@@ -1,0 +1,24 @@
+﻿@model RadiosViewModel
+@{
+    ViewData["Title"] = "Radios";
+}
+
+<partial name="GOVUK/ErrorSummary" />
+
+<span class="govuk-caption-xl">GOV.UK Design System</span>
+<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+
+<form asp-controller="Radios" asp-action="Post" method="post" novalidate>
+    <govuk-radios asp-for="Field1">
+        <govuk-radios-item value="1">Item one</govuk-radios-item>
+        <govuk-radios-item value="2">Item two
+            <govuk-radios-item-hint>Optional hint text</govuk-radios-item-hint>
+        </govuk-radios-item>
+        <govuk-radios-item value="3">Item three</govuk-radios-item>
+    </govuk-radios>
+
+    <govuk-button>Submit</govuk-button>
+</form>
+@section scripts {
+    <partial name="GOVUK/Validation" />
+}

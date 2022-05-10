@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
+@using System.Threading
+
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => (Value: c.Name, Text: c.NativeName ))
+        .ToList();
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    var currentLanguage = requestCulture != null ? requestCulture.RequestCulture.UICulture.Name : Thread.CurrentThread.CurrentUICulture.Name;
+}
+
+@if (cultureItems.Count > 1) {
+    <header id="language-switcher-container">
+        <ul id="language-switcher" class="govuk-list">
+            @foreach (var culture in cultureItems)
+            {
+                <li class="@((currentLanguage == culture.Value) ? "languageSelected" : "languageNotSelected")"><a class="govuk-link" asp-action="SetLanguage" asp-controller="Home" asp-route-returnUrl="@returnUrl" asp-route-culture="@culture.Value">@culture.Text</a></li>
+            }
+        </ul>
+    </header>
+}

@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <partial name="GOVUK/Head" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("head", required: false)
+</head>
+<body class="govuk-template__body ">
+    <partial name="GOVUK/BodyOpen" />
+    <main>@RenderBody()</main>
+    <partial name="GOVUK/BodyClosing" />
+    @RenderSection("scripts", required: false)
+</body>
+</html>

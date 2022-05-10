@@ -1,0 +1,55 @@
+﻿@model TextInputViewModel
+@{
+    ViewData["Title"] = "Text input";
+}
+
+<partial name="GOVUK/ErrorSummary" />
+
+<span class="govuk-caption-xl">GOV.UK Design System</span>
+<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+
+<form asp-controller="TextInput" asp-action="Post" method="post" novalidate>
+    <govuk-input-wrapper>
+        <govuk-input asp-for="Field1">
+            <govuk-input-label>Field label</govuk-input-label>
+            <govuk-input-hint>This field must be numeric, and between 5 and 20 characters</govuk-input-hint>
+            <govuk-input-error-message />
+        </govuk-input>
+    </govuk-input-wrapper>
+
+    <govuk-input-wrapper>
+        <govuk-input asp-for="Field2">
+            <govuk-input-label>Another field</govuk-input-label>
+            <govuk-input-hint>This must be the same as the first, like confirming an email address</govuk-input-hint>
+            <govuk-input-error-message />
+        </govuk-input>
+    </govuk-input-wrapper>
+
+    <govuk-input-wrapper>
+        <govuk-input asp-for="Field3">
+            <govuk-input-label>Email address</govuk-input-label>
+            <govuk-input-hint>This field be an email address between 5 and 100 characters</govuk-input-hint>
+            <govuk-input-error-message />
+        </govuk-input>
+    </govuk-input-wrapper>
+
+    <govuk-input-wrapper>
+        <govuk-input asp-for="Field4" input-class="govuk-input--width-3">
+            <govuk-input-label>Range validation</govuk-input-label>
+            <govuk-input-hint>This must be a number between 5 and 50</govuk-input-hint>
+            <govuk-input-error-message />
+        </govuk-input>
+    </govuk-input-wrapper>
+
+    <govuk-input-wrapper>
+        <govuk-input asp-for="Field5">
+            <govuk-input-label>Credit card</govuk-input-label>
+            <govuk-input-error-message />
+        </govuk-input>
+    </govuk-input-wrapper>
+
+    <govuk-button>Submit</govuk-button>
+</form>
+@section scripts {
+    <partial name="GOVUK/Validation" />
+}

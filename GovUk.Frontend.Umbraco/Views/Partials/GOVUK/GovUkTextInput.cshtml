@@ -1,0 +1,25 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.Umbraco.Html
+@using Umbraco.Extensions
+@{
+    ViewContext.ModelState.TryGetValue(Model.Settings.Value<string>("modelProperty"), out var modelStateEntry);
+}
+<govuk-input-wrapper 
+    error-message-required="@(Model.Settings.Value<string>("errorMessageRequired"))"
+    error-message-regex="@(Model.Settings.Value<string>("errorMessageRegex"))"
+    error-message-email="@(Model.Settings.Value<string>("errorMessageEmail"))"
+    error-message-length="@(Model.Settings.Value<string>("errorMessageLength"))"
+    error-message-minlength="@(Model.Settings.Value<string>("errorMessageMinLength"))"
+    error-message-maxlength="@(Model.Settings.Value<string>("errorMessageMaxLength"))"
+    error-message-range="@(Model.Settings.Value<string>("errorMessageRange"))"
+    error-message-compare="@(Model.Settings.Value<string>("errorMessageCompare"))"
+    error-message-credit-card="@(Model.Settings.Value<string>("errorMessageCreditCard"))"
+>
+    <govuk-input name="@(Model.Settings.Value<string>("modelProperty"))" value="@modelStateEntry?.AttemptedValue" input-class="@(Model.Settings.Value<string>("cssClasses"))">
+        <govuk-input-label>@(Model.Content.Value<string>("label"))</govuk-input-label>
+        <govuk-input-hint>@Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(Model.Content.Value<string>("hint")))</govuk-input-hint>
+        <govuk-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-input-error-message>
+    </govuk-input>
+</govuk-input-wrapper>

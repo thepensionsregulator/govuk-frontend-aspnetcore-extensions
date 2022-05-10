@@ -1,0 +1,7 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using Umbraco.Extensions
+<govuk-details>
+    <govuk-details-summary>@(Model.Content.Value<string>("summary"))</govuk-details-summary>
+    <govuk-details-text>@Html.Raw(Model.Content.Value<string>("text"))</govuk-details-text>
+</govuk-details>

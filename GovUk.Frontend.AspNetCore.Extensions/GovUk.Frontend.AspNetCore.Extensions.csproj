@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Remove="Content\govuk\govuk-js-init.js" />
+		<None Remove="Content\govuk\govuk-js-test.js" />
+		<None Remove="Content\govuk\govuk-validation.js" />
+		<None Remove="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+		<None Remove="Content\lib\jquery-validation\dist\jquery.validate.min.js" />
+		<None Remove="Content\lib\jquery\dist\jquery.min.js" />
+		<None Remove="Content\lib\jquery\dist\jquery.min.map" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Content\govuk\govuk-js-init.js" />
+		<EmbeddedResource Include="Content\govuk\govuk-js-test.js" />
+		<EmbeddedResource Include="Content\govuk\govuk-validation.js" />
+		<EmbeddedResource Include="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+		<EmbeddedResource Include="Content\lib\jquery-validation\dist\jquery.validate.min.js" />
+		<EmbeddedResource Include="Content\lib\jquery\dist\jquery.min.js" />
+		<EmbeddedResource Include="Content\lib\jquery\dist\jquery.min.map" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.4" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\govuk-frontend-aspnetcore\src\GovUk.Frontend.AspNetCore\GovUk.Frontend.AspNetCore.csproj" />
+	</ItemGroup>
+</Project>

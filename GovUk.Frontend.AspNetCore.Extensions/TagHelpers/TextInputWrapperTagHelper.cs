@@ -233,7 +233,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
                     targetElementAttributes.Add("data-val-range", SelectBestErrorMessage(errorMessageRange, rangeAttr.ErrorMessage));
                     targetElementAttributes.Add("data-val-range-max", rangeAttr.Maximum.ToString());
                     targetElementAttributes.Add("data-val-range-min", rangeAttr.Minimum.ToString());
-                    targetElementAttributes["type"].Value = "number";
+                    if (modelProperty.PropertyType != typeof(Boolean))
+                    {
+                        targetElementAttributes["type"].Value = "number";
+                    }
                 }
 
                 // Regex

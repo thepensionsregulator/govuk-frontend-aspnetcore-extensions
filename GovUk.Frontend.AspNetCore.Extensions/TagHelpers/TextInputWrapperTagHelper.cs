@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     [HtmlTargetElement("govuk-input-wrapper")]
-    [RestrictChildren("govuk-input")]
+    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes")]
     public class TextInputWrapperTagHelper : TagHelper
     {
         private static IStringLocalizerFactory? _factory;
@@ -97,6 +97,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 
             // Get the input element that should always be there if a <govuk-input> child exists.
             var input = html.DocumentNode.SelectSingleNode("//input");
+            if (input == null) input = html.DocumentNode.SelectSingleNode("//select");
+            if (input == null) input = html.DocumentNode.SelectSingleNode("//textarea");
+
             if (input != null)
             {
                 // Get the output of the <govuk-input-error-message> grandchild tag helper, if present.
@@ -131,6 +134,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         private static void RemoveErrorClasses(HtmlDocument html, HtmlNode input)
         {
             input.RemoveClass("govuk-input--error");
+            input.RemoveClass("govuk-select--error");
             var errorContainer = html.DocumentNode.SelectSingleNode("//*[contains(@class,'govuk-form-group--error')]");
             if (errorContainer != null) { errorContainer.RemoveClass("govuk-form-group--error"); }
         }

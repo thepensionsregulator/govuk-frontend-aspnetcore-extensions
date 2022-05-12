@@ -66,13 +66,13 @@ This repository includes an example application which demonstrates the validatio
    <h1 class="govuk-heading-l">My form</h1>
 
    <form asp-controller="Home" asp-action="Post" method="post" novalidate>
-       <govuk-input-wrapper>
+       <govuk-client-side-validation>
            <govuk-input asp-for="MyModelProperty">
                <govuk-input-label>Field label</govuk-input-label>
                <govuk-input-hint>This is the hint</govuk-input-hint>
                <govuk-input-error-message />
            </govuk-input>
-       </govuk-input-wrapper>
+       </govuk-client-side-validation>
 
        <govuk-button type="submit">Submit</govuk-button>
    </form>

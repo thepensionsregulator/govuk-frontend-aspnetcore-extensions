@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Localization;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -14,14 +15,14 @@ using System.Threading.Tasks;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
-    [HtmlTargetElement("govuk-input-wrapper")]
-    [RestrictChildren("govuk-input")]
-    public class TextInputWrapperTagHelper : TagHelper
+    [HtmlTargetElement("govuk-client-side-validation")]
+    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes")]
+    public class GovUKClientSideValidationTagHelper : TagHelper
     {
         private static IStringLocalizerFactory? _factory;
         private static IStringLocalizer? _localizer = null;
 
-        public TextInputWrapperTagHelper(IStringLocalizerFactory? factory = null)
+        public GovUKClientSideValidationTagHelper(IStringLocalizerFactory? factory = null)
         {
             _factory = factory;
         }
@@ -97,6 +98,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 
             // Get the input element that should always be there if a <govuk-input> child exists.
             var input = html.DocumentNode.SelectSingleNode("//input");
+            if (input == null) input = html.DocumentNode.SelectSingleNode("//select");
+            if (input == null) input = html.DocumentNode.SelectSingleNode("//textarea");
+
             if (input != null)
             {
                 // Get the output of the <govuk-input-error-message> grandchild tag helper, if present.
@@ -131,6 +135,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         private static void RemoveErrorClasses(HtmlDocument html, HtmlNode input)
         {
             input.RemoveClass("govuk-input--error");
+            input.RemoveClass("govuk-select--error");
             var errorContainer = html.DocumentNode.SelectSingleNode("//*[contains(@class,'govuk-form-group--error')]");
             if (errorContainer != null) { errorContainer.RemoveClass("govuk-form-group--error"); }
         }
@@ -229,7 +234,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
                     targetElementAttributes.Add("data-val-range", SelectBestErrorMessage(errorMessageRange, rangeAttr.ErrorMessage));
                     targetElementAttributes.Add("data-val-range-max", rangeAttr.Maximum.ToString());
                     targetElementAttributes.Add("data-val-range-min", rangeAttr.Minimum.ToString());
-                    targetElementAttributes["type"].Value = "number";
+                    if (IsNumericType(modelProperty.PropertyType))
+                    {
+                        targetElementAttributes["type"].Value = "number";
+                    }
                 }
 
                 // Regex
@@ -285,6 +293,20 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
             }
 
             return modelProperty;
+        }
+
+        private static readonly HashSet<Type> NumericTypes = new HashSet<Type>
+        {
+            typeof(int),  typeof(double),  typeof(decimal),
+            typeof(long), typeof(short),   typeof(sbyte),
+            typeof(byte), typeof(ulong),   typeof(ushort),
+            typeof(uint), typeof(float)
+        };
+
+        internal static bool IsNumericType(Type type)
+        {
+            return NumericTypes.Contains(type) ||
+                   NumericTypes.Contains(Nullable.GetUnderlyingType(type));
         }
     }
 }

@@ -19,7 +19,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "govuk-frontend-aspnetcore"'
+    script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "../govuk-frontend-aspnetcore"'
 
 - task: NuGetCommand@2
   inputs:

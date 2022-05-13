@@ -29,12 +29,12 @@ steps:
   inputs:
     script: 'dir' 
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+# - task: VSBuild@1
+#   inputs:
+#     solution: '$(solution)'
+#     msbuildArgs: '/p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true'
+#     platform: '$(buildPlatform)'
+#     configuration: '$(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -45,6 +45,17 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: 'GovUk.Frontend.AspNetCore.Extensions/*.csproj'
+    versioningScheme: 'off'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: "build"
+    projects: "../GovUk.Frontend.AspNetCore/*.csproj"
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '../GovUk.Frontend.AspNetCore/*.csproj'
     versioningScheme: 'off'
 
 - task: NuGetCommand@2

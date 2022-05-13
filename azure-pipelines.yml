@@ -47,15 +47,19 @@ steps:
     packagesToPack: 'GovUk.Frontend.AspNetCore.Extensions/*.csproj'
     versioningScheme: 'off'
 
+- task: CmdLine@2
+  inputs:
+    script: 'dir' 
+
 - task: DotNetCoreCLI@2
   inputs:
     command: "build"
-    projects: "../govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj"
+    projects: "govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj"
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
-    packagesToPack: '../govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
+    packagesToPack: 'govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
     versioningScheme: 'off'
 
 - task: NuGetCommand@2

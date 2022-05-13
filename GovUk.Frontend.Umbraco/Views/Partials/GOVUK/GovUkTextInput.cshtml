@@ -7,7 +7,7 @@
 @{
     ViewContext.ModelState.TryGetValue(Model.Item.Settings.Value<string>("modelProperty"), out var modelStateEntry);
 }
-<govuk-input-wrapper 
+<govuk-client-side-validation
     error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))"
     error-message-regex="@(Model.Item.Settings.Value<string>("errorMessageRegex"))"
     error-message-email="@(Model.Item.Settings.Value<string>("errorMessageEmail"))"
@@ -23,4 +23,4 @@
         <govuk-input-hint>@Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(Model.Item.Content.Value<string>("hint")))</govuk-input-hint>
         <govuk-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-input-error-message>
     </govuk-input>
-</govuk-input-wrapper>
+</govuk-client-side-validation>

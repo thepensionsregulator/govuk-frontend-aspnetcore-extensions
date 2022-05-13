@@ -1,8 +1,3 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
    - develop
 
@@ -30,12 +25,6 @@ steps:
          git.exe submodule update
        workingDirectory: '../govuk-frontend-aspnetcore'
 
-   # - task: CopyFiles@2
-   #   inputs:
-   #     SourceFolder: 'govuk-precompiled'
-   #     Contents: '**'
-   #     TargetFolder: '../govuk-frontend-aspnetcore/lib/govuk-frontend/dist'
-
    - task: NuGetCommand@2
      inputs:
         restoreSolution: "$(solution)"
@@ -43,13 +32,6 @@ steps:
    - task: CmdLine@2
      inputs:
         script: "dir"
-
-   # - task: VSBuild@1
-   #   inputs:
-   #     solution: '$(solution)'
-   #     msbuildArgs: '/p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true'
-   #     platform: '$(buildPlatform)'
-   #     configuration: '$(buildConfiguration)'
 
    - task: DotNetCoreCLI@2
      inputs:
@@ -62,37 +44,11 @@ steps:
         packagesToPack: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
         versioningScheme: "off"
 
-   # - task: CmdLine@2
-   #   inputs:
-   #     script: 'dir'
-
-   # - task: DotNetCoreCLI@2
-   #   inputs:
-   #     command: 'build'
-   #     projects: 'govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
-   #     workingDirectory: '..'
-
-   # - task: DotNetCoreCLI@2
-   #   inputs:
-   #     command: 'pack'
-   #     packagesToPack: 'govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
-   #     versioningScheme: 'off'
-
    - task: NuGetCommand@2
      inputs:
-        command: "push"
-        packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg"
-        nuGetFeedType: "internal"
-        publishVstsFeed: "0a710e17-5efe-4e4d-80aa-bb204c717d15/0adf1698-d301-4304-9266-d66afb560b7b"
-        allowPackageConflicts: true
-# - task: VSBuild@1
-#   inputs:
-#     solution: '$(solution)'
-#     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
-
-# - task: VSTest@2
-#   inputs:
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
+       command: 'push'
+       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+       nuGetFeedType: 'internal'
+       publishVstsFeed: '0158f35d-cea5-4d9d-adc8-9fc3d3d98793/f63b15a0-0f4a-4812-82c0-e8a73b0bf199'
+       versioningScheme: "off"
+       allowPackageConflicts: true

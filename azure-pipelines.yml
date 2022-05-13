@@ -21,11 +21,20 @@ steps:
      inputs:
         script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "../govuk-frontend-aspnetcore"'
 
-   - task: CopyFiles@2
+   - task: CmdLine@2
      inputs:
-       SourceFolder: 'govuk-precompiled'
-       Contents: '**'
-       TargetFolder: '../govuk-frontend-aspnetcore/lib/govuk-frontend/dist'
+       script: |
+         echo init submodule
+         git.exe submodule init
+         git.exe submodule set-url "lib/govuk-frontend" https://github.com/alphagov/govuk-frontend.git
+         git.exe submodule update
+       workingDirectory: '../govuk-frontend-aspnetcore'
+
+   # - task: CopyFiles@2
+   #   inputs:
+   #     SourceFolder: 'govuk-precompiled'
+   #     Contents: '**'
+   #     TargetFolder: '../govuk-frontend-aspnetcore/lib/govuk-frontend/dist'
 
    - task: NuGetCommand@2
      inputs:

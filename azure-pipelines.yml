@@ -23,7 +23,7 @@ steps:
 
    - task: CopyFiles@2
      inputs:
-       SourceFolder: 'govuk-frontend-aspnetcore-extensions/govuk-precompiled'
+       SourceFolder: 'govuk-precompiled'
        Contents: '**'
        TargetFolder: '../govuk-frontend-aspnetcore/lib/govuk-frontend/dist'
 

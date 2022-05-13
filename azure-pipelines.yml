@@ -23,12 +23,12 @@ steps:
 
    - task: CmdLine@2
      inputs:
-        script: |
-        echo init submodule
-        git.exe submodule init
-        git.exe submodule set-url "lib/govuk-frontend" https://github.com/alphagov/govuk-frontend.git
-        git.exe submodule update
-     workingDirectory: '../govuk-frontend-aspnetcore'
+       script: |
+         echo init submodule
+         git.exe submodule init
+         git.exe submodule set-url "lib/govuk-frontend" https://github.com/alphagov/govuk-frontend.git
+         git.exe submodule update
+       workingDirectory: '../govuk-frontend-aspnetcore'
 
    # - task: CopyFiles@2
    #   inputs:

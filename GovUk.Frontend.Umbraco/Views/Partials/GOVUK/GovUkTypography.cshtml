@@ -1,9 +1,10 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Models
 @using HtmlAgilityPack
 @using Umbraco.Extensions
 @{
-    var html = Model.Content.Value<string>("text");
+    var html = Model.Item.Content.Value<string>("text");
 }
 @functions {
     public void ApplyClass(HtmlDocument doc, string xpath, string className)

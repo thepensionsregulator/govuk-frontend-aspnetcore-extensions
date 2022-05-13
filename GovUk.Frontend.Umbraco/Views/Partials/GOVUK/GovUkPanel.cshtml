@@ -1,8 +1,9 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Html
+@using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
 <govuk-panel heading-level="1">
-    <govuk-panel-title>@(Model.Content.Value<string>("panelHeading"))</govuk-panel-title>
-    <govuk-panel-body>@Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(Model.Content.Value<string>("panelText")))</govuk-panel-body>
+    <govuk-panel-title>@(Model.Item.Content.Value<string>("panelHeading"))</govuk-panel-title>
+    <govuk-panel-body>@Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(Model.Item.Content.Value<string>("panelText")))</govuk-panel-body>
 </govuk-panel>

@@ -4,73 +4,72 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- develop
+   - develop
 
 pool:
-  vmImage: 'windows-latest'
+   vmImage: "windows-latest"
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+   solution: "**/*.sln"
+   buildPlatform: "Any CPU"
+   buildConfiguration: "Release"
 
 steps:
-- task: NuGetToolInstaller@1
+   - task: NuGetToolInstaller@1
 
-- task: CmdLine@2
-  inputs:
-    script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "../govuk-frontend-aspnetcore"'
+   - task: CmdLine@2
+     inputs:
+        script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "../govuk-frontend-aspnetcore"'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+   - task: NuGetCommand@2
+     inputs:
+        restoreSolution: "$(solution)"
 
-- task: CmdLine@2
-  inputs:
-    script: 'dir' 
+   - task: CmdLine@2
+     inputs:
+        script: "dir"
 
-# - task: VSBuild@1
-#   inputs:
-#     solution: '$(solution)'
-#     msbuildArgs: '/p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true'
-#     platform: '$(buildPlatform)'
-#     configuration: '$(buildConfiguration)'
+   # - task: VSBuild@1
+   #   inputs:
+   #     solution: '$(solution)'
+   #     msbuildArgs: '/p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true'
+   #     platform: '$(buildPlatform)'
+   #     configuration: '$(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: "build"
-    projects: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+   - task: DotNetCoreCLI@2
+     inputs:
+        command: "build"
+        projects: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'pack'
-    packagesToPack: 'GovUk.Frontend.AspNetCore.Extensions/*.csproj'
-    versioningScheme: 'off'
+   - task: DotNetCoreCLI@2
+     inputs:
+        command: "pack"
+        packagesToPack: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+        versioningScheme: "off"
 
-- task: CmdLine@2
-  inputs:
-    script: 'dir' 
+   # - task: CmdLine@2
+   #   inputs:
+   #     script: 'dir'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: 'govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
-    workingDirectory: '..'
+   # - task: DotNetCoreCLI@2
+   #   inputs:
+   #     command: 'build'
+   #     projects: 'govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
+   #     workingDirectory: '..'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'pack'
-    packagesToPack: 'govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
-    versioningScheme: 'off'
+   # - task: DotNetCoreCLI@2
+   #   inputs:
+   #     command: 'pack'
+   #     packagesToPack: 'govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
+   #     versioningScheme: 'off'
 
-- task: NuGetCommand@2
-  inputs:
-    command: "push"
-    packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg"
-    nuGetFeedType: "internal"
-    publishVstsFeed: "0a710e17-5efe-4e4d-80aa-bb204c717d15/0adf1698-d301-4304-9266-d66afb560b7b"
-    allowPackageConflicts: true
-
+   - task: NuGetCommand@2
+     inputs:
+        command: "push"
+        packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg"
+        nuGetFeedType: "internal"
+        publishVstsFeed: "0a710e17-5efe-4e4d-80aa-bb204c717d15/0adf1698-d301-4304-9266-d66afb560b7b"
+        allowPackageConflicts: true
 # - task: VSBuild@1
 #   inputs:
 #     solution: '$(solution)'

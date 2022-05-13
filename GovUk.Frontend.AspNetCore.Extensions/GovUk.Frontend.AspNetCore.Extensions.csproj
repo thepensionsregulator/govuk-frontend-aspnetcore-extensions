@@ -37,6 +37,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\govuk-frontend-aspnetcore\src\GovUk.Frontend.AspNetCore\GovUk.Frontend.AspNetCore.csproj" />
+		<ProjectReference Include="..\..\govuk-frontend-aspnetcore\src\GovUk.Frontend.AspNetCore\GovUk.Frontend.AspNetCore.csproj" PrivateAssets="All"/>
 	</ItemGroup>
 </Project>

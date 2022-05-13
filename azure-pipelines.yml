@@ -19,7 +19,7 @@ steps:
 
 - task: CmdLine@2
   inputs:
-    script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "../govuk-frontend-aspnetcore"'
+    script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "govuk-frontend-aspnetcore"'
 
 - task: NuGetCommand@2
   inputs:
@@ -53,13 +53,14 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    command: "build"
-    projects: "../govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj"
+    command: 'build'
+    projects: 'govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
+    workingDirectory: '..'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
-    packagesToPack: '../govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
+    packagesToPack: 'govuk-frontend-aspnetcore/src/GovUk.Frontend.AspNetCore/*.csproj'
     versioningScheme: 'off'
 
 - task: NuGetCommand@2

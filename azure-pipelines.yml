@@ -50,12 +50,12 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: "build"
-    projects: "../GovUk.Frontend.AspNetCore/*.csproj"
+    projects: "GovUk.Frontend.AspNetCore/src/*.csproj"
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
-    packagesToPack: '../GovUk.Frontend.AspNetCore/*.csproj'
+    packagesToPack: 'GovUk.Frontend.AspNetCore/src/*.csproj'
     versioningScheme: 'off'
 
 - task: NuGetCommand@2

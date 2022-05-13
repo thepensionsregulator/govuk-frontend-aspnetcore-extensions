@@ -21,6 +21,12 @@ steps:
      inputs:
         script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "../govuk-frontend-aspnetcore"'
 
+   - task: CopyFiles@2
+     inputs:
+       SourceFolder: 'govuk-precompiled'
+       Contents: '**'
+       TargetFolder: '../govuk-frontend-aspnetcore/lib/govuk-frontend/dist'
+
    - task: NuGetCommand@2
      inputs:
         restoreSolution: "$(solution)"

@@ -1,0 +1,12 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Html
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Extensions
+@{
+    var iconFallbackText = Model.Item.Content.Value<string>("iconFallbackText");
+    if (string.IsNullOrWhiteSpace(iconFallbackText)) { iconFallbackText = "Warning"; }
+}
+<govuk-warning-text icon-fallback-text="@iconFallbackText">
+    @Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(Model.Item.Content.Value<string>("text")))
+</govuk-warning-text>

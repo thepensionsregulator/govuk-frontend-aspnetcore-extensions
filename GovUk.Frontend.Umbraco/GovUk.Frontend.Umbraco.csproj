@@ -21,6 +21,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Update="uSync\v9\ContentTypes\govukdetails.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukinsettext.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukpanel.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -62,6 +72,11 @@
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukvalidationrequired.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukwarningtext.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

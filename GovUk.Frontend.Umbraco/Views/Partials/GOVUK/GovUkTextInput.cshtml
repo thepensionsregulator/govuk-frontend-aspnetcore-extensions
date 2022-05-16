@@ -1,7 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
-@using GovUk.Frontend.Umbraco.Html
+@using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
 @{
@@ -20,7 +20,7 @@
 >
     <govuk-input name="@(Model.Item.Settings.Value<string>("modelProperty"))" value="@modelStateEntry?.AttemptedValue" input-class="@(Model.Item.Settings.Value<string>("cssClasses"))">
         <govuk-input-label>@(Model.Item.Content.Value<string>("label"))</govuk-input-label>
-        <govuk-input-hint>@Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(Model.Item.Content.Value<string>("hint")))</govuk-input-hint>
+        <govuk-input-hint>@Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-input-hint>
         <govuk-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-input-error-message>
     </govuk-input>
 </govuk-client-side-validation>

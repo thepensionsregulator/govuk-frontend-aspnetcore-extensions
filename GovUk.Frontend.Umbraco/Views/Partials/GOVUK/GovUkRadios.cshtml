@@ -1,6 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
-@using GovUk.Frontend.Umbraco.Html
+@using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
@@ -12,7 +12,7 @@
     @foreach (var block in Model.Filter(radioButtons))
     {
         <govuk-radios-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
-            <govuk-radios-item-hint>@Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(block.Content.Value<string>("hint")))</govuk-radios-item-hint>
+            <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
         </govuk-radios-item>
     }
 </govuk-radios>

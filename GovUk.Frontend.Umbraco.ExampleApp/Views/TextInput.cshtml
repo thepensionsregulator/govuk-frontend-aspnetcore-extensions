@@ -7,9 +7,6 @@
 
 <partial name="GOVUK/ErrorSummary" />
 
-<span class="govuk-caption-xl">@Model.Page.Caption<span>
-<h1 class="govuk-heading-l">@Model.Page.Name</h1>
-
 @using (Html.BeginUmbracoForm<TextInputSurfaceController>(nameof(TextInputSurfaceController.Index), null, new { novalidate="novalidate" }))
 {
     <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />

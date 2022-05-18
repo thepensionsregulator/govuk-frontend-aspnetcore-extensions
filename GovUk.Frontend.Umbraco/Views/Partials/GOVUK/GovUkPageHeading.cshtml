@@ -1,0 +1,13 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Extensions
+@{
+    var caption = Model.Item.Content.Value<string>("caption");
+}
+@if (!string.IsNullOrWhiteSpace(caption)) 
+{
+<span class="govuk-caption-l">@caption</span>
+}
+<h1 class="govuk-heading-l">@Umbraco.AssignedContentItem.Name</h1>

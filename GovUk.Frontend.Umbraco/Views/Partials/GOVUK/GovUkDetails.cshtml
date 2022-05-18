@@ -1,8 +1,9 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Html
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
 <govuk-details>
     <govuk-details-summary>@(Model.Item.Content.Value<string>("summary"))</govuk-details-summary>
-    <govuk-details-text>@Html.Raw(Model.Item.Content.Value<string>("text"))</govuk-details-text>
+    <govuk-details-text>@Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(Model.Item.Content.Value<string>("text")))</govuk-details-text>
 </govuk-details>

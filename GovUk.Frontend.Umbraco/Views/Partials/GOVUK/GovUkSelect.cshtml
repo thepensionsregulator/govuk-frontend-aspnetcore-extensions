@@ -1,0 +1,22 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.Umbraco.Html
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+@{
+    var options = Model.Item.Content.Value<BlockListModel>("options");
+    var group = Model.Item.Settings.Value<string>("modelProperty");
+    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
+}
+<govuk-client-side-validation
+    error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
+    <govuk-select name="@group" class="@cssClass">
+        <govuk-select-label>@(Model.Item.Content.Value<string>("label"))</govuk-select-label>
+        @foreach (var block in Model.Filter(options))
+        {
+            <govuk-select-item value="@(block.Content.Value<string>("value"))">@(block.Content.Value<string>("label"))</govuk-select-item>
+        }
+    </govuk-select>
+</govuk-client-side-validation>

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     [HtmlTargetElement("govuk-client-side-validation")]
-    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes")]
+    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes", "govuk-fieldset")]
     public class GovUKClientSideValidationTagHelper : TagHelper
     {
         private static IStringLocalizerFactory? _factory;

@@ -14,8 +14,8 @@
         cssClass = (cssClass + " govuk-radios--inline").TrimStart();
     }
     var hint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-    var legendIsPageHeading = Model.Item.Settings.Value<bool>("h1");
-    var legend = Model.Item.Content.Value<string>("question").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var legendIsPageHeading = Model.Item.Settings.Value<bool>("legendIsPageHeading");
+    var legend = Model.Item.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
 }
 <govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
     <govuk-radios name="@group" class="@cssClass">

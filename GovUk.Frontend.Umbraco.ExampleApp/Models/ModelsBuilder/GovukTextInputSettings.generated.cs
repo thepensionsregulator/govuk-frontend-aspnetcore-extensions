@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Text input settings</summary>
 	[PublishedModel("govukTextInputSettings")]
-	public partial class GovukTextInputSettings : PublishedElementModel, IGovukValidationRequired
+	public partial class GovukTextInputSettings : PublishedElementModel, IGovukCssClasses, IGovukModelProperty, IGovukValidationRequired
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -48,14 +48,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
-
-		///<summary>
-		/// CSS classes
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("cssClasses")]
-		public virtual string CssClasses => this.Value<string>(_publishedValueFallback, "cssClasses");
 
 		///<summary>
 		/// Compare to another field: Sets the error message displayed if the field is set to be the same as another (like when you're asked to re-enter an email address).
@@ -122,12 +114,20 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string ErrorMessageRegex => this.Value<string>(_publishedValueFallback, "errorMessageRegex");
 
 		///<summary>
+		/// CSS classes
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClasses")]
+		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
+
+		///<summary>
 		/// Model property: The name of the property on the view model being bound to in the code.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("modelProperty")]
-		public virtual string ModelProperty => this.Value<string>(_publishedValueFallback, "modelProperty");
+		public virtual string ModelProperty => global::Umbraco.Cms.Web.Common.PublishedModels.GovukModelProperty.GetModelProperty(this, _publishedValueFallback);
 
 		///<summary>
 		/// Required: Sets the message displayed if the field is set by the code to be required.

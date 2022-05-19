@@ -8,9 +8,14 @@
 @{
     var radioButtons = Model.Item.Content.Value<BlockListModel>("radioButtons");
     var group = Model.Item.Settings.Value<string>("modelProperty");
+    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
+    if (Model.Item.Settings.Value<string>("layout") == "Horizontal")
+    {
+        cssClass = (cssClass + " govuk-radios--inline").TrimStart();
+    }
 }
 <govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
-    <govuk-radios name="@group">
+    <govuk-radios name="@group" class="@cssClass">
         @foreach (var block in Model.Filter(radioButtons))
         {
             <govuk-radios-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))

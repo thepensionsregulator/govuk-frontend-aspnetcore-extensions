@@ -18,9 +18,16 @@
     <govuk-radios name="@group" class="@cssClass">
         @foreach (var block in Model.Filter(radioButtons))
         {
-            <govuk-radios-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
-                <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
-            </govuk-radios-item>
+            if (block.Content.ContentType.Alias == "govukRadiosDivider")
+            {
+                <govuk-radios-divider>@(string.IsNullOrWhiteSpace(block.Content.Value<string>("text")) ? "or" : block.Content.Value<string>("text"))</govuk-radios-divider>
+            }
+            else
+            {
+                <govuk-radios-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
+                    <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
+                </govuk-radios-item>                
+            }
         }
     </govuk-radios>
 </govuk-client-side-validation>

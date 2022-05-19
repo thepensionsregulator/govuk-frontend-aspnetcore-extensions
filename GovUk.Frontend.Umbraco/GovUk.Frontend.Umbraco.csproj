@@ -21,6 +21,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Update="uSync\v9\ContentTypes\govukcaption.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukcssclasses.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -41,7 +46,17 @@
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukpageheading.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukpanel.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukpanelsettings.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -52,6 +67,11 @@
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukradios.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukradiosdivider.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

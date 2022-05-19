@@ -13,9 +13,19 @@
     {
         cssClass = (cssClass + " govuk-radios--inline").TrimStart();
     }
+    var hint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var legendIsPageHeading = Model.Item.Settings.Value<bool>("h1");
+    var legend = Model.Item.Content.Value<string>("question").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
 }
 <govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
     <govuk-radios name="@group" class="@cssClass">
+         <govuk-radios-fieldset>
+            <govuk-radios-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-radios-fieldset-legend>
+        </govuk-radios-fieldset>
+        @if (!string.IsNullOrWhiteSpace(hint))
+        {
+            <govuk-radios-hint>@Html.Raw(hint)</govuk-radios-hint>
+        }
         @foreach (var block in Model.Filter(radioButtons))
         {
             if (block.Content.ContentType.Alias == "govukRadiosDivider")

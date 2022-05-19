@@ -48,21 +48,5 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
-
-		///<summary>
-		/// Caption: Appears above the heading, to make it clear that a page is part of a larger section or group.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("caption")]
-		public virtual string Caption => this.Value<string>(_publishedValueFallback, "caption");
-
-		///<summary>
-		/// Page heading: The page name (editable at the start of this page) is displayed as a GOV.UK main heading.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("h1")]
-		public virtual string H1 => this.Value<string>(_publishedValueFallback, "h1");
 	}
 }

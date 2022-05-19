@@ -11,12 +11,16 @@
 <form asp-controller="Radios" asp-action="Post" method="post" novalidate>
     <govuk-client-side-validation>
         <govuk-radios asp-for="Field1">
-            <govuk-radios-item value="1">Item one</govuk-radios-item>
-            <govuk-radios-item value="2">Item two
-                <govuk-radios-item-hint>Optional hint text</govuk-radios-item-hint>
-            </govuk-radios-item>
-            <govuk-radios-divider>or</govuk-radios-divider>
-            <govuk-radios-item value="3">Item three</govuk-radios-item>
+        <govuk-radios-fieldset>
+            <govuk-radios-fieldset-legend>This is the legend</govuk-radios-fieldset-legend>
+        </govuk-radios-fieldset>
+        <govuk-radios-hint>This is the hint</govuk-radios-hint>
+        <govuk-radios-item value="1">Item one</govuk-radios-item>
+        <govuk-radios-item value="2">Item two
+            <govuk-radios-item-hint>Optional hint text</govuk-radios-item-hint>
+        </govuk-radios-item>
+        <govuk-radios-divider>or</govuk-radios-divider>
+        <govuk-radios-item value="3">Item three</govuk-radios-item>
         </govuk-radios>
     </govuk-client-side-validation>
 

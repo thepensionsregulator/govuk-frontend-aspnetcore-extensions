@@ -74,7 +74,12 @@
           error.setAttribute("id", errorId);
           error.setAttribute("data-valmsg-for", id);
           error.setAttribute("data-valmsg-replace", "true");
-          element.parentElement.insertBefore(error, element);
+
+          let radios = $(element).closest(".govuk-radios");
+          let targetElement = radios.length ? radios[0] : element;
+          if (targetElement.parentElement) {
+            targetElement.parentElement.insertBefore(error, targetElement);
+          }
 
           const errorPrefix = document.createElement("span");
           errorPrefix.classList.add("govuk-visually-hidden");

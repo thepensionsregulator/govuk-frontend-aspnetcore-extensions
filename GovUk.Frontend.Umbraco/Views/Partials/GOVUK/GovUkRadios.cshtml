@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models.Blocks
@@ -8,11 +9,13 @@
     var radioButtons = Model.Item.Content.Value<BlockListModel>("radioButtons");
     var group = Model.Item.Settings.Value<string>("modelProperty");
 }
-<govuk-radios name="@group">
-    @foreach (var block in Model.Filter(radioButtons))
-    {
-        <govuk-radios-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
-            <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
-        </govuk-radios-item>
-    }
-</govuk-radios>
+<govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
+    <govuk-radios name="@group">
+        @foreach (var block in Model.Filter(radioButtons))
+        {
+            <govuk-radios-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
+                <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
+            </govuk-radios-item>
+        }
+    </govuk-radios>
+</govuk-client-side-validation>

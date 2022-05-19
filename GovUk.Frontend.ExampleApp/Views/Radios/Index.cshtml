@@ -9,13 +9,15 @@
 <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
 
 <form asp-controller="Radios" asp-action="Post" method="post" novalidate>
-    <govuk-radios asp-for="Field1">
-        <govuk-radios-item value="1">Item one</govuk-radios-item>
-        <govuk-radios-item value="2">Item two
-            <govuk-radios-item-hint>Optional hint text</govuk-radios-item-hint>
-        </govuk-radios-item>
-        <govuk-radios-item value="3">Item three</govuk-radios-item>
-    </govuk-radios>
+    <govuk-client-side-validation>
+        <govuk-radios asp-for="Field1">
+            <govuk-radios-item value="1">Item one</govuk-radios-item>
+            <govuk-radios-item value="2">Item two
+                <govuk-radios-item-hint>Optional hint text</govuk-radios-item-hint>
+            </govuk-radios-item>
+            <govuk-radios-item value="3">Item three</govuk-radios-item>
+        </govuk-radios>
+    </govuk-client-side-validation>
 
     <govuk-button>Submit</govuk-button>
 </form>

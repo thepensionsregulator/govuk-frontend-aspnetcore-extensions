@@ -75,8 +75,8 @@
           error.setAttribute("data-valmsg-for", id);
           error.setAttribute("data-valmsg-replace", "true");
 
-          let radios = $(element).closest(".govuk-radios");
-          let targetElement = radios.length ? radios[0] : element;
+          let list = $(element).closest(".govuk-radios, .govuk-checkboxes");
+          let targetElement = list.length ? list[0] : element;
           if (targetElement.parentElement) {
             targetElement.parentElement.insertBefore(error, targetElement);
           }

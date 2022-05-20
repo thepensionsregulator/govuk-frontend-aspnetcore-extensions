@@ -1,0 +1,51 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+@{
+    var radioButtons = Model.Item.Content.Value<BlockListModel>("checkboxes");
+    var group = Model.Item.Settings.Value<string>("modelProperty");
+    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
+    var hint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var legendIsPageHeading = Model.Item.Settings.Value<bool>("legendIsPageHeading");
+    var legend = Model.Item.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+}
+
+<govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
+    <govuk-checkboxes name="@group" class="@cssClass">
+         <govuk-checkboxes-fieldset>
+            <govuk-checkboxes-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-checkboxes-fieldset-legend>
+            @{
+                if (!string.IsNullOrWhiteSpace(hint))
+                {
+                    <govuk-checkboxes-hint>@Html.Raw(hint)</govuk-checkboxes-hint>
+                }
+                foreach (var block in Model.Filter(radioButtons))
+                {
+                    if (block.Content.ContentType.Alias == "govukCheckboxesDivider")
+                    {
+                        <govuk-checkboxes-divider>@(string.IsNullOrWhiteSpace(block.Content.Value<string>("text")) ? "or" : block.Content.Value<string>("text"))</govuk-checkboxes-divider>
+                    }
+                    else
+                    {
+                        if (block.Settings.Value<bool>("exclusive")) 
+                        {
+                            <govuk-checkboxes-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))" input-data-behaviour="exclusive">@(block.Content.Value<string>("label"))
+                                <govuk-checkboxes-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-checkboxes-item-hint>
+                            </govuk-checkboxes-item>
+                        }
+                        else
+                        {
+                            <govuk-checkboxes-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
+                                <govuk-checkboxes-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-checkboxes-item-hint>
+                            </govuk-checkboxes-item>                    
+                        }
+                    }
+                }
+            }
+        </govuk-checkboxes-fieldset>
+    </govuk-checkboxes>
+</govuk-client-side-validation>

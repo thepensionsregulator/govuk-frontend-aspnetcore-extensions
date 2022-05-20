@@ -36,6 +36,14 @@
             {
                 <govuk-radios-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
                     <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
+                    @{
+                        var conditional = block.Content.Value<BlockListModel>("conditionalBlocks");
+                        if (conditional.Any()){
+                            <govuk-radios-item-conditional>
+                                @await Html.PartialAsync("GOVUK/FilteredBlockList", new FilteredBlockListModel(conditional, Model.Filter))
+                            </govuk-radios-item-conditional>
+                        }
+                    }
                 </govuk-radios-item>                
             }
         }

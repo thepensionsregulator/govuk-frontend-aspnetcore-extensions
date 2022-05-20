@@ -6,5 +6,8 @@ namespace GovUk.Frontend.ExampleApp.Models
     {
         [Required(ErrorMessage = "This field is required")]
         public string Field1 { get; set; }
+
+        [RegularExpression("[0-9]+", ErrorMessage = "The related question must be numbers")]
+        public string Field2 { get; set; }
     }
 }

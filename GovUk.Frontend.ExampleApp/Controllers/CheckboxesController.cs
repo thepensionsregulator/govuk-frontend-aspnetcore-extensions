@@ -9,7 +9,7 @@ namespace GovUk.Frontend.ExampleApp.Controllers
     {
         public IActionResult Index()
         {
-            return View(new CheckboxesViewModel());
+            return View();
         }
 
         [HttpPost]

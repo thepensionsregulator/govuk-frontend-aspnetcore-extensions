@@ -1,0 +1,24 @@
+﻿@model TextareaViewModel
+@{
+    ViewData["Title"] = "Textarea";
+}
+
+<partial name="GOVUK/ErrorSummary" />
+
+<span class="govuk-caption-xl">GOV.UK Design System</span>
+<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+
+<form asp-controller="Textarea" asp-action="Post" method="post" novalidate>
+    <govuk-client-side-validation>
+        <govuk-textarea asp-for="Field1">
+            <govuk-textarea-label>Field label</govuk-textarea-label>
+            <govuk-textarea-hint>This field must be full of numbers</govuk-textarea-hint>
+            <govuk-textarea-error-message />
+        </govuk-textarea>
+    </govuk-client-side-validation>
+
+    <govuk-button>Submit</govuk-button>
+</form>
+@section scripts {
+    <partial name="GOVUK/Validation" />
+}

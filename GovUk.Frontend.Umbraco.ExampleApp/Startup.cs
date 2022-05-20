@@ -86,6 +86,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
             mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(Checkboxes), nameof(Checkboxes.Blocks)));
             mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(Radios), nameof(Radios.Blocks)));
             mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(Select), nameof(Select.Blocks)));
+            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(Textarea), nameof(Textarea.Blocks)));
             mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(TextInput), nameof(TextInput.Blocks)));
         }
     }

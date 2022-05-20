@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     [HtmlTargetElement("govuk-client-side-validation")]
-    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes", "govuk-fieldset")]
+    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes", "govuk-fieldset", "govuk-textarea")]
     public class GovUKClientSideValidationTagHelper : TagHelper
     {
         private static IStringLocalizerFactory? _factory;
@@ -137,6 +137,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
             foreach (var input in inputs)
             {
                 input.RemoveClass("govuk-input--error");
+                input.RemoveClass("govuk-textarea--error");
                 input.RemoveClass("govuk-select--error");
                 var errorContainer = html.DocumentNode.SelectSingleNode("//*[contains(@class,'govuk-form-group--error')]");
                 if (errorContainer != null) { errorContainer.RemoveClass("govuk-form-group--error"); }

@@ -94,7 +94,7 @@
         const email = element.getAttribute("data-val-email");
         const pattern = element.getAttribute("data-val-regex-pattern");
         const minLength = element.getAttribute("data-val-length-min");
-        const minLengthOnly = element.getAttribute("data-val-minlength-max");
+        const minLengthOnly = element.getAttribute("data-val-minlength-min");
         const maxLength = element.getAttribute("data-val-length-max");
         const maxLengthOnly = element.getAttribute("data-val-maxlength-max");
         const minRange = element.getAttribute("data-val-range-min");

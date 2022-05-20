@@ -9,14 +9,12 @@ namespace GovUk.Frontend.ExampleApp.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            return View(new CheckboxesViewModel());
         }
 
         [HttpPost]
         public IActionResult Post(CheckboxesViewModel viewModel)
         {
-            var multipleSelectedValues = Request.Form["Field1"];
-
             if (ModelState.IsValid)
             {
                 Response.StatusCode = 303;

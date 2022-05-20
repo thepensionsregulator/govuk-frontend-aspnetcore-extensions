@@ -35,8 +35,6 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         [ModelType(typeof(CheckboxesViewModel))]
         public IActionResult Index(CheckboxesViewModel viewModel)
         {
-            var multipleSelectedValues = Request.Form["Field1"];
-
             if (ModelState.IsValid)
             {
                 if (viewModel.Page.NextPage != null)

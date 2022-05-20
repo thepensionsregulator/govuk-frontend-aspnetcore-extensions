@@ -14,7 +14,7 @@ This repository includes an example application which demonstrates the validatio
 
 1. Clone this repo
 2. Run `Install-TPRGitHooks.ps1`
-3. Clone https://github.com/gunndabad/govuk-frontend-aspnetcore into a sibling folder called `govuk-frontend-aspnetcore` and checkout the `gds-4.0.0` branch
+3. Clone https://github.com/gunndabad/govuk-frontend-aspnetcore into a sibling folder called `govuk-frontend-aspnetcore` and checkout the `v1.0` branch
 4. Clone the `govuk-frontend` submodule:
 
    ```pwsh

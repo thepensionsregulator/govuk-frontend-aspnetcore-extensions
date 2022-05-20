@@ -50,11 +50,25 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Character count threshold (%): If the limit is much higher than most users are likely to reach, you can choose to only display the message after a user has entered a certain percentage.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[ImplementPropertyType("characterCountThreshold")]
+		public virtual int CharacterCountThreshold => this.Value<int>(_publishedValueFallback, "characterCountThreshold");
+
+		///<summary>
 		/// Rows: More than 1. Defaults to 5 if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[ImplementPropertyType("rows")]
 		public virtual int Rows => this.Value<int>(_publishedValueFallback, "rows");
+
+		///<summary>
+		/// Show character count: Always test your service without a character count first.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[ImplementPropertyType("showCharacterCount")]
+		public virtual bool ShowCharacterCount => this.Value<bool>(_publishedValueFallback, "showCharacterCount");
 
 		///<summary>
 		/// CSS classes

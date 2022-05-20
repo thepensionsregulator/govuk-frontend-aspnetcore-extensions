@@ -15,6 +15,12 @@
             <govuk-textarea-hint>This field must be full of numbers</govuk-textarea-hint>
             <govuk-textarea-error-message />
         </govuk-textarea>
+
+        <govuk-character-count asp-for="Field2" max-length="100">
+            <govuk-character-count-label>Character count</govuk-character-count-label>
+            <govuk-character-count-hint>This has a 100 character limit</govuk-character-count-hint>
+            <govuk-character-count-error-message />
+        </govuk-character-count>
     </govuk-client-side-validation>
 
     <govuk-button>Submit</govuk-button>

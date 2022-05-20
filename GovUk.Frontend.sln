@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.ExampleApp",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco.ExampleApp", "GovUk.Frontend.Umbraco.ExampleApp\GovUk.Frontend.Umbraco.ExampleApp.csproj", "{58C3146F-D2C2-46D8-B59C-2482E75584EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GovUk.Frontend.Umbraco.Tests", "GovUk.Frontend.Umbraco.Tests\GovUk.Frontend.Umbraco.Tests.csproj", "{216A148E-1402-4778-9823-2FE5ADDF1360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco.Tests", "GovUk.Frontend.Umbraco.Tests\GovUk.Frontend.Umbraco.Tests.csproj", "{216A148E-1402-4778-9823-2FE5ADDF1360}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GovUk.Frontend.AspNetCore.Extensions.Tests", "GovUk.Frontend.AspNetCore.Extensions.Tests\GovUk.Frontend.AspNetCore.Extensions.Tests.csproj", "{AC6F49AE-C825-466D-837A-9376CF1FAA07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{216A148E-1402-4778-9823-2FE5ADDF1360}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{216A148E-1402-4778-9823-2FE5ADDF1360}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{216A148E-1402-4778-9823-2FE5ADDF1360}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC6F49AE-C825-466D-837A-9376CF1FAA07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC6F49AE-C825-466D-837A-9376CF1FAA07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC6F49AE-C825-466D-837A-9376CF1FAA07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC6F49AE-C825-466D-837A-9376CF1FAA07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

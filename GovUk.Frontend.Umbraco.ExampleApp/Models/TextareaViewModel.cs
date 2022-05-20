@@ -11,5 +11,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         [MinLength(10, ErrorMessage = nameof(Field1))]
         [RegularExpression(@"[0-9]+", ErrorMessage = nameof(Field1))]
         public string Field1 { get; set; }
+
+        [MaxLength(100, ErrorMessage = nameof(Field2))]
+        public string Field2 { get; set; }
     }
 }

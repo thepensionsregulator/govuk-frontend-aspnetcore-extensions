@@ -26,7 +26,7 @@ namespace GovUk.Frontend.Umbraco.Validation
             if (umbracoContext == null) { return; }
             if (umbracoContext.PublishedRequest?.PublishedContent == null) { return; }
 
-            var blockLists = umbracoContext.PublishedRequest.PublishedContent.Properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList).Select(x => x.Value<BlockListModel>(null));
+            var blockLists = umbracoContext.PublishedRequest.PublishedContent.Properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue()).Select(x => x.Value<BlockListModel>(null));
             RecursivelyUpdateBlockLists(context.ValidationMetadata.ValidatorMetadata, blockLists);
 
         }
@@ -48,7 +48,11 @@ namespace GovUk.Frontend.Umbraco.Validation
                     if (attribute is CreditCardAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageCreditCard"); }
                 }
 
-                RecursivelyUpdateBlockLists(validationAttributes, blockList.SelectMany(block => block.Content.Properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList).Select(x => x.Value<BlockListModel>(null))));
+                var descendantBlockLists = blockList.SelectMany(block => block.Content.Properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue()));
+                if (descendantBlockLists.Any())
+                {
+                    RecursivelyUpdateBlockLists(validationAttributes, descendantBlockLists.Select(x => x.Value<BlockListModel>(null)));
+                }
             }
         }
 
@@ -57,13 +61,16 @@ namespace GovUk.Frontend.Umbraco.Validation
             var validationAttribute = attribute as ValidationAttribute;
             if (validationAttribute == null) { return; }
 
-            var block = blockList.SingleOrDefault(x => x.Settings != null && x.Settings.Value<string>("modelProperty") == validationAttribute.ErrorMessage);
-            if (block == null) { return; }
+            var blocks = blockList.Where(x => x.Settings != null && x.Settings.Value<string>("modelProperty") == validationAttribute.ErrorMessage);
+            if (blocks == null) { return; }
 
-            var customError = block.Settings.Value<string>(errorMessagePropertyAlias);
-            if (!string.IsNullOrEmpty(customError))
+            foreach (var block in blocks)
             {
-                validationAttribute.ErrorMessage = customError;
+                var customError = block.Settings.Value<string>(errorMessagePropertyAlias);
+                if (!string.IsNullOrEmpty(customError))
+                {
+                    validationAttribute.ErrorMessage = customError;
+                }
             }
         }
     }

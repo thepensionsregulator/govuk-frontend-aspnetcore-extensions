@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Radio</summary>
 	[PublishedModel("govukRadio")]
-	public partial class GovukRadio : PublishedElementModel
+	public partial class GovukRadio : PublishedElementModel, IGovukHint
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -50,12 +50,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Hint
+		/// Conditional blocks: Ask the user a related question when they select this option, so they only see the question when it’s relevant to them. Keep it simple.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("hint")]
-		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Hint => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "hint");
+		[ImplementPropertyType("conditionalBlocks")]
+		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel ConditionalBlocks => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "conditionalBlocks");
 
 		///<summary>
 		/// Label
@@ -72,5 +72,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("value")]
 		public virtual string Value => this.Value<string>(_publishedValueFallback, "value");
+
+		///<summary>
+		/// Hint
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("hint")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Hint => global::Umbraco.Cms.Web.Common.PublishedModels.GovukHint.GetHint(this, _publishedValueFallback);
 	}
 }

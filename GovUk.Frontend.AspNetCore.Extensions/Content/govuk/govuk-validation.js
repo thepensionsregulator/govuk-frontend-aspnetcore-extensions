@@ -74,7 +74,12 @@
           error.setAttribute("id", errorId);
           error.setAttribute("data-valmsg-for", id);
           error.setAttribute("data-valmsg-replace", "true");
-          element.parentElement.insertBefore(error, element);
+
+          let list = $(element).closest(".govuk-radios, .govuk-checkboxes");
+          let targetElement = list.length ? list[0] : element;
+          if (targetElement.parentElement) {
+            targetElement.parentElement.insertBefore(error, targetElement);
+          }
 
           const errorPrefix = document.createElement("span");
           errorPrefix.classList.add("govuk-visually-hidden");
@@ -89,7 +94,7 @@
         const email = element.getAttribute("data-val-email");
         const pattern = element.getAttribute("data-val-regex-pattern");
         const minLength = element.getAttribute("data-val-length-min");
-        const minLengthOnly = element.getAttribute("data-val-minlength-max");
+        const minLengthOnly = element.getAttribute("data-val-minlength-min");
         const maxLength = element.getAttribute("data-val-length-max");
         const maxLengthOnly = element.getAttribute("data-val-maxlength-max");
         const minRange = element.getAttribute("data-val-range-min");

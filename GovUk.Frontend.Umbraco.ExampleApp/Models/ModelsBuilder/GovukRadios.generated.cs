@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Radios</summary>
 	[PublishedModel("govukRadios")]
-	public partial class GovukRadios : PublishedElementModel
+	public partial class GovukRadios : PublishedElementModel, IGovukHint, IGovukLegend
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -56,5 +56,21 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("radioButtons")]
 		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel RadioButtons => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "radioButtons");
+
+		///<summary>
+		/// Hint
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("hint")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Hint => global::Umbraco.Cms.Web.Common.PublishedModels.GovukHint.GetHint(this, _publishedValueFallback);
+
+		///<summary>
+		/// Legend: Use {{name}} to include the page name.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("legend")]
+		public virtual string Legend => global::Umbraco.Cms.Web.Common.PublishedModels.GovukLegend.GetLegend(this, _publishedValueFallback);
 	}
 }

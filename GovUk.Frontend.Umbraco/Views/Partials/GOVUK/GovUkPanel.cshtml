@@ -3,7 +3,13 @@
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
-<govuk-panel heading-level="1">
+@{
+    if (!Int32.TryParse(Model.Item.Settings.Value<string>("headingLevel")?.Replace("Heading ", string.Empty), out var headingLevel))
+    {
+        headingLevel = 1;
+    }
+}
+<govuk-panel heading-level="@headingLevel">
     <govuk-panel-title>@(Model.Item.Content.Value<string>("panelHeading"))</govuk-panel-title>
     <govuk-panel-body>@Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("panelText"), new TypographyOptions{ RemoveWrappingParagraph = true, BackgroundType = BackgroundType.Dark }))</govuk-panel-body>
 </govuk-panel>

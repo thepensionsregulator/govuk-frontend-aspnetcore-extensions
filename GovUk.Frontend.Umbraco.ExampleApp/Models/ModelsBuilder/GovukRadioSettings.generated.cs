@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Radio settings</summary>
 	[PublishedModel("govukRadioSettings")]
-	public partial class GovukRadioSettings : PublishedElementModel
+	public partial class GovukRadioSettings : PublishedElementModel, IGovukCssClasses
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -55,6 +55,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClasses")]
-		public virtual string CssClasses => this.Value<string>(_publishedValueFallback, "cssClasses");
+		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
 	}
 }

@@ -1,0 +1,34 @@
+﻿@model CheckboxesViewModel
+@{
+    ViewData["Title"] = "Checkboxes";
+}
+
+<partial name="GOVUK/ErrorSummary" />
+
+<span class="govuk-caption-xl">GOV.UK Design System</span>
+
+<form asp-controller="Checkboxes" asp-action="Post" method="post" novalidate>
+    <govuk-client-side-validation>
+        <govuk-checkboxes asp-for="Field1">
+            <govuk-checkboxes-fieldset>
+                <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">Checkboxes</govuk-checkboxes-fieldset-legend>
+                <govuk-checkboxes-hint>This is the hint</govuk-checkboxes-hint>
+                <govuk-checkboxes-item value="1">Item one (reveals related question)
+                    <govuk-checkboxes-item-conditional>
+                        <govuk-input asp-for="Field2"><govuk-input-label>Answer this related question</govuk-input-label></govuk-input>
+                    </govuk-checkboxes-item-conditional>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-item value="2">Item two
+                    <govuk-checkboxes-item-hint>Optional hint text</govuk-checkboxes-item-hint>
+                </govuk-checkboxes-item>
+                <govuk-checkboxes-divider>or</govuk-checkboxes-divider>
+                <govuk-checkboxes-item value="3" input-data-behaviour="exclusive">Item three (cannot be combined with the other two)</govuk-checkboxes-item>
+            </govuk-checkboxes-fieldset>
+        </govuk-checkboxes>
+    </govuk-client-side-validation>
+
+    <govuk-button>Submit</govuk-button>
+</form>
+@section scripts {
+    <partial name="GOVUK/Validation" />
+}

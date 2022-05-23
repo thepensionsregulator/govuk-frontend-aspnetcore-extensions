@@ -7,7 +7,9 @@
 @using Umbraco.Extensions
 @{
     var radioButtons = Model.Item.Content.Value<BlockListModel>("radioButtons");
-    var group = Model.Item.Settings.Value<string>("modelProperty");
+    var modelPropertyName = Model.Item.Settings.Value<string>("modelProperty");
+    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var cssClass = Model.Item.Settings.Value<string>("cssClasses");
     if (Model.Item.Settings.Value<string>("layout") == "Horizontal")
     {
@@ -18,7 +20,7 @@
     var legend = Model.Item.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
 }
 <govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
-    <govuk-radios name="@group" class="@cssClass">
+    <govuk-radios name="@modelPropertyName" class="@cssClass">
          <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-radios-fieldset-legend>
         </govuk-radios-fieldset>
@@ -34,7 +36,8 @@
             }
             else
             {
-                <govuk-radios-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
+                var value = block.Content.Value<string>("value");
+                <govuk-radios-item value="@value" class="@(block.Settings.Value<string>("cssClasses"))" checked="@(value.ToUpperInvariant() == attemptedValue)">@(block.Content.Value<string>("label"))
                     <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
                     @{
                         var conditional = block.Content.Value<BlockListModel>("conditionalBlocks");

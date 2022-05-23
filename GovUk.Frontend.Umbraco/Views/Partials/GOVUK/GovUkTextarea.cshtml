@@ -29,22 +29,24 @@
     @if (Model.Item.Settings.Value<bool>("showCharacterCount"))
     {
         var threshold = Model.Item.Settings.Value<int?>("characterCountThreshold");
-        var modelProperty = propertyResolver.ResolveModelProperty(ViewContext, Model.Item.Settings.Value<string>("modelProperty"));
+        var modelProperty = propertyResolver.ResolveModelProperty(ViewContext, modelPropertyName);
         var maxLengthAttr = modelProperty.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
         var stringLengthAttr = modelProperty.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
         int? maxLength = maxLengthAttr != null ? maxLengthAttr.Length : stringLengthAttr != null ? stringLengthAttr.MaximumLength : null;
-        <govuk-character-count name="@(modelPropertyName)" value="@modelStateEntry?.AttemptedValue" input-class="@(Model.Item.Settings.Value<string>("cssClasses"))" rows="@rows" max-length="@maxLength" threshold="@threshold">
+        <govuk-character-count name="@modelPropertyName" form-group-class="@(Model.Item.Settings.Value<string>("cssClasses"))" rows="@rows" max-length="@maxLength" threshold="@threshold">
             <govuk-character-count-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Item.Content.Value<string>("label"))</govuk-character-count-label>
             <govuk-character-count-hint>@Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-character-count-hint>
             <govuk-character-count-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-character-count-error-message>
+            <govuk-character-count-value>@modelStateEntry?.AttemptedValue</govuk-character-count-value>
         </govuk-character-count>
     }
     else
     {
-        <govuk-textarea name="@(Model.Item.Settings.Value<string>("modelProperty"))" value="@modelStateEntry?.AttemptedValue" class="@(Model.Item.Settings.Value<string>("cssClasses"))" rows="@rows">
+        <govuk-textarea name="@modelPropertyName" class="@(Model.Item.Settings.Value<string>("cssClasses"))" rows="@rows">
             <govuk-textarea-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Item.Content.Value<string>("label"))</govuk-textarea-label>
             <govuk-textarea-hint>@Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-textarea-hint>
             <govuk-textarea-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-textarea-error-message>
+            <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>
         </govuk-textarea>
     }
 </govuk-client-side-validation>

@@ -6,16 +6,20 @@
 @using Umbraco.Extensions
 @{
     var options = Model.Item.Content.Value<BlockListModel>("options");
-    var group = Model.Item.Settings.Value<string>("modelProperty");
+    var modelPropertyName = Model.Item.Settings.Value<string>("modelProperty");
     var cssClass = Model.Item.Settings.Value<string>("cssClasses");
+    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
-    <govuk-select name="@group" class="@cssClass">
+    <govuk-select name="@modelPropertyName" class="@cssClass">
         <govuk-select-label>@(Model.Item.Content.Value<string>("label"))</govuk-select-label>
+        <govuk-select-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-select-error-message>
         @foreach (var block in Model.Filter(options))
         {
-            <govuk-select-item value="@(block.Content.Value<string>("value"))">@(block.Content.Value<string>("label"))</govuk-select-item>
+            var value = block.Content.Value<string>("value");
+            <govuk-select-item value="@value" selected="@(value == attemptedValue)">@(block.Content.Value<string>("label"))</govuk-select-item>
         }
     </govuk-select>
 </govuk-client-side-validation>

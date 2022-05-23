@@ -7,15 +7,18 @@
 @using Umbraco.Extensions
 @{
     var radioButtons = Model.Item.Content.Value<BlockListModel>("checkboxes");
-    var group = Model.Item.Settings.Value<string>("modelProperty");
+    var modelPropertyName = Model.Item.Settings.Value<string>("modelProperty");
+    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
     var cssClass = Model.Item.Settings.Value<string>("cssClasses");
     var hint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
     var legendIsPageHeading = Model.Item.Settings.Value<bool>("legendIsPageHeading");
     var legend = Model.Item.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var selectedValues = new List<string>();
+    if (!string.IsNullOrEmpty(modelStateEntry?.AttemptedValue)) { selectedValues.AddRange(modelStateEntry.AttemptedValue.ToUpperInvariant().Split(",")); }
 }
 
 <govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
-    <govuk-checkboxes name="@group" class="@cssClass">
+    <govuk-checkboxes name="@modelPropertyName" class="@cssClass">
          <govuk-checkboxes-fieldset>
             <govuk-checkboxes-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-checkboxes-fieldset-legend>
             @{
@@ -33,7 +36,8 @@
                     {
                         if (block.Settings.Value<bool>("exclusive")) 
                         {
-                            <govuk-checkboxes-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))" input-data-behaviour="exclusive">@(block.Content.Value<string>("label"))
+                            var value = block.Content.Value<string>("value");
+                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>("cssClasses"))" input-data-behaviour="exclusive">@(block.Content.Value<string>("label"))
                                 <govuk-checkboxes-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-checkboxes-item-hint>
                                 @{
                                     var conditional = block.Content.Value<BlockListModel>("conditionalBlocks");
@@ -47,7 +51,8 @@
                         }
                         else
                         {
-                            <govuk-checkboxes-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
+                            var value = block.Content.Value<string>("value");
+                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
                                 <govuk-checkboxes-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-checkboxes-item-hint>
                                 @{
                                     var conditional = block.Content.Value<BlockListModel>("conditionalBlocks");

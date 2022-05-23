@@ -180,6 +180,17 @@ This repository includes an example application which demonstrates the validatio
     }
     ```
 
+## Populating initial values
+
+If you need to select or populate values on your initial GET request, use the `ModelState.SetInitialValues` extension method:
+
+```csharp
+/// Controller
+using GovUk.Frontend.Umbraco.Validation;
+
+ModelState.SetInitialValue(nameof(viewModel.Field1), Request.Query["field1"]);
+```
+
 ## Filtering the block list
 
 When using the block list editor, if you need to conditionally hide some of the blocks you can supply a filter. For example, if you wanted to hide all radio buttons where the value is `not-relevant`:

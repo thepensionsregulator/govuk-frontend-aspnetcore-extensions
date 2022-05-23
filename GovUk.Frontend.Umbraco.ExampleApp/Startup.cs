@@ -1,5 +1,4 @@
 using GovUk.Frontend.AspNetCore.Extensions;
-using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,6 @@ using Microsoft.Extensions.Options;
 using System;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Web;
-using Umbraco.Cms.Web.Common.PublishedModels;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp
@@ -83,11 +81,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                     u.UseWebsiteEndpoints();
                 });
 
-            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(Checkboxes), nameof(Checkboxes.Blocks)));
-            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(Radios), nameof(Radios.Blocks)));
-            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(Select), nameof(Select.Blocks)));
-            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(Textarea), nameof(Textarea.Blocks)));
-            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, nameof(TextInput), nameof(TextInput.Blocks)));
+
+            app.UseGovUkFrontendUmbracoExtensions(mvcOptions, umbracoContextAccessor);
         }
     }
 }

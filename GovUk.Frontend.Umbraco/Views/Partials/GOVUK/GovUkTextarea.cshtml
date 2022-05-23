@@ -3,28 +3,29 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @inject IModelPropertyResolver propertyResolver
 @using GovUk.Frontend.AspNetCore.Extensions.Validation
+@using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using System.Reflection
 @using System.ComponentModel.DataAnnotations
 @using Umbraco.Extensions
 @{
-    var modelPropertyName = Model.Item.Settings.Value<string>("modelProperty");
+    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
     Int32.TryParse(Model.Item.Settings.Value<string>("rows"), out var rows);
     if (rows < 2) { rows = 5; }
     var labelIsPageHeading = Model.Item.Settings.Value<bool>("labelIsPageHeading");
 }
 <govuk-client-side-validation
-    error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))"
-    error-message-regex="@(Model.Item.Settings.Value<string>("errorMessageRegex"))"
-    error-message-email="@(Model.Item.Settings.Value<string>("errorMessageEmail"))"
-    error-message-length="@(Model.Item.Settings.Value<string>("errorMessageLength"))"
-    error-message-minlength="@(Model.Item.Settings.Value<string>("errorMessageMinLength"))"
-    error-message-maxlength="@(Model.Item.Settings.Value<string>("errorMessageMaxLength"))"
-    error-message-range="@(Model.Item.Settings.Value<string>("errorMessageRange"))"
-    error-message-compare="@(Model.Item.Settings.Value<string>("errorMessageCompare"))"
-    error-message-credit-card="@(Model.Item.Settings.Value<string>("errorMessageCreditCard"))"
+    error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
+    error-message-regex="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRegex))"
+    error-message-email="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageEmail))"
+    error-message-length="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageLength))"
+    error-message-minlength="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageMinLength))"
+    error-message-maxlength="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageMaxLength))"
+    error-message-range="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
+    error-message-compare="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
+    error-message-credit-card="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageCreditCard))"
 >
     @if (Model.Item.Settings.Value<bool>("showCharacterCount"))
     {

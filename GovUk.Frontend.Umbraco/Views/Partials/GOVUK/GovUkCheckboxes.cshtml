@@ -1,13 +1,14 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
     var radioButtons = Model.Item.Content.Value<BlockListModel>("checkboxes");
-    var modelPropertyName = Model.Item.Settings.Value<string>("modelProperty");
+    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
     var cssClass = Model.Item.Settings.Value<string>("cssClasses");
     var hint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
@@ -17,7 +18,7 @@
     if (!string.IsNullOrEmpty(modelStateEntry?.AttemptedValue)) { selectedValues.AddRange(modelStateEntry.AttemptedValue.ToUpperInvariant().Split(",")); }
 }
 
-<govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>("errorMessageRequired"))">
+<govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-checkboxes name="@modelPropertyName" class="@cssClass">
          <govuk-checkboxes-fieldset>
             <govuk-checkboxes-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-checkboxes-fieldset-legend>

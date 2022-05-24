@@ -30,7 +30,7 @@
     @if (Model.Item.Settings.Value<bool>("showCharacterCount"))
     {
         var threshold = Model.Item.Settings.Value<int?>("characterCountThreshold");
-        var modelProperty = propertyResolver.ResolveModelProperty(ViewContext, modelPropertyName);
+        var modelProperty = propertyResolver.ResolveModelProperty(propertyResolver.ResolveModelType(ViewContext), modelPropertyName);
         var maxLengthAttr = modelProperty.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
         var stringLengthAttr = modelProperty.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
         int? maxLength = maxLengthAttr != null ? maxLengthAttr.Length : stringLengthAttr != null ? stringLengthAttr.MaximumLength : null;

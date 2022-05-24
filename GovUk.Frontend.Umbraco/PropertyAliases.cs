@@ -11,6 +11,5 @@
         internal const string ErrorMessageMaxLength = "errorMessageMaxLength";
         internal const string ErrorMessageRange = "errorMessageRange";
         internal const string ErrorMessageCompare = "errorMessageCompare";
-        internal const string ErrorMessageCreditCard = "errorMessageCreditCard";
     }
 }

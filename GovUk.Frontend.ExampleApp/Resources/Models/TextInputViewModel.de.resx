@@ -135,9 +135,6 @@
   <data name="Must be 5 or more characters" xml:space="preserve">
     <value>Muss aus 5 oder mehr Zeichen bestehen</value>
   </data>
-  <data name="Must be a credit card number" xml:space="preserve">
-    <value>Muss eine Kreditkartennummer sein</value>
-  </data>
   <data name="Must be a number between 5 and 50" xml:space="preserve">
     <value>Muss eine Zahl zwischen 5 und 50 sein</value>
   </data>

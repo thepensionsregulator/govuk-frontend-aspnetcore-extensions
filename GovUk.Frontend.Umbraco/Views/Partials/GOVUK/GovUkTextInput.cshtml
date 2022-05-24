@@ -18,7 +18,6 @@
     error-message-maxlength="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageMaxLength))"
     error-message-range="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
     error-message-compare="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
-    error-message-credit-card="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageCreditCard))"
 >
     <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" input-class="@(Model.Item.Settings.Value<string>("cssClasses"))">
         <govuk-input-label>@(Model.Item.Content.Value<string>("label"))</govuk-input-label>

@@ -29,8 +29,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             string? errorMessageMinLength,
             string? errorMessageMaxLength,
             string? errorMessageRange,
-            string? errorMessageCompare,
-            string? errorMessageCreditCard)
+            string? errorMessageCompare)
         {
             var document = new HtmlDocument();
             document.LoadHtml(html);
@@ -63,8 +62,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     errorMessageMinLength,
                     errorMessageMaxLength,
                     errorMessageRange,
-                    errorMessageCompare,
-                    errorMessageCreditCard);
+                    errorMessageCompare);
             }
 
             return document.DocumentNode.OuterHtml;
@@ -110,8 +108,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             string? errorMessageMinLength,
             string? errorMessageMaxLength,
             string? errorMessageRange,
-            string? errorMessageCompare,
-            string? errorMessageCreditCard)
+            string? errorMessageCompare)
         {
             if (viewContext == null || !viewContext.ClientValidationEnabled) { return; }
 
@@ -147,14 +144,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     {
                         targetElement.Attributes.Add("data-val-equalto", SelectBestErrorMessage(errorMessageCompare, compareAttr.ErrorMessage, localizer));
                         targetElement.Attributes.Add("data-val-equalto-other", compareAttr.OtherProperty);
-                        validateElement = true;
-                    }
-
-                    // Credit Card
-                    var creditCardAttr = modelProperty.GetCustomAttributes<CreditCardAttribute>().FirstOrDefault();
-                    if (creditCardAttr != null)
-                    {
-                        targetElement.Attributes.Add("data-val-creditcard", SelectBestErrorMessage(errorMessageCreditCard, creditCardAttr.ErrorMessage, localizer));
                         validateElement = true;
                     }
 

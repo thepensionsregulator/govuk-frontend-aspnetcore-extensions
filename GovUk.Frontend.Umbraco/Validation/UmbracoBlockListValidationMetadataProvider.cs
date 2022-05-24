@@ -66,7 +66,6 @@ namespace GovUk.Frontend.Umbraco.Validation
                     if (attribute is MaxLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageMaxLength); }
                     if (attribute is RangeAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRange); }
                     if (attribute is CompareAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageCompare); }
-                    if (attribute is CreditCardAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageCreditCard); }
                 }
             }
         }

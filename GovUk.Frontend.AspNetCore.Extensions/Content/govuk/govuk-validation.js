@@ -100,7 +100,6 @@
         const minRange = element.getAttribute("data-val-range-min");
         const maxRange = element.getAttribute("data-val-range-max");
         const compareTo = element.getAttribute("data-val-equalto-other");
-        const creditCard = element.getAttribute("data-val-creditcard");
         if (
           required &&
           !$.validator.methods.required.call(
@@ -168,14 +167,6 @@
           element.value !== document.getElementById(compareTo).value
         ) {
           updateSummary(id, element.getAttribute("data-val-equalto"));
-        } else if (
-          creditCard &&
-          element.value
-            .replace(" ", "")
-            .replace("-", "")
-            .match(/^[0-9]{7,}$/)
-        ) {
-          updateSummary(id, creditCard);
         }
       },
       unhighlight: function (element, errorClass, validClass) {

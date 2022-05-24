@@ -76,12 +76,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         [HtmlAttributeName("error-message-compare")]
         public string? ErrorMessageCompare { get; set; }
 
-        /// <summary>
-        /// Custom error message to show if the bound property has a <see cref="CreditCardAttribute"/>
-        /// </summary>
-        [HtmlAttributeName("error-message-credit-card")]
-        public string? ErrorMessageCreditCard { get; set; }
-
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             // Grab the HTML that would've been rendered by the child tag helper.
@@ -98,8 +92,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
                 ErrorMessageMinLength,
                 ErrorMessageMaxLength,
                 ErrorMessageRange,
-                ErrorMessageCompare,
-                ErrorMessageCreditCard
+                ErrorMessageCompare
                 );
 
             // Output the child HTML with any modifications made

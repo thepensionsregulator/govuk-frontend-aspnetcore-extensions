@@ -20,7 +20,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         private const string errorMessageMaxLength = "Property failed maximum length validation";
         private const string errorMessageRange = "Property failed range validation";
         private const string errorMessageCompare = "Property failed compare validation";
-        private const string errorMessageCreditCard = "Property failed credit card validation";
 
         private class ExampleClass
         {
@@ -52,9 +51,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             [Compare(nameof(UnvalidatedField), ErrorMessage = errorMessageCompare)]
             public string CompareField { get; set; }
-
-            [CreditCard(ErrorMessage = errorMessageCreditCard)]
-            public string CreditCard { get; set; }
         }
 
 
@@ -75,8 +71,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -106,8 +101,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -138,8 +132,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -168,8 +161,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             Assert.AreEqual($"<input name=\"{nameof(ExampleClass.RequiredField)}\">", result);
         }
@@ -192,8 +184,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             Assert.AreEqual($"<input name=\"{nameof(ExampleClass.UnvalidatedField)}\">", result);
         }
@@ -218,8 +209,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -247,8 +237,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -277,8 +266,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -308,8 +296,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -338,8 +325,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -370,8 +356,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -403,8 +388,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -435,8 +419,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -468,8 +451,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -502,8 +484,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -535,8 +516,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -569,8 +549,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -602,8 +581,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);
@@ -630,8 +608,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageMinLength,
                 errorMessageMaxLength,
                 errorMessageRange,
-                errorMessageCompare,
-                errorMessageCreditCard);
+                errorMessageCompare);
 
             var document = new HtmlDocument();
             document.LoadHtml(result);

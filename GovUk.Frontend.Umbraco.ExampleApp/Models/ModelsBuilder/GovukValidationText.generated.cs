@@ -27,11 +27,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string ErrorMessageCompare { get; }
 
-		/// <summary>Credit card</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		string ErrorMessageCreditCard { get; }
-
 		/// <summary>Email address</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -106,19 +101,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static string GetErrorMessageCompare(IGovukValidationText that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "errorMessageCompare");
-
-		///<summary>
-		/// Credit card: Sets the message displayed if the field is set by the code to require a credit card number.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageCreditCard")]
-		public virtual string ErrorMessageCreditCard => GetErrorMessageCreditCard(this, _publishedValueFallback);
-
-		/// <summary>Static getter for Credit card</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static string GetErrorMessageCreditCard(IGovukValidationText that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "errorMessageCreditCard");
 
 		///<summary>
 		/// Email address: Sets the message displayed if the field is set by the code to require an email address.

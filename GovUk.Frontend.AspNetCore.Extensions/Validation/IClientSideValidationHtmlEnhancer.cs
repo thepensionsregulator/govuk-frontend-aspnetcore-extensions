@@ -13,7 +13,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             string? errorMessageMinLength,
             string? errorMessageMaxLength,
             string? errorMessageRange,
-            string? errorMessageCompare,
-            string? errorMessageCreditCard);
+            string? errorMessageCompare);
     }
 }

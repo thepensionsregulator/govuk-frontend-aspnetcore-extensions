@@ -8,6 +8,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Remove="Content\css\govuk-frontend-aspnetcore-extensions.css" />
 		<None Remove="Content\govuk\govuk-js-init.js" />
 		<None Remove="Content\govuk\govuk-js-test.js" />
 		<None Remove="Content\govuk\govuk-validation.js" />
@@ -18,6 +19,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<EmbeddedResource Include="Content\css\govuk-frontend-aspnetcore-extensions.css" />
 		<EmbeddedResource Include="Content\govuk\govuk-js-init.js" />
 		<EmbeddedResource Include="Content\govuk\govuk-js-test.js" />
 		<EmbeddedResource Include="Content\govuk\govuk-validation.js" />

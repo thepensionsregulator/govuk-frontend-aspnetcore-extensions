@@ -14,6 +14,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         private class DefaultModel
         {
             public string DefaultModelProperty { get; set; }
+            public DateTime DateTimeProperty { get; set; }
         };
 
         private class ModelFromModelType
@@ -92,7 +93,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         }
 
         [Test]
-        public void Property_is_resolved_model_type()
+        public void Property_is_resolved_from_model_type()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
 
@@ -102,5 +103,22 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Assert.AreEqual(property.Name, nameof(DefaultModel.DefaultModelProperty));
         }
 
+
+        [Test]
+        public void Date_property_is_resolved_from_date_internal_fields()
+        {
+            var modelPropertyResolver = new ModelPropertyResolver();
+
+            var propertyFromDayField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty) + ".Day");
+            var propertyFromMonthField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty) + ".Month");
+            var propertyFromYearField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty) + ".Year");
+
+            Assert.AreEqual(propertyFromDayField.DeclaringType, typeof(DefaultModel));
+            Assert.AreEqual(propertyFromDayField.Name, nameof(DefaultModel.DateTimeProperty));
+            Assert.AreEqual(propertyFromMonthField.DeclaringType, typeof(DefaultModel));
+            Assert.AreEqual(propertyFromMonthField.Name, nameof(DefaultModel.DateTimeProperty));
+            Assert.AreEqual(propertyFromYearField.DeclaringType, typeof(DefaultModel));
+            Assert.AreEqual(propertyFromYearField.Name, nameof(DefaultModel.DateTimeProperty));
+        }
     }
 }

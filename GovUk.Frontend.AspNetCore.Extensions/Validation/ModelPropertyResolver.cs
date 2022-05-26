@@ -21,7 +21,17 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
         /// <inheritdoc/>
         public PropertyInfo ResolveModelProperty(Type modelType, string modelPropertyName)
         {
-            var modelProperty = modelType?.GetProperty(modelPropertyName);
+            PropertyInfo? modelProperty = null;
+
+            if (!string.IsNullOrWhiteSpace(modelPropertyName))
+            {
+                if (modelPropertyName.EndsWith(".Day") || modelPropertyName.EndsWith(".Month") || modelPropertyName.EndsWith(".Year"))
+                {
+                    modelPropertyName = modelPropertyName.Substring(0, modelPropertyName.LastIndexOf('.'));
+                }
+
+                modelProperty = modelType?.GetProperty(modelPropertyName);
+            }
             if (modelProperty == null) { throw new InvalidOperationException($"To support client-side validation add a property named {modelPropertyName} to type {modelType!.FullName}, or decorate your controller action with {nameof(ModelTypeAttribute)} to specify a different model type."); }
 
             return modelProperty;

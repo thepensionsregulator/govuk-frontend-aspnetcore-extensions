@@ -1,0 +1,30 @@
+﻿@model DateInputViewModel
+@{
+    ViewData["Title"] = "Date input";
+}
+
+<partial name="GOVUK/ErrorSummary" />
+
+<span class="govuk-caption-xl">GOV.UK Design System</span>
+
+<form asp-controller="DateInput" asp-action="Post" method="post" novalidate>
+    <govuk-client-side-validation>
+        <govuk-date-input asp-for="Field1">
+            <govuk-date-input-fieldset>
+                <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">Date input</govuk-date-input-fieldset-legend>
+                <govuk-date-input-hint>This is the hint for field 1. The previous heading is also the legend.</govuk-date-input-hint>
+            </govuk-date-input-fieldset>
+        </govuk-date-input>
+
+          <govuk-date-input asp-for="Field2">
+            <govuk-date-input-fieldset>
+                <govuk-date-input-fieldset-legend>This is the legend for field 2. The hint is optional.</govuk-date-input-fieldset-legend>
+            </govuk-date-input-fieldset>
+        </govuk-date-input>
+    </govuk-client-side-validation>
+
+    <govuk-button>Submit</govuk-button>
+</form>
+@section scripts {
+    <partial name="GOVUK/Validation" />
+}

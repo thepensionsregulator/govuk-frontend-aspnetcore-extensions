@@ -75,7 +75,9 @@ namespace GovUk.Frontend.Umbraco.Validation
             var validationAttribute = attribute as ValidationAttribute;
             if (validationAttribute == null) { return; }
 
-            var blocks = blockList.Where(x => x.Settings != null && x.Settings.GetProperty(PropertyAliases.ModelProperty).GetValue().ToString() == validationAttribute.ErrorMessage);
+            var blocks = blockList.Where(x => x.Settings != null &&
+                                              x.Settings.GetProperty(PropertyAliases.ModelProperty) != null &&
+                                              x.Settings.GetProperty(PropertyAliases.ModelProperty).GetValue().ToString() == validationAttribute.ErrorMessage);
             if (blocks == null) { return; }
 
             foreach (var block in blocks)

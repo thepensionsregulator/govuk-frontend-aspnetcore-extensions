@@ -51,5 +51,6 @@
                 </govuk-radios-item>                
             }
         }
+        <govuk-radios-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-radios-error-message>
     </govuk-radios>
 </govuk-client-side-validation>

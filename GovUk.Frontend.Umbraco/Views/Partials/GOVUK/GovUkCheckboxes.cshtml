@@ -27,6 +27,7 @@
                 {
                     <govuk-checkboxes-hint>@Html.Raw(hint)</govuk-checkboxes-hint>
                 }
+                <govuk-checkboxes-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-checkboxes-error-message>
                 foreach (var block in Model.Filter(radioButtons))
                 {
                     if (block.Content.ContentType.Alias == "govukCheckboxesDivider")

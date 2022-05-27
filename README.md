@@ -11,3 +11,18 @@ This builds on [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://g
 For .NET projects without Umbraco see [GovUk.Frontend.AspNetCore.Extensions](GovUk.Frontend.AspNetCore.Extensions/README.md).
 
 For Umbraco projects see [GovUk.Frontend.Umbraco](GovUk.Frontend.Umbraco/README.md).
+
+## Tests
+
+To run unit tests on the client-side validation JavaScript:
+
+```cmd
+yarn install
+yarn jest
+```
+
+To run unit tests on the .NET code:
+
+```cmd
+dotnet test
+```

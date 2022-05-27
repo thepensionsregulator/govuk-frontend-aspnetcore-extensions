@@ -1,0 +1,17 @@
+{
+  "name": "govuk-frontend-aspnetcore-extensions",
+  "version": "1.0.0",
+  "description": "Adds client-side validation and editing in Umbraco to https://github.com/gunndabad/govuk-frontend-aspnetcore",
+  "main": "index.js",
+  "repository": "https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions.git",
+  "author": "The Pensions Regulator <no-reply@tpr.gov.uk>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "jest": "^28.1.0",
+    "jest-environment-jsdom": "^28.1.0"
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
+  }
+}

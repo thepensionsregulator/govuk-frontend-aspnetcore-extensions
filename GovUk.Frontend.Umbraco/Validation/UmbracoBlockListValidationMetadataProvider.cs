@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 
@@ -26,32 +27,45 @@ namespace GovUk.Frontend.Umbraco.Validation
             if (umbracoContext == null) { return; }
             if (umbracoContext.PublishedRequest?.PublishedContent == null) { return; }
 
-            var blockLists = umbracoContext.PublishedRequest.PublishedContent.Properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue()).Select(x => x.Value<BlockListModel>(null));
-            RecursivelyUpdateBlockLists(context.ValidationMetadata.ValidatorMetadata, blockLists);
-
+            var blockLists = RecursivelyGetBlockLists(umbracoContext.PublishedRequest.PublishedContent.Properties);
+            UpdateValidationAttributeErrorMessages(blockLists, context.ValidationMetadata.ValidatorMetadata);
         }
 
-        private static void RecursivelyUpdateBlockLists(IList<object> validationAttributes, IEnumerable<BlockListModel> blockLists)
+        internal IEnumerable<BlockListModel> RecursivelyGetBlockLists(IEnumerable<IPublishedProperty> properties)
+        {
+            var blockLists = new List<BlockListModel>();
+            RecursivelyGetBlockLists(properties, blockLists);
+            return blockLists;
+        }
+
+        private void RecursivelyGetBlockLists(IEnumerable<IPublishedProperty> properties, List<BlockListModel> allBlockLists)
+        {
+            var newBlockLists = properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue()).Select(x => x.Value<BlockListModel>(null));
+            if (newBlockLists.Any())
+            {
+                allBlockLists.AddRange(newBlockLists);
+
+                foreach (var blockList in newBlockLists)
+                {
+                    RecursivelyGetBlockLists(blockList.SelectMany(block => block.Content.Properties), allBlockLists);
+                }
+            }
+        }
+
+        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<BlockListModel> blockLists, IList<object> validationAttributes)
         {
             foreach (var blockList in blockLists)
             {
                 foreach (var attribute in validationAttributes)
                 {
-                    if (attribute is RequiredAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageRequired"); }
-                    if (attribute is RegularExpressionAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageRegex"); }
-                    if (attribute is EmailAddressAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageEmail"); }
-                    if (attribute is StringLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageLength"); }
-                    if (attribute is MinLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageMinLength"); }
-                    if (attribute is MaxLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageMaxLength"); }
-                    if (attribute is RangeAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageRange"); }
-                    if (attribute is CompareAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageCompare"); }
-                    if (attribute is CreditCardAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageCreditCard"); }
-                }
-
-                var descendantBlockLists = blockList.SelectMany(block => block.Content.Properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue()));
-                if (descendantBlockLists.Any())
-                {
-                    RecursivelyUpdateBlockLists(validationAttributes, descendantBlockLists.Select(x => x.Value<BlockListModel>(null)));
+                    if (attribute is RequiredAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRequired); }
+                    if (attribute is RegularExpressionAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRegex); }
+                    if (attribute is EmailAddressAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageEmail); }
+                    if (attribute is StringLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageLength); }
+                    if (attribute is MinLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageMinLength); }
+                    if (attribute is MaxLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageMaxLength); }
+                    if (attribute is RangeAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRange); }
+                    if (attribute is CompareAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageCompare); }
                 }
             }
         }
@@ -61,12 +75,14 @@ namespace GovUk.Frontend.Umbraco.Validation
             var validationAttribute = attribute as ValidationAttribute;
             if (validationAttribute == null) { return; }
 
-            var blocks = blockList.Where(x => x.Settings != null && x.Settings.Value<string>("modelProperty") == validationAttribute.ErrorMessage);
+            var blocks = blockList.Where(x => x.Settings != null &&
+                                              x.Settings.GetProperty(PropertyAliases.ModelProperty) != null &&
+                                              x.Settings.GetProperty(PropertyAliases.ModelProperty).GetValue().ToString() == validationAttribute.ErrorMessage);
             if (blocks == null) { return; }
 
             foreach (var block in blocks)
             {
-                var customError = block.Settings.Value<string>(errorMessagePropertyAlias);
+                var customError = block.Settings.GetProperty(errorMessagePropertyAlias).GetValue().ToString();
                 if (!string.IsNullOrEmpty(customError))
                 {
                     validationAttribute.ErrorMessage = customError;

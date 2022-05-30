@@ -19,8 +19,5 @@ namespace GovUk.Frontend.ExampleApp.Models
 
         [Range(5, 50, ErrorMessage = "Must be a number between 5 and 50")]
         public int Field4 { get; set; }
-
-        [CreditCard(ErrorMessage = "Must be a credit card number")]
-        public string Field5 { get; set; }
     }
 }

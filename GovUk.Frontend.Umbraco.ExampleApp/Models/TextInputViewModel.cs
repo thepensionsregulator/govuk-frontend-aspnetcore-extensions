@@ -22,8 +22,5 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 
         [Range(5, 50, ErrorMessage = nameof(Field4))]
         public int Field4 { get; set; }
-
-        [CreditCard(ErrorMessage = nameof(Field5))]
-        public string Field5 { get; set; }
     }
 }

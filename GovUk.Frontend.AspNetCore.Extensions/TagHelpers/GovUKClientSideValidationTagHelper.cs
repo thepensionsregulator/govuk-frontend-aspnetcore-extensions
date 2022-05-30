@@ -1,31 +1,23 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Localization;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     [HtmlTargetElement("govuk-client-side-validation")]
-    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes", "govuk-fieldset", "govuk-textarea")]
-    public class GovUKClientSideValidationTagHelper : TagHelper
+    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes", "govuk-fieldset", "govuk-textarea", "govuk-date-input")]
+    public class GovUkClientSideValidationTagHelper : TagHelper
     {
-        private readonly IModelPropertyResolver _modelPropertyResolver;
-        private static IStringLocalizerFactory? _factory;
-        private static IStringLocalizer? _localizer = null;
+        private readonly IClientSideValidationHtmlEnhancer _htmlModifier;
 
-        public GovUKClientSideValidationTagHelper(IModelPropertyResolver modelPropertyResolver, IStringLocalizerFactory? factory = null)
+        public GovUkClientSideValidationTagHelper(IClientSideValidationHtmlEnhancer htmlModifier)
         {
-            _modelPropertyResolver = modelPropertyResolver ?? throw new ArgumentNullException(nameof(modelPropertyResolver));
-            _factory = factory;
+            _htmlModifier = htmlModifier ?? throw new ArgumentNullException(nameof(htmlModifier));
         }
 
         /// <summary>
@@ -84,224 +76,27 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         [HtmlAttributeName("error-message-compare")]
         public string? ErrorMessageCompare { get; set; }
 
-        /// <summary>
-        /// Custom error message to show if the bound property has a <see cref="CreditCardAttribute"/>
-        /// </summary>
-        [HtmlAttributeName("error-message-credit-card")]
-        public string? ErrorMessageCreditCard { get; set; }
-
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             // Grab the HTML that would've been rendered by the child tag helper.
-            var html = new HtmlDocument();
-            html.LoadHtml((await output.GetChildContentAsync()).GetContent());
+            var html = (await output.GetChildContentAsync()).GetContent();
             output.SuppressOutput();
 
-            // Get the input element that should always be there if a <govuk-input> child exists.
-            var inputs = html.DocumentNode.SelectNodes("//input");
-            if (inputs == null) inputs = html.DocumentNode.SelectNodes("//select");
-            if (inputs == null) inputs = html.DocumentNode.SelectNodes("//textarea");
-
-            if (inputs != null && inputs.Count > 0)
-            {
-                // Get the output of the <govuk-input-error-message> grandchild tag helper, if present.
-                var errorMessage = html.DocumentNode.SelectSingleNode("//*[@class='govuk-error-message']");
-
-                // If <govuk-input-error-message> is present, the <govuk-input> tag helper always adds error classes because it assumes
-                // we put it there because we already detected an error on the server. But we might want it there at all times to enable 
-                // client-side validation, so remove those classes if there is not actually an error.
-                bool hasError = ErrorMessageTagHelperHasRenderedAnError(errorMessage);
-                if (!hasError)
-                {
-                    RemoveErrorClasses(html, inputs);
-                }
-
-                // Add the data-val-* attributes for ASP.NET / jQuery validation to pick up
-                AddClientSideValidationAttributes(ViewContext!, _modelPropertyResolver, inputs, errorMessage?.Attributes,
-                    ErrorMessageRequired,
-                    ErrorMessageRegex,
-                    ErrorMessageEmail,
-                    ErrorMessageLength,
-                    ErrorMessageMinLength,
-                    ErrorMessageMaxLength,
-                    ErrorMessageRange,
-                    ErrorMessageCompare,
-                    ErrorMessageCreditCard);
-            }
+            html = _htmlModifier.EnhanceHtml(
+                html,
+                ViewContext!,
+                ErrorMessageRequired,
+                ErrorMessageRegex,
+                ErrorMessageEmail,
+                ErrorMessageLength,
+                ErrorMessageMinLength,
+                ErrorMessageMaxLength,
+                ErrorMessageRange,
+                ErrorMessageCompare
+                );
 
             // Output the child HTML with any modifications made
-            output.Content.AppendHtml(html.DocumentNode.OuterHtml);
-        }
-
-        private static void RemoveErrorClasses(HtmlDocument html, HtmlNodeCollection inputs)
-        {
-            foreach (var input in inputs)
-            {
-                input.RemoveClass("govuk-input--error");
-                input.RemoveClass("govuk-textarea--error");
-                input.RemoveClass("govuk-select--error");
-                var errorContainer = html.DocumentNode.SelectSingleNode("//*[contains(@class,'govuk-form-group--error')]");
-                if (errorContainer != null) { errorContainer.RemoveClass("govuk-form-group--error"); }
-            }
-        }
-
-        private static bool ErrorMessageTagHelperHasRenderedAnError(HtmlNode? errorMessage)
-        {
-            if (errorMessage == null) { return false; }
-            foreach (var node in errorMessage.ChildNodes)
-            {
-                if (node.NodeType == HtmlNodeType.Element && !node.HasClass("govuk-visually-hidden") ||
-                    node.NodeType == HtmlNodeType.Text && !string.IsNullOrWhiteSpace(node.InnerText))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static void AddClientSideValidationAttributes(ViewContext viewContext,
-            IModelPropertyResolver propertyResolver,
-            HtmlNodeCollection targetElements,
-            HtmlAttributeCollection? errorMessageAttributes,
-            string? errorMessageRequired,
-            string? errorMessageRegex,
-            string? errorMessageEmail,
-            string? errorMessageLength,
-            string? errorMessageMinLength,
-            string? errorMessageMaxLength,
-            string? errorMessageRange,
-            string? errorMessageCompare,
-            string? errorMessageCreditCard)
-        {
-            if (viewContext == null || !viewContext.ClientValidationEnabled) { return; }
-
-            foreach (var targetElement in targetElements)
-            {
-                var modelPropertyName = targetElement.Attributes["name"]?.Value;
-                if (string.IsNullOrEmpty(modelPropertyName)) { return; }
-
-                targetElement.Attributes.Add("data-val", "true");
-
-                if (errorMessageAttributes != null)
-                {
-                    var targetElementId = targetElement.Attributes["id"]?.Value;
-                    errorMessageAttributes.Add("data-valmsg-for", targetElementId);
-                    errorMessageAttributes.Add("data-valmsg-replace", "true");
-                    errorMessageAttributes.Add("id", targetElementId + "-error");
-                }
-
-                var modelProperty = propertyResolver.ResolveModelProperty(viewContext, modelPropertyName);
-
-                if (modelProperty != null)
-                {
-                    if (_factory != null)
-                    {
-                        _localizer = _factory.Create(modelProperty.DeclaringType!);
-                    }
-
-                    // Compare
-                    var compareAttr = modelProperty.GetCustomAttributes<CompareAttribute>().FirstOrDefault();
-                    if (compareAttr != null)
-                    {
-                        targetElement.Attributes.Add("data-val-equalto", SelectBestErrorMessage(errorMessageCompare, compareAttr.ErrorMessage));
-                        targetElement.Attributes.Add("data-val-equalto-other", compareAttr.OtherProperty);
-                    }
-
-                    // Credit Card
-                    var creditCardAttr = modelProperty.GetCustomAttributes<CreditCardAttribute>().FirstOrDefault();
-                    if (creditCardAttr != null)
-                    {
-                        targetElement.Attributes.Add("data-val-creditcard", SelectBestErrorMessage(errorMessageCreditCard, creditCardAttr.ErrorMessage));
-                    }
-
-                    // Email Address
-                    var emailAttr = modelProperty.GetCustomAttributes<EmailAddressAttribute>().FirstOrDefault();
-                    if (emailAttr != null)
-                    {
-                        targetElement.Attributes.Add("data-val-email", SelectBestErrorMessage(errorMessageEmail, emailAttr.ErrorMessage));
-                        targetElement.Attributes["type"].Value = "email";
-                    }
-
-                    // Max Length
-                    var maxLengthAttr = modelProperty.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
-                    if (maxLengthAttr != null)
-                    {
-                        targetElement.Attributes.Add("data-val-maxlength", SelectBestErrorMessage(errorMessageMaxLength, maxLengthAttr.ErrorMessage));
-                        targetElement.Attributes.Add("data-val-maxlength-max", maxLengthAttr.Length.ToString());
-                        targetElement.Attributes.Add("maxlength", maxLengthAttr.Length.ToString());
-                    }
-
-                    // Min Length
-                    var minLengthAttr = modelProperty.GetCustomAttributes<MinLengthAttribute>().FirstOrDefault();
-                    if (minLengthAttr != null)
-                    {
-                        targetElement.Attributes.Add("data-val-minlength", SelectBestErrorMessage(errorMessageMinLength, minLengthAttr.ErrorMessage));
-                        targetElement.Attributes.Add("data-val-minlength-min", minLengthAttr.Length.ToString());
-                    }
-
-                    // Range
-                    var rangeAttr = modelProperty.GetCustomAttributes<RangeAttribute>().FirstOrDefault();
-                    if (rangeAttr != null)
-                    {
-                        targetElement.Attributes.Add("data-val-range", SelectBestErrorMessage(errorMessageRange, rangeAttr.ErrorMessage));
-                        targetElement.Attributes.Add("data-val-range-max", rangeAttr.Maximum.ToString());
-                        targetElement.Attributes.Add("data-val-range-min", rangeAttr.Minimum.ToString());
-                        if (IsNumericType(modelProperty.PropertyType))
-                        {
-                            targetElement.Attributes["type"].Value = "number";
-                        }
-                    }
-
-                    // Regex
-                    var regexAttr = modelProperty.GetCustomAttributes<RegularExpressionAttribute>().FirstOrDefault();
-                    if (regexAttr != null)
-                    {
-                        targetElement.Attributes.Add("data-val-regex", SelectBestErrorMessage(errorMessageRegex, regexAttr.ErrorMessage));
-                        targetElement.Attributes.Add("data-val-regex-pattern", regexAttr.Pattern);
-                        targetElement.Attributes.Add("pattern", regexAttr.Pattern);
-                    }
-
-                    // Required
-                    var reqdAttr = modelProperty.GetCustomAttributes<RequiredAttribute>().FirstOrDefault();
-                    if (reqdAttr != null)
-                    {
-                        targetElement.Attributes.Add("required", "required");
-                        targetElement.Attributes.Add("data-val-required", SelectBestErrorMessage(errorMessageRequired, reqdAttr.ErrorMessage));
-                    }
-
-                    // String Length
-                    var strLenAttr = modelProperty.GetCustomAttributes(typeof(StringLengthAttribute), true).Cast<StringLengthAttribute>().FirstOrDefault();
-                    if (strLenAttr != null)
-                    {
-                        targetElement.Attributes.Add("data-val-length", SelectBestErrorMessage(errorMessageLength, strLenAttr.ErrorMessage));
-                        targetElement.Attributes.Add("data-val-length-max", strLenAttr.MaximumLength.ToString());
-                        targetElement.Attributes.Add("data-val-length-min", strLenAttr.MinimumLength.ToString());
-                        targetElement.Attributes.Add("maxlength", strLenAttr.MaximumLength.ToString());
-                    }
-                }
-            }
-        }
-
-        private static string? SelectBestErrorMessage(string? fromTagHelperAttribute, string? fromDataAnnotationsAttribute)
-        {
-            return string.IsNullOrEmpty(fromTagHelperAttribute) ?
-                        (_localizer != null && !string.IsNullOrEmpty(fromDataAnnotationsAttribute) ? _localizer.GetString(fromDataAnnotationsAttribute!) : fromDataAnnotationsAttribute) :
-                        fromTagHelperAttribute;
-        }
-
-        private static readonly HashSet<Type> NumericTypes = new HashSet<Type>
-        {
-            typeof(int),  typeof(double),  typeof(decimal),
-            typeof(long), typeof(short),   typeof(sbyte),
-            typeof(byte), typeof(ulong),   typeof(ushort),
-            typeof(uint), typeof(float)
-        };
-
-        internal static bool IsNumericType(Type type)
-        {
-            return NumericTypes.Contains(type) ||
-                   NumericTypes.Contains(Nullable.GetUnderlyingType(type));
+            output.Content.AppendHtml(html);
         }
     }
 }

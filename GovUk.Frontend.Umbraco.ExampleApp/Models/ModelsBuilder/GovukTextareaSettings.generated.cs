@@ -110,14 +110,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string ErrorMessageCompare => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageCompare(this, _publishedValueFallback);
 
 		///<summary>
-		/// Credit card: Sets the message displayed if the field is set by the code to require a credit card number.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageCreditCard")]
-		public virtual string ErrorMessageCreditCard => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageCreditCard(this, _publishedValueFallback);
-
-		///<summary>
 		/// Email address: Sets the message displayed if the field is set by the code to require an email address.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]

@@ -18,6 +18,8 @@ namespace GovUk.Frontend.Umbraco.Typography
                 {
                     ApplyClass(document, "//a", "govuk-link--inverse");
                 }
+                ApplyClass(document, "//h2", "govuk-heading-m");
+                ApplyClass(document, "//h3", "govuk-heading-s");
                 ApplyClass(document, "//p", "govuk-body");
                 ApplyClass(document, "//ul", "govuk-list");
                 ApplyClass(document, "//ul", "govuk-list--bullet");

@@ -407,3 +407,7 @@ FodyWeavers.xsd
 
 # Development environment
 appsettings.Development.json
+
+# CSS files generated from SASS
+govuk-umbraco-rich-text-editor.css
+govuk-umbraco-rich-text-editor.css.map

@@ -4,10 +4,13 @@
 
 	<Target Name="CopyFilesFromGovUkFrontendUmbraco" BeforeTargets="BeforeBuild">
 		<ItemGroup>
-			<FilesFromGovUkFrontendUmbraco Include="$(SolutionDir)GovUk.Frontend.Umbraco\uSync\**" />
+			<uSyncFilesFromGovUkFrontendUmbraco Include="$(SolutionDir)GovUk.Frontend.Umbraco\uSync\**" />
+			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(SolutionDir)GovUk.Frontend.Umbraco\wwwroot\**" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(FilesFromGovUkFrontendUmbraco)"
+		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 </Project>

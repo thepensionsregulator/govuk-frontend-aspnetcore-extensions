@@ -4,8 +4,8 @@ describe("errorMessageForElement", () => {
   it("returns an existing .govuk-error-message if it exists", () => {
     document.body.innerHTML = `
       <div class="govuk-form-group">
-        <p class="govuk-error-message" id="existing"></p>
-        <input class="govuk-input" />
+        <p class="govuk-error-message" id="existing" data-valmsg-for="Field1"></p>
+        <input class="govuk-input" name="Field1" id="Field1" />
       </div>`;
     const testSubject = govuk();
     jest
@@ -17,6 +17,38 @@ describe("errorMessageForElement", () => {
     );
 
     expect(result.id).toEqual("existing");
+  });
+
+  it("does not return an existing error for a field that is conditional upon the target field", () => {
+    document.body.innerHTML = `
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+          <legend class="govuk-fieldset__legend"></legend>
+          <div class="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="Field1" name="Field1" type="checkbox" />
+            </div>  
+            <div class="govuk-checkboxes__conditional">
+                <div class="govuk-form-group" id="inner">
+                    <label class="govuk-label" id="text-input-label"></label>
+                    <p class="govuk-error-message" id="Field2-error" data-valmsg-for="Field2"></p>
+                    <input class="govuk-input" id="text-input" />
+                </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>`;
+
+    const testSubject = govuk();
+    jest
+      .spyOn(testSubject, "formGroupForElement")
+      .mockReturnValue(document.body.firstElementChild);
+
+    const result = testSubject.errorMessageForElement(
+      document.getElementById("Field1")
+    );
+
+    expect(result.getAttribute("data-valmsg-for")).toBe("Field1");
   });
 
   it("inserts a .govuk-error-message with prefix before the form element", () => {

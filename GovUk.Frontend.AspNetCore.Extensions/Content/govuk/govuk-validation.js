@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 // For Jest tests
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
@@ -141,7 +141,9 @@ function createGovUkValidator() {
      */
     errorMessageForElement: function (element) {
       const formGroup = govuk.formGroupForElement(element);
-      let errorMessage = formGroup.querySelector(".govuk-error-message");
+      let errorMessage = formGroup.querySelector(
+        ".govuk-error-message[data-valmsg-for='" + element.id + "']"
+      );
       if (!errorMessage) {
         // Create a new error message container
         errorMessage = document.createElement("p");

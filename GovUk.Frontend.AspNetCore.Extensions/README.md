@@ -49,6 +49,8 @@ This repository includes an example application which demonstrates the validatio
    </html>
    ```
 
+   Note that `GOVUK/Head` imports the `/govuk/govuk-frontend-publicsans.css` stylesheet for use [where 'GDS Transport' is not allowed](https://design-system.service.gov.uk/styles/typography/). You can choose to import `/govuk/govuk-frontend.css` instead to use 'GDS Transport'.
+
 4. Add the following to your `Views/_ViewImports.cshtml` file:
 
    ```csharp

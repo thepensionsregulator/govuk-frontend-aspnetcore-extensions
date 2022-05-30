@@ -10,5 +10,8 @@ namespace GovUk.Frontend.ExampleApp.Models
 
         [RegularExpression("[0-9]+", ErrorMessage = "The related question must be numbers")]
         public string Field2 { get; set; }
+
+        [Required(ErrorMessage = "You must select the single checkbox")]
+        public string Field3 { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 
 // For Jest tests
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
@@ -91,15 +91,22 @@ function createGovUkValidator() {
       [].slice
         .call(document.querySelectorAll(".govuk-error-message"))
         .map(function (error) {
-          let summaryError = document.createElement("li");
           const link = document.createElement("a");
-          link.href = "#" + error.id.substring(0, error.id.length - 6);
           const prefix = error.querySelector(".govuk-visually-hidden");
+          const textNode = 3;
           [].slice.call(error.childNodes).map(function (x) {
-            if (x !== prefix) {
+            if (
+              x !== prefix &&
+              (x.nodeType !== textNode || x.textContent.trim())
+            ) {
               link.appendChild(x.cloneNode(true));
             }
           });
+          if (!link.hasChildNodes()) {
+            return;
+          }
+          link.href = "#" + error.id.substring(0, error.id.length - 6);
+          let summaryError = document.createElement("li");
           summaryError.appendChild(link);
           list.appendChild(summaryError);
         });

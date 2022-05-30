@@ -37,7 +37,7 @@ describe("errorMessageForElement", () => {
 
     expect(error.nextElementSibling.id).toEqual("example");
     expect(error.getAttribute("data-valmsg-for")).toEqual("example");
-    expect(error.getAttribute("data-valmsg-replace")).toEqual("true");
+    expect(error.getAttribute("data-valmsg-replace")).toEqual("false");
     expect(
       error.firstElementChild.classList.contains("govuk-visually-hidden")
     ).toBe(true);

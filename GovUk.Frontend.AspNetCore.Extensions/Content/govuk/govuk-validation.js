@@ -147,7 +147,7 @@ function createGovUkValidator() {
         errorMessage = document.createElement("p");
         errorMessage.classList.add("govuk-error-message");
         errorMessage.setAttribute("data-valmsg-for", element.id);
-        errorMessage.setAttribute("data-valmsg-replace", "true");
+        errorMessage.setAttribute("data-valmsg-replace", "false");
 
         const errorPrefix = document.createElement("span");
         errorPrefix.classList.add("govuk-visually-hidden");

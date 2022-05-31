@@ -2,11 +2,16 @@
 @{
     ViewData["Title"] = "Text input";
 }
+@section language {
+    <partial name="_LanguageSwitcher"/>
+}
 
 <partial name="GOVUK/ErrorSummary" />
 
 <span class="govuk-caption-xl">GOV.UK Design System</span>
 <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+
+<p class="govuk-body">To demonstrate localisation, use the language switcher to change the language of error messages.</p>
 
 <form asp-controller="TextInput" asp-action="Post" method="post" novalidate>
     <govuk-client-side-validation>

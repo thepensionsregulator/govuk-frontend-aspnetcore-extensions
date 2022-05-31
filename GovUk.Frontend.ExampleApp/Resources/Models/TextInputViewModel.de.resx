@@ -141,7 +141,7 @@
   <data name="String length must be between 5 and 20" xml:space="preserve">
     <value>Die Zeichenfolgenlänge muss zwischen 5 und 20 liegen</value>
   </data>
-  <data name="This field is required" xml:space="preserve">
+  <data name="This text input is required" xml:space="preserve">
     <value>Dieses Feld wird benötigt</value>
   </data>
 </root>

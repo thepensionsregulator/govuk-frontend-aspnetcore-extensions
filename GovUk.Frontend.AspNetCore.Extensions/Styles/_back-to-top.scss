@@ -1,8 +1,13 @@
-﻿.govuk-back-to-top-link {
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+.govuk-back-to-top-link {
+    @include govuk-link-common;
+    @include govuk-link-style-no-visited-state;
     font-size: 14px;
     font-size: .875rem;
     line-height: 1.14286;
-    font-family: GDS Transport,arial,sans-serif;
+    font-family: $govuk-font-family;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-decoration: underline;
@@ -27,38 +32,6 @@
         font-size: 14pt;
         line-height: 1.2;
         font-family: sans-serif
-    }
-}
-
-.govuk-back-to-top-link:focus {
-    outline: 3px solid rgba(0,0,0,0);
-    color: #0b0c0c;
-    background-color: #fd0;
-    box-shadow: 0 -2px #fd0,0 4px #0b0c0c;
-    text-decoration: none
-}
-
-.govuk-back-to-top-link:link, .govuk-back-to-top-link:visited {
-    color: #0b0c0c
-}
-
-@media print {
-    .govuk-back-to-top-link:link, .govuk-back-to-top-link:visited {
-        color: #000
-    }
-}
-
-.govuk-back-to-top-link:hover {
-    color: rgba(11,12,12,.99)
-}
-
-.govuk-back-to-top-link:active, .govuk-back-to-top-link:focus {
-    color: #0b0c0c
-}
-
-@media print {
-    .govuk-back-to-top-link:active, .govuk-back-to-top-link:focus {
-        color: #000
     }
 }
 

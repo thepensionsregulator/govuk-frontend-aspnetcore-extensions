@@ -6,7 +6,7 @@ describe("updateSummary", () => {
       <div class="govuk-error-summary">
         <ul class="govuk-list govuk-error-summary__list"></ul>
       </div>
-      <p class="govuk-error-message"></p>`;
+      <p class="govuk-error-message">Error message</p>`;
 
     govuk().updateErrorSummary();
 
@@ -66,11 +66,25 @@ describe("updateSummary", () => {
 
     govuk().updateErrorSummary();
 
-    expect(document.querySelector(".govuk-error-summary").innerText).not.toBe(
-      "New one"
-    );
+    expect(
+      document.querySelector(".govuk-error-summary__list > li > a").innerHTML
+    ).toBe("New one");
     expect(
       document.querySelector(".govuk-error-summary .govuk-visually-hidden")
     ).toBeNull();
+  });
+
+  it("ignores errors with no content or whitespace", () => {
+    document.body.innerHTML = `
+      <div class="govuk-error-summary">
+        <ul class="govuk-list govuk-error-summary__list"></ul>
+      </div>
+      <p id="new1-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span> </p>`; // deliberate whitespace instead of message
+
+    govuk().updateErrorSummary();
+
+    expect(
+      document.querySelector(".govuk-error-summary__list").hasChildNodes()
+    ).toBe(false);
   });
 });

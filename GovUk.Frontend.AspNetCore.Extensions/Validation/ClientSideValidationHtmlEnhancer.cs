@@ -121,7 +121,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 {
                     var targetElementId = targetElement.Attributes["id"]?.Value;
                     errorMessageAttributes.Add("data-valmsg-for", targetElementId);
-                    errorMessageAttributes.Add("data-valmsg-replace", "true");
+                    errorMessageAttributes.Add("data-valmsg-replace", "false");
                     errorMessageAttributes.Add("id", targetElementId + "-error");
                 }
 

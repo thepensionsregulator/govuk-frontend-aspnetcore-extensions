@@ -1,16 +1,18 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<TextInputViewModel>
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
+@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using System.Threading
 @section head{
 	<title>@Model.Page.Name</title>
 }
-
-<partial name="GOVUK/ErrorSummary" />
-
+@section language {
+    <partial name="_LanguageSwitcher" model="Model.Page"/>
+}
 @using (Html.BeginUmbracoForm<TextInputSurfaceController>(nameof(TextInputSurfaceController.Index), null, new { novalidate="novalidate" }))
 {
     <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
-    <govuk-button type="submit">@Model.Page.ButtonText</govuk-button>
 }
 @section scripts {
     <partial name="GOVUK/Validation" />

@@ -40,6 +40,31 @@ namespace GovUk.Frontend.Umbraco.Tests
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link--inverse')]").Count);
         }
 
+
+        [Test]
+        public void Heading_medium_class_is_added_to_H2()
+        {
+            var html = "<h2>Heading</h2><h2>Another heading</h2>";
+
+            var result = GovUkTypography.Apply(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//h2[@class='govuk-heading-m']").Count);
+        }
+
+        [Test]
+        public void Heading_small_class_is_added_to_H3()
+        {
+            var html = "<h3>Heading</h3><h3>Another heading</h3>";
+
+            var result = GovUkTypography.Apply(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//h3[@class='govuk-heading-s']").Count);
+        }
+
         [Test]
         public void Body_class_is_added_to_paragraphs()
         {

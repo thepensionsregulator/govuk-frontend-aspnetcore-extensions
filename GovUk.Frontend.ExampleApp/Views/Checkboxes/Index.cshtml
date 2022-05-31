@@ -27,6 +27,16 @@
         </govuk-checkboxes>
     </govuk-client-side-validation>
 
+    <h2 class="govuk-heading-m">Toggle a single option on or off</h2>
+    <govuk-client-side-validation>
+        <govuk-checkboxes asp-for="Field3">
+            <govuk-checkboxes-item value="yes">
+                I agree to something
+                <govuk-checkboxes-item-hint>You have to agree to this.</govuk-checkboxes-item-hint>
+            </govuk-checkboxes-item>
+        </govuk-checkboxes>
+    </govuk-client-side-validation>
+
     <govuk-button>Submit</govuk-button>
 </form>
 @section scripts {

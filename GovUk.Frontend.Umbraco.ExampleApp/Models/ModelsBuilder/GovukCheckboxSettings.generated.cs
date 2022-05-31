@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Checkbox settings</summary>
+	/// <summary>Checkbox settings (list)</summary>
 	[PublishedModel("govukCheckboxSettings")]
 	public partial class GovukCheckboxSettings : PublishedElementModel, IGovukCssClasses
 	{

@@ -7,11 +7,24 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Styles\govuk-umbraco-rich-text-editor.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Include="Styles\govuk-umbraco-rich-text-editor.scss">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.52.1.2" />
 		<PackageReference Include="Umbraco.Cms.Core" Version="9.5.0" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.5.0" />
 		<PackageReference Include="Umbraco.Cms.Web.Common" Version="9.5.0" />
 	</ItemGroup>
 
@@ -27,6 +40,16 @@
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukcheckbox.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukcheckboxes.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukcheckboxsettings.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -96,6 +119,11 @@
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govuktextareasettings.config">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -151,5 +179,14 @@
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\govuk-umbraco-rich-text-editor.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="App_Plugins\GOVUK\" />
+	  <Folder Include="wwwroot\css\" />
 	</ItemGroup>
 </Project>

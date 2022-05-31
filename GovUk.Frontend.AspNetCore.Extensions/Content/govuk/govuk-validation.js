@@ -91,15 +91,22 @@ function createGovUkValidator() {
       [].slice
         .call(document.querySelectorAll(".govuk-error-message"))
         .map(function (error) {
-          let summaryError = document.createElement("li");
           const link = document.createElement("a");
-          link.href = "#" + error.id.substring(0, error.id.length - 6);
           const prefix = error.querySelector(".govuk-visually-hidden");
+          const textNode = 3;
           [].slice.call(error.childNodes).map(function (x) {
-            if (x !== prefix) {
+            if (
+              x !== prefix &&
+              (x.nodeType !== textNode || x.textContent.trim())
+            ) {
               link.appendChild(x.cloneNode(true));
             }
           });
+          if (!link.hasChildNodes()) {
+            return;
+          }
+          link.href = "#" + error.id.substring(0, error.id.length - 6);
+          let summaryError = document.createElement("li");
           summaryError.appendChild(link);
           list.appendChild(summaryError);
         });
@@ -134,13 +141,15 @@ function createGovUkValidator() {
      */
     errorMessageForElement: function (element) {
       const formGroup = govuk.formGroupForElement(element);
-      let errorMessage = formGroup.querySelector(".govuk-error-message");
+      let errorMessage = formGroup.querySelector(
+        ".govuk-error-message[data-valmsg-for='" + element.id + "']"
+      );
       if (!errorMessage) {
         // Create a new error message container
         errorMessage = document.createElement("p");
         errorMessage.classList.add("govuk-error-message");
         errorMessage.setAttribute("data-valmsg-for", element.id);
-        errorMessage.setAttribute("data-valmsg-replace", "true");
+        errorMessage.setAttribute("data-valmsg-replace", "false");
 
         const errorPrefix = document.createElement("span");
         errorPrefix.classList.add("govuk-visually-hidden");

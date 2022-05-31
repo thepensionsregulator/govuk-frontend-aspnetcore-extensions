@@ -77,7 +77,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             document.LoadHtml(result);
 
             Assert.True(document.DocumentNode.SelectSingleNode($"//p[@data-valmsg-for='{nameof(ExampleClass.RequiredField)}']") != null);
-            Assert.True(document.DocumentNode.SelectSingleNode("//p[@data-valmsg-replace='true']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode("//p[@data-valmsg-replace='false']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//p[@id='{nameof(ExampleClass.RequiredField)}-error']") != null);
         }
 

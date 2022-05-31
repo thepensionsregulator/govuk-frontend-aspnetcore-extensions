@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 
+	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
+		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
+		 -->
+	<Target Name="BuildSass" BeforeTargets="AfterBuild">
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
+		<Output TaskParameter="Result" ItemName="SassCompilerVersion" />
+    </XmlPeek>
+	<PropertyGroup>
+		<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
+		<SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
+		<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)\..\..\govuk-frontend-aspnetcore\lib\govuk-frontend\src</GovUkFrontEndFolder>
+		<SourceFolder>$(MsBuildThisFileDirectory)\Styles\</SourceFolder>
+		<TargetFolder>$(MsBuildThisFileDirectory)\Content\govuk\</TargetFolder>
+	</PropertyGroup>
+	<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-frontend.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(SourceFolder) $(TargetFolder)govuk-frontend.css"/>
+	<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-frontend-publicsans.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(SourceFolder) $(TargetFolder)govuk-frontend-publicsans.css"/>
+	</Target>
+</Project>

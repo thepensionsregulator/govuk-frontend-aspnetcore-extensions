@@ -10,9 +10,6 @@
 @section language {
     <partial name="_LanguageSwitcher" model="Model.Page"/>
 }
-
-<partial name="GOVUK/ErrorSummary" />
-
 @using (Html.BeginUmbracoForm<TextInputSurfaceController>(nameof(TextInputSurfaceController.Index), null, new { novalidate="novalidate" }))
 {
     <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />

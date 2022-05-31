@@ -4,9 +4,6 @@
 @section head{
 	<title>@Model.Page.Name</title>
 }
-
-<partial name="GOVUK/ErrorSummary" />
-
 @using (Html.BeginUmbracoForm<SelectSurfaceController>(nameof(SelectSurfaceController.Index), null, new { novalidate="novalidate" }))
 {
     <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />

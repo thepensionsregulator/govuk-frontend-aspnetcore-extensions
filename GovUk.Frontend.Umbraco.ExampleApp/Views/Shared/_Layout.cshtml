@@ -9,6 +9,7 @@
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
+    @RenderSection("language", required: false)
     <main>@RenderBody()</main>
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)

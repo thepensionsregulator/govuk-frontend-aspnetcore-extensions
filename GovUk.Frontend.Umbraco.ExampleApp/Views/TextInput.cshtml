@@ -1,8 +1,14 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<TextInputViewModel>
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
+@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using System.Threading
 @section head{
 	<title>@Model.Page.Name</title>
+}
+@section language {
+    <partial name="_LanguageSwitcher" model="Model.Page"/>
 }
 
 <partial name="GOVUK/ErrorSummary" />

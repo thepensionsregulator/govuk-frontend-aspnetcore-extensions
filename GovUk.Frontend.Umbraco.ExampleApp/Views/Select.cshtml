@@ -10,7 +10,6 @@
 @using (Html.BeginUmbracoForm<SelectSurfaceController>(nameof(SelectSurfaceController.Index), null, new { novalidate="novalidate" }))
 {
     <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
-    <govuk-button type="submit">@Model.Page.ButtonText</govuk-button>
 }
 @section scripts {
     <partial name="GOVUK/Validation" />

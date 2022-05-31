@@ -6,11 +6,14 @@
 		<ItemGroup>
 			<uSyncFilesFromGovUkFrontendUmbraco Include="$(SolutionDir)GovUk.Frontend.Umbraco\uSync\**" />
 			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(SolutionDir)GovUk.Frontend.Umbraco\wwwroot\**" />
+			<PluginFilesFromGovUkFrontendUmbraco Include="$(SolutionDir)GovUk.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 </Project>

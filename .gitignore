@@ -403,7 +403,8 @@ FodyWeavers.xsd
 # Umbraco 
 **/umbraco/
 **/Smidge/
-**/App_Plugins/
+**/App_Plugins/*
+!**/App_Plugins/GOVUK
 
 # Development environment
 appsettings.Development.json

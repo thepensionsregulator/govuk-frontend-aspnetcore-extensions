@@ -24,6 +24,7 @@
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.52.1.2" />
 		<PackageReference Include="Umbraco.Cms.Core" Version="9.5.0" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.5.0" />
 		<PackageReference Include="Umbraco.Cms.Web.Common" Version="9.5.0" />
 	</ItemGroup>
 
@@ -185,6 +186,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="App_Plugins\GOVUK\" />
 	  <Folder Include="wwwroot\css\" />
 	</ItemGroup>
 </Project>

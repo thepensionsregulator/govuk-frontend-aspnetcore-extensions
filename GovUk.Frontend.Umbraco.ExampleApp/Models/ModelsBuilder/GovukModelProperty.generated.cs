@@ -25,7 +25,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		/// <summary>Model property</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		string ModelProperty { get; }
+		object ModelProperty { get; }
 	}
 
 	/// <summary>Model property</summary>
@@ -65,11 +65,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("modelProperty")]
-		public virtual string ModelProperty => GetModelProperty(this, _publishedValueFallback);
+		public virtual object ModelProperty => GetModelProperty(this, _publishedValueFallback);
 
 		/// <summary>Static getter for Model property</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static string GetModelProperty(IGovukModelProperty that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "modelProperty");
+		public static object GetModelProperty(IGovukModelProperty that, IPublishedValueFallback publishedValueFallback) => that.Value(publishedValueFallback, "modelProperty");
 	}
 }

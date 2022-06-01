@@ -4,9 +4,9 @@
 
 	<Target Name="CopyFilesFromGovUkFrontendUmbraco" BeforeTargets="BeforeBuild">
 		<ItemGroup>
-			<uSyncFilesFromGovUkFrontendUmbraco Include="$($(ProjectDir)\..\)..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\uSync\**" />
-			<WwwrootFilesFromGovUkFrontendUmbraco Include="$($(ProjectDir)\..\)..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\wwwroot\**" />
-			<PluginFilesFromGovUkFrontendUmbraco Include="$($(ProjectDir)\..\)..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\App_Plugins\**" />
+			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)\..\..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\uSync\**" />
+			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)\..\..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\wwwroot\**" />
+			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)\..\..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
 		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"

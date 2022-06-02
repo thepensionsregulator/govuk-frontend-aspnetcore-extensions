@@ -2,18 +2,18 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 -->
 
-	<!-- <Target Name="CopyFilesFromGovUkFrontendUmbraco" BeforeTargets="BeforeBuild">
+	<Target Name="CopyFilesFromGovUkFrontendUmbraco" BeforeTargets="BeforeBuild">
 		<ItemGroup>
-			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)\..\..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\uSync\**" />
+			<!-- <uSyncFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)\..\..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\uSync\**" /> -->
 			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)\..\..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\wwwroot\**" />
 			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)\..\..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
-		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
+		<!-- <Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" /> -->
 		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
-	</Target> -->
+	</Target>
 </Project>

@@ -4,7 +4,7 @@
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
 		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
 		 -->
-	<Target Name="BuildSass" BeforeTargets="AfterBuild">
+	<Target Name="BuildSass" BeforeTargets="BeforeBuild">
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
 		<Output TaskParameter="Result" ItemName="SassCompilerVersion" />
     </XmlPeek>

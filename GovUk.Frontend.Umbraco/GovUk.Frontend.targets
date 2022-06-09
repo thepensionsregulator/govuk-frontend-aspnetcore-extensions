@@ -9,11 +9,11 @@
 			<PluginFilesFromGovUkFrontendUmbraco Include="$(MsBuildThisFileDirectory)..\..\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
-		<!-- <Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" /> -->
+		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
+			DestinationFiles="$(MsBuildThisFileDirectory)uSync\%(RecursiveDir)%(Filename)%(Extension)" /> 
 		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
+			DestinationFiles="$(MsBuildThisFileDirectory)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
+			DestinationFiles="$(MsBuildThisFileDirectory)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 </Project>

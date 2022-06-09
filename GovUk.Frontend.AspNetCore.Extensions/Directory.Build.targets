@@ -5,7 +5,7 @@
 		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
 		 -->
 	<Target Name="BuildSass" BeforeTargets="BeforeBuild">
-		<Message Text="Run SassCompiler $(MSBuildProjectFullPath)..." Importance="high"/>
+		<Message Text="Run SassCompiler $(MSBuildProjectFullPath)" Importance="high"/>
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
 			<Output TaskParameter="Result" ItemName="SassCompilerVersion" />
 		</XmlPeek>

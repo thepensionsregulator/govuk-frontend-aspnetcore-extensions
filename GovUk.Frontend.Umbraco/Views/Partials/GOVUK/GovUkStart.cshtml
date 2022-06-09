@@ -9,4 +9,4 @@
     if (string.IsNullOrWhiteSpace(text)) { text = "Start now"; }
     var link = Model.Item.Content.Value<Link>("link");
 }
-<govuk-button-link is-start-button="true" href="@link.Url">@text</govuk-button-link>
+<govuk-button-link is-start-button="true" href="@link.Url" id="@Model.Item.Content.Key">@text</govuk-button-link>

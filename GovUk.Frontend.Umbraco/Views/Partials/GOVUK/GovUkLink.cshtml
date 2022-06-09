@@ -8,4 +8,4 @@
     var text = Model.Item.Content.Value<string>("text");
     var link = Model.Item.Content.Value<Link>("link");
 }
-<a href="@link.Url" class="govuk-link">@text</a>
+<a href="@link.Url" class="govuk-link" id="@Model.Item.Content.Key">@text</a>

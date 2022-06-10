@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 
@@ -11,38 +14,59 @@ namespace GovUk.Frontend.Umbraco.Validation
     public class UmbracoBlockListValidationMetadataProvider : IValidationMetadataProvider
     {
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
-        private readonly string _documentTypeAlias;
-        private readonly string _blockListAlias;
 
-        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, string documentTypeAlias, string blockListAlias)
+        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor)
         {
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
-            _documentTypeAlias = documentTypeAlias ?? throw new ArgumentNullException(nameof(documentTypeAlias));
-            _blockListAlias = blockListAlias ?? throw new ArgumentNullException(nameof(blockListAlias));
         }
 
         public void CreateValidationMetadata(ValidationMetadataProviderContext context)
         {
-            if (context.Attributes.Count == 0) { return; }
+            if (context.ValidationMetadata == null || context.ValidationMetadata.ValidatorMetadata == null || context.ValidationMetadata.ValidatorMetadata.Count == 0) { return; }
             _umbracoContextAccessor.TryGetUmbracoContext(out var umbracoContext);
             if (umbracoContext == null) { return; }
             if (umbracoContext.PublishedRequest?.PublishedContent == null) { return; }
-            if (umbracoContext.PublishedRequest?.PublishedContent.ContentType.Alias.ToUpperInvariant() != _documentTypeAlias.ToUpperInvariant()) { return; }
 
-            var blockList = umbracoContext.PublishedRequest.PublishedContent.Value<BlockListModel>(_blockListAlias);
-            if (blockList == null) { return; }
+            var blockLists = RecursivelyGetBlockLists(umbracoContext.PublishedRequest.PublishedContent.Properties);
+            UpdateValidationAttributeErrorMessages(blockLists, context.ValidationMetadata.ValidatorMetadata);
+        }
 
-            foreach (var attribute in context.Attributes)
+        internal IEnumerable<BlockListModel> RecursivelyGetBlockLists(IEnumerable<IPublishedProperty> properties)
+        {
+            var blockLists = new List<BlockListModel>();
+            RecursivelyGetBlockLists(properties, blockLists);
+            return blockLists;
+        }
+
+        private void RecursivelyGetBlockLists(IEnumerable<IPublishedProperty> properties, List<BlockListModel> allBlockLists)
+        {
+            var newBlockLists = properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue()).Select(x => x.Value<BlockListModel>(null));
+            if (newBlockLists.Any())
             {
-                if (attribute is RequiredAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageRequired"); }
-                if (attribute is RegularExpressionAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageRegex"); }
-                if (attribute is EmailAddressAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageEmail"); }
-                if (attribute is StringLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageLength"); }
-                if (attribute is MinLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageMinLength"); }
-                if (attribute is MaxLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageMaxLength"); }
-                if (attribute is RangeAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageRange"); }
-                if (attribute is CompareAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageCompare"); }
-                if (attribute is CreditCardAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, "errorMessageCreditCard"); }
+                allBlockLists.AddRange(newBlockLists);
+
+                foreach (var blockList in newBlockLists)
+                {
+                    RecursivelyGetBlockLists(blockList.SelectMany(block => block.Content.Properties), allBlockLists);
+                }
+            }
+        }
+
+        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<BlockListModel> blockLists, IList<object> validationAttributes)
+        {
+            foreach (var blockList in blockLists)
+            {
+                foreach (var attribute in validationAttributes)
+                {
+                    if (attribute is RequiredAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRequired); }
+                    if (attribute is RegularExpressionAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRegex); }
+                    if (attribute is EmailAddressAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageEmail); }
+                    if (attribute is StringLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageLength); }
+                    if (attribute is MinLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageMinLength); }
+                    if (attribute is MaxLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageMaxLength); }
+                    if (attribute is RangeAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRange); }
+                    if (attribute is CompareAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageCompare); }
+                }
             }
         }
 
@@ -51,13 +75,18 @@ namespace GovUk.Frontend.Umbraco.Validation
             var validationAttribute = attribute as ValidationAttribute;
             if (validationAttribute == null) { return; }
 
-            var block = blockList.SingleOrDefault(x => x.Settings != null && x.Settings.Value<string>("modelProperty") == validationAttribute.ErrorMessage);
-            if (block == null) { return; }
+            var blocks = blockList.Where(x => x.Settings != null &&
+                                              x.Settings.GetProperty(PropertyAliases.ModelProperty) != null &&
+                                              x.Settings.GetProperty(PropertyAliases.ModelProperty).GetValue().ToString() == validationAttribute.ErrorMessage);
+            if (blocks == null) { return; }
 
-            var customError = block.Settings.Value<string>(errorMessagePropertyAlias);
-            if (!string.IsNullOrEmpty(customError))
+            foreach (var block in blocks)
             {
-                validationAttribute.ErrorMessage = customError;
+                var customError = block.Settings.GetProperty(errorMessagePropertyAlias).GetValue().ToString();
+                if (!string.IsNullOrEmpty(customError))
+                {
+                    validationAttribute.ErrorMessage = customError;
+                }
             }
         }
     }

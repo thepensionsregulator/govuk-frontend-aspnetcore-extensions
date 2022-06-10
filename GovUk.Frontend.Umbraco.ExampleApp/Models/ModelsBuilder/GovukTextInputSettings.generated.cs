@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Text input settings</summary>
 	[PublishedModel("govukTextInputSettings")]
-	public partial class GovukTextInputSettings : PublishedElementModel, IGovukValidationRequired
+	public partial class GovukTextInputSettings : PublishedElementModel, IGovukCssClasses, IGovukModelProperty, IGovukValidationRequired, IGovukValidationText
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -55,71 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClasses")]
-		public virtual string CssClasses => this.Value<string>(_publishedValueFallback, "cssClasses");
-
-		///<summary>
-		/// Compare to another field: Sets the error message displayed if the field is set to be the same as another (like when you're asked to re-enter an email address).
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageCompare")]
-		public virtual string ErrorMessageCompare => this.Value<string>(_publishedValueFallback, "errorMessageCompare");
-
-		///<summary>
-		/// Credit card: Sets the message displayed if the field is set by the code to require a credit card number.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageCreditCard")]
-		public virtual string ErrorMessageCreditCard => this.Value<string>(_publishedValueFallback, "errorMessageCreditCard");
-
-		///<summary>
-		/// Email address: Sets the message displayed if the field is set by the code to require an email address.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageEmail")]
-		public virtual string ErrorMessageEmail => this.Value<string>(_publishedValueFallback, "errorMessageEmail");
-
-		///<summary>
-		/// Minimum and maximum length: Sets the message displayed if the field is set by the code to require text between a minimum and maximum length.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageLength")]
-		public virtual string ErrorMessageLength => this.Value<string>(_publishedValueFallback, "errorMessageLength");
-
-		///<summary>
-		/// Maximum length: Sets the message displayed if the field is set by the code to require text of a maximum length.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageMaxLength")]
-		public virtual string ErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "errorMessageMaxLength");
-
-		///<summary>
-		/// Minimum length: Sets the message displayed if the field is set by the code to require text of a minimum length.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageMinLength")]
-		public virtual string ErrorMessageMinLength => this.Value<string>(_publishedValueFallback, "errorMessageMinLength");
-
-		///<summary>
-		/// Numeric range: Sets the message displayed if the field is set by the code to require a number in a given range.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageRange")]
-		public virtual string ErrorMessageRange => this.Value<string>(_publishedValueFallback, "errorMessageRange");
-
-		///<summary>
-		/// Pattern: Sets the message displayed if the field is set by the code to require a regular expression pattern to be matched.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageRegex")]
-		public virtual string ErrorMessageRegex => this.Value<string>(_publishedValueFallback, "errorMessageRegex");
+		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
 
 		///<summary>
 		/// Model property: The name of the property on the view model being bound to in the code.
@@ -127,7 +63,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("modelProperty")]
-		public virtual string ModelProperty => this.Value<string>(_publishedValueFallback, "modelProperty");
+		public virtual object ModelProperty => global::Umbraco.Cms.Web.Common.PublishedModels.GovukModelProperty.GetModelProperty(this, _publishedValueFallback);
 
 		///<summary>
 		/// Required: Sets the message displayed if the field is set by the code to be required.
@@ -136,5 +72,61 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("errorMessageRequired")]
 		public virtual string ErrorMessageRequired => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationRequired.GetErrorMessageRequired(this, _publishedValueFallback);
+
+		///<summary>
+		/// Compare to another field: Sets the error message displayed if the field is set to be the same as another (like when you're asked to re-enter an email address).
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageCompare")]
+		public virtual string ErrorMessageCompare => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageCompare(this, _publishedValueFallback);
+
+		///<summary>
+		/// Email address: Sets the message displayed if the field is set by the code to require an email address.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageEmail")]
+		public virtual string ErrorMessageEmail => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageEmail(this, _publishedValueFallback);
+
+		///<summary>
+		/// Minimum and maximum length: Sets the message displayed if the field is set by the code to require text between a minimum and maximum length.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageLength")]
+		public virtual string ErrorMessageLength => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageLength(this, _publishedValueFallback);
+
+		///<summary>
+		/// Maximum length: Sets the message displayed if the field is set by the code to require text of a maximum length.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageMaxLength")]
+		public virtual string ErrorMessageMaxLength => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageMaxLength(this, _publishedValueFallback);
+
+		///<summary>
+		/// Minimum length: Sets the message displayed if the field is set by the code to require text of a minimum length.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageMinLength")]
+		public virtual string ErrorMessageMinLength => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageMinLength(this, _publishedValueFallback);
+
+		///<summary>
+		/// Numeric range: Sets the message displayed if the field is set by the code to require a number in a given range.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageRange")]
+		public virtual string ErrorMessageRange => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageRange(this, _publishedValueFallback);
+
+		///<summary>
+		/// Pattern: Sets the message displayed if the field is set by the code to require a regular expression pattern to be matched.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageRegex")]
+		public virtual string ErrorMessageRegex => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageRegex(this, _publishedValueFallback);
 	}
 }

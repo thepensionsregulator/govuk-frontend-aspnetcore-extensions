@@ -1,0 +1,29 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Typography
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+@{
+    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
+    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    var legendIsPageHeading = Model.Item.Settings.Value<bool>("legendIsPageHeading");
+    var legend = Model.Item.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var hint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+}
+<govuk-client-side-validation
+    error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" class="@cssClass">
+        <govuk-date-input-fieldset>
+            <govuk-date-input-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-date-input-fieldset-legend>
+            @if (!string.IsNullOrWhiteSpace(hint))
+            {
+                <govuk-date-input-hint>@Html.Raw(hint)</govuk-date-input-hint>
+            }
+            <govuk-date-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-date-input-error-message>
+        </govuk-date-input-fieldset>
+    </govuk-date-input>
+</govuk-client-side-validation>

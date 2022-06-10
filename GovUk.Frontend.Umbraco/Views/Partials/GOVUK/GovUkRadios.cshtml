@@ -1,17 +1,56 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
-@using GovUk.Frontend.Umbraco.Html
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var radioButtons = Model.Content.Value<BlockListModel>("radioButtons");
-    var group = Model.Settings.Value<string>("modelProperty");
-}
-<govuk-radios name="@group">
-    @foreach (var block in radioButtons)
+    var radioButtons = Model.Item.Content.Value<BlockListModel>("radioButtons");
+    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
+    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
+    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
+    if (Model.Item.Settings.Value<string>("layout") == "Horizontal")
     {
-        <govuk-radios-item value="@(block.Content.Value<string>("value"))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
-            <govuk-radios-item-hint>@Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(block.Content.Value<string>("hint")))</govuk-radios-item-hint>
-        </govuk-radios-item>
+        cssClass = (cssClass + " govuk-radios--inline").TrimStart();
     }
-</govuk-radios>
+    var hint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var legendIsPageHeading = Model.Item.Settings.Value<bool>("legendIsPageHeading");
+    var legend = Model.Item.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+}
+<govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+    <govuk-radios name="@modelPropertyName" class="@cssClass">
+         <govuk-radios-fieldset>
+            <govuk-radios-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-radios-fieldset-legend>
+        </govuk-radios-fieldset>
+        @if (!string.IsNullOrWhiteSpace(hint))
+        {
+            <govuk-radios-hint>@Html.Raw(hint)</govuk-radios-hint>
+        }
+        @foreach (var block in Model.Filter(radioButtons))
+        {
+            if (block.Content.ContentType.Alias == "govukRadiosDivider")
+            {
+                <govuk-radios-divider>@(string.IsNullOrWhiteSpace(block.Content.Value<string>("text")) ? "or" : block.Content.Value<string>("text"))</govuk-radios-divider>
+            }
+            else
+            {
+                var value = block.Content.Value<string>("value");
+                <govuk-radios-item value="@value" class="@(block.Settings.Value<string>("cssClasses"))" checked="@(value.ToUpperInvariant() == attemptedValue)">@(block.Content.Value<string>("label"))
+                    <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
+                    @{
+                        var conditional = block.Content.Value<BlockListModel>("conditionalBlocks");
+                        if (conditional.Any()){
+                            <govuk-radios-item-conditional>
+                                @await Html.PartialAsync("GOVUK/FilteredBlockList", new FilteredBlockListModel(conditional, Model.Filter))
+                            </govuk-radios-item-conditional>
+                        }
+                    }
+                </govuk-radios-item>                
+            }
+        }
+        <govuk-radios-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-radios-error-message>
+    </govuk-radios>
+</govuk-client-side-validation>

@@ -1,34 +1,14 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Typography
 @using HtmlAgilityPack
 @using Umbraco.Extensions
 @{
-    var html = Model.Content.Value<string>("text");
+    var html = Model.Item.Content.Value<string>("text");
+    html = GovUkTypography.Apply(html);
 }
-@functions {
-    public void ApplyClass(HtmlDocument doc, string xpath, string className)
-    {
-        var nodes = doc.DocumentNode.SelectNodes(xpath);
-        if (nodes != null)
-        {
-            foreach (var node in nodes)
-            {
-                node.AddClass(className);
-            }
-        }
-    }
-}
-
 @if (!string.IsNullOrWhiteSpace(html))
 {
-    var doc = new HtmlDocument();
-    doc.LoadHtml(html);
-
-    ApplyClass(doc, "//p", "govuk-body");
-    ApplyClass(doc, "//ul", "govuk-list");
-    ApplyClass(doc, "//ul", "govuk-list--bullet");
-    ApplyClass(doc, "//ol", "govuk-list");
-    ApplyClass(doc, "//ol", "govuk-list--number");
-
-    @(Html.Raw(doc.DocumentNode.OuterHtml))
+    @(Html.Raw(html))
 }

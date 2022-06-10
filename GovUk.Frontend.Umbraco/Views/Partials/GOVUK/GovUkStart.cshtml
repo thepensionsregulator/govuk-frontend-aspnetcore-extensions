@@ -1,0 +1,12 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@{
+    var text = Model.Item.Content.Value<string>("text");
+    if (string.IsNullOrWhiteSpace(text)) { text = "Start now"; }
+    var link = Model.Item.Content.Value<Link>("link");
+}
+<govuk-button-link is-start-button="true" href="@link.Url" id="@Model.Item.Content.Key">@text</govuk-button-link>

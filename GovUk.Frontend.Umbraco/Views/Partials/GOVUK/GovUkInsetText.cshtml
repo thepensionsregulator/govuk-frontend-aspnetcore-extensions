@@ -1,5 +1,6 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
-@using GovUk.Frontend.Umbraco.Html
+@using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
-<govuk-inset-text>@Html.Raw(GovUkHtmlHelper.RemoveWrappingParagraph(Model.Content.Value<string>("text")))</govuk-inset-text>
+<govuk-inset-text id="@Model.Item.Content.Key">@Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("text"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-inset-text>

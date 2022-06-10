@@ -1,0 +1,26 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+@{
+    var options = Model.Item.Content.Value<BlockListModel>("options");
+    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
+    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
+}
+<govuk-client-side-validation
+    error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+    <govuk-select name="@modelPropertyName" class="@cssClass">
+        <govuk-select-label>@(Model.Item.Content.Value<string>("label"))</govuk-select-label>
+        <govuk-select-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-select-error-message>
+        @foreach (var block in Model.Filter(options))
+        {
+            var value = block.Content.Value<string>("value");
+            <govuk-select-item value="@value" selected="@(value == attemptedValue)">@(block.Content.Value<string>("label"))</govuk-select-item>
+        }
+    </govuk-select>
+</govuk-client-side-validation>

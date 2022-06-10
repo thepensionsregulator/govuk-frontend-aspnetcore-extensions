@@ -1,3 +1,4 @@
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,6 +22,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions
             }
 
             services.AddGovUkFrontend(configureOptions);
+            services.AddTransient<IClientSideValidationHtmlEnhancer, ClientSideValidationHtmlEnhancer>();
+            services.AddTransient<IModelPropertyResolver, ModelPropertyResolver>();
             services.AddSingleton<IStartupFilter, EmbedContentFolderStartupFilter>();
 
             return services;

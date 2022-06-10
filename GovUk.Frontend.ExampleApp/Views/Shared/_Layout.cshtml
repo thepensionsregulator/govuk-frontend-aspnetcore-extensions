@@ -9,8 +9,8 @@
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
-    <partial name="_LanguageSwitcher"/>
-    <main>
+    @RenderSection("language", required: false)
+    <main id="main">
         @RenderBody()
     </main>
     <partial name="GOVUK/BodyClosing" />

@@ -403,7 +403,14 @@ FodyWeavers.xsd
 # Umbraco 
 **/umbraco/
 **/Smidge/
-**/App_Plugins/
+**/App_Plugins/*
+!**/App_Plugins/GOVUK
 
 # Development environment
 appsettings.Development.json
+
+# CSS files generated from SASS
+govuk-umbraco-rich-text-editor.css
+govuk-umbraco-rich-text-editor.css.map
+govuk-frontend*.css
+govuk-frontend*.css.map

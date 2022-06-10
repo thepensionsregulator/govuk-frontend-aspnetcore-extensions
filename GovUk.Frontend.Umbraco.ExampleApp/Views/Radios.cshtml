@@ -4,16 +4,9 @@
 @section head{
 	<title>@Model.Page.Name</title>
 }
-
-<partial name="GOVUK/ErrorSummary" />
-
-<span class="govuk-caption-xl">@Model.Page.Caption<span>
-<h1 class="govuk-heading-l">@Model.Page.Name</h1>
-
 @using (Html.BeginUmbracoForm<RadiosSurfaceController>(nameof(RadiosSurfaceController.Index), null, new { novalidate="novalidate" }))
 {
     <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
-    <govuk-button type="submit">@Model.Page.ButtonText</govuk-button>
 }
 @section scripts {
     <partial name="GOVUK/Validation" />

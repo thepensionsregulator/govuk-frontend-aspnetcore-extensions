@@ -3,6 +3,5 @@
 	<title>@Model.Name</title>
 }
 
-<span class="govuk-caption-xl">@Model.Caption<span>
-<h1 class="govuk-heading-l">@Model.Name</h1>
 <partial name="GOVUK/BlockList" model="Model.Blocks" />
+<govuk-back-to-top-link href="#main">@Umbraco.GetDictionaryValue("Back to top")</govuk-back-to-top-link>

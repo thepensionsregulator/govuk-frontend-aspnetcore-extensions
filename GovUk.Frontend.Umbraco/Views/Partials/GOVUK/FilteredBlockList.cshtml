@@ -1,0 +1,12 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListModel>
+@using GovUk.Frontend.Umbraco.Models
+@{
+    var blocks = Model.FilteredBlocks();
+    if (!blocks.Any()) { return; }
+}
+@foreach (var block in blocks)
+{
+    if (block?.ContentUdi == null) { continue; }
+    var data = block.Content;
+    @await Html.PartialAsync("GOVUK/" + data.ContentType.Alias, new FilteredBlockListItem(block, Model.Filter))
+}

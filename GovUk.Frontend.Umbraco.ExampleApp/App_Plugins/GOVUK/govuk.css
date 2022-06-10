@@ -1,0 +1,9 @@
+﻿.govuk-umbraco-error { 
+    position: relative;
+    padding: 0 0 0 50px;
+}
+.govuk-umbraco-error > span {
+    position: absolute;
+    top: 0;
+    left: 0;
+}

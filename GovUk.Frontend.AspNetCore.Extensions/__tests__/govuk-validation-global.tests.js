@@ -50,8 +50,6 @@ describe("govuk-validation with only jQuery Validator mocked", () => {
 
     testSubject.removeOrUpdateError(document.querySelector("input"));
 
-    console.log(document.body.innerHTML);
-
     expect(
       document
         .querySelector(".govuk-error-summary")

@@ -39,7 +39,7 @@ describe("govuk-validation with only jQuery Validator mocked", () => {
                 </ul>
             </div>
             <div class="govuk-form-group">
-                <p class="govuk-error-message" id="field-error">Error message</p>
+                <p class="govuk-error-message" id="field-error" data-valmsg-for="field">Error message</p>
                 <input id="field" class="govuk-input" data-val="true" data-val-required="This field is required" value="valid" />
             </div>
         </main>  
@@ -49,6 +49,8 @@ describe("govuk-validation with only jQuery Validator mocked", () => {
     jest.spyOn(testSubject, "getValidator").mockReturnValue(_mockValidator);
 
     testSubject.removeOrUpdateError(document.querySelector("input"));
+
+    console.log(document.body.innerHTML);
 
     expect(
       document

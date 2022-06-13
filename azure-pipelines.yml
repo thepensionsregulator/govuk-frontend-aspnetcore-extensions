@@ -1,0 +1,60 @@
+trigger:
+   - develop
+
+pool:
+   vmImage: "windows-2022"
+
+variables:
+   - group: Azure DevOps Artifacts
+   - name: solution
+     value: "**/*.sln"
+   - name: buildPlatform
+     value: "Any CPU"
+   - name: buildConfiguration
+     value: "Release"
+
+steps:
+   - task: NuGetToolInstaller@1
+
+   - task: CmdLine@2
+     displayName: Cloning govuk v1.0
+     inputs:
+        script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "../govuk-frontend-aspnetcore"'
+
+   - task: CmdLine@2
+     displayName: Setting up submodule
+     inputs:
+        script: |
+           echo init submodule
+           git.exe submodule init
+           git.exe submodule set-url "lib/govuk-frontend" https://github.com/alphagov/govuk-frontend.git
+           git.exe submodule update
+        workingDirectory: "../govuk-frontend-aspnetcore"
+
+   - task: NuGetCommand@2
+     displayName: Restoring Solution
+     inputs:
+        restoreSolution: "$(solution)"
+
+   - task: DotNetCoreCLI@2
+     displayName: Build Extensions project
+     inputs:
+        command: "build"
+        projects: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+
+   - task: DotNetCoreCLI@2
+     displayName: Packing project
+     inputs:
+        command: "pack"
+        packagesToPack: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+        versioningScheme: "off"
+
+   - task: NuGetCommand@2
+     displayName: Pushing to internal nuget feed
+     inputs:
+        command: "push"
+        packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg"
+        nuGetFeedType: "internal"
+        publishVstsFeed: "$(PrivateNuGetFeed)"
+        versioningScheme: "off"
+        allowPackageConflicts: true

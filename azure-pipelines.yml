@@ -1,0 +1,54 @@
+trigger:
+   - develop
+
+pool:
+   vmImage: "windows-latest"
+
+variables:
+   solution: "**/*.sln"
+   buildPlatform: "Any CPU"
+   buildConfiguration: "Release"
+
+steps:
+   - task: NuGetToolInstaller@1
+
+   - task: CmdLine@2
+     inputs:
+        script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "../govuk-frontend-aspnetcore"'
+
+   - task: CmdLine@2
+     inputs:
+       script: |
+         echo init submodule
+         git.exe submodule init
+         git.exe submodule set-url "lib/govuk-frontend" https://github.com/alphagov/govuk-frontend.git
+         git.exe submodule update
+       workingDirectory: '../govuk-frontend-aspnetcore'
+
+   - task: NuGetCommand@2
+     inputs:
+        restoreSolution: "$(solution)"
+
+   - task: CmdLine@2
+     inputs:
+        script: "dir"
+
+   - task: DotNetCoreCLI@2
+     inputs:
+        command: "build"
+        projects: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+
+   - task: DotNetCoreCLI@2
+     inputs:
+        command: "pack"
+        packagesToPack: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+        versioningScheme: "off"
+
+   - task: NuGetCommand@2
+     inputs:
+       command: 'push'
+       packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+       nuGetFeedType: 'internal'
+       publishVstsFeed: '0158f35d-cea5-4d9d-adc8-9fc3d3d98793/f63b15a0-0f4a-4812-82c0-e8a73b0bf199'
+       versioningScheme: "off"
+       allowPackageConflicts: true

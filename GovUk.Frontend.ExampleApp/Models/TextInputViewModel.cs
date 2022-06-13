@@ -4,7 +4,7 @@ namespace GovUk.Frontend.ExampleApp.Models
 {
     public class TextInputViewModel
     {
-        [Required(ErrorMessage = "This text input is required")]
+        //[Required(ErrorMessage = "This text input is required")]
         [StringLength(20, MinimumLength = 5, ErrorMessage = "String length must be between 5 and 20")]
         [RegularExpression(@"[0-9]+", ErrorMessage = "Field must be only numbers")]
         [Compare(nameof(Field2), ErrorMessage = "Fields must be the same")]

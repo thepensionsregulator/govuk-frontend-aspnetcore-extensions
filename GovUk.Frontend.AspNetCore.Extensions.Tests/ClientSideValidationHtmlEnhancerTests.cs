@@ -21,6 +21,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         private const string errorMessageRange = "Property failed range validation";
         private const string errorMessageCompare = "Property failed compare validation";
 
+        private class ChildClass        
+        {
+            [Required(ErrorMessage =errorMessageRequired)]
+            public string RequiredChildField { get; set; }
+        }
+
         private class ExampleClass
         {
             public string UnvalidatedField { get; set; }
@@ -51,6 +57,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             [Compare(nameof(UnvalidatedField), ErrorMessage = errorMessageCompare)]
             public string CompareField { get; set; }
+
+            [Required(ErrorMessage = errorMessageRequired)]
+            public ChildClass ChildField { get; set; }
         }
 
 
@@ -615,6 +624,35 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             Console.Write(document.DocumentNode.OuterHtml);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-required='{errorMessageRequired}']") != null);
+        }
+
+        [Test]
+        public void Child_Properties_are_validated()
+        {
+            var viewContext = new ViewContext() { ClientValidationEnabled = true };
+            var property = typeof(ChildClass).GetProperty(nameof(ChildClass.RequiredChildField));
+            var propertyResolver = new Mock<IModelPropertyResolver>();
+            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
+            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.ChildField.RequiredChildField))).Returns(property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, null);
+
+            var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.ChildField.RequiredChildField)}\">",
+                viewContext,
+                null,
+                errorMessageRegex,
+                errorMessageEmail,
+                errorMessageLength,
+                errorMessageMinLength,
+                errorMessageMaxLength,
+                errorMessageRange,
+                errorMessageCompare);
+
+            var document = new HtmlDocument();
+            document.LoadHtml(result);
+
+            Console.Write(document.DocumentNode.OuterHtml);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-required='{errorMessageRequired}']") != null);
+
         }
     }
 }

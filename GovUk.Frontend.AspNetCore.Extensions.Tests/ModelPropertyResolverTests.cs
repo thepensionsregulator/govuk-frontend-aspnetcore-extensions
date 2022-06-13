@@ -33,6 +33,19 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             public IActionResult Index() => null;
         }
 
+        private class ChildModel
+        {
+            public string ChildModelProperty { get; set; }
+        }
+
+        private class ParentModel
+        {
+            public string ParentModelProperty { get; set; }
+            public ChildModel Child { get; set; }
+
+
+        }
+
         [Test]
         public void No_model_type_throws_InvalidOperationException()
         {
@@ -109,16 +122,41 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         {
             var modelPropertyResolver = new ModelPropertyResolver();
 
-            var propertyFromDayField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty) + ".Day");
-            var propertyFromMonthField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty) + ".Month");
-            var propertyFromYearField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty) + ".Year");
+            var propertyFromDayField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty.Day));
+            var propertyFromMonthField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty.Month));
+            var propertyFromYearField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty.Year));
 
-            Assert.AreEqual(propertyFromDayField.DeclaringType, typeof(DefaultModel));
-            Assert.AreEqual(propertyFromDayField.Name, nameof(DefaultModel.DateTimeProperty));
-            Assert.AreEqual(propertyFromMonthField.DeclaringType, typeof(DefaultModel));
-            Assert.AreEqual(propertyFromMonthField.Name, nameof(DefaultModel.DateTimeProperty));
-            Assert.AreEqual(propertyFromYearField.DeclaringType, typeof(DefaultModel));
-            Assert.AreEqual(propertyFromYearField.Name, nameof(DefaultModel.DateTimeProperty));
+            Assert.AreEqual(propertyFromDayField.DeclaringType, typeof(DateTime));
+            Assert.AreEqual(propertyFromDayField.Name, nameof(DefaultModel.DateTimeProperty.Day));
+            Assert.AreEqual(propertyFromMonthField.DeclaringType, typeof(DateTime));
+            Assert.AreEqual(propertyFromMonthField.Name, nameof(DefaultModel.DateTimeProperty.Month));
+            Assert.AreEqual(propertyFromYearField.DeclaringType, typeof(DateTime));
+            Assert.AreEqual(propertyFromYearField.Name, nameof(DefaultModel.DateTimeProperty.Year));
+        }
+
+        [Test]
+        public void ChildProperty_is_resolved_from_Parent_Model()
+        {
+            var modelPropertyResolver = new ModelPropertyResolver();
+
+            var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(ParentModel), nameof(ParentModel.Child.ChildModelProperty));
+            Assert.AreEqual(childProperty.DeclaringType, typeof(ChildModel));
+            Assert.AreEqual(childProperty.Name, nameof(ParentModel.Child.ChildModelProperty));
+
+
+        }
+
+
+        [Test]
+        public void ChildProperty_String_is_resolved_from_Parent_Model()
+        {
+            var modelPropertyResolver = new ModelPropertyResolver();
+
+            var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(ParentModel), "Child.ChildModelProperty");
+            Assert.AreEqual(childProperty.DeclaringType, typeof(ChildModel));
+            Assert.AreEqual(childProperty.Name, nameof(ParentModel.Child.ChildModelProperty));
+
+
         }
     }
 }

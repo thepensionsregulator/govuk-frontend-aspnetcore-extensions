@@ -638,7 +638,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.ChildField.RequiredChildField)}\">",
                 viewContext,
-                null,
+                errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
                 errorMessageLength,

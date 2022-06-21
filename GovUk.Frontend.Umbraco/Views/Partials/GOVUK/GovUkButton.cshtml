@@ -7,15 +7,15 @@
     var text = Model.Item.Content.Value<string>("text");
     switch (Model.Item.Settings.Value<string>("typeOfButton")) {
         case "Secondary":
-            <govuk-button class="govuk-button--secondary" type="button">@text</govuk-button>
+            <govuk-button class="govuk-button--secondary" type="button" id="@Model.Item.Content.Key">@text</govuk-button>
             break;
 
         case "Warning":
-            <govuk-button class="govuk-button--warning" type="button">@text</govuk-button>
+            <govuk-button class="govuk-button--warning" type="button" id="@Model.Item.Content.Key">@text</govuk-button>
             break;
 
         default:
-            <govuk-button type="submit">@text</govuk-button>
+            <govuk-button type="submit" id="@Model.Item.Content.Key">@text</govuk-button>
             break;
     }
 }

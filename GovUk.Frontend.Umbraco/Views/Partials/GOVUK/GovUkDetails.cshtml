@@ -3,7 +3,7 @@
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
-<govuk-details>
+<govuk-details id="@Model.Item.Content.Key">
     <govuk-details-summary>@(Model.Item.Content.Value<string>("summary"))</govuk-details-summary>
     <govuk-details-text>@Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("text"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-details-text>
 </govuk-details>

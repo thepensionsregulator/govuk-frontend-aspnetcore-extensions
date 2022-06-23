@@ -1,5 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@inject IContextAwareHostUpdater hostUpdater
+@using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models
@@ -7,5 +9,6 @@
 @{
     var text = Model.Item.Content.Value<string>("text");
     var link = Model.Item.Content.Value<Link>("link");
+    link.Url = hostUpdater.UpdateHost(link.Url, Context.Request.Host.Host);
 }
 <govuk-back-to-menu href="@link.Url" id="@Model.Item.Content.Key">@text</govuk-back-to-menu>

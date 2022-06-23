@@ -7,31 +7,31 @@ using System.Threading.Tasks;
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     /// <summary>
-    /// Generates a GDS back link component.
+    /// Generates a link that cancels the current operation.
     /// </summary>
     [HtmlTargetElement(TagName)]
-    [OutputElementHint(ComponentGenerator.BackToTopLinkElement)]
-    public class BackToTopLinkTagHelper : TagHelper
+    [OutputElementHint(ComponentGenerator.BackToMenuElement)]
+    public class BackToMenuTagHelper : TagHelper
     {
-        internal const string TagName = "govuk-back-to-top-link";
+        internal const string TagName = "govuk-back-to-menu";
 
-        private static readonly HtmlString _defaultContent = new HtmlString(ComponentGenerator.BackToTopLinkDefaultContent);
+        private static readonly HtmlString _defaultContent = new HtmlString(ComponentGenerator.BackToMenuDefaultContent);
 
         private const string HrefAttributeName = "href";
 
-        private string _href = ComponentGenerator.BackToTopLinkDefaultHref;
+        private string _href = ComponentGenerator.BackToMenuDefaultHref;
 
         private readonly IGovUkHtmlGenerator _htmlGenerator;
 
         /// <summary>
-        /// Creates a new <see cref="BackToTopLinkTagHelper"/>.
+        /// Creates a new <see cref="BackToMenuTagHelper"/>.
         /// </summary>
-        public BackToTopLinkTagHelper()
+        public BackToMenuTagHelper()
             : this(htmlGenerator: null)
         {
         }
 
-        internal BackToTopLinkTagHelper(IGovUkHtmlGenerator? htmlGenerator)
+        internal BackToMenuTagHelper(IGovUkHtmlGenerator? htmlGenerator)
         {
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
@@ -60,7 +60,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
                 content = await output.GetChildContentAsync();
             }
 
-            var tagBuilder = _htmlGenerator.GenerateBackToTopLink(Href, content, output.Attributes.ToAttributeDictionary());
+            var tagBuilder = _htmlGenerator.GenerateBackToMenu(Href, content, output.Attributes.ToAttributeDictionary());
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

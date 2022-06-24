@@ -15,15 +15,16 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         private const string errorMessageRequired = "Property is required";
         private const string errorMessageRegex = "Property must match regex";
         private const string errorMessageEmail = "Property must be an email address";
+        private const string errorMessagePhone = "Property must be an phone number";
         private const string errorMessageLength = "Property failed length validation";
         private const string errorMessageMinLength = "Property failed minimum length validation";
         private const string errorMessageMaxLength = "Property failed maximum length validation";
         private const string errorMessageRange = "Property failed range validation";
         private const string errorMessageCompare = "Property failed compare validation";
 
-        private class ChildClass        
+        private class ChildClass
         {
-            [Required(ErrorMessage =errorMessageRequired)]
+            [Required(ErrorMessage = errorMessageRequired)]
             public string RequiredChildField { get; set; }
         }
 
@@ -39,6 +40,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             [EmailAddress(ErrorMessage = errorMessageEmail)]
             public string EmailField { get; set; }
+
+            [Phone(ErrorMessage = errorMessagePhone)]
+            public string PhoneField { get; set; }
 
             [StringLength(20, MinimumLength = 10, ErrorMessage = errorMessageLength)]
             public string LengthField { get; set; }
@@ -76,6 +80,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -106,6 +111,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -137,6 +143,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -166,6 +173,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -189,6 +197,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -214,6 +223,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -242,6 +252,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -271,6 +282,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -301,6 +313,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -330,6 +343,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -342,6 +356,35 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Assert.True(document.DocumentNode.SelectSingleNode("//input[@data-val='true']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode("//input[@type='email']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-email='{errorMessageEmail}']") != null);
+        }
+
+        [Test]
+        public void Phone_validator_adds_phone_attributes()
+        {
+            var viewContext = new ViewContext() { ClientValidationEnabled = true };
+            var propertyResolver = new Mock<IModelPropertyResolver>();
+            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
+            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.PhoneField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.PhoneField)));
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object);
+
+            var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.PhoneField)}\">",
+                viewContext,
+                errorMessageRequired,
+                errorMessageRegex,
+                errorMessageEmail,
+                errorMessagePhone,
+                errorMessageLength,
+                errorMessageMinLength,
+                errorMessageMaxLength,
+                errorMessageRange,
+                errorMessageCompare);
+
+            var document = new HtmlDocument();
+            document.LoadHtml(result);
+
+            Assert.True(document.DocumentNode.SelectSingleNode("//input[@data-val='true']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode("//input[@type='tel']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-phone='{errorMessagePhone}']") != null);
         }
 
         [Test]
@@ -361,6 +404,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -393,6 +437,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -424,6 +469,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -456,6 +502,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -489,6 +536,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -521,6 +569,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -554,6 +603,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 "Error from parameters",
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -586,6 +636,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 null,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -613,6 +664,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 null,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,
@@ -641,6 +693,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 errorMessageRequired,
                 errorMessageRegex,
                 errorMessageEmail,
+                errorMessagePhone,
                 errorMessageLength,
                 errorMessageMinLength,
                 errorMessageMaxLength,

@@ -36,7 +36,13 @@
             <govuk-input-error-message />
         </govuk-input>
 
-        <govuk-input asp-for="Field4" input-class="govuk-input--width-3">
+         <govuk-input asp-for="Field4">
+            <govuk-input-label>Phone validation</govuk-input-label>
+            <govuk-input-hint>This must be a phone number</govuk-input-hint>
+            <govuk-input-error-message />
+        </govuk-input>
+
+        <govuk-input asp-for="Field5" input-class="govuk-input--width-3">
             <govuk-input-label>Range validation</govuk-input-label>
             <govuk-input-hint>This must be a number between 5 and 50</govuk-input-hint>
             <govuk-input-error-message />

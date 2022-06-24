@@ -5,10 +5,13 @@ const _mockValidator = {
   methods: {
     required: jest.fn(),
     email: jest.fn(),
+    phone: jest.fn(),
+    regex: jest.fn(),
     minlength: jest.fn(),
     maxlength: jest.fn(),
     rangelength: jest.fn(),
     range: jest.fn(),
+    equalTo: jest.fn(),
   },
 };
 
@@ -19,19 +22,19 @@ function mockCalledFunctions(testSubject) {
     .mockImplementation(() => null);
 }
 
-// value deliberately fails email and compare validators, which are not from jQuery Validate and not mocked
 _allValidatorsApplied = `
-    <input value="abc"
+    <input value=""
            data-val="true" 
            data-val-required="This field is required"   
            data-val-email="This field must be an email address"
+           data-val-phone="This field must be a phone number"
            data-val-regex="This field must match the pattern" data-val-regex-pattern="[0-9]+"
            data-val-minlength="This field must be a minimum length" data-val-minlength-min="4"
            data-val-maxlength="This field must be a maximum length" data-val-maxlength-max="2"
            data-val-length="This field must be between a minimum and maximum length" data-val-length-min="4" data-val-length-max="10"
            data-val-range="This field must be between a minimum and maximum range" data-val-range-min="5" data-val-range-max="10"
            data-val-equalto="This field must match the other" data-val-equalto-other="other" />
-    <input id="other" value="def" />`;
+    <input id="other" value="" />`;
 
 describe("validateElement", () => {
   it("runs updateError if a required field fails validation", () => {
@@ -67,6 +70,24 @@ describe("validateElement", () => {
     expect(_mockUpdateError.mock.calls[0][0]).toBe(input);
     expect(_mockUpdateError.mock.calls[0][1]).toBe(
       input.getAttribute("data-val-email")
+    );
+  });
+
+  it("runs updateError if an phone field fails validation", () => {
+    document.body.innerHTML =
+      '<input data-val="true" data-val-phone="This field must be an phone number" value="abc" />';
+
+    const testSubject = govuk();
+    mockCalledFunctions(testSubject);
+    _mockValidator.methods.phone.mockReturnValue(false);
+
+    const input = document.querySelector("input");
+    testSubject.validateElement(input);
+
+    expect(_mockUpdateError.mock.calls.length).toBe(1);
+    expect(_mockUpdateError.mock.calls[0][0]).toBe(input);
+    expect(_mockUpdateError.mock.calls[0][1]).toBe(
+      input.getAttribute("data-val-phone")
     );
   });
 
@@ -184,12 +205,13 @@ describe("validateElement", () => {
     mockCalledFunctions(testSubject);
     _mockValidator.methods.required.mockReturnValue(false);
     _mockValidator.methods.email.mockReturnValue(false);
-    // regex is invalid in _allValidatorsApplied
+    _mockValidator.methods.phone.mockReturnValue(false);
+    _mockValidator.methods.regex.mockReturnValue(false);
     _mockValidator.methods.minlength.mockReturnValue(false);
     _mockValidator.methods.maxlength.mockReturnValue(false);
     _mockValidator.methods.rangelength.mockReturnValue(false);
     _mockValidator.methods.range.mockReturnValue(false);
-    // compare is invalid in _allValidatorsApplied
+    _mockValidator.methods.equalTo.mockReturnValue(false);
 
     const input = document.querySelector("input");
     testSubject.validateElement(input);
@@ -208,12 +230,13 @@ describe("validateElement", () => {
     mockCalledFunctions(testSubject);
     _mockValidator.methods.required.mockReturnValue(true);
     _mockValidator.methods.email.mockReturnValue(false);
-    // regex is invalid in _allValidatorsApplied
+    _mockValidator.methods.phone.mockReturnValue(false);
+    _mockValidator.methods.regex.mockReturnValue(false);
     _mockValidator.methods.minlength.mockReturnValue(false);
     _mockValidator.methods.maxlength.mockReturnValue(false);
     _mockValidator.methods.rangelength.mockReturnValue(false);
     _mockValidator.methods.range.mockReturnValue(false);
-    // compare is invalid in _allValidatorsApplied
+    _mockValidator.methods.equalTo.mockReturnValue(false);
 
     const input = document.querySelector("input");
     testSubject.validateElement(input);
@@ -225,19 +248,45 @@ describe("validateElement", () => {
     );
   });
 
-  it("matches regex third when there are multiple errors", () => {
+  it("matches phone third when there are multiple errors", () => {
     document.body.innerHTML = _allValidatorsApplied;
 
     const testSubject = govuk();
     mockCalledFunctions(testSubject);
     _mockValidator.methods.required.mockReturnValue(true);
     _mockValidator.methods.email.mockReturnValue(true);
-    // regex is invalid in _allValidatorsApplied
+    _mockValidator.methods.phone.mockReturnValue(false);
+    _mockValidator.methods.regex.mockReturnValue(false);
     _mockValidator.methods.minlength.mockReturnValue(false);
     _mockValidator.methods.maxlength.mockReturnValue(false);
     _mockValidator.methods.rangelength.mockReturnValue(false);
     _mockValidator.methods.range.mockReturnValue(false);
-    // compare is invalid in _allValidatorsApplied
+    _mockValidator.methods.equalTo.mockReturnValue(false);
+
+    const input = document.querySelector("input");
+    testSubject.validateElement(input);
+
+    expect(_mockUpdateError.mock.calls.length).toBe(1);
+    expect(_mockUpdateError.mock.calls[0][0]).toBe(input);
+    expect(_mockUpdateError.mock.calls[0][1]).toBe(
+      input.getAttribute("data-val-phone")
+    );
+  });
+
+  it("matches regex fourth when there are multiple errors", () => {
+    document.body.innerHTML = _allValidatorsApplied;
+
+    const testSubject = govuk();
+    mockCalledFunctions(testSubject);
+    _mockValidator.methods.required.mockReturnValue(true);
+    _mockValidator.methods.email.mockReturnValue(true);
+    _mockValidator.methods.phone.mockReturnValue(true);
+    _mockValidator.methods.regex.mockReturnValue(false);
+    _mockValidator.methods.minlength.mockReturnValue(false);
+    _mockValidator.methods.maxlength.mockReturnValue(false);
+    _mockValidator.methods.rangelength.mockReturnValue(false);
+    _mockValidator.methods.range.mockReturnValue(false);
+    _mockValidator.methods.equalTo.mockReturnValue(false);
 
     const input = document.querySelector("input");
     testSubject.validateElement(input);
@@ -249,19 +298,20 @@ describe("validateElement", () => {
     );
   });
 
-  it("matches min length fourth when there are multiple errors", () => {
+  it("matches min length fifth when there are multiple errors", () => {
     document.body.innerHTML = _allValidatorsApplied;
 
     const testSubject = govuk();
     mockCalledFunctions(testSubject);
     _mockValidator.methods.required.mockReturnValue(true);
     _mockValidator.methods.email.mockReturnValue(true);
-    document.querySelector("input").setAttribute("value", "123"); // valid for regex, still invalid for compare
+    _mockValidator.methods.phone.mockReturnValue(true);
+    _mockValidator.methods.regex.mockReturnValue(true);
     _mockValidator.methods.minlength.mockReturnValue(false);
     _mockValidator.methods.maxlength.mockReturnValue(false);
     _mockValidator.methods.rangelength.mockReturnValue(false);
     _mockValidator.methods.range.mockReturnValue(false);
-    // compare is invalid
+    _mockValidator.methods.equalTo.mockReturnValue(false);
 
     const input = document.querySelector("input");
     testSubject.validateElement(input);
@@ -273,19 +323,20 @@ describe("validateElement", () => {
     );
   });
 
-  it("matches max length fifth when there are multiple errors", () => {
+  it("matches max length sixth when there are multiple errors", () => {
     document.body.innerHTML = _allValidatorsApplied;
 
     const testSubject = govuk();
     mockCalledFunctions(testSubject);
     _mockValidator.methods.required.mockReturnValue(true);
     _mockValidator.methods.email.mockReturnValue(true);
-    document.querySelector("input").setAttribute("value", "123"); // valid for regex, still invalid for compare
+    _mockValidator.methods.phone.mockReturnValue(true);
+    _mockValidator.methods.regex.mockReturnValue(true);
     _mockValidator.methods.minlength.mockReturnValue(true);
     _mockValidator.methods.maxlength.mockReturnValue(false);
     _mockValidator.methods.rangelength.mockReturnValue(false);
     _mockValidator.methods.range.mockReturnValue(false);
-    // compare is invalid
+    _mockValidator.methods.equalTo.mockReturnValue(false);
 
     const input = document.querySelector("input");
     testSubject.validateElement(input);
@@ -297,19 +348,20 @@ describe("validateElement", () => {
     );
   });
 
-  it("matches min/max length fifth when there are multiple errors", () => {
+  it("matches min/max length seventh when there are multiple errors", () => {
     document.body.innerHTML = _allValidatorsApplied;
 
     const testSubject = govuk();
     mockCalledFunctions(testSubject);
     _mockValidator.methods.required.mockReturnValue(true);
     _mockValidator.methods.email.mockReturnValue(true);
-    document.querySelector("input").setAttribute("value", "123"); // valid for regex, still invalid for compare
+    _mockValidator.methods.phone.mockReturnValue(true);
+    _mockValidator.methods.regex.mockReturnValue(true);
     _mockValidator.methods.minlength.mockReturnValue(true);
     _mockValidator.methods.maxlength.mockReturnValue(true);
     _mockValidator.methods.rangelength.mockReturnValue(false);
     _mockValidator.methods.range.mockReturnValue(false);
-    // compare is invalid
+    _mockValidator.methods.equalTo.mockReturnValue(false);
 
     const input = document.querySelector("input");
     testSubject.validateElement(input);
@@ -321,19 +373,20 @@ describe("validateElement", () => {
     );
   });
 
-  it("matches range sixth when there are multiple errors", () => {
+  it("matches range eighth when there are multiple errors", () => {
     document.body.innerHTML = _allValidatorsApplied;
 
     const testSubject = govuk();
     mockCalledFunctions(testSubject);
     _mockValidator.methods.required.mockReturnValue(true);
     _mockValidator.methods.email.mockReturnValue(true);
-    document.querySelector("input").setAttribute("value", "123"); // valid for regex, still invalid for compare
+    _mockValidator.methods.phone.mockReturnValue(true);
+    _mockValidator.methods.regex.mockReturnValue(true);
     _mockValidator.methods.minlength.mockReturnValue(true);
     _mockValidator.methods.maxlength.mockReturnValue(true);
     _mockValidator.methods.rangelength.mockReturnValue(true);
     _mockValidator.methods.range.mockReturnValue(false);
-    // compare is invalid
+    _mockValidator.methods.equalTo.mockReturnValue(false);
 
     const input = document.querySelector("input");
     testSubject.validateElement(input);

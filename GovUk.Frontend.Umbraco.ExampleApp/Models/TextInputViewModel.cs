@@ -20,7 +20,10 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         [MaxLength(100, ErrorMessage = nameof(Field3))]
         public string Field3 { get; set; }
 
-        [Range(5, 50, ErrorMessage = nameof(Field4))]
-        public int Field4 { get; set; }
+        [Phone(ErrorMessage = nameof(Field4))]
+        public string Field4 { get; set; }
+
+        [Range(5, 50, ErrorMessage = nameof(Field5))]
+        public int Field5 { get; set; }
     }
 }

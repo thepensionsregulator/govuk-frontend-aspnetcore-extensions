@@ -21,7 +21,11 @@ function createGovUkValidator() {
      * Gets the global jQuery Validator instance
      * @returns jQuery Validator instance
      */
-    getValidator: function () {
+    getValidator: function (form) {
+      // We use .call to hand off to jQuery Validate methods. Some require the internal .settings property to be set.
+      if (form && !$.validator.prototype.settings) {
+        $.validator.prototype.settings = $.data(form, "validator").settings;
+      }
       return $.validator;
     },
 
@@ -226,13 +230,14 @@ function createGovUkValidator() {
     },
 
     validateElement: function (element) {
-      const validator = govuk.getValidator();
+      const validator = govuk.getValidator(element.form);
 
       // We cannot copy the error that jQuery validate generates, because it hasn't done it yet when this event fires.
       // Instead execute the same tests as 'else ifs' so that only one message appears.
       // Do it in the same order as jQuery to get the same error message to display.
       const required = element.getAttribute("data-val-required");
       const email = element.getAttribute("data-val-email");
+      const phone = element.getAttribute("data-val-phone");
       const pattern = element.getAttribute("data-val-regex-pattern");
       const minLength = element.getAttribute("data-val-length-min");
       const minLengthOnly = element.getAttribute("data-val-minlength-min");
@@ -241,6 +246,7 @@ function createGovUkValidator() {
       const minRange = element.getAttribute("data-val-range-min");
       const maxRange = element.getAttribute("data-val-range-max");
       const compareTo = element.getAttribute("data-val-equalto-other");
+
       if (
         required &&
         !validator.methods.required.call(
@@ -259,7 +265,24 @@ function createGovUkValidator() {
         )
       ) {
         govuk.updateError(element, email);
-      } else if (pattern && !element.value.match("^" + pattern + "$")) {
+      } else if (
+        phone &&
+        !validator.methods.phone.call(
+          validator.prototype,
+          element.value,
+          element
+        )
+      ) {
+        govuk.updateError(element, phone);
+      } else if (
+        pattern &&
+        !validator.methods.regex.call(
+          validator.prototype,
+          element.value,
+          element,
+          pattern
+        )
+      ) {
         govuk.updateError(element, element.getAttribute("data-val-regex"));
       } else if (
         minLengthOnly &&
@@ -305,7 +328,12 @@ function createGovUkValidator() {
         govuk.updateError(element, element.getAttribute("data-val-range"));
       } else if (
         compareTo &&
-        element.value !== document.getElementById(compareTo).value
+        !validator.methods.equalTo.call(
+          validator.prototype,
+          element.value,
+          element,
+          document.getElementById(compareTo)
+        )
       ) {
         govuk.updateError(element, element.getAttribute("data-val-equalto"));
       }
@@ -355,6 +383,110 @@ function createGovUkValidator() {
         }
       }
     },
+
+    // Ported from .NET Core code so that behaviour matches https://source.dot.net/#System.ComponentModel.Annotations/System/ComponentModel/DataAnnotations/PhoneAttribute.cs
+    validatePhone(value, element) {
+      if (!value) {
+        return true;
+      }
+
+      const additionalPhoneNumberCharacters = "-.()";
+      const extensionAbbreviationExtDot = "ext.";
+      const extensionAbbreviationExt = "ext";
+      const extensionAbbreviationX = "x";
+
+      function isDigit(char) {
+        return /^\d$/.test(char);
+      }
+
+      function isWhiteSpace(char) {
+        return /^\s$/.test(char);
+      }
+
+      function removePhoneExtension(potentialPhoneNumber) {
+        let lastIndexOfExtension = potentialPhoneNumber.lastIndexOf(
+          extensionAbbreviationExtDot
+        );
+        if (lastIndexOfExtension >= 0) {
+          var extension = potentialPhoneNumber.substring(
+            lastIndexOfExtension + extensionAbbreviationExtDot.length
+          );
+          if (matchesPhoneExtension(extension)) {
+            return potentialPhoneNumber.substring(0, lastIndexOfExtension);
+          }
+        }
+
+        lastIndexOfExtension = potentialPhoneNumber.lastIndexOf(
+          extensionAbbreviationExt
+        );
+        if (lastIndexOfExtension >= 0) {
+          var extension = potentialPhoneNumber.substring(
+            lastIndexOfExtension + extensionAbbreviationExt.length
+          );
+          if (matchesPhoneExtension(extension)) {
+            return potentialPhoneNumber.substring(0, lastIndexOfExtension);
+          }
+        }
+
+        lastIndexOfExtension = potentialPhoneNumber.lastIndexOf(
+          extensionAbbreviationX
+        );
+        if (lastIndexOfExtension >= 0) {
+          var extension = potentialPhoneNumber.substring(
+            lastIndexOfExtension + extensionAbbreviationX.length
+          );
+          if (matchesPhoneExtension(extension)) {
+            return potentialPhoneNumber.substring(0, lastIndexOfExtension);
+          }
+        }
+
+        return potentialPhoneNumber;
+      }
+
+      function matchesPhoneExtension(potentialExtension) {
+        potentialExtension = potentialExtension.trim();
+        if (potentialExtension.length === 0) {
+          return false;
+        }
+
+        for (let i = 0; i < potentialExtension.length; i++) {
+          if (!isDigit(potentialExtension[i])) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      value = value.replace("+", "").trim();
+      value = removePhoneExtension(value);
+
+      let digitFound = false;
+      for (let i = 0; i < value.length; i++) {
+        if (isDigit(value[i])) {
+          digitFound = true;
+          break;
+        }
+      }
+
+      if (!digitFound) {
+        return false;
+      }
+
+      for (let i = 0; i < value.length; i++) {
+        if (
+          !(
+            isDigit(value[i]) ||
+            isWhiteSpace(value[i]) ||
+            additionalPhoneNumberCharacters.indexOf(value[i]) !== -1
+          )
+        ) {
+          return false;
+        }
+      }
+
+      return true;
+    },
   };
 
   return govuk;
@@ -364,10 +496,15 @@ window.addEventListener("DOMContentLoaded", function () {
 
   govuk.createErrorSummary();
 
-  if (govuk.getValidator()) {
-    govuk.getValidator().setDefaults({
+  const validator = govuk.getValidator();
+  if (validator) {
+    validator.setDefaults({
       highlight: govuk.showError,
       unhighlight: govuk.removeOrUpdateError,
     });
+
+    validator.addMethod("phone", govuk.validatePhone);
+    validator.unobtrusive.adapters.addBool("phone");
+    validator.unobtrusive.parse();
   }
 });

@@ -355,6 +355,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             Assert.True(document.DocumentNode.SelectSingleNode("//input[@data-val='true']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode("//input[@type='email']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode("//input[@autocomplete='email']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-email='{errorMessageEmail}']") != null);
         }
 
@@ -384,6 +385,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             Assert.True(document.DocumentNode.SelectSingleNode("//input[@data-val='true']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode("//input[@type='tel']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode("//input[@autocomplete='tel']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-phone='{errorMessagePhone}']") != null);
         }
 

@@ -155,6 +155,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     if (emailAttr != null)
                     {
                         targetElement.Attributes.Add("data-val-email", SelectBestErrorMessage(errorMessageEmail, emailAttr.ErrorMessage, localizer));
+                        AddOrUpdateHtmlAttribute(targetElement, "autocomplete", "email");
                         AddOrUpdateHtmlAttribute(targetElement, "type", "email");
                         validateElement = true;
                     }
@@ -164,6 +165,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     if (phoneAttr != null)
                     {
                         targetElement.Attributes.Add("data-val-phone", SelectBestErrorMessage(errorMessagePhone, phoneAttr.ErrorMessage, localizer));
+                        AddOrUpdateHtmlAttribute(targetElement, "autocomplete", "tel");
                         AddOrUpdateHtmlAttribute(targetElement, "type", "tel");
                         validateElement = true;
                     }

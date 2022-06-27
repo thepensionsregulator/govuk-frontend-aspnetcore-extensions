@@ -51,7 +51,6 @@
 		<Content Remove="uSync\v9\ContentTypes\govuktextinputsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktypography.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationrequired.config" />
-		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtext.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtons.config" />
@@ -238,9 +237,6 @@
 		<None Include="uSync\v9\ContentTypes\govukvalidationrequired.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\ContentTypes\govukvalidationtext.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
 		<None Include="uSync\v9\ContentTypes\govukwarningtext.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -283,5 +279,13 @@
 		<None Include="uSync\v9\DataTypes\GOVUKSelectOptions.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="uSync\v9\ContentTypes\govukvalidationtext.config">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
 	</ItemGroup>
 </Project>

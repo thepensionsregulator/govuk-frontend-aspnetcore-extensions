@@ -142,6 +142,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string ErrorMessageMinLength => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageMinLength(this, _publishedValueFallback);
 
 		///<summary>
+		/// Phone number: Sets the message displayed if the field is set by the code to require a phone number.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessagePhone")]
+		public virtual string ErrorMessagePhone => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessagePhone(this, _publishedValueFallback);
+
+		///<summary>
 		/// Numeric range: Sets the message displayed if the field is set by the code to require a number in a given range.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "9.5.0+1c39c27e220efde6f0f360b94b6e7b6a1f0f0e59")]

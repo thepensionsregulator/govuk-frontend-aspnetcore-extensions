@@ -30,7 +30,7 @@ This repository includes an example application which demonstrates the validatio
    ```xml
    <?xml version="1.0" encoding="utf-8" ?>
    <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-       <Import Project="$(SolutionDir)GovUk.Frontend.Umbraco\GovUk.Frontend.targets" />
+       <Import Project="$(ProjectDir)\..\GovUk.Frontend.Umbraco\GovUk.Frontend.targets" />
    </Project>
    ```
 
@@ -70,7 +70,6 @@ This repository includes an example application which demonstrates the validatio
     @using (Html.BeginUmbracoForm<HomeSurfaceController>(nameof(HomeSurfaceController.Index), null, new { novalidate="novalidate" }))
     {
       <partial name="GOVUK/BlockList" model="Model.Blocks" />
-      <govuk-button type="submit">@Model.ButtonText</govuk-button>
     }
     ```
 
@@ -108,13 +107,13 @@ This repository includes an example application which demonstrates the validatio
 15. In `Startup.cs` add the following to the `ConfigureServices` method:
 
     ```csharp
-    using GovUk.Frontend.AspNetCore.Extensions;
+    using GovUk.Frontend.Umbraco;
 
     public void ConfigureServices(IServiceCollection services)
     {
         // Other code, including services.AddUmbraco()...
 
-        services.AddGovUkFrontendExtensions(options =>
+        services.AddGovUkFrontendUmbracoExtensions(options =>
         {
            // Avoid adding scripts which require 'unsafe-inline' in the content security policy
             options.AddImportsToHtml = false;

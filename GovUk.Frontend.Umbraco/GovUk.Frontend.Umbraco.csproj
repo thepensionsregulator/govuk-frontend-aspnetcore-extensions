@@ -7,14 +7,76 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Styles\govuk-umbraco-rich-text-editor.scss" />
+		<Content Remove="uSync\v9\ContentTypes\govukbutton.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukbuttongroup.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukbuttonsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukcaption.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukcheckbox.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukcheckboxes.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukcheckboxesdivider.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukcheckboxessettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukcheckboxsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukcssclasses.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukdateinput.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukdateinputsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukdetails.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukerrorsummary.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukfieldset.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukfieldsetsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukhint.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukinsettext.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuklabelispageheading.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuklegend.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuklegendispageheading.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuklink.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukmodelproperty.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuknotificationbanner.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuknotificationbannersettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukpageheading.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukpanel.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukpanelsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukradio.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukradios.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukradiosdivider.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukradiosettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukradiossettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukselect.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukselectoption.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukselectsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukstart.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktextarea.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktextareasettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktextinput.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktextinputsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktypography.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukvalidationrequired.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukwarningtext.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKButtons.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKButtonType.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKHeadingLevel.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKLinkPicker.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKModelProperty.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKNotificationBannerType.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKRadioButtons.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKRadiosLayout.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditor.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKSelectOptions.config" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Include="Styles\govuk-umbraco-rich-text-editor.scss">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
+		<None Remove="Styles\govuk-umbraco-rich-text-editor.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Styles\govuk-umbraco-rich-text-editor.scss">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -23,6 +85,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.52.1.2" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 		<PackageReference Include="Umbraco.Cms.Core" Version="9.5.0" />
 		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.5.0" />
 		<PackageReference Include="Umbraco.Cms.Web.Common" Version="9.5.0" />
@@ -34,159 +97,191 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Update="uSync\v9\ContentTypes\govukcaption.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukcheckbox.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukcheckboxes.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukcheckboxsettings.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukcssclasses.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukdetails.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukinsettext.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukmodelproperty.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukpageheading.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukpanel.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukpanelsettings.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukradio.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukradios.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukradiosdivider.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukradiosettings.config">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukradiossettings.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukselectsettings.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govuktextareasettings.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govuktextinput.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govuktextinputsettings.config">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govuktypography.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukvalidationrequired.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukvalidationtext.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukwarningtext.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\GOVUKBlockList.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\GOVUKRadioButtons.config">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditor.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
+		<UpToDateCheckInput Remove="Styles\govuk-umbraco-rich-text-editor.scss" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\govuk-umbraco-rich-text-editor.scss" />
+		<Folder Include="App_Plugins\GOVUK\" />
+		<Folder Include="wwwroot\css\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="App_Plugins\GOVUK\" />
-	  <Folder Include="wwwroot\css\" />
+		<None Include="uSync\v9\ContentTypes\govukbutton.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukbuttongroup.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukbuttonsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukcaption.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukcheckbox.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukcheckboxes.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukcheckboxesdivider.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukcheckboxessettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukcheckboxsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukcssclasses.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukdateinput.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukdateinputsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukdetails.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukerrorsummary.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukfieldset.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukfieldsetsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukhint.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukinsettext.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuklabelispageheading.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuklegend.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuklegendispageheading.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuklink.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukmodelproperty.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuknotificationbanner.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuknotificationbannersettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukpageheading.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukpanel.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukpanelsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukradio.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukradios.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukradiosdivider.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukradiosettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukradiossettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukselect.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukselectoption.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukselectsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukstart.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktextarea.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktextareasettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktextinput.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktextinputsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktypography.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukvalidationrequired.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukvalidationtext.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukwarningtext.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKBlockList.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKButtons.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKButtonType.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKHeadingLevel.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKLinkPicker.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKModelProperty.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKNotificationBannerType.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKRadioButtons.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKRadiosLayout.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditor.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKSelectOptions.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 </Project>

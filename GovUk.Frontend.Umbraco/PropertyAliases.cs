@@ -6,6 +6,7 @@
         internal const string ErrorMessageRequired = "errorMessageRequired";
         internal const string ErrorMessageRegex = "errorMessageRegex";
         internal const string ErrorMessageEmail = "errorMessageEmail";
+        internal const string ErrorMessagePhone = "errorMessagePhone";
         internal const string ErrorMessageLength = "errorMessageLength";
         internal const string ErrorMessageMinLength = "errorMessageMinLength";
         internal const string ErrorMessageMaxLength = "errorMessageMaxLength";

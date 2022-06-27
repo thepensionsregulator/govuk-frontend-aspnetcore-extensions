@@ -21,11 +21,14 @@ namespace GovUk.Frontend.Umbraco.Validation
             var controllerType = controllers?.FirstOrDefault(x => x.Name.ToUpperInvariant() == $"{alias.ToUpperInvariant()}CONTROLLER");
             if (controllerType != null)
             {
-                var actionMethod = controllerType.GetMethod("Index");
-                var modelType = (actionMethod?.GetCustomAttributes(typeof(ModelTypeAttribute), false).SingleOrDefault() as ModelTypeAttribute)?.ModelType;
-                if (modelType != null)
+                var actionMethods = controllerType.GetMethods().Where(x => x.Name == "Index");
+                foreach (var method in actionMethods)
                 {
-                    return modelType.GetProperties().Where(x => !x.PropertyType.IsSubclassOf(typeof(PublishedContentModel))).Select(x => x.Name);
+                    var modelType = (method?.GetCustomAttributes(typeof(ModelTypeAttribute), false).SingleOrDefault() as ModelTypeAttribute)?.ModelType;
+                    if (modelType != null)
+                    {
+                        return modelType.GetProperties().Where(x => !x.PropertyType.IsSubclassOf(typeof(PublishedContentModel))).Select(x => x.Name);
+                    }
                 }
             }
 

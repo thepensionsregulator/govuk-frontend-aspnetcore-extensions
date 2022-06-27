@@ -61,6 +61,7 @@ namespace GovUk.Frontend.Umbraco.Validation
                     if (attribute is RequiredAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRequired); }
                     if (attribute is RegularExpressionAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRegex); }
                     if (attribute is EmailAddressAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageEmail); }
+                    if (attribute is PhoneAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessagePhone); }
                     if (attribute is StringLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageLength); }
                     if (attribute is MinLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageMinLength); }
                     if (attribute is MaxLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageMaxLength); }

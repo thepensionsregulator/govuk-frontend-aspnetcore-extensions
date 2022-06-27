@@ -47,6 +47,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         public string? ErrorMessageEmail { get; set; }
 
         /// <summary>
+        /// Custom error message to show if the bound property has a <see cref="PhoneAttribute"/>
+        /// </summary>
+        [HtmlAttributeName("error-message-phone")]
+        public string? ErrorMessagePhone { get; set; }
+
+        /// <summary>
         /// Custom error message to show if the bound property has a <see cref="StringLengthAttribute"/>
         /// </summary>
         [HtmlAttributeName("error-message-length")]
@@ -88,6 +94,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
                 ErrorMessageRequired,
                 ErrorMessageRegex,
                 ErrorMessageEmail,
+                ErrorMessagePhone,
                 ErrorMessageLength,
                 ErrorMessageMinLength,
                 ErrorMessageMaxLength,

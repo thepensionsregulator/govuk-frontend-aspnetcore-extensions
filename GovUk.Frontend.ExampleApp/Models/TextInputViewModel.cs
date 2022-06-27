@@ -17,7 +17,10 @@ namespace GovUk.Frontend.ExampleApp.Models
         [MaxLength(100, ErrorMessage = "Must be 100 or fewer characters")]
         public string Field3 { get; set; }
 
+        [Phone(ErrorMessage = "Must be a phone number")]
+        public string Field4 { get; set; }
+
         [Range(5, 50, ErrorMessage = "Must be a number between 5 and 50")]
-        public int Field4 { get; set; }
+        public int Field5 { get; set; }
     }
 }

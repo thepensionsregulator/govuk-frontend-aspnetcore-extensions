@@ -46,9 +46,9 @@ steps:
    - task: DotNetCoreCLI@2
      displayName: Packing project
      inputs:
-        command: "pack"
-        packagesToPack: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
-        versioningScheme: "off"
+       command: 'pack'
+       packagesToPack: 'GovUk.Frontend.AspNetCore.Extensions/*.csproj'
+       versioningScheme: 'byBuildNumber'
 
    - task: NuGetCommand@2
      displayName: Pushing to internal nuget feed

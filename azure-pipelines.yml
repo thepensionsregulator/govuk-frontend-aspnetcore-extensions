@@ -128,8 +128,11 @@ steps:
     displayName: Packing project
     inputs:
       command: "pack"
-      packagesToPack: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.AspNetCore.Extensions/*.csproj"
-      versioningScheme: "off"
+      packagesToPack: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+      versioningScheme: "byPrereleaseNumber"
+      majorVersion: "2"
+      minorVersion: "0"
+      patchVersion: "0"
 
   - task: NuGetCommand@2
     displayName: Pushing to internal nuget feed

@@ -130,7 +130,7 @@ steps:
     displayName: Packing project
     inputs:
       command: "pack"
-      packagesToPack: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+      packagesToPack: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.AspNetCore.Extensions/*.csproj"
       versioningScheme: "byPrereleaseNumber"
       majorVersion: "2"
       minorVersion: "0"

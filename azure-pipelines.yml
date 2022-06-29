@@ -7,19 +7,38 @@ pool:
 variables:
   - group: Azure DevOps Artifacts
   - name: solution
-    value: "**/*.sln"
+    value: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.sln"
   - name: buildPlatform
     value: "Any CPU"
   - name: buildConfiguration
     value: "Release"
+  - name: YARN_CACHE_FOLDER
+    value: $(Pipeline.Workspace)/.yarn
+
+resources:
+  repositories:
+    - repository: hooks
+      type: git
+      name: TPR/Tools-TPRGitHooks
+      ref: develop
+    - repository: pipelines
+      type: git
+      name: TPR/Tools-AzurePipelines
+      ref: develop
 
 steps:
+  - checkout: self
+  - checkout: hooks
+  - checkout: pipelines
+
+  - template: git-secrets.steps.yml@hooks
+
   - task: NuGetToolInstaller@1
 
   - task: CmdLine@2
     displayName: Cloning govuk v1.0
     inputs:
-      script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "../govuk-frontend-aspnetcore"'
+      script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore"'
 
   - task: CmdLine@2
     displayName: Setting up submodule
@@ -29,7 +48,40 @@ steps:
         git.exe submodule init
         git.exe submodule set-url "lib/govuk-frontend" https://github.com/alphagov/govuk-frontend.git
         git.exe submodule update
-      workingDirectory: "../govuk-frontend-aspnetcore"
+      workingDirectory: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore"
+
+  - task: NodeTool@0
+    inputs:
+      versionSpec: "16.15.1"
+    displayName: Set Node version
+
+  - task: Cache@2
+    inputs:
+      key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\yarn.lock'
+      restoreKeys: |
+        yarn | "$(Agent.OS)"
+      path: $(YARN_CACHE_FOLDER)
+    displayName: Cache Yarn packages
+
+  - task: Yarn@3
+    inputs:
+      projectDirectory: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
+      arguments: "audit --level moderate --groups dependencies"
+    displayName: yarn audit
+
+  - task: Yarn@3
+    inputs:
+      projectDirectory: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
+      arguments: "--frozen-lockfile"
+    displayName: yarn build
+
+  - script: |
+      cd $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions
+      yarn jest --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura
+    displayName: Run JS tests
+    continueOnError: false # Test failures should fail the build
+
+  # Do not publish JS test results to the pipeline as Azure DevOps cannot publish both C# and JS results so we have to choose
 
   - task: UseDotNet@2
     displayName: Install .NET 6.0.6
@@ -38,22 +90,45 @@ steps:
       performMultiLevelLookup: true
       includePreviewVersions: false
 
-  - task: NuGetCommand@2
-    displayName: Restoring Solution
+  - task: DotNetCoreCLI@2
+    displayName: "dotnet restore $(solution)"
     inputs:
-      restoreSolution: "$(solution)"
+      command: "restore"
+      projects: "$(solution)"
+      includeNuGetOrg: true
+
+  - template: security/check-nuget-packages.steps.yml@pipelines
+    parameters:
+      path: "$(solution)"
 
   - task: DotNetCoreCLI@2
     displayName: Build Extensions project
     inputs:
       command: "build"
-      projects: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+      projects: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+
+  - task: DotNetCoreCLI@2
+    displayName: dotnet test $(buildConfiguration)
+    inputs:
+      command: test
+      projects: |
+        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore\test\GovUk.Frontend.AspNetCore.Tests\GovUk.Frontend.AspNetCore.Tests.csproj
+        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco.Tests\GovUk.Frontend.Umbraco.Tests.csproj
+        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions.Tests\GovUk.Frontend.AspNetCore.Extensions.Tests.csproj
+      arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
+
+  - task: PublishCodeCoverageResults@1
+    displayName: "Publish code coverage"
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: $(Agent.TempDirectory)\**\coverage.cobertura.xml
+      failIfCoverageEmpty: true
 
   - task: DotNetCoreCLI@2
     displayName: Packing project
     inputs:
       command: "pack"
-      packagesToPack: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+      packagesToPack: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.AspNetCore.Extensions/*.csproj"
       versioningScheme: "off"
 
   - task: NuGetCommand@2

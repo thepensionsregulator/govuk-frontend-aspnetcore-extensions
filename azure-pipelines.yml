@@ -32,6 +32,8 @@ steps:
   - checkout: pipelines
 
   - template: git-secrets.steps.yml@hooks
+    parameters:
+      repoPath: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions
 
   - task: NuGetToolInstaller@1
 

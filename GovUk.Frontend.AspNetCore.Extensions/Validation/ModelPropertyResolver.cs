@@ -39,7 +39,22 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     foreach (var property in modelType!.GetProperties())
                     {
                         if (property.PropertyType == modelType) break; // Prevent Stack overflow
-                        
+
+                        // check for IList or Array type fields.
+                        var splitFront = modelPropertyName.Split("[")[0]; // Grab the first part
+                        if (property.Name == splitFront)
+                        {
+                            var splitBack = modelPropertyName.Split("].", 2)[1]; // Grab the second half
+
+                            // The 'T' in IList<T> comes from GenericTypeArguments[]. Only dealing with one for now.
+                            var resList = IterateOverProperties(property.PropertyType.GenericTypeArguments[0], splitBack);
+                            if (resList != null)
+                            {
+                                modelProperty = resList;
+                                break;
+                            }
+                        }
+
                         // Would this property match modelPropertyName?
                         var pp = parentPropertyName == "" ? property.Name : parentPropertyName + ("." + property.Name); 
                         if (pp == modelPropertyName) return property;

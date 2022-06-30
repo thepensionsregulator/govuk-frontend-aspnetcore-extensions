@@ -1,4 +1,3 @@
-using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +47,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                 .AddComposers()
                 .Build();
 
-            services.AddGovUkFrontendExtensions(options =>
+            services.AddGovUkFrontendUmbracoExtensions(options =>
             {
                 options.AddImportsToHtml = false;
             });

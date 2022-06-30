@@ -70,7 +70,6 @@ This repository includes an example application which demonstrates the validatio
     @using (Html.BeginUmbracoForm<HomeSurfaceController>(nameof(HomeSurfaceController.Index), null, new { novalidate="novalidate" }))
     {
       <partial name="GOVUK/BlockList" model="Model.Blocks" />
-      <govuk-button type="submit">@Model.ButtonText</govuk-button>
     }
     ```
 
@@ -108,13 +107,13 @@ This repository includes an example application which demonstrates the validatio
 15. In `Startup.cs` add the following to the `ConfigureServices` method:
 
     ```csharp
-    using GovUk.Frontend.AspNetCore.Extensions;
+    using GovUk.Frontend.Umbraco;
 
     public void ConfigureServices(IServiceCollection services)
     {
         // Other code, including services.AddUmbraco()...
 
-        services.AddGovUkFrontendExtensions(options =>
+        services.AddGovUkFrontendUmbracoExtensions(options =>
         {
            // Avoid adding scripts which require 'unsafe-inline' in the content security policy
             options.AddImportsToHtml = false;

@@ -9,6 +9,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             string? errorMessageRequired,
             string? errorMessageRegex,
             string? errorMessageEmail,
+            string? errorMessagePhone,
             string? errorMessageLength,
             string? errorMessageMinLength,
             string? errorMessageMaxLength,

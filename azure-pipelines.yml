@@ -31,10 +31,11 @@ steps:
            git.exe submodule update
         workingDirectory: "../govuk-frontend-aspnetcore"
 
-   - task: NuGetCommand@2
+   - task: DotNetCoreCLI@2
      displayName: Restoring Solution
      inputs:
-        restoreSolution: "$(solution)"
+       command: 'restore'
+       projects: '$(solution)'
 
    - task: DotNetCoreCLI@2
      displayName: Build Extensions project
@@ -45,9 +46,12 @@ steps:
    - task: DotNetCoreCLI@2
      displayName: Packing project
      inputs:
-        command: "pack"
-        packagesToPack: "GovUk.Frontend.AspNetCore.Extensions/*.csproj"
-        versioningScheme: "off"
+       command: 'pack'
+       packagesToPack: 'GovUk.Frontend.AspNetCore.Extensions/*.csproj'
+       versioningScheme: 'byPrereleaseNumber'
+       majorVersion: '1'
+       minorVersion: '0'
+       patchVersion: '5'
 
    - task: NuGetCommand@2
      displayName: Pushing to internal nuget feed

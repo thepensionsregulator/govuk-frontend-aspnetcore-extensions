@@ -48,10 +48,7 @@ steps:
      inputs:
        command: 'pack'
        packagesToPack: 'GovUk.Frontend.AspNetCore.Extensions/*.csproj'
-       versioningScheme: 'byPrereleaseNumber'
-       majorVersion: '1'
-       minorVersion: '0'
-       patchVersion: '5'
+       versioningScheme: 'off'
 
    - task: NuGetCommand@2
      displayName: Pushing to internal nuget feed

@@ -30,6 +30,8 @@
 		<Content Remove="uSync\v9\ContentTypes\govuklegend.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklegendispageheading.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklink.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuklinkasbutton.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuklinkasbuttonsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukmodelproperty.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuknotificationbanner.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuknotificationbannersettings.config" />
@@ -45,7 +47,6 @@
 		<Content Remove="uSync\v9\ContentTypes\govukselectoption.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselectsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config" />
-		<Content Remove="uSync\v9\ContentTypes\govukstart.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextarea.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextareasettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextinput.config" />
@@ -54,14 +55,12 @@
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationrequired.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtext.config" />
-		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtonType.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKHeadingLevel.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKLinkPicker.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKModelProperty.config" />
-		<Content Remove="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKNotificationBannerType.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadioButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadiosLayout.config" />
@@ -177,6 +176,12 @@
 		<None Include="uSync\v9\ContentTypes\govuklink.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govuklinkasbutton.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuklinkasbuttonsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukmodelproperty.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -222,9 +227,6 @@
 		<None Include="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\ContentTypes\govukstart.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
 		<None Include="uSync\v9\ContentTypes\govuktextarea.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -249,9 +251,6 @@
 		<None Include="uSync\v9\ContentTypes\govukwarningtext.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\DataTypes\GOVUKBlockList.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKButtons.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -268,9 +267,6 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKModelProperty.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-		<None Include="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKNotificationBannerType.config">

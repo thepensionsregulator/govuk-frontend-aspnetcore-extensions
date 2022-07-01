@@ -405,6 +405,7 @@ FodyWeavers.xsd
 **/Smidge/
 **/App_Plugins/*
 !**/App_Plugins/GOVUK
+appsettings-schema.json
 
 # Development environment
 appsettings.Development.json

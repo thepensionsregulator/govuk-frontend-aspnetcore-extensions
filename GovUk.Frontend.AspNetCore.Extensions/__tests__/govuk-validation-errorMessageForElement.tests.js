@@ -19,6 +19,34 @@ describe("errorMessageForElement", () => {
     expect(result.id).toEqual("existing");
   });
 
+  it("returns an existing .govuk-error-message for another field in the same date if it exists", () => {
+    document.body.innerHTML = `
+        <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+                <legend class="govuk-fieldset__legend"></legend>
+                <div class="govuk-hint"></div>
+                <p class="govuk-error-message" id="existing" data-valmsg-for="Field1.Year"></p>
+                <div class="govuk-date-input">
+                    <div class="govuk-form-group" id="inner">
+                        <label class="govuk-label govuk-date-input__label"></label>
+                        <input class="govuk-input govuk-date-input__input" id="Field1.Month" />
+                    </div>
+                </div>
+            </fieldset>
+        </div>`;
+
+    const testSubject = govuk();
+    jest
+      .spyOn(testSubject, "formGroupForElement")
+      .mockReturnValue(document.body.firstElementChild);
+
+    const result = testSubject.errorMessageForElement(
+      document.querySelector("input")
+    );
+
+    expect(result.id).toEqual("existing");
+  });
+
   it("does not return an existing error for a field that is conditional upon the target field", () => {
     document.body.innerHTML = `
       <div class="govuk-form-group">

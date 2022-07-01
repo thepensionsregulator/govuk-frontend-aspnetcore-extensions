@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Content Remove="uSync\v9\ContentTypes\govukbacktomenu.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukbutton.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukbuttongroup.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukbuttonsettings.config" />
@@ -66,6 +67,8 @@
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadiosLayout.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditor.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKSelectOptions.config" />
+		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
+		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -102,10 +105,12 @@
 
 	<ItemGroup>
 		<Folder Include="App_Plugins\GOVUK\" />
-		<Folder Include="wwwroot\css\" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="uSync\v9\ContentTypes\govukbacktomenu.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukbutton.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -239,7 +244,7 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukvalidationtext.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukwarningtext.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -283,5 +288,14 @@
 		<None Include="uSync\v9\DataTypes\GOVUKSelectOptions.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css.map">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <Resource Include="uSync\v9\ContentTypes\govukbacktomenu.config" />
 	</ItemGroup>
 </Project>

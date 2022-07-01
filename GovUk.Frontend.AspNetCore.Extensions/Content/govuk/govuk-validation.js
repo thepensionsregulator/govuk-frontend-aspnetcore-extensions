@@ -145,9 +145,25 @@ function createGovUkValidator() {
      */
     errorMessageForElement: function (element) {
       const formGroup = govuk.formGroupForElement(element);
+      const isDateField = element.classList.contains("govuk-date-input__input");
       let errorMessage = formGroup.querySelector(
         ".govuk-error-message[data-valmsg-for='" + element.id + "']"
       );
+      if (isDateField) {
+        const dateFieldId = element.id.substring(
+          0,
+          element.id.lastIndexOf(".")
+        );
+        errorMessage = formGroup.querySelector(
+          ".govuk-error-message[data-valmsg-for='" +
+            dateFieldId +
+            ".Day'], .govuk-error-message[data-valmsg-for='" +
+            dateFieldId +
+            ".Month'], .govuk-error-message[data-valmsg-for='" +
+            dateFieldId +
+            ".Year']"
+        );
+      }
       if (!errorMessage) {
         // Create a new error message container
         errorMessage = document.createElement("p");

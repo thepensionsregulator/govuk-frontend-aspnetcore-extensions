@@ -1,4 +1,5 @@
-﻿@model CheckboxesViewModel
+﻿@using GovUk.Frontend.ExampleApp.Models
+@model CheckboxesViewModel
 @{
     ViewData["Title"] = "Checkboxes";
 }
@@ -9,7 +10,7 @@
 
 <form asp-controller="Checkboxes" asp-action="Post" method="post" novalidate>
     <govuk-client-side-validation>
-        <govuk-checkboxes asp-for="Field1">
+        <govuk-checkboxes name="Field1">
             <govuk-checkboxes-fieldset>
                 <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">Checkboxes</govuk-checkboxes-fieldset-legend>
                 <govuk-checkboxes-hint>This is the hint</govuk-checkboxes-hint>

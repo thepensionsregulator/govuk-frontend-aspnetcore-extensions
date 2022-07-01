@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 
@@ -39,7 +40,38 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     foreach (var property in modelType!.GetProperties())
                     {
                         if (property.PropertyType == modelType) break; // Prevent Stack overflow
-                        
+
+                        // Only do this next bit for Enumerable type. Have to exclude string
+                        if (typeof(IEnumerable).IsAssignableFrom(property.PropertyType) && property.PropertyType != typeof(String))
+                        {
+                            if (modelPropertyName.Contains("["))
+                            {
+                                // check for IList or Array type fields.
+                                var splitFront = modelPropertyName.Split("[")[0]; // Grab the first part
+                                if (property.Name == splitFront)
+                                {
+                                    // Property is IEnum<T>
+                                    if (property.PropertyType.GenericTypeArguments.Any())
+                                    {
+                                        var splitBack = modelPropertyName.Split("].", 2)[1]; // Grab the second half
+
+                                        // The 'T' in IList<T> comes from GenericTypeArguments[]. Only dealing with one for now.
+                                        var resList = IterateOverProperties(property.PropertyType.GenericTypeArguments[0], splitBack);
+                                        if (resList != null)
+                                        {
+                                            modelProperty = resList;
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Property is object[]
+                                        return property;
+                                    }
+                                }
+                            }
+                        }
+
                         // Would this property match modelPropertyName?
                         var pp = parentPropertyName == "" ? property.Name : parentPropertyName + ("." + property.Name); 
                         if (pp == modelPropertyName) return property;

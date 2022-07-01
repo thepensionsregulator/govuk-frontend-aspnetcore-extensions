@@ -47,8 +47,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
         private class IterativeModel
         {
-            public string Field1 { get; set; }
+            public string Field { get; set; }
             public IList<ChildModel> List { get; set; }
+
+            public string[] Array { get; set; }
         }
 
 
@@ -174,6 +176,16 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var childType = typeof(IterativeModel).GetProperty("List").PropertyType.GenericTypeArguments[0];
             Assert.AreEqual(typeof(ChildModel),childType);
             Assert.AreEqual(childProperty.Name, nameof(ChildModel.ChildModelProperty));
+        }
+
+        [Test]
+        public void ArrayProperty_is_resolved_from_Iterative_Model()
+        {
+            var modelPropertyResolver = new ModelPropertyResolver();
+
+            var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(IterativeModel), "Array[0]");
+            Assert.AreEqual(childProperty.PropertyType, typeof(IterativeModel).GetProperty("Array").PropertyType);
+            Assert.AreEqual(childProperty.Name, nameof(IterativeModel.Array));
         }
 
     }

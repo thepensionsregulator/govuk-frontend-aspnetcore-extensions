@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Collections;
 using System.Linq;
 using System.Reflection;
 
@@ -40,18 +41,34 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     {
                         if (property.PropertyType == modelType) break; // Prevent Stack overflow
 
-                        // check for IList or Array type fields.
-                        var splitFront = modelPropertyName.Split("[")[0]; // Grab the first part
-                        if (property.Name == splitFront)
+                        // Only do this next bit for Enumerable type. Have to exclude string
+                        if (typeof(IEnumerable).IsAssignableFrom(property.PropertyType) && property.PropertyType != typeof(String))
                         {
-                            var splitBack = modelPropertyName.Split("].", 2)[1]; // Grab the second half
-
-                            // The 'T' in IList<T> comes from GenericTypeArguments[]. Only dealing with one for now.
-                            var resList = IterateOverProperties(property.PropertyType.GenericTypeArguments[0], splitBack);
-                            if (resList != null)
+                            if (modelPropertyName.Contains("["))
                             {
-                                modelProperty = resList;
-                                break;
+                                // check for IList or Array type fields.
+                                var splitFront = modelPropertyName.Split("[")[0]; // Grab the first part
+                                if (property.Name == splitFront)
+                                {
+                                    // Property is IEnum<T>
+                                    if (property.PropertyType.GenericTypeArguments.Any())
+                                    {
+                                        var splitBack = modelPropertyName.Split("].", 2)[1]; // Grab the second half
+
+                                        // The 'T' in IList<T> comes from GenericTypeArguments[]. Only dealing with one for now.
+                                        var resList = IterateOverProperties(property.PropertyType.GenericTypeArguments[0], splitBack);
+                                        if (resList != null)
+                                        {
+                                            modelProperty = resList;
+                                            break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // Property is object[]
+                                        return property;
+                                    }
+                                }
                             }
                         }
 

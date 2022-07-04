@@ -5,7 +5,7 @@
         <govuk-error-summary-title>There is a problem</govuk-error-summary-title>
         @foreach (var key in ViewContext.ModelState.Keys)
         {
-            foreach (var error in ViewContext.ModelState[key].Errors)
+            foreach (var error in ViewContext.ModelState[key]!.Errors)
             {
                 <govuk-error-summary-item for="@key">@error.ErrorMessage</govuk-error-summary-item>
             }

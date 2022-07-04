@@ -1,3 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
 @using GovUk.Frontend.Umbraco.Models
-<h1 class="govuk-heading-l">@Umbraco.AssignedContentItem.Name</h1>
+@using Umbraco.Extensions
+@{
+    var cssClass = ("govuk-heading-l " + Model.Item.Settings?.Value<string>("cssClasses")).TrimEnd();
+}
+<h1 class="@cssClass">@Umbraco.AssignedContentItem.Name</h1>

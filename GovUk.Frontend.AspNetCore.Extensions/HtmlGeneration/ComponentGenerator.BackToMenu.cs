@@ -22,7 +22,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             Guard.ArgumentNotNull(nameof(content), content);
 
             var tagBuilder = new TagBuilder(BackToMenuElement);
-            tagBuilder.MergeAttributes(attributes);
+            if (attributes != null) tagBuilder.MergeAttributes(attributes);
             tagBuilder.MergeCssClass("govuk-body");
             tagBuilder.MergeCssClass("govuk-back-to-menu");
 

@@ -20,5 +20,7 @@ namespace GovUk.Frontend.Umbraco.Models
         {
             return Filter(_model);
         }
+
+        public bool RenderGrid { get; set; } = true;
     }
 }

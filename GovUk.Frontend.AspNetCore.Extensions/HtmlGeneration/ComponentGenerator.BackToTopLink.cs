@@ -20,7 +20,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             Guard.ArgumentNotNull(nameof(content), content);
 
             var tagBuilder = new TagBuilder(BackToTopLinkElement);
-            tagBuilder.MergeAttributes(attributes);
+            if (attributes != null) tagBuilder.MergeAttributes(attributes);
             tagBuilder.MergeCssClass("govuk-back-to-top-link");
             tagBuilder.Attributes.Add("href", href);
             tagBuilder.InnerHtml.AppendHtml(content);

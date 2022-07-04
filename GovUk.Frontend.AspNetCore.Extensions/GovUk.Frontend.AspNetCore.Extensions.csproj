@@ -14,6 +14,7 @@
 		<None Remove="Content\govuk\govuk-js-init.js" />
 		<None Remove="Content\govuk\govuk-js-test.js" />
 		<None Remove="Content\govuk\govuk-validation.js" />
+		<None Remove="Content\tpr\tpr.css" />
 		<None Remove="Styles\_variables.scss" />
 		<None Remove="__tests__\govuk-validation-createErrorSummary.tests.js" />
 		<None Remove="__tests__\govuk-validation-errorMessageForElement.tests.js" />
@@ -77,6 +78,7 @@
 	<ItemGroup>
 		<EmbeddedResource Include="Content\govuk\govuk-frontend-publicsans.css" />
 		<EmbeddedResource Include="Content\govuk\govuk-frontend.css" />
+		<EmbeddedResource Include="Content\tpr\tpr.css" />
 		<EmbeddedResource Include="Styles\_variables.scss" />
 		<EmbeddedResource Include="Styles\_back-to-top.scss" />
 		<EmbeddedResource Include="Content\govuk\PublicSans-Bold.ttf" />
@@ -140,5 +142,9 @@
 
 	<ItemGroup>
 		<UpToDateCheckInput Remove="Styles\_variables.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
 	</ItemGroup>
 </Project>

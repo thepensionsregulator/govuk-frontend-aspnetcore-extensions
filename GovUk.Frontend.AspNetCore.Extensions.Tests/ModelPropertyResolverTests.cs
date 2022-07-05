@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 {
@@ -42,9 +43,16 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         {
             public string ParentModelProperty { get; set; }
             public ChildModel Child { get; set; }
-
-
         }
+
+        private class IterativeModel
+        {
+            public string Field { get; set; }
+            public IList<ChildModel> List { get; set; }
+
+            public string[] Array { get; set; }
+        }
+
 
         [Test]
         public void No_model_type_throws_InvalidOperationException()
@@ -155,8 +163,30 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(ParentModel), "Child.ChildModelProperty");
             Assert.AreEqual(childProperty.DeclaringType, typeof(ChildModel));
             Assert.AreEqual(childProperty.Name, nameof(ParentModel.Child.ChildModelProperty));
-
-
         }
+
+        [Test]
+        public void ChildProperty_is_resolved_from_Iterative_Model()
+        {
+            var modelPropertyResolver = new ModelPropertyResolver();
+
+            var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(IterativeModel), "List[0].ChildModelProperty");
+            Assert.AreEqual(childProperty.DeclaringType, typeof(ChildModel));
+            
+            var childType = typeof(IterativeModel).GetProperty("List").PropertyType.GenericTypeArguments[0];
+            Assert.AreEqual(typeof(ChildModel),childType);
+            Assert.AreEqual(childProperty.Name, nameof(ChildModel.ChildModelProperty));
+        }
+
+        [Test]
+        public void ArrayProperty_is_resolved_from_Iterative_Model()
+        {
+            var modelPropertyResolver = new ModelPropertyResolver();
+
+            var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(IterativeModel), "Array[0]");
+            Assert.AreEqual(childProperty.PropertyType, typeof(IterativeModel).GetProperty("Array").PropertyType);
+            Assert.AreEqual(childProperty.Name, nameof(IterativeModel.Array));
+        }
+
     }
 }

@@ -16,63 +16,10 @@
 		<None Remove="Content\govuk\govuk-validation.js" />
 		<None Remove="Content\tpr\tpr.css" />
 		<None Remove="Styles\_variables.scss" />
-		<None Remove="__tests__\govuk-validation-createErrorSummary.tests.js" />
-		<None Remove="__tests__\govuk-validation-errorMessageForElement.tests.js" />
-		<None Remove="__tests__\govuk-validation-formGroupForElement.tests.js" />
-		<None Remove="__tests__\govuk-validation-global.tests.js" />
-		<None Remove="__tests__\govuk-validation-removeOrUpdateError.tests.js" />
-		<None Remove="__tests__\govuk-validation-showError.tests.js" />
-		<None Remove="__tests__\govuk-validation-updateErrorMessage.tests.js" />
-		<None Remove="__tests__\govuk-validation-updateErrorSummary.tests.js" />
-		<None Remove="__tests__\govuk-validation-updateTitle.tests.js" />
-		<None Remove="__tests__\govuk-validation-validateElement.tests.js" />
 		<None Remove="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
 		<None Remove="Content\lib\jquery-validation\dist\jquery.validate.min.js" />
 		<None Remove="Content\lib\jquery\dist\jquery.min.js" />
 		<None Remove="Content\lib\jquery\dist\jquery.min.map" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="__tests__\govuk-validation-createErrorSummary.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-errorMessageForElement.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-formGroupForElement.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-global.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-removeOrUpdateError.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-showError.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-updateErrorMessage.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-updateErrorSummary.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-updateTitle.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-validateElement.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -146,5 +93,35 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
+	  <None Update="__tests__\govuk-validation-createErrorSummary.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-errorMessageForElement.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-formGroupForElement.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-global.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-removeOrUpdateError.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-showError.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-updateErrorMessage.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-updateErrorSummary.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-updateTitle.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-validateElement.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
 	</ItemGroup>
 </Project>

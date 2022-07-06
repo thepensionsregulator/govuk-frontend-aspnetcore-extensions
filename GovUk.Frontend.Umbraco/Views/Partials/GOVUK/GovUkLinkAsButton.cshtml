@@ -6,7 +6,8 @@
 @using Umbraco.Extensions
 @{
     var text = Model.Item.Content.Value<string>("text");
-    if (string.IsNullOrWhiteSpace(text)) { text = "Start now"; }
     var link = Model.Item.Content.Value<Link>("link");
+    var isStartButton = Model.Item.Settings.Value<bool>("isStartButton");
+    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
 }
-<govuk-button-link is-start-button="true" href="@link.Url" id="@Model.Item.Content.Key">@text</govuk-button-link>
+<govuk-button-link is-start-button="@isStartButton" href="@link.Url" id="@Model.Item.Content.Key" class="@cssClass">@text</govuk-button-link>

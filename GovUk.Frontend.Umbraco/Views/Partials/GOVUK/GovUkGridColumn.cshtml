@@ -1,0 +1,16 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Services
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+@{
+    var blocks = Model.Item.Content.Value<BlockListModel>("blocks");
+    var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
+                        Model.Item.Settings?.Value<string>("columnSize"), 
+                        Model.Item.Settings?.Value<string>("columnSizeFromDesktop"), 
+                        Model.Item.Settings?.Value<string>("cssClassesForColumn")).TrimEnd();
+}
+    <div class="@columnClass">
+        @await Html.PartialAsync("GOVUK/FilteredBlockList", new FilteredBlockListModel(blocks,Model.Filter){ RenderGrid = false })
+    </div>

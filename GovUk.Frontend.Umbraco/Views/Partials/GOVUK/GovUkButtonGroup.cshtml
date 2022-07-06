@@ -5,7 +5,7 @@
 @using Umbraco.Extensions
 @using System.Linq
 @{
-    var buttons = new FilteredBlockListModel(Model.Item.Content.Value<BlockListModel>("buttons"), Model.Filter);
+    var buttons = new FilteredBlockListModel(Model.Item.Content.Value<BlockListModel>("buttons"), Model.Filter) { RenderGrid = false };
 }
 @if (buttons.FilteredBlocks().Any()) {
 <div class="govuk-button-group">

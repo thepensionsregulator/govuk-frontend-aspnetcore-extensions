@@ -19,6 +19,8 @@
 {
     if (blocks[i]?.ContentUdi == null) { continue; }
 
+    var block = blocks[i] is FilteredBlockListItem ? blocks[i] : new FilteredBlockListItem(blocks[i], Model.Filter);
+
     var isGridRowBlock = blocks[i].Content.ContentType.Alias == "govukGridRow";
     string rowClass = GovUkGridClassBuilder.BuildGridRowClass(blocks[i].Settings?.Value<string>("cssClassesForRow"));
     var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
@@ -40,7 +42,7 @@
         @:<div class="@rowClass"> 
         @:<div class="@columnClass"> 
     }
-    @await Html.PartialAsync("GOVUK/" + blocks[i].Content.ContentType.Alias, new FilteredBlockListItem(blocks[i], Model.Filter))
+    @await Html.PartialAsync("GOVUK/" + blocks[i].Content.ContentType.Alias, block)
     @if (Model.RenderGrid && !isGridRowBlock && !sameAsNext) {
         @:</div> 
         @:</div> 

@@ -6,23 +6,23 @@
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
 @{
-    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
 }
 <govuk-client-side-validation
-    error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
-    error-message-regex="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRegex))"
-    error-message-email="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageEmail))"
-    error-message-phone="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessagePhone))"
-    error-message-length="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageLength))"
-    error-message-minlength="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageMinLength))"
-    error-message-maxlength="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageMaxLength))"
-    error-message-range="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
-    error-message-compare="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
+    error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
+    error-message-regex="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRegex))"
+    error-message-email="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageEmail))"
+    error-message-phone="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessagePhone))"
+    error-message-length="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageLength))"
+    error-message-minlength="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageMinLength))"
+    error-message-maxlength="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageMaxLength))"
+    error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
+    error-message-compare="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
 >
-    <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" input-class="@(Model.Item.Settings.Value<string>("cssClasses"))">
-        <govuk-input-label>@(Model.Item.Content.Value<string>("label"))</govuk-input-label>
-        <govuk-input-hint>@Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-input-hint>
+    <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" input-class="@(Model.Settings.Value<string>("cssClasses"))">
+        <govuk-input-label>@(Model.Content.Value<string>("label"))</govuk-input-label>
+        <govuk-input-hint>@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-input-hint>
         <govuk-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-input-error-message>
     </govuk-input>
 </govuk-client-side-validation>

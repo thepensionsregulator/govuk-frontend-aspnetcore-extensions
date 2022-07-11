@@ -4,7 +4,7 @@
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
 @{
-    var caption = Model.Item.Content.Value<string>("caption");
+    var caption = Model.Content.Value<string>("caption");
 }
 @if (!string.IsNullOrWhiteSpace(caption)) 
 {

@@ -2,6 +2,6 @@
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
 @{
-    var cssClass = ("govuk-heading-l " + Model.Item.Settings?.Value<string>("cssClasses")).TrimEnd();
+    var cssClass = ("govuk-heading-l " + Model.Settings?.Value<string>("cssClasses")).TrimEnd();
 }
 <h1 class="@cssClass">@Umbraco.AssignedContentItem.Name</h1>

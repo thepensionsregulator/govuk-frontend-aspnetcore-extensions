@@ -5,7 +5,7 @@
 @using HtmlAgilityPack
 @using Umbraco.Extensions
 @{
-    var html = Model.Item.Content.Value<string>("text");
+    var html = Model.Content.Value<string>("text");
     html = GovUkTypography.Apply(html);
 }
 @if (!string.IsNullOrWhiteSpace(html))

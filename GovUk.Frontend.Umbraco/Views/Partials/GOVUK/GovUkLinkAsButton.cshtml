@@ -5,9 +5,9 @@
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Extensions
 @{
-    var text = Model.Item.Content.Value<string>("text");
-    var link = Model.Item.Content.Value<Link>("link");
-    var isStartButton = Model.Item.Settings.Value<bool>("isStartButton");
-    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
+    var text = Model.Content.Value<string>("text");
+    var link = Model.Content.Value<Link>("link");
+    var isStartButton = Model.Settings.Value<bool>("isStartButton");
+    var cssClass = Model.Settings.Value<string>("cssClasses");
 }
-<govuk-button-link is-start-button="@isStartButton" href="@link.Url" id="@Model.Item.Content.Key" class="@cssClass">@text</govuk-button-link>
+<govuk-button-link is-start-button="@isStartButton" href="@link.Url" id="@Model.Content.Key" class="@cssClass">@text</govuk-button-link>

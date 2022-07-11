@@ -10,41 +10,41 @@
 @using System.ComponentModel.DataAnnotations
 @using Umbraco.Extensions
 @{
-    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
-    Int32.TryParse(Model.Item.Settings.Value<string>("rows"), out var rows);
+    Int32.TryParse(Model.Settings.Value<string>("rows"), out var rows);
     if (rows < 2) { rows = 5; }
-    var labelIsPageHeading = Model.Item.Settings.Value<bool>("labelIsPageHeading");
+    var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
 }
 <govuk-client-side-validation
-    error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
-    error-message-regex="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRegex))"
-    error-message-email="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageEmail))"
-    error-message-length="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageLength))"
-    error-message-minlength="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageMinLength))"
-    error-message-maxlength="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageMaxLength))"
-    error-message-range="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
-    error-message-compare="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
+    error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
+    error-message-regex="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRegex))"
+    error-message-email="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageEmail))"
+    error-message-length="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageLength))"
+    error-message-minlength="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageMinLength))"
+    error-message-maxlength="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageMaxLength))"
+    error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
+    error-message-compare="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
 >
-    @if (Model.Item.Settings.Value<bool>("showCharacterCount"))
+    @if (Model.Settings.Value<bool>("showCharacterCount"))
     {
-        var threshold = Model.Item.Settings.Value<int?>("characterCountThreshold");
+        var threshold = Model.Settings.Value<int?>("characterCountThreshold");
         var modelProperty = propertyResolver.ResolveModelProperty(propertyResolver.ResolveModelType(ViewContext), modelPropertyName);
         var maxLengthAttr = modelProperty.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
         var stringLengthAttr = modelProperty.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
         int? maxLength = maxLengthAttr != null ? maxLengthAttr.Length : stringLengthAttr != null ? stringLengthAttr.MaximumLength : null;
-        <govuk-character-count name="@modelPropertyName" form-group-class="@(Model.Item.Settings.Value<string>("cssClasses"))" rows="@rows" max-length="@maxLength" threshold="@threshold">
-            <govuk-character-count-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Item.Content.Value<string>("label"))</govuk-character-count-label>
-            <govuk-character-count-hint>@Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-character-count-hint>
+        <govuk-character-count name="@modelPropertyName" form-group-class="@(Model.Settings.Value<string>("cssClasses"))" rows="@rows" max-length="@maxLength" threshold="@threshold">
+            <govuk-character-count-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-character-count-label>
+            <govuk-character-count-hint>@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-character-count-hint>
             <govuk-character-count-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-character-count-error-message>
             <govuk-character-count-value>@modelStateEntry?.AttemptedValue</govuk-character-count-value>
         </govuk-character-count>
     }
     else
     {
-        <govuk-textarea name="@modelPropertyName" class="@(Model.Item.Settings.Value<string>("cssClasses"))" rows="@rows">
-            <govuk-textarea-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Item.Content.Value<string>("label"))</govuk-textarea-label>
-            <govuk-textarea-hint>@Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-textarea-hint>
+        <govuk-textarea name="@modelPropertyName" class="@(Model.Settings.Value<string>("cssClasses"))" rows="@rows">
+            <govuk-textarea-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-textarea-label>
+            <govuk-textarea-hint>@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-textarea-hint>
             <govuk-textarea-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-textarea-error-message>
             <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>
         </govuk-textarea>

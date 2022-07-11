@@ -5,12 +5,12 @@
 @using GovUk.Frontend.Umbraco.Services
 @using Umbraco.Extensions
 @{
-    var blocks = Model.Item.Content.Value<BlockListModel>("blocks");
-    var rowClass = Model.Item.Settings.Value<string>("cssClassesForRow");
+    var blocks = Model.Content.Value<BlockListModel>("blocks");
+    var rowClass = Model.Settings?.Value<string>("cssClassesForRow");
     var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
-                        Model.Item.Settings?.Value<string>("columnSize"), 
-                        Model.Item.Settings?.Value<string>("columnSizeFromDesktop"), 
-                        Model.Item.Settings?.Value<string>("cssClassesForColumn")).TrimEnd();
+                        Model.Settings?.Value<string>("columnSize"), 
+                        Model.Settings?.Value<string>("columnSizeFromDesktop"), 
+                        Model.Settings?.Value<string>("cssClassesForColumn")).TrimEnd();
 }
 <div class="govuk-grid-row @rowClass">
     <div class="@columnClass">

@@ -7,15 +7,15 @@
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
-    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
+    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var cssClass = Model.Settings.Value<string>("cssClasses");
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
-    var legendIsPageHeading = Model.Item.Settings.Value<bool>("legendIsPageHeading");
-    var legend = Model.Item.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var hint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
+    var legend = Model.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
 }
 <govuk-client-side-validation
-    error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+    error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" class="@cssClass">
         <govuk-date-input-fieldset>
             <govuk-date-input-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-date-input-fieldset-legend>

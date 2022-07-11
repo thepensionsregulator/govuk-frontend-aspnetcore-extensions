@@ -4,16 +4,18 @@ using Umbraco.Cms.Core.Models.Blocks;
 
 namespace GovUk.Frontend.Umbraco.Models
 {
-    public class FilteredBlockListItem
+    public class FilteredBlockListItem : BlockListItem
     {
-        public FilteredBlockListItem(BlockListItem item, Func<BlockListModel, IEnumerable<BlockListItem>>? filter)
+        public FilteredBlockListItem(BlockListItem item, Func<IEnumerable<BlockListItem>, IEnumerable<BlockListItem>>? filter) :
+            base(item.ContentUdi, new OverridablePublishedElement(item.Content), item.SettingsUdi, new OverridablePublishedElement(item.Settings))
         {
-            Item = item;
             Filter = filter ?? (x => x);
         }
 
-        public Func<BlockListModel, IEnumerable<BlockListItem>> Filter { get; private set; }
+        public new IOverridablePublishedElement Content { get => (IOverridablePublishedElement)base.Content; }
 
-        public BlockListItem Item { get; set; }
+        public new IOverridablePublishedElement Settings { get => (IOverridablePublishedElement)base.Settings; }
+
+        public Func<IEnumerable<BlockListItem>, IEnumerable<BlockListItem>> Filter { get; private set; }
     }
 }

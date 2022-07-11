@@ -5,17 +5,17 @@
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
 @{
-    if (!Enum.TryParse(typeof(NotificationBannerType), Model.Item.Settings.Value<string>("type"), out var bannerType))
+    if (!Enum.TryParse(typeof(NotificationBannerType), Model.Settings.Value<string>("type"), out var bannerType))
     {
         bannerType = NotificationBannerType.Default;
     }
-    var heading = GovUkTypography.Apply(Model.Item.Content.Value<string>("heading"), new TypographyOptions{ RemoveWrappingParagraph = true });
-    var text = GovUkTypography.Apply(Model.Item.Content.Value<string>("text"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var heading = GovUkTypography.Apply(Model.Content.Value<string>("heading"), new TypographyOptions{ RemoveWrappingParagraph = true });
+    var text = GovUkTypography.Apply(Model.Content.Value<string>("text"), new TypographyOptions { RemoveWrappingParagraph = true });
 }
 <govuk-notification-banner type="@((NotificationBannerType)bannerType!)">
-    @if (!string.IsNullOrEmpty(Model.Item.Settings.Value<string>("title")))
+    @if (!string.IsNullOrEmpty(Model.Settings.Value<string>("title")))
     {
-        <govuk-notification-banner-title>@(Model.Item.Settings.Value<string>("title"))</govuk-notification-banner-title>
+        <govuk-notification-banner-title>@(Model.Settings.Value<string>("title"))</govuk-notification-banner-title>
     }
     @if (string.IsNullOrEmpty(text))
     {

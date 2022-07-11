@@ -7,18 +7,18 @@
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
-    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
-    var value = Model.Item.Content.Value<string>("value");
-    var checkboxHint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-    var conditional = Model.Item.Content.Value<BlockListModel>("conditionalBlocks");
+    var cssClass = Model.Settings.Value<string>("cssClasses");
+    var value = Model.Content.Value<string>("value");
+    var checkboxHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var conditional = Model.Content.Value<BlockListModel>("conditionalBlocks");
 }
 
-<govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+<govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-checkboxes name="@modelPropertyName" class="@cssClass">
         <govuk-checkboxes-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-checkboxes-error-message>
-        <govuk-checkboxes-item value="@value" checked="@(modelStateEntry?.AttemptedValue?.ToUpperInvariant() == value.ToUpperInvariant())">@(Model.Item.Content.Value<string>("label"))
+        <govuk-checkboxes-item value="@value" checked="@(modelStateEntry?.AttemptedValue?.ToUpperInvariant() == value.ToUpperInvariant())">@(Model.Content.Value<string>("label"))
             @if (!string.IsNullOrWhiteSpace(checkboxHint)) 
             {
                 <govuk-checkboxes-item-hint>@Html.Raw(checkboxHint)</govuk-checkboxes-item-hint>

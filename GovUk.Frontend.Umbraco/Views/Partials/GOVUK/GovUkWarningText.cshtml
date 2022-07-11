@@ -4,9 +4,9 @@
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
 @{
-    var iconFallbackText = Model.Item.Content.Value<string>("iconFallbackText");
+    var iconFallbackText = Model.Content.Value<string>("iconFallbackText");
     if (string.IsNullOrWhiteSpace(iconFallbackText)) { iconFallbackText = "Warning"; }
 }
-<govuk-warning-text icon-fallback-text="@iconFallbackText" id="@Model.Item.Content.Key">
-    @Html.Raw(GovUkTypography.Apply(Model.Item.Content.Value<string>("text"), new TypographyOptions{ RemoveWrappingParagraph = true }))
+<govuk-warning-text icon-fallback-text="@iconFallbackText" id="@Model.Content.Key">
+    @Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("text"), new TypographyOptions{ RemoveWrappingParagraph = true }))
 </govuk-warning-text>

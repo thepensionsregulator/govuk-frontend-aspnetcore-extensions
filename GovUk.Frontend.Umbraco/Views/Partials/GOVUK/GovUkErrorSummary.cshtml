@@ -3,7 +3,7 @@
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Extensions
 @{
-    var title = Model.Item.Content.Value<string>("title");
+    var title = Model.Content.Value<string>("title");
     if (string.IsNullOrWhiteSpace(title)) { title = "There is a problem"; }
     var visibleClass = ViewContext.ModelState.ErrorCount > 0 ? "govuk-!-display-block" : "govuk-!-display-none";
 }

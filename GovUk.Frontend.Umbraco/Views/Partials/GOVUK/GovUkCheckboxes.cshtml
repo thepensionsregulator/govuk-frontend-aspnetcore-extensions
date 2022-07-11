@@ -7,18 +7,18 @@
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var checkboxes = Model.Item.Content.Value<BlockListModel>("checkboxes");
-    var modelPropertyName = Model.Item.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var checkboxes = Model.Content.Value<BlockListModel>("checkboxes");
+    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
-    var cssClass = Model.Item.Settings.Value<string>("cssClasses");
-    var fieldsetHint = GovUkTypography.Apply(Model.Item.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-    var legendIsPageHeading = Model.Item.Settings.Value<bool>("legendIsPageHeading");
-    var legend = Model.Item.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var cssClass = Model.Settings.Value<string>("cssClasses");
+    var fieldsetHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
+    var legend = Model.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var selectedValues = new List<string>();
     if (!string.IsNullOrEmpty(modelStateEntry?.AttemptedValue)) { selectedValues.AddRange(modelStateEntry.AttemptedValue.ToUpperInvariant().Split(",")); }
 }
 
-<govuk-client-side-validation error-message-required="@(Model.Item.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+<govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-checkboxes name="@modelPropertyName" class="@cssClass">
          <govuk-checkboxes-fieldset>
             <govuk-checkboxes-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-checkboxes-fieldset-legend>

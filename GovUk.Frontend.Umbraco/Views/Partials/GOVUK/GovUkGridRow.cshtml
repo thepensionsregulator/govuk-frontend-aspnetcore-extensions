@@ -1,0 +1,36 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using GovUk.Frontend.Umbraco.Services
+@using Umbraco.Extensions
+@{
+    var blocks = Model.Item.Content.Value<BlockListModel>("blocks");
+    var rowClass = Model.Item.Settings.Value<string>("cssClassesForRow");
+    var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
+                        Model.Item.Settings?.Value<string>("columnSize"), 
+                        Model.Item.Settings?.Value<string>("columnSizeFromDesktop"), 
+                        Model.Item.Settings?.Value<string>("cssClassesForColumn")).TrimEnd();
+}
+<div class="govuk-grid-row @rowClass">
+    <div class="@columnClass">
+    @{
+        // Put each child item in a grid row, except where multiple columns follow each other, then they need to be in the same row.
+        for (var i = 0; i < blocks.Count; i++)
+        {
+            var isOpeningColumnSet = blocks[i].Content.ContentType.Alias == "govukGridColumn" && (i == 0 || blocks[i - 1].Content.ContentType.Alias != "govukGridColumn");
+            var isClosingColumnSet = blocks[i].Content.ContentType.Alias == "govukGridColumn" && (i == blocks.Count-1 || blocks[i + 1].Content.ContentType.Alias != "govukGridColumn");
+
+            if (isOpeningColumnSet)
+            {
+                @:<div class="govuk-grid-row">
+            }
+            @await Html.PartialAsync("GOVUK/" + blocks[i].Content.ContentType.Alias, new FilteredBlockListItem(blocks[i], Model.Filter))
+            if (isClosingColumnSet)
+            {
+                @:</div>                    
+            }
+        }
+    }
+    </div>
+</div>

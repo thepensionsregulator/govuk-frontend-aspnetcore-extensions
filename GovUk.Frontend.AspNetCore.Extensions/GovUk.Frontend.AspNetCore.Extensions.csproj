@@ -1,11 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<Nullable>enable</Nullable>
-		<Version>1.0.4</Version>
+		<Version>2.0.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -14,17 +14,8 @@
 		<None Remove="Content\govuk\govuk-js-init.js" />
 		<None Remove="Content\govuk\govuk-js-test.js" />
 		<None Remove="Content\govuk\govuk-validation.js" />
+		<None Remove="Content\tpr\tpr.css" />
 		<None Remove="Styles\_variables.scss" />
-		<None Remove="__tests__\govuk-validation-createErrorSummary.tests.js" />
-		<None Remove="__tests__\govuk-validation-errorMessageForElement.tests.js" />
-		<None Remove="__tests__\govuk-validation-formGroupForElement.tests.js" />
-		<None Remove="__tests__\govuk-validation-global.tests.js" />
-		<None Remove="__tests__\govuk-validation-removeOrUpdateError.tests.js" />
-		<None Remove="__tests__\govuk-validation-showError.tests.js" />
-		<None Remove="__tests__\govuk-validation-updateErrorMessage.tests.js" />
-		<None Remove="__tests__\govuk-validation-updateErrorSummary.tests.js" />
-		<None Remove="__tests__\govuk-validation-updateTitle.tests.js" />
-		<None Remove="__tests__\govuk-validation-validateElement.tests.js" />
 		<None Remove="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
 		<None Remove="Content\lib\jquery-validation\dist\jquery.validate.min.js" />
 		<None Remove="Content\lib\jquery\dist\jquery.min.js" />
@@ -32,51 +23,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="__tests__\govuk-validation-createErrorSummary.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-errorMessageForElement.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-formGroupForElement.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-global.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-removeOrUpdateError.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-showError.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-updateErrorMessage.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-updateErrorSummary.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-updateTitle.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-		<Content Include="__tests__\govuk-validation-validateElement.tests.js">
-			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
 		<EmbeddedResource Include="Content\govuk\govuk-frontend-publicsans.css" />
 		<EmbeddedResource Include="Content\govuk\govuk-frontend.css" />
+		<EmbeddedResource Include="Content\tpr\tpr.css" />
 		<EmbeddedResource Include="Styles\_variables.scss" />
 		<EmbeddedResource Include="Styles\_back-to-top.scss" />
 		<EmbeddedResource Include="Content\govuk\PublicSans-Bold.ttf" />
@@ -101,7 +50,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\govuk-frontend-aspnetcore\src\GovUk.Frontend.AspNetCore\GovUk.Frontend.AspNetCore.csproj" PrivateAssets="All"/>
+		<ProjectReference Include="..\..\govuk-frontend-aspnetcore\src\GovUk.Frontend.AspNetCore\GovUk.Frontend.AspNetCore.csproj" PrivateAssets="All" />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -111,7 +60,7 @@
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
 		<ItemGroup>
 			<!-- Filter out unnecessary files -->
-			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')->WithMetadataValue('PrivateAssets', 'All'))"/>
+			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
 		</ItemGroup>
 
 		<!-- Print batches for debug purposes -->
@@ -119,7 +68,7 @@
 
 		<ItemGroup>
 			<!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
-			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)"/>
+			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
 		</ItemGroup>
 	</Target>
 	<ItemGroup>
@@ -140,5 +89,39 @@
 
 	<ItemGroup>
 		<UpToDateCheckInput Remove="Styles\_variables.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
+	  <None Update="__tests__\govuk-validation-createErrorSummary.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-errorMessageForElement.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-formGroupForElement.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-global.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-removeOrUpdateError.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-showError.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-updateErrorMessage.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-updateErrorSummary.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-updateTitle.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="__tests__\govuk-validation-validateElement.tests.js">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
 	</ItemGroup>
 </Project>

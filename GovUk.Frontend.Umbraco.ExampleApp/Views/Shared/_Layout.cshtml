@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <partial name="GOVUK/Head" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/tpr/tpr.css" />
     @RenderSection("head", required: false)
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
-    @RenderSection("language", required: false)
-    <main id="main">@RenderBody()</main>
+    <div class="govuk-width-container">
+        @RenderSection("language", required: false)
+        <main id="main" class="govuk-main-wrapper">@RenderBody()</main>
+    </div>
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)
 </body>

@@ -130,7 +130,16 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
                 var modelPropertyName = targetElement.Attributes["name"]?.Value;
                 if (string.IsNullOrEmpty(modelPropertyName)) { continue; }
-                var modelProperty = propertyResolver.ResolveModelProperty(modelType, modelPropertyName);
+                PropertyInfo? modelProperty;
+                if (modelPropertyName.EndsWith(".Day") || modelPropertyName.EndsWith(".Month") || modelPropertyName.EndsWith(".Year"))
+                {
+                    // Dates are a special case because we have collect child properties but they should all resolve to the one parent property.
+                    modelProperty = propertyResolver.ResolveModelProperty(modelType, modelPropertyName.Substring(0, modelPropertyName.LastIndexOf(".")));
+                }
+                else
+                {
+                    modelProperty = propertyResolver.ResolveModelProperty(modelType, modelPropertyName);
+                }
 
                 if (modelProperty != null)
                 {

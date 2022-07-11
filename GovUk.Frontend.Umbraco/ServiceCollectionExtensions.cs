@@ -1,6 +1,7 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.Umbraco.Services;
+using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -24,6 +25,10 @@ namespace GovUk.Frontend.Umbraco
 
             services.AddGovUkFrontendExtensions(configureOptions);
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<RemoveBlockListSettingsErrorsActionFilter>();
+            });
 
             return services;
         }

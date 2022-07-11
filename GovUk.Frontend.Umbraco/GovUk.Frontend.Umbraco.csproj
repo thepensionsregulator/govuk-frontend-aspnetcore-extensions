@@ -1,16 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Content Remove="uSync\v9\ContentTypes\govukbacktomenu.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukbacktomenusettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukbutton.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukbuttongroup.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukbuttongroupsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukbuttonsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcaption.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukcaptionsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcheckbox.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcheckboxes.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcheckboxesdivider.config" />
@@ -20,19 +24,31 @@
 		<Content Remove="uSync\v9\ContentTypes\govukdateinput.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukdateinputsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukdetails.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukdetailssettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukerrorsummary.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukerrorsummarysettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukfieldset.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukfieldsetsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukgrid.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukgridcolumn.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukgridcolumnclasses.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukgridcolumnsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukgridrow.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukgridrowsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukhint.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukinsettext.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukinsettextsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklabelispageheading.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklegend.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklegendispageheading.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklink.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuklinkasbutton.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuklinkasbuttonsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukmodelproperty.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuknotificationbanner.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuknotificationbannersettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukpageheading.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukpageheadingsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukpanel.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukpanelsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukradio.config" />
@@ -44,28 +60,27 @@
 		<Content Remove="uSync\v9\ContentTypes\govukselectoption.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselectsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config" />
-		<Content Remove="uSync\v9\ContentTypes\govukstart.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextarea.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextareasettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextinput.config" />
-		<Content Remove="uSync\v9\ContentTypes\govuktextinputsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktypography.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationrequired.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtext.config" />
-		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukwarningtextsettings.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtonType.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKHeadingLevel.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKLinkPicker.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKModelProperty.config" />
-		<Content Remove="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKNotificationBannerType.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadioButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadiosLayout.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditor.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKSelectOptions.config" />
+		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
+		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -86,9 +101,9 @@
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.52.1.2" />
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-		<PackageReference Include="Umbraco.Cms.Core" Version="9.5.0" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.5.0" />
-		<PackageReference Include="Umbraco.Cms.Web.Common" Version="9.5.0" />
+		<PackageReference Include="Umbraco.Cms.Core" Version="10.0.0" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
+		<PackageReference Include="Umbraco.Cms.Web.Common" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -102,20 +117,31 @@
 
 	<ItemGroup>
 		<Folder Include="App_Plugins\GOVUK\" />
-		<Folder Include="wwwroot\css\" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="uSync\v9\ContentTypes\govukbacktomenu.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukbacktomenusettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukbutton.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukbuttongroup.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govukbuttongroupsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukbuttonsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukcaption.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukcaptionsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukcheckbox.config">
@@ -145,7 +171,13 @@
 		<None Include="uSync\v9\ContentTypes\govukdetails.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govukdetailssettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukerrorsummary.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukerrorsummarysettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukfieldset.config">
@@ -154,10 +186,31 @@
 		<None Include="uSync\v9\ContentTypes\govukfieldsetsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govukgrid.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukgridcolumn.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukgridcolumnclasses.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukgridcolumnsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukgridrow.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukgridrowsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukhint.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukinsettext.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukinsettextsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govuklabelispageheading.config">
@@ -172,6 +225,12 @@
 		<None Include="uSync\v9\ContentTypes\govuklink.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govuklinkasbutton.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuklinkasbuttonsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukmodelproperty.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -182,6 +241,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukpageheading.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukpageheadingsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukpanel.config">
@@ -217,9 +279,6 @@
 		<None Include="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\ContentTypes\govukstart.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
 		<None Include="uSync\v9\ContentTypes\govuktextarea.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -227,9 +286,6 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govuktextinput.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-		<None Include="uSync\v9\ContentTypes\govuktextinputsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govuktypography.config">
@@ -244,7 +300,7 @@
 		<None Include="uSync\v9\ContentTypes\govukwarningtext.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\DataTypes\GOVUKBlockList.config">
+		<None Include="uSync\v9\ContentTypes\govukwarningtextsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKButtons.config">
@@ -265,9 +321,6 @@
 		<None Include="uSync\v9\DataTypes\GOVUKModelProperty.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKNotificationBannerType.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -283,5 +336,14 @@
 		<None Include="uSync\v9\DataTypes\GOVUKSelectOptions.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css.map">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="uSync\v9\ContentTypes\govukbacktomenu.config" />
 	</ItemGroup>
 </Project>

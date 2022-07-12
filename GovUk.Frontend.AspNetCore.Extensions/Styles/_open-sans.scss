@@ -1,0 +1,42 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+@import 'govuk/core/all';
+@import "govuk/objects/all";
+@import "govuk/components/back-link";
+@import "govuk/components/button";
+@import "govuk/components/character-count";
+@import "govuk/components/checkboxes";
+@import "govuk/components/date-input";
+@import "govuk/components/details";
+@import "govuk/components/error-message";
+@import "govuk/components/error-summary";
+@import "govuk/components/fieldset";
+@import "govuk/components/hint";
+@import "govuk/components/input";
+@import "govuk/components/inset-text";
+@import "govuk/components/label";
+@import "govuk/components/notification-banner";
+@import "govuk/components/panel";
+@import "govuk/components/radios";
+@import "govuk/components/select";
+@import "govuk/components/skip-link";
+@import "govuk/components/textarea";
+@import "govuk/components/warning-text";
+@import "govuk/utilities/all";
+@import "govuk/overrides/all";
+
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(../govuk/open-sans-regular.woff2) format("woff2");
+}
+
+@font-face {
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(../govuk/open-sans-bold.woff2) format("woff2");
+}

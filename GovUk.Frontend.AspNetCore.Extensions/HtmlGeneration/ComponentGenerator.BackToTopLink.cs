@@ -21,7 +21,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
             var tagBuilder = new TagBuilder(BackToTopLinkElement);
             if (attributes != null) tagBuilder.MergeAttributes(attributes);
-            tagBuilder.MergeCssClass("govuk-back-to-top-link");
+            tagBuilder.MergeCssClass("govuk-link");
+            tagBuilder.MergeCssClass("govuk-link--tpr-back-to-top");
             tagBuilder.Attributes.Add("href", href);
             tagBuilder.InnerHtml.AppendHtml(content);
 

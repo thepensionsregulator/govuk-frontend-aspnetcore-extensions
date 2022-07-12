@@ -1,4 +1,186 @@
 ﻿/* The default font for the GOV.UK Design System, 'GDS Transport', is not licenced for use on many .gov.uk domains,
-   (see https://design-system.service.gov.uk/styles/typography/) so replace it with 'Public Sans' from Google Fonts.
+   (see https://design-system.service.gov.uk/styles/typography/) so replace it with 'Open Sans' from Google Fonts.
 */
 $govuk-font-family: 'Open Sans', Arial, sans-serif;
+$tpr-font-weight-regular: normal;
+$tpr-font-weight-semi-bold: 600; // browsers should use 'Open Sans Semi Bold'
+$tpr-font-weight-bold: 700; // browsers should use 'Open Sans Bold'
+$govuk-font-weight-regular: $tpr-font-weight-regular;
+$govuk-font-weight-bold: $tpr-font-weight-bold;
+
+/* TPR brand colours */
+$tpr-colour-lime: #cdd500;
+$tpr-colour-violet: #483b8b;
+$tpr-colour-blue-marguerite: #7469ba;
+$tpr-colour-tolopea: #0b0030;
+$tpr-colour-eastern-blue: #0381a2;
+$tpr-colour-regent-st-blue: #99ccd9;
+$tpr-colour-royal-blue: #006ebc;
+$tpr-colour-kashmir-blue: #557b97;
+$tpr-colour-cornflower: #98c4e4;
+$tpr-colour-camarone: #1e7e34;
+$tpr-colour-fire-brick: #a91717;
+$tpr-colour-brick: #cd2e25;
+$tpr-colour-petite-orchid: #dca1a1;
+$tpr-colour-tawny: #ca5002;
+$tpr-colour-tangerine-yellow: #fed100;
+$tpr-colour-white: #ffffff;
+$tpr-colour-snow: #fafafa;
+$tpr-colour-white-smoke: #f5f5f5;
+$tpr-colour-whisper: #ededed;
+$tpr-colour-very-light-grey: #cacaca;
+$tpr-colour-silver: #bbbbbb;
+$tpr-colour-dark-grey: #b0b0b0;
+$tpr-colour-grey: #777777;
+$tpr-colour-steel: #54616c;
+$tpr-colour-eclipse: #3d3d3d;
+$tpr-colour-zambezi: #585858;
+$tpr-colour-black: #000000;
+
+/* Change the colours on GOV.UK components where TPR brand colours diverge from 
+   the GOV.UK Design System. Colours are changed in two ways:
+   - here, before GOV.UK classes are compiled, targeting situations where GOV.UK source
+     defines a variable for the specific situation
+   - in _tpr-*.scss for individual components, after GOV.UK classes are compiled
+*/
+
+$govuk-text-colour: $tpr-colour-eclipse;
+$govuk-link-colour: $tpr-colour-royal-blue;
+$govuk-link-visited-colour: $tpr-colour-violet;
+$govuk-link-hover-colour: $tpr-colour-kashmir-blue;
+$govuk-link-active-colour: $tpr-colour-kashmir-blue;
+$govuk-secondary-text-colour: $tpr-colour-zambezi;
+$govuk-input-border-colour: $tpr-colour-eclipse;
+$govuk-focus-colour: $tpr-colour-tangerine-yellow;
+$govuk-error-colour: $tpr-colour-fire-brick;
+
+/* Change the default typography sizing where the TPR brand diverges from the
+   GOV.UK Design System. GOV.UK code uses the govuk-font() mixin. It passes in the 
+   index and device (eg 80 and 'tablet') and gets back a font-size and line-height.
+   Some GOV.UK classes like .govuk-body-s are not going to work, but that is the TPR brand.
+
+   Original settings are at https://github.com/alphagov/govuk-frontend/blob/4b5ed0ada3b64722ae2074dfa0db5d4d3a45cb79/package/govuk/settings/_typography-responsive.scss#L70
+
+   Further typography changes are made in _tpr-*.scss for individual components, 
+   after GOV.UK classes are compiled.
+
+   .govuk-heading-xl uses 48
+   .govuk-heading-l uses 36                  --> h1
+   .govuk-heading-m and .govuk-body-l use 24 --> h2 or large body text
+   .govuk-heading-s and .govuk-body-m use 19 --> h3 or body text
+
+*/
+$govuk-typography-scale: (
+  80: (
+    null: (
+      font-size: 53px,
+      line-height: 55px
+    ),
+    tablet: (
+      font-size: 80px,
+      line-height: 80px
+    ),
+    print: (
+      font-size: 53pt,
+      line-height: 1.1
+    )
+  ),
+  48: (
+    null: (
+      font-size: 32px,
+      line-height: 35px
+    ),
+    tablet: (
+      font-size: 48px,
+      line-height: 50px
+    ),
+    print: (
+      font-size: 32pt,
+      line-height: 1.15
+    )
+  ),
+  36: (
+    null: (
+      font-size: 34px,
+      line-height: 48px
+    ),
+    tablet: (
+      font-size: 45px,
+      line-height: 68px
+    ),
+    print: (
+      font-size: 24pt,
+      line-height: 1.05
+    )
+  ),
+  27: (
+    null: (
+      font-size: 18px,
+      line-height: 20px
+    ),
+    tablet: (
+      font-size: 27px,
+      line-height: 30px
+    ),
+    print: (
+      font-size: 18pt,
+      line-height: 1.15
+    )
+  ),
+  24: (
+    null: (
+      font-size: 18px,
+      line-height: 24px
+    ),
+    tablet: (
+      font-size: 23px,
+      line-height: 36px
+    ),
+    print: (
+      font-size: 18pt,
+      line-height: 1.15
+    )
+  ),
+  19: (
+    null: (
+      font-size: 16px,
+      line-height: 1.5
+    ),
+    tablet: (
+      font-size: 16px,
+      line-height: 1.5
+    ),
+    print: (
+      font-size: 14pt,
+      line-height: 1.15
+    )
+  ),
+  16: (
+    null: (
+      font-size: 16px,
+      line-height: 1.5
+    ),
+    tablet: (
+      font-size: 16px,
+      line-height: 1.5
+    ),
+    print: (
+      font-size: 14pt,
+      line-height: 1.2
+    )
+  ),
+  14: (
+    null: (
+      font-size: 12px,
+      line-height: 15px
+    ),
+    tablet: (
+      font-size: 14px,
+      line-height: 20px
+    ),
+    print: (
+      font-size: 12pt,
+      line-height: 1.2
+    )
+  )
+) !default;

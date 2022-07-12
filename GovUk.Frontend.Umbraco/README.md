@@ -89,7 +89,7 @@ This repository includes an example application which demonstrates the validatio
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <partial name="GOVUK/Head" />
+        <partial name="TPR/Head" />
         @RenderSection("head", required: false)
       </head>
       <body class="govuk-template__body ">
@@ -103,7 +103,7 @@ This repository includes an example application which demonstrates the validatio
 
     If you do not need form validation on every page you can remove `<partial name="GOVUK/Validation" />` and insert it only on the views where it is required.
 
-    Note that `GOVUK/Head` imports the `/govuk/govuk-frontend-opensans.css` stylesheet for use [where 'GDS Transport' is not allowed](https://design-system.service.gov.uk/styles/typography/). You can choose to import `/govuk/govuk-frontend.css` instead to use 'GDS Transport', but this does not include the 'Back to top' component.
+    Note that `TPR/Head` imports TPR styles on top of the GOV.UK Design System. You can use the partial `GOVUK/Head` instead to use the GOV.UK Design System styles only.
 
 16. In `Startup.cs` add the following to the `ConfigureServices` method:
 

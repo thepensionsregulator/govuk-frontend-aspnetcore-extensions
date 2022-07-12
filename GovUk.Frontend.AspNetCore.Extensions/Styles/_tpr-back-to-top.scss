@@ -1,0 +1,47 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* Customisations to the default style applied by .govuk-link */
+.govuk-link--tpr-back-to-top {
+    @include govuk-link-style-no-visited-state;
+    @include govuk-font($size: 14);
+    float: right;
+    display: inline-block;
+    position: relative;
+    @include govuk-responsive-margin(3, "bottom");
+    padding-left: 16px; // space for the arrow
+}
+
+/* Arrow pointing upward, made of CSS borders */
+.govuk-link--tpr-back-to-top:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 4px;
+    bottom: 0;
+    left: 2px;
+    width: 7px;
+    height: 7px;
+    margin: auto 0;
+    -webkit-transform: rotate(315deg);
+    -ms-transform: rotate(315deg);
+    transform: rotate(315deg);
+    border: solid;
+    border-width: 1px 1px 0 0;
+    border-color: $tpr-colour-eclipse;
+}
+
+/* Change the arrow colour when the link has the standard focus background */
+.govuk-link--tpr-back-to-top:focus:before {
+    border-color: $tpr-colour-black;
+}
+
+/* Increase the clickable area of the link */
+.govuk-link--tpr-back-to-top:after {
+    content: "";
+    position: absolute;
+    top: -14px;
+    right: 0;
+    bottom: -14px;
+    left: 0
+}

@@ -1,0 +1,8 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* Change GOV.UK label styles for form elements where the TPR brand diverges from the 
+   GOV.UK Design System. */
+.govuk-label {
+    font-weight: $tpr-font-weight-bold;
+}

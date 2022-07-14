@@ -45,9 +45,9 @@ $tpr-button-padding: 20px;
     background-color: $tpr-colour-royal-blue;
 }
 .govuk-button--secondary:disabled {
-    color: $tpr-colour-white;
-    background-color: $tpr-colour-cornflower;
-    border-color: transparent;
+    color: $tpr-colour-cornflower;
+    background-color: $tpr-colour-white;
+    border-color: $tpr-colour-cornflower;
 }
 
 /* Remove chevron where it's not wanted */

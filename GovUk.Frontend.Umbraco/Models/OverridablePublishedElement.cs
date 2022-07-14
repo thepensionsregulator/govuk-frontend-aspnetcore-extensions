@@ -84,7 +84,7 @@ namespace GovUk.Frontend.Umbraco.Models
                 return (T)_propertyValues[alias];
             }
 
-            return _publishedElement != null ? _publishedElement.Value<T>(alias) : default(T);
+            return _publishedElement != null ? _publishedElement.Value<T>(alias) : default;
         }
     }
 }

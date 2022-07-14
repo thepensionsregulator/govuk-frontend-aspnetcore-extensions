@@ -1,19 +1,24 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var checkboxes = Model.Content.Value<BlockListModel>("checkboxes");
+    var checkboxes = Model.Content.Value<OverridableBlockListModel>("checkboxes")!;
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
-    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    ModelStateEntry? modelStateEntry = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+    }
     var cssClass = Model.Settings.Value<string>("cssClasses");
     var fieldsetHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
     var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
-    var legend = Model.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var selectedValues = new List<string>();
     if (!string.IsNullOrEmpty(modelStateEntry?.AttemptedValue)) { selectedValues.AddRange(modelStateEntry.AttemptedValue.ToUpperInvariant().Split(",")); }
 }
@@ -28,7 +33,7 @@
                     <govuk-checkboxes-hint>@Html.Raw(fieldsetHint)</govuk-checkboxes-hint>
                 }
                 <govuk-checkboxes-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-checkboxes-error-message>
-                foreach (var block in Model.Filter(checkboxes))
+                foreach (var block in checkboxes.Filter(checkboxes))
                 {
                     if (block.Content.ContentType.Alias == "govukCheckboxesDivider")
                     {
@@ -38,7 +43,7 @@
                     {
                         if (block.Settings.Value<bool>("exclusive")) 
                         {
-                            var value = block.Content.Value<string>("value");
+                            var value = block.Content.Value<string>("value") ?? string.Empty;
                             var checkboxHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
                             <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>("cssClasses"))" input-data-behaviour="exclusive">@(block.Content.Value<string>("label"))
                                 @{
@@ -46,10 +51,10 @@
                                     {
                                         <govuk-checkboxes-item-hint>@Html.Raw(checkboxHint)</govuk-checkboxes-item-hint>
                                     }
-                                    var conditional = block.Content.Value<BlockListModel>("conditionalBlocks");
+                                    var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
                                     if (conditional.Any()){
                                         <govuk-checkboxes-item-conditional>
-                                            @await Html.PartialAsync("GOVUK/FilteredBlockList", new FilteredBlockListModel(conditional, Model.Filter))
+                                            @await Html.PartialAsync("GOVUK/BlockList", conditional)
                                         </govuk-checkboxes-item-conditional>
                                     }
                                 }
@@ -57,7 +62,7 @@
                         }
                         else
                         {
-                            var value = block.Content.Value<string>("value");
+                            var value = block.Content.Value<string>("value") ?? string.Empty;
                             var checkboxHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
                             <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
                                 @{
@@ -65,10 +70,10 @@
                                     {
                                         <govuk-checkboxes-item-hint>@Html.Raw(checkboxHint)</govuk-checkboxes-item-hint>
                                     }
-                                    var conditional = block.Content.Value<BlockListModel>("conditionalBlocks");
+                                    var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
                                     if (conditional.Any()){
                                         <govuk-checkboxes-item-conditional>
-                                            @await Html.PartialAsync("GOVUK/FilteredBlockList", new FilteredBlockListModel(conditional, Model.Filter))
+                                            @await Html.PartialAsync("GOVUK/BlockList", conditional)
                                         </govuk-checkboxes-item-conditional>
                                     }
                                 }

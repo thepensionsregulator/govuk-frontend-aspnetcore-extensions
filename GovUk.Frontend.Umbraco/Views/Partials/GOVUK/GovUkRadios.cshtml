@@ -1,15 +1,20 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var radioButtons = Model.Content.Value<BlockListModel>("radioButtons");
+    var radioButtons = Model.Content.Value<OverridableBlockListModel>("radioButtons")!;
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
-    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    ModelStateEntry? modelStateEntry = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+    }
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var cssClass = Model.Settings.Value<string>("cssClasses");
     if (Model.Settings.Value<string>("layout") == "Horizontal")
@@ -18,7 +23,7 @@
     }
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
     var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
-    var legend = Model.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
 }
 <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-radios name="@modelPropertyName" class="@cssClass">
@@ -29,7 +34,7 @@
         {
             <govuk-radios-hint>@Html.Raw(hint)</govuk-radios-hint>
         }
-        @foreach (var block in Model.Filter(radioButtons))
+        @foreach (var block in radioButtons.Filter(radioButtons))
         {
             if (block.Content.ContentType.Alias == "govukRadiosDivider")
             {
@@ -37,14 +42,14 @@
             }
             else
             {
-                var value = block.Content.Value<string>("value");
+                var value = block.Content.Value<string>("value") ?? string.Empty;
                 <govuk-radios-item value="@value" class="@(block.Settings.Value<string>("cssClasses"))" checked="@(value.ToUpperInvariant() == attemptedValue)">@(block.Content.Value<string>("label"))
                     <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
                     @{
-                        var conditional = block.Content.Value<BlockListModel>("conditionalBlocks");
+                        var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
                         if (conditional.Any()){
                             <govuk-radios-item-conditional>
-                                @await Html.PartialAsync("GOVUK/FilteredBlockList", new FilteredBlockListModel(conditional, Model.Filter))
+                                @await Html.PartialAsync("GOVUK/BlockList", conditional)
                             </govuk-radios-item-conditional>
                         }
                     }

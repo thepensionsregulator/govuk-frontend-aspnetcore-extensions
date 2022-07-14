@@ -1,0 +1,9 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* Change GOV.UK caption styles where the TPR brand diverges from the GOV.UK Design System. */
+.govuk-caption-m,
+.govuk-caption-l,
+.govuk-caption-xl {
+    color: $tpr-colour-grey;
+}

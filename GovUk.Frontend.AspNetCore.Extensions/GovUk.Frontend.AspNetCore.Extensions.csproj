@@ -9,14 +9,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Remove="Content\govuk\govuk-frontend-opensans.css" />
 		<None Remove="Content\govuk\govuk-frontend.css" />
 		<None Remove="Content\govuk\govuk-js-init.js" />
 		<None Remove="Content\govuk\govuk-js-test.js" />
 		<None Remove="Content\govuk\govuk-validation.js" />
 		<None Remove="Content\govuk\open-sans-bold.woff2" />
 		<None Remove="Content\govuk\open-sans-regular.woff2" />
+		<None Remove="Content\govuk\open-sans-semi-bold.woff2" />
 		<None Remove="Content\tpr\tpr.css" />
+		<None Remove="Styles\_govuk-button.scss" />
+		<None Remove="Styles\_govuk-caption.scss" />
+		<None Remove="Styles\_govuk-date-input.scss" />
+		<None Remove="Styles\_govuk-label.scss" />
+		<None Remove="Styles\_govuk-link.scss" />
+		<None Remove="Styles\_govuk-panel.scss" />
+		<None Remove="Styles\_govuk-radios-checkboxes.scss" />
+		<None Remove="Styles\_tpr-grid.scss" />
 		<None Remove="Styles\_variables.scss" />
 		<None Remove="Content\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
 		<None Remove="Content\lib\jquery-validation\dist\jquery.validate.min.js" />
@@ -26,12 +34,20 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Content\govuk\govuk-frontend.css" />
-		<EmbeddedResource Include="Content\govuk\govuk-frontend-opensans.css" />
 		<EmbeddedResource Include="Content\govuk\open-sans-bold.woff2" />
 		<EmbeddedResource Include="Content\govuk\open-sans-regular.woff2" />
+		<EmbeddedResource Include="Content\govuk\open-sans-semi-bold.woff2" />
 		<EmbeddedResource Include="Content\tpr\tpr.css" />
+		<EmbeddedResource Include="Styles\_govuk-caption.scss" />
+		<EmbeddedResource Include="Styles\_govuk-button.scss" />
+		<EmbeddedResource Include="Styles\_govuk-date-input.scss" />
+		<EmbeddedResource Include="Styles\_govuk-label.scss" />
+		<EmbeddedResource Include="Styles\_govuk-panel.scss" />
+		<EmbeddedResource Include="Styles\_govuk-radios-checkboxes.scss" />
+		<EmbeddedResource Include="Styles\_tpr-grid.scss" />
+		<EmbeddedResource Include="Styles\_govuk-link.scss" />
 		<EmbeddedResource Include="Styles\_variables.scss" />
-		<EmbeddedResource Include="Styles\_back-to-top.scss" />
+		<EmbeddedResource Include="Styles\_tpr-back-to-top.scss" />
 		<EmbeddedResource Include="Content\govuk\govuk-js-init.js" />
 		<EmbeddedResource Include="Content\govuk\govuk-js-test.js" />
 		<EmbeddedResource Include="Content\govuk\govuk-validation.js" />
@@ -73,9 +89,6 @@
 			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
 		</ItemGroup>
 	</Target>
-	<ItemGroup>
-		<UpToDateCheckInput Remove="Styles\_back-to-top.scss" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<UpToDateCheckInput Remove="Styles\govuk-frontend.scss" />
@@ -87,10 +100,6 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_open-sans.scss" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\govuk-frontend-opensans.scss" />
 	</ItemGroup>
 	
 	<ItemGroup>
@@ -125,6 +134,46 @@
 	  <None Update="__tests__\govuk-validation-validateElement.tests.js">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </None>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-grid.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-caption.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-inset-text.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-button.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-panel.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-radios-checkboxes.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-link.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-back-to-top.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-label.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-date-input.scss" />
 	</ItemGroup>
 
 </Project>

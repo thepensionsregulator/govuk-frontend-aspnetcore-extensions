@@ -1,0 +1,27 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* Change GOV.UK radio and checkbox styles where the TPR brand diverges from the GOV.UK Design System. */
+.govuk-checkboxes__label,
+.govuk-radios__label {
+    font-weight: $tpr-font-weight-semi-bold;
+}
+
+.govuk-checkboxes__label:before,
+.govuk-radios__label:before {
+    background-color: $tpr-colour-white-smoke;
+}
+
+.govuk-radios__input:disabled,
+.govuk-checkboxes__input:disabled {
+    border-color: $tpr-colour-silver;
+}
+.govuk-radios__input:disabled + .govuk-radios__label,
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
+    opacity: 1; // GOV.UK uses opacity to change the colour, so undo that
+    color: $tpr-colour-dark-grey;
+}
+.govuk-radios__input:disabled + .govuk-radios__label:before
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label:before {
+    background-color: $tpr-colour-snow;
+}

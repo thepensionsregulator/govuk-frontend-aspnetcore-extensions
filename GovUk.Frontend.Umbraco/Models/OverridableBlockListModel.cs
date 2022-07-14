@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace GovUk.Frontend.Umbraco.Models
 {
@@ -18,20 +19,22 @@ namespace GovUk.Frontend.Umbraco.Models
         /// </summary>
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
-        public OverridableBlockListModel(IEnumerable<BlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>>? filter = null)
+        /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
+        public OverridableBlockListModel(IEnumerable<BlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>>? filter = null, Func<IPublishedElement, IOverridablePublishedElement>? publishedElementFactory = null)
         {
             Filter = filter ?? (x => x);
+            var factory = publishedElementFactory ?? OverridableBlockListItem.DefaultPublishedElementFactory;
 
             // Take the IEnumerable<BlockListItem> (which is probably a BlockListModel) and convert each item to an OverridableBlockListItem,
             // and each nested block list to an OverridableBlockListModel populated with OverridableBlockListItems.
             foreach (var item in blockListItems)
             {
-                var overridableItem = new OverridableBlockListItem(item);
+                var overridableItem = new OverridableBlockListItem(item, factory);
                 foreach (var prop in overridableItem.Content.Properties)
                 {
                     if (prop.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList)
                     {
-                        var overriddenNestedBlockList = new OverridableBlockListModel(overridableItem.Content.Value<BlockListModel>(prop.Alias)!, Filter);
+                        var overriddenNestedBlockList = new OverridableBlockListModel(overridableItem.Content.Value<BlockListModel>(prop.Alias)!, Filter, factory);
                         overridableItem.Content.OverrideValue(prop.Alias, overriddenNestedBlockList);
                     }
                 }

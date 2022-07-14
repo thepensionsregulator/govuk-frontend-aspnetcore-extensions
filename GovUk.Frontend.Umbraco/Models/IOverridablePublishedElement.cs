@@ -8,6 +8,6 @@ namespace GovUk.Frontend.Umbraco.Models
     public interface IOverridablePublishedElement : IPublishedElement
     {
         void OverrideValue(string alias, object value);
-        T? Value<T>(string alias);
+        T? Value<T>(string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default);
     }
 }

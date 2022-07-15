@@ -63,16 +63,21 @@
 		<Content Remove="uSync\v9\ContentTypes\govuktextarea.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextareasettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextinput.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktextinputsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktypography.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationrequired.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtextsettings.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtonType.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKGridRowBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKHeadingLevel.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKLinkPicker.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKModelProperty.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKNotificationBannerType.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadioButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadiosLayout.config" />
@@ -287,6 +292,9 @@
 		<None Include="uSync\v9\ContentTypes\govuktextinput.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govuktextinputsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govuktypography.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -302,11 +310,20 @@
 		<None Include="uSync\v9\ContentTypes\govukwarningtextsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKBlockList.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKButtons.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKButtonType.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKGridRowBlockList.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKHeadingLevel.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -316,6 +333,9 @@
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKModelProperty.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKNotificationBannerType.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -338,25 +358,5 @@
 		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css.map">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="uSync\v9\ContentTypes\govukbacktomenu.config" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Content Update="uSync\v9\DataTypes\GOVUKBlockList.config">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="uSync\v9\DataTypes\GOVUKGridRowBlockList.config">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
 	</ItemGroup>
 </Project>

@@ -1,0 +1,16 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* When a field prefix or suffix is used, to align with the TPR brand, remove the helpful border and background that make it stand out. */
+.govuk-input__prefix, 
+.govuk-input__suffix {
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.govuk-input__prefix {
+    min-width: 0;
+    padding-left: 0;
+    border-left: none;
+    padding-right: govuk-spacing(2);
+}

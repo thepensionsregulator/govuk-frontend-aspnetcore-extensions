@@ -1,4 +1,4 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @using GovUk.Frontend.Umbraco
@@ -6,7 +6,7 @@
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var options = Model.Content.Value<BlockListModel>("options");
+    var options = Model.Content.Value<OverridableBlockListModel>("options")!;
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     var cssClass = Model.Settings.Value<string>("cssClasses");
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
@@ -17,7 +17,7 @@
     <govuk-select name="@modelPropertyName" class="@cssClass">
         <govuk-select-label>@(Model.Content.Value<string>("label"))</govuk-select-label>
         <govuk-select-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-select-error-message>
-        @foreach (var block in Model.Filter(options))
+        @foreach (var block in options.Filter(options))
         {
             var value = block.Content.Value<string>("value");
             <govuk-select-item value="@value" selected="@(value == attemptedValue)">@(block.Content.Value<string>("label"))</govuk-select-item>

@@ -68,7 +68,11 @@ namespace GovUk.Frontend.Umbraco.Models
         /// Gets the value of a content's property identified by its alias, converted to a specified type.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="alias"></param>
+        /// <param name="alias">The property alias</param>
+        /// <param name="culture">The variation language</param>
+        /// <param name="segment">The variation segment</param>
+        /// <param name="fallback">Optional fallback strategy</param>
+        /// <param name="defaultValue">The default value</param>
         /// <returns></returns>
         /// <remarks>
         /// The value comes a value passed to <see cref="OverrideValue"/>, or from the <see cref="IPublishedProperty"/> field <c>Value</c> ie it is suitable for use when rendering content.
@@ -77,14 +81,14 @@ namespace GovUk.Frontend.Umbraco.Models
         /// 
         /// The alias is case-insensitive.
         /// </remarks>
-        public T? Value<T>(string alias)
+        public T? Value<T>(string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default)
         {
             if (_propertyValues.ContainsKey(alias))
             {
                 return (T)_propertyValues[alias];
             }
 
-            return _publishedElement != null ? _publishedElement.Value<T>(alias) : default(T);
+            return _publishedElement != null ? _publishedElement.Value(alias, culture, segment, fallback, defaultValue) : default;
         }
     }
 }

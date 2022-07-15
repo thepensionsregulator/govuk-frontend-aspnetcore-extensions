@@ -1,14 +1,15 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @using System.Linq
 @{
-    var buttons = new FilteredBlockListModel(Model.Content.Value<BlockListModel>("buttons"), Model.Filter) { RenderGrid = false };
+    var buttons = Model.Content.Value<OverridableBlockListModel>("buttons")!;
+    buttons.RenderGrid = false;
 }
 @if (buttons.FilteredBlocks().Any()) {
 <div class="govuk-button-group">
-    @await Html.PartialAsync("GOVUK/FilteredBlockList", buttons)
+    @await Html.PartialAsync("GOVUK/BlockList", buttons)
 </div>
 }

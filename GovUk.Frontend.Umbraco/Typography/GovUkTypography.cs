@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using System.Collections.Generic;
 
 namespace GovUk.Frontend.Umbraco.Typography
 {
@@ -18,8 +19,10 @@ namespace GovUk.Frontend.Umbraco.Typography
                 {
                     ApplyClass(document, "//a", "govuk-link--inverse");
                 }
-                ApplyClass(document, "//h2", "govuk-heading-m");
-                ApplyClass(document, "//h3", "govuk-heading-s");
+
+                var allHeadingClasses = new[] { "govuk-heading-xl", "govuk-heading-l", "govuk-heading-m", "govuk-heading-s" };
+                ApplyClass(document, "//h2", "govuk-heading-m", allHeadingClasses);
+                ApplyClass(document, "//h3", "govuk-heading-s", allHeadingClasses);
                 ApplyClass(document, "//p", "govuk-body");
                 ApplyClass(document, "//ul", "govuk-list");
                 ApplyClass(document, "//ul", "govuk-list--bullet");
@@ -54,14 +57,29 @@ namespace GovUk.Frontend.Umbraco.Typography
             return document.DocumentNode.OuterHtml;
         }
 
-        private static void ApplyClass(HtmlDocument doc, string xpath, string className)
+        private static void ApplyClass(HtmlDocument doc, string xpath, string className, IEnumerable<string>? unlessTheseClassesAreApplied = null)
         {
             var nodes = doc.DocumentNode.SelectNodes(xpath);
             if (nodes != null)
             {
                 foreach (var node in nodes)
                 {
-                    node.AddClass(className);
+                    var addClass = true;
+                    if (unlessTheseClassesAreApplied != null)
+                    {
+                        foreach (var unlessClass in unlessTheseClassesAreApplied)
+                        {
+                            if (node.HasClass(unlessClass))
+                            {
+                                addClass = false;
+                                break;
+                            }
+                        }
+                    }
+                    if (addClass)
+                    {
+                        node.AddClass(className);
+                    }
                 }
             }
         }

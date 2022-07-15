@@ -63,7 +63,6 @@
 		<Content Remove="uSync\v9\ContentTypes\govuktextarea.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextareasettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextinput.config" />
-		<Content Remove="uSync\v9\ContentTypes\govuktypography.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationrequired.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtext.config" />
@@ -77,6 +76,7 @@
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadioButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadiosLayout.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditor.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditorLarge.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKSelectOptions.config" />
 		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
 		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
@@ -287,9 +287,6 @@
 		<None Include="uSync\v9\ContentTypes\govuktextinput.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\ContentTypes\govuktypography.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
 		<None Include="uSync\v9\ContentTypes\govukvalidationrequired.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -327,6 +324,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditor.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditorLarge.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKSelectOptions.config">

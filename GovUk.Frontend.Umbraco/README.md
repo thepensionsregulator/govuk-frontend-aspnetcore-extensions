@@ -203,25 +203,25 @@ public class MyDocumentTypeViewModel
 {
     public MyDocumentType Page { get; set; }
 
-    public FilteredBlockListModel FilteredBlocks { get; set; }
+    public OverridableBlockListModel OverriddenBlocks { get; set; }
 }
 
 /// Controller
 using GovUk.Frontend.Umbraco.Models
 
-viewModel.FilteredBlocks = new FilteredBlockListModel(viewModel.Page.Blocks, model =>
+viewModel.OverriddenBlocks = new OverridableBlockListModel(viewModel.Page.Blocks, model =>
     model.Where(block =>
         block.Content.ContentType.Alias != GovukRadio.ModelTypeAlias ||
         ((GovukRadio)block.Content).Value != "not-relevant")
     );
 
 /// View
-<partial name="GOVUK/FilteredBlockList" model="Model.FilteredBlocks" />
+<partial name="GOVUK/BlockList" model="Model.OverriddenBlocks" />
 ```
 
 ## Overriding values in the block list
 
-When using the block list editor, if you need to conditionally override some values in specific blocks you can do that. (This does not yet work for nested block lists.)
+When using the block list editor, if you need to conditionally override some values in specific blocks you can do that.
 
 For example, if you wanted to apply an additional CSS class to a grid row:
 
@@ -231,16 +231,18 @@ public class MyDocumentTypeViewModel
 {
     public MyDocumentType Page { get; set; }
 
-    public FilteredBlockListModel FilteredBlocks { get; set; }
+    public OverridableBlockListModel OverriddenBlocks { get; set; }
 }
 
 /// Controller
 using GovUk.Frontend.Umbraco.Models
 using System.Linq;
 
-viewModel.FilteredBlocks = new FilteredBlockListModel(viewModel.Page.Blocks);
-viewModel.FilteredBlocks.First(x => x.Content.ContentType.Alias == "govukGridRow").Settings.OverrideValue("cssClassesForRow", "my-custom-class");
+viewModel.OverriddenBlocks = new OverridableBlockListModel(viewModel.Page.Blocks);
+viewModel.OverriddenBlocks.First(x => x.Content.ContentType.Alias == "govukGridRow").Settings.OverrideValue("cssClassesForRow", "my-custom-class");
 
 /// View
-<partial name="GOVUK/FilteredBlockList" model="Model.FilteredBlocks" />
+<partial name="GOVUK/BlockList" model="Model.OverriddenBlocks" />
 ```
+
+See `BlockListController.cs` in `GovUk.Frontend.Umbraco.ExampleApp` for a more complete example.

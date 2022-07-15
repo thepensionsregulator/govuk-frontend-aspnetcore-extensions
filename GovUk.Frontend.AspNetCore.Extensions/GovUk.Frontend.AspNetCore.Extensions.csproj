@@ -16,6 +16,8 @@
 		<None Remove="Content\govuk\open-sans-bold.woff2" />
 		<None Remove="Content\govuk\open-sans-regular.woff2" />
 		<None Remove="Content\govuk\open-sans-semi-bold.woff2" />
+		<None Remove="Content\tpr\chevron_right_eclipse_24dp.svg" />
+		<None Remove="Content\tpr\chevron_right_white_24dp.svg" />
 		<None Remove="Content\tpr\tpr.css" />
 		<None Remove="Styles\_govuk-button.scss" />
 		<None Remove="Styles\_govuk-caption.scss" />
@@ -37,6 +39,8 @@
 		<EmbeddedResource Include="Content\govuk\open-sans-bold.woff2" />
 		<EmbeddedResource Include="Content\govuk\open-sans-regular.woff2" />
 		<EmbeddedResource Include="Content\govuk\open-sans-semi-bold.woff2" />
+		<EmbeddedResource Include="Content\tpr\chevron_right_white_24dp.svg" />
+		<EmbeddedResource Include="Content\tpr\chevron_right_eclipse_24dp.svg" />
 		<EmbeddedResource Include="Content\tpr\tpr.css" />
 		<EmbeddedResource Include="Styles\_govuk-caption.scss" />
 		<EmbeddedResource Include="Styles\_govuk-button.scss" />
@@ -174,6 +178,10 @@
 	
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_govuk-date-input.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-input.scss" />
 	</ItemGroup>
 
 </Project>

@@ -1,15 +1,15 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var blocks = Model.Content.Value<BlockListModel>("blocks");
+    var blocks = Model.Content.Value<OverridableBlockListModel>("blocks");
     var cssClass = Model.Settings.Value<string>("cssClasses");
     var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
-    var legend = Model.Content.Value<string>("legend").Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
 }
 <govuk-fieldset class="@cssClass">
     <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-fieldset-legend>
-    @await Html.PartialAsync("GOVUK/FilteredBlockList", new FilteredBlockListModel(blocks,Model.Filter))
+    @await Html.PartialAsync("GOVUK/BlockList", blocks)
 </govuk-fieldset>

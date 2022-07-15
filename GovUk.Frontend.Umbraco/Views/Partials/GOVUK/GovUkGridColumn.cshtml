@@ -1,16 +1,17 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Services
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var blocks = Model.Content.Value<BlockListModel>("blocks");
+    var blocks = Model.Content.Value<OverridableBlockListModel>("blocks");
+    blocks.RenderGrid = false;
     var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
                         Model.Settings?.Value<string>("columnSize"), 
                         Model.Settings?.Value<string>("columnSizeFromDesktop"), 
                         Model.Settings?.Value<string>("cssClassesForColumn")).TrimEnd();
 }
     <div class="@columnClass">
-        @await Html.PartialAsync("GOVUK/FilteredBlockList", new FilteredBlockListModel(blocks,Model.Filter){ RenderGrid = false })
+        @await Html.PartialAsync("GOVUK/BlockList", blocks)
     </div>

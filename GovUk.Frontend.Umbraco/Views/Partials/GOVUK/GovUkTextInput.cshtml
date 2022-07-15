@@ -1,4 +1,4 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilteredBlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @using GovUk.Frontend.Umbraco
@@ -8,6 +8,8 @@
 @{
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    var prefix = Model.Settings.Value<string>("prefix");
+    var suffix = Model.Settings.Value<string>("suffix");
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
@@ -24,5 +26,13 @@
         <govuk-input-label>@(Model.Content.Value<string>("label"))</govuk-input-label>
         <govuk-input-hint>@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-input-hint>
         <govuk-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-input-error-message>
+        @if (!string.IsNullOrEmpty(prefix))
+        {
+            <govuk-input-prefix>@prefix</govuk-input-prefix>
+        }
+        @if (!string.IsNullOrEmpty(suffix))
+        {
+            <govuk-input-suffix>@suffix</govuk-input-suffix>
+        }
     </govuk-input>
 </govuk-client-side-validation>

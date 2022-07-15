@@ -179,5 +179,9 @@
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_govuk-date-input.scss" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-input.scss" />
+	</ItemGroup>
 
 </Project>

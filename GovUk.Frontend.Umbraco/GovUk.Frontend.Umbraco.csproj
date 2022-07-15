@@ -82,6 +82,7 @@
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadioButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadiosLayout.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditor.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditorLarge.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKSelectOptions.config" />
 		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
 		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
@@ -347,6 +348,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditor.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditorLarge.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKSelectOptions.config">

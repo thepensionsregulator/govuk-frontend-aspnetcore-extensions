@@ -54,6 +54,19 @@ namespace GovUk.Frontend.Umbraco.Tests
         }
 
         [Test]
+        public void Heading_medium_class_is_not_added_to_H2_if_another_heading_class_is_already_present()
+        {
+            var html = "<h2 class=\"govuk-heading-s\">Heading</h2><h2>Another heading</h2>";
+
+            var result = GovUkTypography.Apply(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//h2[@class='govuk-heading-s']").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//h2[@class='govuk-heading-m']").Count);
+        }
+
+        [Test]
         public void Heading_small_class_is_added_to_H3()
         {
             var html = "<h3>Heading</h3><h3>Another heading</h3>";
@@ -63,6 +76,19 @@ namespace GovUk.Frontend.Umbraco.Tests
             var doc = new HtmlDocument();
             doc.LoadHtml(result);
             Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//h3[@class='govuk-heading-s']").Count);
+        }
+
+        [Test]
+        public void Heading_small_class_is_not_added_to_H3_if_another_heading_class_is_already_present()
+        {
+            var html = "<h3 class=\"govuk-heading-m\">Heading</h3><h3>Another heading</h3>";
+
+            var result = GovUkTypography.Apply(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//h3[@class='govuk-heading-s']").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//h3[@class='govuk-heading-m']").Count);
         }
 
         [Test]

@@ -6,35 +6,59 @@
    are compiled. Changes in this file target situations where GOV.UK source uses generic GOV.UK
    tools like the govuk-colour() mixin that might apply more widely than buttons, rather than 
    defining a specific variable.
+
+   The chevron image is from Material UI https://fonts.google.com/icons?selected=Material+Icons+Outlined:chevron_right
+   Using a background image means no extra HTML is required and no extra characters are exposed to assistive technology.
 */
+$tpr-button-padding: 20px;
+
 .govuk-button {
     color: $tpr-colour-white;
-    background-color: $tpr-colour-eastern-blue;
     line-height: govuk-px-to-rem(24);
+    border-radius: 8px;
+    box-shadow: none;
+    background: $tpr-colour-eastern-blue url(/tpr/chevron_right_white_24dp.svg) right center no-repeat;
+    padding-left: $tpr-button-padding;
+    padding-right: $tpr-button-padding *2;
 }
 .govuk-button:hover, .govuk-button:active {
     color: $tpr-colour-white;
     background-color: $tpr-colour-violet;
 }
+.govuk-button:focus:not(:active):not(:hover) {
+    background-image: url(/tpr/chevron_right_eclipse_24dp.svg);
+    color: $tpr-colour-eclipse;
+}
 .govuk-button:disabled {
-    color: $tpr-colour-black;
+    color: $tpr-colour-white;
     background-color: $tpr-colour-regent-st-blue;
 }
 
 .govuk-button--secondary {
     color: $tpr-colour-royal-blue;
-    background-color: $tpr-colour-white;
+    background: $tpr-colour-white;
     border-color: $tpr-colour-royal-blue;
     box-shadow: none;
-    border-radius: 8px;
 }
 .govuk-button--secondary:hover, .govuk-button--secondary:active {
     color: $tpr-colour-white;
     background-color: $tpr-colour-royal-blue;
 }
 .govuk-button--secondary:disabled {
-    color: $tpr-colour-black;
-    background-color: $tpr-colour-cornflower;
+    color: $tpr-colour-cornflower;
+    background-color: $tpr-colour-white;
+    border-color: $tpr-colour-cornflower;
+}
+
+/* Remove chevron where it's not wanted */
+.govuk-button--start,
+.govuk-button--secondary {
+    background-image: none;
+    padding-right: $tpr-button-padding;
+}
+.govuk-button--start:focus:not(:active):not(:hover),
+.govuk-button--secondary:focus:not(:active):not(:hover) {
+    background-image: none;
 }
 
 .govuk-button--warning {
@@ -46,6 +70,6 @@
     background-color: $tpr-colour-brick;
 }
 .govuk-button--warning:disabled {
-    color: $tpr-colour-black;
+    color: $tpr-colour-white;
     background-color: $tpr-colour-petite-orchid;
 }

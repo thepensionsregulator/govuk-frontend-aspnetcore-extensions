@@ -29,11 +29,11 @@
     <govuk-radios name="@modelPropertyName" class="@cssClass">
          <govuk-radios-fieldset>
             <govuk-radios-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-radios-fieldset-legend>
-        </govuk-radios-fieldset>
         @if (!string.IsNullOrWhiteSpace(hint))
         {
             <govuk-radios-hint>@Html.Raw(hint)</govuk-radios-hint>
         }
+        <govuk-radios-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-radios-error-message>
         @foreach (var block in radioButtons.Filter(radioButtons))
         {
             if (block.Content.ContentType.Alias == "govukRadiosDivider")
@@ -43,6 +43,7 @@
             else
             {
                 var value = block.Content.Value<string>("value") ?? string.Empty;
+
                 <govuk-radios-item value="@value" class="@(block.Settings.Value<string>("cssClasses"))" checked="@(value.ToUpperInvariant() == attemptedValue)">@(block.Content.Value<string>("label"))
                     <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
                     @{
@@ -56,6 +57,6 @@
                 </govuk-radios-item>                
             }
         }
-        <govuk-radios-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-radios-error-message>
+        </govuk-radios-fieldset>
     </govuk-radios>
 </govuk-client-side-validation>

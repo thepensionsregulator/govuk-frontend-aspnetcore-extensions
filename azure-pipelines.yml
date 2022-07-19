@@ -38,9 +38,9 @@ steps:
   - task: NuGetToolInstaller@1
 
   - task: CmdLine@2
-    displayName: Cloning govuk v1.0
+    displayName: Cloning govuk main
     inputs:
-      script: 'git.exe clone --progress --branch v1.0 -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore"'
+      script: 'git.exe clone --progress --branch main -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore"'
 
   - task: CmdLine@2
     displayName: Setting up submodule

@@ -183,5 +183,9 @@
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_govuk-input.scss" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-umbraco-rich-text-editor.scss" />
+	</ItemGroup>
 
 </Project>

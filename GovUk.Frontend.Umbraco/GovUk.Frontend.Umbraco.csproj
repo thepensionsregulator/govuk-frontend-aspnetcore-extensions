@@ -36,7 +36,6 @@
 		<Content Remove="uSync\v9\ContentTypes\govukgridrowsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukhint.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukinsettext.config" />
-		<Content Remove="uSync\v9\ContentTypes\govukinsettextsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklabelispageheading.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklegend.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklegendispageheading.config" />
@@ -208,9 +207,6 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukinsettext.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-		<None Include="uSync\v9\ContentTypes\govukinsettextsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govuklabelispageheading.config">

@@ -18,7 +18,6 @@
 		<Content Remove="uSync\v9\ContentTypes\govukcheckbox.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcheckboxes.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcheckboxesdivider.config" />
-		<Content Remove="uSync\v9\ContentTypes\govukcheckboxessettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcheckboxsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcssclasses.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukdateinput.config" />
@@ -55,7 +54,6 @@
 		<Content Remove="uSync\v9\ContentTypes\govukradios.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukradiosdivider.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukradiosettings.config" />
-		<Content Remove="uSync\v9\ContentTypes\govukradiossettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselect.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselectoption.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselectsettings.config" />
@@ -156,9 +154,6 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukcheckboxesdivider.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-		<None Include="uSync\v9\ContentTypes\govukcheckboxessettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukcheckboxsettings.config">
@@ -267,9 +262,6 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukradiosettings.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-		<None Include="uSync\v9\ContentTypes\govukradiossettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukselect.config">

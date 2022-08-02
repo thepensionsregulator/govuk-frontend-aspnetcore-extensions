@@ -50,6 +50,22 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Prefix: For example, a £ sign before a currency field.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("prefix")]
+		public virtual string Prefix => this.Value<string>(_publishedValueFallback, "prefix");
+
+		///<summary>
+		/// Suffix: For example, a % sign after a percentage field.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("suffix")]
+		public virtual string Suffix => this.Value<string>(_publishedValueFallback, "suffix");
+
+		///<summary>
 		/// CSS classes
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]

@@ -50,6 +50,30 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// CSS classes for checkboxes
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClassesForCheckboxes")]
+		public virtual string CssClassesForCheckboxes => this.Value<string>(_publishedValueFallback, "cssClassesForCheckboxes");
+
+		///<summary>
+		/// CSS classes for error
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClassesForError")]
+		public virtual string CssClassesForError => this.Value<string>(_publishedValueFallback, "cssClassesForError");
+
+		///<summary>
+		/// CSS classes for hint
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClassesForHint")]
+		public virtual string CssClassesForHint => this.Value<string>(_publishedValueFallback, "cssClassesForHint");
+
+		///<summary>
 		/// CSS classes
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]

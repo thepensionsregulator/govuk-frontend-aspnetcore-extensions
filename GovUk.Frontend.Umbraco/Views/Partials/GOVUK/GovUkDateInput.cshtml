@@ -16,7 +16,7 @@
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
-    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" class="@cssClass">
+    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" class="@cssClass">
         <govuk-date-input-fieldset>
             <govuk-date-input-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-date-input-fieldset-legend>
             @if (!string.IsNullOrWhiteSpace(hint))

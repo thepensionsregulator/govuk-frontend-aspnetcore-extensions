@@ -55,12 +55,10 @@
 		<Content Remove="uSync\v9\ContentTypes\govukradiosettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselect.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselectoption.config" />
-		<Content Remove="uSync\v9\ContentTypes\govukselectsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextarea.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextareasettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextinput.config" />
-		<Content Remove="uSync\v9\ContentTypes\govuktextinputsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktypography.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationrequired.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
@@ -266,9 +264,6 @@
 		<None Include="uSync\v9\ContentTypes\govukselectoption.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\ContentTypes\govukselectsettings.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
 		<None Include="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -279,9 +274,6 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govuktextinput.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-		<None Include="uSync\v9\ContentTypes\govuktextinputsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govuktypography.config">

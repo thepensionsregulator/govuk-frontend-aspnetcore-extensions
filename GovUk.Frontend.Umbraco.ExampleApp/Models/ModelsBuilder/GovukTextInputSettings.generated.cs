@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Text input settings</summary>
 	[PublishedModel("govukTextInputSettings")]
-	public partial class GovukTextInputSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukModelProperty, IGovukValidationRequired, IGovukValidationText
+	public partial class GovukTextInputSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLabelIsPageHeading, IGovukModelProperty, IGovukValidationRequired, IGovukValidationText
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -104,6 +104,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClassesForColumn")]
 		public virtual string CssClassesForColumn => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetCssClassesForColumn(this, _publishedValueFallback);
+
+		///<summary>
+		/// The label is the page heading
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[ImplementPropertyType("labelIsPageHeading")]
+		public virtual bool LabelIsPageHeading => global::Umbraco.Cms.Web.Common.PublishedModels.GovukLabelIsPageHeading.GetLabelIsPageHeading(this, _publishedValueFallback);
 
 		///<summary>
 		/// Model property: The name of the property on the view model being bound to in the code.

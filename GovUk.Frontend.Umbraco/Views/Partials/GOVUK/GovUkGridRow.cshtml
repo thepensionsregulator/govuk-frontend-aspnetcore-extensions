@@ -5,7 +5,7 @@
 @using GovUk.Frontend.Umbraco.Services
 @using Umbraco.Extensions
 @{
-    var blocks = Model.Content.Value<OverridableBlockListModel>("blocks")?.ToList();
+    var blocks = Model.Content.Value<OverridableBlockListModel>("blocks")?.FilteredBlocks().ToList();
     var rowClass = Model.Settings?.Value<string>("cssClassesForRow");
     var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
                         Model.Settings?.Value<string>("columnSize"), 

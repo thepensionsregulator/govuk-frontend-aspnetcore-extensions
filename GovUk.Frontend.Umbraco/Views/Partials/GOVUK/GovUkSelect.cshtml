@@ -11,11 +11,12 @@
     var cssClass = Model.Settings.Value<string>("cssClasses");
     ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
+    var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-select name="@modelPropertyName" class="@cssClass">
-        <govuk-select-label>@(Model.Content.Value<string>("label"))</govuk-select-label>
+        <govuk-select-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-select-label>
         <govuk-select-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-select-error-message>
         @foreach (var block in options.Filter(options))
         {

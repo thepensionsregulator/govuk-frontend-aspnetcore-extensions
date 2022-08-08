@@ -105,3 +105,30 @@
     @extend .govuk-grid-row--tpr-divider;
     width: 100%;
 }
+
+
+/*
+    Columns with alternating white and grey backgrounds.
+    Columns should have a *-from-desktop grid width applied, eg govuk-grid-column-one-third-from-desktop for a three column layout.
+    Switch to flexbox for desktop layouts so that, when columns are active, column backgrounds extend the full height of the column.
+*/
+
+.govuk-grid-row--tpr-columns > .govuk-grid-column > .govuk-grid-row > .govuk-grid-column {
+    @include govuk-responsive-padding(4, "top"); // space above and below text in the column is required on a non-white background
+    @include govuk-responsive-padding(4, "bottom");
+    @include govuk-responsive-margin(2, "bottom"); // vertical space between columns when stacked
+}
+
+@include govuk-media-query($from: desktop) {
+    .govuk-grid-row--tpr-columns > .govuk-grid-column > .govuk-grid-row {
+        display: flex;
+    }
+
+    .govuk-grid-row--tpr-columns > .govuk-grid-column > .govuk-grid-row > .govuk-grid-column {
+        @include govuk-responsive-margin(0, "bottom"); // vertical space no longer needed when not stacked
+    }
+}
+
+.govuk-grid-row--tpr-columns > .govuk-grid-column > .govuk-grid-row > .govuk-grid-column:nth-child(even) {
+    background: $tpr-colour-white-smoke;
+}

@@ -54,13 +54,14 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <param name="value"></param>
         public void OverrideValue(string alias, object value)
         {
-            if (_propertyValues.ContainsKey(alias))
+            var key = alias.ToUpperInvariant();
+            if (_propertyValues.ContainsKey(key))
             {
-                _propertyValues[alias] = value;
+                _propertyValues[key] = value;
             }
             else
             {
-                _propertyValues.Add(alias, value);
+                _propertyValues.Add(key, value);
             }
         }
 
@@ -83,9 +84,10 @@ namespace GovUk.Frontend.Umbraco.Models
         /// </remarks>
         public T? Value<T>(string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default)
         {
-            if (_propertyValues.ContainsKey(alias))
+            var key = alias.ToUpperInvariant();
+            if (_propertyValues.ContainsKey(key))
             {
-                return (T)_propertyValues[alias];
+                return (T)_propertyValues[key];
             }
 
             return _publishedElement != null ? _publishedElement.Value(alias, culture, segment, fallback, defaultValue) : default;

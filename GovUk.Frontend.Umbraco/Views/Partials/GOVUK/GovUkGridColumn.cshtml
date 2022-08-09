@@ -6,7 +6,7 @@
 @using Umbraco.Extensions
 @{
     var blocks = Model.Content.Value<OverridableBlockListModel>("blocks");
-    blocks.RenderGrid = false;
+    blocks!.RenderGrid = Model.Settings?.Value<bool>("renderRowsAndColumnsForChildBlocks") ?? false;
     var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
                         Model.Settings?.Value<string>("columnSize"), 
                         Model.Settings?.Value<string>("columnSizeFromDesktop"), 

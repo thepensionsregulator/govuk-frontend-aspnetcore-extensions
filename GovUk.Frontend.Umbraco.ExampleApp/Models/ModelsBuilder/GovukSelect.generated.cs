@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Select</summary>
 	[PublishedModel("govukSelect")]
-	public partial class GovukSelect : PublishedElementModel
+	public partial class GovukSelect : PublishedElementModel, IGovukHint
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -64,5 +64,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("options")]
 		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel Options => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "options");
+
+		///<summary>
+		/// Hint
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("hint")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Hint => global::Umbraco.Cms.Web.Common.PublishedModels.GovukHint.GetHint(this, _publishedValueFallback);
 	}
 }

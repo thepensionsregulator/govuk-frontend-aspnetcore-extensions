@@ -10,7 +10,7 @@ This repository includes an example application which demonstrates the validatio
 
 ## Getting started
 
-1. Add `GovUk.Frontend.AspNetCore.Extensions` and `govuk-frontend-aspnetcore` (`v1.0` branch) as project references. (These will be available on NuGet later.)
+1. Add `GovUk.Frontend.AspNetCore.Extensions` as a project reference. (This will be available on NuGet later.)
 
 2. In `Startup.cs` add the following to the `ConfigureServices` method:
 

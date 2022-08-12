@@ -1,54 +1,57 @@
 ﻿@import '_variables.scss';
 @import 'govuk/base';
 
-/* Modifier for .govuk-grid-row which adds a decorative divider after the row with padding above and margin below. 
-   Reset the negative left/right margin of .govuk-grid-row to 0 so that the divider lines up with the content.
+/* 
+    Modifier for .govuk-grid-row which adds a decorative divider after the row with padding above and margin below. 
+    Use ::after so we can align the divider with content but don't need to mess with the margin & padding of 
+    .govuk-grid-row, which disrupts GOV.UK grid layout.
 */
-.govuk-grid-row--tpr-divider {
+@mixin tpr-divider {
     @include govuk-responsive-padding(6, "bottom");
     border-bottom: 1px solid $tpr-colour-very-light-grey;
     @include govuk-responsive-margin(6, "bottom");
-    margin-left: 0;
-    margin-right: 0;
 }
 
-/* Put a negative margin on .govuk-grid-column-* to make up for removing it from .govuk-grid-row above. */
-.govuk-grid-row--tpr-divider > .govuk-grid-column {
-    margin-left: -($govuk-gutter-half);
-    margin-right: -($govuk-gutter-half);
+.govuk-grid-row--tpr-divider::after {
+    @include tpr-divider;
+    margin-left: $govuk-gutter-half;
+    margin-right: $govuk-gutter-half;
 }
 
 /* Add a background box to highlight a section of content.
-   Apply it to the column rather than the row so that it can be combined with .govuk-grid-row--tpr-divider.
-   If both were applied on the .govuk-grid-row the divider would be the bottom-border of the box without spacing between.
 */
-.govuk-grid-column--tpr-box {
+.govuk-grid-row--tpr-box {
+    padding-left: $govuk-gutter-half;
+    padding-right: $govuk-gutter-half;
+}
+
+.govuk-grid-row--tpr-box > .govuk-grid-column {
     padding: $govuk-gutter;
     background: $tpr-colour-whisper;
     @include govuk-responsive-margin(6, "bottom");
 }
 
-/* When applying a divider and box together, remove the negative margin altogether so that the box aligns with other content.
+/* .govuk-grid-row--tpr-box can be combined with .govuk-grid-row--tpr-divider. 
+    In that case the padding applied for .govuk-grid-row--tpr-box creates space equivalent to the margins 
+    applied for .govuk-grid-row--tpr-divider, so remove the margins.
 */
-.govuk-grid-row--tpr-divider > .govuk-grid-column--tpr-box {
+.govuk-grid-row--tpr-divider.govuk-grid-row--tpr-box::after {
     margin-left: 0;
     margin-right: 0;
 }
 
-/* .govuk-grid-row--tpr-divider has padding-bottom and inside that .govuk-grid-column--tpr-box has margin-bottom, so remove 
-    the margin-bottom so that we get one spacer, not the combination of both.
-*/
-.govuk-grid-row--tpr-divider > .govuk-grid-column--tpr-box:last-child {
+.govuk-grid-row--tpr-divider.govuk-grid-row--tpr-box > .govuk-grid-column {
     margin-bottom: 0;
 }
+
 
 /* .govuk-grid-row--tpr-divider and .govuk-grid-column--tpr-box both apply padding-bottom, so remove any bottom padding or 
     margin from the last element inside either one so that we get one spacer, not the combination of both.
 */
 .govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child,
 .govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child,
-.govuk-grid-column--tpr-box > :last-child,
-.govuk-grid-column--tpr-box > .govuk-grid-row:last-child > .govuk-grid-column > :last-child {
+.govuk-grid-row--tpr-box > .govuk-grid-column > :last-child,
+.govuk-grid-row--tpr-box > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child {
     padding-bottom: 0;
     margin-bottom: 0;
 }
@@ -102,10 +105,9 @@
 
 .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > fieldset > legend,
 .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > .govuk-form-group > fieldset > legend {
-    @extend .govuk-grid-row--tpr-divider;
     width: 100%;
+    @include tpr-divider;
 }
-
 
 /*
     Columns with alternating white and grey backgrounds.

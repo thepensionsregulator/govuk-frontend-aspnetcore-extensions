@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.Umbraco.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,10 @@ namespace GovUk.Frontend.Umbraco.Validation
                     var modelType = (method?.GetCustomAttributes(typeof(ModelTypeAttribute), false).SingleOrDefault() as ModelTypeAttribute)?.ModelType;
                     if (modelType != null)
                     {
-                        return modelType.GetProperties().Where(x => !x.PropertyType.IsSubclassOf(typeof(PublishedContentModel))).Select(x => x.Name);
+                        return modelType.GetProperties().Where(x =>
+                            !x.PropertyType.IsSubclassOf(typeof(PublishedContentModel)) &&
+                            !x.PropertyType.IsAssignableTo(typeof(OverridableBlockListModel))
+                            ).Select(x => x.Name);
                     }
                 }
             }

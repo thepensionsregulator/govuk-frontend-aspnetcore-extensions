@@ -8,10 +8,15 @@
 @using GovUk.Frontend.Umbraco.Models
 @using System.Reflection
 @using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Extensions
 @{
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
-    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    ModelStateEntry? modelStateEntry = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+    }
     Int32.TryParse(Model.Settings.Value<string>("rows"), out var rows);
     if (rows < 2) { rows = 5; }
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");

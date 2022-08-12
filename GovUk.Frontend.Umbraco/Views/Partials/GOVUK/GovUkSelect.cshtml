@@ -4,13 +4,18 @@
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Typography
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
     var options = Model.Content.Value<OverridableBlockListModel>("options")!;
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    ModelStateEntry? modelStateEntry = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+    }
     var cssClass = Model.Settings.Value<string>("cssClasses");
-    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });

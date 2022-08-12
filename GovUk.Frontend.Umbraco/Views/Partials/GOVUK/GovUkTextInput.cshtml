@@ -4,10 +4,15 @@
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Extensions
 @{
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
-    ViewContext.ModelState.TryGetValue(modelPropertyName, out var modelStateEntry);
+    ModelStateEntry? modelStateEntry = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+    }
     var prefix = Model.Settings.Value<string>("prefix");
     var suffix = Model.Settings.Value<string>("suffix");
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");

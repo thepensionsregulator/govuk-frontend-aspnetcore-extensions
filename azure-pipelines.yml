@@ -37,21 +37,6 @@ steps:
 
   - task: NuGetToolInstaller@1
 
-  - task: CmdLine@2
-    displayName: Cloning govuk main
-    inputs:
-      script: 'git.exe clone --progress --branch main -v "https://github.com/gunndabad/govuk-frontend-aspnetcore.git" "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore"'
-
-  - task: CmdLine@2
-    displayName: Setting up submodule
-    inputs:
-      script: |
-        echo init submodule
-        git.exe submodule init
-        git.exe submodule set-url "lib/govuk-frontend" https://github.com/alphagov/govuk-frontend.git
-        git.exe submodule update
-      workingDirectory: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore"
-
   - task: NodeTool@0
     inputs:
       versionSpec: "16.15.1"
@@ -114,7 +99,6 @@ steps:
     inputs:
       command: test
       projects: |
-        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore\test\GovUk.Frontend.AspNetCore.Tests\GovUk.Frontend.AspNetCore.Tests.csproj
         $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco.Tests\GovUk.Frontend.Umbraco.Tests.csproj
         $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions.Tests\GovUk.Frontend.AspNetCore.Extensions.Tests.csproj
       arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'

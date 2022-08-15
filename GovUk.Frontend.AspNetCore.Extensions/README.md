@@ -10,9 +10,18 @@ This repository includes an example application which demonstrates the validatio
 
 ## Getting started
 
-1. Add `GovUk.Frontend.AspNetCore.Extensions` as a project reference. (This will be available on NuGet later.)
+1. Clone this repo
 
-2. In `Startup.cs` add the following to the `ConfigureServices` method:
+2. Clone the `govuk-frontend` submodule:
+
+   ```pwsh
+   git submodule init
+   git submodule update
+   ```
+
+3. Add `GovUk.Frontend.AspNetCore.Extensions` as a project reference. (This will be available on NuGet later.)
+
+4. In `Startup.cs` add the following to the `ConfigureServices` method:
 
    ```csharp
    using GovUk.Frontend.AspNetCore.Extensions;
@@ -29,7 +38,7 @@ This repository includes an example application which demonstrates the validatio
    }
    ```
 
-3. Add partial views and the `govuk-template__body` class to your layout file as shown below. You should also make sure you have a `<main>` element in your markup.
+5. Add partial views and the `govuk-template__body` class to your layout file as shown below. You should also make sure you have a `<main>` element in your markup.
 
    ```html
    <!DOCTYPE html>
@@ -51,16 +60,16 @@ This repository includes an example application which demonstrates the validatio
 
    Note that `TPR/Head` imports TPR styles on top of the GOV.UK Design System. You can use the partial `GOVUK/Head` instead to use the GOV.UK Design System styles only.
 
-4. Add the following to your `Views/_ViewImports.cshtml` file:
+6. Add the following to your `Views/_ViewImports.cshtml` file:
 
    ```csharp
    @addTagHelper *, GovUk.Frontend.AspNetCore
    @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
    ```
 
-5. [Add validation rules to your model](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0) as you normally would for ASP.NET, using attributes from the [System.ComponentModel.DataAnnotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) namespace.
+7. [Add validation rules to your model](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0) as you normally would for ASP.NET, using attributes from the [System.ComponentModel.DataAnnotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) namespace.
 
-6. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `GovUk.Frontend.AspNetCore.Extensions`.
+8. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `GovUk.Frontend.AspNetCore.Extensions`.
 
    ```csharp
    <partial name="GOVUK/ErrorSummary" />

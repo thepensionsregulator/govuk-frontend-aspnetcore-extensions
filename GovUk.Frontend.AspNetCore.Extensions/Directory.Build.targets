@@ -12,7 +12,7 @@
 		<PropertyGroup>
 			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
 			<SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
-			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\..\govuk-frontend-aspnetcore\lib\govuk-frontend\src</GovUkFrontEndFolder>
+			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src</GovUkFrontEndFolder>
 			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
 			<TargetFolder>$(MsBuildThisFileDirectory)Content\</TargetFolder>
 		</PropertyGroup>

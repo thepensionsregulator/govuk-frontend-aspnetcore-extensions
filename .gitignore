@@ -417,3 +417,7 @@ govuk-umbraco-rich-text-editor.css.map
 govuk-frontend*.css
 govuk-frontend*.css.map
 tpr.css*
+
+# Jest
+junit.xml
+cobertura-coverage.xml

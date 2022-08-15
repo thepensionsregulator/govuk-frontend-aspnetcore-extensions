@@ -37,6 +37,14 @@ steps:
 
   - task: NuGetToolInstaller@1
 
+  - task: CmdLine@2
+    displayName: Setup govuk-frontend submodule
+    inputs:
+      script: |
+        git submodule init
+        git submodule update
+      workingDirectory: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions"
+
   - task: NodeTool@0
     inputs:
       versionSpec: "16.15.1"

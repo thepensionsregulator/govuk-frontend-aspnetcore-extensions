@@ -13,6 +13,7 @@
     "jest-junit": "^14.0.0"
   },
   "jest": {
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "rootDir": "GovUk.Frontend.AspNetCore.Extensions"
   }
 }

@@ -1,3 +1,13 @@
 ﻿header { border-bottom: 1px solid #ccc; margin-top: 2rem; }
 .languageSelected { border-left: 4px solid #ccc; padding-left: 8px; }
 .languageNotSelected { padding-left: 12px; }
+
+/*
+    Show GOV.UK grid lines - enable using document.body.classList.add("debug-grid") in the DevTools console
+*/
+.debug-grid .govuk-grid-row {
+    outline: 1px dashed red;
+}
+.debug-grid .govuk-grid-column {
+    outline: 1px dotted blue;
+}

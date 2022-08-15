@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.AspNetCore", "..\govuk-frontend-aspnetcore\src\GovUk.Frontend.AspNetCore\GovUk.Frontend.AspNetCore.csproj", "{5BCBE378-4DF8-485A-AAF3-ACF3B2335322}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{04812FE1-E2E5-4EB3-86F4-E9E3851BE1E7}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -21,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco.Exam
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco.Tests", "GovUk.Frontend.Umbraco.Tests\GovUk.Frontend.Umbraco.Tests.csproj", "{216A148E-1402-4778-9823-2FE5ADDF1360}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GovUk.Frontend.AspNetCore.Extensions.Tests", "GovUk.Frontend.AspNetCore.Extensions.Tests\GovUk.Frontend.AspNetCore.Extensions.Tests.csproj", "{AC6F49AE-C825-466D-837A-9376CF1FAA07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.AspNetCore.Extensions.Tests", "GovUk.Frontend.AspNetCore.Extensions.Tests\GovUk.Frontend.AspNetCore.Extensions.Tests.csproj", "{AC6F49AE-C825-466D-837A-9376CF1FAA07}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +27,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5BCBE378-4DF8-485A-AAF3-ACF3B2335322}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5BCBE378-4DF8-485A-AAF3-ACF3B2335322}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5BCBE378-4DF8-485A-AAF3-ACF3B2335322}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5BCBE378-4DF8-485A-AAF3-ACF3B2335322}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B0D74DE0-13E1-40A0-AA15-9A81E5356C4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B0D74DE0-13E1-40A0-AA15-9A81E5356C4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0D74DE0-13E1-40A0-AA15-9A81E5356C4B}.Release|Any CPU.ActiveCfg = Release|Any CPU

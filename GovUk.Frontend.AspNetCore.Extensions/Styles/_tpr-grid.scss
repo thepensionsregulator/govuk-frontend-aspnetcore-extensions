@@ -141,3 +141,22 @@
 .govuk-grid-row--tpr-columns > .govuk-grid-column {
     margin-left:0;
 }
+
+/* 
+    If a .govuk-grid-row is put into an error state that means red borders should extend to all its children.
+*/
+.govuk-grid-row.govuk-form-group--error {
+    margin-left: 0;
+
+    & > .govuk-grid-column {
+        padding-left: 0;
+    }
+
+    & .govuk-input, & .govuk-select {
+        border-color: $govuk-error-colour;
+
+        &:focus {
+            border-color: $govuk-input-border-colour;
+        }
+    }
+}

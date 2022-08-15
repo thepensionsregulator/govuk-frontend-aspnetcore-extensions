@@ -1,0 +1,9 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Extensions
+@{
+    var cssClass = Model.Settings.Value<string>("cssClasses");
+}
+<govuk-error-message id="@Model.Content.Key" class="@cssClass">@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("error"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-error-message>

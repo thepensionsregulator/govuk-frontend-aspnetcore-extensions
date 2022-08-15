@@ -10,9 +10,14 @@
 @{
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
+    DateTime? dateValue = null;
     if (!string.IsNullOrEmpty(modelPropertyName))
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+        if (DateTime.TryParse(modelStateEntry?.AttemptedValue, out var date))
+        {
+            dateValue = date;            
+        }
     }
     var cssClass = Model.Settings.Value<string>("cssClasses");
     var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
@@ -21,7 +26,7 @@
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
-    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" class="@cssClass">
+    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue" class="@cssClass">
         <govuk-date-input-fieldset>
             <govuk-date-input-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-date-input-fieldset-legend>
             @if (!string.IsNullOrWhiteSpace(hint))

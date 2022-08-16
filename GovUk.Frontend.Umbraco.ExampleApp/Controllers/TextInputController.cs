@@ -1,5 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
+using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             {
                 Page = new TextInput(CurrentPage, null)
             };
+
+            ModelState.SetInitialValue(nameof(TextInputViewModel.Field6), "Hidden field value");
 
             return CurrentTemplate(viewModel);
         }

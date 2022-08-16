@@ -34,6 +34,8 @@
 		<Content Remove="uSync\v9\ContentTypes\govukgridcolumnsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukgridrow.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukgridrowsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukhidden.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukhiddensettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukhint.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukinsettext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklabelispageheading.config" />
@@ -200,6 +202,12 @@
 		<None Include="uSync\v9\ContentTypes\govukgridrowsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govukhidden.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukhiddensettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukhint.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -293,7 +301,7 @@
 		<None Include="uSync\v9\DataTypes\GOVUKBlockList.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\DataTypes\GOVUKButtons.config">
+					<None Include="uSync\v9\DataTypes\GOVUKButtons.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKButtonType.config">

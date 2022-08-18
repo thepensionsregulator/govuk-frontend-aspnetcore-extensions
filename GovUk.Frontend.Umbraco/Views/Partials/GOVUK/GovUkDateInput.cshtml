@@ -20,13 +20,14 @@
         }
     }
     var cssClass = Model.Settings.Value<string>("cssClasses");
+    var hidden = Model.Settings.Value<bool>("hidden");
     var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
-    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue" class="@cssClass">
+    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue" class="@cssClass" hidden="@hidden">
         <govuk-date-input-fieldset>
             <govuk-date-input-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-date-input-fieldset-legend>
             @if (!string.IsNullOrWhiteSpace(hint))

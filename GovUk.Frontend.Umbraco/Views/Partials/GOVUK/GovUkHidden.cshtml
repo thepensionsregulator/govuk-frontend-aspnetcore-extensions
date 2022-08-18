@@ -1,0 +1,14 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
+@using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Models
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Umbraco.Extensions
+@{
+    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    ModelStateEntry? modelStateEntry = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+    }
+}
+<input type="hidden" name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" />

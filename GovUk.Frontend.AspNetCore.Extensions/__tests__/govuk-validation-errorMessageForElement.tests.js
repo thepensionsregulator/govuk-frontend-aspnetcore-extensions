@@ -1,4 +1,4 @@
-const govuk = require("../Content/govuk/govuk-validation");
+const govuk = require("../wwwroot/govuk/govuk-validation");
 
 describe("errorMessageForElement", () => {
   it("returns an existing .govuk-error-message if it exists", () => {

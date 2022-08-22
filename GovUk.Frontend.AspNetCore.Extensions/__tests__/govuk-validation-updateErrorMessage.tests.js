@@ -1,4 +1,4 @@
-const govuk = require("../Content/govuk/govuk-validation");
+const govuk = require("../wwwroot/govuk/govuk-validation");
 
 describe("updateErrorMessage", () => {
   it("should set the error message id based on the id of the invalid element", () => {

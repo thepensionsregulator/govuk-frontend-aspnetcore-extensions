@@ -14,10 +14,28 @@ namespace GovUk.Frontend.Umbraco.Validation
     public class UmbracoBlockListValidationMetadataProvider : IValidationMetadataProvider
     {
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
+        private readonly Dictionary<Type, string> _attributeTypes;
 
-        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor)
+        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, Type attributeType, string errorMessagePropertyAlias)
+        {
+            if (attributeType is null)
+            {
+                throw new ArgumentNullException(nameof(attributeType));
+            }
+
+            if (string.IsNullOrEmpty(errorMessagePropertyAlias))
+            {
+                throw new ArgumentException($"'{nameof(errorMessagePropertyAlias)}' cannot be null or empty.", nameof(errorMessagePropertyAlias));
+            }
+
+            _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
+            _attributeTypes = new Dictionary<Type, string> { { attributeType, errorMessagePropertyAlias } };
+        }
+
+        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, Dictionary<Type, string> attributeTypes)
         {
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
+            _attributeTypes = attributeTypes ?? throw new ArgumentNullException(nameof(attributeTypes));
         }
 
         public void CreateValidationMetadata(ValidationMetadataProviderContext context)
@@ -28,7 +46,7 @@ namespace GovUk.Frontend.Umbraco.Validation
             if (umbracoContext.PublishedRequest?.PublishedContent == null) { return; }
 
             var blockLists = RecursivelyGetBlockLists(umbracoContext.PublishedRequest.PublishedContent.Properties);
-            UpdateValidationAttributeErrorMessages(blockLists, context.ValidationMetadata.ValidatorMetadata);
+            UpdateValidationAttributeErrorMessages(blockLists, context.ValidationMetadata.ValidatorMetadata, _attributeTypes);
         }
 
         internal IEnumerable<BlockListModel> RecursivelyGetBlockLists(IEnumerable<IPublishedProperty> properties)
@@ -52,21 +70,19 @@ namespace GovUk.Frontend.Umbraco.Validation
             }
         }
 
-        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<BlockListModel> blockLists, IList<object> validationAttributes)
+        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<BlockListModel> blockLists, IList<object> validationAttributes, Dictionary<Type, string> attributeTypes)
         {
             foreach (var blockList in blockLists)
             {
                 foreach (var attribute in validationAttributes)
                 {
-                    if (attribute is RequiredAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRequired); }
-                    if (attribute is RegularExpressionAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRegex); }
-                    if (attribute is EmailAddressAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageEmail); }
-                    if (attribute is PhoneAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessagePhone); }
-                    if (attribute is StringLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageLength); }
-                    if (attribute is MinLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageMinLength); }
-                    if (attribute is MaxLengthAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageMaxLength); }
-                    if (attribute is RangeAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageRange); }
-                    if (attribute is CompareAttribute) { UpdateValidationAttributeErrorMessage(blockList, attribute, PropertyAliases.ErrorMessageCompare); }
+                    foreach (var attributeType in attributeTypes.Keys)
+                    {
+                        if (attribute.GetType().IsAssignableTo(attributeType))
+                        {
+                            UpdateValidationAttributeErrorMessage(blockList, attribute, attributeTypes[attributeType]);
+                        }
+                    }
                 }
             }
         }

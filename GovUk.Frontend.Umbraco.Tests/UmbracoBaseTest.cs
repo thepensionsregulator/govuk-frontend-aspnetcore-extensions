@@ -45,7 +45,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         protected static PublishedPropertyType CreatePropertyType(int dataTypeId, string propertyEditorAlias, object configuration)
         {
             var propertyType = new Mock<IPropertyType>();
-            propertyType.SetupGet(x => x.DataTypeId).Returns(1);
+            propertyType.SetupGet(x => x.DataTypeId).Returns(dataTypeId);
             propertyType.SetupGet(x => x.PropertyEditorAlias).Returns(propertyEditorAlias);
 
             var converter = new Mock<IPropertyValueConverter>();

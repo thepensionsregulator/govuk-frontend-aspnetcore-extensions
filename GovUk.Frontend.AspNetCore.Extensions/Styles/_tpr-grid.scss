@@ -143,7 +143,7 @@
 }
 
 /* 
-    If a .govuk-grid-row is put into an error state that means red borders should extend to all its children.
+    If a .govuk-grid-row or .govuk-grid-column is put into an error state that means red borders should extend to all its children.
 */
 .govuk-grid-row.govuk-form-group--error {
     margin-left: 0;
@@ -152,6 +152,16 @@
         padding-left: 0;
     }
 
+    & .govuk-input, & .govuk-select {
+        border-color: $govuk-error-colour;
+
+        &:focus {
+            border-color: $govuk-input-border-colour;
+        }
+    }
+}
+
+.govuk-grid-column--error {
     & .govuk-input, & .govuk-select {
         border-color: $govuk-error-colour;
 

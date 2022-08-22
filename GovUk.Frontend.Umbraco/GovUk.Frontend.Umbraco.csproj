@@ -18,6 +18,7 @@
 		<Content Remove="uSync\v9\ContentTypes\govukcheckbox.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcheckboxes.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcheckboxesdivider.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukcheckboxessettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcheckboxsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukcssclasses.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukdateinput.config" />
@@ -55,13 +56,17 @@
 		<Content Remove="uSync\v9\ContentTypes\govukradios.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukradiosdivider.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukradiosettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukradiossettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselect.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselectoption.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukselectsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextarea.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextareasettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextinput.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktextinputsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktypography.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukvalidationcustom.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationrequired.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtext.config" />
@@ -152,6 +157,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukcheckboxesdivider.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukcheckboxessettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukcheckboxsettings.config">
@@ -265,10 +273,16 @@
 		<None Include="uSync\v9\ContentTypes\govukradiosettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govukradiossettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukselect.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukselectoption.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukselectsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config">
@@ -283,7 +297,13 @@
 		<None Include="uSync\v9\ContentTypes\govuktextinput.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govuktextinputsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govuktypography.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukvalidationcustom.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukvalidationrequired.config">
@@ -301,7 +321,7 @@
 		<None Include="uSync\v9\DataTypes\GOVUKBlockList.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-					<None Include="uSync\v9\DataTypes\GOVUKButtons.config">
+		<None Include="uSync\v9\DataTypes\GOVUKButtons.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKButtonType.config">

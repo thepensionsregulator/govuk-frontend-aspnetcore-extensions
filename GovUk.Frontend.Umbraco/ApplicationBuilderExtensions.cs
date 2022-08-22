@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Umbraco.Cms.Core.Web;
 
 namespace GovUk.Frontend.Umbraco
@@ -16,7 +18,18 @@ namespace GovUk.Frontend.Umbraco
                 throw new ArgumentNullException(nameof(app));
             }
 
-            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor));
+            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, new Dictionary<Type, string>
+            {
+                { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired },
+                { typeof(RegularExpressionAttribute),  PropertyAliases.ErrorMessageRegex },
+                { typeof(EmailAddressAttribute),PropertyAliases.ErrorMessageEmail },
+                { typeof(PhoneAttribute), PropertyAliases.ErrorMessagePhone },
+                { typeof(StringLengthAttribute), PropertyAliases.ErrorMessageLength },
+                { typeof(MinLengthAttribute), PropertyAliases.ErrorMessageMinLength },
+                { typeof(MaxLengthAttribute), PropertyAliases.ErrorMessageMaxLength },
+                { typeof(RangeAttribute), PropertyAliases.ErrorMessageRange },
+                { typeof(CompareAttribute), PropertyAliases.ErrorMessageCompare }
+            }));
 
             return app;
         }

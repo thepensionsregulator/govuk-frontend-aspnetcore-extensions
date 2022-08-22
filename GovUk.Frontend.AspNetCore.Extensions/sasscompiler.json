@@ -2,5 +2,5 @@
    This is just to render the default MSBuild action for AspNetCore.SassCompiler inert. 
    A custom action is run using Directory.Build.targets. */
 {
-  "SourceFolder": "Views"
+  "SourceFolder": "Pages"
 }

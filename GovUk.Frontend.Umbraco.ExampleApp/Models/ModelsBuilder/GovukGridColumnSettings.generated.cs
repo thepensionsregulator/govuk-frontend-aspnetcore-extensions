@@ -50,6 +50,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Render rows and columns for child blocks
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[ImplementPropertyType("renderRowsAndColumnsForChildBlocks")]
+		public virtual bool RenderRowsAndColumnsForChildBlocks => this.Value<bool>(_publishedValueFallback, "renderRowsAndColumnsForChildBlocks");
+
+		///<summary>
 		/// Column size: Defaults to 'two-thirds' if both column size properties are left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]

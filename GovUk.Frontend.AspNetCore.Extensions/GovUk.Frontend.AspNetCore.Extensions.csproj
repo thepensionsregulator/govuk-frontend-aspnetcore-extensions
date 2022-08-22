@@ -9,18 +9,10 @@
 		<Version>2.0.1</Version>
 	</PropertyGroup>
 
+	
+	
 	<ItemGroup>
-	  <Content Remove="wwwroot\govuk\govuk-frontend.css" />
 	  <Content Remove="wwwroot\govuk\govuk-frontend.css.map" />
-	  <Content Remove="wwwroot\govuk\govuk-js-init.js" />
-	  <Content Remove="wwwroot\govuk\govuk-js-test.js" />
-	  <Content Remove="wwwroot\govuk\govuk-validation.js" />
-	  <Content Remove="wwwroot\govuk\open-sans-bold.woff2" />
-	  <Content Remove="wwwroot\govuk\open-sans-regular.woff2" />
-	  <Content Remove="wwwroot\govuk\open-sans-semi-bold.woff2" />
-	  <Content Remove="wwwroot\tpr\chevron_right_eclipse_24dp.svg" />
-	  <Content Remove="wwwroot\tpr\chevron_right_white_24dp.svg" />
-	  <Content Remove="wwwroot\tpr\tpr.css" />
 	  <Content Remove="wwwroot\tpr\tpr.css.map" />
 	</ItemGroup>
 
@@ -51,20 +43,10 @@
 		<EmbeddedResource Include="Styles\_govuk-link.scss" />
 		<EmbeddedResource Include="Styles\_variables.scss" />
 		<EmbeddedResource Include="Styles\_tpr-back-to-top.scss" />
-		<EmbeddedResource Include="wwwroot\govuk\govuk-frontend.css" />
-		<EmbeddedResource Include="wwwroot\govuk\govuk-js-init.js" />
-		<EmbeddedResource Include="wwwroot\govuk\govuk-js-test.js" />
-		<EmbeddedResource Include="wwwroot\govuk\govuk-validation.js" />
-		<EmbeddedResource Include="wwwroot\govuk\open-sans-bold.woff2" />
-		<EmbeddedResource Include="wwwroot\govuk\open-sans-regular.woff2" />
-		<EmbeddedResource Include="wwwroot\govuk\open-sans-semi-bold.woff2" />
 		<EmbeddedResource Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
 		<EmbeddedResource Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
 		<EmbeddedResource Include="wwwroot\lib\jquery\dist\jquery.min.js" />
 		<EmbeddedResource Include="wwwroot\lib\jquery\dist\jquery.min.map" />
-		<EmbeddedResource Include="wwwroot\tpr\chevron_right_eclipse_24dp.svg" />
-		<EmbeddedResource Include="wwwroot\tpr\chevron_right_white_24dp.svg" />
-		<EmbeddedResource Include="wwwroot\tpr\tpr.css" />
 	</ItemGroup>
 
 	<ItemGroup>

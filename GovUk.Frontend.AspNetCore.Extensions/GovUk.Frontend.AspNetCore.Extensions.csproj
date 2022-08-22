@@ -9,6 +9,8 @@
 		<Version>2.0.1</Version>
 	</PropertyGroup>
 
+	
+	
 	<ItemGroup>
 	  <Content Remove="wwwroot\govuk\govuk-frontend.css.map" />
 	  <Content Remove="wwwroot\tpr\tpr.css.map" />

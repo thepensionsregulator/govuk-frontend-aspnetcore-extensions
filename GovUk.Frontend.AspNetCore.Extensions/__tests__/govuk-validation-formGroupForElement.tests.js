@@ -1,4 +1,4 @@
-const govuk = require("../Content/govuk/govuk-validation");
+const govuk = require("../wwwroot/govuk/govuk-validation");
 
 describe("formGroupForElement", () => {
   it("should choose the closest group for .govuk-input", () => {

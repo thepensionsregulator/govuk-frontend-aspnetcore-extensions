@@ -1,4 +1,4 @@
-const govuk = require("../Content/govuk/govuk-validation");
+const govuk = require("../wwwroot/govuk/govuk-validation");
 
 describe("updateTitle", () => {
   it("should add Error: when there is an error", () => {

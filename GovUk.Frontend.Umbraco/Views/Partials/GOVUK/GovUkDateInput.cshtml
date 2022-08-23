@@ -20,38 +20,23 @@
         }
     }
     var cssClass = Model.Settings.Value<string>("cssClasses");
-    var hidden = Model.Settings.Value<bool>("hidden");
     var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
 }
-@if (hidden)
-{
-    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue" class="@cssClass" hidden>
-        <govuk-date-input-fieldset>
-            <govuk-date-input-fieldset-legend>@legend</govuk-date-input-fieldset-legend>
+<govuk-client-side-validation
+    error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue" class="@cssClass">
+        <govuk-date-input-fieldset class="govuk-date-input__fieldset">
+            <govuk-date-input-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-date-input-fieldset-legend>
+            @if (!string.IsNullOrWhiteSpace(hint))
+            {
+                <govuk-date-input-hint>@Html.Raw(hint)</govuk-date-input-hint>
+            }
+            <govuk-date-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-date-input-error-message>
             <govuk-date-input-day maxlength="2"/>
             <govuk-date-input-month maxlength="2" />
             <govuk-date-input-year maxlength="4" />
         </govuk-date-input-fieldset>
     </govuk-date-input>
-}
-else
-{
-    <govuk-client-side-validation
-        error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
-        <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue" class="@cssClass">
-            <govuk-date-input-fieldset>
-                <govuk-date-input-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-date-input-fieldset-legend>
-                @if (!string.IsNullOrWhiteSpace(hint))
-                {
-                    <govuk-date-input-hint>@Html.Raw(hint)</govuk-date-input-hint>
-                }
-                <govuk-date-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-date-input-error-message>
-                <govuk-date-input-day maxlength="2"/>
-                <govuk-date-input-month maxlength="2" />
-                <govuk-date-input-year maxlength="4" />
-            </govuk-date-input-fieldset>
-        </govuk-date-input>
-    </govuk-client-side-validation>        
-}
+</govuk-client-side-validation>

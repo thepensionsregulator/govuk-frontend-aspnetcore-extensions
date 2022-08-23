@@ -1,4 +1,4 @@
-const govuk = require("../Content/govuk/govuk-validation");
+const govuk = require("../wwwroot/govuk/govuk-validation");
 
 describe("createErrorSummary", () => {
   it("should do nothing if an error summary already exists", () => {

@@ -20,7 +20,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
                 {
                     FileProvider = new ManifestEmbeddedFileProvider(
                       typeof(EmbedContentFolderStartupFilter).Assembly,
-                      root: "Content")
+                      root: "wwwroot")
                 });
 
                 next(app);

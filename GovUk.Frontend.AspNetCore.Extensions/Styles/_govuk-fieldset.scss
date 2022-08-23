@@ -1,0 +1,10 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* Change GOV.UK fieldset styles where the TPR brand diverges from the GOV.UK Design System. 
+   
+   Legends should look like h2. They need to be bolder than GOV.UK because we make .govuk-label bold.
+*/
+legend.govuk-fieldset__legend {
+    @extend .govuk-fieldset__legend--m;
+}

@@ -31,7 +31,7 @@
 <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-radios name="@modelPropertyName" class="@cssClass" radios-class="@cssClassesForRadios">
          <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-radios-fieldset-legend>
+            <govuk-radios-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-radios-fieldset-legend>
         @if (!string.IsNullOrWhiteSpace(fieldsetHint))
         {
             <govuk-radios-hint class="@cssClassesForHint">@Html.Raw(fieldsetHint)</govuk-radios-hint>

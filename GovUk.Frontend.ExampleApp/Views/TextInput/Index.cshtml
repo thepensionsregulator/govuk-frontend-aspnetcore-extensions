@@ -12,11 +12,12 @@
 <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
 
 <p class="govuk-body">To demonstrate localisation, use the language switcher to change the language of error messages.</p>
+<p class="govuk-body">You must apply <code>.govuk-fieldset__legend--for-fieldset</code> if you want TPR styling.</p>
 
 <form asp-controller="TextInput" asp-action="Post" method="post" novalidate>
     <govuk-client-side-validation>
         <govuk-fieldset>
-            <govuk-fieldset-legend>The first two fields are in a fieldset</govuk-fieldset-legend>
+            <govuk-fieldset-legend class="govuk-fieldset__legend--for-fieldset">The first two fields are in a fieldset</govuk-fieldset-legend>
                 <govuk-input asp-for="Field1">
                     <govuk-input-label>Field label</govuk-input-label>
                     <govuk-input-hint>This field must be numeric, and between 5 and 20 characters</govuk-input-hint>

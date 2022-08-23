@@ -29,12 +29,12 @@ namespace GovUk.Frontend.Umbraco.Models
             // and each nested block list to an OverridableBlockListModel populated with OverridableBlockListItems.
             foreach (var item in blockListItems)
             {
-                var overridableItem = new OverridableBlockListItem(item, factory);
+                var overridableItem = item as OverridableBlockListItem ?? new OverridableBlockListItem(item, factory);
                 foreach (var prop in overridableItem.Content.Properties)
                 {
                     if (prop.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList)
                     {
-                        var overriddenNestedBlockList = new OverridableBlockListModel(overridableItem.Content.Value<BlockListModel>(prop.Alias)!, Filter, factory);
+                        var overriddenNestedBlockList = overridableItem.Content.Value<OverridableBlockListModel>(prop.Alias) ?? new OverridableBlockListModel(overridableItem.Content.Value<BlockListModel>(prop.Alias)!, Filter, factory);
                         overridableItem.Content.OverrideValue(prop.Alias, overriddenNestedBlockList);
                     }
                 }

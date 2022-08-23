@@ -35,7 +35,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <param name="propertyName"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static BlockListItem? FindBlock(this IPublishedRequest request, string propertyName)
+        public static BlockListItem? FindBlockByBoundProperty(this IPublishedRequest request, string propertyName)
         {
             var blockLists = request.GetBlockListModels();
 

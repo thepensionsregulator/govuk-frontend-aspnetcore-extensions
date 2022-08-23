@@ -1,9 +1,22 @@
 const govuk = require("../wwwroot/govuk/govuk-validation");
+const errorPlaceholderHtml =
+  '<p class="govuk-error-message" id="some-field-error" data-valmsg-for="some-field" data-valmsg-replace="false"><span class="govuk-visually-hidden">Error:</span></p>';
+const errorHtml =
+  '<p class="govuk-error-message" id="some-field-error" data-valmsg-for="some-field" data-valmsg-replace="false"><span class="govuk-visually-hidden">Error:</span> A real error</p>';
 
 describe("updateTitle", () => {
+  it("should not add Error: when there is an empty error placeholder", () => {
+    document.title = "Example";
+    document.body.innerHTML = errorPlaceholderHtml;
+
+    govuk().updateTitle();
+
+    expect(document.title).toBe("Example");
+  });
+
   it("should add Error: when there is an error", () => {
     document.title = "Example";
-    document.body.innerHTML = '<p class="govuk-error-message"></p>';
+    document.body.innerHTML = errorHtml;
 
     govuk().updateTitle();
 
@@ -12,7 +25,7 @@ describe("updateTitle", () => {
 
   it("should not add Error: multiple times", () => {
     document.title = "Error: Example";
-    document.body.innerHTML = '<p class="govuk-error-message"></p>';
+    document.body.innerHTML = errorHtml;
 
     govuk().updateTitle();
 

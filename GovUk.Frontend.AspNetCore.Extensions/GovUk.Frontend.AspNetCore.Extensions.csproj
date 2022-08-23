@@ -189,5 +189,9 @@
 	<ItemGroup>
 	  <Folder Include="Content\" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-fieldset.scss" />
+	</ItemGroup>
 
 </Project>

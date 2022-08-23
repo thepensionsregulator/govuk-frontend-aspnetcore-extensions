@@ -34,7 +34,22 @@ function createGovUkValidator() {
      */
     updateTitle: function () {
       const prefix = "Error: ";
-      const hasError = document.querySelector(".govuk-error-message");
+      const hasError = [].slice
+        .call(document.querySelectorAll(".govuk-error-message"))
+        .filter(function (error) {
+          const prefix = error.querySelector(".govuk-visually-hidden");
+          const textNode = 3;
+          for (let i = 0; i < error.childNodes.length; i++) {
+            let x = error.childNodes[i];
+            if (
+              x !== prefix &&
+              (x.nodeType !== textNode || x.textContent.trim())
+            ) {
+              return true;
+            }
+          }
+          return false;
+        }).length;
       const index = document.title.indexOf(prefix);
       if (hasError && index !== 0) {
         document.title = prefix + document.title;

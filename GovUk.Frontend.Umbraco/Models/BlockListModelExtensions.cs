@@ -30,7 +30,7 @@ namespace GovUk.Frontend.Umbraco.Models
             return RecursivelyFindBlock(blockList, x => x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == propertyName);
         }
 
-        internal static BlockListItem? RecursivelyFindBlock(this ReadOnlyCollection<BlockListItem> blockList, Func<BlockListItem, bool> matcher)
+        private static BlockListItem? RecursivelyFindBlock(ReadOnlyCollection<BlockListItem> blockList, Func<BlockListItem, bool> matcher)
         {
             if (blockList is null)
             {

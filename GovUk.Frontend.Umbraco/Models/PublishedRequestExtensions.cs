@@ -18,7 +18,7 @@ namespace GovUk.Frontend.Umbraco.Models
             {
                 if (blockList != null)
                 {
-                    var block = blockList.RecursivelyFindBlock(matcher);
+                    var block = blockList.FindBlock(matcher);
                     if (block != null)
                     {
                         return block;

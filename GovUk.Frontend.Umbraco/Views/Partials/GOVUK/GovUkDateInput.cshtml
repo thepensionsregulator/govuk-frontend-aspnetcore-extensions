@@ -28,7 +28,7 @@
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue" class="@cssClass">
         <govuk-date-input-fieldset class="govuk-date-input__fieldset">
-            <govuk-date-input-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-date-input-fieldset-legend>
+            <govuk-date-input-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-date-input-fieldset-legend>
             @if (!string.IsNullOrWhiteSpace(hint))
             {
                 <govuk-date-input-hint>@Html.Raw(hint)</govuk-date-input-hint>

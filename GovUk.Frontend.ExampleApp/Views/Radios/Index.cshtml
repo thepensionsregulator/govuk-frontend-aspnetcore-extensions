@@ -12,8 +12,8 @@
     <govuk-client-side-validation>
         <govuk-radios asp-for="Field1">
             <govuk-radios-fieldset>
-                <govuk-radios-fieldset-legend>This is the legend</govuk-radios-fieldset-legend>
-                <govuk-radios-hint>This is the hint</govuk-radios-hint>
+                <govuk-radios-fieldset-legend class="govuk-fieldset__legend--for-field">This is the legend</govuk-radios-fieldset-legend>
+                <govuk-radios-hint>This is the hint. You must apply <code>.govuk-fieldset__legend--for-field</code> if you want TPR styling.</govuk-radios-hint>
                 <govuk-radios-item value="1">
                     Item one (reveals related question)
                     <govuk-radios-item-conditional>

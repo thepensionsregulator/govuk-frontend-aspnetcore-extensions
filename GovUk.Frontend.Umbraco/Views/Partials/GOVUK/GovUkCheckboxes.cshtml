@@ -29,7 +29,7 @@
 <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-checkboxes name="@modelPropertyName" class="@cssClass" checkboxes-class="@cssClassesForCheckboxes">
          <govuk-checkboxes-fieldset>
-            <govuk-checkboxes-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : null)">@legend</govuk-checkboxes-fieldset-legend>
+            <govuk-checkboxes-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-checkboxes-fieldset-legend>
             @{
                 if (!string.IsNullOrWhiteSpace(fieldsetHint))
                 {

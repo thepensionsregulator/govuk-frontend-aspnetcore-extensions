@@ -1,15 +1,7 @@
 ﻿@import '_variables.scss';
 @import 'govuk/base';
 
-/* Change GOV.UK date input styles where the TPR brand diverges from the GOV.UK Design System. 
-
-   _govuk-fieldset.scss makes legends bigger by default, so reset them for date fields to be the same 
-   as the TPR version of .govuk-label.
-*/
-.govuk-date-input__fieldset > legend {
-    @extend .govuk-fieldset__legend--s;
-}
-
+/* Change GOV.UK date input styles where the TPR brand diverges from the GOV.UK Design System. */
 .govuk-label.govuk-date-input__label {
     font-weight: $tpr-font-weight-semi-bold;
 }

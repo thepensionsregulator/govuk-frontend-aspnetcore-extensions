@@ -17,8 +17,7 @@ This repository includes an example application which demonstrates the validatio
 3. Clone the `govuk-frontend` submodule:
 
    ```pwsh
-   git submodule init
-   git submodule update
+   git submodule update --init
    ```
 
 4. If you are working on a project for The Pensions Regulator, run `Install-TPRGitHooks.ps1`

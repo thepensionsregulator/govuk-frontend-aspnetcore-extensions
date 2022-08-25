@@ -12,6 +12,21 @@ For .NET projects without Umbraco see [GovUk.Frontend.AspNetCore.Extensions](Gov
 
 For Umbraco projects see [GovUk.Frontend.Umbraco](GovUk.Frontend.Umbraco/README.md).
 
+## Run the Umbraco example application
+
+1. Ensure you have .NET 6.0.5 (SDK version 6.0.300) or better installed. Run `dotnet --list-sdks` to check.
+2. Clone this repo
+3. Clone the `govuk-frontend` submodule:
+
+   ```pwsh
+   git submodule update --init
+   ```
+
+4. Open `GovUk.Frontend.sln` in Visual Studio 2022 or better, click on the `GovUk.Frontend.Umbraco.ExampleApp` project, and run it.
+5. When you see the Umbraco installer enter your name, email address and a new password and click 'Continue'.
+6. When you are taken to the Umbraco back office go to Settings > uSync > Everything > Import all
+7. View the example application at https://localhost:44350
+
 ## Tests
 
 To run unit tests on the client-side validation JavaScript:

@@ -15,8 +15,7 @@ This repository includes an example application which demonstrates the validatio
 2. Clone the `govuk-frontend` submodule:
 
    ```pwsh
-   git submodule init
-   git submodule update
+   git submodule update --init
    ```
 
 3. Add `GovUk.Frontend.AspNetCore.Extensions` as a project reference. (This will be available on NuGet later.)

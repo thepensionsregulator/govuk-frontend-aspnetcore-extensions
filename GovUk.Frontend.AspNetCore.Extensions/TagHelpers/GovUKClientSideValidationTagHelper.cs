@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     [HtmlTargetElement("govuk-client-side-validation")]
-    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes", "govuk-fieldset", "govuk-textarea", "govuk-date-input")]
+    [RestrictChildren("govuk-input", "govuk-radios", "govuk-select", "govuk-character-count", "govuk-checkboxes", "govuk-fieldset", "govuk-textarea", "govuk-date-input", "govuk-file-upload")]
     public class GovUkClientSideValidationTagHelper : TagHelper
     {
         private readonly IClientSideValidationHtmlEnhancer _htmlModifier;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -73,5 +74,15 @@ namespace GovUk.Frontend.Umbraco.Models
         /// Gets or sets whether a default grid row and column should be rendered for this block list.
         /// </summary>
         public bool RenderGrid { get; set; } = true;
+
+        /// <summary>
+        /// Convert to a <see cref="BlockListModel" />
+        /// </summary>
+        /// <param name="model"></param>
+        public static explicit operator BlockListModel(OverridableBlockListModel model)
+        {
+            var blockList = model.FilteredBlocks().ToList<BlockListItem>();
+            return new BlockListModel(blockList);
+        }
     }
 }

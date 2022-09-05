@@ -1,0 +1,45 @@
+﻿@using GovUk.Frontend.ExampleApp.Models
+@model CustomValidationViewModel
+@{
+    ViewData["Title"] = "Custom Validation";
+}
+@section language {
+<partial name="_LanguageSwitcher" />
+}
+
+@*<partial name="GOVUK/ErrorSummary" />
+*@
+<span class="govuk-caption-xl">GOV.UK Design System</span>
+
+<form asp-controller="CustomValidation" asp-action="Post" method="post" novalidate>
+    <govuk-fieldset>
+        <govuk-fieldset-legend class="govuk-fieldset__legend--l">
+            Custom Validation
+        </govuk-fieldset-legend>
+        <govuk-client-side-validation>
+            <govuk-input asp-for="Field">
+                <govuk-input-label>Text</govuk-input-label>
+                <govuk-input-hint>Must be FISH</govuk-input-hint>
+            </govuk-input>
+        </govuk-client-side-validation>
+    </govuk-fieldset>
+
+    <govuk-button type="submit">Submit</govuk-button>
+
+</form>
+@section scripts {
+<partial name="GOVUK/Validation" />
+<script type="text/javascript">
+    var $jQval = $.validator;
+
+    $jQval.addMethod("data-val-custom",
+        function (value, element, parameters) {
+            return value == "FISH";
+        }
+    );
+
+    var adapters = $jQval.unobtrusive.adapters;
+    adapters.addBool('data-val-custom');
+</script>
+
+}

@@ -1,0 +1,32 @@
+﻿@model FileUploadViewModel
+@{
+    ViewData["Title"] = "File Uploads";
+}
+@section language {
+<partial name="_LanguageSwitcher" />
+}
+
+@*<partial name="GOVUK/ErrorSummary" />
+*@
+<span class="govuk-caption-xl">GOV.UK Design System</span>
+<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+
+<form asp-controller="FileUpload" asp-action="Post" method="post" enctype="multipart/form-data" novalidate>
+    <govuk-fieldset>
+        <govuk-fieldset-legend class="govuk-fieldset__legend--l">
+            File Upload
+        </govuk-fieldset-legend>
+        <govuk-client-side-validation>
+            <govuk-file-upload asp-for="File" input-accept=".csv">
+                <govuk-file-upload-label>Select a .csv file:</govuk-file-upload-label>
+                <govuk-file-upload-hint>(Only .csv files are allowed for file upload)</govuk-file-upload-hint>
+            </govuk-file-upload>
+        </govuk-client-side-validation>
+    </govuk-fieldset>
+
+    <govuk-button type="submit">Upload your file</govuk-button>
+
+</form>
+@section scripts {
+<partial name="GOVUK/Validation" />
+}

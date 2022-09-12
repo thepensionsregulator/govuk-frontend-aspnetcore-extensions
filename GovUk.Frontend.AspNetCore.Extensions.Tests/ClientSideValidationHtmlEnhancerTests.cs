@@ -62,6 +62,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             [Compare(nameof(UnvalidatedField), ErrorMessage = errorMessageCompare)]
             public string CompareField { get; set; }
 
+            public decimal NumberField { get; set; }
+
             [Required(ErrorMessage = errorMessageRequired)]
             public ChildClass ChildField { get; set; }
         }
@@ -518,6 +520,36 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range='{errorMessageRange}']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range-min='{min}']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range-max='{max}']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='number']") != null);
+        }
+
+        [Test]
+        public void Numeric_fields_without_range_have_type_equals_number_added()
+        {
+            var viewContext = new ViewContext() { ClientValidationEnabled = true };
+            var propertyResolver = new Mock<IModelPropertyResolver>();
+            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumberField));
+            //var min = (property.GetCustomAttributes(typeof(RangeAttribute), false)[0] as RangeAttribute).Minimum;
+            //var max = (property.GetCustomAttributes(typeof(RangeAttribute), false)[0] as RangeAttribute).Maximum;
+            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
+            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumberField))).Returns(property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object);
+
+            var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumberField)}\">",
+                viewContext,
+                errorMessageRequired,
+                errorMessageRegex,
+                errorMessageEmail,
+                errorMessagePhone,
+                errorMessageLength,
+                errorMessageMinLength,
+                errorMessageMaxLength,
+                errorMessageRange,
+                errorMessageCompare);
+
+            var document = new HtmlDocument();
+            document.LoadHtml(result);
+
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='number']") != null);
         }
 

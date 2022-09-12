@@ -529,8 +529,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumberField));
-            //var min = (property.GetCustomAttributes(typeof(RangeAttribute), false)[0] as RangeAttribute).Minimum;
-            //var max = (property.GetCustomAttributes(typeof(RangeAttribute), false)[0] as RangeAttribute).Maximum;
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumberField))).Returns(property);
             var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object);

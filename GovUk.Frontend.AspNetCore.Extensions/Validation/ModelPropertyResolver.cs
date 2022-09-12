@@ -28,7 +28,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             return modelProperty;
         }
 
-        private PropertyInfo? IterateOverProperties(Type modelType, string modelPropertyName, string parentPropertyName = "")
+        private PropertyInfo? IterateOverProperties(Type modelType, string modelPropertyName, string parentPropertyName = "", int stackCount = 0)
         {
             PropertyInfo? modelProperty = null;
 
@@ -37,7 +37,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 modelProperty = modelType?.GetProperty(modelPropertyName);
                 if (modelProperty == null)
                 {
-                    foreach (var property in modelType!.GetProperties())
+                    foreach (var property in modelType!.GetProperties()) //BindingFlags.Public
                     {
                         if (property.PropertyType == modelType) break; // Prevent Stack overflow
 
@@ -77,7 +77,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         if (pp == modelPropertyName) return property;
 
                         // If no, iterate down.
-                        var res = IterateOverProperties(property.PropertyType, modelPropertyName, pp);
+                        var res = IterateOverProperties(property.PropertyType, modelPropertyName, pp, stackCount + 1);
                         if (res != null)
                         {
                             modelProperty = res;

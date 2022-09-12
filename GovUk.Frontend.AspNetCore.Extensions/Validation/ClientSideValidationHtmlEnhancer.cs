@@ -149,6 +149,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     }
 
                     var validateElement = false;
+                        
+                   
 
                     // Compare
                     var compareAttr = modelProperty.GetCustomAttributes<CompareAttribute>().FirstOrDefault();
@@ -240,6 +242,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         targetElement.Attributes.Add("data-val-length-min", strLenAttr.MinimumLength.ToString());
                         targetElement.Attributes.Add("maxlength", strLenAttr.MaximumLength.ToString());
                         validateElement = true;
+                    }
+
+                    if (IsNumericType(modelProperty.PropertyType))
+                    {
+                        AddOrUpdateHtmlAttribute(targetElement, "type", "number");
                     }
 
                     if (validateElement) { targetElement.Attributes.Add("data-val", "true"); }

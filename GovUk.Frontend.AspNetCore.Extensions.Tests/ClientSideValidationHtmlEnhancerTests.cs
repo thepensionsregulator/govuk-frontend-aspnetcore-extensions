@@ -30,7 +30,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
         private class ExampleClass
         {
-            public double NumberField;
+            public double NumberField { get; set; }
 
             public string UnvalidatedField { get; set; }
 

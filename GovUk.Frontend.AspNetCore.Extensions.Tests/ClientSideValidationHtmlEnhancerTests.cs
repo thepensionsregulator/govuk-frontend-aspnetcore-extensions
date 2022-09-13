@@ -30,6 +30,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
         private class ExampleClass
         {
+            public double NumberField { get; set; }
+
             public string UnvalidatedField { get; set; }
 
             [Required(ErrorMessage = errorMessageRequired)]
@@ -553,6 +555,34 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range-min='{min}']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range-max='{max}']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='number']") == null); // different to the numeric version of this test
+        }
+
+        [Test]
+        public void Numeric_fields_without_range_have_type_equals_number_added()
+        {
+            var viewContext = new ViewContext() { ClientValidationEnabled = true };
+            var propertyResolver = new Mock<IModelPropertyResolver>();
+            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumberField));
+            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
+            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumberField))).Returns(property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object);
+
+            var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumberField)}\">",
+                viewContext,
+                errorMessageRequired,
+                errorMessageRegex,
+                errorMessageEmail,
+                errorMessagePhone,
+                errorMessageLength,
+                errorMessageMinLength,
+                errorMessageMaxLength,
+                errorMessageRange,
+                errorMessageCompare);
+
+            var document = new HtmlDocument();
+            document.LoadHtml(result);
+
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='number']") != null);
         }
 
         [Test]

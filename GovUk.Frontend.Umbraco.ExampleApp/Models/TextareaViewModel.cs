@@ -5,14 +5,14 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 {
     public class TextareaViewModel
     {
-        public Textarea Page { get; set; }
+        public Textarea? Page { get; set; }
 
         [Required(ErrorMessage = nameof(Field1))]
         [MinLength(10, ErrorMessage = nameof(Field1))]
         [RegularExpression(@"[0-9]+", ErrorMessage = nameof(Field1))]
-        public string Field1 { get; set; }
+        public string? Field1 { get; set; }
 
         [MaxLength(100, ErrorMessage = nameof(Field2))]
-        public string Field2 { get; set; }
+        public string? Field2 { get; set; }
     }
 }

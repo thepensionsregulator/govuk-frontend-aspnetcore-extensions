@@ -2,11 +2,11 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @section head{
-	<title>@Model.Page.Name</title>
+	<title>@Model.Page!.Name</title>
 }
-@using (Html.BeginUmbracoForm<RadiosSurfaceController>(nameof(RadiosSurfaceController.Index), null, new { novalidate="novalidate" }))
+@using (Html.BeginUmbracoForm<RadiosSurfaceController>(nameof(RadiosSurfaceController.Index), new {}, new { novalidate="novalidate" }))
 {
-    <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
+    <partial name="GOVUK/BlockList" model="Model.Page!.Blocks" />
 }
 @section scripts {
     <partial name="GOVUK/Validation" />

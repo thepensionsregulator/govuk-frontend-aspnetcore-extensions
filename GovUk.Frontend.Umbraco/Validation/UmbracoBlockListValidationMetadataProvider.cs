@@ -58,7 +58,7 @@ namespace GovUk.Frontend.Umbraco.Validation
 
         private void RecursivelyGetBlockLists(IEnumerable<IPublishedProperty> properties, List<BlockListModel> allBlockLists)
         {
-            var newBlockLists = properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue()).Select(x => x.Value<BlockListModel>(null));
+            var newBlockLists = properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue()).Select(x => x.Value<BlockListModel>(null)).OfType<BlockListModel>();
             if (newBlockLists.Any())
             {
                 allBlockLists.AddRange(newBlockLists);
@@ -94,12 +94,12 @@ namespace GovUk.Frontend.Umbraco.Validation
 
             var blocks = blockList.Where(x => x.Settings != null &&
                                               x.Settings.GetProperty(PropertyAliases.ModelProperty) != null &&
-                                              x.Settings.GetProperty(PropertyAliases.ModelProperty).GetValue().ToString() == validationAttribute.ErrorMessage);
+                                              x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == validationAttribute.ErrorMessage);
             if (blocks == null) { return; }
 
             foreach (var block in blocks)
             {
-                var customError = block.Settings.GetProperty(errorMessagePropertyAlias).GetValue().ToString();
+                var customError = block.Settings.GetProperty(errorMessagePropertyAlias)?.GetValue()?.ToString();
                 if (!string.IsNullOrEmpty(customError))
                 {
                     validationAttribute.ErrorMessage = customError;

@@ -6,7 +6,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 {
     public class DateInputViewModel
     {
-        public DateInput Page { get; set; }
+        public DateInput? Page { get; set; }
 
         [Required(ErrorMessage = nameof(Field1))]
         public DateTime? Field1 { get; set; }

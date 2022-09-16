@@ -65,7 +65,7 @@ This repository includes an example application which demonstrates the validatio
 
     <h1 class="govuk-heading-l">@Model.Name</h1>
 
-    @using (Html.BeginUmbracoForm<HomeSurfaceController>(nameof(HomeSurfaceController.Index), null, new { novalidate="novalidate" }))
+    @using (Html.BeginUmbracoForm<HomeSurfaceController>(nameof(HomeSurfaceController.Index), new {}, new { novalidate="novalidate" }))
     {
       <partial name="GOVUK/BlockList" model="Model.Blocks" />
     }

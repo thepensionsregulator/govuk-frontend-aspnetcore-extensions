@@ -12,7 +12,6 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Common.Filters;
 using Umbraco.Cms.Web.Website.Controllers;
-using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 {
@@ -37,7 +36,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (viewModel.Page.NextPage != null)
+                if (viewModel.Page?.NextPage != null)
                 {
                     Response.StatusCode = 303;
                     Response.GetTypedHeaders().Location = new Uri(viewModel.Page.NextPage.Url(), UriKind.RelativeOrAbsolute);

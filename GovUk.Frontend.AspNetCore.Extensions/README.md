@@ -197,3 +197,91 @@ If enabled, the extension library automatically generates localised strings for 
    ```
 
 5. To implement a different language, create a resx file inside a Resources folder: you _must_ make sure that the Resource folder path matches the Solution folder structure. For example, if a model class is `~/ViewModels/Home/LoginModel.cs`, the corresponding resx file should be at `~/Resources/ViewModels/Home/LoginModel.de.resx`
+
+## Custom Validation Attributes
+
+To implement Custom Validation Attributes _and_ Client Side Validation, you need to do the following:
+
+1. Create a validation attribute that inherits from `ValidationAttribute` and `IClientModelValidator`. This attribute can take additional parameters, but should override `IsValid`, and implement `public void AddValidation(ClientModelValidationContext context)`, which adds data-val attributes to the generated html.
+
+```csharp
+[AttributeUsage(AttributeTargets.Property)]
+public class BananaValidatorAttribute : ValidationAttribute, IClientModelValidator
+{
+    private string AdditionalParameter { get; set; }
+
+    public BananaValidatorAttribute(string additionalParameter)
+    {
+        AdditionalParameter = additionalParameter;
+    }
+
+    protected override ValidationResult IsValid(object value, ValidationContext context)
+    {
+        // Do some validation here
+        return ValidationResult.Success;
+    }
+
+    public void AddValidation(ClientModelValidationContext context)
+    {
+        MergeAttribute(context.Attributes, "data-val", "true");
+        var errorMessage = FormatErrorMessage(context.ModelMetadata.GetDisplayName());
+        MergeAttribute(context.Attributes, "data-val-banana", errorMessage);
+        MergeAttribute(context.Attributes, "data-val-banana-additionalParameter", AdditionalParameter);
+    }
+
+    private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
+    {
+        if (attributes.ContainsKey(key))
+        {
+            return false;
+        }
+        attributes.Add(key, value);
+        return true;
+    }
+}
+```
+
+2. Apply your attribute to the model as per normal
+
+```csharp
+[BananaValidator("My Additional Attribute", ErrorMessage = "An error message")]
+public string Field { get; set; }
+```
+
+3. In the `.cshtml` file that uses the model, you will need to write a client-side validator that hooks into jquery validate, and can be set up with unobtrusive.
+
+```javascript
+<partial name="GOVUK/Validation" />
+<script type="text/javascript">
+    const govuk = createGovUkValidator();
+    const validator = govuk.getValidator();
+    govuk.createErrorSummary();
+
+    if (validator) {
+        validator.setDefaults({
+            highlight: govuk.showError,
+            unhighlight: govuk.removeOrUpdateError,
+        });
+
+        validator.addMethod('banana', function (value, element, params) {
+            var additionalParameter = params.additionalParameter;
+            // Do some validation here            
+            return true;
+        });
+
+        validator.unobtrusive.adapters.add("banana", ["additionalParameter"],
+            function (options) {
+                options.rules['banana'] = {
+                    additionalParameter: options.params.additionalParameter,
+                };
+                options.messages['banana'] = options.message;
+            }
+        );
+        validator.unobtrusive.parse();
+    }
+</script>
+```
+
+3. All being well, you should find that the generated html element now has `data-val-banana` and `data-val-banana-additionaparamter` attributes. These correspond to the validation attribute added to the view model.
+
+4. Client-side validation is handled by `$.validator`, which should now have a `banana` method that is called by the govuk-validation.js code.

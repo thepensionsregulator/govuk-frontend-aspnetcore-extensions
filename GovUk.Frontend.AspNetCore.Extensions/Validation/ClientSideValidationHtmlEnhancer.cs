@@ -275,6 +275,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                                     targetElement.Attributes.Add(attr.Key, attr.Value);
                                 }
                             }
+                            validateElement = true;
                         }
                     }
 

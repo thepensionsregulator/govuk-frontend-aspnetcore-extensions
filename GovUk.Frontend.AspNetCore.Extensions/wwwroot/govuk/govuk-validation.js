@@ -261,8 +261,61 @@ function createGovUkValidator() {
     },
 
     validateElement: function (element) {
-      const validator = govuk.getValidator(element.form);
+        const validator = govuk.getValidator(element.form);
 
+        var data = {};
+        [].forEach.call(element.attributes, function (attr) { // find all data-val attributes for this element
+            if (/^data-val/.test(attr.name)) {
+                var ruleName = attr.name.substr(9); // Creates a dictionary - keys look like data-val-[KEY]
+                data[ruleName] = attr.value;
+            }
+        });
+
+        for (const [key, value] of Object.entries(data)) {      // Rules look like data-val-[RULE_NAME] so let's find those
+            if (!key.includes("-")) {                           // No hyphen means this is a rule                
+                var props = {};                                 // Find properties associated with rule
+                for (const [k, v] of Object.entries(data)) {
+                    if (k.startsWith(key + "-")) {              // look for attributes that look like [RULE_NAME]-property - e.g. range-max
+                        var prop = k.replace(key + "-", "");
+                        props[prop] = v;
+                    }
+                }
+
+                if (key) {
+                    var method = key;
+                    // conditional switch on anything that doesn't match - data-val-length
+                    if (method == "length" && props) {
+                        // Now query props to see which rule we have to call...
+                        var propsKeys = Object.keys(props);
+                        var hasMin = propsKeys.find(e => e == "min");
+                        var hasMax = propsKeys.find(e => e == "max");
+
+                        if (hasMax && hasMin) {
+                            method = "rangelength";
+                        }
+                    }
+
+                    if (method == "equalto") {
+                        method = "equalTo";
+                        var other = props["other"];
+                        props = document.getElementById(other);
+                    }
+
+                    var valid = validator.methods[method].call(
+                        validator.prototype,
+                        element.value,
+                        element,
+                        props
+                    );
+                    if (!valid) {
+                        govuk.updateError(element, value);
+                        break;  // Break so that the errors are displayed in the order they're specified
+                    }
+                }
+            }
+        }
+        
+        /*
       // We cannot copy the error that jQuery validate generates, because it hasn't done it yet when this event fires.
       // Instead execute the same tests as 'else ifs' so that only one message appears.
       // Do it in the same order as jQuery to get the same error message to display.
@@ -277,6 +330,9 @@ function createGovUkValidator() {
       const minRange = element.getAttribute("data-val-range-min");
       const maxRange = element.getAttribute("data-val-range-max");
       const compareTo = element.getAttribute("data-val-equalto-other");
+
+      const custom = element.getAttribute("data-val-custom");        
+      
 
       if (
         required &&
@@ -367,7 +423,8 @@ function createGovUkValidator() {
         )
       ) {
         govuk.updateError(element, element.getAttribute("data-val-equalto"));
-      }
+        }
+        */
     },
 
     /**

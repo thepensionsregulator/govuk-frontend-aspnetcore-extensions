@@ -2,7 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-    </PropertyGroup>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Umbraco.Cms" Version="10.0.0" />

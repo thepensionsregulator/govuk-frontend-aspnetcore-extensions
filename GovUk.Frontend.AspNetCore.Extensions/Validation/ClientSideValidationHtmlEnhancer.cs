@@ -210,10 +210,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         targetElement.Attributes.Add("data-val-range", SelectBestErrorMessage(errorMessageRange, rangeAttr.ErrorMessage, localizer));
                         targetElement.Attributes.Add("data-val-range-max", rangeAttr.Maximum.ToString());
                         targetElement.Attributes.Add("data-val-range-min", rangeAttr.Minimum.ToString());
-                        if (IsNumericType(modelProperty.PropertyType))
-                        {
-                            AddOrUpdateHtmlAttribute(targetElement, "type", "number");
-                        }
                         validateElement = true;
                     }
 
@@ -245,6 +241,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         targetElement.Attributes.Add("data-val-length-min", strLenAttr.MinimumLength.ToString());
                         targetElement.Attributes.Add("maxlength", strLenAttr.MaximumLength.ToString());
                         validateElement = true;
+                    }
+
+                    if (IsNumericType(modelProperty.PropertyType))
+                    {
+                        AddOrUpdateHtmlAttribute(targetElement, "type", "number");
                     }
 
                     if (!validateElement) // Not already handled

@@ -2,11 +2,11 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @section head{
-	<title>@Model.Page.Name</title>
+	<title>@Model.Page!.Name</title>
 }
-@using (Html.BeginUmbracoForm<CheckboxesSurfaceController>(nameof(CheckboxesSurfaceController.Index), null, new { novalidate="novalidate" }))
+@using (Html.BeginUmbracoForm<CheckboxesSurfaceController>(nameof(CheckboxesSurfaceController.Index), new {}, new { novalidate="novalidate" }))
 {
-    <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
+    <partial name="GOVUK/BlockList" model="Model.Page!.Blocks" />
 }
 @section scripts {
     <partial name="GOVUK/Validation" />

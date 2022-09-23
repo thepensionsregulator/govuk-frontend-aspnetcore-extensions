@@ -5,14 +5,14 @@
 @using Microsoft.AspNetCore.Localization
 @using System.Threading
 @section head{
-	<title>@Model.Page.Name</title>
+	<title>@Model.Page!.Name</title>
 }
 @section language {
     <partial name="_LanguageSwitcher" model="Model.Page"/>
 }
-@using (Html.BeginUmbracoForm<TextInputSurfaceController>(nameof(TextInputSurfaceController.Index), null, new { novalidate="novalidate" }))
+@using (Html.BeginUmbracoForm<TextInputSurfaceController>(nameof(TextInputSurfaceController.Index), new {}, new { novalidate="novalidate" }))
 {
-    <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
+    <partial name="GOVUK/BlockList" model="Model.Page!.Blocks" />
 }
 @section scripts {
     <partial name="GOVUK/Validation" />

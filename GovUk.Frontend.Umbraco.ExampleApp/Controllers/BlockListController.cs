@@ -27,7 +27,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             };
 
             // Filter out a block in the block list
-            viewModel.OverriddenBlocks = new OverridableBlockListModel(viewModel.Page.Blocks,
+            viewModel.OverriddenBlocks = new OverridableBlockListModel(viewModel.Page.Blocks!,
                 blocks => blocks.Where(block => block.Settings.Value<string>("cssClassesForRow") != "filter-this")
             );
 
@@ -37,9 +37,15 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             // Override content in a nested block list
             var row = viewModel.OverriddenBlocks.First(x => x.Content.ContentType.Alias == "govukGridRow");
-            var col = row.Content.Value<OverridableBlockListModel>("blocks").Last(x => x.Content.ContentType.Alias == "govukGridColumn");
-            var nestedBlockToOverride = col.Content.Value<OverridableBlockListModel>("blocks").First(x => x.Settings.Value<string>("cssClassesForRow") == "override-this");
-            nestedBlockToOverride.Content.OverrideValue("text", GovukTypography.Apply("<p><strong>This text is overridden.</strong></p>"));
+            var col = row.Content.Value<OverridableBlockListModel>("blocks")?.LastOrDefault(x => x.Content.ContentType.Alias == "govukGridColumn");
+            if (col != null)
+            {
+                var nestedBlockToOverride = col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.Settings.Value<string>("cssClassesForRow") == "override-this");
+                if (nestedBlockToOverride != null)
+                {
+                    nestedBlockToOverride.Content.OverrideValue("text", GovukTypography.Apply("<p><strong>This text is overridden.</strong></p>"));
+                }
+            }
 
             return CurrentTemplate(viewModel);
         }

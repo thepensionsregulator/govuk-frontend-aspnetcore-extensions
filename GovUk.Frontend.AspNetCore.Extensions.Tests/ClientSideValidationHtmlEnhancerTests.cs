@@ -646,7 +646,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumberField));
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumberField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumberField)}\">",
                 viewContext,

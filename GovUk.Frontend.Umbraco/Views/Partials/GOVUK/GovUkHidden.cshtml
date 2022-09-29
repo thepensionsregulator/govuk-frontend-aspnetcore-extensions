@@ -11,4 +11,4 @@
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
 }
-<input type="hidden" name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" />
+<input type="hidden" id="@modelPropertyName" name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" />

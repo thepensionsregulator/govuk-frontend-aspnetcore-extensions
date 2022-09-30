@@ -265,25 +265,25 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     if (!validateElement) // Not already handled
                     {
                         // Get anything else that inherits from ValidationAttribute
-                        var baseValidationAttribute = modelProperty.GetCustomAttribute<ValidationAttribute>(); 
+                        var baseValidationAttribute = modelProperty.GetCustomAttribute<ValidationAttribute>();
                         if (baseValidationAttribute != null)
                         {
                             // Recast to see if we should be adding client-side attributes
-                            var customValidation = (IClientModelValidator)baseValidationAttribute;
+                            var customValidation = baseValidationAttribute as IClientModelValidator;
                             if (customValidation != null)
                             {
                                 // Get existing attributes
                                 var attrDictionary = targetElement.Attributes.ToDictionary(s => s.Name, s => s.Value);
-                                
+
                                 // Get metadata
                                 var metadata = metadataProvider.GetMetadataForType(modelType);
-                                
+
                                 // Now call the IClientModelValidator AddValidation method. This merges existing attributes with anything from the IClientModelValidator
                                 customValidation.AddValidation(new ClientModelValidationContext(viewContext, metadata, metadataProvider, attrDictionary));
-                                
+
                                 // Remove existing html attributes
                                 targetElement.Attributes.RemoveAll();
-                                
+
                                 // And add them back in again - this time with everything populated by the AddValidation method.
                                 foreach (var attr in attrDictionary)
                                 {

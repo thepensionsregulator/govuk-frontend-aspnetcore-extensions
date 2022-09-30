@@ -58,6 +58,7 @@
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.0-beta1" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.4" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.9" />
 	</ItemGroup>
 
 	<PropertyGroup>

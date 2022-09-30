@@ -117,28 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Email address must include @" xml:space="preserve">
-    <value>E-Mail-Adresse muss @ enthalten</value>
+  <data name="error_required" xml:space="preserve">
+    <value>This text input is required (Shared Resource)</value>
   </data>
-  <data name="Field 1" xml:space="preserve">
-    <value>Feld 1</value>
-  </data>
-  <data name="Field must be only numbers (Model Resource)" xml:space="preserve">
-    <value>Das Feld darf nur aus Zahlen bestehen (Model Resource)</value>
-  </data>
-  <data name="Fields must be the same" xml:space="preserve">
-    <value>Die Felder müssen gleich sein</value>
-  </data>
-  <data name="Must be 100 or fewer characters" xml:space="preserve">
-    <value>Darf höchstens 100 Zeichen lang sein</value>
-  </data>
-  <data name="Must be 5 or more characters" xml:space="preserve">
-    <value>Muss aus 5 oder mehr Zeichen bestehen</value>
-  </data>
-  <data name="Must be a number between 5 and 50" xml:space="preserve">
-    <value>Muss eine Zahl zwischen 5 und 50 sein</value>
-  </data>
-  <data name="String length must be between 5 and 20 (Model Resource)" xml:space="preserve">
-    <value>Die Zeichenfolgenlänge muss zwischen 5 und 20 liegen (Model Resource)</value>
+  <data name="field_label" xml:space="preserve">
+    <value>Field label (Shared Resource)</value>
   </data>
 </root>

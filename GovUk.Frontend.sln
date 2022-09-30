@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.AspNetCore.Extensions.Tests", "GovUk.Frontend.AspNetCore.Extensions.Tests\GovUk.Frontend.AspNetCore.Extensions.Tests.csproj", "{AC6F49AE-C825-466D-837A-9376CF1FAA07}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.ExampleSharedResource", "SharedResourceLibrary\GovUk.Frontend.ExampleSharedResource.csproj", "{9E55BF8E-A29A-462C-AB98-AE73AB6F722C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{AC6F49AE-C825-466D-837A-9376CF1FAA07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC6F49AE-C825-466D-837A-9376CF1FAA07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC6F49AE-C825-466D-837A-9376CF1FAA07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E55BF8E-A29A-462C-AB98-AE73AB6F722C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E55BF8E-A29A-462C-AB98-AE73AB6F722C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E55BF8E-A29A-462C-AB98-AE73AB6F722C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E55BF8E-A29A-462C-AB98-AE73AB6F722C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

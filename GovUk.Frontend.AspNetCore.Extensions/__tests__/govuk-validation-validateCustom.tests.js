@@ -32,4 +32,19 @@ describe("validateElement", () => {
             input.getAttribute("data-val-custom")
         );
     });
+
+    it("passes custom prop to a custom rule", () => {
+        document.body.innerHTML =
+            '<input data-val="true" data-val-custom="Custom rule failed" data-val-custom-prop="Banana" value="" />';
+
+        const testSubject = govuk();
+        mockCalledFunctions(testSubject);
+
+        expect(_mockValidator.methods["custom"]).toBeCalledWith(
+            "",                     // element value
+            expect.anything(),      // html element
+            { "prop": "Banana" }    // custom prop
+        );        
+
+    });
 });

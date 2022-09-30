@@ -263,7 +263,7 @@ function createGovUkValidator() {
     validateElement: function (element) {
         const validator = govuk.getValidator(element.form);
 
-        var data = {};
+        let data = {};
         [].forEach.call(element.attributes, function (attr) { // find all data-val attributes for this element
             if (/^data-val/.test(attr.name)) {
                 var ruleName = attr.name.substr(9); // Creates a dictionary - keys look like data-val-[KEY]
@@ -273,35 +273,50 @@ function createGovUkValidator() {
 
         for (const [key, value] of Object.entries(data)) {      // Rules look like data-val-[RULE_NAME] so let's find those
             if (!key.includes("-")) {                           // No hyphen means this is a rule                
-                var props = {};                                 // Find properties associated with rule
+                let props = {};                                 // Find properties associated with rule
                 for (const [k, v] of Object.entries(data)) {
                     if (k.startsWith(key + "-")) {              // look for attributes that look like [RULE_NAME]-property - e.g. range-max
-                        var prop = k.replace(key + "-", "");
+                        let prop = k.replace(key + "-", "");
                         props[prop] = v;
                     }
                 }
 
                 if (key) {
-                    var method = key;
+                    let method = key;
                     // conditional switch on anything that doesn't match - data-val-length
                     if (method == "length" && props) {
                         // Now query props to see which rule we have to call...
-                        var propsKeys = Object.keys(props);
-                        var hasMin = propsKeys.find(e => e == "min");
-                        var hasMax = propsKeys.find(e => e == "max");
+                        let propsKeys = Object.keys(props);
+                        let hasMin = propsKeys.find(e => e == "min");
+                        let hasMax = propsKeys.find(e => e == "max");
 
                         if (hasMax && hasMin) {
                             method = "rangelength";
                         }
                     }
 
+                    if (method == "minlength" && props) {
+                        let min = parseInt(props["min"]);
+                        props = min;
+                    }
+
+                    if (method == "maxlength" && props) {
+                        let max = parseInt(props["max"]);
+                        props = max;
+                    }
+
                     if (method == "equalto") {
                         method = "equalTo";
-                        var other = props["other"];
+                        let other = props["other"];
                         props = document.getElementById(other);
                     }
 
-                    var valid = validator.methods[method].call(
+                    if (method == "regex") {
+                        let pattern = props["pattern"];
+                        props = pattern;
+                    }
+
+                    let valid = validator.methods[method].call(
                         validator.prototype,
                         element.value,
                         element,
@@ -314,117 +329,6 @@ function createGovUkValidator() {
                 }
             }
         }
-        
-        /*
-      // We cannot copy the error that jQuery validate generates, because it hasn't done it yet when this event fires.
-      // Instead execute the same tests as 'else ifs' so that only one message appears.
-      // Do it in the same order as jQuery to get the same error message to display.
-      const required = element.getAttribute("data-val-required");
-      const email = element.getAttribute("data-val-email");
-      const phone = element.getAttribute("data-val-phone");
-      const pattern = element.getAttribute("data-val-regex-pattern");
-      const minLength = element.getAttribute("data-val-length-min");
-      const minLengthOnly = element.getAttribute("data-val-minlength-min");
-      const maxLength = element.getAttribute("data-val-length-max");
-      const maxLengthOnly = element.getAttribute("data-val-maxlength-max");
-      const minRange = element.getAttribute("data-val-range-min");
-      const maxRange = element.getAttribute("data-val-range-max");
-      const compareTo = element.getAttribute("data-val-equalto-other");
-
-      const custom = element.getAttribute("data-val-custom");        
-      
-
-      if (
-        required &&
-        !validator.methods.required.call(
-          validator.prototype,
-          element.value,
-          element
-        )
-      ) {
-        govuk.updateError(element, required);
-      } else if (
-        email &&
-        !validator.methods.email.call(
-          validator.prototype,
-          element.value,
-          element
-        )
-      ) {
-        govuk.updateError(element, email);
-      } else if (
-        phone &&
-        !validator.methods.phone.call(
-          validator.prototype,
-          element.value,
-          element
-        )
-      ) {
-        govuk.updateError(element, phone);
-      } else if (
-        pattern &&
-        !validator.methods.regex.call(
-          validator.prototype,
-          element.value,
-          element,
-          pattern
-        )
-      ) {
-        govuk.updateError(element, element.getAttribute("data-val-regex"));
-      } else if (
-        minLengthOnly &&
-        !validator.methods.minlength.call(
-          validator.prototype,
-          element.value,
-          element,
-          parseInt(minLengthOnly)
-        )
-      ) {
-        govuk.updateError(element, element.getAttribute("data-val-minlength"));
-      } else if (
-        maxLengthOnly &&
-        !validator.methods.maxlength.call(
-          validator.prototype,
-          element.value,
-          element,
-          parseInt(maxLengthOnly)
-        )
-      ) {
-        govuk.updateError(element, element.getAttribute("data-val-maxlength"));
-      } else if (
-        minLength &&
-        maxLength &&
-        !validator.methods.rangelength.call(
-          validator.prototype,
-          element.value,
-          element,
-          [minLength, maxLength]
-        )
-      ) {
-        govuk.updateError(element, element.getAttribute("data-val-length"));
-      } else if (
-        minRange &&
-        maxRange &&
-        !validator.methods.range.call(
-          validator.prototype,
-          element.value,
-          element,
-          [minRange, maxRange]
-        )
-      ) {
-        govuk.updateError(element, element.getAttribute("data-val-range"));
-      } else if (
-        compareTo &&
-        !validator.methods.equalTo.call(
-          validator.prototype,
-          element.value,
-          element,
-          document.getElementById(compareTo)
-        )
-      ) {
-        govuk.updateError(element, element.getAttribute("data-val-equalto"));
-        }
-        */
     },
 
     /**

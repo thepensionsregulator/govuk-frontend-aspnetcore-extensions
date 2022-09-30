@@ -271,9 +271,7 @@ public string Field { get; set; }
 
         validator.unobtrusive.adapters.add("banana", ["additionalParameter"],
             function (options) {
-                options.rules['banana'] = {
-                    additionalParameter: options.params.additionalParameter,
-                };
+                options.rules['banana'] = options.params;
                 options.messages['banana'] = options.message;
             }
         );
@@ -282,6 +280,51 @@ public string Field { get; set; }
 </script>
 ```
 
-3. All being well, you should find that the generated html element now has `data-val-banana` and `data-val-banana-additionaparamter` attributes. These correspond to the validation attribute added to the view model.
+3. All being well, you should find that the generated html element now has `data-val-banana` and `data-val-banana-additionalparamter` attributes. These correspond to the validation attribute added to the view model.
 
 4. Client-side validation is handled by `$.validator`, which should now have a `banana` method that is called by the govuk-validation.js code.
+
+## Shared Resource Strings
+
+In larger projects, it is common to have multiple projects with View-Models that share fields - for example, Email, Address, Phone Numbers etc. Each of these fields will have the same validation error message - for example, an Email Address will always need the same "Please enter a valid email address" message
+
+Rather than replicate the same error message across all projects that have "Email Address" attribute, a better approach would be to have a shared resource
+
+By default, View-Model Data Annotation error messages are found within a ```Resources``` folder: assuming the model class exists in ```ViewModels/MyModel.cs```, a typical resource file would be ```Resources/ViewModels/MyModel.de.resx```
+
+The scaffolding for this is:
+
+```csharp
+    services.AddMvc()
+        .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+        .AddDataAnnotationsLocalization();
+```
+
+The _downside_ to this is that it only supports one resource file per model. For example, if a project contains multiple address fields, the same error message will need to be copied throughout the project.
+
+One solution to this is to use a custom Localizer that allows for a (graceful) fallback to some other resource file. This localizer is part of the ```GovUk.Frontend.AspNetCore.Extensions``` library, called ```DataAnnotationStringLocalizer```
+
+Setup is simple
+
+1. Create an empty class (for example ```SharedResource.cs```) in the root of your project - this can be a shared project elsewhere
+2. Add a ```Resources``` folder in the same project, and create resource files with the same name as your empty class - for example ```SharedResource.es.resx```, ```SharedResource.fr.resx```
+3. In ```Startup.cs```, instead of the default ```AddDataAnnotationsLocalization```, we use ```DataAnnotationStringLocalizer``` and provide SharedResource as a fallback.
+
+```csharp
+services.AddMvc()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization(o =>
+    {
+        o.DataAnnotationLocalizerProvider = (type, factory) =>
+        {
+            var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName!);
+
+            return new DataAnnotationStringLocalizer(
+                factory?.Create(type),
+                factory?.Create(nameof(SharedResource), assemblyName.Name!)
+            );
+        };
+    });
+```
+
+4. Attribute error messages are then searched for by the local project Resource folder (e.g. ```Resources/ViewModels/MyModel.de.resx```), and then (if nothing is found) the referenced class - in the example above, ```SharedResource```

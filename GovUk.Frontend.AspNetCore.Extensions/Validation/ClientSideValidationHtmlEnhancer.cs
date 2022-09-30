@@ -1,8 +1,10 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,12 +18,19 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
         private readonly IModelPropertyResolver _modelPropertyResolver;
         private readonly IStringLocalizerFactory? _factory;
         private readonly IModelMetadataProvider _metadataProvider;
+        private readonly IOptions<MvcDataAnnotationsLocalizationOptions> _options;
 
-        public ClientSideValidationHtmlEnhancer(IModelPropertyResolver modelPropertyResolver, IModelMetadataProvider metadataProvider, IStringLocalizerFactory? factory = null)
+        public ClientSideValidationHtmlEnhancer(
+            IModelPropertyResolver modelPropertyResolver, 
+            IModelMetadataProvider metadataProvider,
+            IOptions<MvcDataAnnotationsLocalizationOptions> options,
+        IStringLocalizerFactory? factory = null)
         {
             _modelPropertyResolver = modelPropertyResolver ?? throw new ArgumentNullException(nameof(modelPropertyResolver));
+            
             _factory = factory;
             _metadataProvider = metadataProvider;
+            _options = options;
         }
 
         public string EnhanceHtml(string html,
@@ -59,7 +68,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 }
 
                 // Add the data-val-* attributes for ASP.NET / jQuery validation to pick up
-                AddClientSideValidationAttributes(viewContext, _modelPropertyResolver, _metadataProvider, _factory, inputs, errorMessage?.Attributes,
+                AddClientSideValidationAttributes(viewContext, _modelPropertyResolver, _metadataProvider, _factory, _options, inputs, errorMessage?.Attributes,
                     errorMessageRequired,
                     errorMessageRegex,
                     errorMessageEmail,
@@ -106,6 +115,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             IModelPropertyResolver propertyResolver,
             IModelMetadataProvider metadataProvider,
             IStringLocalizerFactory? stringLocalizerFactory,
+            IOptions<MvcDataAnnotationsLocalizationOptions>? options,
             HtmlNodeCollection targetElements,
             HtmlAttributeCollection? errorMessageAttributes,
             string? errorMessageRequired,
@@ -148,9 +158,13 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
                 if (modelProperty != null)
                 {
-                    if (stringLocalizerFactory != null)
+                    if (options!.Value.DataAnnotationLocalizerProvider != null && stringLocalizerFactory != null)
                     {
-                        localizer = stringLocalizerFactory.Create(modelProperty.DeclaringType!);
+                        // This will pass first non-null type (either containerType or modelType) to delegate.
+                        // Pass the root model type(container type) if it is non null, else pass the model type.
+                        localizer = options.Value.DataAnnotationLocalizerProvider(
+                            modelType,
+                            stringLocalizerFactory);
                     }
 
                     var validateElement = false;

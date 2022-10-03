@@ -16,6 +16,7 @@ namespace GovUk.Frontend.ExampleApp.Models
         [Range(1, 10, ErrorMessage = "Must be between 1 and 10")]
         public int Field2 { get; set; }
 
+        [Required(ErrorMessage = "This field is required")]
         [CustomValidator("Field1", "Field2", ErrorMessage = "This field must be the sum of box 1 and box 2")]
         public string Field3 { get; set; }
     }

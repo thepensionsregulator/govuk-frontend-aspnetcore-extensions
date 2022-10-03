@@ -262,11 +262,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         AddOrUpdateHtmlAttribute(targetElement, "type", "number");
                     }
 
-                    if (!validateElement) // Not already handled
+                    // Get anything else that inherits from ValidationAttribute
+                    var baseValidationAttributes = modelProperty.GetCustomAttributes<ValidationAttribute>();
+                    if (baseValidationAttributes != null && baseValidationAttributes.Count() > 0)
                     {
-                        // Get anything else that inherits from ValidationAttribute
-                        var baseValidationAttribute = modelProperty.GetCustomAttribute<ValidationAttribute>();
-                        if (baseValidationAttribute != null)
+                        foreach (var baseValidationAttribute in baseValidationAttributes)
                         {
                             // Recast to see if we should be adding client-side attributes
                             var customValidation = baseValidationAttribute as IClientModelValidator;

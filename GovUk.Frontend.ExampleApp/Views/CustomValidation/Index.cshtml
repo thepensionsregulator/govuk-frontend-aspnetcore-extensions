@@ -1,0 +1,36 @@
+﻿@using GovUk.Frontend.ExampleApp.Models
+@model CustomValidationViewModel
+@{
+    ViewData["Title"] = "Custom Validation";
+}
+@section language {
+    <partial name="_LanguageSwitcher" />
+}
+    <span class="govuk-caption-xl">GOV.UK Design System</span>
+
+    <form asp-controller="CustomValidation" asp-action="Post" method="post" novalidate>
+        <govuk-fieldset>
+            <govuk-fieldset-legend class="govuk-fieldset__legend--l">
+                Custom Validation
+            </govuk-fieldset-legend>
+            <govuk-client-side-validation>
+                <govuk-input asp-for="Field1" type="number">
+                    <govuk-input-label>Number 1</govuk-input-label>
+                </govuk-input>
+                <govuk-input asp-for="Field2" type="number">
+                    <govuk-input-label>Number 2</govuk-input-label>
+                </govuk-input>
+                <govuk-input asp-for="Field3" type="number">
+                    <govuk-input-label>Number 3</govuk-input-label>
+                    <govuk-input-hint>Must be Number 1 + Number 2</govuk-input-hint>
+                </govuk-input>
+            </govuk-client-side-validation>
+        </govuk-fieldset>
+
+        <govuk-button type="submit">Submit</govuk-button>
+
+    </form>
+    @section scripts {
+    <partial name="GOVUK/Validation" />
+    <script src="scripts/custom-validation.js" type="text/javascript"></script>
+}

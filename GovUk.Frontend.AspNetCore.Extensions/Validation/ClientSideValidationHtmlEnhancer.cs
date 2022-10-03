@@ -1,6 +1,10 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,11 +17,20 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
     {
         private readonly IModelPropertyResolver _modelPropertyResolver;
         private readonly IStringLocalizerFactory? _factory;
+        private readonly IModelMetadataProvider _metadataProvider;
+        private readonly IOptions<MvcDataAnnotationsLocalizationOptions> _options;
 
-        public ClientSideValidationHtmlEnhancer(IModelPropertyResolver modelPropertyResolver, IStringLocalizerFactory? factory = null)
+        public ClientSideValidationHtmlEnhancer(
+            IModelPropertyResolver modelPropertyResolver, 
+            IModelMetadataProvider metadataProvider,
+            IOptions<MvcDataAnnotationsLocalizationOptions> options,
+        IStringLocalizerFactory? factory = null)
         {
             _modelPropertyResolver = modelPropertyResolver ?? throw new ArgumentNullException(nameof(modelPropertyResolver));
+            
             _factory = factory;
+            _metadataProvider = metadataProvider;
+            _options = options;
         }
 
         public string EnhanceHtml(string html,
@@ -55,7 +68,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 }
 
                 // Add the data-val-* attributes for ASP.NET / jQuery validation to pick up
-                AddClientSideValidationAttributes(viewContext, _modelPropertyResolver, _factory, inputs, errorMessage?.Attributes,
+                AddClientSideValidationAttributes(viewContext, _modelPropertyResolver, _metadataProvider, _factory, _options, inputs, errorMessage?.Attributes,
                     errorMessageRequired,
                     errorMessageRegex,
                     errorMessageEmail,
@@ -100,7 +113,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
         private static void AddClientSideValidationAttributes(ViewContext viewContext,
             IModelPropertyResolver propertyResolver,
+            IModelMetadataProvider metadataProvider,
             IStringLocalizerFactory? stringLocalizerFactory,
+            IOptions<MvcDataAnnotationsLocalizationOptions>? options,
             HtmlNodeCollection targetElements,
             HtmlAttributeCollection? errorMessageAttributes,
             string? errorMessageRequired,
@@ -143,9 +158,13 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
                 if (modelProperty != null)
                 {
-                    if (stringLocalizerFactory != null)
+                    if (options!.Value.DataAnnotationLocalizerProvider != null && stringLocalizerFactory != null)
                     {
-                        localizer = stringLocalizerFactory.Create(modelProperty.DeclaringType!);
+                        // This will pass first non-null type (either containerType or modelType) to delegate.
+                        // Pass the root model type(container type) if it is non null, else pass the model type.
+                        localizer = options.Value.DataAnnotationLocalizerProvider(
+                            modelType,
+                            stringLocalizerFactory);
                     }
 
                     var validateElement = false;
@@ -241,6 +260,38 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     if (IsNumericType(modelProperty.PropertyType))
                     {
                         AddOrUpdateHtmlAttribute(targetElement, "type", "number");
+                    }
+
+                    if (!validateElement) // Not already handled
+                    {
+                        // Get anything else that inherits from ValidationAttribute
+                        var baseValidationAttribute = modelProperty.GetCustomAttribute<ValidationAttribute>();
+                        if (baseValidationAttribute != null)
+                        {
+                            // Recast to see if we should be adding client-side attributes
+                            var customValidation = baseValidationAttribute as IClientModelValidator;
+                            if (customValidation != null)
+                            {
+                                // Get existing attributes
+                                var attrDictionary = targetElement.Attributes.ToDictionary(s => s.Name, s => s.Value);
+
+                                // Get metadata
+                                var metadata = metadataProvider.GetMetadataForType(modelType);
+
+                                // Now call the IClientModelValidator AddValidation method. This merges existing attributes with anything from the IClientModelValidator
+                                customValidation.AddValidation(new ClientModelValidationContext(viewContext, metadata, metadataProvider, attrDictionary));
+
+                                // Remove existing html attributes
+                                targetElement.Attributes.RemoveAll();
+
+                                // And add them back in again - this time with everything populated by the AddValidation method.
+                                foreach (var attr in attrDictionary)
+                                {
+                                    targetElement.Attributes.Add(attr.Key, attr.Value);
+                                }
+                            }
+                            validateElement = true;
+                        }
                     }
 
                     if (validateElement) { targetElement.Attributes.Add("data-val", "true"); }

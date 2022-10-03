@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using GovUk.Frontend.ExampleSharedResource;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 
 namespace GovUk.Frontend.ExampleApp
 {
@@ -34,7 +36,18 @@ namespace GovUk.Frontend.ExampleApp
 
             services.AddMvc()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
+                .AddDataAnnotationsLocalization(o =>
+                {
+                    o.DataAnnotationLocalizerProvider = (type, factory) =>
+                    {
+                        var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName!);
+
+                        return new DataAnnotationStringLocalizer(
+                            factory?.Create(type),
+                            factory?.Create(nameof(SharedResource), assemblyName.Name!)
+                        );
+                    };
+                });
 
             services.Configure<RequestLocalizationOptions>(options =>
             {

@@ -6,14 +6,14 @@
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<IncludeRazorContentInPack>true</IncludeRazorContentInPack>
 		<Nullable>enable</Nullable>
-		<Version>2.0.1</Version>
+		<Version>2.0.2</Version>
 	</PropertyGroup>
 
-	
-	
+
+
 	<ItemGroup>
-	  <Content Remove="wwwroot\govuk\govuk-frontend.css.map" />
-	  <Content Remove="wwwroot\tpr\tpr.css.map" />
+		<Content Remove="wwwroot\govuk\govuk-frontend.css.map" />
+		<Content Remove="wwwroot\tpr\tpr.css.map" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -58,6 +58,7 @@
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.0-beta1" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.4" />
+		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.9" />
 	</ItemGroup>
 
 	<PropertyGroup>
@@ -88,110 +89,110 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_open-sans.scss" />
+		<UpToDateCheckInput Remove="Styles\_open-sans.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
-	  <None Update="__tests__\govuk-validation-createErrorSummary.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="__tests__\govuk-validation-errorMessageForElement.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="__tests__\govuk-validation-formGroupForElement.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="__tests__\govuk-validation-global.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="__tests__\govuk-validation-removeOrUpdateError.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="__tests__\govuk-validation-showError.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="__tests__\govuk-validation-updateErrorMessage.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="__tests__\govuk-validation-updateErrorSummary.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="__tests__\govuk-validation-updateTitle.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="__tests__\govuk-validation-validateElement.tests.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
+		<UpToDateCheckInput Remove="Styles\tpr.scss" />
+		<None Update="__tests__\govuk-validation-createErrorSummary.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-errorMessageForElement.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-formGroupForElement.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-global.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-removeOrUpdateError.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-showError.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-updateErrorMessage.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-updateErrorSummary.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-updateTitle.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-validateElement.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-grid.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-grid.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-caption.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-caption.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-inset-text.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-inset-text.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-button.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-button.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-panel.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-panel.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-radios-checkboxes.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-radios-checkboxes.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-link.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-link.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-back-to-top.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-back-to-top.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-label.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-label.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-date-input.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-date-input.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-input.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-input.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-add-link.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-add-link.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <None Include="wwwroot\govuk\govuk-frontend.css.map" />
-	  <None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
-	  <None Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
-	  <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
-	  <None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
-	  <None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
-	  <None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
-	  <None Include="wwwroot\lib\jquery\dist\jquery.js" />
-	  <None Include="wwwroot\lib\jquery\LICENSE.txt" />
-	  <None Include="wwwroot\tpr\tpr.css.map" />
+		<None Include="wwwroot\govuk\govuk-frontend.css.map" />
+		<None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+		<None Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+		<None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
+		<None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
+		<None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
+		<None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
+		<None Include="wwwroot\lib\jquery\dist\jquery.js" />
+		<None Include="wwwroot\lib\jquery\LICENSE.txt" />
+		<None Include="wwwroot\tpr\tpr.css.map" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <Folder Include="Content\" />
+		<Folder Include="Content\" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-fieldset.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-fieldset.scss" />
 	</ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿@model FileUploadViewModel
+﻿@using GovUk.Frontend.ExampleApp.Models
+@model FileUploadViewModel
 @{
     ViewData["Title"] = "File Uploads";
 }
@@ -6,14 +7,11 @@
 <partial name="_LanguageSwitcher" />
 }
 
-@*<partial name="GOVUK/ErrorSummary" />
-*@
 <span class="govuk-caption-xl">GOV.UK Design System</span>
-<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
 
 <form asp-controller="FileUpload" asp-action="Post" method="post" enctype="multipart/form-data" novalidate>
     <govuk-fieldset>
-        <govuk-fieldset-legend class="govuk-fieldset__legend--l">
+            <govuk-fieldset-legend is-page-heading="true"  class="govuk-fieldset__legend--l">
             File Upload
         </govuk-fieldset-legend>
         <govuk-client-side-validation>

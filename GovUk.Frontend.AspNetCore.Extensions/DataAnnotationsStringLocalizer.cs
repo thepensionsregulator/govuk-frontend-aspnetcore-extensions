@@ -49,9 +49,5 @@ namespace GovUk.Frontend.AspNetCore.Extensions
 
         public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
             => primaryLocalizer.GetAllStrings(includeParentCultures).Concat(fallbackLocalizer.GetAllStrings(includeParentCultures));
-
-
-        //public IStringLocalizer WithCulture(CultureInfo culture)
-        //    => new DataAnnotationStringLocalizer(primaryLocalizer.CurrentCulture(culture), fallbackLocalizer.WithCulture(culture));
     }
 }

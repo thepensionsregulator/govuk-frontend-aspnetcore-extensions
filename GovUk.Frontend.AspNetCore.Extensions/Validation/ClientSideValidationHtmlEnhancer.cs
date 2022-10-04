@@ -259,7 +259,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
                     if (IsNumericType(modelProperty.PropertyType))
                     {
-                        AddOrUpdateHtmlAttribute(targetElement, "type", "number");
+                        AddOrUpdateHtmlAttribute(targetElement, "type", "text");
                     }
 
                     if (!validateElement) // Not already handled

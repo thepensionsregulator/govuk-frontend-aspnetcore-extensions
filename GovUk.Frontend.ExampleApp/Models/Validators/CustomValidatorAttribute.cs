@@ -34,11 +34,11 @@ namespace GovUk.Frontend.ExampleApp.Models.Validators
                 return new ValidationResult(ErrorMessage);
             }
         }
-
         public void AddValidation(ClientModelValidationContext context)
         {
-            MergeAttribute(context.Attributes, "data-val", "true");
             var errorMessage = FormatErrorMessage(context.ModelMetadata.GetDisplayName());
+            
+            MergeAttribute(context.Attributes, "data-val", "true");            
             MergeAttribute(context.Attributes, "data-val-custom", errorMessage);
             MergeAttribute(context.Attributes, "data-val-custom-property1", Property1);
             MergeAttribute(context.Attributes, "data-val-custom-property2", Property2);
@@ -54,5 +54,6 @@ namespace GovUk.Frontend.ExampleApp.Models.Validators
             attributes.Add(key, value);
             return true;
         }
+
     }
 }

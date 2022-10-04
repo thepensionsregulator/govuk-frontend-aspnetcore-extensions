@@ -275,11 +275,14 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                                 // Get existing attributes
                                 var attrDictionary = targetElement.Attributes.ToDictionary(s => s.Name, s => s.Value);
 
+                                var errorMes = SelectBestErrorMessage("", baseValidationAttribute.ErrorMessage, localizer);
+
                                 // Get metadata
                                 var metadata = metadataProvider.GetMetadataForType(modelType);
-
                                 // Now call the IClientModelValidator AddValidation method. This merges existing attributes with anything from the IClientModelValidator
-                                customValidation.AddValidation(new ClientModelValidationContext(viewContext, metadata, metadataProvider, attrDictionary));
+                                customValidation.AddValidation(
+                                    new ClientModelValidationContext(viewContext, metadata, metadataProvider, attrDictionary)
+                                    );
 
                                 // Remove existing html attributes
                                 targetElement.Attributes.RemoveAll();
@@ -287,10 +290,16 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                                 // And add them back in again - this time with everything populated by the AddValidation method.
                                 foreach (var attr in attrDictionary)
                                 {
-                                    targetElement.Attributes.Add(attr.Key, attr.Value);
+                                    var value = attr.Value;
+                                    if(attr.Value == baseValidationAttribute.ErrorMessage)
+                                    {
+                                        value = errorMes;
+                                    }
+                                    targetElement.Attributes.Add(attr.Key, value);
                                 }
-                            }
-                            validateElement = true;
+
+                                validateElement = true;
+                            }                            
                         }
                     }
 

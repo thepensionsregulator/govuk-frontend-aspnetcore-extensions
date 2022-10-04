@@ -72,7 +72,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             [Compare(nameof(UnvalidatedField), ErrorMessage = errorMessageCompare)]
             public string CompareField { get; set; }
 
-           
+
             [CustomValidator(ErrorMessage = errorMessageRequiredCustom)]
             public string CustomField { get; set; }
 
@@ -297,11 +297,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CustomField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField)));
 
             var metadataProvider = new EmptyModelMetadataProvider();
-            var metadata = metadataProvider.GetMetadataForProperty(containerType: typeof(ExampleClass),propertyName: nameof(ExampleClass.CustomField));
+            var metadata = metadataProvider.GetMetadataForProperty(containerType: typeof(ExampleClass), propertyName: nameof(ExampleClass.CustomField));
 
             var mockMetaDataProvider = new Mock<IModelMetadataProvider>();
             mockMetaDataProvider.Setup(x => x.GetMetadataForType(typeof(ExampleClass))).Returns(metadata);
-            
+
 
             var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, mockMetaDataProvider.Object, options);
 
@@ -718,7 +718,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         public void Error_message_comes_from_parameters_first()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
-            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField)); 
+            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField));
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
@@ -848,6 +848,58 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Console.Write(document.DocumentNode.OuterHtml);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-required='{errorMessageRequired}']") != null);
 
+        }
+
+        [Test]
+        public void Error_message_for_custom_attributes_comes_from_localiser()
+        {
+            var viewContext = new ViewContext() { ClientValidationEnabled = true };
+            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField));
+
+            var propertyResolver = new Mock<IModelPropertyResolver>();
+            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
+            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CustomField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField)));
+
+            var localiserFactory = new Mock<IStringLocalizerFactory>();
+            var localiser = new Mock<IStringLocalizer>();
+            localiserFactory.Setup(x => x.Create(property.DeclaringType)).Returns(localiser.Object);
+            localiser.Setup(x => x[errorMessageRequiredCustom]).Returns(new LocalizedString(errorMessageRequiredCustom, "Error from localiser"));
+
+            var metadataProvider = new EmptyModelMetadataProvider();
+            var metadata = metadataProvider.GetMetadataForProperty(containerType: typeof(ExampleClass), propertyName: nameof(ExampleClass.CustomField));
+
+            var mockMetaDataProvider = new Mock<IModelMetadataProvider>();
+            mockMetaDataProvider.Setup(x => x.GetMetadataForType(typeof(ExampleClass))).Returns(metadata);
+
+            var options = Options.Create(new MvcDataAnnotationsLocalizationOptions()
+            {
+                DataAnnotationLocalizerProvider = (type, factory) =>
+                {
+                    return factory.Create(type);
+                }
+            });
+
+
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, mockMetaDataProvider.Object, options, localiserFactory.Object);
+
+            // Check support for multiple inputs with the same name, because the required attribute
+            // has to support a group of radio buttons or checkboxes
+            var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.CustomField)}\">",
+                viewContext,
+                errorMessageRequired,
+                errorMessageRegex,
+                errorMessageEmail,
+                errorMessagePhone,
+                errorMessageLength,
+                errorMessageMinLength,
+                errorMessageMaxLength,
+                errorMessageRange,
+                errorMessageCompare);
+
+            var document = new HtmlDocument();
+            document.LoadHtml(result);
+
+            Assert.True(document.DocumentNode.SelectSingleNode("//input[@data-val-custom='Error from localiser']") != null);
         }
     }
 }

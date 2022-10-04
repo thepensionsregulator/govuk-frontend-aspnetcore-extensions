@@ -260,6 +260,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     if (IsNumericType(modelProperty.PropertyType))
                     {
                         AddOrUpdateHtmlAttribute(targetElement, "type", "text");
+                        AddOrUpdateHtmlAttribute(targetElement, "inputmode", "numeric");
+                        AddOrUpdateHtmlAttribute(targetElement, "pattern", "[0-9]*");
                     }
 
                     if (!validateElement) // Not already handled

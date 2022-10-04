@@ -616,6 +616,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range-min='{min}']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range-max='{max}']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='text']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@inputmode='numeric']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='[0-9]*']") != null);
         }
 
         [Test]
@@ -681,6 +683,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='text']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@inputmode='numeric']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='[0-9]*']") != null);
         }
 
         [Test]

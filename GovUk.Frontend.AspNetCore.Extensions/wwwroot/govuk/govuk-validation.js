@@ -261,74 +261,78 @@ function createGovUkValidator() {
     },
 
     validateElement: function (element) {
-        const validator = govuk.getValidator(element.form);
+      const validator = govuk.getValidator(element.form);
 
-        let data = {};
-        [].forEach.call(element.attributes, function (attr) { // find all data-val attributes for this element
-            if (/^data-val/.test(attr.name)) {
-                var ruleName = attr.name.substr(9); // Creates a dictionary - keys look like data-val-[KEY]
-                data[ruleName] = attr.value;
-            }
-        });
-
-        for (const [key, value] of Object.entries(data)) {      // Rules look like data-val-[RULE_NAME] so let's find those
-            if (!key.includes("-")) {                           // No hyphen means this is a rule                
-                let props = {};                                 // Find properties associated with rule
-                for (const [k, v] of Object.entries(data)) {
-                    if (k.startsWith(key + "-")) {              // look for attributes that look like [RULE_NAME]-property - e.g. range-max
-                        let prop = k.replace(key + "-", "");
-                        props[prop] = v;
-                    }
-                }
-
-                if (key) {
-                    let method = key;
-                    // conditional switch on anything that doesn't match - data-val-length
-                    if (method == "length" && props) {
-                        // Now query props to see which rule we have to call...
-                        let propsKeys = Object.keys(props);
-                        let hasMin = propsKeys.find(e => e == "min");
-                        let hasMax = propsKeys.find(e => e == "max");
-
-                        if (hasMax && hasMin) {
-                            method = "rangelength";
-                        }
-                    }
-
-                    if (method == "minlength" && props) {
-                        let min = parseInt(props["min"]);
-                        props = min;
-                    }
-
-                    if (method == "maxlength" && props) {
-                        let max = parseInt(props["max"]);
-                        props = max;
-                    }
-
-                    if (method == "equalto") {
-                        method = "equalTo";
-                        let other = props["other"];
-                        props = document.getElementById(other);
-                    }
-
-                    if (method == "regex") {
-                        let pattern = props["pattern"];
-                        props = pattern;
-                    }
-
-                    let valid = validator.methods[method].call(
-                        validator.prototype,
-                        element.value,
-                        element,
-                        props
-                    );
-                    if (!valid) {
-                        govuk.updateError(element, value);
-                        break;  // Break so that the errors are displayed in the order they're specified
-                    }
-                }
-            }
+      let data = {};
+      [].forEach.call(element.attributes, function (attr) {
+        // find all data-val attributes for this element
+        if (/^data-val/.test(attr.name)) {
+          var ruleName = attr.name.substr(9); // Creates a dictionary - keys look like data-val-[KEY]
+          data[ruleName] = attr.value;
         }
+      });
+
+      for (const [key, value] of Object.entries(data)) {
+        // Rules look like data-val-[RULE_NAME] so let's find those
+        if (!key.includes("-")) {
+          // No hyphen means this is a rule
+          let props = {}; // Find properties associated with rule
+          for (const [k, v] of Object.entries(data)) {
+            if (k.startsWith(key + "-")) {
+              // look for attributes that look like [RULE_NAME]-property - e.g. range-max
+              let prop = k.replace(key + "-", "");
+              props[prop] = v;
+            }
+          }
+
+          if (key) {
+            let method = key;
+            // conditional switch on anything that doesn't match - data-val-length
+            if (method == "length" && props) {
+              // Now query props to see which rule we have to call...
+              let propsKeys = Object.keys(props);
+              let hasMin = propsKeys.find((e) => e == "min");
+              let hasMax = propsKeys.find((e) => e == "max");
+
+              if (hasMax && hasMin) {
+                method = "rangelength";
+              }
+            }
+
+            if (method == "minlength" && props) {
+              let min = parseInt(props["min"]);
+              props = min;
+            }
+
+            if (method == "maxlength" && props) {
+              let max = parseInt(props["max"]);
+              props = max;
+            }
+
+            if (method == "equalto") {
+              method = "equalTo";
+              let other = props["other"];
+              props = document.getElementById(other);
+            }
+
+            if (method == "regex") {
+              let pattern = props["pattern"];
+              props = pattern;
+            }
+
+            let valid = validator.methods[method].call(
+              validator.prototype,
+              element.value,
+              element,
+              props
+            );
+            if (!valid) {
+              govuk.updateError(element, value);
+              break; // Break so that the errors are displayed in the order they're specified
+            }
+          }
+        }
+      }
     },
 
     /**
@@ -478,12 +482,15 @@ function createGovUkValidator() {
       }
 
       return true;
-      },
+    },
 
     // Custom range validator to handle numbers with commas in
     validateRangeWithCommas(value, element, param) {
-      var commaFreeVal = Number(value.replace(',',''));    
-      return this.optional(element) || (commaFreeVal >= param[0] && commaFreeVal <= param[1]);
+      var commaFreeNumber = Number(value.replaceAll(",", ""));
+      return (
+        this.optional(element) ||
+        (commaFreeNumber >= param[0] && commaFreeNumber <= param[1])
+      );
     },
   };
 
@@ -503,7 +510,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
     validator.addMethod("phone", govuk.validatePhone);
     validator.addMethod("range", govuk.validateRangeWithCommas);
-      
+
     validator.unobtrusive.adapters.addBool("phone");
     validator.unobtrusive.parse();
   }

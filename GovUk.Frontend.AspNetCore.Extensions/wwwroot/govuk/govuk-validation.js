@@ -486,10 +486,10 @@ function createGovUkValidator() {
 
     // Custom range validator to handle numbers with commas in
     validateRangeWithCommas(value, element, param) {
-      var commaFreeNumber = Number(value.replaceAll(",", ""));
+      var commaFreeVal = Number(value.replaceAll(",", ""));
       return (
         this.optional(element) ||
-        (commaFreeNumber >= param[0] && commaFreeNumber <= param[1])
+        (commaFreeVal >= param[0] && commaFreeVal <= param[1])
       );
     },
   };

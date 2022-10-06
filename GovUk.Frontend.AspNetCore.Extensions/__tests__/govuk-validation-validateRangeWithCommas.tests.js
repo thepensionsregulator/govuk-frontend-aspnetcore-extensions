@@ -4,7 +4,8 @@ describe("validateRangeWithCommas", () => {
   const minValue = -100000000;
   const maxValue = 100000000;
   it("should allow values in range", () => {
-    const shouldBeValid = [
+      const shouldBeValid = [
+      "",
       "100,000",
       "1,000,000",
       "-100,000",

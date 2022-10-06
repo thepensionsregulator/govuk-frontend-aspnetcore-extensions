@@ -196,8 +196,8 @@ function createGovUkValidator() {
         // Otherwise target the original element.
         let list = closest(
           element,
-          ".govuk-radios, .govuk-radios__conditional, .govuk-checkboxes, .govuk-checkboxes__conditional, .govuk-date-input"
-        );
+          ".govuk-radios, .govuk-radios__conditional, .govuk-checkboxes, .govuk-checkboxes__conditional, .govuk-date-input, .govuk-input__wrapper"
+          );
         let targetElement =
           list &&
           !list.classList.contains("govuk-radios__conditional") &&

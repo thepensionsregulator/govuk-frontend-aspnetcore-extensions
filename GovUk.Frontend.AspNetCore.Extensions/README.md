@@ -202,11 +202,11 @@ If enabled, the extension library automatically generates localised strings for 
 
 To implement Custom Validation Attributes _and_ Client Side Validation, you need to do the following:
 
-1. Create a validation attribute that inherits from `ValidationAttribute` and `IClientModelValidator`. This attribute can take additional parameters, but should override `IsValid`, and implement `public void AddValidation(ClientModelValidationContext context)`, which adds data-val attributes to the generated html.
+1. Create a validation attribute that inherits from `ValidationAttribute`. This attribute can take additional parameters, but should override `IsValid`.
 
 ```csharp
 [AttributeUsage(AttributeTargets.Property)]
-public class BananaValidatorAttribute : ValidationAttribute, IClientModelValidator
+public class BananaValidatorAttribute : ValidationAttribute
 {
     private string AdditionalParameter { get; set; }
 
@@ -220,35 +220,64 @@ public class BananaValidatorAttribute : ValidationAttribute, IClientModelValidat
         // Do some validation here
         return ValidationResult.Success;
     }
-
-    public void AddValidation(ClientModelValidationContext context)
-    {
-        MergeAttribute(context.Attributes, "data-val", "true");
-        var errorMessage = FormatErrorMessage(context.ModelMetadata.GetDisplayName());
-        MergeAttribute(context.Attributes, "data-val-banana", errorMessage);
-        MergeAttribute(context.Attributes, "data-val-banana-additionalParameter", AdditionalParameter);
-    }
-
-    private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
-    {
-        if (attributes.ContainsKey(key))
-        {
-            return false;
-        }
-        attributes.Add(key, value);
-        return true;
-    }
 }
 ```
 
-2. Apply your attribute to the model as per normal
+2. Create an Attribute Adapter - this should inherit from ```AttributeAdapterBase<T>``` and needs to be able to pass a localiser to the base class, and override ```AddValidation```
+
+
+```csharp
+    public class BananaValidatorAttributeAdapter : AttributeAdapterBase<BananaValidatorAttribute>
+    {
+        public BananaValidatorAttributeAdapter(BananaValidatorAttribute attribute, IStringLocalizer stringLocalizer) : base(attribute, stringLocalizer) { }
+
+        public override void AddValidation(ClientModelValidationContext context)
+        {
+            MergeAttribute(context.Attributes, "data-val", "true");
+        var errorMessage = GetErrorMessage(context);
+        MergeAttribute(context.Attributes, "data-val-banana", errorMessage);
+        MergeAttribute(context.Attributes, "data-val-banana-additionalParameter", AdditionalParameter);
+        }
+
+        public override string GetErrorMessage(ModelValidationContextBase validationContext)
+        {
+            return GetErrorMessage(validationContext.ModelMetadata, validationContext.ModelMetadata.GetDisplayName());
+        }
+    }
+
+```
+
+3. Create an Attribute Adapter Provider - you only need one, but you can add multiple Custom Validation Attribute Adapters as you need to:
+
+```csharp
+public class CustomValidationAttributeAdapterProvider : IValidationAttributeAdapterProvider
+    {
+        private readonly IValidationAttributeAdapterProvider _baseProvider = new ValidationAttributeAdapterProvider();
+
+        public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
+        {
+            if (attribute is BananaValidatorAttribute)
+                return new BananaValidatorAttributeAdapter(attribute as BananaValidatorAttribute, stringLocalizer);
+            else
+                return _baseProvider.GetAttributeAdapter(attribute, stringLocalizer);
+        }
+    }
+```
+
+4. Register this Adapter Provider in ```Startup.cs```
+
+```csharp
+services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
+```
+
+5. Apply your attribute to the model as per normal
 
 ```csharp
 [BananaValidator("My Additional Attribute", ErrorMessage = "An error message")]
 public string Field { get; set; }
 ```
 
-3. In the `.cshtml` file that uses the model, you will need to write a client-side validator that hooks into jquery validate, and can be set up with unobtrusive.
+6. In the `.cshtml` file that uses the model, you will need to write a client-side validator that hooks into jquery validate, and can be set up with unobtrusive.
 
 ```javascript
 <partial name="GOVUK/Validation" />
@@ -280,9 +309,9 @@ public string Field { get; set; }
 </script>
 ```
 
-3. All being well, you should find that the generated html element now has `data-val-banana` and `data-val-banana-additionalparamter` attributes. These correspond to the validation attribute added to the view model.
+7. All being well, you should find that the generated html element now has `data-val-banana` and `data-val-banana-additionalparamter` attributes. These correspond to the validation attribute added to the view model.
 
-4. Client-side validation is handled by `$.validator`, which should now have a `banana` method that is called by the govuk-validation.js code.
+8. Client-side validation is handled by `$.validator`, which should now have a `banana` method that is called by the govuk-validation.js code.
 
 ## Shared Resource Strings
 

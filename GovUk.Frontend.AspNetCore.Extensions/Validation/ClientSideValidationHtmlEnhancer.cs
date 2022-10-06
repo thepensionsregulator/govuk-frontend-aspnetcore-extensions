@@ -19,17 +19,20 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
         private readonly IStringLocalizerFactory? _factory;
         private readonly IModelMetadataProvider _metadataProvider;
         private readonly IOptions<MvcDataAnnotationsLocalizationOptions> _options;
+        private readonly IValidationAttributeAdapterProvider _validationAttributeAdapterProvider;
 
         public ClientSideValidationHtmlEnhancer(
             IModelPropertyResolver modelPropertyResolver, 
             IModelMetadataProvider metadataProvider,
             IOptions<MvcDataAnnotationsLocalizationOptions> options,
+            IValidationAttributeAdapterProvider validationAttributeAdapterProvider,
         IStringLocalizerFactory? factory = null)
         {
             _modelPropertyResolver = modelPropertyResolver ?? throw new ArgumentNullException(nameof(modelPropertyResolver));
             
             _factory = factory;
             _metadataProvider = metadataProvider;
+            _validationAttributeAdapterProvider = validationAttributeAdapterProvider;
             _options = options;
         }
 
@@ -68,7 +71,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 }
 
                 // Add the data-val-* attributes for ASP.NET / jQuery validation to pick up
-                AddClientSideValidationAttributes(viewContext, _modelPropertyResolver, _metadataProvider, _factory, _options, inputs, errorMessage?.Attributes,
+                AddClientSideValidationAttributes(viewContext, _modelPropertyResolver, _metadataProvider, _factory, 
+                    _validationAttributeAdapterProvider,
+                    _options, inputs, errorMessage?.Attributes,
                     errorMessageRequired,
                     errorMessageRegex,
                     errorMessageEmail,
@@ -115,6 +120,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             IModelPropertyResolver propertyResolver,
             IModelMetadataProvider metadataProvider,
             IStringLocalizerFactory? stringLocalizerFactory,
+            IValidationAttributeAdapterProvider validationAttributeAdapterProvider,
             IOptions<MvcDataAnnotationsLocalizationOptions>? options,
             HtmlNodeCollection targetElements,
             HtmlAttributeCollection? errorMessageAttributes,
@@ -208,7 +214,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         validateElement = true;
                     }
 
-                    // Min Length
+                    //// Min Length
                     var minLengthAttr = modelProperty.GetCustomAttributes<MinLengthAttribute>().FirstOrDefault();
                     if (minLengthAttr != null)
                     {
@@ -270,19 +276,18 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     {
                         foreach (var baseValidationAttribute in baseValidationAttributes)
                         {
-                            // Recast to see if we should be adding client-side attributes
-                            var customValidation = baseValidationAttribute as IClientModelValidator;
-                            if (customValidation != null)
+                            var adapter = validationAttributeAdapterProvider.GetAttributeAdapter(baseValidationAttribute, localizer);
+
+                            if (adapter != null)
                             {
                                 // Get existing attributes
                                 var attrDictionary = targetElement.Attributes.ToDictionary(s => s.Name, s => s.Value);
 
-                                var errorMes = SelectBestErrorMessage("", baseValidationAttribute.ErrorMessage, localizer);
-
                                 // Get metadata
                                 var metadata = metadataProvider.GetMetadataForType(modelType);
-                                // Now call the IClientModelValidator AddValidation method. This merges existing attributes with anything from the IClientModelValidator
-                                customValidation.AddValidation(
+
+                                // Now call the Adapter's AddValidation method. This merges existing attributes with anything already present
+                                adapter!.AddValidation(
                                     new ClientModelValidationContext(viewContext, metadata, metadataProvider, attrDictionary)
                                     );
 
@@ -292,16 +297,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                                 // And add them back in again - this time with everything populated by the AddValidation method.
                                 foreach (var attr in attrDictionary)
                                 {
-                                    var value = attr.Value;
-                                    if(attr.Value == baseValidationAttribute.ErrorMessage)
-                                    {
-                                        value = errorMes;
-                                    }
-                                    targetElement.Attributes.Add(attr.Key, value);
+                                    targetElement.Attributes.Add(attr.Key, attr.Value);
                                 }
 
                                 validateElement = true;
-                            }                            
+                            }
                         }
                     }
 

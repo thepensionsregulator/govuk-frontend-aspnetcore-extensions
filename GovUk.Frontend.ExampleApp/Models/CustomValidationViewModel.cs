@@ -8,7 +8,8 @@ namespace GovUk.Frontend.ExampleApp.Models
 {
     public class CustomValidationViewModel
     {
-        [Required(ErrorMessage ="This field is required")]
+                
+        [Required(ErrorMessage = "This field is required")]
         [Range(10, 20, ErrorMessage = "Must be between 10 and 20")]
         public int Field1 { get; set; }
 

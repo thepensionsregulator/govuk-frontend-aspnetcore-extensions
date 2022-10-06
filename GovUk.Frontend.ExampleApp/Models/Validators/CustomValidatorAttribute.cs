@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System;
 
 namespace GovUk.Frontend.ExampleApp.Models.Validators
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class CustomValidatorAttribute : ValidationAttribute, IClientModelValidator
+    public class CustomValidatorAttribute : ValidationAttribute
     {
-        private string Property1 { get; set; }
-        private string Property2 { get; set; }
+        public string Property1 { get; set; }
+        public string Property2 { get; set; }
 
         public CustomValidatorAttribute(string property1, string property2)
         {
@@ -34,26 +32,5 @@ namespace GovUk.Frontend.ExampleApp.Models.Validators
                 return new ValidationResult(ErrorMessage);
             }
         }
-        public void AddValidation(ClientModelValidationContext context)
-        {
-            var errorMessage = FormatErrorMessage(context.ModelMetadata.GetDisplayName());
-            
-            MergeAttribute(context.Attributes, "data-val", "true");            
-            MergeAttribute(context.Attributes, "data-val-custom", errorMessage);
-            MergeAttribute(context.Attributes, "data-val-custom-property1", Property1);
-            MergeAttribute(context.Attributes, "data-val-custom-property2", Property2);
-
-        }
-
-        private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
-        {
-            if (attributes.ContainsKey(key))
-            {
-                return false;
-            }
-            attributes.Add(key, value);
-            return true;
-        }
-
-    }
+    }    
 }

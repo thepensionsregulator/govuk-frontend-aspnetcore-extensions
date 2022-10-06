@@ -478,6 +478,15 @@ function createGovUkValidator() {
       }
 
       return true;
+      },
+
+    // Custom range validator to handle numbers with commas in
+    validateRangeWithCommas(value, element, param) {
+      var commaFreeVal = Number(value.replaceAll(",", ""));
+      return (
+        this.optional(element) ||
+        (commaFreeVal >= param[0] && commaFreeVal <= param[1])
+      );
     },
   };
 
@@ -496,6 +505,8 @@ window.addEventListener("DOMContentLoaded", function () {
     });
 
     validator.addMethod("phone", govuk.validatePhone);
+    validator.addMethod("range", govuk.validateRangeWithCommas);
+      
     validator.unobtrusive.adapters.addBool("phone");
     validator.unobtrusive.parse();
   }

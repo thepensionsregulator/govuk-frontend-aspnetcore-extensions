@@ -615,7 +615,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range='{errorMessageRange}']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range-min='{min}']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-range-max='{max}']") != null);
-            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='number']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='text']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@inputmode='numeric']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='[0-9]*']") != null);
         }
 
         [Test]
@@ -654,7 +656,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         }
 
         [Test]
-        public void Numeric_fields_without_range_have_type_equals_number_added()
+        public void Numeric_fields_without_range_have_text_input_type_numeric_input_mode()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
@@ -679,7 +681,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var document = new HtmlDocument();
             document.LoadHtml(result);
 
-            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='number']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='text']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@inputmode='numeric']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='[0-9]*']") != null);
         }
 
         [Test]

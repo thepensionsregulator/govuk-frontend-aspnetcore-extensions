@@ -196,8 +196,8 @@ function createGovUkValidator() {
         // Otherwise target the original element.
         let list = closest(
           element,
-          ".govuk-radios, .govuk-radios__conditional, .govuk-checkboxes, .govuk-checkboxes__conditional, .govuk-date-input"
-        );
+          ".govuk-radios, .govuk-radios__conditional, .govuk-checkboxes, .govuk-checkboxes__conditional, .govuk-date-input, .govuk-input__wrapper"
+          );
         let targetElement =
           list &&
           !list.classList.contains("govuk-radios__conditional") &&
@@ -483,10 +483,10 @@ function createGovUkValidator() {
     // Custom range validator to handle numbers with commas in
     validateRangeWithCommas(value, element, param) {
       var commaFreeVal = Number(value.replace(/,/g, ''));
-      return (
-        this.optional(element) ||
-        (commaFreeVal >= param[0] && commaFreeVal <= param[1])
-      );
+      if (!value) {
+        return true;
+      }
+      return (commaFreeVal >= param[0] && commaFreeVal <= param[1]);
     },
   };
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Localization;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace GovUk.Frontend.ExampleApp.Models.Validators
 {

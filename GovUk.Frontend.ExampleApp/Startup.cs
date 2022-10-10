@@ -64,6 +64,8 @@ namespace GovUk.Frontend.ExampleApp
             });
 
             services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
+
+            services.AddSingleton<IValidatorAttributeAdapterFactory, CustomValidatorAttributeAdapterFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

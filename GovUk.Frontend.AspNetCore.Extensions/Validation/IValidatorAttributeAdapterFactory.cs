@@ -1,7 +1,6 @@
-﻿namespace GovUk.Frontend.ExampleApp.Models.Validators
+﻿namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 {
     using Microsoft.AspNetCore.Mvc.DataAnnotations;
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
     using Microsoft.Extensions.Localization;
     using System.ComponentModel.DataAnnotations;
 

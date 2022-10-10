@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Reflection;
 using GovUk.Frontend.ExampleApp.Models.Validators;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
 
 namespace GovUk.Frontend.ExampleApp
 {

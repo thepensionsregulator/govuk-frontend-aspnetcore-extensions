@@ -5,7 +5,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace GovUk.Frontend.ExampleApp.Models.Validators
+namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 {
     public class CustomValidationAttributeAdapterProvider : IValidationAttributeAdapterProvider
     {

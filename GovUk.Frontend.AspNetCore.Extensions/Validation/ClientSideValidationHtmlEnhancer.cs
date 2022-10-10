@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -270,42 +271,58 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         AddOrUpdateHtmlAttribute(targetElement, "pattern", "[0-9]*");
                     }
 
-                    // Get anything else that inherits from ValidationAttribute
-                    var baseValidationAttributes = modelProperty.GetCustomAttributes<ValidationAttribute>();
-                    if (baseValidationAttributes != null && baseValidationAttributes.Count() > 0)
+                    //if (!validateElement)
                     {
-                        foreach (var baseValidationAttribute in baseValidationAttributes)
+                        // Get anything else that inherits from ValidationAttribute
+                        var baseValidationAttributes = modelProperty.GetCustomAttributes<ValidationAttribute>();
+                        if (baseValidationAttributes != null && baseValidationAttributes.Count() > 0)
                         {
-                            var adapter = validationAttributeAdapterProvider.GetAttributeAdapter(baseValidationAttribute, localizer);
-
-                            if (adapter != null)
+                            foreach (var baseValidationAttribute in baseValidationAttributes)
                             {
-                                // Get existing attributes
-                                var attrDictionary = targetElement.Attributes.ToDictionary(s => s.Name, s => s.Value);
+                                var adapter = validationAttributeAdapterProvider.GetAttributeAdapter(baseValidationAttribute, localizer);
 
-                                // Get metadata
-                                var metadata = metadataProvider.GetMetadataForType(modelType);
-
-                                // Now call the Adapter's AddValidation method. This merges existing attributes with anything already present
-                                adapter!.AddValidation(
-                                    new ClientModelValidationContext(viewContext, metadata, metadataProvider, attrDictionary)
-                                    );
-
-                                // Remove existing html attributes
-                                targetElement.Attributes.RemoveAll();
-
-                                // And add them back in again - this time with everything populated by the AddValidation method.
-                                foreach (var attr in attrDictionary)
+                                if (adapter != null)
                                 {
-                                    targetElement.Attributes.Add(attr.Key, attr.Value);
-                                }
+                                    var attrDictionary = new Dictionary<string, string>();
+                                    
+                                    // Get existing attributes - have to iterate to avoid duplication
+                                    foreach(var attribute in targetElement.Attributes)
+                                    {
+                                        if (!attrDictionary.ContainsKey(attribute.Name))
+                                        {
+                                            attrDictionary.Add(attribute.Name, attribute.Value);
+                                        }
+                                    }
 
-                                validateElement = true;
+                                    // Get metadata
+                                    var metadata = metadataProvider.GetMetadataForType(modelType);
+
+                                    // Now call the Adapter's AddValidation method. This merges existing attributes with anything already present
+                                    adapter!.AddValidation(
+                                        new ClientModelValidationContext(viewContext, metadata, metadataProvider, attrDictionary)
+                                        );
+
+                                    // Remove existing html attributes
+                                    targetElement.Attributes.RemoveAll();
+
+                                    // And add them back in again - this time with everything populated by the AddValidation method.
+                                    foreach (var attr in attrDictionary)
+                                    {
+                                        targetElement.Attributes.Add(attr.Key, attr.Value);
+                                    }
+
+                                    validateElement = true;
+                                }
                             }
                         }
                     }
 
-                    if (validateElement) { targetElement.Attributes.Add("data-val", "true"); }
+                    if (validateElement) {
+                        if (!targetElement.Attributes.Contains("data-val"))
+                        {
+                            targetElement.Attributes.Add("data-val", "true");
+                        }
+                    }
 
                 }
             }

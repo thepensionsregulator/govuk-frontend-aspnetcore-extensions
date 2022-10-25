@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="custom_sum_error" xml:space="preserve">
+    <value>Dieses Feld muss die Summe aus Feld 1 und Feld 2 sein (Shared Resource)</value>
+  </data>
   <data name="error_required" xml:space="preserve">
     <value>Dieses Feld wird benötigt (Shared Resource)</value>
   </data>

@@ -259,4 +259,32 @@ describe("errorMessageForElement", () => {
       error.nextElementSibling.classList.contains("govuk-date-input")
     ).toBe(true);
   });
+
+    it("puts a error with text input with prefix before govuk-input__wrapper and after govuk-hint", () => {
+        document.body.innerHTML = `
+          <div class="govuk-form-group">
+            <label class="govuk-label"></label>
+            <div class="govuk-hint"></div>
+            <div class="govuk-input__wrapper" >
+              <div class="govuk-input__prefix">£</div>
+              <input class="govuk-input type="text" id="inner" />
+            </div>
+          </div>`;
+
+        const testSubject = govuk();
+        jest
+            .spyOn(testSubject, "formGroupForElement")
+            .mockReturnValue(document.getElementById("inner"));
+
+        const error = testSubject.errorMessageForElement(
+            document.querySelector("input")
+        );
+
+        expect(error.previousElementSibling.classList.contains("govuk-hint")).toBe(
+            true
+        );
+        expect(
+            error.nextElementSibling.classList.contains("govuk-input__wrapper")
+        ).toBe(true);
+    });
 });

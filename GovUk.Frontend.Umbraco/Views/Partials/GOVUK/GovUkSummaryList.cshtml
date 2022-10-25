@@ -1,0 +1,32 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@{
+    var listItems = Model.Content.Value<OverridableBlockListModel>("items")!;
+}
+<govuk-summary-list id="@Model.Content.Key">
+    @foreach (var listItem in listItems.Filter(listItems))
+    {
+        <govuk-summary-list-row class="@(listItem.Settings.Value<string>("cssClasses"))">
+            <govuk-summary-list-row-key>@(listItem.Content.Value<string>("key"))</govuk-summary-list-row-key>
+            <govuk-summary-list-row-value>@Html.Raw(GovUkTypography.Apply(listItem.Content.Value<string>("value"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-summary-list-row-value>
+            @{
+                var actionsModel = listItem.Content.Value<OverridableBlockListModel>("actions")!;
+                var actions = actionsModel.Filter(actionsModel);
+                if (actions.Any()) 
+                {
+                    <govuk-summary-list-row-actions>
+                    @foreach (var action in actions)
+                    {
+                        var link = action.Content.Value<Link>("link");
+                        <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@(listItem.Content.Value<string>("key"))">@(action.Content.Value<string>("text"))</govuk-summary-list-row-action>
+                    }
+                    </govuk-summary-list-row-actions>
+                }
+            }
+        </govuk-summary-list-row>
+    }
+</govuk-summary-list>

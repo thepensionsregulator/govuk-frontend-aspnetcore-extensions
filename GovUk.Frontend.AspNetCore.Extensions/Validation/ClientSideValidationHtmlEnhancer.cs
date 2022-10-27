@@ -60,7 +60,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             if (inputs != null && inputs.Count > 0)
             {
                 // Get the output of the <govuk-input-error-message> grandchild tag helper, if present.
-                var errorMessage = document.DocumentNode.SelectSingleNode("//*[@class='govuk-error-message']");
+                var errorMessage = document.DocumentNode.SelectSingleNode("//*[@class[normalize-space()='govuk-error-message']]");
 
                 // If <govuk-input-error-message> is present, the <govuk-input> tag helper always adds error classes because it assumes
                 // we put it there because we already detected an error on the server. But we might want it there at all times to enable 

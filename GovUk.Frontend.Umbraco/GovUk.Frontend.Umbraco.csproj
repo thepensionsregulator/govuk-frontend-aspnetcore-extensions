@@ -52,6 +52,7 @@
 		<Content Remove="uSync\v9\ContentTypes\govukpageheadingsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukpanel.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukpanelsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukphasebanner.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukradio.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukradios.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukradiosdivider.config" />
@@ -86,10 +87,12 @@
 		<Content Remove="uSync\v9\DataTypes\GOVUKModelProperty.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKNotificationBannerType.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKPhase.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadioButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRadiosLayout.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditor.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditorLarge.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditorPhaseBanner.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditorSummaryList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKSelectOptions.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKSummaryListActions.config" />
@@ -269,6 +272,9 @@
 		<None Include="uSync\v9\ContentTypes\govukpanelsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govukphasebanner.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukradio.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -371,6 +377,9 @@
 		<None Include="uSync\v9\DataTypes\GOVUKNotificationBannerType.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKPhase.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKRadioButtons.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -381,6 +390,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditorLarge.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditorPhaseBanner.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditorSummaryList.config">

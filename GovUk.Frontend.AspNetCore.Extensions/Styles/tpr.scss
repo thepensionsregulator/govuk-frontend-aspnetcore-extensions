@@ -23,6 +23,7 @@
 @import "govuk/components/radios";
 @import "govuk/components/select";
 @import "govuk/components/skip-link";
+@import "govuk/components/summary-list";
 @import "govuk/components/textarea";
 @import "govuk/components/warning-text";
 @import "govuk/utilities/all";
@@ -42,6 +43,7 @@
 @import '_govuk-link.scss';
 @import '_govuk-panel.scss';
 @import '_govuk-radios-checkboxes.scss';
+@import '_govuk-summary-list.scss';
 
 // Add different components and customisations that are not part of the GOV.UK Design System
 @import '_tpr-grid.scss';

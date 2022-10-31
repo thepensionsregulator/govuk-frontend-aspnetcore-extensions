@@ -9,8 +9,6 @@
 		<Version>2.0.2</Version>
 	</PropertyGroup>
 
-
-
 	<ItemGroup>
 		<Content Remove="wwwroot\govuk\govuk-frontend.css.map" />
 		<Content Remove="wwwroot\tpr\tpr.css.map" />
@@ -57,7 +55,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.52.1.2" />
-		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.0-beta2" />
+		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.0-beta3" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.9" />
@@ -198,7 +196,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-summary-list.scss" />
+		<UpToDateCheckInput Remove="Styles\_govuk-summary-list.scss" />
 	</ItemGroup>
 
 </Project>

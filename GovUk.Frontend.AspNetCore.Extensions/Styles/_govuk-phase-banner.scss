@@ -1,0 +1,7 @@
+﻿/* .govuk-phase-banner should always be followed by .tpr-header. 
+    The bottom border creates a step where the border ends but .tpr-header extends the full width of the viewport;
+    Hide the border rather than removing it, as removing it creates a fine line below .tpr-header.
+*/
+.govuk-phase-banner {
+    border-bottom-color: transparent;
+}

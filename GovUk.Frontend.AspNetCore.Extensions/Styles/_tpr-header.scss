@@ -1,0 +1,144 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+@import 'govuk/helpers/_focused';
+
+$tpr-header-vertical-space: govuk-px-to-rem(10);
+$tpr-header-horizontal-space: govuk-px-to-rem(20);
+$tpr-header-line-spacing: 1.5em;
+$tpr-header-breakpoint-medium: 42em;
+
+/* 
+    Stack everything by default, and hide .tpr-header__label which is usually a disposable strapline.
+    At medium size align the sections horizontally rather than stacked.
+*/
+@mixin tpr-header-media-query-m {
+    @media (min-width: 42em) {
+        @content;
+    }
+}
+@mixin tpr-header-media-query-l {
+    @media (min-width: 54em) {
+        @content;
+    }
+}
+@mixin tpr-header-media-query-xl {
+    @media (min-width: 60em) {
+        @content;
+    }
+}
+
+/* This background extends across the whole viewport. */
+.tpr-header {
+    background: $tpr-colour-violet;
+}
+
+.tpr-header__inner {
+    display: flex;
+    flex-direction: column;
+    padding: $tpr-header-vertical-space 0;
+}
+
+@include tpr-header-media-query-m {
+    .tpr-header__inner {
+        flex-direction: row;
+        align-items: center;
+    }
+}
+
+.tpr-header__logo {
+    display: flex;
+    flex: 0 0 auto;
+}
+
+.tpr-header__logo > img {
+    width: govuk-px-to-rem(180);
+    height: govuk-px-to-rem(75);
+}
+
+@include tpr-header-media-query-m {
+    .tpr-header__logo {
+        padding: 0 govuk-px-to-rem(30) 0 0;
+        border-right: 0.0625rem solid $tpr-colour-blue-marguerite;
+        margin-right: $tpr-header-horizontal-space;
+    }
+}
+
+@include tpr-header-media-query-xl {
+    .tpr-header__logo {
+        /* Not in rems so that it doesn't grow and take up extra space when the base font size is increased. */
+        min-width: 285px;
+    }
+}
+
+.tpr-header__label {
+    display: none;
+}
+
+@include tpr-header-media-query-m {
+    .tpr-header__label {
+        display: flex;
+        flex-grow: 1;
+        margin: $tpr-header-vertical-space $tpr-header-horizontal-space $tpr-header-vertical-space 0;
+        color: $tpr-colour-white;
+        font-weight: $tpr-font-weight-regular;
+        line-height: $tpr-header-line-spacing;
+    }
+}
+
+.tpr-header__content {
+    display: flex;
+    margin: 0;
+}
+
+@include tpr-header-media-query-m {
+    .tpr-header__content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@include tpr-header-media-query-l {
+    .tpr-header__content {
+        flex-direction: row;
+    }
+}
+
+.tpr-header__content > a {
+    font-weight: $tpr-font-weight-regular;
+    line-height: $tpr-header-line-spacing;
+    white-space: nowrap;
+}
+
+.tpr-header__content > a:link,
+.tpr-header__content > a:visited {
+    color: $tpr-colour-white;
+}
+
+.tpr-header__content > a:focus {
+    color: $govuk-focus-text-colour;
+}
+
+.tpr-header__content > a:active {
+    @include govuk-focused-text;
+}
+
+.tpr-header__content > a {
+    margin-right: $tpr-header-horizontal-space;
+}
+.tpr-header__content > a:last-child {
+    margin-right: 0;
+}
+
+/* Links are now stacked to save space, so remove the margin that would knock them off-centre.*/
+@include tpr-header-media-query-m {
+    .tpr-header__content > a {
+        margin-right: 0;
+    }
+}
+
+/* Now the links have room to spread out.*/
+@include tpr-header-media-query-l {
+    .tpr-header__content > a {
+        margin-right: $tpr-header-horizontal-space;
+    }
+}

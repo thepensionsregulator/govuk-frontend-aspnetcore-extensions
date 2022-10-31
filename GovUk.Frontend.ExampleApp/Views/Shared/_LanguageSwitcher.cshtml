@@ -17,12 +17,12 @@
 }
 
 @if (cultureItems.Count > 1) {
-    <header id="language-switcher-container">
-        <ul id="language-switcher" class="govuk-list">
+    <div class="govuk-width-container">
+        <ul class="govuk-list language-switcher">
             @foreach (var culture in cultureItems)
             {
                 <li class="@((currentLanguage == culture.Value) ? "languageSelected" : "languageNotSelected")"><a class="govuk-link" asp-action="SetLanguage" asp-controller="Home" asp-route-returnUrl="@returnUrl" asp-route-culture="@culture.Value">@culture.Text</a></li>
             }
         </ul>
-    </header>
+    </div>
 }

@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Home</summary>
 	[PublishedModel("home")]
-	public partial class Home : PublishedContentModel, IGovukPhaseBanner
+	public partial class Home : PublishedContentModel, IGovukPhaseBanner, ITprHeader
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -72,5 +72,37 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("govukPhaseBannerText")]
 		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString GovukPhaseBannerText => global::Umbraco.Cms.Web.Common.PublishedModels.GovukPhaseBanner.GetGovukPhaseBannerText(this, _publishedValueFallback);
+
+		///<summary>
+		/// Content: A small number of links, or blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderContent")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprHeaderContent => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderContent(this, _publishedValueFallback);
+
+		///<summary>
+		/// Label: Typically set to 'Making workplace pensions work'
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderLabel")]
+		public virtual string TprHeaderLabel => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderLabel(this, _publishedValueFallback);
+
+		///<summary>
+		/// Logo alternative text: Defaults to 'Go to The Pensions Regulator website' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderLogoAlt")]
+		public virtual string TprHeaderLogoAlt => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderLogoAlt(this, _publishedValueFallback);
+
+		///<summary>
+		/// Logo links to where?: Typically the TPR website home page, https://www.thepensionsregulator.gov.uk
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderLogoHref")]
+		public virtual global::Umbraco.Cms.Core.Models.Link TprHeaderLogoHref => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderLogoHref(this, _publishedValueFallback);
 	}
 }

@@ -1,10 +1,14 @@
-﻿@using GovUk.Frontend.Umbraco.ExampleApp.Models
+﻿@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
+@using GovUk.Frontend.Umbraco.ExampleApp.Models
 @using GovUk.Frontend.Umbraco.Typography
+@using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
 @{
     var home = Umbraco.ContentSingleAtXPath("//home");
     var phase = home?.Value<string>("govukPhase");
+    var skipLink = string.IsNullOrEmpty(home?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : home?.Value<string>("govukSkipLinkText");
+    var headerLogoAlt = string.IsNullOrEmpty(home?.Value<string>("tprHeaderLogoAlt")) ? ComponentGenerator.HeaderLogoDefaultAlt : home?.Value<string>("tprHeaderLogoAlt");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -17,15 +21,22 @@
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
-    <div class="govuk-width-container">
+    <govuk-skip-link href="#main">@skipLink</govuk-skip-link>
+    <header role="banner">
         @if (home != null && !string.IsNullOrEmpty(phase) && phase != "Live")
         {
-            <govuk-phase-banner>
+            <govuk-phase-banner class="govuk-width-container">
                 <govuk-phase-banner-tag>@phase</govuk-phase-banner-tag>
                 @Html.Raw(GovUkTypography.Apply(home.Value("govukPhaseBannerText")?.ToString(), new TypographyOptions{ RemoveWrappingParagraph = true }))
             </govuk-phase-banner>
         }
+        <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(home?.Value<Link>("tprHeaderLogoHref")?.Url)" label="@(home?.Value<string?>("tprHeaderLabel"))">
+            @Html.Raw(GovUkTypography.Apply(home?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+        </tpr-header-bar>
+        <tpr-context-bar context-1="@(home?.Value<string>("tprContext1"))" context-2="@(home?.Value<string>("tprContext2"))" context-3="@(home?.Value<string>("tprContext3"))" />
         @RenderSection("language", required: false)
+        </header>
+    <div class="govuk-width-container">
         <main id="main" class="govuk-main-wrapper">@RenderBody()</main>
     </div>
     <partial name="GOVUK/BodyClosing" />

@@ -8,5 +8,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
     {
         TagBuilder GenerateBackToTopLink(string href, IHtmlContent content, AttributeDictionary? attributes);
         TagBuilder GenerateBackToMenu(string href, IHtmlContent content, AttributeDictionary? attributes);
+        TagBuilder GenerateTprHeaderBar(string? logoHref, string logoAlt, string? label, IHtmlContent? content, AttributeDictionary? attributes);
+        TagBuilder GenerateTprContextBar(string? context1, string? context2, string? context3, AttributeDictionary? attributes);
     }
 }

@@ -9,10 +9,16 @@
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
-    @RenderSection("language", required: false)
-    <main id="main">
-        @RenderBody()
-    </main>
+    <div class="govuk-width-container">
+        <govuk-phase-banner>
+            <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
+            This is a new service - your <a href="#" class="govuk-link">feedback</a> will help us to improve it.
+        </govuk-phase-banner>
+        @RenderSection("language", required: false)
+        <main id="main" class="govuk-main-wrapper">
+            @RenderBody()
+        </main>
+    </div>
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)
 </body>

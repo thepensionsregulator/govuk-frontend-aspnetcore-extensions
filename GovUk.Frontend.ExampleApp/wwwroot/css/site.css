@@ -1,4 +1,3 @@
-﻿body { padding: 2rem; max-width: 60rem; }
-header { border-bottom: 1px solid #ccc; margin-bottom: 2rem; }
+﻿header { border-bottom: 1px solid #ccc; margin-top: 1rem; }
 .languageSelected { border-left: 4px solid #ccc; padding-left: 8px; }
 .languageNotSelected { padding-left: 12px; }

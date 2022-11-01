@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Home</summary>
 	[PublishedModel("home")]
-	public partial class Home : PublishedContentModel, IGovukPhaseBanner, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprHeader
+	public partial class Home : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprHeader
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -72,6 +72,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("govukPhaseBannerText")]
 		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString GovukPhaseBannerText => global::Umbraco.Cms.Web.Common.PublishedModels.GovukPhaseBanner.GetGovukPhaseBannerText(this, _publishedValueFallback);
+
+		///<summary>
+		/// Skip link text: Defaults to 'Skip to main content' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("govukSkipLinkText")]
+		public virtual string GovukSkipLinkText => global::Umbraco.Cms.Web.Common.PublishedModels.GovukSkipLink.GetGovukSkipLinkText(this, _publishedValueFallback);
 
 		///<summary>
 		/// Context 1: Typically the name of the application or the mode it's in.

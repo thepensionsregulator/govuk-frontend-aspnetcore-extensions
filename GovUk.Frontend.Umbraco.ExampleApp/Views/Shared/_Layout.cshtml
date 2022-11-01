@@ -7,6 +7,7 @@
 @{
     var home = Umbraco.ContentSingleAtXPath("//home");
     var phase = home?.Value<string>("govukPhase");
+    var skipLink = string.IsNullOrEmpty(home?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : home?.Value<string>("govukSkipLinkText");
     var headerLogoAlt = string.IsNullOrEmpty(home?.Value<string>("tprHeaderLogoAlt")) ? ComponentGenerator.HeaderLogoDefaultAlt : home?.Value<string>("tprHeaderLogoAlt");
 }
 <!DOCTYPE html>
@@ -20,6 +21,7 @@
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
+    <govuk-skip-link href="#main">@skipLink</govuk-skip-link>
     <header role="banner">
         @if (home != null && !string.IsNullOrEmpty(phase) && phase != "Live")
         {

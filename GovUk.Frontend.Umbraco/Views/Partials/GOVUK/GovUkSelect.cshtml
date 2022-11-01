@@ -28,7 +28,7 @@
         {
             <govuk-select-hint>@Html.Raw(hint)</govuk-select-hint>
         }
-        <govuk-select-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-select-error-message>
+        @*<govuk-select-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-select-error-message>*@
         @foreach (var block in options.Filter(options))
         {
             var value = block.Content.Value<string>("value");

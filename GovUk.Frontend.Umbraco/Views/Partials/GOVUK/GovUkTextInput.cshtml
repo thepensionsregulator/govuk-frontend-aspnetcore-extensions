@@ -35,7 +35,7 @@
         {
             <govuk-input-hint>@Html.Raw(hint)</govuk-input-hint>
         }
-        <govuk-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-input-error-message>
+        @*<govuk-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-input-error-message>*@
         @if (!string.IsNullOrEmpty(prefix))
         {
             <govuk-input-prefix>@prefix</govuk-input-prefix>

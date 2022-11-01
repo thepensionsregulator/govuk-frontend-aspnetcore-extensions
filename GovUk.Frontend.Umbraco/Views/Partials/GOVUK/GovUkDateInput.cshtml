@@ -33,7 +33,7 @@
             {
                 <govuk-date-input-hint>@Html.Raw(hint)</govuk-date-input-hint>
             }
-            <govuk-date-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-date-input-error-message>
+            @*<govuk-date-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-date-input-error-message>*@
             <govuk-date-input-day maxlength="2"/>
             <govuk-date-input-month maxlength="2" />
             <govuk-date-input-year maxlength="4" />

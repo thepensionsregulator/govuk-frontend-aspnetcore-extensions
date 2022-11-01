@@ -57,7 +57,7 @@
             {
                 <govuk-textarea-hint>@Html.Raw(hint)</govuk-textarea-hint>
             }
-            <govuk-textarea-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-textarea-error-message>
+            @*<govuk-textarea-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-textarea-error-message>*@
             <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>
         </govuk-textarea>
     }

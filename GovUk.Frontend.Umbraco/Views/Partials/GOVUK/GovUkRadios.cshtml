@@ -36,7 +36,7 @@
         {
             <govuk-radios-hint class="@cssClassesForHint">@Html.Raw(fieldsetHint)</govuk-radios-hint>
         }
-        <govuk-radios-error-message class="@cssClassesForError">@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-radios-error-message>
+        @*<govuk-radios-error-message class="@cssClassesForError">@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-radios-error-message>*@
         @foreach (var block in radioButtons.Filter(radioButtons))
         {
             if (block.Content.ContentType.Alias == "govukRadiosDivider")

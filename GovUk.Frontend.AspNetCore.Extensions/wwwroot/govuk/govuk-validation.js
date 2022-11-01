@@ -499,7 +499,7 @@ window.addEventListener("DOMContentLoaded", function () {
   const govuk = createGovUkValidator();
 
   govuk.createErrorSummary();
-
+  govuk.updateTitle();
   const validator = govuk.getValidator();
   if (validator) {
     validator.setDefaults({

@@ -3,14 +3,16 @@
 @import 'govuk/helpers/_focused';
 
 $tpr-header-vertical-space: govuk-px-to-rem(10);
-$tpr-header-horizontal-space: govuk-px-to-rem(20);
-$tpr-header-line-spacing: 1.5em;
-$tpr-header-breakpoint-medium: 42em;
+$tpr-header-line-height: 1.5em;
+$tpr-header-image-width: govuk-px-to-rem(180);
+$tpr-header-left-width-xl: 200px;
 
-/* 
-    Stack everything by default, and hide .tpr-header__label which is usually a disposable strapline.
-    At medium size align the sections horizontally rather than stacked.
-*/
+@mixin tpr-header-media-query-below-m {
+    @media (max-width: 42em) {
+        @content;
+    }
+}
+
 @mixin tpr-header-media-query-m {
     @media (min-width: 42em) {
         @content;
@@ -27,8 +29,12 @@ $tpr-header-breakpoint-medium: 42em;
     }
 }
 
-/* This background extends across the whole viewport. */
-.tpr-header {
+// For .tpr-header stack everything by default, and hide .tpr-header__label which is usually a disposable strapline.
+// At medium size align the sections horizontally rather than stacked.
+
+// This background extends across the whole viewport.
+.tpr-header,
+.tpr-context {
     background: $tpr-colour-violet;
 }
 
@@ -51,22 +57,22 @@ $tpr-header-breakpoint-medium: 42em;
 }
 
 .tpr-header__logo > img {
-    width: govuk-px-to-rem(180);
+    width: $tpr-header-image-width;
     height: govuk-px-to-rem(75);
 }
 
 @include tpr-header-media-query-m {
     .tpr-header__logo {
         padding: 0 govuk-px-to-rem(30) 0 0;
-        border-right: 0.0625rem solid $tpr-colour-blue-marguerite;
-        margin-right: $tpr-header-horizontal-space;
+        border-right: govuk-px-to-rem(1) solid $tpr-colour-blue-marguerite;
+        margin-right: $govuk-gutter;
     }
 }
 
 @include tpr-header-media-query-xl {
     .tpr-header__logo {
-        /* Not in rems so that it doesn't grow and take up extra space when the base font size is increased. */
-        min-width: 285px;
+        // Not in rems so that it doesn't grow and take up extra space when the base font size is increased.
+        min-width: $tpr-header-left-width-xl;
     }
 }
 
@@ -78,10 +84,10 @@ $tpr-header-breakpoint-medium: 42em;
     .tpr-header__label {
         display: flex;
         flex-grow: 1;
-        margin: $tpr-header-vertical-space $tpr-header-horizontal-space $tpr-header-vertical-space 0;
+        margin: $tpr-header-vertical-space $govuk-gutter $tpr-header-vertical-space 0;
         color: $tpr-colour-white;
         font-weight: $tpr-font-weight-regular;
-        line-height: $tpr-header-line-spacing;
+        line-height: $tpr-header-line-height;
     }
 }
 
@@ -105,7 +111,7 @@ $tpr-header-breakpoint-medium: 42em;
 
 .tpr-header__content > a {
     font-weight: $tpr-font-weight-regular;
-    line-height: $tpr-header-line-spacing;
+    line-height: $tpr-header-line-height;
     white-space: nowrap;
 }
 
@@ -123,22 +129,176 @@ $tpr-header-breakpoint-medium: 42em;
 }
 
 .tpr-header__content > a {
-    margin-right: $tpr-header-horizontal-space;
+    margin-right: $govuk-gutter;
 }
 .tpr-header__content > a:last-child {
     margin-right: 0;
 }
 
-/* Links are now stacked to save space, so remove the margin that would knock them off-centre.*/
+// Links are now stacked to save space, so remove the margin that would knock them off-centre.
 @include tpr-header-media-query-m {
     .tpr-header__content > a {
         margin-right: 0;
     }
 }
 
-/* Now the links have room to spread out.*/
+// Now the links have room to spread out.
 @include tpr-header-media-query-l {
     .tpr-header__content > a {
-        margin-right: $tpr-header-horizontal-space;
+        margin-right: $govuk-gutter;
+    }
+}
+
+
+
+// For .tpr-context stack everything by default.
+.tpr-context__inner {
+    min-height: govuk-px-to-rem(50);
+}
+
+.tpr-context .govuk-body {
+    font-weight: $tpr-font-weight-regular;
+    line-height: $tpr-header-line-height;
+    color: $tpr-colour-white;
+    margin: 0;
+}
+
+// Required when the text inside .tpr-context__context-2 is short.
+.tpr-context__container {
+    width: 100%; 
+}
+
+.tpr-context__context-1 {
+    align-items: center;
+    flex: 0 0 auto;
+    padding: $tpr-header-vertical-space $govuk-gutter-half;
+    border-top: govuk-px-to-rem(1) solid $tpr-colour-blue-marguerite;
+}
+
+// Allow more space for .tpr-context__context-2 as the viewport width grows.
+.tpr-context__context-2 {
+    flex-grow: 1;
+    align-items: center;
+    padding: $tpr-header-vertical-space $govuk-gutter-half;
+    background-color: $tpr-colour-black;
+}
+
+// Use another div inside .tpr-context__context-3 so that at larger sizes a left border can come in on the inner element,
+// but not extend to the top and bottom of the outer element.
+// overflow: hidden prevents the border of .tpr-context__context-3-inner extending too far.
+.tpr-context__context-3 {
+    white-space: nowrap;
+    background-color: $tpr-colour-black;
+    overflow: hidden;
+}
+
+.tpr-context__context-3-inner {
+    border-top: govuk-px-to-rem(1) solid rgba(202, 202, 202, 0.5);
+    padding: $tpr-header-vertical-space $govuk-gutter-half;
+    align-items: center;
+    width: 100%;
+}
+
+@include tpr-header-media-query-below-m {
+    .tpr-context__inner {
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+/* Align spacing changes with those in .tpr-header inherited from .govuk-width-container. 
+   Calculations copied from the govuk-width-container mixin: https://github.com/alphagov/govuk-frontend/blob/137b806d7c308f98f75f8c78ecfdb7f760b27d39/package/govuk/objects/_width-container.scss
+*/
+@include govuk-media-query($from: tablet) {
+    @supports (margin: unquote("max(calc(0px))")) {
+        .tpr-context__context-1,
+        .tpr-context__context-2,
+        .tpr-context__context-3-inner {
+
+            // Respect 'display cutout' safe area (avoids notches and rounded corners)
+            $gutter-safe-area-right: calc(#{$govuk-gutter-half} + env(safe-area-inset-right));
+            $gutter-safe-area-left: calc(#{$govuk-gutter-half} + env(safe-area-inset-left));
+
+            // Use max() to pick largest margin, default or with safe area
+            // Escaped due to Sass max() vs. CSS native max()
+            padding-right: unquote("max(#{$govuk-gutter}, #{$gutter-safe-area-right})");
+            padding-left: unquote("max(#{$govuk-gutter}, #{$gutter-safe-area-left})");
+        }
+    }
+}
+
+@include tpr-header-media-query-m {
+    // At larger sizes the background extends to the edge of the viewport beyond the app. On the left it
+    // must be $tpr-colour-violet with a border-top and to the right it must be $tpr-colour-black, so a
+    // ::before pseudo-element is used to cover up the .tpr-context background with a different one for half the width.
+    .tpr-context {
+        background-color: $tpr-colour-black;
+        position: relative;
+    }
+
+    .tpr-context::before {
+        content: ' ';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        border-top: govuk-px-to-rem(1) solid $tpr-colour-blue-marguerite;
+        box-sizing: border-box;
+        background-color: $tpr-colour-violet;
+        z-index: 0;
+    }
+    // At this width leave .tpr-context__context-2 and .tpr-context__context-3 stacked, but bring .tpr-context__container up alongside .tpr-context__context-1,
+    // and match the width of .tpr-context to the logo in .tpr-header.
+    // Remove the border on .tpr-context__context-1, and use z-index to raise the content above the pseudo-element creating the background and longer border.
+    // Start using flexbox at this level, not earlier, otherwise IE11 does not expand the height of .tpr-context__context-2 when text wraps onto multiple lines.
+    .tpr-context__inner {
+        display: flex;
+        position: relative;
+        z-index: 1;
+        align-items: center;
+    }
+
+    .tpr-context__context-1 {
+        padding: $tpr-header-vertical-space $govuk-gutter $tpr-header-vertical-space 0;
+        width: $tpr-header-image-width;
+        border: none;
+    }
+
+    .tpr-context__context-2 {
+        padding: $tpr-header-vertical-space $govuk-gutter;
+    }
+
+    .tpr-context__context-3 {
+        overflow: visible;
+    }
+
+    .tpr-context__context-3-inner {
+        padding: $tpr-header-vertical-space $govuk-gutter;
+    }
+}
+
+@include tpr-header-media-query-xl {
+    // At this width make .tpr-context__context-1 bigger to match the width to the logo in .tpr-header,
+    // and unstack .tpr-context__context-2 and .tpr-context__context-3 to be side-by-side.
+    .context {
+        width: govuk-px-to-rem(285);
+    }
+
+    .tpr-context__context-1 {
+        width: $tpr-header-left-width-xl;
+    }
+
+    .tpr-context__container,
+    .tpr-context__context-2,
+    .tpr-context__context-3 {
+        display: flex;
+    }
+
+    .tpr-context__context-3-inner {
+        border-top: none;
+        border-left: govuk-px-to-rem(1) solid rgba(202, 202, 202, 0.5);
+        margin: $tpr-header-vertical-space 0;
+        padding: $tpr-header-vertical-space 0 $tpr-header-vertical-space $govuk-gutter;
     }
 }

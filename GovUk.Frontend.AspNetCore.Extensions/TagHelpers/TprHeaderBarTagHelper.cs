@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     /// <summary>
-    /// Generates a TPR header component
+    /// Generates a TPR header bar component
     /// </summary>
     [HtmlTargetElement(TagName)]
-    [OutputElementHint(ComponentGenerator.TprHeaderElement)]
-    public class TprHeaderTagHelper : TagHelper
+    [OutputElementHint(ComponentGenerator.TprHeaderBarElement)]
+    public class TprHeaderBarTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-header";
+        internal const string TagName = "tpr-header-bar";
 
         private const string LabelAttributeName = "label";
         private const string LogoAltAttributeName = "logo-alt";
@@ -24,14 +24,14 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         private readonly IGovUkHtmlGenerator _htmlGenerator;
 
         /// <summary>
-        /// Creates a new <see cref="TprHeaderTagHelper"/>.
+        /// Creates a new <see cref="TprHeaderBarTagHelper"/>.
         /// </summary>
-        public TprHeaderTagHelper()
+        public TprHeaderBarTagHelper()
             : this(htmlGenerator: null)
         {
         }
 
-        internal TprHeaderTagHelper(IGovUkHtmlGenerator? htmlGenerator)
+        internal TprHeaderBarTagHelper(IGovUkHtmlGenerator? htmlGenerator)
         {
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
@@ -68,7 +68,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
                 content = await output.GetChildContentAsync();
             }
 
-            var tagBuilder = _htmlGenerator.GenerateTprHeader(LogoHref, LogoAlt, Label, content, output.Attributes.ToAttributeDictionary());
+            var tagBuilder = _htmlGenerator.GenerateTprHeaderBar(LogoHref, LogoAlt, Label, content, output.Attributes.ToAttributeDictionary());
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

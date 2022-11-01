@@ -7,12 +7,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 {
     public partial class ComponentGenerator
     {
-        internal const string TprHeaderElement = "div";
+        internal const string TprHeaderBarElement = "div";
         internal const string DefaultHeaderLabel = "Making workplace pensions work";
         public const string HeaderLogoDefaultAlt = "Go to The Pensions Regulator website";
         internal const string HeaderLogoDefaultHref = "https://www.thepensionsregulator.gov.uk";
 
-        public virtual TagBuilder GenerateTprHeader(
+        public virtual TagBuilder GenerateTprHeaderBar(
             string? logoHref,
             string logoAlt,
             string? label,
@@ -21,7 +21,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
         {
             Guard.ArgumentNotNullOrEmpty(nameof(logoAlt), logoAlt);
 
-            var tagBuilder = new TagBuilder(TprHeaderElement);
+            var tagBuilder = new TagBuilder(TprHeaderBarElement);
             if (attributes != null) tagBuilder.MergeAttributes(attributes);
             tagBuilder.MergeCssClass("tpr-header");
 

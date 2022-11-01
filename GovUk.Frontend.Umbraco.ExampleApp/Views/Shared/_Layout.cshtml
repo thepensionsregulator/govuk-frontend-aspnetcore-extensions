@@ -28,9 +28,9 @@
                 @Html.Raw(GovUkTypography.Apply(home.Value("govukPhaseBannerText")?.ToString(), new TypographyOptions{ RemoveWrappingParagraph = true }))
             </govuk-phase-banner>
         }
-        <tpr-header logo-alt="@headerLogoAlt" logo-href="@(home?.Value<Link>("tprHeaderLogoHref")?.Url)" label="@(home?.Value<string?>("tprHeaderLabel"))">
+        <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(home?.Value<Link>("tprHeaderLogoHref")?.Url)" label="@(home?.Value<string?>("tprHeaderLabel"))">
             @Html.Raw(GovUkTypography.Apply(home?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
-        </tpr-header>
+        </tpr-header-bar>
         @RenderSection("language", required: false)
         </header>
     <div class="govuk-width-container">

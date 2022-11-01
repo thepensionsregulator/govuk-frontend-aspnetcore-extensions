@@ -22,7 +22,10 @@
 
 <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-checkboxes name="@modelPropertyName" class="@cssClass">
-        @*<govuk-checkboxes-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-checkboxes-error-message>*@
+        @if (modelStateEntry != null && modelStateEntry.Errors.Any())
+        {
+            <govuk-checkboxes-error-message>@(string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)))</govuk-checkboxes-error-message>
+        }
         <govuk-checkboxes-item value="@value" checked="@(modelStateEntry?.AttemptedValue?.ToUpperInvariant() == value?.ToUpperInvariant())">@(Model.Content.Value<string>("label"))
             @if (!string.IsNullOrWhiteSpace(checkboxHint)) 
             {

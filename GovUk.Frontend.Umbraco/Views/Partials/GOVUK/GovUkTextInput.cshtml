@@ -30,12 +30,15 @@
     error-message-compare="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
 >
     <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" input-class="@(Model.Settings.Value<string>("cssClasses"))">
-        <govuk-input-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-input-label>
+        <govuk-input-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))zzz</govuk-input-label>
         @if (!string.IsNullOrWhiteSpace(hint))
         {
             <govuk-input-hint>@Html.Raw(hint)</govuk-input-hint>
         }
-        @*<govuk-input-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-input-error-message>*@
+        @if (modelStateEntry != null && modelStateEntry.Errors.Any())
+        {
+            <govuk-input-error-message>@(string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)))</govuk-input-error-message>
+        }
         @if (!string.IsNullOrEmpty(prefix))
         {
             <govuk-input-prefix>@prefix</govuk-input-prefix>

@@ -31,6 +31,7 @@
         <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(home?.Value<Link>("tprHeaderLogoHref")?.Url)" label="@(home?.Value<string?>("tprHeaderLabel"))">
             @Html.Raw(GovUkTypography.Apply(home?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
         </tpr-header-bar>
+        <tpr-context-bar context-1="@(home?.Value<string>("tprContext1"))" context-2="@(home?.Value<string>("tprContext2"))" context-3="@(home?.Value<string>("tprContext3"))" />
         @RenderSection("language", required: false)
         </header>
     <div class="govuk-width-container">

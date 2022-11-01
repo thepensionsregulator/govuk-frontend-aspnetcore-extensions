@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Home</summary>
 	[PublishedModel("home")]
-	public partial class Home : PublishedContentModel, IGovukPhaseBanner, ITprHeader
+	public partial class Home : PublishedContentModel, IGovukPhaseBanner, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprHeader
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -72,6 +72,30 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("govukPhaseBannerText")]
 		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString GovukPhaseBannerText => global::Umbraco.Cms.Web.Common.PublishedModels.GovukPhaseBanner.GetGovukPhaseBannerText(this, _publishedValueFallback);
+
+		///<summary>
+		/// Context 1: Typically the name of the application or the mode it's in.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprContext1")]
+		public virtual string TprContext1 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar1.GetTprContext1(this, _publishedValueFallback);
+
+		///<summary>
+		/// Context 2: Typically the name of the entity being edited in the application.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprContext2")]
+		public virtual string TprContext2 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar2.GetTprContext2(this, _publishedValueFallback);
+
+		///<summary>
+		/// Context 3: Typically a reference number for the entity being edited in the application.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprContext3")]
+		public virtual string TprContext3 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar3.GetTprContext3(this, _publishedValueFallback);
 
 		///<summary>
 		/// Content: A small number of links, or blank.

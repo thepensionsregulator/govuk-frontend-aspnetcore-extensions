@@ -77,6 +77,9 @@
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtextsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\tprcontextbar1.config" />
+		<Content Remove="uSync\v9\ContentTypes\tprcontextbar2.config" />
+		<Content Remove="uSync\v9\ContentTypes\tprcontextbar3.config" />
 		<Content Remove="uSync\v9\ContentTypes\tprheader.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtons.config" />
@@ -346,6 +349,15 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukwarningtextsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\tprcontextbar1.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\tprcontextbar2.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\tprcontextbar3.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\tprheader.config">

@@ -62,6 +62,7 @@
 		<Content Remove="uSync\v9\ContentTypes\govukselectoption.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukselectsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukskiplink.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksummarylist.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksummarylistaction.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksummarylistitem.config" />
@@ -77,6 +78,10 @@
 		<Content Remove="uSync\v9\ContentTypes\govukvalidationtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtext.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukwarningtextsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\tprcontextbar1.config" />
+		<Content Remove="uSync\v9\ContentTypes\tprcontextbar2.config" />
+		<Content Remove="uSync\v9\ContentTypes\tprcontextbar3.config" />
+		<Content Remove="uSync\v9\ContentTypes\tprheader.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtonType.config" />
@@ -302,6 +307,9 @@
 		<None Include="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govukskiplink.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govuksummarylist.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -346,6 +354,18 @@
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukwarningtextsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\tprcontextbar1.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\tprcontextbar2.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\tprcontextbar3.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\tprheader.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKBlockList.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>

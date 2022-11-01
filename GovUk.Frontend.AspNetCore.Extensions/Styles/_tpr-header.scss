@@ -302,3 +302,40 @@ $tpr-header-left-width-xl: 200px;
         padding: $tpr-header-vertical-space 0 $tpr-header-vertical-space $govuk-gutter;
     }
 }
+
+.tpr-header__logo-img--print {
+    display: none;
+}
+@media print {
+    .tpr-header__inner {
+        display: block;
+    }
+    .tpr-header__logo {
+        float: left;
+        margin-top: govuk-px-to-rem(5) * -1;
+        margin-right: $govuk-gutter;
+        padding-bottom: govuk-px-to-rem(10);
+    }
+    .tpr-header__logo-img--screen {
+        display: none;
+    }
+    .tpr-header__logo-img--print {
+        display: block;
+    }
+    .tpr-header__label {
+        display: block;
+    }
+    .tpr-header__content > a:link,
+    .tpr-header__content > a:visited {
+        color: $govuk-link-colour;
+    }
+    .tpr-context {
+        clear: both;
+    }
+    .tpr-context .govuk-body {
+        color: $govuk-text-colour;
+    }
+    .tpr-context__context-1 {
+        border-bottom: govuk-px-to-rem(1) solid $tpr-colour-blue-marguerite;
+    }
+}

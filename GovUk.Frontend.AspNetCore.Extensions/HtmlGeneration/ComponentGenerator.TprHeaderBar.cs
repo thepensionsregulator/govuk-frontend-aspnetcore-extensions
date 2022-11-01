@@ -33,13 +33,25 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             var logoElement = new TagBuilder(logoIsLinked ? "a" : "span");
             if (logoIsLinked) { logoElement.Attributes.Add("href", logoHref); }
             logoElement.MergeCssClass("tpr-header__logo");
-            var logo = new TagBuilder("img");
-            logo.TagRenderMode = TagRenderMode.SelfClosing;
-            logo.Attributes.Add("src", "/_content/GovUK.Frontend.AspNetCore.Extensions/tpr/tpr-logo-header.svg");
-            logo.Attributes.Add("alt", logoAlt);
-            logo.Attributes.Add("width", "180");
-            logo.Attributes.Add("height", "75");
-            logoElement.InnerHtml.AppendHtml(logo);
+
+            var screenLogo = new TagBuilder("img");
+            screenLogo.TagRenderMode = TagRenderMode.SelfClosing;
+            screenLogo.Attributes.Add("src", "/_content/GovUK.Frontend.AspNetCore.Extensions/tpr/tpr-logo-header.svg");
+            screenLogo.Attributes.Add("alt", logoAlt);
+            screenLogo.Attributes.Add("width", "180");
+            screenLogo.Attributes.Add("height", "75");
+            screenLogo.MergeCssClass("tpr-header__logo-img--screen");
+            logoElement.InnerHtml.AppendHtml(screenLogo);
+
+            var printLogo = new TagBuilder("img");
+            printLogo.TagRenderMode = TagRenderMode.SelfClosing;
+            printLogo.Attributes.Add("src", "/_content/GovUK.Frontend.AspNetCore.Extensions/tpr/tpr-logo-footer.svg");
+            printLogo.Attributes.Add("alt", logoAlt);
+            printLogo.Attributes.Add("width", "180");
+            printLogo.Attributes.Add("height", "75");
+            printLogo.MergeCssClass("tpr-header__logo-img--print");
+            logoElement.InnerHtml.AppendHtml(printLogo);
+
             headerContent.InnerHtml.AppendHtml(logoElement);
 
             if (!string.IsNullOrEmpty(label))

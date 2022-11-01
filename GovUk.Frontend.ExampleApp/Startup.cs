@@ -10,6 +10,9 @@ using GovUk.Frontend.ExampleSharedResource;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using GovUk.Frontend.ExampleApp.Models.Validators;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
 
 namespace GovUk.Frontend.ExampleApp
 {
@@ -60,6 +63,10 @@ namespace GovUk.Frontend.ExampleApp
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
+
+            services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
+
+            services.AddSingleton<IValidatorAttributeAdapterFactory, CustomValidatorAttributeAdapterFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

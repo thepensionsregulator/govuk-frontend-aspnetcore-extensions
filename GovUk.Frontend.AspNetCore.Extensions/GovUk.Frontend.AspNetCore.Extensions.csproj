@@ -9,8 +9,6 @@
 		<Version>2.0.2</Version>
 	</PropertyGroup>
 
-
-
 	<ItemGroup>
 		<Content Remove="wwwroot\govuk\govuk-frontend.css.map" />
 		<Content Remove="wwwroot\tpr\tpr.css.map" />
@@ -24,6 +22,7 @@
 		<None Remove="Styles\_govuk-link.scss" />
 		<None Remove="Styles\_govuk-panel.scss" />
 		<None Remove="Styles\_govuk-radios-checkboxes.scss" />
+		<None Remove="Styles\_govuk-summary-list.scss" />
 		<None Remove="Styles\_tpr-grid.scss" />
 		<None Remove="Styles\_variables.scss" />
 		<None Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
@@ -37,6 +36,7 @@
 		<EmbeddedResource Include="Styles\_govuk-button.scss" />
 		<EmbeddedResource Include="Styles\_govuk-date-input.scss" />
 		<EmbeddedResource Include="Styles\_govuk-label.scss" />
+		<EmbeddedResource Include="Styles\_govuk-summary-list.scss" />
 		<EmbeddedResource Include="Styles\_govuk-panel.scss" />
 		<EmbeddedResource Include="Styles\_govuk-radios-checkboxes.scss" />
 		<EmbeddedResource Include="Styles\_tpr-grid.scss" />
@@ -55,7 +55,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.52.1.2" />
-		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.0-beta1" />
+		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.0-beta3" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.37" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.9" />
@@ -193,6 +193,10 @@
 
 	<ItemGroup>
 		<UpToDateCheckInput Remove="Styles\_govuk-fieldset.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Styles\_govuk-summary-list.scss" />
 	</ItemGroup>
 
 </Project>

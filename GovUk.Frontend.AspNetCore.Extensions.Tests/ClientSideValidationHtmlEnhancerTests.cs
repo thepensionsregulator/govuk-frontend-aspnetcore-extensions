@@ -1,4 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+﻿using GovUk.Frontend.AspNetCore.Extensions.Tests.CustomValidation;
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -12,7 +13,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using System.Reflection;
 using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.Tests
@@ -72,45 +73,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             [Compare(nameof(UnvalidatedField), ErrorMessage = errorMessageCompare)]
             public string CompareField { get; set; }
 
-           
-            [CustomValidator(ErrorMessage = errorMessageRequiredCustom)]
+
+            [CustomTestValidator(ErrorMessage = errorMessageRequiredCustom)]
             public string CustomField { get; set; }
 
             [Required(ErrorMessage = errorMessageRequired)]
             public ChildClass ChildField { get; set; }
-        }
-
-        [AttributeUsage(AttributeTargets.Property)]
-        public class CustomValidatorAttribute : ValidationAttribute, IClientModelValidator
-        {
-            protected override ValidationResult IsValid(object value, ValidationContext context)
-            {
-                if (value != null && value.ToString() == "FISH")
-                {
-                    return ValidationResult.Success;
-                }
-                else
-                {
-                    return new ValidationResult(ErrorMessage);
-                }
-            }
-
-            public void AddValidation(ClientModelValidationContext context)
-            {
-                MergeAttribute(context.Attributes, "data-val", "true");
-                var errorMessage = FormatErrorMessage(context.ModelMetadata.GetDisplayName());
-                MergeAttribute(context.Attributes, "data-val-custom", errorMessage);
-            }
-
-            private bool MergeAttribute(IDictionary<string, string> attributes, string key, string value)
-            {
-                if (attributes.ContainsKey(key))
-                {
-                    return false;
-                }
-                attributes.Add(key, value);
-                return true;
-            }
         }
 
 
@@ -118,7 +86,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         public void Validation_attributes_added_to_error_message_placeholder()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(Mock.Of<IModelPropertyResolver>(), Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>());
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(Mock.Of<IModelPropertyResolver>(), Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml(@$"<p class=""govuk-error-message""></p>
                                                     <input id=""{nameof(ExampleClass.RequiredField)}"" 
@@ -146,7 +114,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         public void If_error_message_is_empty_error_classes_are_removed()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(Mock.Of<IModelPropertyResolver>(), Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>());
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(Mock.Of<IModelPropertyResolver>(), Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml(@$"<div class=""govuk-form-group govuk-form-group--error"">
                                                     <p class=""govuk-error-message""></p>
@@ -178,7 +146,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         public void If_error_message_is_rendered_error_classes_remain()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(Mock.Of<IModelPropertyResolver>(), Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>());
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(Mock.Of<IModelPropertyResolver>(), Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml(@$"<div class=""govuk-form-group govuk-form-group--error"">
                                                     <p class=""govuk-error-message"">Something went wrong</p>
@@ -213,7 +181,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField)));
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>());
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RequiredField)}\">",
                 viewContext,
@@ -238,7 +206,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.UnvalidatedField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.UnvalidatedField)));
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.UnvalidatedField)}\">",
                 viewContext,
@@ -263,7 +231,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField)));
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             // Check support for multiple inputs with the same name, because the required attribute
             // has to support a group of radio buttons or checkboxes
@@ -291,19 +259,26 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         public void Custom_validator_adds_custom_attributes_to_inputs()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
+            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField));
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
+            
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CustomField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField)));
 
             var metadataProvider = new EmptyModelMetadataProvider();
-            var metadata = metadataProvider.GetMetadataForProperty(containerType: typeof(ExampleClass),propertyName: nameof(ExampleClass.CustomField));
+            var metadata = metadataProvider.GetMetadataForProperty(containerType: typeof(ExampleClass), propertyName: nameof(ExampleClass.CustomField));
 
             var mockMetaDataProvider = new Mock<IModelMetadataProvider>();
             mockMetaDataProvider.Setup(x => x.GetMetadataForType(typeof(ExampleClass))).Returns(metadata);
-            
 
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, mockMetaDataProvider.Object, options);
+            var baseValidationAttribute = property.GetCustomAttribute<CustomTestValidatorAttribute>();
+            var validationAttributeAdapterProvider = new Mock<IValidationAttributeAdapterProvider>();
+            validationAttributeAdapterProvider.Setup(x => x.GetAttributeAdapter(It.IsAny<ValidationAttribute>(), It.IsAny<IStringLocalizer>())).Returns(
+                new CustomTestValidatorAttributeAdapter(baseValidationAttribute, null));
+
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, mockMetaDataProvider.Object, options,
+                validationAttributeAdapterProvider.Object) ;
 
             // Check support for multiple inputs with the same name, because the required attribute
             // has to support a group of radio buttons or checkboxes
@@ -334,7 +309,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField)));
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<select name=\"{nameof(ExampleClass.RequiredField)}\"></select>",
                 viewContext,
@@ -365,7 +340,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField)));
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<textarea name=\"{nameof(ExampleClass.RequiredField)}\"></textarea>",
                 viewContext,
@@ -397,7 +372,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var pattern = (property.GetCustomAttributes(typeof(RegularExpressionAttribute), false)[0] as RegularExpressionAttribute).Pattern;
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RegexField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RegexField)}\">",
                 viewContext,
@@ -428,7 +403,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.EmailField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.EmailField)));
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.EmailField)}\">",
                 viewContext,
@@ -459,7 +434,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.PhoneField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.PhoneField)));
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.PhoneField)}\">",
                 viewContext,
@@ -493,7 +468,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var maxLength = (property.GetCustomAttributes(typeof(StringLengthAttribute), false)[0] as StringLengthAttribute).MaximumLength;
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.LengthField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.LengthField)}\">",
                 viewContext,
@@ -527,7 +502,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var minLength = (property.GetCustomAttributes(typeof(MinLengthAttribute), false)[0] as MinLengthAttribute).Length;
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.MinLengthField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.MinLengthField)}\">",
                 viewContext,
@@ -560,7 +535,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var maxLength = (property.GetCustomAttributes(typeof(MaxLengthAttribute), false)[0] as MaxLengthAttribute).Length;
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.MaxLengthField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.MaxLengthField)}\">",
                 viewContext,
@@ -594,7 +569,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var max = (property.GetCustomAttributes(typeof(RangeAttribute), false)[0] as RangeAttribute).Maximum;
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumericRangeField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumericRangeField)}\">",
                 viewContext,
@@ -631,7 +606,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var max = (property.GetCustomAttributes(typeof(RangeAttribute), false)[0] as RangeAttribute).Maximum;
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.DateRangeField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.DateRangeField)}\">",
                 viewContext,
@@ -664,7 +639,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumberField));
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumberField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumberField)}\">",
                 viewContext,
@@ -696,7 +671,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var other = (property.GetCustomAttributes(typeof(CompareAttribute), false)[0] as CompareAttribute).OtherProperty;
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CompareField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.CompareField)}\">",
                 viewContext,
@@ -722,7 +697,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         public void Error_message_comes_from_parameters_first()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
-            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField)); 
+            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField));
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
@@ -731,7 +706,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var localiser = new Mock<IStringLocalizer>();
             localiserFactory.Setup(x => x.Create(property.DeclaringType)).Returns(localiser.Object);
             localiser.Setup(x => x[errorMessageRequired]).Returns(new LocalizedString(errorMessageRequired, "Error from localiser"));
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, localiserFactory.Object);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>(), localiserFactory.Object);
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RequiredField)}\">",
                 viewContext,
@@ -773,7 +748,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 }
             });
 
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, localiserFactory.Object);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(
+                propertyResolver.Object, 
+                Mock.Of<IModelMetadataProvider>(), 
+                options, 
+                Mock.Of<IValidationAttributeAdapterProvider>(), 
+                localiserFactory.Object);
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RequiredField)}\">",
                 viewContext,
@@ -802,7 +782,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, null, options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, null, options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RequiredField)}\">",
                 viewContext,
@@ -832,7 +812,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.ChildField.RequiredChildField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, null, options);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, null, options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.ChildField.RequiredChildField)}\">",
                 viewContext,
@@ -852,6 +832,69 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Console.Write(document.DocumentNode.OuterHtml);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-required='{errorMessageRequired}']") != null);
 
+        }
+
+        [Test]
+        public void Error_message_for_custom_attributes_comes_from_localiser()
+        {
+            var viewContext = new ViewContext() { ClientValidationEnabled = true };
+            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField));
+
+            var propertyResolver = new Mock<IModelPropertyResolver>();
+            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
+            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CustomField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField)));
+
+            
+            var localiser = new Mock<IStringLocalizer>(MockBehavior.Loose);
+
+            localiser.Setup(x => x[errorMessageRequiredCustom, It.IsAny<object[]>()]).Returns(new LocalizedString(errorMessageRequiredCustom, "Error from localiser"));
+            var localiserFactory = new Mock<IStringLocalizerFactory>();
+            localiserFactory.Setup(x => x.Create(property.DeclaringType)).Returns(localiser.Object);           
+
+            var metadataProvider = new EmptyModelMetadataProvider();
+            var metadata = metadataProvider.GetMetadataForProperty(containerType: typeof(ExampleClass), propertyName: nameof(ExampleClass.CustomField));
+
+            var mockMetaDataProvider = new Mock<IModelMetadataProvider>();
+            mockMetaDataProvider.Setup(x => x.GetMetadataForType(typeof(ExampleClass))).Returns(metadata);
+
+            var options = Options.Create(new MvcDataAnnotationsLocalizationOptions()
+            {
+                DataAnnotationLocalizerProvider = (type, factory) =>
+                {
+                    return factory?.Create(type);
+                }
+            });
+
+            var baseValidationAttribute = property.GetCustomAttribute<CustomTestValidatorAttribute>();
+            var validationAttributeAdapterProvider = new Mock<IValidationAttributeAdapterProvider>();
+            validationAttributeAdapterProvider.Setup(x => x.GetAttributeAdapter(It.IsAny<ValidationAttribute>(), It.IsAny<IStringLocalizer>())).Returns(
+                new CustomTestValidatorAttributeAdapter(baseValidationAttribute, localiser.Object));
+
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(
+                propertyResolver.Object, 
+                mockMetaDataProvider.Object, 
+                options, 
+                validationAttributeAdapterProvider.Object, 
+                localiserFactory.Object);
+
+            // Check support for multiple inputs with the same name, because the required attribute
+            // has to support a group of radio buttons or checkboxes
+            var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.CustomField)}\">",
+                viewContext,
+                errorMessageRequired,
+                errorMessageRegex,
+                errorMessageEmail,
+                errorMessagePhone,
+                errorMessageLength,
+                errorMessageMinLength,
+                errorMessageMaxLength,
+                errorMessageRange,
+                errorMessageCompare);
+
+            var document = new HtmlDocument();
+            document.LoadHtml(result);
+
+            Assert.True(document.DocumentNode.SelectSingleNode("//input[@data-val-custom='Error from localiser']") != null);
         }
     }
 }

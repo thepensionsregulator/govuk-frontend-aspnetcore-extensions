@@ -181,6 +181,7 @@ $tpr-header-left-width-xl: 200px;
     align-items: center;
     padding: $tpr-header-vertical-space $govuk-gutter-half;
     background-color: $tpr-colour-black;
+    min-height: 1.8em; // Ensures the black background covers the violet when .tpr-context__context-3 is not rendered
 }
 
 // Use another div inside .tpr-context__context-3 so that at larger sizes a left border can come in on the inner element,
@@ -293,12 +294,13 @@ $tpr-header-left-width-xl: 200px;
     .tpr-context__context-2,
     .tpr-context__context-3 {
         display: flex;
+        align-items: center;
     }
 
     .tpr-context__context-3-inner {
         border-top: none;
         border-left: govuk-px-to-rem(1) solid rgba(202, 202, 202, 0.5);
-        margin: $tpr-header-vertical-space 0;
+        margin: $tpr-header-vertical-space/2 0;
         padding: $tpr-header-vertical-space 0 $tpr-header-vertical-space $govuk-gutter;
     }
 }

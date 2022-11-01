@@ -26,44 +26,41 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             var hasContext2 = !string.IsNullOrWhiteSpace(context2);
             var hasContext3 = !string.IsNullOrWhiteSpace(context3);
 
+            var context1Element = new TagBuilder("div");
+            context1Element.MergeCssClass("govuk-body");
+            context1Element.MergeCssClass("tpr-context__context-1");
             if (hasContext1)
             {
-                var contextElement = new TagBuilder("div");
-                contextElement.MergeCssClass("govuk-body");
-                contextElement.MergeCssClass("tpr-context__context-1");
-                contextElement.InnerHtml.Append(context1!);
-                inner.InnerHtml.AppendHtml(contextElement);
+                context1Element.InnerHtml.Append(context1!);
             }
+            inner.InnerHtml.AppendHtml(context1Element);
 
-            if (hasContext2 || hasContext3)
+            var context23container = new TagBuilder("div");
+            context23container.MergeCssClass("tpr-context__container");
+
+            var context2Element = new TagBuilder("div");
+            context2Element.MergeCssClass("govuk-body");
+            context2Element.MergeCssClass("tpr-context__context-2");
+            if (hasContext2)
             {
-                var context23container = new TagBuilder("div");
-                context23container.MergeCssClass("tpr-context__container");
-
-                if (hasContext2)
-                {
-                    var contextElement = new TagBuilder("div");
-                    contextElement.MergeCssClass("govuk-body");
-                    contextElement.MergeCssClass("tpr-context__context-2");
-                    contextElement.InnerHtml.Append(context2!);
-                    context23container.InnerHtml.AppendHtml(contextElement);
-                }
-
-                if (hasContext3)
-                {
-                    var contextElement = new TagBuilder("div");
-                    contextElement.MergeCssClass("govuk-body");
-                    contextElement.MergeCssClass("tpr-context__context-3");
-
-                    var innerContextElement = new TagBuilder("div");
-                    innerContextElement.MergeCssClass("tpr-context__context-3-inner");
-                    innerContextElement.InnerHtml.Append(context3!);
-                    contextElement.InnerHtml.AppendHtml(innerContextElement);
-                    context23container.InnerHtml.AppendHtml(contextElement);
-                }
-
-                inner.InnerHtml.AppendHtml(context23container);
+                context2Element.InnerHtml.Append(context2!);
             }
+            context23container.InnerHtml.AppendHtml(context2Element);
+
+            if (hasContext3)
+            {
+                var context3Element = new TagBuilder("div");
+                context3Element.MergeCssClass("govuk-body");
+                context3Element.MergeCssClass("tpr-context__context-3");
+
+                var context3InnerElement = new TagBuilder("div");
+                context3InnerElement.MergeCssClass("tpr-context__context-3-inner");
+                context3InnerElement.InnerHtml.Append(context3!);
+                context3Element.InnerHtml.AppendHtml(context3InnerElement);
+                context23container.InnerHtml.AppendHtml(context3Element);
+            }
+
+            inner.InnerHtml.AppendHtml(context23container);
 
             tagBuilder.InnerHtml.AppendHtml(inner);
 

@@ -231,7 +231,7 @@ function createGovUkValidator() {
 
       //const prefix = errorMessage.querySelector(".govuk-visually-hidden");
       [].slice.call(errorMessage.childNodes).map(function (x) {
-          errorMessage.removeChild(x); 
+          errorMessage.empty(); 
       });
 
       errorMessage.appendChild(errorPrefix);

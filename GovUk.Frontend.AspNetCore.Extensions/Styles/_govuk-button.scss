@@ -12,8 +12,9 @@
 */
 $tpr-button-padding: 20px;
 
-.govuk-button {
+.govuk-button, input[type="file"]::file-selector-button {
     color: $tpr-colour-white;
+    border-color: transparent;
     line-height: govuk-px-to-rem(24);
     border-radius: 8px;
     box-shadow: none;
@@ -21,7 +22,7 @@ $tpr-button-padding: 20px;
     padding-left: $tpr-button-padding;
     padding-right: $tpr-button-padding *2;
 }
-.govuk-button:hover, .govuk-button:active {
+.govuk-button:hover, .govuk-button:active, input[type="file"]::file-selector-button:hover {
     color: $tpr-colour-white;
     background-color: $tpr-colour-violet;
 }
@@ -52,7 +53,8 @@ $tpr-button-padding: 20px;
 
 /* Remove chevron where it's not wanted */
 .govuk-button--start,
-.govuk-button--secondary {
+.govuk-button--secondary,
+input[type="file"]::file-selector-button {
     background-image: none;
     padding-right: $tpr-button-padding;
 }

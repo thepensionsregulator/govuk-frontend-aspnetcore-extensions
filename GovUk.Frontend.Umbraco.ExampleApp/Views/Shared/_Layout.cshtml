@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using GovUk.Frontend.Umbraco.ExampleApp.Models
+@using GovUk.Frontend.Umbraco.Typography
+@using Umbraco.Cms.Web.Common
+@inject UmbracoHelper Umbraco
+@{
+    var home = Umbraco.ContentSingleAtXPath("//home");
+    var phase = home?.Value<string>("govukPhase");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,6 +18,13 @@
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
     <div class="govuk-width-container">
+        @if (home != null && !string.IsNullOrEmpty(phase) && phase != "Live")
+        {
+            <govuk-phase-banner>
+                <govuk-phase-banner-tag>@phase</govuk-phase-banner-tag>
+                @Html.Raw(GovUkTypography.Apply(home.Value("govukPhaseBannerText")?.ToString(), new TypographyOptions{ RemoveWrappingParagraph = true }))
+            </govuk-phase-banner>
+        }
         @RenderSection("language", required: false)
         <main id="main" class="govuk-main-wrapper">@RenderBody()</main>
     </div>

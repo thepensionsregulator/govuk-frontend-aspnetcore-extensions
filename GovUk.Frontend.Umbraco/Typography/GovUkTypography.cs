@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GovUk.Frontend.Umbraco.Typography
 {
@@ -33,12 +34,30 @@ namespace GovUk.Frontend.Umbraco.Typography
                 {
                     return RemoveWrappingParagraph(document);
                 }
+                else if (options.RemoveWrappingParagraphs)
+                {
+                    return RemoveWrappingParagraphs(document);
+                }
                 else
                 {
                     return document.DocumentNode.OuterHtml;
                 }
             }
             return string.Empty;
+        }
+
+        private static string RemoveWrappingParagraphs(HtmlDocument document)
+        {
+            var paragraphs = document.DocumentNode.Elements("p").ToList();
+            for (var i = 0; i < paragraphs.Count; i++)
+            {
+                foreach (var child in paragraphs[i].ChildNodes)
+                {
+                    document.DocumentNode.InsertBefore(child, paragraphs[i]);
+                }
+                paragraphs[i].Remove();
+            }
+            return document.DocumentNode.OuterHtml;
         }
 
         /// <summary>

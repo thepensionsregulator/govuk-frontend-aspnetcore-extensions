@@ -151,8 +151,33 @@ namespace GovUk.Frontend.Umbraco.Tests
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//p").Count);
         }
 
+
         [Test]
-        public void Multiple_wrapping_paragraphs_are_left_alone_by_removal_request()
+        public void Multiple_wrapping_paragraphs_are_not_removed_if_not_requested()
+        {
+            var html = "<p>Some content</p><p>Some content</p>";
+
+            var result = GovUkTypography.Apply(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
+        }
+
+        [Test]
+        public void Multiple_wrapping_paragraphs_are_removed_if_requested()
+        {
+            var html = "<p>Some content</p><p>Some content</p>";
+
+            var result = GovUkTypography.Apply(html, new TypographyOptions { RemoveWrappingParagraphs = true });
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+            Assert.AreEqual("Some contentSome content", result);
+        }
+
+        [Test]
+        public void Multiple_wrapping_paragraphs_are_left_alone_by_single_removal_request()
         {
             var html = "<p>Some content</p><p>Some content</p>";
 

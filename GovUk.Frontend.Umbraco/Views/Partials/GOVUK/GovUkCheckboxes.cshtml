@@ -35,7 +35,10 @@
                 {
                     <govuk-checkboxes-hint class="@cssClassesForHint">@Html.Raw(fieldsetHint)</govuk-checkboxes-hint>
                 }
-                <govuk-checkboxes-error-message class="@cssClassesForError">@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-checkboxes-error-message>
+                if (modelStateEntry != null && modelStateEntry.Errors.Any())
+                {
+                    <govuk-checkboxes-error-message>@(string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)))</govuk-checkboxes-error-message>
+                }
                 foreach (var block in checkboxes.Filter(checkboxes))
                 {
                     if (block.Content.ContentType.Alias == "govukCheckboxesDivider")

@@ -1,25 +1,34 @@
 ﻿@import '_variables.scss';
 @import 'govuk/base';
 
-/* Customisations to the default style applied by .govuk-link */
-.govuk-link--tpr-back-to-top {
-    @include govuk-link-style-no-visited-state;
-    @include govuk-font($size: 14);
-    float: right;
-    display: inline-block;
-    position: relative;
-    @include govuk-responsive-margin(3, "bottom");
-    padding-left: 16px; // space for the arrow
+.tpr-back-to-top {
+    text-align: center;
+    border-top: govuk-px-to-rem(1) solid $tpr-colour-very-light-grey;
+    padding-top: govuk-px-to-rem(11); // to achieve WCAG minimum click target height of 44px
 }
 
-/* Arrow pointing upward, made of CSS borders */
-.govuk-link--tpr-back-to-top:before {
+@include govuk-media-query($from: desktop) {
+    .tpr-back-to-top {
+        text-align: right;
+    }
+}
+
+// Customisations to the default style applied by .govuk-link
+.tpr-back-to-top .govuk-link {
+    @include govuk-link-style-no-visited-state;
+    display: inline-block;
+    position: relative;
+    padding: 0 16px govuk-px-to-rem(11) 16px; // space for the arrow, but center on the text only
+}
+
+// Arrow pointing upward, made of CSS borders
+.tpr-back-to-top .govuk-link:before {
     content: "";
     display: block;
     position: absolute;
-    top: 4px;
+    top: -4px;
     bottom: 0;
-    left: 2px;
+    left: 0;
     width: 7px;
     height: 7px;
     margin: auto 0;
@@ -27,21 +36,27 @@
     -ms-transform: rotate(315deg);
     transform: rotate(315deg);
     border: solid;
-    border-width: 1px 1px 0 0;
-    border-color: $tpr-colour-eclipse;
+    border-width: govuk-px-to-rem(2) govuk-px-to-rem(2) 0 0;
+    border-color: $tpr-colour-royal-blue;
 }
 
-/* Change the arrow colour when the link has the standard focus background */
-.govuk-link--tpr-back-to-top:focus:before {
+// Change the arrow colour when the link has the standard focus background 
+.tpr-back-to-top .govuk-link:focus:before {
     border-color: $tpr-colour-black;
 }
 
-/* Increase the clickable area of the link */
-.govuk-link--tpr-back-to-top:after {
+// Increase the clickable area of the link
+.tpr-back-to-top .govuk-link:after {
     content: "";
     position: absolute;
     top: -14px;
     right: 0;
     bottom: -14px;
     left: 0
+}
+
+@media print {
+    .tpr-back-to-top {
+         display: none;
+    }
 }

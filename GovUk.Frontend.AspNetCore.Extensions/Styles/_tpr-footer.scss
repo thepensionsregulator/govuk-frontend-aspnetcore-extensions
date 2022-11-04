@@ -2,6 +2,12 @@
 @import 'govuk/base';
 @import 'govuk/helpers/_focused';
 
+// Like .govuk-width-container but without the margins because they're handled according to TPR brand by padding on .tpr-footer
+@mixin tpr-footer-width-container {
+    max-width: $govuk-page-width;
+    margin: auto;
+}
+
 .tpr-footer {
     background: $tpr-colour-whisper;
     border-top: govuk-px-to-rem(6) solid $tpr-colour-steel;
@@ -9,6 +15,7 @@
 }
 
 .tpr-footer__footer-logo {
+    @include tpr-footer-width-container;
     padding-bottom: govuk-px-to-rem(20);
 }
 
@@ -19,6 +26,7 @@
 
 // Wrapper around .tpr-footer__content and .tpr-footer__copyright allowing them to be positioned using flexbox at tablet & above
 .tpr-footer__content-container {
+    @include tpr-footer-width-container;
     border-top: govuk-px-to-rem(1) solid $tpr-colour-very-light-grey;
     padding-top: govuk-px-to-rem(22);
 }

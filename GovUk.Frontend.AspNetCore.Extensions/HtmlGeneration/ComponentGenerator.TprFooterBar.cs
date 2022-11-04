@@ -28,9 +28,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             tagBuilder.MergeCssClass("tpr-footer");
             tagBuilder.MergeAttribute("role", "contentinfo");
 
-            var footerContent = new TagBuilder("div");
-            footerContent.MergeCssClass("govuk-width-container");
-
             var logoContainer = new TagBuilder("div");
             logoContainer.MergeCssClass("tpr-footer__footer-logo");
 
@@ -47,7 +44,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             logoElement.InnerHtml.AppendHtml(logo);
 
             logoContainer.InnerHtml.AppendHtml(logoElement);
-            footerContent.InnerHtml.AppendHtml(logoContainer);
+            tagBuilder.InnerHtml.AppendHtml(logoContainer);
 
             var hasContent = !(content as TagHelperContent)?.IsEmptyOrWhiteSpace ?? true;
             var hasCopyright = !string.IsNullOrWhiteSpace(copyright);
@@ -78,10 +75,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                     copyrightElement.InnerHtml.Append("© " + copyright);
                     contentContainer.InnerHtml.AppendHtml(copyrightElement);
                 }
-                footerContent.InnerHtml.AppendHtml(contentContainer);
+                tagBuilder.InnerHtml.AppendHtml(contentContainer);
             }
-
-            tagBuilder.InnerHtml.AppendHtml(footerContent);
 
             return tagBuilder;
         }

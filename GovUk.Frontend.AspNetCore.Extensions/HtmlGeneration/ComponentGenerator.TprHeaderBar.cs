@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 {
@@ -63,7 +64,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                 headerContent.InnerHtml.AppendHtml(labelElement);
             }
 
-            if (!string.IsNullOrEmpty(content?.ToString()?.Trim()))
+            if (!(content as TagHelperContent)?.IsEmptyOrWhiteSpace ?? true)
             {
                 var contentElement = new TagBuilder("div");
                 contentElement.MergeCssClass("govuk-body");

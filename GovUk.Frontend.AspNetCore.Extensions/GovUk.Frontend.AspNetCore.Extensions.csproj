@@ -207,4 +207,12 @@
 	  <UpToDateCheckInput Remove="Styles\_govuk-phase-banner.scss" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-footer.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-page.scss" />
+	</ItemGroup>
+
 </Project>

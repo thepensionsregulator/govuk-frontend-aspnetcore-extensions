@@ -186,11 +186,6 @@ function createGovUkValidator() {
         errorMessage.setAttribute("data-valmsg-for", element.id);
         errorMessage.setAttribute("data-valmsg-replace", "false");
 
-        const errorPrefix = document.createElement("span");
-        errorPrefix.classList.add("govuk-visually-hidden");
-        errorPrefix.appendChild(document.createTextNode("Error: "));
-        errorMessage.appendChild(errorPrefix);
-
         // Decide where to put it based on the type of component.
         // If it's within a radio, checkbox or date group and NOT within a conditional area within that group, target the group.
         // Otherwise target the original element.
@@ -225,13 +220,18 @@ function createGovUkValidator() {
       if (!errorMessage) {
         return;
       }
+
+      const errorPrefix = document.createElement("span");
+      errorPrefix.classList.add("govuk-visually-hidden");
+      errorPrefix.appendChild(document.createTextNode("Error: "));
+     
       errorMessage.setAttribute("id", element.id + "-error");
-      const prefix = errorMessage.querySelector(".govuk-visually-hidden");
+
       [].slice.call(errorMessage.childNodes).map(function (x) {
-        if (x !== prefix) {
-          errorMessage.removeChild(x);
-        }
+            x.remove();
       });
+
+      errorMessage.appendChild(errorPrefix);
       errorMessage.appendChild(document.createTextNode(message));
     },
 
@@ -496,7 +496,7 @@ window.addEventListener("DOMContentLoaded", function () {
   const govuk = createGovUkValidator();
 
   govuk.createErrorSummary();
-
+  govuk.updateTitle();
   const validator = govuk.getValidator();
   if (validator) {
     validator.setDefaults({

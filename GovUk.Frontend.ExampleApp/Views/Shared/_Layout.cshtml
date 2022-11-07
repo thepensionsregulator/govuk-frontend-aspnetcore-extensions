@@ -22,11 +22,18 @@
         <tpr-context-bar context-1="Example app" context-2="Something being edited with a very long name that will always wrap even at full width" context-3="ID: 12345678" />
         @RenderSection("language", required: false)
     </header>
-    <div class="govuk-width-container">
-        <main id="main" class="govuk-main-wrapper">
-            @RenderBody()
-        </main>
+    <div class="tpr-main-wrapper">
+        <div class="govuk-width-container">
+            <main id="main" class="govuk-main-wrapper">
+                @RenderBody()
+            </main>
+        </div>
     </div>
+    <tpr-back-to-top href="#main">Back to top</tpr-back-to-top>
+    <tpr-footer-bar>
+        <a class="govuk-link" href="#">A link</a>
+        <a class="govuk-link" href="#">Another link</a>
+    </tpr-footer-bar>
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)
 </body>

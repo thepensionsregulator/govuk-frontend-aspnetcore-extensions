@@ -19,14 +19,22 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             Guard.ArgumentNotNullOrEmpty(nameof(href), href);
             Guard.ArgumentNotNull(nameof(content), content);
 
-            var tagBuilder = new TagBuilder(BackToTopLinkElement);
-            if (attributes != null) tagBuilder.MergeAttributes(attributes);
-            tagBuilder.MergeCssClass("govuk-link");
-            tagBuilder.MergeCssClass("govuk-link--tpr-back-to-top");
-            tagBuilder.Attributes.Add("href", href);
-            tagBuilder.InnerHtml.AppendHtml(content);
+            var outer = new TagBuilder("div");
+            outer.MergeCssClass("tpr-back-to-top");
 
-            return tagBuilder;
+            var inner = new TagBuilder("div");
+            inner.MergeCssClass("govuk-width-container");
+
+            var link = new TagBuilder(BackToTopLinkElement);
+            if (attributes != null) link.MergeAttributes(attributes);
+            link.MergeCssClass("govuk-link");
+            link.Attributes.Add("href", href);
+
+            outer.InnerHtml.AppendHtml(inner);
+            inner.InnerHtml.AppendHtml(link);
+            link.InnerHtml.AppendHtml(content);
+
+            return outer;
         }
     }
 }

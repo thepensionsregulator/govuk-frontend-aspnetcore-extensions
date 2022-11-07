@@ -13,7 +13,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     [OutputElementHint(ComponentGenerator.BackToTopLinkElement)]
     public class BackToTopLinkTagHelper : TagHelper
     {
-        internal const string TagName = "govuk-back-to-top-link";
+        internal const string TagName = "tpr-back-to-top";
 
         private static readonly HtmlString _defaultContent = new HtmlString(ComponentGenerator.BackToTopLinkDefaultContent);
 

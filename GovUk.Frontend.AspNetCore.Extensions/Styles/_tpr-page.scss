@@ -1,0 +1,17 @@
+﻿// Make the footer stick to the bottom of the viewport when the content is not long enough to fill it
+html, body {
+    height: 100%;
+}
+
+.govuk-template__body {
+    display: flex;
+    flex-direction: column;
+}
+
+.tpr-main-wrapper {
+    flex: 1 0 auto;
+}
+
+.tpr-footer {
+    flex-shrink: 0;
+}

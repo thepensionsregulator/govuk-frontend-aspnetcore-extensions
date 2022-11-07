@@ -9,6 +9,7 @@
     var phase = home?.Value<string>("govukPhase");
     var skipLink = string.IsNullOrEmpty(home?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : home?.Value<string>("govukSkipLinkText");
     var headerLogoAlt = string.IsNullOrEmpty(home?.Value<string>("tprHeaderLogoAlt")) ? ComponentGenerator.HeaderLogoDefaultAlt : home?.Value<string>("tprHeaderLogoAlt");
+    var footerLogoAlt = string.IsNullOrEmpty(home?.Value<string>("tprFooterLogoAlt")) ? ComponentGenerator.FooterLogoDefaultAlt : home?.Value<string>("tprFooterLogoAlt");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -35,10 +36,16 @@
         </tpr-header-bar>
         <tpr-context-bar context-1="@(home?.Value<string>("tprContext1"))" context-2="@(home?.Value<string>("tprContext2"))" context-3="@(home?.Value<string>("tprContext3"))" />
         @RenderSection("language", required: false)
-        </header>
-    <div class="govuk-width-container">
-        <main id="main" class="govuk-main-wrapper">@RenderBody()</main>
+    </header>
+    <div class="tpr-main-wrapper">
+        <div class="govuk-width-container">
+            <main id="main" class="govuk-main-wrapper">@RenderBody()</main>
+        </div>
     </div>
+    <tpr-back-to-top href="#main">@Umbraco.GetDictionaryValue("Back to top")</tpr-back-to-top>
+    <tpr-footer-bar logo-alt="@footerLogoAlt" logo-href="@(home?.Value<Link>("tprFooterLogoHref")?.Url)" copyright="@(home?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))">
+        @Html.Raw(GovUkTypography.Apply(home?.Value("tprFooterContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+    </tpr-footer-bar>
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)
 </body>

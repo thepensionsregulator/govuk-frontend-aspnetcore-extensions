@@ -1,0 +1,93 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+@import 'govuk/helpers/_focused';
+
+// Like .govuk-width-container but without the margins because they're handled according to TPR brand by padding on .tpr-footer
+@mixin tpr-footer-width-container {
+    max-width: $govuk-page-width;
+    margin: auto;
+}
+
+.tpr-footer {
+    background: $tpr-colour-whisper;
+    border-top: govuk-px-to-rem(6) solid $tpr-colour-steel;
+    padding: govuk-px-to-rem(40) govuk-px-to-rem(20) 0;
+}
+
+.tpr-footer__footer-logo {
+    @include tpr-footer-width-container;
+    padding-bottom: govuk-px-to-rem(20);
+}
+
+.tpr-footer__footer-logo img {
+    width: govuk-px-to-rem(126);
+    height: govuk-px-to-rem(47);
+}
+
+// Wrapper around .tpr-footer__content and .tpr-footer__copyright allowing them to be positioned using flexbox at tablet & above
+.tpr-footer__content-container {
+    @include tpr-footer-width-container;
+    border-top: govuk-px-to-rem(1) solid $tpr-colour-very-light-grey;
+    padding-top: govuk-px-to-rem(22);
+}
+
+.tpr-footer__content {
+    padding: 0 0 govuk-px-to-rem(14);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+// Support a copyright statement with no content in .tpr-footer__content - the element must still be present for the flexbox layout
+// to push the copyright statement to the right at tablet & above
+.tpr-footer__content--empty {
+    padding: 0;
+}
+
+.tpr-footer__content > a:link,
+.tpr-footer__content > a:visited {
+    color: $tpr-colour-steel;
+    margin-bottom: govuk-px-to-rem(20);
+}
+
+.tpr-footer__content > a:focus {
+    color: $tpr-colour-eclipse;
+}
+
+.tpr-footer__copyright {
+    margin: 0;
+    padding: 0 0 govuk-px-to-rem(25);
+}
+
+@include govuk-media-query($from: tablet) {
+    .tpr-footer {
+        padding-left: govuk-px-to-rem(30);
+        padding-right: govuk-px-to-rem(30);
+    }
+
+    .tpr-footer__footer-logo {
+        padding-bottom: govuk-px-to-rem(60);
+    }
+
+    .tpr-footer__content-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .tpr-footer__content {
+        flex-direction: row;
+    }
+
+    .tpr-footer__content > a {
+        margin-bottom: 0;
+        margin-right: govuk-px-to-rem(29);
+    }
+}
+
+@include govuk-media-query($from: desktop) {
+    .tpr-footer {
+        padding-left: govuk-px-to-rem(85);
+        padding-right: govuk-px-to-rem(85);
+    }
+}
+

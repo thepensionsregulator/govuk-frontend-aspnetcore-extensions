@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Home</summary>
 	[PublishedModel("home")]
-	public partial class Home : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprHeader
+	public partial class Home : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprFooter, ITprHeader
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -104,6 +104,38 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprContext3")]
 		public virtual string TprContext3 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar3.GetTprContext3(this, _publishedValueFallback);
+
+		///<summary>
+		/// Content: A small number of links, or blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprFooterContent")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprFooterContent => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterContent(this, _publishedValueFallback);
+
+		///<summary>
+		/// Copyright: Use {{year}} to include the current year.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprFooterCopyright")]
+		public virtual string TprFooterCopyright => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterCopyright(this, _publishedValueFallback);
+
+		///<summary>
+		/// Logo alternative text: Defaults to 'Go to The Pensions Regulator website' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprFooterLogoAlt")]
+		public virtual string TprFooterLogoAlt => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterLogoAlt(this, _publishedValueFallback);
+
+		///<summary>
+		/// Logo links to where?: Typically the TPR website home page, https://www.thepensionsregulator.gov.uk
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprFooterLogoHref")]
+		public virtual global::Umbraco.Cms.Core.Models.Link TprFooterLogoHref => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterLogoHref(this, _publishedValueFallback);
 
 		///<summary>
 		/// Content: A small number of links, or blank.

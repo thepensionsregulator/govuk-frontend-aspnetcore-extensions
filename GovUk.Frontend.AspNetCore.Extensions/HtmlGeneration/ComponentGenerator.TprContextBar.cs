@@ -37,6 +37,14 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
             var context23container = new TagBuilder("div");
             context23container.MergeCssClass("tpr-context__container");
+            if (!hasContext2)
+            {
+                context23container.MergeCssClass("tpr-context__container--context-2-empty");
+            }
+            if (!hasContext3)
+            {
+                context23container.MergeCssClass("tpr-context__container--context-3-empty");
+            }
 
             var context2Element = new TagBuilder("div");
             context2Element.MergeCssClass("govuk-body");

@@ -1,4 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.HtmlGeneration;
+﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+using GovUk.Frontend.AspNetCore.HtmlGeneration;
 using System.Collections.Generic;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers

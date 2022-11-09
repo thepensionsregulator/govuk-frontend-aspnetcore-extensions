@@ -1,4 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.TagHelpers;
+﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+using GovUk.Frontend.AspNetCore.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
 

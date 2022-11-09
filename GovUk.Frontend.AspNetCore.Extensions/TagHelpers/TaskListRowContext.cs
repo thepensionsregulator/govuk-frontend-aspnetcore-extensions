@@ -1,4 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.HtmlGeneration;
+﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+using GovUk.Frontend.AspNetCore.HtmlGeneration;
 using GovUk.Frontend.AspNetCore.TagHelpers;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;

@@ -10,10 +10,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="HtmlGeneration\ComponentGenerator.TaskList.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Remove="wwwroot\govuk\govuk-frontend.css.map" />
 		<Content Remove="wwwroot\tpr\tpr.css.map" />
 	</ItemGroup>
@@ -179,7 +175,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="HtmlGeneration\ComponentGenerator.TaskList.cs" />
 		<None Include="wwwroot\govuk\govuk-frontend.css.map" />
 		<None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
 		<None Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />

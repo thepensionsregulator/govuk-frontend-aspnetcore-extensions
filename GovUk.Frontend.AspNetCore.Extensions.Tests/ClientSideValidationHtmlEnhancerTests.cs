@@ -43,6 +43,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             [RegularExpression("[0-9.,]+", ErrorMessage = errorMessageRegex)]
             public double NumberFieldWithRegex { get; set; }
 
+            [RegularExpression("[0-9.,]+", ErrorMessage = errorMessageRegex)]
+            public double NumberFieldWithRegex { get; set; }
+
             public string UnvalidatedField { get; set; }
 
             [Required(ErrorMessage = errorMessageRequired)]
@@ -662,6 +665,36 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='text']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@inputmode='numeric']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='{expectedRegex}']") != null);
+        }
+
+
+        [Test]
+        public void Regex_validator_has_higher_priority_than_regex_for_numeric_fields()
+        {
+            var viewContext = new ViewContext() { ClientValidationEnabled = true };
+            var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
+            var propertyResolver = new Mock<IModelPropertyResolver>();
+            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumberFieldWithRegex));
+            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
+            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumberFieldWithRegex))).Returns(property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+
+            var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumberFieldWithRegex)}\">",
+                viewContext,
+                errorMessageRequired,
+                errorMessageRegex,
+                errorMessageEmail,
+                errorMessagePhone,
+                errorMessageLength,
+                errorMessageMinLength,
+                errorMessageMaxLength,
+                errorMessageRange,
+                errorMessageCompare);
+
+            var document = new HtmlDocument();
+            document.LoadHtml(result);
+
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='[0-9.,]+']") != null);
         }
 
 

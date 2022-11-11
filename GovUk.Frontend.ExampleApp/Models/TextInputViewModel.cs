@@ -21,6 +21,7 @@ namespace GovUk.Frontend.ExampleApp.Models
         public string Field4 { get; set; }
 
         [Range(5, 50, ErrorMessage = "Must be a number between 5 and 50")]
+        [RegularExpression(@"[0-9.]+", ErrorMessage = "Field must be only numbers (Model Resource)")]
         public int Field5 { get; set; }
     }
 }

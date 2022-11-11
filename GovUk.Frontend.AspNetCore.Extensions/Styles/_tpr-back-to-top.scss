@@ -7,10 +7,9 @@
     padding-top: govuk-px-to-rem(11); // to achieve WCAG minimum click target height of 44px
 }
 
-@include govuk-media-query($from: desktop) {
-    .tpr-back-to-top {
-        text-align: right;
-    }
+.tpr-back-to-top__inner {
+    display: inline-block;
+    padding: 0 16px 0 0; // space equal to that for the arrow, so that the link is centered on the text only
 }
 
 // Customisations to the default style applied by .govuk-link
@@ -18,7 +17,18 @@
     @include govuk-link-style-no-visited-state;
     display: inline-block;
     position: relative;
-    padding: 0 16px govuk-px-to-rem(11) 16px; // space for the arrow, but center on the text only
+    padding: 0 0 0 16px; // space for the arrow
+    margin-bottom: govuk-px-to-rem(11);
+}
+
+@include govuk-media-query($from: desktop) {
+    .tpr-back-to-top {
+        text-align: right;
+    }
+
+    .tpr-back-to-top__inner {
+        padding: 0;
+    }
 }
 
 // Arrow pointing upward, made of CSS borders
@@ -26,7 +36,7 @@
     content: "";
     display: block;
     position: absolute;
-    top: -4px;
+    top: 6px;
     bottom: 0;
     left: 0;
     width: 7px;

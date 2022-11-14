@@ -49,17 +49,19 @@
             else
             {
                 var value = block.Content.Value<string>("value") ?? string.Empty;
+                var radioHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+                var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
 
                 <govuk-radios-item value="@value" class="@(block.Settings.Value<string>("cssClasses"))" checked="@(value.ToUpperInvariant() == attemptedValue)">@(block.Content.Value<string>("label"))
-                    <govuk-radios-item-hint>@Html.Raw(GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-radios-item-hint>
-                    @{
-                        var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
-                        if (conditional.Any()){
+                        @if (!string.IsNullOrEmpty(radioHint))
+                        {
+                            <govuk-radios-item-hint>@Html.Raw(radioHint)</govuk-radios-item-hint>
+                        }
+                        @if (conditional.Any()){
                             <govuk-radios-item-conditional>
                                 @await Html.PartialAsync("GOVUK/BlockList", conditional)
                             </govuk-radios-item-conditional>
                         }
-                    }
                 </govuk-radios-item>                
             }
         }

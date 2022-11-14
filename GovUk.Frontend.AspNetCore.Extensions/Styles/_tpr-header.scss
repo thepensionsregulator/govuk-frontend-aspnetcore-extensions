@@ -159,7 +159,6 @@ $tpr-header-left-width-xl: 200px;
 .tpr-context .govuk-body {
     font-weight: $tpr-font-weight-regular;
     line-height: $tpr-header-line-height;
-    color: $tpr-colour-white;
     margin: 0;
 }
 
@@ -173,14 +172,17 @@ $tpr-header-left-width-xl: 200px;
     flex: 0 0 auto;
     padding: $tpr-header-vertical-space $govuk-gutter-half;
     border-top: govuk-px-to-rem(1) solid $tpr-colour-blue-marguerite;
+    color: $tpr-colour-white;
+    background: $tpr-colour-violet;
 }
 
 // Allow more space for .tpr-context__context-2 as the viewport width grows.
 .tpr-context__context-2 {
+    color: $tpr-colour-white;
+    background-color: $tpr-colour-black;
     flex-grow: 1;
     align-items: center;
     padding: $tpr-header-vertical-space $govuk-gutter-half;
-    background-color: $tpr-colour-black;
 }
 
 // Hide context 2 on small viewports if empty
@@ -196,6 +198,7 @@ $tpr-header-left-width-xl: 200px;
 // overflow: hidden prevents the border of .tpr-context__context-3-inner extending too far.
 .tpr-context__context-3 {
     white-space: nowrap;
+    color: $tpr-colour-white;
     background-color: $tpr-colour-black;
     overflow: hidden;
 }

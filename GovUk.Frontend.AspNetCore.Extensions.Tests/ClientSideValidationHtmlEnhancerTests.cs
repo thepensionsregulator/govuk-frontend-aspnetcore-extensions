@@ -3,15 +3,12 @@ using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute;
@@ -39,7 +36,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
         private class ExampleClass
         {
-            public double NumberField { get; set; }
+            public int IntegerField { get; set; }
+
+            public double DoubleField { get; set; }
+
+            [RegularExpression("[0-9.,]+", ErrorMessage = errorMessageRegex)]
+            public double NumberFieldWithRegex { get; set; }
 
             public string UnvalidatedField { get; set; }
 
@@ -261,7 +263,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField));
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            
+
             var propertyResolver = new Mock<IModelPropertyResolver>();
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CustomField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField)));
@@ -278,7 +280,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 new CustomTestValidatorAttributeAdapter(baseValidationAttribute, null));
 
             var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, mockMetaDataProvider.Object, options,
-                validationAttributeAdapterProvider.Object) ;
+                validationAttributeAdapterProvider.Object);
 
             // Check support for multiple inputs with the same name, because the required attribute
             // has to support a group of radio buttons or checkboxes
@@ -630,18 +632,19 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='number']") == null); // different to the numeric version of this test
         }
 
-        [Test]
-        public void Numeric_fields_without_range_have_text_input_type_numeric_input_mode()
+        [TestCase(nameof(ExampleClass.IntegerField), "[0-9]*")]
+        [TestCase(nameof(ExampleClass.DoubleField), "[0-9.]*")]
+        public void Numeric_fields_without_range_have_text_input_type_numeric_input_mode(string propertyName, string expectedRegex)
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
             var propertyResolver = new Mock<IModelPropertyResolver>();
-            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumberField));
+            var property = typeof(ExampleClass).GetProperty(propertyName);
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumberField))).Returns(property);
+            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), propertyName)).Returns(property);
             var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
-            var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumberField)}\">",
+            var result = htmlUpdater.EnhanceHtml($"<input name=\"{propertyName}\">",
                 viewContext,
                 errorMessageRequired,
                 errorMessageRegex,
@@ -658,7 +661,37 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='text']") != null);
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@inputmode='numeric']") != null);
-            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='[0-9]*']") != null);
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='{expectedRegex}']") != null);
+        }
+
+
+        [Test]
+        public void Regex_validator_has_higher_priority_than_regex_for_numeric_fields()
+        {
+            var viewContext = new ViewContext() { ClientValidationEnabled = true };
+            var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
+            var propertyResolver = new Mock<IModelPropertyResolver>();
+            var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumberFieldWithRegex));
+            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
+            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumberFieldWithRegex))).Returns(property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+
+            var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumberFieldWithRegex)}\">",
+                viewContext,
+                errorMessageRequired,
+                errorMessageRegex,
+                errorMessageEmail,
+                errorMessagePhone,
+                errorMessageLength,
+                errorMessageMinLength,
+                errorMessageMaxLength,
+                errorMessageRange,
+                errorMessageCompare);
+
+            var document = new HtmlDocument();
+            document.LoadHtml(result);
+
+            Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='[0-9.,]+']") != null);
         }
 
         [Test]
@@ -749,10 +782,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             });
 
             var htmlUpdater = new ClientSideValidationHtmlEnhancer(
-                propertyResolver.Object, 
-                Mock.Of<IModelMetadataProvider>(), 
-                options, 
-                Mock.Of<IValidationAttributeAdapterProvider>(), 
+                propertyResolver.Object,
+                Mock.Of<IModelMetadataProvider>(),
+                options,
+                Mock.Of<IValidationAttributeAdapterProvider>(),
                 localiserFactory.Object);
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RequiredField)}\">",
@@ -844,12 +877,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
             propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CustomField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField)));
 
-            
+
             var localiser = new Mock<IStringLocalizer>(MockBehavior.Loose);
 
             localiser.Setup(x => x[errorMessageRequiredCustom, It.IsAny<object[]>()]).Returns(new LocalizedString(errorMessageRequiredCustom, "Error from localiser"));
             var localiserFactory = new Mock<IStringLocalizerFactory>();
-            localiserFactory.Setup(x => x.Create(property.DeclaringType)).Returns(localiser.Object);           
+            localiserFactory.Setup(x => x.Create(property.DeclaringType)).Returns(localiser.Object);
 
             var metadataProvider = new EmptyModelMetadataProvider();
             var metadata = metadataProvider.GetMetadataForProperty(containerType: typeof(ExampleClass), propertyName: nameof(ExampleClass.CustomField));
@@ -871,10 +904,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 new CustomTestValidatorAttributeAdapter(baseValidationAttribute, localiser.Object));
 
             var htmlUpdater = new ClientSideValidationHtmlEnhancer(
-                propertyResolver.Object, 
-                mockMetaDataProvider.Object, 
-                options, 
-                validationAttributeAdapterProvider.Object, 
+                propertyResolver.Object,
+                mockMetaDataProvider.Object,
+                options,
+                validationAttributeAdapterProvider.Object,
                 localiserFactory.Object);
 
             // Check support for multiple inputs with the same name, because the required attribute

@@ -8,7 +8,6 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 
@@ -23,14 +22,14 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
         private readonly IValidationAttributeAdapterProvider _validationAttributeAdapterProvider;
 
         public ClientSideValidationHtmlEnhancer(
-            IModelPropertyResolver modelPropertyResolver, 
+            IModelPropertyResolver modelPropertyResolver,
             IModelMetadataProvider metadataProvider,
             IOptions<MvcDataAnnotationsLocalizationOptions> options,
             IValidationAttributeAdapterProvider validationAttributeAdapterProvider,
         IStringLocalizerFactory? factory = null)
         {
             _modelPropertyResolver = modelPropertyResolver ?? throw new ArgumentNullException(nameof(modelPropertyResolver));
-            
+
             _factory = factory;
             _metadataProvider = metadataProvider;
             _validationAttributeAdapterProvider = validationAttributeAdapterProvider;
@@ -72,7 +71,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 }
 
                 // Add the data-val-* attributes for ASP.NET / jQuery validation to pick up
-                AddClientSideValidationAttributes(viewContext, _modelPropertyResolver, _metadataProvider, _factory, 
+                AddClientSideValidationAttributes(viewContext, _modelPropertyResolver, _metadataProvider, _factory,
                     _validationAttributeAdapterProvider,
                     _options, inputs, errorMessage?.Attributes,
                     errorMessageRequired,
@@ -176,6 +175,20 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
                     var validateElement = false;
 
+                    if (IsIntegerNumericType(modelProperty.PropertyType) || IsFloatingPointNumericType(modelProperty.PropertyType))
+                    {
+                        AddOrUpdateHtmlAttribute(targetElement, "type", "text");
+                        AddOrUpdateHtmlAttribute(targetElement, "inputmode", "numeric");
+                        if (IsIntegerNumericType(modelProperty.PropertyType))
+                        {
+                            AddOrUpdateHtmlAttribute(targetElement, "pattern", "[0-9]*");
+                        }
+                        else
+                        {
+                            AddOrUpdateHtmlAttribute(targetElement, "pattern", "[0-9.]*");
+                        }
+                    }
+
                     // Compare
                     var compareAttr = modelProperty.GetCustomAttributes<CompareAttribute>().FirstOrDefault();
                     if (compareAttr != null)
@@ -240,7 +253,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     {
                         targetElement.Attributes.Add("data-val-regex", SelectBestErrorMessage(errorMessageRegex, regexAttr.ErrorMessage, localizer));
                         targetElement.Attributes.Add("data-val-regex-pattern", regexAttr.Pattern);
-                        targetElement.Attributes.Add("pattern", regexAttr.Pattern);
+                        AddOrUpdateHtmlAttribute(targetElement, "pattern", regexAttr.Pattern);
                         validateElement = true;
                     }
 
@@ -264,60 +277,51 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         validateElement = true;
                     }
 
-                    if (IsNumericType(modelProperty.PropertyType))
+                    // Get anything else that inherits from ValidationAttribute
+                    var baseValidationAttributes = modelProperty.GetCustomAttributes<ValidationAttribute>();
+                    if (baseValidationAttributes != null && baseValidationAttributes.Count() > 0)
                     {
-                        AddOrUpdateHtmlAttribute(targetElement, "type", "text");
-                        AddOrUpdateHtmlAttribute(targetElement, "inputmode", "numeric");
-                        AddOrUpdateHtmlAttribute(targetElement, "pattern", "[0-9]*");
-                    }
-
-                    //if (!validateElement)
-                    {
-                        // Get anything else that inherits from ValidationAttribute
-                        var baseValidationAttributes = modelProperty.GetCustomAttributes<ValidationAttribute>();
-                        if (baseValidationAttributes != null && baseValidationAttributes.Count() > 0)
+                        foreach (var baseValidationAttribute in baseValidationAttributes)
                         {
-                            foreach (var baseValidationAttribute in baseValidationAttributes)
+                            var adapter = validationAttributeAdapterProvider.GetAttributeAdapter(baseValidationAttribute, localizer);
+
+                            if (adapter != null)
                             {
-                                var adapter = validationAttributeAdapterProvider.GetAttributeAdapter(baseValidationAttribute, localizer);
+                                var attrDictionary = new Dictionary<string, string>();
 
-                                if (adapter != null)
+                                // Get existing attributes - have to iterate to avoid duplication
+                                foreach (var attribute in targetElement.Attributes)
                                 {
-                                    var attrDictionary = new Dictionary<string, string>();
-                                    
-                                    // Get existing attributes - have to iterate to avoid duplication
-                                    foreach(var attribute in targetElement.Attributes)
+                                    if (!attrDictionary.ContainsKey(attribute.Name))
                                     {
-                                        if (!attrDictionary.ContainsKey(attribute.Name))
-                                        {
-                                            attrDictionary.Add(attribute.Name, attribute.Value);
-                                        }
+                                        attrDictionary.Add(attribute.Name, attribute.Value);
                                     }
-
-                                    // Get metadata
-                                    var metadata = metadataProvider.GetMetadataForType(modelType);
-
-                                    // Now call the Adapter's AddValidation method. This merges existing attributes with anything already present
-                                    adapter!.AddValidation(
-                                        new ClientModelValidationContext(viewContext, metadata, metadataProvider, attrDictionary)
-                                        );
-
-                                    // Remove existing html attributes
-                                    targetElement.Attributes.RemoveAll();
-
-                                    // And add them back in again - this time with everything populated by the AddValidation method.
-                                    foreach (var attr in attrDictionary)
-                                    {
-                                        targetElement.Attributes.Add(attr.Key, attr.Value);
-                                    }
-
-                                    validateElement = true;
                                 }
+
+                                // Get metadata
+                                var metadata = metadataProvider.GetMetadataForType(modelType);
+
+                                // Now call the Adapter's AddValidation method. This merges existing attributes with anything already present
+                                adapter!.AddValidation(
+                                    new ClientModelValidationContext(viewContext, metadata, metadataProvider, attrDictionary)
+                                    );
+
+                                // Remove existing html attributes
+                                targetElement.Attributes.RemoveAll();
+
+                                // And add them back in again - this time with everything populated by the AddValidation method.
+                                foreach (var attr in attrDictionary)
+                                {
+                                    targetElement.Attributes.Add(attr.Key, attr.Value);
+                                }
+
+                                validateElement = true;
                             }
                         }
                     }
 
-                    if (validateElement) {
+                    if (validateElement)
+                    {
                         if (!targetElement.Attributes.Contains("data-val"))
                         {
                             targetElement.Attributes.Add("data-val", "true");
@@ -347,18 +351,30 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         fromTagHelperAttribute;
         }
 
-        private static readonly HashSet<Type> NumericTypes = new HashSet<Type>
+        private static readonly HashSet<Type> IntegerNumericTypes = new HashSet<Type>
         {
-            typeof(int),  typeof(double),  typeof(decimal),
-            typeof(long), typeof(short),   typeof(sbyte),
-            typeof(byte), typeof(ulong),   typeof(ushort),
-            typeof(uint), typeof(float)
+            typeof(sbyte), typeof(byte),
+            typeof(int), typeof(uint),
+            typeof(short), typeof(ushort),
+            typeof(long), typeof(ulong)
+
         };
 
-        internal static bool IsNumericType(Type type)
+        private static readonly HashSet<Type> FloatingPointNumericTypes = new HashSet<Type>
         {
-            return NumericTypes.Contains(type) ||
-                   NumericTypes.Contains(Nullable.GetUnderlyingType(type)!);
+            typeof(double), typeof(decimal), typeof(float)
+        };
+
+        private static bool IsFloatingPointNumericType(Type type)
+        {
+            return FloatingPointNumericTypes.Contains(type) ||
+                   FloatingPointNumericTypes.Contains(Nullable.GetUnderlyingType(type)!);
+        }
+
+        private static bool IsIntegerNumericType(Type type)
+        {
+            return IntegerNumericTypes.Contains(type) ||
+                   IntegerNumericTypes.Contains(Nullable.GetUnderlyingType(type)!);
         }
     }
 }

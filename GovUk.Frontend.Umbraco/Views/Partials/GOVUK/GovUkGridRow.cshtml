@@ -1,16 +1,17 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models.Blocks
 @using GovUk.Frontend.Umbraco.Services
 @using Umbraco.Extensions
 @{
     var blocks = Model.Content.Value<OverridableBlockListModel>("blocks")?.FilteredBlocks().ToList();
-    var rowClass = Model.Settings?.Value<string>("cssClassesForRow");
+    var rowClass = Model.Settings?.Value<string>(PropertyAliases.CssClassesForRow);
     var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
-                        Model.Settings?.Value<string>("columnSize"), 
-                        Model.Settings?.Value<string>("columnSizeFromDesktop"), 
-                        Model.Settings?.Value<string>("cssClassesForColumn")).TrimEnd();
+                        Model.Settings?.Value<string>(PropertyAliases.ColumnSize), 
+                        Model.Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop), 
+                        Model.Settings?.Value<string>(PropertyAliases.CssClassesForColumn)).TrimEnd();
 }
 <div class="govuk-grid-row @rowClass">
     <div class="@columnClass">
@@ -18,8 +19,8 @@
         // Put each child item in a grid row, except where multiple columns follow each other, then they need to be in the same row.
         for (var i = 0; i < blocks.Count; i++)
         {
-            var isOpeningColumnSet = blocks[i].Content.ContentType.Alias == "govukGridColumn" && (i == 0 || blocks[i - 1].Content.ContentType.Alias != "govukGridColumn");
-            var isClosingColumnSet = blocks[i].Content.ContentType.Alias == "govukGridColumn" && (i == blocks.Count-1 || blocks[i + 1].Content.ContentType.Alias != "govukGridColumn");
+            var isOpeningColumnSet = blocks[i].Content.ContentType.Alias == ElementTypeAliases.GridColumn && (i == 0 || blocks[i - 1].Content.ContentType.Alias != ElementTypeAliases.GridColumn);
+            var isClosingColumnSet = blocks[i].Content.ContentType.Alias == ElementTypeAliases.GridColumn && (i == blocks.Count-1 || blocks[i + 1].Content.ContentType.Alias != ElementTypeAliases.GridColumn);
 
             if (isOpeningColumnSet)
             {

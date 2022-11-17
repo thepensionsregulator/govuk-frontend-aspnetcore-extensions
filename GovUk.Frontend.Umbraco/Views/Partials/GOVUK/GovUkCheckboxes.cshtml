@@ -15,7 +15,7 @@
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
-    var cssClass = Model.Settings.Value<string>("cssClasses");
+    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var fieldsetHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
     var cssClassesForHint = Model.Settings.Value<string>("cssClassesForHint");
     var cssClassesForError = Model.Settings.Value<string>("cssClassesForError");
@@ -51,7 +51,8 @@
                         {
                             var value = block.Content.Value<string>("value") ?? string.Empty;
                             var checkboxHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>("cssClasses"))" input-data-behaviour="exclusive">@(block.Content.Value<string>("label"))
+                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" input-data-behaviour="exclusive">
+                                @(block.Content.Value<string>("label"))
                                 @{
                                     if (!string.IsNullOrWhiteSpace(checkboxHint)) 
                                     {
@@ -70,7 +71,7 @@
                         {
                             var value = block.Content.Value<string>("value") ?? string.Empty;
                             var checkboxHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>("cssClasses"))">@(block.Content.Value<string>("label"))
+                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))">@(block.Content.Value<string>("label"))
                                 @{
                                     if (!string.IsNullOrWhiteSpace(checkboxHint)) 
                                     {

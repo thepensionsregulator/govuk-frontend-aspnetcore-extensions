@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models
@@ -8,6 +9,6 @@
     var text = Model.Content.Value<string>("text");
     var link = Model.Content.Value<Link>("link");
     var isStartButton = Model.Settings.Value<bool>("isStartButton");
-    var cssClass = Model.Settings.Value<string>("cssClasses");
+    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
 }
 <govuk-button-link is-start-button="@isStartButton" href="@link.Url" id="@Model.Content.Key" class="@cssClass">@text</govuk-button-link>

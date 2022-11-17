@@ -1,15 +1,30 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Services
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var blocks = Model.Content.Value<OverridableBlockListModel>("blocks");
-    var cssClass = Model.Settings.Value<string>("cssClasses");
-    var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
+    var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks);
+    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+
+    // If there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state
+    var fieldsetErrorClass = GovUkFieldsetClassBuilder.BuildFieldsetErrorClass(Model, ViewContext.ModelState, true);
+    var renderFieldsetError = !string.IsNullOrEmpty(fieldsetErrorClass);
 }
 <govuk-fieldset class="@cssClass">
     <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-fieldset")">@legend</govuk-fieldset-legend>
+    @if (renderFieldsetError){
+        @:<div class="govuk-grid-row @fieldsetErrorClass">
+        @:<div class="govuk-grid-column govuk-grid-column-full">
+    }
     @await Html.PartialAsync("GOVUK/BlockList", blocks)
+    @if (renderFieldsetError){
+        @:</div>
+        @:</div>
+    }
 </govuk-fieldset>

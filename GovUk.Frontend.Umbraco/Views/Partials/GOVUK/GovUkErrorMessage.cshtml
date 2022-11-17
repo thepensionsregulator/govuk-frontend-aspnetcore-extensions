@@ -1,9 +1,24 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Extensions
 @{
-    var cssClass = Model.Settings.Value<string>("cssClasses");
+    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var showError = true;
+    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    ModelStateEntry? modelStateEntry = null;
+    var id = Model.Content.Key.ToString();
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        id = modelPropertyName;
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+        showError = modelStateEntry?.Errors.Count > 0;
+    }
 }
-<govuk-error-message id="@Model.Content.Key" class="@cssClass">@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("error"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-error-message>
+@if (showError)
+{
+    <govuk-error-message id="@id" class="@cssClass">@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("error"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-error-message>
+}

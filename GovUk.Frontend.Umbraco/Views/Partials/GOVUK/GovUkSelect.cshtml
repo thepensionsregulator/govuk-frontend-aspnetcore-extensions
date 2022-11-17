@@ -15,7 +15,7 @@
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
-    var cssClass = Model.Settings.Value<string>("cssClasses");
+    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });

@@ -50,6 +50,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Render error classes: When a nested 'Error message' component is bound to a property, render GOV.UK error classes when that property fails validation.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[ImplementPropertyType("renderErrorClasses")]
+		public virtual bool RenderErrorClasses => this.Value<bool>(_publishedValueFallback, "renderErrorClasses");
+
+		///<summary>
 		/// CSS classes
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]

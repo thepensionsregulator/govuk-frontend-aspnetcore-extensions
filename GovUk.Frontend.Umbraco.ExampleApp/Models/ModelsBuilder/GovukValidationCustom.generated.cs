@@ -36,6 +36,21 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string CustomError3 { get; }
+
+		/// <summary>Fieldset validation property 1</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		object ValidationProperty1 { get; }
+
+		/// <summary>Fieldset validation property 2</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		object ValidationProperty2 { get; }
+
+		/// <summary>Fieldset validation property 3</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		object ValidationProperty3 { get; }
 	}
 
 	/// <summary>Validation (Custom)</summary>
@@ -107,5 +122,44 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static string GetCustomError3(IGovukValidationCustom that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "customError3");
+
+		///<summary>
+		/// Fieldset validation property 1: A property on the view model in the code used for fieldset validation. Bind an 'Error message' component to the same property.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("validationProperty1")]
+		public virtual object ValidationProperty1 => GetValidationProperty1(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Fieldset validation property 1</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static object GetValidationProperty1(IGovukValidationCustom that, IPublishedValueFallback publishedValueFallback) => that.Value(publishedValueFallback, "validationProperty1");
+
+		///<summary>
+		/// Fieldset validation property 2: A property on the view model in the code used for fieldset validation. Bind an 'Error message' component to the same property.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("validationProperty2")]
+		public virtual object ValidationProperty2 => GetValidationProperty2(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Fieldset validation property 2</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static object GetValidationProperty2(IGovukValidationCustom that, IPublishedValueFallback publishedValueFallback) => that.Value(publishedValueFallback, "validationProperty2");
+
+		///<summary>
+		/// Fieldset validation property 3: A property on the view model in the code used for fieldset validation. Bind an 'Error message' component to the same property.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("validationProperty3")]
+		public virtual object ValidationProperty3 => GetValidationProperty3(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Fieldset validation property 3</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static object GetValidationProperty3(IGovukValidationCustom that, IPublishedValueFallback publishedValueFallback) => that.Value(publishedValueFallback, "validationProperty3");
 	}
 }

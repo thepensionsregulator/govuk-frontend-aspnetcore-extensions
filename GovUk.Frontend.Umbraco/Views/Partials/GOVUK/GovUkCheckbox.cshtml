@@ -14,7 +14,7 @@
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
-    var cssClass = Model.Settings.Value<string>("cssClasses");
+    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var value = Model.Content.Value<string>("value");
     var checkboxHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
     var conditional = Model.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;

@@ -39,7 +39,7 @@
         var maxLengthAttr = modelProperty.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
         var stringLengthAttr = modelProperty.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
         int? maxLength = maxLengthAttr != null ? maxLengthAttr.Length : stringLengthAttr != null ? stringLengthAttr.MaximumLength : null;
-        <govuk-character-count name="@modelPropertyName" form-group-class="@(Model.Settings.Value<string>("cssClasses"))" rows="@rows" max-length="@maxLength" threshold="@threshold">
+        <govuk-character-count name="@modelPropertyName" form-group-class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))" rows="@rows" max-length="@maxLength" threshold="@threshold">
             <govuk-character-count-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-character-count-label>
             @if (!string.IsNullOrWhiteSpace(hint))
             {
@@ -51,7 +51,7 @@
     }
     else
     {
-        <govuk-textarea name="@modelPropertyName" class="@(Model.Settings.Value<string>("cssClasses"))" rows="@rows">
+        <govuk-textarea name="@modelPropertyName" class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))" rows="@rows">
             <govuk-textarea-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-textarea-label>
             @if (!string.IsNullOrWhiteSpace(hint))
             {

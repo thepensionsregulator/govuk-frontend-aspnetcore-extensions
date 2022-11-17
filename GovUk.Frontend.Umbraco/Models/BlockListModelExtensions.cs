@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Extensions;
@@ -17,6 +18,17 @@ namespace GovUk.Frontend.Umbraco.Models
         public static BlockListItem? FindBlock(this IEnumerable<BlockListItem> blockList, Func<BlockListItem, bool> matcher)
         {
             return RecursivelyFindBlock(blockList, matcher);
+        }
+
+        /// <summary>
+        /// Recursively find the matching blocks in a block list and any decendant block lists
+        /// </summary>
+        /// <param name="blockList">The block list to search</param>
+        /// <param name="matcher">A function which returns <c>true</c> for a matching block and <c>false</c> otherwise</param>
+        /// <returns>An IEnumerable of 0 or more matching blocks</returns>
+        public static IEnumerable<BlockListItem> FindBlocks(this IEnumerable<BlockListItem> blockList, Func<BlockListItem, bool> matcher)
+        {
+            return RecursivelyFindBlocks(blockList, matcher, false);
         }
 
         /// <summary>
@@ -43,16 +55,24 @@ namespace GovUk.Frontend.Umbraco.Models
 
         private static BlockListItem? RecursivelyFindBlock(IEnumerable<BlockListItem> blockList, Func<BlockListItem, bool> matcher)
         {
+            return RecursivelyFindBlocks(blockList, matcher, true).FirstOrDefault();
+        }
+
+        private static IList<BlockListItem> RecursivelyFindBlocks(IEnumerable<BlockListItem> blockList, Func<BlockListItem, bool> matcher, bool returnFirstMatchOnly)
+        {
             if (blockList is null)
             {
                 throw new ArgumentNullException(nameof(blockList));
             }
 
+            var matchedBlocks = new List<BlockListItem>();
+
             foreach (var block in blockList)
             {
                 if (matcher(block))
                 {
-                    return block;
+                    matchedBlocks.Add(block);
+                    if (returnFirstMatchOnly) { return matchedBlocks; }
                 }
 
                 foreach (var blockProperty in block.Content.Properties)
@@ -61,15 +81,15 @@ namespace GovUk.Frontend.Umbraco.Models
                     {
                         IEnumerable<BlockListItem>? childBlocks = (block as OverridableBlockListItem)?.Content.Value<OverridableBlockListModel>(blockProperty.Alias);
                         if (childBlocks == null) { childBlocks = blockProperty.Value<BlockListModel>(null); }
-                        var result = RecursivelyFindBlock(childBlocks!, matcher);
-                        if (result != null)
+                        var result = RecursivelyFindBlocks(childBlocks!, matcher, returnFirstMatchOnly);
+                        if (result.Any())
                         {
-                            return result;
+                            matchedBlocks.AddRange(result);
                         }
                     }
                 }
             }
-            return null;
+            return matchedBlocks;
         }
     }
 }

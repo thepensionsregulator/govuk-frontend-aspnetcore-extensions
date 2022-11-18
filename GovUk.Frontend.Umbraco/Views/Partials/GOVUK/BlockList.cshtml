@@ -32,7 +32,7 @@
                         blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForColumn));
 
     // If there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state
-    var fieldsetErrorClass = GovUkFieldsetClassBuilder.BuildFieldsetErrorClass(blocks[i], ViewContext.ModelState, false);
+    var fieldsetErrorClass = GovUkFieldsetAttributeBuilder.BuildFieldsetErrorClass(blocks[i], ViewContext.ModelState, false);
     if (!string.IsNullOrEmpty(fieldsetErrorClass))
     {
         rowClass += " " + fieldsetErrorClass;

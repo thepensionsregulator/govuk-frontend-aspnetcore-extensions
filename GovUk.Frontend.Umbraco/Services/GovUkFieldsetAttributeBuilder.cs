@@ -1,12 +1,14 @@
 ﻿using GovUk.Frontend.Umbraco.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.Services
 {
-    public static class GovUkFieldsetClassBuilder
+    public static class GovUkFieldsetAttributeBuilder
     {
         /// <summary>
         /// Return classes for a fieldset-level error, if one exists
@@ -40,6 +42,39 @@ namespace GovUk.Frontend.Umbraco.Services
                 }
             }
             return string.Empty;
+        }
+
+        /// <summary>
+        /// If this component is bound to separate properties for validation, and one or more of those properties are invalid, 
+        /// return the ids of error messages bound to the invalid properties to be referenced by aria-describedby.
+        /// </summary>
+        /// <param name="settingsProperties">Settings of a component such as 'Select' or 'Text input' within a fieldset</param>
+        /// <param name="modelState">ModelState containing errors for the current request</param>
+        /// <returns></returns>
+        public static string BuildAriaDescribedByForFieldsetErrors(IEnumerable<IPublishedProperty> settingsProperties, ModelStateDictionary modelState)
+        {
+            var describedByIds = new List<string>();
+            var settings = settingsProperties.ToDictionary(x => x.Alias, x => x);
+            for (var i = 1; i <= 3; i++)
+            {
+                var validationPropertyName = settings[$"validationProperty{i}"]?.GetValue()?.ToString();
+                if (!string.IsNullOrEmpty(validationPropertyName))
+                {
+                    modelState.TryGetValue(validationPropertyName, out var validationPropertyModelStateEntry);
+                    if (validationPropertyModelStateEntry?.ValidationState == ModelValidationState.Invalid)
+                    {
+                        describedByIds.Add(validationPropertyName);
+                    }
+                }
+            }
+            if (describedByIds.Any())
+            {
+                return string.Join(' ', describedByIds.ToArray());
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
     }
 }

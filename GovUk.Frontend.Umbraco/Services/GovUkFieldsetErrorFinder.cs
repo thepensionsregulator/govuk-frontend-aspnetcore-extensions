@@ -24,7 +24,7 @@ namespace GovUk.Frontend.Umbraco.Services
             var blocksWithinFieldset = fieldsetBlock.Content.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks);
             if (fieldsetErrorsEnabled && blocksWithinFieldset != null)
             {
-                var invalidFields = modelState.Where(x => x.Value?.ValidationState == ModelValidationState.Invalid).Select(x => x.Key);
+                var invalidFields = modelState.Where(x => x.Value?.ValidationState == ModelValidationState.Invalid && !string.IsNullOrEmpty(x.Key)).Select(x => x.Key);
                 return blocksWithinFieldset.Where(x => x.Content.ContentType.Alias == ElementTypeAliases.ErrorMessage
                                                        && !string.IsNullOrEmpty(x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString())
                                                        && invalidFields.Contains(x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString()));

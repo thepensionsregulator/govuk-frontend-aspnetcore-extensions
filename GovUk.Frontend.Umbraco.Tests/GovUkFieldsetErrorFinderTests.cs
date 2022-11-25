@@ -19,7 +19,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void Non_fieldset_returns_no_results()
         {
-            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.GridRow, ElementTypeAliases.ErrorMessage, true);
+            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.GridRow, ElementTypeAliases.ErrorMessage, true, VIEWMODEL_PROPERTY_NAME);
 
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
@@ -32,7 +32,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void Render_error_classes_false_no_results()
         {
-            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, false);
+            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, false, VIEWMODEL_PROPERTY_NAME);
 
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
@@ -45,7 +45,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void No_ModelState_error_returns_no_results()
         {
-            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, true);
+            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, true, VIEWMODEL_PROPERTY_NAME);
 
             var modelState = new ModelStateDictionary();
 
@@ -57,7 +57,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void Block_other_than_ErrorMessage_bound_to_invalid_property_returns_no_results()
         {
-            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.TextInput, true);
+            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.TextInput, true, VIEWMODEL_PROPERTY_NAME);
 
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
@@ -70,7 +70,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void ErrorMessage_block_bound_to_invalid_property_returns_ErrorMessage_block()
         {
-            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, true);
+            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, true, VIEWMODEL_PROPERTY_NAME);
 
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
@@ -81,7 +81,20 @@ namespace GovUk.Frontend.Umbraco.Tests
             Assert.AreEqual(ElementTypeAliases.ErrorMessage, results.First().Content.ContentType.Alias);
         }
 
-        private static OverridableBlockListItem CreateUmbracoTestContentForClasses(string aliasOfParentBlock, string aliasOfChildBlock, bool fieldsetErrorsEnabled)
+        [Test]
+        public void Page_level_error_is_not_matched_to_unbound_error_message()
+        {
+            var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, true, string.Empty);
+
+            var modelState = new ModelStateDictionary();
+            modelState.AddModelError(string.Empty, "Any error");
+
+            var results = GovUkFieldsetErrorFinder.FindFieldsetErrors(fieldsetBlock, modelState);
+
+            Assert.AreEqual(0, results.Count());
+        }
+
+        private static OverridableBlockListItem CreateUmbracoTestContentForClasses(string aliasOfParentBlock, string aliasOfChildBlock, bool fieldsetErrorsEnabled, string modelPropertyBoundToErrorMessage)
         {
             var blockListPropertyType = CreatePropertyType(1, Constants.PropertyEditors.Aliases.BlockList, new BlockListConfiguration());
             var textBoxPropertyType = CreatePropertyType(2, Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration());
@@ -102,7 +115,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             errorMessageContent.Setup(x => x.ContentType).Returns(errorMessageContentType.Object);
 
             var errorMessageSettings = new Mock<IOverridablePublishedElement>();
-            errorMessageSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(CreateProperty(PropertyAliases.ModelProperty, textBoxPropertyType, VIEWMODEL_PROPERTY_NAME));
+            errorMessageSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(CreateProperty(PropertyAliases.ModelProperty, textBoxPropertyType, modelPropertyBoundToErrorMessage));
 
             var errorMessageBlock = new OverridableBlockListItem(
                 new BlockListItem(

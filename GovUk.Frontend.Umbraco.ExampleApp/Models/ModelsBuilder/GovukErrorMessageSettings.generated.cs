@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Error message settings</summary>
 	[PublishedModel("govukErrorMessageSettings")]
-	public partial class GovukErrorMessageSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
+	public partial class GovukErrorMessageSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukModelProperty
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -48,14 +48,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
-
-		///<summary>
-		/// Model property
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("modelProperty")]
-		public virtual object ModelProperty => this.Value(_publishedValueFallback, "modelProperty");
 
 		///<summary>
 		/// CSS classes
@@ -96,5 +88,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClassesForColumn")]
 		public virtual string CssClassesForColumn => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetCssClassesForColumn(this, _publishedValueFallback);
+
+		///<summary>
+		/// Model property: The name of the property on the view model being bound to in the code.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("modelProperty")]
+		public virtual object ModelProperty => global::Umbraco.Cms.Web.Common.PublishedModels.GovukModelProperty.GetModelProperty(this, _publishedValueFallback);
 	}
 }

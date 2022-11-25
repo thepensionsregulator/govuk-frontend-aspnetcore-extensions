@@ -31,11 +31,16 @@
                         blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop), 
                         blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForColumn));
 
-    // If there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state
-    var fieldsetErrorClass = GovUkFieldsetAttributeBuilder.BuildFieldsetErrorClass(blocks[i], ViewContext.ModelState, false);
-    if (!string.IsNullOrEmpty(fieldsetErrorClass))
+    // If this block is a fieldset and there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
+    // But only if the 'legendIsPageHeading' setting is false, otherwise it's done in GovUkFieldset.cshtml.
+    var fieldsetErrors = GovUkFieldsetErrorFinder.FindFieldsetErrors(blocks[i], ViewContext.ModelState);
+    if (fieldsetErrors.Any())
     {
-        rowClass += " " + fieldsetErrorClass;
+        var legendIsPageHeading = blocks[i].Settings?.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading) ?? false;
+        if (!legendIsPageHeading)
+        {
+            rowClass += " govuk-form-group govuk-form-group--error";
+        }
     }
 
     var sameAsPrevious = (isGridRowBlock == previousIsGridRowBlock && rowClass == previousRowClass && columnClass == previousColumnClass);

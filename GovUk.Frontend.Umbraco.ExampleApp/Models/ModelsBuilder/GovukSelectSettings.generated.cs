@@ -129,30 +129,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string CustomError3 => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationCustom.GetCustomError3(this, _publishedValueFallback);
 
 		///<summary>
-		/// Fieldset validation property 1: A property on the view model in the code used for fieldset validation. Bind an 'Error message' component to the same property.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("validationProperty1")]
-		public virtual object ValidationProperty1 => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationCustom.GetValidationProperty1(this, _publishedValueFallback);
-
-		///<summary>
-		/// Fieldset validation property 2: A property on the view model in the code used for fieldset validation. Bind an 'Error message' component to the same property.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("validationProperty2")]
-		public virtual object ValidationProperty2 => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationCustom.GetValidationProperty2(this, _publishedValueFallback);
-
-		///<summary>
-		/// Fieldset validation property 3: A property on the view model in the code used for fieldset validation. Bind an 'Error message' component to the same property.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("validationProperty3")]
-		public virtual object ValidationProperty3 => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationCustom.GetValidationProperty3(this, _publishedValueFallback);
-
-		///<summary>
 		/// Required: Sets the message displayed if the field is set by the code to be required.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]

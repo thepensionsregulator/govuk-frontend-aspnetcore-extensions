@@ -12,18 +12,21 @@
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
 
-    // If there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state
-    var fieldsetErrorClass = GovUkFieldsetAttributeBuilder.BuildFieldsetErrorClass(Model, ViewContext.ModelState, true);
-    var renderFieldsetError = !string.IsNullOrEmpty(fieldsetErrorClass);
+    // If there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
+    // If legendIsPageHeading is false, the classes are assigned in BlockList.cshtml, but describedBy must always be set here.
+    var fieldsetErrors = GovUkFieldsetErrorFinder.FindFieldsetErrors(Model, ViewContext.ModelState);
+    var hasFieldsetError = fieldsetErrors.Any();
+    var fieldsetErrorClasses = hasFieldsetError && legendIsPageHeading ? "govuk-form-group govuk-form-group--error" : null;
+    var describedBy = hasFieldsetError ? string.Join(' ', fieldsetErrors.Select(x => x.Settings.Value<string>(PropertyAliases.ModelProperty)).ToArray()) : null;
 }
-<govuk-fieldset class="@cssClass">
+<govuk-fieldset class="@cssClass" described-by="@describedBy">
     <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-fieldset")">@legend</govuk-fieldset-legend>
-    @if (renderFieldsetError){
-        @:<div class="govuk-grid-row @fieldsetErrorClass">
+    @if (hasFieldsetError){
+        @:<div class="govuk-grid-row @fieldsetErrorClasses">
         @:<div class="govuk-grid-column govuk-grid-column-full">
     }
     @await Html.PartialAsync("GOVUK/BlockList", blocks)
-    @if (renderFieldsetError){
+    @if (hasFieldsetError){
         @:</div>
         @:</div>
     }

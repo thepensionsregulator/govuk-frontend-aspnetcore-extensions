@@ -2,7 +2,6 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @using GovUk.Frontend.Umbraco
-@using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Microsoft.AspNetCore.Mvc.ModelBinding
@@ -19,7 +18,6 @@
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-    var describedBy = GovUkFieldsetAttributeBuilder.BuildAriaDescribedByForFieldsetErrors(Model.Settings.Properties, ViewContext.ModelState);
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
@@ -32,7 +30,7 @@
     error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
     error-message-compare="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
 >
-    <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" input-class="@cssClasses" described-by="@describedBy">
+    <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" input-class="@cssClasses">
         <govuk-input-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(
         Model.Content.Value<string>("label")
         )</govuk-input-label>

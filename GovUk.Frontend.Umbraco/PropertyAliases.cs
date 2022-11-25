@@ -20,6 +20,6 @@
         internal const string ErrorMessage = "error";
         internal const string FieldsetBlocks = "blocks";
         internal const string FieldsetLegendIsPageHeading = "legendIsPageHeading";
-        internal const string FieldsetRenderErrorClasses = "renderErrorClasses";
+        internal const string FieldsetErrorsEnabled = "fieldsetErrors";
     }
 }

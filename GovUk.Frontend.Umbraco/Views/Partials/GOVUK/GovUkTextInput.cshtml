@@ -4,6 +4,7 @@
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Extensions
 @{
@@ -18,6 +19,7 @@
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
@@ -30,7 +32,7 @@
     error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
     error-message-compare="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
 >
-    <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" input-class="@cssClasses">
+    <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" input-class="@cssClasses" input-aria-invalid="@invalid">
         <govuk-input-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(
         Model.Content.Value<string>("label")
         )</govuk-input-label>
@@ -38,11 +40,9 @@
         {
             <govuk-input-hint>@Html.Raw(hint)</govuk-input-hint>
         }
-        @if (modelStateEntry != null && modelStateEntry.Errors.Any())
+        @if (modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
         {
-            <govuk-input-error-message>@(
-        string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage))
-        )</govuk-input-error-message>
+            <govuk-input-error-message>@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-input-error-message>
         }
         @if (!string.IsNullOrEmpty(prefix))
         {

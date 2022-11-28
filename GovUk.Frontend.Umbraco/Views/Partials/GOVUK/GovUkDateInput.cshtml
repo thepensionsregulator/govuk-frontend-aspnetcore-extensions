@@ -4,6 +4,7 @@
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
@@ -23,6 +24,7 @@
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
@@ -33,13 +35,13 @@
             {
                 <govuk-date-input-hint>@Html.Raw(hint)</govuk-date-input-hint>
             }
-            @if (modelStateEntry != null && modelStateEntry.Errors.Any())
+            @if (modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
             {
-                <govuk-date-input-error-message>@(string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)))</govuk-date-input-error-message>
+                <govuk-date-input-error-message>@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-date-input-error-message>
             }
-            <govuk-date-input-day maxlength="2"/>
-            <govuk-date-input-month maxlength="2" />
-            <govuk-date-input-year maxlength="4" />
+            <govuk-date-input-day maxlength="2" aria-invalid="@invalid"/>
+            <govuk-date-input-month maxlength="2" aria-invalid="@invalid" />
+            <govuk-date-input-year maxlength="4" aria-invalid="@invalid" />
         </govuk-date-input-fieldset>
     </govuk-date-input>
 </govuk-client-side-validation>

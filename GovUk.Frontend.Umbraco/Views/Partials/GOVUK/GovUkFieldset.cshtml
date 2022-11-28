@@ -3,6 +3,7 @@
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Services
+@using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
@@ -18,6 +19,23 @@
     var hasFieldsetError = fieldsetErrors.Any();
     var fieldsetErrorClasses = hasFieldsetError && legendIsPageHeading ? "govuk-form-group govuk-form-group--error" : null;
     var describedBy = hasFieldsetError ? string.Join(' ', fieldsetErrors.Select(x => x.Settings.Value<string>(PropertyAliases.ModelProperty)).ToArray()) : null;
+
+    // Add an error to ModelState so that we can communicate the presence of a fieldset error to each field within it
+    if (blocks != null && hasFieldsetError) {
+        var allDescendentFields = blocks.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.Checkbox || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.Checkboxes || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.DateInput || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.Radios || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.Select ||
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.TextInput || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.Textarea);
+        foreach (var field in allDescendentFields) {
+            var modelPropertyName = field.Settings.Value<string>(PropertyAliases.ModelProperty);
+            if (!string.IsNullOrEmpty(modelPropertyName)) {
+                ViewContext.ModelState.AddModelError(modelPropertyName, ValidationConstants.FIELDSET_ERROR);
+            }
+        }
+    }
 }
 <govuk-fieldset class="@cssClass" described-by="@describedBy">
     <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-fieldset")">@legend</govuk-fieldset-legend>

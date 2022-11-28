@@ -4,6 +4,7 @@
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
@@ -24,6 +25,7 @@
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var selectedValues = new List<string>();
     if (!string.IsNullOrEmpty(modelStateEntry?.AttemptedValue)) { selectedValues.AddRange(modelStateEntry.AttemptedValue.ToUpperInvariant().Split(",")); }
+    var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
 
 <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
@@ -35,9 +37,9 @@
                 {
                     <govuk-checkboxes-hint class="@cssClassesForHint">@Html.Raw(fieldsetHint)</govuk-checkboxes-hint>
                 }
-                if (modelStateEntry != null && modelStateEntry.Errors.Any())
+                if (modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
                 {
-                    <govuk-checkboxes-error-message>@(string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)))</govuk-checkboxes-error-message>
+                    <govuk-checkboxes-error-message>@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-checkboxes-error-message>
                 }
                 foreach (var block in checkboxes.Filter(checkboxes))
                 {
@@ -51,7 +53,7 @@
                         {
                             var value = block.Content.Value<string>("value") ?? string.Empty;
                             var checkboxHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" input-data-behaviour="exclusive">
+                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" input-data-behaviour="exclusive" input-aria-invalid="@invalid">
                                 @(block.Content.Value<string>("label"))
                                 @{
                                     if (!string.IsNullOrWhiteSpace(checkboxHint)) 
@@ -71,7 +73,8 @@
                         {
                             var value = block.Content.Value<string>("value") ?? string.Empty;
                             var checkboxHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))">@(block.Content.Value<string>("label"))
+                            <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" input-aria-invalid="@invalid">
+                                @(block.Content.Value<string>("label"))
                                 @{
                                     if (!string.IsNullOrWhiteSpace(checkboxHint)) 
                                     {

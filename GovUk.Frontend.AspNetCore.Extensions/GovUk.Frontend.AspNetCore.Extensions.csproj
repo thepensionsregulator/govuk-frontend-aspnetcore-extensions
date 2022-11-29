@@ -215,4 +215,8 @@
 	  <UpToDateCheckInput Remove="Styles\_tpr-page.scss" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-details.scss" />
+	</ItemGroup>
+
 </Project>

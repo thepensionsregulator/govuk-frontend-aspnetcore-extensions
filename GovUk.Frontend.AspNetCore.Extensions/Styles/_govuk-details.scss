@@ -1,0 +1,12 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* A common TPR pattern is to have a form element (.govuk-form-group) followed by a 
+   .govuk-details with help for completing that form element. GOV.UK styling removes 
+    the space after the last form element, which removes the space between the last of 
+    these pairs. Add that space back.
+
+*/
+.govuk-form-group .govuk-form-group:last-of-type + .govuk-details {
+    @include govuk-responsive-margin(6, "top");
+}

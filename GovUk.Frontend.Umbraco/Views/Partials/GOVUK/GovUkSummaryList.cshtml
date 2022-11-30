@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using Umbraco.Cms.Core.Models
@@ -10,7 +11,7 @@
 <govuk-summary-list id="@Model.Content.Key">
     @foreach (var listItem in listItems.Filter(listItems))
     {
-        <govuk-summary-list-row class="@(listItem.Settings.Value<string>("cssClasses"))">
+        <govuk-summary-list-row class="@(listItem.Settings.Value<string>(PropertyAliases.CssClasses))">
             <govuk-summary-list-row-key>@(listItem.Content.Value<string>("key"))</govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@Html.Raw(GovUkTypography.Apply(listItem.Content.Value<string>("value"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-summary-list-row-value>
             @{

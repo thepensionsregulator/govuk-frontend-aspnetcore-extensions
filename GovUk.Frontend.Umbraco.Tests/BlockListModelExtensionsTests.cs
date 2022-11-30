@@ -52,6 +52,44 @@ namespace GovUk.Frontend.Umbraco.Tests
             Assert.AreEqual(grandChildBlockList.First(), result);
         }
 
+
+        [Test]
+        public void Multiple_matching_blocks_are_matched_in_descendant_block_list()
+        {
+            var blockListPropertyType = CreatePropertyType(1, Constants.PropertyEditors.Aliases.BlockList, new BlockListConfiguration());
+            var textBoxPropertyType = CreatePropertyType(2, Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration());
+
+            var matchingBlockContent1 = new Mock<IOverridablePublishedElement>();
+            matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(CreateProperty("MyTextProperty", textBoxPropertyType, "value"));
+
+            var matchingBlock1 = new OverridableBlockListItem(
+                new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
+                x => (IOverridablePublishedElement)x
+            );
+
+            var matchingBlockContent2 = new Mock<IOverridablePublishedElement>();
+            matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(CreateProperty("MyTextProperty", textBoxPropertyType, "value"));
+
+            var matchingBlock2 = new OverridableBlockListItem(
+                new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
+                x => (IOverridablePublishedElement)x
+            );
+
+            var grandChildBlockList = new BlockListModel(new[] { matchingBlock1, matchingBlock2 });
+            var childBlockListContentProperties = new[] { CreateProperty("grandchildBlocks", blockListPropertyType, grandChildBlockList) };
+            var childBlockList = CreateBlockListModel(childBlockListContentProperties, Array.Empty<IPublishedProperty>());
+            var parentBlockListContentProperties = new[] { CreateProperty("childBlocks", blockListPropertyType, childBlockList) };
+            var parentBlockList = CreateBlockListModel(parentBlockListContentProperties, Array.Empty<IPublishedProperty>());
+
+            // Act
+            var results = BlockListModelExtensions.FindBlocks(parentBlockList, x => x.Content.GetProperty("MyTextProperty") != null).ToList();
+
+            // Assert
+            Assert.AreEqual(2, results.Count());
+            Assert.Contains(matchingBlock1, results);
+            Assert.Contains(matchingBlock2, results);
+        }
+
         [Test]
         public void Block_is_matched_by_model_property()
         {

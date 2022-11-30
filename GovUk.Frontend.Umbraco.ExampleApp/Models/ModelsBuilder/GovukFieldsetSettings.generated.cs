@@ -50,6 +50,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Fieldset errors enabled: When a child 'Error message' component is bound to a property on the view model which fails validation, that is a fieldset error.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
+		[ImplementPropertyType("fieldsetErrors")]
+		public virtual bool FieldsetErrors => this.Value<bool>(_publishedValueFallback, "fieldsetErrors");
+
+		///<summary>
 		/// CSS classes
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]

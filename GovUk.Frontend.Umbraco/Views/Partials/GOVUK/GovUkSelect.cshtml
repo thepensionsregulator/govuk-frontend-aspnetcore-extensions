@@ -4,6 +4,7 @@
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
@@ -15,20 +16,21 @@
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
-    var cssClass = Model.Settings.Value<string>("cssClasses");
+    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
-    <govuk-select name="@modelPropertyName" class="@cssClass">
+    <govuk-select name="@modelPropertyName" class="@cssClass" select-aria-invalid="@invalid">
         <govuk-select-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-select-label>
         @if (!string.IsNullOrWhiteSpace(hint))
         {
             <govuk-select-hint>@Html.Raw(hint)</govuk-select-hint>
         }
-        <govuk-select-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-select-error-message>
+        <govuk-select-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR) ? string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null)</govuk-select-error-message>
         @foreach (var block in options.Filter(options))
         {
             var value = block.Content.Value<string>("value");

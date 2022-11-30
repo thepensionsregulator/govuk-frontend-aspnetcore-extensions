@@ -1,7 +1,9 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<BlockListItem>>
+@using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Services
 @using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
@@ -22,22 +24,34 @@
     var block = blocks[i];
     if (blocks[i]?.ContentUdi == null) { continue; }
 
-    var isGridRowBlock = blocks[i].Content.ContentType.Alias == "govukGridRow";
-    string rowClass = GovUkGridClassBuilder.BuildGridRowClass(blocks[i].Settings?.Value<string>("cssClassesForRow"));
+    var isGridRowBlock = blocks[i].Content.ContentType.Alias == ElementTypeAliases.GridRow;
+    string rowClass = GovUkGridClassBuilder.BuildGridRowClass(blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
     var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
-                        blocks[i].Settings?.Value<string>("columnSize"), 
-                        blocks[i].Settings?.Value<string>("columnSizeFromDesktop"), 
-                        blocks[i].Settings?.Value<string>("cssClassesForColumn"));
+                        blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSize), 
+                        blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop), 
+                        blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForColumn));
+
+    // If this block is a fieldset and there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
+    // But only if the 'legendIsPageHeading' setting is false, otherwise it's done in GovUkFieldset.cshtml.
+    var fieldsetErrors = GovUkFieldsetErrorFinder.FindFieldsetErrors(blocks[i], ViewContext.ModelState);
+    if (fieldsetErrors.Any())
+    {
+        var legendIsPageHeading = blocks[i].Settings?.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading) ?? false;
+        if (!legendIsPageHeading)
+        {
+            rowClass += " govuk-form-group govuk-form-group--error";
+        }
+    }
 
     var sameAsPrevious = (isGridRowBlock == previousIsGridRowBlock && rowClass == previousRowClass && columnClass == previousColumnClass);
 
     var sameAsNext = (i < blocks.Count-1 &&
-                          isGridRowBlock == (blocks[i + 1].Content.ContentType.Alias == "govukGridRow") &&
-                          rowClass == GovUkGridClassBuilder.BuildGridRowClass(blocks[i+1].Settings?.Value<string>("cssClassesForRow")) &&
+                          isGridRowBlock == (blocks[i + 1].Content.ContentType.Alias == ElementTypeAliases.GridRow) &&
+                          rowClass == GovUkGridClassBuilder.BuildGridRowClass(blocks[i+1].Settings?.Value<string>(PropertyAliases.CssClassesForRow)) &&
                           columnClass == GovUkGridClassBuilder.BuildGridColumnClass(
-                                                    blocks[i+1].Settings?.Value<string>("columnSize"), 
-                                                    blocks[i+1].Settings?.Value<string>("columnSizeFromDesktop"), 
-                                                    blocks[i+1].Settings?.Value<string>("cssClassesForColumn")));
+                                                    blocks[i+1].Settings?.Value<string>(PropertyAliases.ColumnSize), 
+                                                    blocks[i+1].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop), 
+                                                    blocks[i+1].Settings?.Value<string>(PropertyAliases.CssClassesForColumn)));
 
     @if (filteredModel.RenderGrid && !isGridRowBlock && !sameAsPrevious) { 
         @:<div class="@rowClass"> 

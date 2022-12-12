@@ -155,17 +155,10 @@ $tpr-header-left-width-xl: 200px;
     }
 }
 
-
-
 // For .tpr-context stack everything by default.
-.tpr-context__inner {
-    min-height: govuk-px-to-rem(50);
-}
-
 .tpr-context .govuk-body {
     font-weight: $tpr-font-weight-regular;
     line-height: $tpr-header-line-height;
-    color: $tpr-colour-white;
     margin: 0;
 }
 
@@ -179,15 +172,25 @@ $tpr-header-left-width-xl: 200px;
     flex: 0 0 auto;
     padding: $tpr-header-vertical-space $govuk-gutter-half;
     border-top: govuk-px-to-rem(1) solid $tpr-colour-blue-marguerite;
+    color: $tpr-colour-white;
+    background: $tpr-colour-violet;
 }
 
 // Allow more space for .tpr-context__context-2 as the viewport width grows.
 .tpr-context__context-2 {
+    color: $tpr-colour-white;
+    background-color: $tpr-colour-black;
     flex-grow: 1;
     align-items: center;
     padding: $tpr-header-vertical-space $govuk-gutter-half;
-    background-color: $tpr-colour-black;
-    min-height: 1.8em; // Ensures the black background covers the violet when .tpr-context__context-3 is not rendered
+}
+
+// Hide context 2 on small viewports if empty
+.tpr-context__container--context-2-empty .tpr-context__context-2 {
+    padding: 0;
+}
+.tpr-context__container--context-2-empty .tpr-context__context-3-inner {
+    border-top: none;
 }
 
 // Use another div inside .tpr-context__context-3 so that at larger sizes a left border can come in on the inner element,
@@ -195,6 +198,7 @@ $tpr-header-left-width-xl: 200px;
 // overflow: hidden prevents the border of .tpr-context__context-3-inner extending too far.
 .tpr-context__context-3 {
     white-space: nowrap;
+    color: $tpr-colour-white;
     background-color: $tpr-colour-black;
     overflow: hidden;
 }
@@ -266,6 +270,12 @@ $tpr-header-left-width-xl: 200px;
         align-items: center;
     }
 
+    // Ensures the black background of .tpr-context__context-2 expands to cover the violet when .tpr-context__context-2 is empty and .tpr-context__context-3 is not rendered
+    .tpr-context__container--context-2-empty.tpr-context__container--context-3-empty {
+        display: flex;
+        align-self: stretch;
+    }
+
     .tpr-context__context-1 {
         padding: $tpr-header-vertical-space $govuk-gutter $tpr-header-vertical-space 0;
         width: $tpr-header-image-width;
@@ -303,6 +313,14 @@ $tpr-header-left-width-xl: 200px;
     .tpr-context__context-3 {
         display: flex;
         align-items: center;
+        background: $tpr-colour-black; // Ensures the black background covers the violet when the content of .tpr-context__context-2 is short or empty
+    }
+
+    // Ensures the height of .tpr-context__context-2 is consistent whether or not .tpr-context__context-3 is rendered
+    // Vertical space should be equal to the sum of padding & margin on .tpr-context__context-3-inner
+    .tpr-context__context-2::after {
+        content: ' ';
+        padding: $tpr-header-vertical-space*1.5 0;
     }
 
     .tpr-context__context-3 {

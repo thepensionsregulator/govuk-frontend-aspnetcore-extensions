@@ -45,6 +45,21 @@ describe("removeOrUpdateError", () => {
     ).toBe(false);
   });
 
+  it("should remove aria-describedby from the element", () => {
+    document.body.innerHTML = `<p class="govuk-error-message field-validation-error" data-valmsg-for="Field1" data-valmsg-replace="false" id="Field1-error"><span class="govuk-visually-hidden">Error: </span>Some error message</p>
+       <input id="Field1" aria-describedby="Field1-error some-other-id" />`;
+
+    const testSubject = govuk();
+    mockCalledFunctions(testSubject, () =>
+      document.querySelector("#Field1-error")
+    );
+
+    const input = document.querySelector("input");
+    testSubject.removeOrUpdateError(input);
+
+    expect(input.getAttribute("aria-describedby")).toBe("some-other-id");
+  });
+
   it("removes an existing error message", () => {
     document.body.innerHTML = `<p class="govuk-error-message"></p>
          <input class="govuk-input govuk-input--error govuk-textarea--error govuk-select--error" />`;

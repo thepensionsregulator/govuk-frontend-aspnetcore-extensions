@@ -8,8 +8,12 @@
     {
         headingLevel = 1;
     }
+    var body = GovUkTypography.Apply(Model.Content.Value<string>("panelText"), new TypographyOptions { RemoveWrappingParagraph = true, BackgroundType = BackgroundType.Dark });
 }
 <govuk-panel heading-level="@headingLevel">
     <govuk-panel-title>@(Model.Content.Value<string>("panelHeading"))</govuk-panel-title>
-    <govuk-panel-body>@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("panelText"), new TypographyOptions{ RemoveWrappingParagraph = true, BackgroundType = BackgroundType.Dark }))</govuk-panel-body>
+    @if (!string.IsNullOrEmpty(body)) 
+    {
+        <govuk-panel-body>@Html.Raw(body)</govuk-panel-body>
+    }
 </govuk-panel>

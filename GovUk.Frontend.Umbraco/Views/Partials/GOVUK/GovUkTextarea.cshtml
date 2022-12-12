@@ -8,6 +8,7 @@
 @using GovUk.Frontend.Umbraco.Models
 @using System.Reflection
 @using System.ComponentModel.DataAnnotations
+@using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Extensions
 @{
@@ -21,6 +22,7 @@
     if (rows < 2) { rows = 5; }
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
@@ -39,25 +41,25 @@
         var maxLengthAttr = modelProperty.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
         var stringLengthAttr = modelProperty.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
         int? maxLength = maxLengthAttr != null ? maxLengthAttr.Length : stringLengthAttr != null ? stringLengthAttr.MaximumLength : null;
-        <govuk-character-count name="@modelPropertyName" form-group-class="@(Model.Settings.Value<string>("cssClasses"))" rows="@rows" max-length="@maxLength" threshold="@threshold">
+        <govuk-character-count name="@modelPropertyName" form-group-class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))" rows="@rows" max-length="@maxLength" threshold="@threshold" textarea-aria-invalid="@invalid">
             <govuk-character-count-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-character-count-label>
             @if (!string.IsNullOrWhiteSpace(hint))
             {
                 <govuk-character-count-hint>@Html.Raw(hint)</govuk-character-count-hint>
             }
-            <govuk-character-count-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-character-count-error-message>
+            <govuk-character-count-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR) ? string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null)</govuk-character-count-error-message>
             <govuk-character-count-value>@modelStateEntry?.AttemptedValue</govuk-character-count-value>
         </govuk-character-count>
     }
     else
     {
-        <govuk-textarea name="@modelPropertyName" class="@(Model.Settings.Value<string>("cssClasses"))" rows="@rows">
+        <govuk-textarea name="@modelPropertyName" class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))" rows="@rows" textarea-aria-invalid="@invalid">
             <govuk-textarea-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-textarea-label>
             @if (!string.IsNullOrWhiteSpace(hint))
             {
                 <govuk-textarea-hint>@Html.Raw(hint)</govuk-textarea-hint>
             }
-            <govuk-textarea-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any() ? string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)) : null)</govuk-textarea-error-message>
+            <govuk-textarea-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR) ? string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null)</govuk-textarea-error-message>
             <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>
         </govuk-textarea>
     }

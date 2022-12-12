@@ -99,7 +99,15 @@ namespace GovUk.Frontend.Umbraco.Validation
 
             foreach (var block in blocks)
             {
-                var customError = block.Settings.GetProperty(errorMessagePropertyAlias)?.GetValue()?.ToString();
+                string? customError;
+                if (block.Content.ContentType.Alias == ElementTypeAliases.ErrorMessage)
+                {
+                    customError = block.Content.GetProperty(PropertyAliases.ErrorMessage)?.GetValue()?.ToString();
+                }
+                else
+                {
+                    customError = block.Settings.GetProperty(errorMessagePropertyAlias)?.GetValue()?.ToString();
+                }
                 if (!string.IsNullOrEmpty(customError))
                 {
                     validationAttribute.ErrorMessage = customError;

@@ -4,6 +4,7 @@
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
@@ -14,19 +15,21 @@
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
-    var cssClass = Model.Settings.Value<string>("cssClasses");
+    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var value = Model.Content.Value<string>("value");
     var checkboxHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
     var conditional = Model.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
+    var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
 
 <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-checkboxes name="@modelPropertyName" class="@cssClass">
-        @if (modelStateEntry != null && modelStateEntry.Errors.Any())
+        @if (modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
         {
-            <govuk-checkboxes-error-message>@(string.Join(". ", modelStateEntry.Errors.Select(x => x.ErrorMessage)))</govuk-checkboxes-error-message>
+            <govuk-checkboxes-error-message>@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-checkboxes-error-message>
         }
-        <govuk-checkboxes-item value="@value" checked="@(modelStateEntry?.AttemptedValue?.ToUpperInvariant() == value?.ToUpperInvariant())">@(Model.Content.Value<string>("label"))
+        <govuk-checkboxes-item value="@value" checked="@(modelStateEntry?.AttemptedValue?.ToUpperInvariant() == value?.ToUpperInvariant())" input-aria-invalid="@invalid">
+            @(Model.Content.Value<string>("label"))
             @if (!string.IsNullOrWhiteSpace(checkboxHint)) 
             {
                 <govuk-checkboxes-item-hint>@Html.Raw(checkboxHint)</govuk-checkboxes-item-hint>

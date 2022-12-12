@@ -1,6 +1,13 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ErrorMessage>
+﻿@using GovUk.Frontend.Umbraco.ExampleApp.Controllers
+@using GovUk.Frontend.Umbraco.ExampleApp.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ErrorMessageViewModel>
 @section head{
-	<title>@Model.Name</title>
+	<title>@Model.Page?.Name</title>
 }
-
-<partial name="GOVUK/BlockList" model="Model.Blocks" />
+@using (Html.BeginUmbracoForm<ErrorMessageSurfaceController>(nameof(ErrorMessageSurfaceController.Index), new { }, new { novalidate = "novalidate" }))
+{
+    <partial name="GOVUK/BlockList" model="Model.Page?.Blocks" />
+}
+@section scripts {
+    <partial name="GOVUK/Validation" />
+}

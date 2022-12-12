@@ -22,15 +22,19 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             var outer = new TagBuilder("div");
             outer.MergeCssClass("tpr-back-to-top");
 
+            var middle = new TagBuilder("div");
+            middle.MergeCssClass("govuk-width-container");
+
             var inner = new TagBuilder("div");
-            inner.MergeCssClass("govuk-width-container");
+            inner.MergeCssClass("tpr-back-to-top__inner");
 
             var link = new TagBuilder(BackToTopLinkElement);
             if (attributes != null) link.MergeAttributes(attributes);
             link.MergeCssClass("govuk-link");
             link.Attributes.Add("href", href);
 
-            outer.InnerHtml.AppendHtml(inner);
+            outer.InnerHtml.AppendHtml(middle);
+            middle.InnerHtml.AppendHtml(inner);
             inner.InnerHtml.AppendHtml(link);
             link.InnerHtml.AppendHtml(content);
 

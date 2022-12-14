@@ -72,7 +72,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                     var copyrightElement = new TagBuilder("p");
                     copyrightElement.MergeCssClass("govuk-body");
                     copyrightElement.MergeCssClass("tpr-footer__copyright");
-                    copyrightElement.InnerHtml.Append("� " + copyright);
+                    copyrightElement.InnerHtml.AppendHtml("&copy; " + copyright);
                     contentContainer.InnerHtml.AppendHtml(copyrightElement);
                 }
                 tagBuilder.InnerHtml.AppendHtml(contentContainer);

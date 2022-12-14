@@ -10,7 +10,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
     public partial class ComponentGenerator
     {
         internal const string TprFooterBarElement = "footer";
-        public const string FooterLogoDefaultAlt = "Go to The Pensions Regulator website";
+        public const string FooterLogoDefaultAlt = "The Pensions Regulator home page";
         internal const string FooterLogoDefaultHref = "https://www.thepensionsregulator.gov.uk";
         internal static string CopyrightDefaultContent = $"{DateTimeOffset.UtcNow.Year} The Pensions Regulator";
 
@@ -72,7 +72,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                     var copyrightElement = new TagBuilder("p");
                     copyrightElement.MergeCssClass("govuk-body");
                     copyrightElement.MergeCssClass("tpr-footer__copyright");
-                    copyrightElement.InnerHtml.Append("© " + copyright);
+                    copyrightElement.InnerHtml.Append("ï¿½ " + copyright);
                     contentContainer.InnerHtml.AppendHtml(copyrightElement);
                 }
                 tagBuilder.InnerHtml.AppendHtml(contentContainer);

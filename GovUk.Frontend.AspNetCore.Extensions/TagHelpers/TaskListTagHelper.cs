@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
@@ -7,7 +9,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     /// Generates a GDS task list component.
     /// </summary>
     [HtmlTargetElement(TagName)]
-    [RestrictChildren(TaskListRowTagHelper.TagName)]
+    [RestrictChildren(TaskListTaskTagHelper.TagName)]
     [OutputElementHint(ComponentGenerator.TaskListElement)]
     public class TaskListTagHelper : TagHelper
     {
@@ -31,16 +33,18 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var TaskListContext = new TaskListContext();
+            var taskListContext = new TaskListContext();
 
-            using (context.SetScopedContextItem(TaskListContext))
+            using (context.SetScopedContextItem(taskListContext))
             {
                 await output.GetChildContentAsync();
             }
 
+            taskListContext.ThrowIfIncomplete();
+
             var tagBuilder = _htmlGenerator.GenerateTaskList(
                 output.Attributes.ToAttributeDictionary(),
-                TaskListContext.Rows);
+                taskListContext.Tasks);
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

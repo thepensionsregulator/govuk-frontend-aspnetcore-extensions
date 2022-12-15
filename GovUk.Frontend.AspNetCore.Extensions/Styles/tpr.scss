@@ -29,6 +29,7 @@
 @import "govuk/components/warning-text";
 @import "govuk/utilities/all";
 @import "govuk/overrides/all";
+@import "_govuk-task-list.scss";
 
 // Load our custom font (we are not allowed to use 'GDS Transport' https://design-system.service.gov.uk/styles/typography/)
 @import '_open-sans.scss';
@@ -49,6 +50,7 @@
 @import '_govuk-summary-list.scss';
 
 // Add different components and customisations that are not part of the GOV.UK Design System
+@import "_tpr-task-list.scss";
 @import '_tpr-page.scss';
 @import '_tpr-grid.scss';
 @import '_tpr-back-to-top.scss';

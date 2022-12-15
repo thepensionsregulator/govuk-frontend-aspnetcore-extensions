@@ -1,25 +1,32 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
-using GovUk.Frontend.AspNetCore.HtmlGeneration;
 using System.Collections.Generic;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     internal class TaskListContext
     {
-        private readonly List<TaskListRow> _rows;
+        private readonly List<TaskListTask> _tasks;
 
         public TaskListContext()
         {
-            _rows = new List<TaskListRow>();
+            _tasks = new List<TaskListTask>();
         }
 
-        public IReadOnlyList<TaskListRow> Rows => _rows;
+        public IReadOnlyList<TaskListTask> Tasks => _tasks;
 
-        public void AddRow(TaskListRow row)
+        public void AddTask(TaskListTask task)
         {
-            Guard.ArgumentNotNull(nameof(row), row);
+            Guard.ArgumentNotNull(nameof(task), task);
 
-            _rows.Add(row);
+            _tasks.Add(task);
+        }
+
+        public void ThrowIfIncomplete()
+        {
+            if (Tasks.Count < 1)
+            {
+                throw ExceptionHelper.AChildElementMustBeProvided(TaskListTaskTagHelper.TagName);
+            }
         }
     }
 }

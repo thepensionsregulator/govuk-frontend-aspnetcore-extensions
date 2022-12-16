@@ -28,7 +28,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         /// The heading to display when the task list is completed.
         /// </summary>
         [HtmlAttributeName("completed-status")]
-        public string CompletedStatus { get; set; } = "Tasks complete";
+        public string CompletedStatus { get; set; } = "Tasks completed";
 
         /// <summary>
         /// Text that displays how many tasks are completed. {0} is replaced with the number of completed tasks, and {1} is replaced with the total number of tasks.

@@ -3,6 +3,14 @@
 This builds on [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore) by James Gunn, adding support for:
 
 - ASP.NET client-side validation using [jQuery Unobtrusive Validation](https://github.com/aspnet/jquery-validation-unobtrusive)
+- Additional components::
+  - [Task list summary](/docs/components/task-list-summary.md)
+  - [Task list](/docs/components/task-list.md)
+  - Back to top
+  - Back to menu
+  - TPR Header
+  - TPR Context Bar
+  - TPR Footer
 
 JQuery is included to support the standard ASP.NET validation. We recommend using vanilla JavaScript for everything else.
 
@@ -223,8 +231,7 @@ public class BananaValidatorAttribute : ValidationAttribute
 }
 ```
 
-2. Create an Attribute Adapter - this should inherit from ```AttributeAdapterBase<T>``` and needs to be able to pass a localiser to the base class, and override ```AddValidation```
-
+2. Create an Attribute Adapter - this should inherit from `AttributeAdapterBase<T>` and needs to be able to pass a localiser to the base class, and override `AddValidation`
 
 ```csharp
     public class BananaValidatorAttributeAdapter : AttributeAdapterBase<BananaValidatorAttribute>
@@ -264,7 +271,7 @@ public class CustomValidationAttributeAdapterProvider : IValidationAttributeAdap
     }
 ```
 
-4. Register this Adapter Provider in ```Startup.cs```
+4. Register this Adapter Provider in `Startup.cs`
 
 ```csharp
 services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
@@ -294,7 +301,7 @@ public string Field { get; set; }
 
         validator.addMethod('banana', function (value, element, params) {
             var additionalParameter = params.additionalParameter;
-            // Do some validation here            
+            // Do some validation here
             return true;
         });
 
@@ -319,7 +326,7 @@ In larger projects, it is common to have multiple projects with View-Models that
 
 Rather than replicate the same error message across all projects that have "Email Address" attribute, a better approach would be to have a shared resource
 
-By default, View-Model Data Annotation error messages are found within a ```Resources``` folder: assuming the model class exists in ```ViewModels/MyModel.cs```, a typical resource file would be ```Resources/ViewModels/MyModel.de.resx```
+By default, View-Model Data Annotation error messages are found within a `Resources` folder: assuming the model class exists in `ViewModels/MyModel.cs`, a typical resource file would be `Resources/ViewModels/MyModel.de.resx`
 
 The scaffolding for this is:
 
@@ -331,13 +338,13 @@ The scaffolding for this is:
 
 The _downside_ to this is that it only supports one resource file per model. For example, if a project contains multiple address fields, the same error message will need to be copied throughout the project.
 
-One solution to this is to use a custom Localizer that allows for a (graceful) fallback to some other resource file. This localizer is part of the ```GovUk.Frontend.AspNetCore.Extensions``` library, called ```DataAnnotationStringLocalizer```
+One solution to this is to use a custom Localizer that allows for a (graceful) fallback to some other resource file. This localizer is part of the `GovUk.Frontend.AspNetCore.Extensions` library, called `DataAnnotationStringLocalizer`
 
 Setup is simple
 
-1. Create an empty class (for example ```SharedResource.cs```) in the root of your project - this can be a shared project elsewhere
-2. Add a ```Resources``` folder in the same project, and create resource files with the same name as your empty class - for example ```SharedResource.es.resx```, ```SharedResource.fr.resx```
-3. In ```Startup.cs```, instead of the default ```AddDataAnnotationsLocalization```, we use ```DataAnnotationStringLocalizer``` and provide SharedResource as a fallback.
+1. Create an empty class (for example `SharedResource.cs`) in the root of your project - this can be a shared project elsewhere
+2. Add a `Resources` folder in the same project, and create resource files with the same name as your empty class - for example `SharedResource.es.resx`, `SharedResource.fr.resx`
+3. In `Startup.cs`, instead of the default `AddDataAnnotationsLocalization`, we use `DataAnnotationStringLocalizer` and provide SharedResource as a fallback.
 
 ```csharp
 services.AddMvc()
@@ -356,4 +363,4 @@ services.AddMvc()
     });
 ```
 
-4. Attribute error messages are then searched for by the local project Resource folder (e.g. ```Resources/ViewModels/MyModel.de.resx```), and then (if nothing is found) the referenced class - in the example above, ```SharedResource```
+4. Attribute error messages are then searched for by the local project Resource folder (e.g. `Resources/ViewModels/MyModel.de.resx`), and then (if nothing is found) the referenced class - in the example above, `SharedResource`

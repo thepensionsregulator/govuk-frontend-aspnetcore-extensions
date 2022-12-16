@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     /// <summary>
-    /// Generates a GDS task list component.
+    /// Generates a GOV.UK task list component.
     /// </summary>
     [HtmlTargetElement(TagName)]
     [RestrictChildren(TaskListTaskTagHelper.TagName)]

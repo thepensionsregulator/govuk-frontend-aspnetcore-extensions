@@ -1,6 +1,14 @@
 ﻿@import '_variables.scss';
 @import 'govuk/base';
 
+.govuk-task-list-summary {
+    @include govuk-responsive-margin(6, "bottom");
+}
+
+.govuk-task-list-summary__heading {
+    margin-bottom: 0;
+}
+
 // Task list component SASS from a pre-release GOV.UK Design System pull request https://github.com/alphagov/govuk-frontend/pull/2261
 $govuk-task-list-focus-colour: govuk-colour("black");
 $govuk-task-list-focus-background-colour: govuk-colour("yellow");

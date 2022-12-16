@@ -6,6 +6,14 @@
 <span class="govuk-caption-xl">GOV.UK Design System</span>
 <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
 
+<govuk-task-list-summary 
+       id="task-list-summary"
+       incomplete-status="Application incomplete" 
+       completed-status="Application completed" 
+       tracker="You've completed {0} of {1} tasks." 
+       total-tasks="10" 
+       completed-tasks="5" />
+
 <h2 class="govuk-heading-m">Section 1</h2>
 <govuk-task-list id="the-list">
     <govuk-task-list-task href="#">
@@ -13,7 +21,7 @@
         <govuk-task-list-task-status status="NotStarted">Not yet started</govuk-task-list-task-status>
     </govuk-task-list-task>
     <govuk-task-list-task href="#" id="the-task">
-        <govuk-task-list-task-name>Another to do</govuk-task-list-task-name>
+        <govuk-task-list-task-name>Another thing to do</govuk-task-list-task-name>
         <govuk-task-list-task-status status="Incomplete" />
     </govuk-task-list-task>
     <govuk-task-list-task href="#">

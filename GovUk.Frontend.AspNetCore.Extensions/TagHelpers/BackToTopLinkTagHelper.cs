@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     /// <summary>
-    /// Generates a GDS back link component.
+    /// Generates a GOV.UK back link component.
     /// </summary>
     [HtmlTargetElement(TagName)]
     [OutputElementHint(ComponentGenerator.BackToTopLinkElement)]

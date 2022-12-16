@@ -13,6 +13,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     {
         internal const string TagName = "govuk-task-list-task-status";
 
+        /// <summary>
+        /// The status of the task. Set to <c>null</c> if no status is possible or the status does not fit one of the standard values.
+        /// </summary>
+        [HtmlAttributeName("status")]
         public TaskListTaskStatus? Status { get; set; }
 
         /// <inheritdoc/>

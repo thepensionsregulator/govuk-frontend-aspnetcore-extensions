@@ -10,7 +10,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
     {
         internal const string TprHeaderBarElement = "div";
         internal const string DefaultHeaderLabel = "Making workplace pensions work";
-        public const string HeaderLogoDefaultAlt = "Go to The Pensions Regulator website";
+        public const string HeaderLogoDefaultAlt = "The Pensions Regulator home page";
         internal const string HeaderLogoDefaultHref = "https://www.thepensionsregulator.gov.uk";
 
         public virtual TagBuilder GenerateTprHeaderBar(

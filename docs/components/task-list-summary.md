@@ -28,3 +28,7 @@ This is part of the [Task list pages](https://design-system.service.gov.uk/patte
 | `tracker`           | `string` | Text that displays how many tasks are completed. `{0}` is replaced with the number of completed tasks, and `{1}` is replaced with the total number of tasks. The default is "You've completed {0} of {1} tasks." |
 | `total-tasks`       | `int`    | The total number of tasks in the task list that must be completed.                                                                                                                                               |
 | `completed-tasks`   | `int`    | The number of tasks in the task list that have been completed so far.                                                                                                                                            |
+
+## Umbraco
+
+When you add a 'Task list summary' component to a block list in Umbraco, it will automatically display the count of tasks for all 'Task list' components on the same page.

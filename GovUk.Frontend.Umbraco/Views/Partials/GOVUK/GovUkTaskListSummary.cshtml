@@ -1,10 +1,17 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+@using GovUk.Frontend.AspNetCore.Extensions;
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
 @using Umbraco.Extensions
 @{
+    var tasks = Umbraco.AssignedContentItem.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.Task);
+    var taskStatuses = tasks.Select(x => x.Settings.Value<string>("status")).Where(x => !string.IsNullOrEmpty(x)).Select(x => Enum.Parse<TaskListTaskStatus>(x!.Replace(" ",string.Empty), true)).ToList();
+    var totalActionableTasks = taskStatuses.Count(x => x != TaskListTaskStatus.NotApplicable);
+    var completedTasks = taskStatuses.Count(x => x == TaskListTaskStatus.Completed);
+
     if (!Int32.TryParse(Model.Settings.Value<string>("headingLevel")?.Replace("Heading ", string.Empty), out var headingLevel))
     {
         headingLevel = 2;
@@ -24,4 +31,6 @@
     incomplete-status="@(incompleteStatus)"
     completed-status="@(completedStatus)"
     tracker="@(tracker)"
+    total-tasks="@totalActionableTasks"
+    completed-tasks="@completedTasks"
     />

@@ -1,6 +1,6 @@
 ﻿namespace GovUk.Frontend.Umbraco
 {
-    internal static class ElementTypeAliases
+    public static class ElementTypeAliases
     {
         public const string DateInput = "govukDateInput";
         public const string ErrorMessage = "govukErrorMessage";
@@ -13,5 +13,6 @@
         public const string GridColumn = "govukGridColumn";
         public const string Radios = "govukRadios";
         public const string Select = "govukSelect";
+        public const string Task = "govukTask";
     }
 }

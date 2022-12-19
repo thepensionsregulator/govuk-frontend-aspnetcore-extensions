@@ -10,6 +10,12 @@ namespace GovUk.Frontend.Umbraco.Models
 {
     public static class PublishedContentExtensions
     {
+        /// <summary>
+        /// Recursively find the first matching block in any block list on the given content node
+        /// </summary>
+        /// <param name="content">The content node to search</param>
+        /// <param name="matcher">A function which returns <c>true</c> for a matching block and <c>false</c> otherwise</param>
+        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static BlockListItem? FindBlock(this IPublishedContent content, Func<BlockListItem, bool> matcher)
         {
             var blockLists = content.GetBlockListModels();
@@ -29,7 +35,32 @@ namespace GovUk.Frontend.Umbraco.Models
         }
 
         /// <summary>
-        /// Recursively find the first block in a request that is bound to a model property using the 'Model property' Umbraco property in the block's settings
+        /// Recursively find the matching blocks in all block lists on the given content node
+        /// </summary>
+        /// <param name="content">The content node to search</param>
+        /// <param name="matcher">A function which returns <c>true</c> for a matching block and <c>false</c> otherwise</param>
+        /// <returns>An IEnumerable of 0 or more matching blocks</returns>
+        public static IEnumerable<BlockListItem> FindBlocks(this IPublishedContent content, Func<BlockListItem, bool> matcher)
+        {
+            var result = new List<BlockListItem>();
+            var blockLists = content.GetBlockListModels();
+
+            foreach (var blockList in blockLists)
+            {
+                if (blockList != null)
+                {
+                    var blocks = blockList.FindBlocks(matcher);
+                    if (blocks.Any())
+                    {
+                        result.AddRange(blocks);
+                    }
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Recursively find the first block in any block list on the given content node that is bound to a model property using the 'Model property' Umbraco property in the block's settings
         /// </summary>
         /// <param name="content"></param>
         /// <param name="propertyName"></param>

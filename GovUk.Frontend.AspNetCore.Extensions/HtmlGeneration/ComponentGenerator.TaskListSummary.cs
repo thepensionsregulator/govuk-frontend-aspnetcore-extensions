@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
+using System.Web;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 {
@@ -11,6 +12,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
         internal const int TaskListSummaryDefaultHeadingLevel = 2;
         internal const int TaskListSummaryMinHeadingLevel = 1;
         internal const int TaskListSummaryMaxHeadingLevel = 6;
+        public const string TaskListSummaryDefaultIncompleteStatus = "Tasks incomplete";
+        public const string TaskListSummaryDefaultCompletedStatus = "Tasks completed";
+        public const string TaskListSummaryDefaultTracker = "You've completed {0} of {1} tasks.";
 
         public TagBuilder GenerateTaskListSummary(TaskListSummary taskListSummary)
         {
@@ -37,8 +41,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
             var trackerTagBuilder = new TagBuilder("p");
             trackerTagBuilder.MergeCssClass("govuk-body");
-            statusTagBuilder.MergeCssClass("govuk-task-list-summary__tracker");
-            trackerTagBuilder.InnerHtml.Append(string.Format(taskListSummary.Tracker, taskListSummary.CompletedTasks, taskListSummary.TotalTasks));
+            trackerTagBuilder.MergeCssClass("govuk-task-list-summary__tracker");
+            trackerTagBuilder.InnerHtml.AppendHtml(string.Format(HttpUtility.HtmlEncode(taskListSummary.Tracker),
+                "<span class=\"govuk-task-list-summary__completed-tasks\">" + taskListSummary.CompletedTasks + "</span>",
+                "<span class=\"govuk-task-list-summary__total-tasks\">" + taskListSummary.TotalTasks + "</span>"));
             tagBuilder.InnerHtml.AppendHtml(trackerTagBuilder);
 
             return tagBuilder;

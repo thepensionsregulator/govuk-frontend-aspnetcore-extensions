@@ -43,9 +43,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                 taskNameTagBuilder.MergeAttributes(task.Name.Attributes);
                 taskNameTagBuilder.MergeCssClass("govuk-task-list__task-name-and-hint");
 
-                var statusText = TaskStatusText(task.Status);
+                var statusText = TaskListTaskStatusText(task.Status.Status, task.Status.Content);
 
-                if (!string.IsNullOrEmpty(task.Href))
+                if (!string.IsNullOrEmpty(task.Href) && task.Status.Status != TaskListTaskStatus.NotApplicable && task.Status.Status != TaskListTaskStatus.CannotStartYet)
                 {
                     var taskLinkTagBuilder = new TagBuilder("a");
                     taskLinkTagBuilder.MergeAttribute("href", task.Href);
@@ -63,7 +63,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                 }
                 else
                 {
-                    var unlinkedTaskTagBuilder = new TagBuilder("div");
+                    var unlinkedTaskTagBuilder = new TagBuilder("span");
                     unlinkedTaskTagBuilder.MergeCssClass("govuk-task-list__task-no-link");
                     unlinkedTaskTagBuilder.InnerHtml.AppendHtml(task.Name.Content!);
                     taskNameTagBuilder.InnerHtml.AppendHtml(unlinkedTaskTagBuilder);
@@ -110,15 +110,15 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             return "govuk-task-list__status-" + Regex.Replace(status.ToString(), "([A-Z])", "-$1").ToLowerInvariant();
         }
 
-        private string? TaskStatusText((AttributeDictionary Attributes, TaskListTaskStatus? Status, string? Content) status)
+        public static string? TaskListTaskStatusText(TaskListTaskStatus? status, string? customStatus = null)
         {
-            if (!string.IsNullOrEmpty(status.Content))
+            if (!string.IsNullOrEmpty(customStatus))
             {
-                return status.Content;
+                return customStatus;
             }
-            else if (status.Status.HasValue)
+            else if (status.HasValue)
             {
-                var statusText = Regex.Replace(status.Status.ToString()!, "([A-Z])", " $1").ToLowerInvariant().Trim();
+                var statusText = Regex.Replace(status.ToString()!, "([A-Z])", " $1").ToLowerInvariant().Trim();
                 return statusText.Substring(0, 1).ToUpperInvariant() + statusText.Substring(1);
             }
             else return null;

@@ -1,0 +1,27 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+@using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Extensions
+@{
+    if (!Int32.TryParse(Model.Settings.Value<string>("headingLevel")?.Replace("Heading ", string.Empty), out var headingLevel))
+    {
+        headingLevel = 2;
+    }
+    var incompleteStatus = Model.Content.Value<string>("incompleteStatus");
+    if (string.IsNullOrEmpty(incompleteStatus)) { incompleteStatus = ComponentGenerator.TaskListSummaryDefaultIncompleteStatus; }
+    var completedStatus = Model.Content.Value<string>("completedStatus");
+    if (string.IsNullOrEmpty(completedStatus)) { completedStatus = ComponentGenerator.TaskListSummaryDefaultCompletedStatus; }
+    var tracker = Model.Content.Value<string>("tracker");
+    if (string.IsNullOrEmpty(tracker)) { tracker = ComponentGenerator.TaskListSummaryDefaultTracker; }
+}
+
+<govuk-task-list-summary 
+    id="@Model.Content.Key"
+    class="@(Model.Settings.Value<string>("cssClasses"))"
+    heading-level="@headingLevel"
+    incomplete-status="@(incompleteStatus)"
+    completed-status="@(completedStatus)"
+    tracker="@(tracker)"
+    />

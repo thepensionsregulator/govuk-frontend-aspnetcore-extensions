@@ -22,19 +22,19 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         /// The heading to display when the task list is incomplete.
         /// </summary>
         [HtmlAttributeName("incomplete-status")]
-        public string IncompleteStatus { get; set; } = "Tasks incomplete";
+        public string IncompleteStatus { get; set; } = ComponentGenerator.TaskListSummaryDefaultIncompleteStatus;
 
         /// <summary>
         /// The heading to display when the task list is completed.
         /// </summary>
         [HtmlAttributeName("completed-status")]
-        public string CompletedStatus { get; set; } = "Tasks completed";
+        public string CompletedStatus { get; set; } = ComponentGenerator.TaskListSummaryDefaultCompletedStatus;
 
         /// <summary>
         /// Text that displays how many tasks are completed. {0} is replaced with the number of completed tasks, and {1} is replaced with the total number of tasks.
         /// </summary>
         [HtmlAttributeName("tracker")]
-        public string Tracker { get; set; } = "You've completed {0} of {1} tasks.";
+        public string Tracker { get; set; } = ComponentGenerator.TaskListSummaryDefaultTracker;
 
         /// <summary>
         /// The total number of tasks in the task list that must be completed.

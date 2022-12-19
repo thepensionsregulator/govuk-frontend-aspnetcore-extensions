@@ -61,3 +61,13 @@ Must be inside a `<govuk-task-list-task>` element.
 
 The content is the status tag, if it needs to be different from the value of the `status` attribute.\
 Must be inside a `<govuk-task-list-task>` element.
+
+## Umbraco
+
+Add the 'Task list' component to a block list, and add 'Task' components to the 'Task list'.
+
+![Task list in Umbraco](/docs/images/task-list-umbraco.png)
+
+The status can be set in the settings of each 'Task', but usually you would [override the status property](/docs/umbraco/override-property-values.md) in code.
+
+The default text of each status can be changed or localised by adding a dictionary entry called `Task list - {status}`. For example, change 'Incomplete' to 'In progress' by creating a dictionary entry called `Task list - Incomplete` and setting the value to 'In progress'.

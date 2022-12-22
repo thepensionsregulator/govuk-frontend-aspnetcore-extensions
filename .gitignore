@@ -402,6 +402,7 @@ FodyWeavers.xsd
 
 # Umbraco 
 **/umbraco/
+!docs/umbraco
 **/Smidge/
 **/App_Plugins/*
 !**/App_Plugins/GOVUK

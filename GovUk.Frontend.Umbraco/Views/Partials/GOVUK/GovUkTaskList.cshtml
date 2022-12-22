@@ -1,0 +1,37 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+@using GovUk.Frontend.AspNetCore.Extensions;
+@using GovUk.Frontend.Umbraco.Typography
+@using GovUk.Frontend.Umbraco.Models
+@using Umbraco.Cms.Core.Models;
+@using Umbraco.Extensions
+@{
+    var tasks = Model.Content.Value<OverridableBlockListModel>("tasks")!;
+}
+@if (tasks.Any())
+{
+    <govuk-task-list 
+        id="@Model.Content.Key"
+        class="@(Model.Settings.Value<string>("cssClasses"))"
+    >
+        @foreach (var task in tasks)
+        {
+            var hint = GovUkTypography.Apply(task.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+            var link = task.Content.Value<Link>("link")?.Url;
+            var status = task.Settings.Value<string>("status")?.Replace(" ", string.Empty);
+            <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>("cssClasses"))">
+                <govuk-task-list-task-name>@(task.Content.Value<string>("taskName"))</govuk-task-list-task-name>
+                @if (!string.IsNullOrEmpty(hint))
+                {
+                    <govuk-task-list-task-hint>@Html.Raw(hint)</govuk-task-list-task-hint>
+                }
+                @if (Enum.TryParse<TaskListTaskStatus>(status, true, out var parsedStatus))
+                {
+                    var defaultTextForStatus = ComponentGenerator.TaskListTaskStatusText(parsedStatus);
+                    <govuk-task-list-task-status status="@parsedStatus">@Umbraco.GetDictionaryValue($"Task list - {defaultTextForStatus}", defaultTextForStatus)</govuk-task-list-task-status>
+                }
+            </govuk-task-list-task>
+        }
+    </govuk-task-list>
+}

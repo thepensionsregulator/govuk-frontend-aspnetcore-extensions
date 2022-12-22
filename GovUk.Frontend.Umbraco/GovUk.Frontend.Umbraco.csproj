@@ -35,6 +35,7 @@
 		<Content Remove="uSync\v9\ContentTypes\govukgridcolumnsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukgridrow.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukgridrowsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukheadinglevel.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukhidden.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukhiddensettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukhint.config" />
@@ -68,6 +69,12 @@
 		<Content Remove="uSync\v9\ContentTypes\govuksummarylistitem.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksummarylistitemsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksummarylistsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktask.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktasklist.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktasklistsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktasklistsummary.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktasklistsummarysettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuktasksettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextarea.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextareasettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuktextinput.config" />
@@ -84,13 +91,16 @@
 		<Content Remove="uSync\v9\ContentTypes\tprfooter.config" />
 		<Content Remove="uSync\v9\ContentTypes\tprheader.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtonType.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKGridRowBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKGridRowBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKHeadingLevel.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKLinkPicker.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKModelProperty.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKNotificationBannerType.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKPhase.config" />
@@ -100,9 +110,12 @@
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditorLarge.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditorPhaseBanner.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditorSummaryList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKRichTextEditorTaskList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKSelectOptions.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKSummaryListActions.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKSummaryListBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKTaskListBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKTaskListStatus.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKTrueOrFalseDefaultsToTrue.config" />
 		<Content Remove="uSync\v9\DataTypes\TPRRichTextEditorTPRHeader.config" />
 		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
@@ -231,6 +244,9 @@
 		<None Include="uSync\v9\ContentTypes\govukgridrowsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govukheadinglevel.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukhidden.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -330,6 +346,24 @@
 		<None Include="uSync\v9\ContentTypes\govuksummarylistsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govuktask.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktasklist.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktasklistsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktasklistsummary.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktasklistsummarysettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktasksettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govuktextarea.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -426,6 +460,9 @@
 		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditorSummaryList.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKRichTextEditorTaskList.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKSelectOptions.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -433,6 +470,12 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKSummaryListBlockList.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKTaskListBlockList.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKTaskListStatus.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKTrueOrFalseDefaultsToTrue.config">

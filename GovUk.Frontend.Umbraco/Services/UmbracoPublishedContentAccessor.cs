@@ -32,23 +32,38 @@ namespace GovUk.Frontend.Umbraco.Services
             _publishedContent = _umbracoContext.PublishedRequest.PublishedContent;
         }
 
+        /// <inheritdoc />
         public IPublishedContent PublishedContent => _publishedContent;
 
-        /// <summary>
-        /// Recursively find the first block in the published content that matches the predicate
-        /// </summary>
-        /// <param name="matcher"></param>
-        /// <returns></returns>
+
+        /// <inheritdoc />
         public BlockListItem? FindBlock(Func<BlockListItem, bool> matcher)
         {
             return FindBlock(PublishedContent, matcher);
         }
 
-        /// <summary>
-        /// Recursively find the first block in the published content that is bound to a model property using the 'Model property' Umbraco property in the block's settings
-        /// </summary>
-        /// <param name="propertyName"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
+        public IEnumerable<BlockListItem> FindBlocks(Func<BlockListItem, bool> matcher)
+        {
+            var result = new List<BlockListItem>();
+            var blockLists = GetBlockListModels(PublishedContent);
+
+            foreach (var blockList in blockLists)
+            {
+                if (blockList != null)
+                {
+                    var blocks = blockList.FindBlocks(matcher);
+                    if (blocks.Any())
+                    {
+                        result.AddRange(blocks);
+                    }
+                }
+            }
+            return result;
+        }
+
+
+        /// <inheritdoc />
         /// <exception cref="ArgumentNullException"></exception>
         public BlockListItem? FindBlockByBoundProperty(string propertyName)
         {

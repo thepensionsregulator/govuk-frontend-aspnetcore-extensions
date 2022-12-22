@@ -1,98 +1,10 @@
-# GovUk.Frontend.AspNetCore.Extensions
-
-This builds on [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore) by James Gunn, adding support for:
-
-- ASP.NET client-side validation using [jQuery Unobtrusive Validation](https://github.com/aspnet/jquery-validation-unobtrusive)
-
-JQuery is included to support the standard ASP.NET validation. We recommend using vanilla JavaScript for everything else.
-
-This repository includes an example application which demonstrates the validation working both client-side and server-side.
-
-## Getting started
-
-1. Clone this repo
-
-2. Clone the `govuk-frontend` submodule:
-
-   ```pwsh
-   git submodule update --init
-   ```
-
-3. Add `GovUk.Frontend.AspNetCore.Extensions` as a project reference. (This will be available on NuGet later.)
-
-4. In `Startup.cs` add the following to the `ConfigureServices` method:
-
-   ```csharp
-   using GovUk.Frontend.AspNetCore.Extensions;
-
-   public void ConfigureServices(IServiceCollection services)
-   {
-       // Other code here
-
-       services.AddGovUkFrontendExtensions(options =>
-       {
-           // Avoid adding scripts which require 'unsafe-inline' in the content security policy
-           options.AddImportsToHtml = false;
-       });
-   }
-   ```
-
-5. Add partial views and the `govuk-template__body` class to your layout file as shown below. You should also make sure you have a `<main>` element in your markup.
-
-   ```html
-   <!DOCTYPE html>
-   <html lang="en">
-     <head>
-       <meta charset="utf-8" />
-       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-       <partial name="TPR/Head" />
-       @RenderSection("head", required: false)
-     </head>
-     <body class="govuk-template__body ">
-       <partial name="GOVUK/BodyOpen" />
-       <main>@RenderBody()</main>
-       <partial name="GOVUK/BodyClosing" />
-       <partial name="GOVUK/Validation" />
-     </body>
-   </html>
-   ```
-
-   Note that `TPR/Head` imports TPR styles on top of the GOV.UK Design System. You can use the partial `GOVUK/Head` instead to use the GOV.UK Design System styles only.
-
-6. Add the following to your `Views/_ViewImports.cshtml` file:
-
-   ```csharp
-   @addTagHelper *, GovUk.Frontend.AspNetCore
-   @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
-   ```
-
-7. [Add validation rules to your model](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0) as you normally would for ASP.NET, using attributes from the [System.ComponentModel.DataAnnotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) namespace.
-
-8. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `GovUk.Frontend.AspNetCore.Extensions`.
-
-   ```csharp
-   <partial name="GOVUK/ErrorSummary" />
-
-   <h1 class="govuk-heading-l">My form</h1>
-
-   <form asp-controller="Home" asp-action="Post" method="post" novalidate>
-       <govuk-client-side-validation>
-           <govuk-input asp-for="MyModelProperty">
-               <govuk-input-label>Field label</govuk-input-label>
-               <govuk-input-hint>This is the hint</govuk-input-hint>
-               <govuk-input-error-message />
-           </govuk-input>
-       </govuk-client-side-validation>
-
-       <govuk-button type="submit">Submit</govuk-button>
-   </form>
-   ```
-
-## Localisation Support
+# Localisation and validation in ASP.NET projects
 
 ASP.NET Core supports Localization via `ViewLocalization` and `DataAnnotationsLocalization` amongst other ways.
 
 If enabled, the extension library automatically generates localised strings for `System.ComponentModel.DataAnnotations` error messages. The scaffolding for this is as follows:
+
+This repository includes an example application which demonstrates the validation working both client-side and server-side.
 
 1. In Startup.cs, add localization to `ConfigureServices`
 
@@ -223,8 +135,7 @@ public class BananaValidatorAttribute : ValidationAttribute
 }
 ```
 
-2. Create an Attribute Adapter - this should inherit from ```AttributeAdapterBase<T>``` and needs to be able to pass a localiser to the base class, and override ```AddValidation```
-
+2. Create an Attribute Adapter - this should inherit from `AttributeAdapterBase<T>` and needs to be able to pass a localiser to the base class, and override `AddValidation`
 
 ```csharp
     public class BananaValidatorAttributeAdapter : AttributeAdapterBase<BananaValidatorAttribute>
@@ -264,7 +175,7 @@ public class CustomValidationAttributeAdapterProvider : IValidationAttributeAdap
     }
 ```
 
-4. Register this Adapter Provider in ```Startup.cs```
+4. Register this Adapter Provider in `Startup.cs`
 
 ```csharp
 services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
@@ -294,7 +205,7 @@ public string Field { get; set; }
 
         validator.addMethod('banana', function (value, element, params) {
             var additionalParameter = params.additionalParameter;
-            // Do some validation here            
+            // Do some validation here
             return true;
         });
 
@@ -319,7 +230,7 @@ In larger projects, it is common to have multiple projects with View-Models that
 
 Rather than replicate the same error message across all projects that have "Email Address" attribute, a better approach would be to have a shared resource
 
-By default, View-Model Data Annotation error messages are found within a ```Resources``` folder: assuming the model class exists in ```ViewModels/MyModel.cs```, a typical resource file would be ```Resources/ViewModels/MyModel.de.resx```
+By default, View-Model Data Annotation error messages are found within a `Resources` folder: assuming the model class exists in `ViewModels/MyModel.cs`, a typical resource file would be `Resources/ViewModels/MyModel.de.resx`
 
 The scaffolding for this is:
 
@@ -331,13 +242,13 @@ The scaffolding for this is:
 
 The _downside_ to this is that it only supports one resource file per model. For example, if a project contains multiple address fields, the same error message will need to be copied throughout the project.
 
-One solution to this is to use a custom Localizer that allows for a (graceful) fallback to some other resource file. This localizer is part of the ```GovUk.Frontend.AspNetCore.Extensions``` library, called ```DataAnnotationStringLocalizer```
+One solution to this is to use a custom Localizer that allows for a (graceful) fallback to some other resource file. This localizer is part of the `GovUk.Frontend.AspNetCore.Extensions` library, called `DataAnnotationStringLocalizer`
 
 Setup is simple
 
-1. Create an empty class (for example ```SharedResource.cs```) in the root of your project - this can be a shared project elsewhere
-2. Add a ```Resources``` folder in the same project, and create resource files with the same name as your empty class - for example ```SharedResource.es.resx```, ```SharedResource.fr.resx```
-3. In ```Startup.cs```, instead of the default ```AddDataAnnotationsLocalization```, we use ```DataAnnotationStringLocalizer``` and provide SharedResource as a fallback.
+1. Create an empty class (for example `SharedResource.cs`) in the root of your project - this can be a shared project elsewhere
+2. Add a `Resources` folder in the same project, and create resource files with the same name as your empty class - for example `SharedResource.es.resx`, `SharedResource.fr.resx`
+3. In `Startup.cs`, instead of the default `AddDataAnnotationsLocalization`, we use `DataAnnotationStringLocalizer` and provide SharedResource as a fallback.
 
 ```csharp
 services.AddMvc()
@@ -356,4 +267,4 @@ services.AddMvc()
     });
 ```
 
-4. Attribute error messages are then searched for by the local project Resource folder (e.g. ```Resources/ViewModels/MyModel.de.resx```), and then (if nothing is found) the referenced class - in the example above, ```SharedResource```
+4. Attribute error messages are then searched for by the local project Resource folder (e.g. `Resources/ViewModels/MyModel.de.resx`), and then (if nothing is found) the referenced class - in the example above, `SharedResource`

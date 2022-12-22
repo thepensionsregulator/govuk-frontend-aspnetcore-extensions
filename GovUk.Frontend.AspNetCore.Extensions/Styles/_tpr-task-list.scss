@@ -1,0 +1,57 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* Change GOV.UK task list styles where the TPR brand diverges from the GOV.UK Design System. */
+.govuk-task-list__item--with-link:hover {
+    background-color: $tpr-colour-whisper;
+}
+
+.govuk-task-list__task-name-and-hint {
+    color: $tpr-colour-eclipse;
+    background-color: transparent;
+    vertical-align: middle;
+}
+
+.govuk-task-list__link {
+    text-decoration: none;
+}
+.govuk-task-list__link:hover {
+    text-decoration: underline;
+}
+
+.govuk-task-list__status {
+    font-weight: bold;
+    padding: govuk-spacing(1) govuk-spacing(4);
+    min-width: 8.25rem; 
+    text-align: center;
+}
+
+.govuk-task-list__status--not-applicable {
+    color: $tpr-colour-zambezi;
+    background: transparent;
+}
+
+.govuk-task-list__status--cannot-start-yet {
+    color: $tpr-colour-eclipse;
+    background-color: $tpr-colour-whisper;
+}
+
+.govuk-task-list__status--not-started {
+    color: $tpr-colour-white;
+    background-color: govuk-tint($tpr-colour-violet,20);
+}
+
+.govuk-task-list__status--incomplete {
+    color: govuk-shade($tpr-colour-violet, 16);
+    background-color: govuk-tint($tpr-colour-violet, 75);
+}
+
+.govuk-task-list__status--completed {
+    color: $tpr-colour-eclipse;
+    background-color: transparent;
+}
+
+.govuk-task-list__status--error {
+    color: govuk-shade($tpr-colour-fire-brick, 30);
+    background-color: govuk-tint($tpr-colour-fire-brick, 75);
+}

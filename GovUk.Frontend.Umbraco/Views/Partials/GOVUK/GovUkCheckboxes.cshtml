@@ -18,6 +18,7 @@
     }
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var fieldsetHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var fieldsetDescribedBy = string.IsNullOrEmpty(fieldsetHint) ? null : modelPropertyName + "-hint";
     var cssClassesForHint = Model.Settings.Value<string>("cssClassesForHint");
     var cssClassesForError = Model.Settings.Value<string>("cssClassesForError");
     var cssClassesForCheckboxes = Model.Settings.Value<string>("cssClassesForCheckboxes");
@@ -29,9 +30,9 @@
 }
 
 <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
-    <govuk-checkboxes name="@modelPropertyName" class="@cssClass" checkboxes-class="@cssClassesForCheckboxes">
-         <govuk-checkboxes-fieldset>
-            <govuk-checkboxes-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-checkboxes-fieldset-legend>
+    <govuk-fieldset described-by="@fieldsetDescribedBy">
+        <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-fieldset-legend>
+        <govuk-checkboxes name="@modelPropertyName" class="@cssClass" checkboxes-class="@cssClassesForCheckboxes">
             @{
                 if (!string.IsNullOrWhiteSpace(fieldsetHint))
                 {
@@ -49,19 +50,20 @@
                     }
                     else
                     {
-                        if (block.Settings.Value<bool>("exclusive")) 
+                        if (block.Settings.Value<bool>("exclusive"))
                         {
                             var value = block.Content.Value<string>("value") ?? string.Empty;
                             var checkboxHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
                             <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" input-data-behaviour="exclusive" input-aria-invalid="@invalid">
                                 @(block.Content.Value<string>("label"))
                                 @{
-                                    if (!string.IsNullOrWhiteSpace(checkboxHint)) 
+                                    if (!string.IsNullOrWhiteSpace(checkboxHint))
                                     {
                                         <govuk-checkboxes-item-hint>@Html.Raw(checkboxHint)</govuk-checkboxes-item-hint>
                                     }
                                     var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
-                                    if (conditional.Any()){
+                                    if (conditional.Any())
+                                    {
                                         <govuk-checkboxes-item-conditional>
                                             @await Html.PartialAsync("GOVUK/BlockList", conditional)
                                         </govuk-checkboxes-item-conditional>
@@ -76,22 +78,23 @@
                             <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" input-aria-invalid="@invalid">
                                 @(block.Content.Value<string>("label"))
                                 @{
-                                    if (!string.IsNullOrWhiteSpace(checkboxHint)) 
+                                    if (!string.IsNullOrWhiteSpace(checkboxHint))
                                     {
                                         <govuk-checkboxes-item-hint>@Html.Raw(checkboxHint)</govuk-checkboxes-item-hint>
                                     }
                                     var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
-                                    if (conditional.Any()){
+                                    if (conditional.Any())
+                                    {
                                         <govuk-checkboxes-item-conditional>
                                             @await Html.PartialAsync("GOVUK/BlockList", conditional)
                                         </govuk-checkboxes-item-conditional>
                                     }
                                 }
-                            </govuk-checkboxes-item>                    
+                            </govuk-checkboxes-item>
                         }
                     }
                 }
             }
-        </govuk-checkboxes-fieldset>
-    </govuk-checkboxes>
+        </govuk-checkboxes>
+    </govuk-fieldset>
 </govuk-client-side-validation>

@@ -146,8 +146,27 @@ function createGovUkValidator() {
      */
     formGroupForElement: function (element) {
       const isDateField = element.classList.contains("govuk-date-input__input");
+      const isRadio = element.classList.contains("govuk-radios__input");
+      const isCheckbox = element.classList.contains("govuk-checkboxes__input");
       let formGroup = closest(element, ".govuk-form-group");
       if (isDateField) {
+        formGroup = closest(formGroup.parentElement, ".govuk-form-group");
+      }
+      if (
+        formGroup.parentElement != null &&
+        ((isDateField &&
+          formGroup.parentElement.classList.contains(
+            "govuk-date-input__fieldset"
+          )) ||
+          (isRadio &&
+            formGroup.parentElement.classList.contains(
+              "govuk-radios__fieldset"
+            )) ||
+          (isCheckbox &&
+            formGroup.parentElement.classList.contains(
+              "govuk-checkboxes__fieldset"
+            )))
+      ) {
         formGroup = closest(formGroup.parentElement, ".govuk-form-group");
       }
       return formGroup;

@@ -32,11 +32,24 @@
     var isInvalid = modelStateEntry?.Errors.Any() ?? false;
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
     var invalidClass = isInvalid ? " govuk-form-group--error" : null;
+    var blocks = Model.Content.Value<OverridableBlockListModel>("fieldsetBlocks");
+    if(blocks != null && blocks.Any())
+    {
+        fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
+    }
+
 }
 <div class="govuk-form-group@(invalidClass)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-radios__fieldset">
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-fieldset-legend>
+            @if (blocks != null && blocks.Any())
+            {
+                blocks.RenderGrid = false;
+                <div id="@modelPropertyName-blocks">
+                    @await Html.PartialAsync("GOVUK/BlockList", blocks)
+                </div>
+            }
             <govuk-radios name="@modelPropertyName" class="@cssClass" radios-class="@cssClassesForRadios">
                 @if (!string.IsNullOrWhiteSpace(fieldsetHint))
                 {

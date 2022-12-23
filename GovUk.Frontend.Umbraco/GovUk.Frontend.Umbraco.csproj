@@ -25,6 +25,7 @@
 		<Content Remove="uSync\v9\ContentTypes\govukdateinputsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukdetails.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukdetailssettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukerrormessagesettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukerrorsummary.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukerrorsummarysettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukfieldset.config" />
@@ -40,6 +41,7 @@
 		<Content Remove="uSync\v9\ContentTypes\govukhiddensettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukhint.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukinsettext.config" />
+		<Content Remove="uSync\v9\ContentTypes\govukinsettextsettingsnogrid.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklabelispageheading.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklegend.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuklegendispageheading.config" />
@@ -94,7 +96,10 @@
 		<Content Remove="uSync\v9\DataTypes\GOVUKBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtons.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKButtonType.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKCheckboxes.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKFieldHelpBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKGridColumnSize.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKGridRowBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKGridRowBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKHeadingLevel.config" />
@@ -188,7 +193,7 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukcheckboxes.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukcheckboxesdivider.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -203,7 +208,7 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukdateinput.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukdateinputsettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -212,6 +217,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukdetailssettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukerrormessagesettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukerrorsummary.config">
@@ -224,7 +232,7 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukfieldsetsettings.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukgrid.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -257,6 +265,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukinsettext.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukinsettextsettingsnogrid.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govuklabelispageheading.config">
@@ -305,7 +316,7 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukradios.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukradiosdivider.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -380,7 +391,7 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukvalidationcustom.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukvalidationrequired.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -418,8 +429,17 @@
 		<None Include="uSync\v9\DataTypes\GOVUKButtonType.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config">
+		<None Include="uSync\v9\DataTypes\GOVUKCheckboxes.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKFieldHelpBlockList.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKGridColumnSize.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKGridRowBlockList.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>

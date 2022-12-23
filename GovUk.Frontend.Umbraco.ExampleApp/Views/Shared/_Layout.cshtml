@@ -35,11 +35,17 @@
             @Html.Raw(GovUkTypography.Apply(home?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
         </tpr-header-bar>
         <tpr-context-bar context-1="@(home?.Value<string>("tprContext1"))" context-2="@(home?.Value<string>("tprContext2"))" context-3="@(home?.Value<string>("tprContext3"))" />
-        @RenderSection("language", required: false)
     </header>
     <div class="tpr-main-wrapper">
         <div class="govuk-width-container">
-            <main id="main" class="govuk-main-wrapper">@RenderBody()</main>
+            <main id="main" class="govuk-main-wrapper">
+                @RenderSection("language", required: false)
+                @if (Context.Request.Path != home?.Url())
+                {
+                    <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
+                }
+                @RenderBody()
+            </main>
         </div>
     </div>
     <tpr-back-to-top href="#main">@Umbraco.GetDictionaryValue("Back to top")</tpr-back-to-top>

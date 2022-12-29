@@ -5,14 +5,14 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Linq;
+using TPR.Umbraco.Test;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.PropertyEditors;
 
 namespace GovUk.Frontend.Umbraco.Tests
 {
-    public class GovUkFieldsetErrorFinderTests : UmbracoBaseTest
+    public class GovUkFieldsetErrorFinderTests
     {
         private const string VIEWMODEL_PROPERTY_NAME = "Field1";
 
@@ -96,9 +96,6 @@ namespace GovUk.Frontend.Umbraco.Tests
 
         private static OverridableBlockListItem CreateUmbracoTestContentForClasses(string aliasOfParentBlock, string aliasOfChildBlock, bool fieldsetErrorsEnabled, string modelPropertyBoundToErrorMessage)
         {
-            var blockListPropertyType = CreatePropertyType(1, Constants.PropertyEditors.Aliases.BlockList, new BlockListConfiguration());
-            var textBoxPropertyType = CreatePropertyType(2, Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration());
-
             var fieldsetContentType = new Mock<IPublishedContentType>();
             fieldsetContentType.Setup(x => x.Alias).Returns(aliasOfParentBlock);
 
@@ -106,7 +103,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             fieldsetContent.Setup(x => x.ContentType).Returns(fieldsetContentType.Object);
 
             var fieldsetSettings = new Mock<IOverridablePublishedElement>();
-            fieldsetSettings.Setup(x => x.GetProperty(PropertyAliases.FieldsetErrorsEnabled)).Returns(CreateProperty(PropertyAliases.FieldsetErrorsEnabled, textBoxPropertyType, fieldsetErrorsEnabled));
+            fieldsetSettings.Setup(x => x.GetProperty(PropertyAliases.FieldsetErrorsEnabled)).Returns(UmbracoPropertyFactory.CreateBooleanProperty(PropertyAliases.FieldsetErrorsEnabled, fieldsetErrorsEnabled));
 
             var errorMessageContentType = new Mock<IPublishedContentType>();
             errorMessageContentType.Setup(x => x.Alias).Returns(aliasOfChildBlock);
@@ -115,7 +112,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             errorMessageContent.Setup(x => x.ContentType).Returns(errorMessageContentType.Object);
 
             var errorMessageSettings = new Mock<IOverridablePublishedElement>();
-            errorMessageSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(CreateProperty(PropertyAliases.ModelProperty, textBoxPropertyType, modelPropertyBoundToErrorMessage));
+            errorMessageSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ModelProperty, modelPropertyBoundToErrorMessage));
 
             var errorMessageBlock = new OverridableBlockListItem(
                 new BlockListItem(
@@ -126,7 +123,7 @@ namespace GovUk.Frontend.Umbraco.Tests
                 );
 
             var fieldsetBlocks = new OverridableBlockListModel(new[] { errorMessageBlock }, null, x => (IOverridablePublishedElement)x);
-            var fieldsetContentProperties = new[] { CreateProperty(PropertyAliases.FieldsetBlocks, blockListPropertyType, fieldsetBlocks) };
+            var fieldsetContentProperties = new[] { UmbracoPropertyFactory.CreateBlockListProperty(PropertyAliases.FieldsetBlocks, fieldsetBlocks) };
             fieldsetContent.SetupGet(x => x.Properties).Returns(fieldsetContentProperties);
             fieldsetContent.Setup(x => x.GetProperty(PropertyAliases.FieldsetBlocks)).Returns(fieldsetContentProperties[0]);
             fieldsetContent.Setup(x => x.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks, null, null, It.IsAny<Fallback>(), null)).Returns(fieldsetBlocks);

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
+    <ProjectReference Include="..\TPR.Umbraco.Test\TPR.Umbraco.Test.csproj" />
   </ItemGroup>
 
 </Project>

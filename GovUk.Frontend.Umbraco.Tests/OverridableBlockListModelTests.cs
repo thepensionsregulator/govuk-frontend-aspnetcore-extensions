@@ -1,8 +1,8 @@
 ﻿using GovUk.Frontend.Umbraco.Models;
+using GovUk.Frontend.Umbraco.Testing;
 using Moq;
 using NUnit.Framework;
 using System;
-using TPR.Umbraco.Test;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 

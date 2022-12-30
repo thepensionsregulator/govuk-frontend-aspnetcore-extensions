@@ -5,7 +5,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Core = Umbraco.Cms.Core;
 
-namespace TPR.Umbraco.Test
+namespace GovUk.Frontend.Umbraco.Testing
 {
     /// <summary>
     /// Mock Umbraco properties and property types

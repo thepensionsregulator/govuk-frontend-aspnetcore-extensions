@@ -13,7 +13,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Routing;
 
-namespace TPR.Umbraco.Test
+namespace GovUk.Frontend.Umbraco.Testing
 {
     /// <summary>
     /// A mock Umbraco environment with a current page request

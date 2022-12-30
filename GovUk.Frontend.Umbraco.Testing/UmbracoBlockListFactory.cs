@@ -4,7 +4,7 @@ using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Core = Umbraco.Cms.Core;
 
-namespace TPR.Umbraco.Test
+namespace GovUk.Frontend.Umbraco.Testing
 {
     /// <summary>
     /// Create block list models and block list items

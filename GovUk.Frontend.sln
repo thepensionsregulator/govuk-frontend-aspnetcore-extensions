@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.AspNetCore.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.ExampleSharedResource", "SharedResourceLibrary\GovUk.Frontend.ExampleSharedResource.csproj", "{9E55BF8E-A29A-462C-AB98-AE73AB6F722C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPR.Umbraco.Test", "TPR.Umbraco.Test\TPR.Umbraco.Test.csproj", "{94C814E0-28CB-48B4-9C31-D29F611EFF4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco.Testing", "GovUk.Frontend.Umbraco.Testing\GovUk.Frontend.Umbraco.Testing.csproj", "{94C814E0-28CB-48B4-9C31-D29F611EFF4D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,7 +1,7 @@
 ﻿using Moq;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace TPR.Umbraco.Test
+namespace GovUk.Frontend.Umbraco.Testing
 {
     public static class UmbracoContentFactory
     {

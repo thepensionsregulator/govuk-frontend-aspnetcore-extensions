@@ -6,7 +6,7 @@ using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace TPR.Umbraco.Test
+namespace GovUk.Frontend.Umbraco.Testing
 {
     public static class UmbracoPublishedElementExtensions
     {

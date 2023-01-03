@@ -8,12 +8,15 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "jest": "^28.1.0",
+    "jest": "^29.3.1",
     "jest-environment-jsdom": "^28.1.0",
     "jest-junit": "^14.0.0"
   },
   "jest": {
     "testEnvironment": "jsdom",
     "rootDir": "GovUk.Frontend.AspNetCore.Extensions"
+  },
+  "resolutions": {
+    "json5": "2.2.2"
   }
 }

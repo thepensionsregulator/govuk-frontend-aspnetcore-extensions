@@ -35,7 +35,19 @@ namespace GovUk.Frontend.Umbraco.Models
                 {
                     if (prop.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList)
                     {
-                        var overriddenNestedBlockList = overridableItem.Content.Value<OverridableBlockListModel>(prop.Alias) ?? new OverridableBlockListModel(overridableItem.Content.Value<BlockListModel>(prop.Alias)!, Filter, factory);
+                        var overriddenNestedBlockList = overridableItem.Content.Value<OverridableBlockListModel>(prop.Alias);
+                        if (overriddenNestedBlockList == null)
+                        {
+                            var nestedBlockList = overridableItem.Content.Value<BlockListModel>(prop.Alias);
+                            if (nestedBlockList != null)
+                            {
+                                overriddenNestedBlockList = new OverridableBlockListModel(nestedBlockList, Filter, factory);
+                            }
+                            else
+                            {
+                                overriddenNestedBlockList = new OverridableBlockListModel(Array.Empty<BlockListItem>(), Filter, factory);
+                            }
+                        }
                         overridableItem.Content.OverrideValue(prop.Alias, overriddenNestedBlockList);
                     }
                 }

@@ -29,6 +29,13 @@ namespace GovUk.Frontend.Umbraco.Typography
                 ApplyClass(document, "//ul", "govuk-list--bullet");
                 ApplyClass(document, "//ol", "govuk-list");
                 ApplyClass(document, "//ol", "govuk-list--number");
+                ApplyClass(document, "//table", "govuk-table");
+                ApplyClass(document, "//caption", "govuk-table__caption");
+                ApplyClass(document, "//thead", "govuk-table__head");
+                ApplyClass(document, "//tbody", "govuk-table__body");
+                ApplyClass(document, "//tr", "govuk-table__row");
+                ApplyClass(document, "//th", "govuk-table__header");
+                ApplyClass(document, "//td", "govuk-table__cell");
 
                 if (options.RemoveWrappingParagraph)
                 {

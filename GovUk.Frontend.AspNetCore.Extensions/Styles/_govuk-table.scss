@@ -1,0 +1,16 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* Change GOV.UK table styles where the TPR brand diverges from the GOV.UK Design System. */
+.govuk-table__caption {
+    @include govuk-responsive-margin(1,"bottom");
+}
+.govuk-table__header, .govuk-table__header:last-child {
+    @include govuk-responsive-padding(4);
+    background-color: $tpr-colour-whisper;
+    border: solid govuk-px-to-rem(2) $tpr-colour-very-light-grey;
+}
+.govuk-table__cell, .govuk-table__cell:last-child {
+    @include govuk-responsive-padding(4);
+    border: solid govuk-px-to-rem(2) $tpr-colour-very-light-grey;
+}

@@ -15,6 +15,9 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         public string? Field2 { get; set; }
 
         [Required(ErrorMessage = nameof(Field3))]
-        public string? Field3 { get; set; }
+        public List<string> Field3 { get; set; } = new();
+
+        [Required(ErrorMessage = nameof(Field4))]
+        public string? Field4 { get; set; }
     }
 }

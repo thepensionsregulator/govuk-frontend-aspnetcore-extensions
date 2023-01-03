@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.Umbraco.Models;
+using GovUk.Frontend.Umbraco.Testing;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -7,21 +8,21 @@ using System.Linq;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.PropertyEditors;
 
 namespace GovUk.Frontend.Umbraco.Tests
 {
-    public class BlockListModelExtensionsTests : UmbracoBaseTest
+    public class BlockListModelExtensionsTests
     {
         [Test]
         public void Block_is_matched_in_root_block_list()
         {
-            var textBoxPropertyType = CreatePropertyType(2, Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration());
-
-            var blockListContentProperties = new[] {
-                CreateProperty("MyTextProperty", textBoxPropertyType, "value")
-            };
-            var blockList = CreateBlockListModel(blockListContentProperties, Array.Empty<IPublishedProperty>());
+            var blockList = UmbracoBlockListFactory.CreateBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoTextboxPropertyValue("MyTextProperty", "value")
+                    .Object
+                )
+            );
 
             // Act
             var result = BlockListModelExtensions.FindBlock(blockList, x => x.Content.GetProperty("MyTextProperty") != null);
@@ -33,17 +34,29 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void Block_is_matched_in_descendant_block_list()
         {
-            var blockListPropertyType = CreatePropertyType(1, Constants.PropertyEditors.Aliases.BlockList, new BlockListConfiguration());
-            var textBoxPropertyType = CreatePropertyType(2, Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration());
+            var grandChildBlockList = UmbracoBlockListFactory.CreateBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoTextboxPropertyValue("MyTextProperty", "value")
+                    .Object
+                )
+            );
 
-            var grandChildBlockListContentProperties = new[] {
-                CreateProperty("MyTextProperty", textBoxPropertyType, "value")
-            };
-            var grandChildBlockList = CreateBlockListModel(grandChildBlockListContentProperties, Array.Empty<IPublishedProperty>());
-            var childBlockListContentProperties = new[] { CreateProperty("grandchildBlocks", blockListPropertyType, grandChildBlockList) };
-            var childBlockList = CreateBlockListModel(childBlockListContentProperties, Array.Empty<IPublishedProperty>());
-            var parentBlockListContentProperties = new[] { CreateProperty("childBlocks", blockListPropertyType, childBlockList) };
-            var parentBlockList = CreateBlockListModel(parentBlockListContentProperties, Array.Empty<IPublishedProperty>());
+            var childBlockList = UmbracoBlockListFactory.CreateBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoBlockListPropertyValue("grandchildBlocks", grandChildBlockList)
+                    .Object
+                    )
+                );
+
+            var parentBlockList = UmbracoBlockListFactory.CreateBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoBlockListPropertyValue("childBlocks", childBlockList)
+                    .Object
+                )
+            );
 
             // Act
             var result = BlockListModelExtensions.FindBlock(parentBlockList, x => x.Content.GetProperty("MyTextProperty") != null);
@@ -56,11 +69,8 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void Multiple_matching_blocks_are_matched_in_descendant_block_list()
         {
-            var blockListPropertyType = CreatePropertyType(1, Constants.PropertyEditors.Aliases.BlockList, new BlockListConfiguration());
-            var textBoxPropertyType = CreatePropertyType(2, Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration());
-
             var matchingBlockContent1 = new Mock<IOverridablePublishedElement>();
-            matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(CreateProperty("MyTextProperty", textBoxPropertyType, "value"));
+            matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
             var matchingBlock1 = new OverridableBlockListItem(
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
@@ -68,7 +78,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             );
 
             var matchingBlockContent2 = new Mock<IOverridablePublishedElement>();
-            matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(CreateProperty("MyTextProperty", textBoxPropertyType, "value"));
+            matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
             var matchingBlock2 = new OverridableBlockListItem(
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
@@ -76,10 +86,22 @@ namespace GovUk.Frontend.Umbraco.Tests
             );
 
             var grandChildBlockList = new BlockListModel(new[] { matchingBlock1, matchingBlock2 });
-            var childBlockListContentProperties = new[] { CreateProperty("grandchildBlocks", blockListPropertyType, grandChildBlockList) };
-            var childBlockList = CreateBlockListModel(childBlockListContentProperties, Array.Empty<IPublishedProperty>());
-            var parentBlockListContentProperties = new[] { CreateProperty("childBlocks", blockListPropertyType, childBlockList) };
-            var parentBlockList = CreateBlockListModel(parentBlockListContentProperties, Array.Empty<IPublishedProperty>());
+
+            var childBlockList = UmbracoBlockListFactory.CreateBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoBlockListPropertyValue("grandchildBlocks", grandChildBlockList)
+                    .Object
+                    )
+                );
+
+            var parentBlockList = UmbracoBlockListFactory.CreateBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoBlockListPropertyValue("childBlocks", childBlockList)
+                    .Object
+                    )
+                );
 
             // Act
             var results = BlockListModelExtensions.FindBlocks(parentBlockList, x => x.Content.GetProperty("MyTextProperty") != null).ToList();
@@ -93,12 +115,14 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void Block_is_matched_by_model_property()
         {
-            var textBoxPropertyType = CreatePropertyType(2, Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration());
-
-            var blockListSettingsProperties = new[] {
-                CreateProperty(PropertyAliases.ModelProperty, textBoxPropertyType, "Field1")
-            };
-            var blockList = CreateBlockListModel(Array.Empty<IPublishedProperty>(), blockListSettingsProperties);
+            var blockList = UmbracoBlockListFactory.CreateBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings().Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.ModelProperty, "Field1")
+                    .Object
+                    )
+                );
 
             // Act
             var result = BlockListModelExtensions.FindBlockByBoundProperty(blockList, "Field1");
@@ -110,8 +134,6 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void Block_is_matched_by_content_type_alias()
         {
-            var textBoxPropertyType = CreatePropertyType(2, Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration());
-
             var contentType = new Mock<IPublishedContentType>();
             contentType.Setup(x => x.Alias).Returns("myAlias");
             var blockContent = new Mock<IPublishedElement>();
@@ -131,11 +153,8 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void OverridableBlockListModel_returns_OverridableBlockListItem()
         {
-            var blockListPropertyType = CreatePropertyType(1, Constants.PropertyEditors.Aliases.BlockList, new BlockListConfiguration());
-            var textBoxPropertyType = CreatePropertyType(2, Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration());
-
             var childContent = new Mock<IOverridablePublishedElement>();
-            childContent.Setup(x => x.GetProperty("MyTextProperty")).Returns(CreateProperty("MyTextProperty", textBoxPropertyType, "value"));
+            childContent.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
             var childBlockItem = new OverridableBlockListItem(
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), childContent.Object, null, null),
@@ -144,9 +163,8 @@ namespace GovUk.Frontend.Umbraco.Tests
 
             var childBlockList = new OverridableBlockListModel(new[] { childBlockItem }, null, x => (IOverridablePublishedElement)x);
 
-
             var parentContent = new Mock<IOverridablePublishedElement>();
-            var parentProperties = new[] { CreateProperty("childBlocks", blockListPropertyType, childBlockList) };
+            var parentProperties = new[] { UmbracoPropertyFactory.CreateBlockListProperty("childBlocks", childBlockList) };
             parentContent.SetupGet(x => x.Properties).Returns(parentProperties);
             parentContent.Setup(x => x.GetProperty("childBlocks")).Returns(parentProperties[0]);
             parentContent.Setup(x => x.Value<OverridableBlockListModel>("childBlocks", null, null, It.IsAny<Fallback>(), null)).Returns(childBlockList);

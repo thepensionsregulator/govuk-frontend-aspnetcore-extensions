@@ -1,27 +1,36 @@
 ﻿using GovUk.Frontend.Umbraco.Models;
+using GovUk.Frontend.Umbraco.Testing;
 using Moq;
 using NUnit.Framework;
 using System;
-using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.PropertyEditors;
 
 namespace GovUk.Frontend.Umbraco.Tests
 {
-    public class OverridableBlockListModelTests : UmbracoBaseTest
+    public class OverridableBlockListModelTests
     {
         [Test]
         public void BlockListModels_are_converted_to_OverridableBlockListModels_including_nested_block_lists()
         {
-            var blockListPropertyType = CreatePropertyType(1, Constants.PropertyEditors.Aliases.BlockList, new BlockListConfiguration());
+            // Arrange
+            var grandChildBlockList = UmbracoBlockListFactory.CreateBlockListModel(Array.Empty<BlockListItem>());
 
-            var grandChildBlockListContentProperties = Array.Empty<IPublishedProperty>();
-            var grandChildBlockList = CreateBlockListModel(grandChildBlockListContentProperties, Array.Empty<IPublishedProperty>());
-            var childBlockListContentProperties = new[] { CreateProperty("grandchildBlocks", blockListPropertyType, grandChildBlockList) };
-            var childBlockList = CreateBlockListModel(childBlockListContentProperties, Array.Empty<IPublishedProperty>());
-            var parentBlockListContentProperties = new[] { CreateProperty("childBlocks", blockListPropertyType, childBlockList) };
-            var parentBlockList = CreateBlockListModel(parentBlockListContentProperties, Array.Empty<IPublishedProperty>());
+            var childBlockList = UmbracoBlockListFactory.CreateBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoBlockListPropertyValue("grandchildBlocks", grandChildBlockList)
+                    .Object
+                    )
+                );
+
+            var parentBlockList = UmbracoBlockListFactory.CreateBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoBlockListPropertyValue("childBlocks", childBlockList)
+                    .Object
+                    )
+                );
 
             OverridableBlockListModel? convertedChildBlockList = null, convertedGrandChildBlockList = null;
 
@@ -30,7 +39,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             {
                 convertedChildBlockList = value as OverridableBlockListModel;
             });
-            parentBlockListContent.Setup(x => x.Properties).Returns(parentBlockListContentProperties);
+            parentBlockListContent.Setup(x => x.Properties).Returns(parentBlockList[0].Content.Properties);
             parentBlockListContent.Setup(x => x.Value<BlockListModel>("childBlocks", null, null, default, default)).Returns(childBlockList);
 
             var childBlockListContent = new Mock<IOverridablePublishedElement>();
@@ -38,12 +47,8 @@ namespace GovUk.Frontend.Umbraco.Tests
             {
                 convertedGrandChildBlockList = value as OverridableBlockListModel;
             });
-            childBlockListContent.Setup(x => x.Properties).Returns(childBlockListContentProperties);
+            childBlockListContent.Setup(x => x.Properties).Returns(childBlockList[0].Content.Properties);
             childBlockListContent.Setup(x => x.Value<BlockListModel>("grandchildBlocks", null, null, default, default)).Returns(grandChildBlockList);
-
-            var grandChildBlockListContent = new Mock<IOverridablePublishedElement>();
-            grandChildBlockListContent.Setup(x => x.Properties).Returns(grandChildBlockListContentProperties);
-
 
             var factoryCalls = 0;
             Func<IPublishedElement, IOverridablePublishedElement> factory = x =>
@@ -56,14 +61,15 @@ namespace GovUk.Frontend.Umbraco.Tests
                         return parentBlockListContent.Object;
                     case 3:
                         return childBlockListContent.Object;
-                    case 5:
-                        return grandChildBlockListContent.Object;
                     default:
                         return null;
                 }
             };
 
+            // Act
             new OverridableBlockListModel(parentBlockList, null, factory);
+
+            // Assert
             Assert.NotNull(convertedChildBlockList);
             Assert.NotNull(convertedGrandChildBlockList);
         }

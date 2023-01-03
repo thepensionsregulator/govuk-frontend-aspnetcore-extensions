@@ -187,5 +187,49 @@ namespace GovUk.Frontend.Umbraco.Tests
             doc.LoadHtml(result);
             Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
         }
+
+        [Test]
+        public void Table_classes_are_added()
+        {
+            var html = @"<table>
+                <caption>Dates and amounts</caption>
+                <thead>
+                <tr>
+                    <th scope=""col"">Date</th>
+                    <th scope=""col"">Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope=""row"">First 6 weeks</th>
+                    <td>£109.80 per week</td>
+                </tr>
+                <tr>
+                    <th scope=""row"">Next 33 weeks</th>
+                    <td>£109.80 per week</td>
+                </tr>
+                <tr>
+                    <th scope=""row"">Total estimated pay</th>
+                    <td>£4,282.20</td>
+                </tr>
+                </tbody>
+            </table>";
+
+            var result = GovUkTypography.Apply(html, new TypographyOptions());
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//table[contains(@class,'govuk-table')]").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//caption[contains(@class,'govuk-table__caption')]").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//thead[contains(@class,'govuk-table__head')]").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//thead/tr[contains(@class,'govuk-table__row')]").Count);
+            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//thead//th[contains(@class,'govuk-table__header')]").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//tbody[contains(@class,'govuk-table__body')]").Count);
+            Assert.AreEqual(3, doc.DocumentNode.SelectNodes("//tbody/tr[contains(@class,'govuk-table__row')]").Count);
+            Assert.AreEqual(3, doc.DocumentNode.SelectNodes("//tbody/tr/th[contains(@class,'govuk-table__header')]").Count);
+            Assert.AreEqual(3, doc.DocumentNode.SelectNodes("//tbody/tr/td[contains(@class,'govuk-table__cell')]").Count);
+
+        }
     }
 }

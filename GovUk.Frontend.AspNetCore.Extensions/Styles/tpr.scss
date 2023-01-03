@@ -25,6 +25,7 @@
 @import "govuk/components/select";
 @import "govuk/components/skip-link";
 @import "govuk/components/summary-list";
+@import "govuk/components/table";
 @import "govuk/components/textarea";
 @import "govuk/components/warning-text";
 @import "govuk/utilities/all";
@@ -48,6 +49,7 @@
 @import '_govuk-phase-banner.scss';
 @import '_govuk-radios-checkboxes.scss';
 @import '_govuk-summary-list.scss';
+@import '_govuk-table.scss';
 
 // Add different components and customisations that are not part of the GOV.UK Design System
 @import "_tpr-task-list.scss";

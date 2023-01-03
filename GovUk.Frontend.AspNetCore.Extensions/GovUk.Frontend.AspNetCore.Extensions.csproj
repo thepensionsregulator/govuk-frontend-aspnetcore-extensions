@@ -231,4 +231,8 @@
 	  <UpToDateCheckInput Remove="Styles\_tpr-task-list.scss" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-table.scss" />
+	</ItemGroup>
+
 </Project>

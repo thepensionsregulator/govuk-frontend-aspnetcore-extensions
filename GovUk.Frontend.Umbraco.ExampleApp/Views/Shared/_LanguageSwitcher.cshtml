@@ -13,12 +13,12 @@
 }
 
 @if (Model.Cultures.Count > 1) {
-    <header id="language-switcher-container">
+    <div id="language-switcher-container" class="govuk-width-container">
         <ul id="language-switcher" class="govuk-list">
             @foreach (var culture in Model.Cultures)
             {
                 <li class="@((currentLanguage == culture.Key) ? "languageSelected" : "languageNotSelected")"><a class="govuk-link" href="@Model.Url(culture.Key)">@(CultureInfo.GetCultureInfoByIetfLanguageTag(culture.Key).NativeName)</a></li>
             }
         </ul>
-    </header>
+    </div>
 }

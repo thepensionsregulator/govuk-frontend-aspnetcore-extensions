@@ -23,50 +23,70 @@
         cssClass = (cssClass + " govuk-radios--inline").TrimStart();
     }
     var fieldsetHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var fieldsetDescribedBy = string.IsNullOrEmpty(fieldsetHint) ? null : modelPropertyName + "-hint";
     var cssClassesForHint = Model.Settings.Value<string>("cssClassesForHint");
     var cssClassesForError = Model.Settings.Value<string>("cssClassesForError");
     var cssClassesForRadios = Model.Settings.Value<string>("cssClassesForRadios");
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
-}
-<govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
-    <govuk-radios name="@modelPropertyName" class="@cssClass" radios-class="@cssClassesForRadios">
-         <govuk-radios-fieldset>
-            <govuk-radios-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-radios-fieldset-legend>
-        @if (!string.IsNullOrWhiteSpace(fieldsetHint))
-        {
-            <govuk-radios-hint class="@cssClassesForHint">@Html.Raw(fieldsetHint)</govuk-radios-hint>
-        }
-        @if (modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
-        {
-            <govuk-radios-error-message class="@cssClassesForError">@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-radios-error-message>
-        }
-        @foreach (var block in radioButtons.Filter(radioButtons))
-        {
-            if (block.Content.ContentType.Alias == "govukRadiosDivider")
-            {
-                <govuk-radios-divider>@(string.IsNullOrWhiteSpace(block.Content.Value<string>("text")) ? "or" : block.Content.Value<string>("text"))</govuk-radios-divider>
-            }
-            else
-            {
-                var value = block.Content.Value<string>("value") ?? string.Empty;
-                var radioHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-                var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
+    var isInvalid = modelStateEntry?.Errors.Any() ?? false;
+    var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
+    var invalidClass = isInvalid ? " govuk-form-group--error" : null;
+    var blocks = Model.Content.Value<OverridableBlockListModel>("fieldsetBlocks");
+    if(blocks != null && blocks.Any())
+    {
+        fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
+    }
 
-                <govuk-radios-item value="@value" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" checked="@(value.ToUpperInvariant() == attemptedValue)" input-aria-invalid="@invalid">@(block.Content.Value<string>("label"))
-                        @if (!string.IsNullOrEmpty(radioHint))
-                        {
-                            <govuk-radios-item-hint>@Html.Raw(radioHint)</govuk-radios-item-hint>
-                        }
-                        @if (conditional.Any()){
-                            <govuk-radios-item-conditional>
-                                @await Html.PartialAsync("GOVUK/BlockList", conditional)
-                            </govuk-radios-item-conditional>
-                        }
-                </govuk-radios-item>                
+}
+<div class="govuk-form-group@(invalidClass)">
+    <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+        <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-radios__fieldset">
+            <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-fieldset-legend>
+            @if (blocks != null && blocks.Any())
+            {
+                blocks.RenderGrid = false;
+                <div id="@modelPropertyName-blocks">
+                    @await Html.PartialAsync("GOVUK/BlockList", blocks)
+                </div>
             }
-        }
-        </govuk-radios-fieldset>
-    </govuk-radios>
-</govuk-client-side-validation>
+            <govuk-radios name="@modelPropertyName" class="@cssClass" radios-class="@cssClassesForRadios">
+                @if (!string.IsNullOrWhiteSpace(fieldsetHint))
+                {
+                    <govuk-radios-hint class="@cssClassesForHint">@Html.Raw(fieldsetHint)</govuk-radios-hint>
+                }
+                @if (modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
+                {
+                    <govuk-radios-error-message class="@cssClassesForError">@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-radios-error-message>
+                }
+                @foreach (var block in radioButtons.Filter(radioButtons))
+                {
+                    if (block.Content.ContentType.Alias == "govukRadiosDivider")
+                    {
+                        <govuk-radios-divider>@(string.IsNullOrWhiteSpace(block.Content.Value<string>("text")) ? "or" : block.Content.Value<string>("text"))</govuk-radios-divider>
+                    }
+                    else
+                    {
+                        var value = block.Content.Value<string>("value") ?? string.Empty;
+                        var radioHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+                        var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
+
+                        <govuk-radios-item value="@value" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" checked="@(value.ToUpperInvariant() == attemptedValue)" input-aria-invalid="@ariaInvalid">
+                            @(block.Content.Value<string>("label"))
+                            @if (!string.IsNullOrEmpty(radioHint))
+                            {
+                                <govuk-radios-item-hint>@Html.Raw(radioHint)</govuk-radios-item-hint>
+                            }
+                            @if (conditional.Any())
+                            {
+                                <govuk-radios-item-conditional>
+                                    @await Html.PartialAsync("GOVUK/BlockList", conditional)
+                                </govuk-radios-item-conditional>
+                            }
+                        </govuk-radios-item>
+                    }
+                }
+            </govuk-radios>
+        </govuk-fieldset>
+    </govuk-client-side-validation>
+</div>

@@ -16,7 +16,7 @@
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
-    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var cssClass = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     var fieldsetHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
     var fieldsetDescribedBy = string.IsNullOrEmpty(fieldsetHint) ? null : modelPropertyName + "-hint";
     var cssClassesForHint = Model.Settings.Value<string>("cssClassesForHint");
@@ -35,7 +35,7 @@
         fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
 }
-<div class="govuk-form-group@(invalidClass)">
+<div class="govuk-form-group@(invalidClass)@(cssClass)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-checkboxes__fieldset">
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-fieldset-legend>
@@ -46,7 +46,7 @@
                     @await Html.PartialAsync("GOVUK/BlockList", blocks)
                 </div>
             }
-            <govuk-checkboxes name="@modelPropertyName" class="@cssClass" checkboxes-class="@cssClassesForCheckboxes">
+            <govuk-checkboxes name="@modelPropertyName" checkboxes-class="@cssClassesForCheckboxes">
                 @{
                     if (!string.IsNullOrWhiteSpace(fieldsetHint))
                     {

@@ -17,7 +17,7 @@
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
-    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var cssClass = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     if (Model.Settings.Value<string>("layout") == "Horizontal")
     {
         cssClass = (cssClass + " govuk-radios--inline").TrimStart();
@@ -39,7 +39,7 @@
     }
 
 }
-<div class="govuk-form-group@(invalidClass)">
+<div class="govuk-form-group@(invalidClass)@(cssClass)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-radios__fieldset">
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-fieldset-legend>
@@ -50,7 +50,7 @@
                     @await Html.PartialAsync("GOVUK/BlockList", blocks)
                 </div>
             }
-            <govuk-radios name="@modelPropertyName" class="@cssClass" radios-class="@cssClassesForRadios">
+            <govuk-radios name="@modelPropertyName" radios-class="@cssClassesForRadios">
                 @if (!string.IsNullOrWhiteSpace(fieldsetHint))
                 {
                     <govuk-radios-hint class="@cssClassesForHint">@Html.Raw(fieldsetHint)</govuk-radios-hint>

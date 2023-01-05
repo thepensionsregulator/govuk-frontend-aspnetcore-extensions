@@ -20,7 +20,7 @@
             dateValue = date;            
         }
     }
-    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var cssClass = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
@@ -34,7 +34,7 @@
         fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
 }
-<div class="govuk-form-group@(invalidClass)">
+<div class="govuk-form-group@(invalidClass)@(cssClass)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-date-input__fieldset" role="group">
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-fieldset-legend>
@@ -45,7 +45,7 @@
                     @await Html.PartialAsync("GOVUK/BlockList", blocks)
                 </div>
             }
-            <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue" class="@cssClass">
+            <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
                 @if (!string.IsNullOrWhiteSpace(hint))
                 {
                     <govuk-date-input-hint>@Html.Raw(hint)</govuk-date-input-hint>

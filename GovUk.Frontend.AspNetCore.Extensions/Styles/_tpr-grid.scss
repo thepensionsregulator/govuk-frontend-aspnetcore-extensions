@@ -85,7 +85,7 @@
         width: govuk-grid-width($width);
     }
 
-    .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > .govuk-form-group > fieldset > .govuk-fieldset__child--#{$width} {
+    .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > .govuk-form-group > fieldset > .govuk-form-group > .govuk-fieldset__child--#{$width} {
         width: govuk-grid-width($width);
     }
 
@@ -97,7 +97,7 @@
             width: govuk-grid-width($width);
         }
 
-        .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > .govuk-form-group > fieldset > .govuk-fieldset__child--#{$width}-from-desktop {
+        .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > .govuk-form-group > fieldset > .govuk-form-group > .govuk-fieldset__child--#{$width}-from-desktop {
             width: govuk-grid-width($width);
         }
     }

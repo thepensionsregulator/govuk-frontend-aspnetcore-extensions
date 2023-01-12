@@ -19,9 +19,15 @@
     .govuk-grid-row, which disrupts GOV.UK grid layout.
 */
 @mixin tpr-divider {
-    @include govuk-responsive-padding(6, "bottom");
+    padding-bottom: govuk-spacing(4);
     border-bottom: 1px solid $tpr-colour-very-light-grey;
-    @include govuk-responsive-margin(6, "bottom");
+    margin-bottom: govuk-spacing(4);
+
+    // Adjust spacing similar to using govuk-responsive-margin, but we can't use that because the target value is not in $govuk-spacing-responsive-scale
+    @include govuk-media-query($from: tablet) {
+        padding-bottom: 36px;
+        margin-bottom: 36px;
+    }
 }
 
 .govuk-grid-row--tpr-divider::after {

@@ -38,12 +38,12 @@
     </header>
     <div class="tpr-main-wrapper">
         <div class="govuk-width-container">
+            @RenderSection("language", required: false)
+            @if (Context.Request.Path != home?.Url())
+            {
+                <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
+            }
             <main id="main" class="govuk-main-wrapper">
-                @RenderSection("language", required: false)
-                @if (Context.Request.Path != home?.Url())
-                {
-                    <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
-                }
                 @RenderBody()
             </main>
         </div>

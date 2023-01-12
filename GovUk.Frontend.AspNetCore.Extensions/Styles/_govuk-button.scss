@@ -41,7 +41,14 @@ $tpr-button-padding: 20px;
     border-color: $tpr-colour-royal-blue;
     box-shadow: none;
 }
-.govuk-button--secondary:hover, .govuk-button--secondary:active {
+
+/* Only for links styled as secondary buttons, we need the extra weight of the a. selector to override GOV.UK color */
+a.govuk-button--secondary:link, a.govuk-button--secondary:visited {
+    color: $tpr-colour-royal-blue;
+}
+
+.govuk-button--secondary:hover, .govuk-button--secondary:active,
+a.govuk-button--secondary:hover {
     color: $tpr-colour-white;
     background-color: $tpr-colour-royal-blue;
 }

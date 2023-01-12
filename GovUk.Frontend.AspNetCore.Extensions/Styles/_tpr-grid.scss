@@ -1,6 +1,18 @@
 ﻿@import '_variables.scss';
 @import 'govuk/base';
 
+/*
+    govuk-frontend includes width overrides like .govuk-!-width-two-thirds which apply from tablet upwards.
+    Add similar override classes that apply from desktop.
+*/
+@each $width in map-keys($govuk-grid-widths) {
+    .govuk-\!-width-#{$width}-from-desktop {
+        @include govuk-media-query($from: desktop) {
+            width: govuk-grid-width($width) !important;
+        }
+    }
+}
+
 /* 
     Modifier for .govuk-grid-row which adds a decorative divider after the row with padding above and margin below. 
     Use ::after so we can align the divider with content but don't need to mess with the margin & padding of 
@@ -57,52 +69,43 @@
 }
 
 
-/* There is a special case where the legend is the page heading (see https://design-system.service.gov.uk/components/fieldset/).
+/* There is a special case where the label or legend is the page heading (see https://design-system.service.gov.uk/components/fieldset/).
    In this case .govuk-grid-row--tpr-divider will not work because the HTML structure is different. 
-   .govuk-grid-row--tpr-divider-for-fieldset must be applied to the .govuk-grid-row instead.
+   .govuk-grid-row--tpr-divider-for-label-as-heading or .govuk-grid-row--tpr-divider-for-fieldset must be applied to the .govuk-grid-row instead.
 
    1. First this overrides the column width chosen for the .govuk-grid-row. It must be 100% for the divider to span the page.
 
-   2. The column width is applied instead to elements within the fieldset, including the h1 inside the legend. 
+   2. The column width is applied instead to elements that make up the field, or within the fieldset. 
 
-      Very specific selectors are used so that nested fieldsets are not matched. The first two selectors target the fieldset
-      component of the GOV.UK Design System. The second two target radio and checkbox groups. The .govuk-fieldset__child target 
-      child components of radio and checkbox groups, eg the hint and error message for the group. All are repeated in *-from-desktop versions.
+      Very specific selectors are used so that nested fieldsets are not matched. Selectors target text input, textarea, date input, fieldset,
+      and radio and checkbox group components of the GOV.UK Design System. All are repeated in *-from-desktop versions.
 
-      Components placed inside the fieldset should typically have .govuk-grid-column-full applied, since the desired width comes from their container element.
+      Components placed inside a fieldset should typically have .govuk-grid-column-full applied, since the desired width comes from their container element.
 
-   3. Finally, the divider is applied to the legend element, which is set to 100% wide so that the divider spans the page.
+   3. Finally, the divider is applied to the h1 (for labels) or legend (for fieldsets) element, which is set to 100% wide so that the divider spans the page.
 */
+.govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column,
 .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column {
     width: 100%;
 }
 
 @each $width in map-keys($govuk-grid-widths) {
+    .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column-#{$width} > .govuk-form-group > *,
     .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width} > fieldset > *,
-    .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width} > fieldset > legend > h1,
-    .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width} > .govuk-form-group > fieldset > *,
-    .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width} > .govuk-form-group > fieldset > legend > h1 {
-        width: govuk-grid-width($width);
-    }
-
-    .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > .govuk-form-group > fieldset > .govuk-fieldset__child--#{$width} {
+    .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width} > .govuk-form-group > fieldset > * {
         width: govuk-grid-width($width);
     }
 
     @include govuk-media-query($from: desktop) {
+        .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column-#{$width}-from-desktop > .govuk-form-group > *,
         .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width}-from-desktop > fieldset > *,
-        .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width}-from-desktop > fieldset > legend > h1,
-        .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width}-from-desktop > .govuk-form-group > fieldset > *,
-        .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width}-from-desktop > .govuk-form-group > fieldset > legend > h1 {
-            width: govuk-grid-width($width);
-        }
-
-        .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > .govuk-form-group > fieldset > .govuk-fieldset__child--#{$width}-from-desktop {
+        .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width}-from-desktop > .govuk-form-group > fieldset > * {
             width: govuk-grid-width($width);
         }
     }
 }
 
+.govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column > .govuk-form-group > h1,
 .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > fieldset > legend,
 .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > .govuk-form-group > fieldset > legend {
     width: 100%;

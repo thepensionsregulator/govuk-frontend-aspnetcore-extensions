@@ -112,6 +112,12 @@
     @include tpr-divider;
 }
 
+/* Remove bottom margin in these cases as the tpr-divider creates enough space between the element and the divider. */
+.govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column > .govuk-form-group > h1 > label,
+.govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column > .govuk-form-group > textarea {
+    margin-bottom: 0;
+}
+
 /*
     Columns with alternating white and grey backgrounds.
     Columns should have a *-from-desktop grid width applied, eg govuk-grid-column-one-third-from-desktop for a three column layout.

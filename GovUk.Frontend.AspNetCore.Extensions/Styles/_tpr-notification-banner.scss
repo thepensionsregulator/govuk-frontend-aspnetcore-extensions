@@ -1,0 +1,15 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+.tpr-notification-banner{
+    background-color: $tpr-colour-eastern-blue;
+    padding: govuk-spacing(6);
+    margin-bottom: govuk-spacing(8);
+}
+.tpr-notificaiton-banner__content{
+    text-align: center;
+    color: $tpr-colour-white;
+}
+.tpr-notification-banner__heading{
+
+}

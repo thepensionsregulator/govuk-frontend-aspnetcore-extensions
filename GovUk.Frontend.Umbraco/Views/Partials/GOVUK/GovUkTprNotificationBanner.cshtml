@@ -1,0 +1,9 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@{
+    var text = Model.Content.Value<string>("content");
+}
+@using GovUk.Frontend.Umbraco.Models;
+<tpr-notification-banner >
+    @text
+</tpr-notification-banner>

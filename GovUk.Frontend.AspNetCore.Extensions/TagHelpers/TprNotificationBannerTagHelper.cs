@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
@@ -38,7 +39,14 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var tagBuilder = _htmlGenerator.GenerateTprNotificationBanner();
+            IHtmlContent? content = null;
+
+            if (output.TagMode == TagMode.StartTagAndEndTag)
+            {
+                content = await output.GetChildContentAsync();
+            }
+
+            var tagBuilder = _htmlGenerator.GenerateTprNotificationBanner(content);
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

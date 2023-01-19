@@ -1,9 +1,17 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
-@{
-    var text = Model.Content.Value<string>("content");
-}
 @using GovUk.Frontend.Umbraco.Models;
-<tpr-notification-banner >
-    @text
+@using GovUk.Frontend.Umbraco.Typography;
+@using GovUk.Frontend.Umbraco;
+@{
+    var heading = GovUkTypography.Apply(Model.Content.Value<string>("heading"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var text = GovUkTypography.Apply(Model.Content.Value<string>("content"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.TprNotificationBannerBlocks);
+
+}
+
+<tpr-notification-banner>
+    <p class="tpr-notification-banner__heading">@Html.Raw(heading)</p>
+    <p class="govuk-body">@Html.Raw(text)</p>
+    @await Html.PartialAsync("GOVUK/BlockList", blocks)
 </tpr-notification-banner>

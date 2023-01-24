@@ -5,7 +5,7 @@ $tpr-notification-banner__heading-line-height: 1.5em;
 $tpr-notification-banner__content-line-height: 1.5em;
 $tpr-notification-banner-font-size: 1.4em;
 
-.tpr-notification-banner{
+.tpr-notification-banner {
     background-color: $tpr-colour-eastern-blue;
     padding: govuk-spacing(6);
     margin-bottom: govuk-spacing(8);
@@ -20,7 +20,23 @@ $tpr-notification-banner-font-size: 1.4em;
         line-height: $tpr-notification-banner__content-line-height;
         margin: 0 0 govuk-spacing(4) 0;
     }
+    > .govuk-grid-row {
+        display: flex;
+        justify-content: center;
 
+        > .govuk-grid-column{
+            > .govuk-button{
+                margin-bottom: 0;
+            }
+            > .govuk-button-group{
+                justify-content: center;
+
+                > .govuk-button{
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
     > .govuk-button-group {
         justify-content: center;
         margin: 0;

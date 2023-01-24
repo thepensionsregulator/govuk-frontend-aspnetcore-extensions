@@ -19,9 +19,15 @@
     .govuk-grid-row, which disrupts GOV.UK grid layout.
 */
 @mixin tpr-divider {
-    @include govuk-responsive-padding(6, "bottom");
+    padding-bottom: govuk-spacing(4);
     border-bottom: 1px solid $tpr-colour-very-light-grey;
-    @include govuk-responsive-margin(6, "bottom");
+    margin-bottom: govuk-spacing(4);
+
+    // Adjust spacing similar to using govuk-responsive-margin, but we can't use that because the target value is not in $govuk-spacing-responsive-scale
+    @include govuk-media-query($from: tablet) {
+        padding-bottom: 36px;
+        margin-bottom: 36px;
+    }
 }
 
 .govuk-grid-row--tpr-divider::after {
@@ -110,6 +116,12 @@
 .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column > .govuk-form-group > fieldset > legend {
     width: 100%;
     @include tpr-divider;
+}
+
+/* Remove bottom margin in these cases as the tpr-divider creates enough space between the element and the divider. */
+.govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column > .govuk-form-group > h1 > label,
+.govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column > .govuk-form-group > textarea {
+    margin-bottom: 0;
 }
 
 /*

@@ -36,6 +36,7 @@
 @import '_open-sans.scss';
 
 // Override compiled GOV.UK styles to apply differences from the TPR UI Kit
+@import '_govuk-back.scss';
 @import '_govuk-button.scss';
 @import '_govuk-caption.scss';
 @import '_govuk-date-input.scss';

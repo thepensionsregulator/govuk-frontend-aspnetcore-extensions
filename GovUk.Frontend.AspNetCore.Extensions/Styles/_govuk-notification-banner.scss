@@ -25,6 +25,7 @@
     padding: govuk-spacing(6);
 
     > .govuk-body {
+        margin-bottom: govuk-spacing(4);
         color: $tpr-colour-white;
     }
 
@@ -36,7 +37,28 @@
         margin-top: 20px;
     }
 
-    > .govuk-button-group{
-        justify-content:center;
+    > .govuk-button-group {
+        justify-content: center;
+    }
+
+    > .govuk-grid-row {
+        display: flex;
+        justify-content: center;
+
+        > .govuk-grid-column {
+
+            > .govuk-button {
+                margin-bottom: 0;
+            }
+
+            > .govuk-button-group {
+                justify-content: center;
+                margin-bottom: 0;
+
+                > .govuk-button {
+                    margin-bottom: 0;
+                }
+            }
+        }
     }
 }

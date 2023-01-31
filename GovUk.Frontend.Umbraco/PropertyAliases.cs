@@ -21,6 +21,6 @@
         internal const string FieldsetBlocks = "blocks";
         internal const string FieldsetLegendIsPageHeading = "legendIsPageHeading";
         internal const string FieldsetErrorsEnabled = "fieldsetErrors";
-        internal const string TprNotificationBannerBlocks = "blocks";
+        internal const string NotificationBannerBlocks = "blocks";
     }
 }

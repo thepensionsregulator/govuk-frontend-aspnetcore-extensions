@@ -33,7 +33,7 @@
     error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
     error-message-compare="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
 >
-    <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" input-class="@cssClasses" input-aria-invalid="@invalid">
+    <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" class="@cssClasses" input-aria-invalid="@invalid">
         <govuk-input-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@label</govuk-input-label>
         @if (!string.IsNullOrWhiteSpace(hint))
         {

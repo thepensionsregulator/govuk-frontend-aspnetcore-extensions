@@ -2,10 +2,11 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
 @using Umbraco.Extensions
 @{
     var text = Model.Content.Value<string>("text");
-    var classNames = Model.Settings.Value<string>("cssClasses");
+    var classNames = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     switch (Model.Settings.Value<string>("typeOfButton")) {
         case "Secondary":
             <govuk-button class="govuk-button--secondary @classNames" type="button" id="@Model.Content.Key">@text</govuk-button>

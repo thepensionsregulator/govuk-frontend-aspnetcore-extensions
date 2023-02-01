@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Panel settings</summary>
 	[PublishedModel("govukPanelSettings")]
-	public partial class GovukPanelSettings : PublishedElementModel, IGovukGrid, IGovukGridColumnClasses
+	public partial class GovukPanelSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -56,6 +56,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("headingLevel")]
 		public virtual string HeadingLevel => this.Value<string>(_publishedValueFallback, "headingLevel");
+
+		///<summary>
+		/// CSS classes
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClasses")]
+		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
 
 		///<summary>
 		/// CSS classes for row

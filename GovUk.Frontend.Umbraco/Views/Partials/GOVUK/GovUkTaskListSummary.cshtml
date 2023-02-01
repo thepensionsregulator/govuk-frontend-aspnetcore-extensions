@@ -26,7 +26,7 @@
 
 <govuk-task-list-summary 
     id="@Model.Content.Key"
-    class="@(Model.Settings.Value<string>("cssClasses"))"
+    class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))"
     heading-level="@headingLevel"
     incomplete-status="@(incompleteStatus)"
     completed-status="@(completedStatus)"

@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Summary list settings</summary>
 	[PublishedModel("govukSummaryListSettings")]
-	public partial class GovukSummaryListSettings : PublishedElementModel, IGovukGrid, IGovukGridColumnClasses
+	public partial class GovukSummaryListSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -48,6 +48,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
+
+		///<summary>
+		/// CSS classes
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClasses")]
+		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
 
 		///<summary>
 		/// CSS classes for row

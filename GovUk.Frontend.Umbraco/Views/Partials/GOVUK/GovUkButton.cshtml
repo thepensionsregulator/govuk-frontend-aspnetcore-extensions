@@ -15,6 +15,10 @@
             <govuk-button class="govuk-button--warning @classNames" type="button" id="@Model.Content.Key">@text</govuk-button>
             break;
 
+        case "Reversed":
+            <govuk-button class="govuk-button--reversed @classNames" type="button" id="@Model.Content.Key">@text</govuk-button>
+            break;
+
         default:
             <govuk-button class="@classNames" type="submit" id="@Model.Content.Key">@text</govuk-button>
             break;

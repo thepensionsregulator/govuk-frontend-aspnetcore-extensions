@@ -20,6 +20,9 @@
 
             > .govuk-button--reversed {
                 color: $tpr-colour-camarone;
+                &:hover{
+                    color: $tpr-colour-white;
+                }
             }
 
             > .govuk-grid-row {

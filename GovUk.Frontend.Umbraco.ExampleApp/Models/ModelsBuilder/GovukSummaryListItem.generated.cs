@@ -63,14 +63,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("itemKey")]
-		public virtual string Key => this.Value<string>(_publishedValueFallback, "key");
+		public virtual string ItemKey => this.Value<string>(_publishedValueFallback, "itemKey");
 
 		///<summary>
 		/// Value: If the key is ‘Name’, the value is the piece of information itself, like ‘John Smith’
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("value")]
-		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Value => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "value");
+		[ImplementPropertyType("itemValue")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Value => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "itemValue");
 	}
 }

@@ -84,7 +84,7 @@ input[type="file"]::file-selector-button {
     background-color: $tpr-colour-petite-orchid;
 }
 .govuk-notification-banner--success{
-    > * .govuk-button--reversed{
+    .govuk-button--reversed{
         color: $tpr-colour-camarone;
     }
 }

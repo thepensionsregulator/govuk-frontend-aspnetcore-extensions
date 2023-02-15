@@ -83,23 +83,20 @@ input[type="file"]::file-selector-button {
     color: $tpr-colour-white;
     background-color: $tpr-colour-petite-orchid;
 }
-.govuk-notification-banner--success{
-    .govuk-button--reversed{
-        color: $tpr-colour-camarone;
-    }
-}
 
 .govuk-button--reversed {
     background-color: $tpr-colour-white;
     background-image: none;
     padding-right: govuk-spacing(4);
     color: $tpr-colour-eastern-blue;
-
-    &:hover {
+    
+    &:hover,
+    &:active,
+    &:active:focus {
         color: $tpr-colour-white;
     }
 
     &:focus {
-        color: $tpr-colour-black;
+        color: $tpr-colour-black;  
     }
 }

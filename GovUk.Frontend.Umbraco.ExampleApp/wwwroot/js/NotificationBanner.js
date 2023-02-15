@@ -1,6 +1,10 @@
 ﻿window.addEventListener("DOMContentLoaded", function () {
     const dismissButton = document.getElementsByClassName("dismiss")[0];
-    dismissButton.addEventListener("click", dismissBanner);
+
+    if (dismissButton) {
+        dismissButton.addEventListener("click", dismissBanner);
+        dismissButton.classList.remove("govuk-!-display-none");
+    }
 
     function dismissBanner() {
         const banner = document.getElementsByClassName("govuk-notification-banner")[0];

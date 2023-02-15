@@ -62,7 +62,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.0.0+e3f4b86")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("key")]
+		[ImplementPropertyType("itemKey")]
 		public virtual string Key => this.Value<string>(_publishedValueFallback, "key");
 
 		///<summary>

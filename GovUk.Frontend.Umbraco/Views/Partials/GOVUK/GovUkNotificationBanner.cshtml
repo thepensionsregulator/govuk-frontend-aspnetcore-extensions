@@ -19,14 +19,18 @@
     {
         <govuk-notification-banner-title>@(Model.Settings.Value<string>("title"))</govuk-notification-banner-title>
     }
-    @if (string.IsNullOrEmpty(text))
+    @if (string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(heading))
     {
         <p class="govuk-notification-banner__heading">@Html.Raw(heading)</p>
     }
-    else
+    else 
     {
-        <h3 class="govuk-notification-banner__heading">@Html.Raw(heading)</h3>
+        if (!string.IsNullOrEmpty(heading))
+        {
+            <h3 class="govuk-notification-banner__heading">@Html.Raw(heading)</h3> 
+        }
         @Html.Raw(text)
     }
+    
     @await Html.PartialAsync("GOVUK/BlockList", blocks)
 </govuk-notification-banner>

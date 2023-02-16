@@ -13,8 +13,9 @@
     var heading = GovUkTypography.Apply(Model.Content.Value<string>("heading"), new TypographyOptions{ RemoveWrappingParagraph = true });
     var text = GovUkTypography.Apply(Model.Content.Value<string>("text"), new TypographyOptions { RemoveWrappingParagraph = false });
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.NotificationBannerBlocks);
+    var classNames = Model.Settings.Value<string>("cssClasses");
 }
-<govuk-notification-banner type="@((NotificationBannerType)bannerType!)">
+<govuk-notification-banner type="@((NotificationBannerType)bannerType!)" class="@classNames">
     @if (!string.IsNullOrEmpty(Model.Settings.Value<string>("title")))
     {
         <govuk-notification-banner-title>@(Model.Settings.Value<string>("title"))</govuk-notification-banner-title>

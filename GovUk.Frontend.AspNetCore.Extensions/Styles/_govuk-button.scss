@@ -92,6 +92,7 @@ input[type="file"]::file-selector-button {
     
     &:hover,
     &:active,
+    &:hover:focus,
     &:active:focus {
         color: $tpr-colour-white;
     }

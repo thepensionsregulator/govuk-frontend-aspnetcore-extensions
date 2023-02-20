@@ -6,21 +6,10 @@
 	<Target Name="CopyFilesFromGovUkFrontend" BeforeTargets="BeforeBuild">
 		<ItemGroup>
 			<WwwrootFilesFromGovUkFrontendExtensions Include="$(ProjectDir)..\GovUk.Frontend.AspNetCore.Extensions\wwwroot\**" />
-			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\uSync\**" />
-			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\wwwroot\**" />
-			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
 		<Message Text="Copying files from GovUk.Frontend.AspNetCore.Extensions to $(ProjectDir)" Importance="high" />
 		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendExtensions)"
 			DestinationFiles="$(ProjectDir)wwwroot\_content\GovUk.Frontend.AspNetCore.Extensions\%(RecursiveDir)%(Filename)%(Extension)" />
-
-		<Message Text="Copying files from GovUk.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
-		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" /> 
-		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
-		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 </Project>

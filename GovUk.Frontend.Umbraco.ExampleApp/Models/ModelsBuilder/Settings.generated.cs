@@ -50,6 +50,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Use The Pensions Regulator styles
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
+		[ImplementPropertyType("useTPRStyles")]
+		public virtual bool UseTprstyles => this.Value<bool>(_publishedValueFallback, "useTPRStyles");
+
+		///<summary>
 		/// Phase
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]

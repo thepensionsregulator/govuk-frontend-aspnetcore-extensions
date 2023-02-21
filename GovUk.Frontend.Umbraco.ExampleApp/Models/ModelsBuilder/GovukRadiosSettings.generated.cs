@@ -50,30 +50,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// CSS classes for error
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("cssClassesForError")]
-		public virtual string CssClassesForError => this.Value<string>(_publishedValueFallback, "cssClassesForError");
-
-		///<summary>
-		/// CSS classes for hint
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("cssClassesForHint")]
-		public virtual string CssClassesForHint => this.Value<string>(_publishedValueFallback, "cssClassesForHint");
-
-		///<summary>
-		/// CSS classes for radio buttons
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("cssClassesForRadios")]
-		public virtual string CssClassesForRadios => this.Value<string>(_publishedValueFallback, "cssClassesForRadios");
-
-		///<summary>
 		/// Layout: Only use horizontal radios when the question only has two options and both options are short.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]

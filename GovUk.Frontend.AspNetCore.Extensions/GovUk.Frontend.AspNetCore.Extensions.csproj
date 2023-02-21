@@ -6,8 +6,8 @@
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<IncludeRazorContentInPack>true</IncludeRazorContentInPack>
 		<Nullable>enable</Nullable>
-		<Version>1.0.0-pre0001</Version>
-		<PackageValidationBaselineVersion>1.0.0-pre0001</PackageValidationBaselineVersion>
+		<Version>1.0.0-pre0003</Version>
+		<PackageValidationBaselineVersion>1.0.0-pre0003</PackageValidationBaselineVersion>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.GovUk.Frontend</Title>

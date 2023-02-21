@@ -37,7 +37,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
             var screenLogo = new TagBuilder("img");
             screenLogo.TagRenderMode = TagRenderMode.SelfClosing;
-            screenLogo.Attributes.Add("src", "/_content/GovUK.Frontend.AspNetCore.Extensions/tpr/tpr-logo-header.svg");
+            screenLogo.Attributes.Add("src", "/_content/ThePensionsRegulator.GovUk.Frontend/tpr/tpr-logo-header.svg");
             screenLogo.Attributes.Add("alt", logoAlt);
             screenLogo.Attributes.Add("width", "180");
             screenLogo.Attributes.Add("height", "75");
@@ -46,7 +46,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
             var printLogo = new TagBuilder("img");
             printLogo.TagRenderMode = TagRenderMode.SelfClosing;
-            printLogo.Attributes.Add("src", "/_content/GovUK.Frontend.AspNetCore.Extensions/tpr/tpr-logo-footer.svg");
+            printLogo.Attributes.Add("src", "/_content/ThePensionsRegulator.GovUk.Frontend/tpr/tpr-logo-footer.svg");
             printLogo.Attributes.Add("alt", logoAlt);
             printLogo.Attributes.Add("width", "180");
             printLogo.Attributes.Add("height", "75");

@@ -37,7 +37,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
             var logo = new TagBuilder("img");
             logo.TagRenderMode = TagRenderMode.SelfClosing;
-            logo.Attributes.Add("src", "/_content/GovUK.Frontend.AspNetCore.Extensions/tpr/tpr-logo-footer.svg");
+            logo.Attributes.Add("src", "/_content/ThePensionsRegulator.GovUk.Frontend/tpr/tpr-logo-footer.svg");
             logo.Attributes.Add("alt", logoAlt);
             logo.Attributes.Add("width", "126");
             logo.Attributes.Add("height", "47");

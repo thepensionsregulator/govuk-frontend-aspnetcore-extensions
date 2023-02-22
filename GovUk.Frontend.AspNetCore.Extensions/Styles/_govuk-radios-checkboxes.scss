@@ -16,12 +16,18 @@
 .govuk-checkboxes__input:disabled {
     border-color: $tpr-colour-silver;
 }
+
 .govuk-radios__input:disabled + .govuk-radios__label,
 .govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
     opacity: 1; // GOV.UK uses opacity to change the colour, so undo that
     color: $tpr-colour-dark-grey;
 }
+
 .govuk-radios__input:disabled + .govuk-radios__label:before
 .govuk-checkboxes__input:disabled + .govuk-checkboxes__label:before {
     background-color: $tpr-colour-snow;
+}
+
+.govuk-radios__label:after {
+    border-color: $tpr-colour-royal-blue;
 }

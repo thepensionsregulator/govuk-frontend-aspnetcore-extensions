@@ -427,6 +427,9 @@
 		<Content Update="uSync\v9\DataTypes\GOVUKTaskListStatus.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\DataTypes\GOVUKTextInputWidth.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKTrueOrFalseDefaultsToTrue.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

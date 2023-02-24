@@ -27,5 +27,6 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 
         [Range(5, 50, ErrorMessage = nameof(Field6))]
         public int? Field6 { get; set; }
+        public string? Field7 { get; set; }
     }
 }

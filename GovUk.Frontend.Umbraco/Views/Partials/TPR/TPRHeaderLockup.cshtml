@@ -1,0 +1,54 @@
+﻿@model TprHeaderLockupModel
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+@using GovUk.Frontend.Umbraco.Models;
+@using GovUk.Frontend.Umbraco.Services;
+@using GovUk.Frontend.Umbraco.Typography;
+@using HtmlAgilityPack;
+@using Umbraco.Cms.Web.Common;
+@using Umbraco.Extensions;
+@inject UmbracoHelper Umbraco
+@inject IContextAwareHostUpdater hostUpdater
+@{
+    var phase = Model.Phase();
+    var skipLink = Model.SkipLinkText();
+    if (string.IsNullOrEmpty(skipLink)) { skipLink = "Skip to main content"; }
+    var headerLogoAlt = Model.LogoAlternativeText();
+    if (string.IsNullOrEmpty(headerLogoAlt)) { headerLogoAlt = ComponentGenerator.HeaderLogoDefaultAlt; }
+    var document = new HtmlDocument();
+    document.LoadHtml(GovUkTypography.Apply(Model.HeaderBarContent(), new TypographyOptions { RemoveWrappingParagraphs = true }));
+    var headerLinks = document.DocumentNode.SelectNodes("//a");
+    if(headerLinks != null)
+    {
+        foreach(var link in headerLinks)
+        {
+            var attribute = link.Attributes["href"];
+            attribute.Value = hostUpdater.UpdateHost(attribute.Value, Context.Request.Host.Host);
+        }
+    }
+    var showPhaseBanner = Model.ShowPhaseBanner && !string.IsNullOrEmpty(phase) && phase != "Live";
+}
+@if (Model.ShowSkipLink)
+{
+    <govuk-skip-link href="@Model.SkipLinkHref()" class="@Model.SkipLinkClass()">@skipLink</govuk-skip-link>
+}
+@if (showPhaseBanner || Model.ShowHeader)
+{
+    <header role="banner">
+        @if (showPhaseBanner)
+        {
+            <govuk-phase-banner class="govuk-width-container @Model.PhaseBannerClass()">
+                <govuk-phase-banner-tag>@phase</govuk-phase-banner-tag>
+                @Html.Raw(GovUkTypography.Apply(Model.PhaseBannerText(), new TypographyOptions{ RemoveWrappingParagraph = true }))
+            </govuk-phase-banner>
+        }
+        @if (Model.ShowHeader)
+        {
+            <tpr-header-bar class="@Model.HeaderBarClass()" logo-alt="@headerLogoAlt" logo-href="@Model.LogoHref()" label="@Model.HeaderBarLabel()">
+                @Html.Raw(document.DocumentNode.OuterHtml)
+            </tpr-header-bar>
+            <tpr-context-bar class="@Model.ContextBarClass()" context-1="@Model.Context1()" context-2="@Model.Context2()" context-3="@Model.Context3()" />
+        }
+    </header>
+}

@@ -20,6 +20,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             Guard.ArgumentNotNull(nameof(content), content);
 
             var outer = new TagBuilder("div");
+            if (attributes != null) { outer.MergeAttributes(attributes); }
             outer.MergeCssClass("tpr-back-to-top");
 
             var middle = new TagBuilder("div");
@@ -29,7 +30,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             inner.MergeCssClass("tpr-back-to-top__inner");
 
             var link = new TagBuilder(BackToTopLinkElement);
-            if (attributes != null) link.MergeAttributes(attributes);
             link.MergeCssClass("govuk-link");
             link.Attributes.Add("href", href);
 

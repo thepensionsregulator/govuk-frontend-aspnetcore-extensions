@@ -73,7 +73,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string CssClassesForRow => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGrid.GetCssClassesForRow(this, _publishedValueFallback);
 
 		///<summary>
-		/// Column size: Defaults to 'two-thirds' if both column size properties are left blank.
+		/// Column size
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -81,7 +81,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string ColumnSize => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetColumnSize(this, _publishedValueFallback);
 
 		///<summary>
-		/// Column size (from desktop)
+		/// Column size (from desktop): Defaults to 'two-thirds' if both column size properties are left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

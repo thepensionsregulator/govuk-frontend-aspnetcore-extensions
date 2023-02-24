@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Back to menu settings</summary>
 	[PublishedModel("govukBackToMenuSettings")]
-	public partial class GovukBackToMenuSettings : PublishedElementModel, IGovukGrid, IGovukGridColumnClasses
+	public partial class GovukBackToMenuSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -50,6 +50,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// CSS classes
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClasses")]
+		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
+
+		///<summary>
 		/// CSS classes for row
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
@@ -58,7 +66,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string CssClassesForRow => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGrid.GetCssClassesForRow(this, _publishedValueFallback);
 
 		///<summary>
-		/// Column size: Defaults to 'two-thirds' if both column size properties are left blank.
+		/// Column size
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -66,7 +74,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string ColumnSize => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetColumnSize(this, _publishedValueFallback);
 
 		///<summary>
-		/// Column size (from desktop)
+		/// Column size (from desktop): Defaults to 'two-thirds' if both column size properties are left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

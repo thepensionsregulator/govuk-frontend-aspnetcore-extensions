@@ -70,7 +70,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Column size: Defaults to 'two-thirds' if both column size properties are left blank.
+		/// Column size
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -83,7 +83,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public static string GetColumnSize(IGovukGridColumnClasses that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "columnSize");
 
 		///<summary>
-		/// Column size (from desktop)
+		/// Column size (from desktop): Defaults to 'two-thirds' if both column size properties are left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

@@ -35,12 +35,13 @@
     // If this block is a fieldset and there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
     // But only if the 'legendIsPageHeading' setting is false, otherwise it's done in GovUkFieldset.cshtml.
     var fieldsetErrors = GovUkFieldsetErrorFinder.FindFieldsetErrors(blocks[i], ViewContext.ModelState);
+    string? fieldsetErrorClasses = null;
     if (fieldsetErrors.Any())
     {
         var legendIsPageHeading = blocks[i].Settings?.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading) ?? false;
         if (!legendIsPageHeading)
         {
-            rowClass += " govuk-form-group govuk-form-group--error";
+            fieldsetErrorClasses = "govuk-form-group govuk-form-group--error";
         }
     }
 
@@ -59,7 +60,15 @@
         @:<div class="@rowClass"> 
         @:<div class="@columnClass"> 
     }
+    @if (!string.IsNullOrEmpty(fieldsetErrorClasses))
+    {
+        @:<div class="@fieldsetErrorClasses"> 
+    }
     @await Html.PartialAsync("GOVUK/" + blocks[i].Content.ContentType.Alias, block)
+    @if (!string.IsNullOrEmpty(fieldsetErrorClasses))
+    {
+        @:</div> 
+    }
     @if (filteredModel.RenderGrid && !isGridRowBlock && !sameAsNext) {
         @:</div> 
         @:</div> 

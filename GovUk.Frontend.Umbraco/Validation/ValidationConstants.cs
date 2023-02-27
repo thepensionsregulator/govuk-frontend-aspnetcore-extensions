@@ -1,7 +1,7 @@
 ﻿namespace GovUk.Frontend.Umbraco.Validation
 {
-    internal class ValidationConstants
+    public class ValidationConstants
     {
-        internal const string FIELDSET_ERROR = "FIELDSET-ERROR";
+        public const string FIELDSET_ERROR = "FIELDSET-ERROR";
     }
 }

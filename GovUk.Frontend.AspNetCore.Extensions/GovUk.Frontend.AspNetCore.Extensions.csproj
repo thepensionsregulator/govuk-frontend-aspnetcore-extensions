@@ -324,11 +324,18 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_govuk-back.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+      <UpToDateCheckInput Remove="Styles\_govuk-notification-banner.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
 		<Content Include="GovUk.Frontend.AspNetCore.Extensions.targets">
 			<Pack>true</Pack>
 			<PackagePath>build</PackagePath>
 		</Content>
-	  <Content Include="Styles\_variables.scss" />
+	  	<Content Include="Styles\_variables.scss" />
 	</ItemGroup>
 
 </Project>

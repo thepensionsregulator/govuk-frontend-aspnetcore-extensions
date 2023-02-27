@@ -104,15 +104,17 @@ function createGovUkValidator() {
       if (!list) {
         return;
       }
-      while (list.firstChild) {
-        list.removeChild(list.firstChild);
-      }
-      [].slice
+
+      const textNode = 3;
+
+      // Get the current links in the error summary, and the links that need to be there
+      const currentErrors = [].slice.call(list.querySelectorAll("a"));
+
+      const updatedErrors = [].slice
         .call(document.querySelectorAll(".govuk-error-message"))
         .map(function (error) {
           const link = document.createElement("a");
           const prefix = error.querySelector(".govuk-visually-hidden");
-          const textNode = 3;
           [].slice.call(error.childNodes).map(function (x) {
             if (
               x !== prefix &&
@@ -125,10 +127,73 @@ function createGovUkValidator() {
             return;
           }
           link.href = "#" + error.id.substring(0, error.id.length - 6);
-          let summaryError = document.createElement("li");
-          summaryError.appendChild(link);
-          list.appendChild(summaryError);
+          return link;
+        })
+        .filter(function (link) {
+          return link !== undefined;
         });
+
+      function findErrorsNotMatched(errorsToLookFor, errorsToSearch) {
+        const result = [];
+        for (let i = 0; i < errorsToLookFor.length; i++) {
+          let matchingErrors = errorsToSearch.filter(function (link) {
+            return matchErrorLink(link, errorsToLookFor[i]);
+          });
+          if (!matchingErrors.length) {
+            result.push(errorsToLookFor[i]);
+          }
+        }
+        return result;
+      }
+
+      function matchErrorLink(link1, link2) {
+        return (
+          link1.href === link2.href && link1.textContent == link2.textContent
+        );
+      }
+
+      // Remove any errors from the error summary that are no longer in the page.
+      const errorsToRemove = findErrorsNotMatched(currentErrors, updatedErrors);
+
+      for (let i = 0; i < errorsToRemove.length; i++) {
+        list.removeChild(errorsToRemove[i].parentElement);
+      }
+
+      // Find any new errors and insert them at the correct position in the error summary.
+      // It's important to leave existing links untouched. If your focus is in a field and you click
+      // on an error summary link, validation will run on focusout of the field before the link is followed.
+      // If validation removes the link (even if it recreates an identical one) it cannot be followed.
+      let errorsToAdd = findErrorsNotMatched(updatedErrors, currentErrors);
+
+      for (let i = 0; i < errorsToAdd.length; i++) {
+        let summaryError = document.createElement("li");
+        summaryError.appendChild(errorsToAdd[i]);
+
+        if (list.childNodes.length == 0) {
+          list.appendChild(summaryError);
+        } else {
+          let indexOfThisError = updatedErrors.indexOf(errorsToAdd[i]);
+          if (indexOfThisError === 0) {
+            list.insertBefore(summaryError, list.firstChild);
+          } else {
+            let errorToInsertAfter = updatedErrors[indexOfThisError - 1];
+            for (let j = 0; j < list.childNodes.length; j++) {
+              let link = list.childNodes[j].querySelector("a");
+              if (matchErrorLink(link, errorToInsertAfter)) {
+                if (list.childNodes[j].nextSibling) {
+                  list.insertBefore(
+                    summaryError,
+                    list.childNodes[j].nextSibling
+                  );
+                } else {
+                  list.appendChild(summaryError);
+                }
+                break;
+              }
+            }
+          }
+        }
+      }
 
       const hasError = list.querySelector("li");
       summary.classList.remove(
@@ -437,7 +502,7 @@ function createGovUkValidator() {
           extensionAbbreviationExtDot
         );
         if (lastIndexOfExtension >= 0) {
-          var extension = potentialPhoneNumber.substring(
+          const extension = potentialPhoneNumber.substring(
             lastIndexOfExtension + extensionAbbreviationExtDot.length
           );
           if (matchesPhoneExtension(extension)) {
@@ -449,7 +514,7 @@ function createGovUkValidator() {
           extensionAbbreviationExt
         );
         if (lastIndexOfExtension >= 0) {
-          var extension = potentialPhoneNumber.substring(
+          const extension = potentialPhoneNumber.substring(
             lastIndexOfExtension + extensionAbbreviationExt.length
           );
           if (matchesPhoneExtension(extension)) {
@@ -461,7 +526,7 @@ function createGovUkValidator() {
           extensionAbbreviationX
         );
         if (lastIndexOfExtension >= 0) {
-          var extension = potentialPhoneNumber.substring(
+          const extension = potentialPhoneNumber.substring(
             lastIndexOfExtension + extensionAbbreviationX.length
           );
           if (matchesPhoneExtension(extension)) {

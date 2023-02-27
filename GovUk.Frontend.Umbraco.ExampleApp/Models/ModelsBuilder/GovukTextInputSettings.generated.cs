@@ -66,6 +66,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string Suffix => this.Value<string>(_publishedValueFallback, "suffix");
 
 		///<summary>
+		/// Text input width
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("textInputWidth")]
+		public virtual string TextInputWidth => this.Value<string>(_publishedValueFallback, "textInputWidth");
+
+		///<summary>
 		/// CSS classes
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]

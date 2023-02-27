@@ -46,8 +46,8 @@ describe("updateSummary", () => {
     govuk().updateErrorSummary();
 
     expect(
-      document.querySelector(".govuk-error-summary > .govuk-list").childNodes
-        .length
+      document.querySelector(".govuk-error-summary > .govuk-list")
+        .childElementCount
     ).toBe(2);
     expect(
       document.querySelector(".govuk-error-summary a[href='#new1']")

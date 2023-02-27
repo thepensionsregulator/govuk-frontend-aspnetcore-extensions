@@ -1,6 +1,11 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<NotificationBanner>
+﻿@using Smidge.Models;
+@using Smidge
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<NotificationBanner>
 @section head{
 	<title>@Model.Name</title>
+}
+@{
+    SmidgeHelper.RequiresJs(new JavaScriptFile { FilePath = "~/js/NotificationBanner.js", Order = 0 });
 }
 
 <partial name="GOVUK/BlockList" model="Model.Blocks" />

@@ -5,17 +5,22 @@
 @using Umbraco.Extensions
 @{
     var text = Model.Content.Value<string>("text");
+    var classNames = Model.Settings.Value<string>("cssClasses");
     switch (Model.Settings.Value<string>("typeOfButton")) {
         case "Secondary":
-            <govuk-button class="govuk-button--secondary" type="button" id="@Model.Content.Key">@text</govuk-button>
+            <govuk-button class="govuk-button--secondary @classNames" type="button" id="@Model.Content.Key">@text</govuk-button>
             break;
 
         case "Warning":
-            <govuk-button class="govuk-button--warning" type="button" id="@Model.Content.Key">@text</govuk-button>
+            <govuk-button class="govuk-button--warning @classNames" type="button" id="@Model.Content.Key">@text</govuk-button>
+            break;
+
+        case "Reversed":
+            <govuk-button class="govuk-button--reversed @classNames" type="button" id="@Model.Content.Key">@text</govuk-button>
             break;
 
         default:
-            <govuk-button type="submit" id="@Model.Content.Key">@text</govuk-button>
+            <govuk-button class="@classNames" type="submit" id="@Model.Content.Key">@text</govuk-button>
             break;
     }
 }

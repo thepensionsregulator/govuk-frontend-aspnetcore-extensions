@@ -238,9 +238,13 @@
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_govuk-table.scss" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-back.scss" />
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Styles\_govuk-back.scss" />
 	</ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Styles\_govuk-notification-banner.scss" />
+  </ItemGroup>
 
 </Project>

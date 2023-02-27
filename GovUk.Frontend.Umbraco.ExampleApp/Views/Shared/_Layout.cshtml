@@ -55,4 +55,5 @@
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)
 </body>
+@await SmidgeHelper.JsHereAsync(debug: true)
 </html>

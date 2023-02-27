@@ -66,7 +66,8 @@ input[type="file"]::file-selector-button {
     padding-right: $tpr-button-padding;
 }
 .govuk-button--start:focus:not(:active):not(:hover),
-.govuk-button--secondary:focus:not(:active):not(:hover) {
+.govuk-button--secondary:focus:not(:active):not(:hover),
+.govuk-button--reversed:focus:not(:active):not(:hover) {
     background-image: none;
 }
 
@@ -81,4 +82,22 @@ input[type="file"]::file-selector-button {
 .govuk-button--warning:disabled {
     color: $tpr-colour-white;
     background-color: $tpr-colour-petite-orchid;
+}
+
+.govuk-button--reversed {
+    background-color: $tpr-colour-white;
+    background-image: none;
+    padding-right: govuk-spacing(4);
+    color: $tpr-colour-eastern-blue;
+    
+    &:hover,
+    &:active,
+    &:hover:focus,
+    &:active:focus {
+        color: $tpr-colour-white;
+    }
+
+    &:focus {
+        color: $tpr-colour-black;  
+    }
 }

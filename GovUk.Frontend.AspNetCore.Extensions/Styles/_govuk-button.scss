@@ -14,6 +14,7 @@ $tpr-button-padding: 20px;
 
 .govuk-button, input[type="file"]::file-selector-button {
     color: $tpr-colour-white;
+    border-width: 1px;
     border-color: transparent;
     line-height: govuk-px-to-rem(24);
     border-radius: 8px;
@@ -95,6 +96,8 @@ input[type="file"]::file-selector-button {
     &:hover:focus,
     &:active:focus {
         color: $tpr-colour-white;
+        background: transparent;
+        border: 1px solid $tpr-colour-white;
     }
 
     &:focus {

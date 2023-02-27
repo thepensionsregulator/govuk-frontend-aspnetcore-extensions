@@ -6,10 +6,10 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.$(AssemblyName)</Title>
-		<Version>1.0.0-pre0003</Version>
+		<Version>1.0.0-pre0007</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
-		<PackageValidationBaselineVersion>1.0.0-pre0003</PackageValidationBaselineVersion>
+		<PackageValidationBaselineVersion>1.0.0-pre0007</PackageValidationBaselineVersion>
 		<Authors>rickmason-tpr</Authors>
 		<Company>The Pensions Regulator</Company>
 		<Description>GOV.UK Design System components implemented using the block list editor in Umbraco, and classes used to build applications based on these components. Includes some components specifically for applications built for The Pensions Regulator.</Description>
@@ -37,7 +37,7 @@
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />
 		<Content Include="App_Plugins\GOVUK\package.manifest" />
-		<Content Include="GovUk.Frontend.Umbraco.targets">
+		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.targets">
 		  <PackagePath>build</PackagePath>
 		  <Pack>true</Pack>
 		</Content>

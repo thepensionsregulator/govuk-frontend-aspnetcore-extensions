@@ -6,10 +6,10 @@
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<IncludeRazorContentInPack>true</IncludeRazorContentInPack>
 		<Nullable>enable</Nullable>
-		<Version>1.0.0-pre0003</Version>
+		<Version>1.0.0-pre0008</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
-		<PackageValidationBaselineVersion>1.0.0-pre0003</PackageValidationBaselineVersion>
+		<PackageValidationBaselineVersion>1.0.0-pre0008</PackageValidationBaselineVersion>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.GovUk.Frontend</Title>
@@ -30,74 +30,6 @@
 		<Product>ThePensionsRegulator.GovUk.Frontend</Product>
 	</PropertyGroup>
 	
-
-	<ItemGroup>
-		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\_base.scss" Link="$(MsBuildThisFileDirectory)">
-			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk</PackagePath>
-		</Content>
-		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\helpers\*.scss" Link="$(MsBuildThisFileDirectory)">
-			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk\helpers</PackagePath>
-		</Content>
-		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\tools\*.scss" Link="$(MsBuildThisFileDirectory)">
-			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk\tools</PackagePath>
-		</Content>
-		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\settings\*.scss" Link="$(MsBuildThisFileDirectory)">
-			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk\settings</PackagePath>
-		</Content>
-		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\vendor\*.scss" Link="$(MsBuildThisFileDirectory)">
-			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk\vendor</PackagePath>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_all.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_clearfix.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_colour.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_device-pixels.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_focused.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_font-faces.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_grid.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_links.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_media-queries.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_shape-arrow.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_spacing.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_typography.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\helpers\_visually-hidden.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_all.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_assets.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_colours-applied.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_colours-organisations.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_colours-palette.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_compatibility.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_global-styles.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_ie8.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_links.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_measurements.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_media-queries.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_spacing.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_typography-font-families.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_typography-font.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\settings\_typography-responsive.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\tools\_all.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\tools\_compatibility.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\tools\_exports.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\tools\_font-url.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\tools\_ie8.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\tools\_image-url.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\tools\_px-to-em.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\tools\_px-to-rem.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\vendor\_sass-mq.scss" />
-		<Content Remove="C:\dev\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\..\lib\govuk-frontend\src\govuk\_base.scss" />
-		<Content Remove="sasscompiler.json" />
-		<Content Remove="wwwroot\govuk\govuk-frontend.css.map" />
-		<Content Remove="wwwroot\tpr\tpr.css.map" />
-	</ItemGroup>
-
 	<ItemGroup>
 		<None Remove="Styles\_govuk-back.scss" />
 		<None Remove="Styles\_govuk-button.scss" />
@@ -265,6 +197,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\_base.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk</PackagePath>
+		</Content>
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\helpers\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk\helpers</PackagePath>
+		</Content>
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\tools\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk\tools</PackagePath>
+		</Content>
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\settings\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk\settings</PackagePath>
+		</Content>
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\vendor\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk\vendor</PackagePath>
+		</Content>
+
 		<None Include="..\tpr-nuget.png">
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
@@ -280,6 +233,12 @@
 		<None Include="wwwroot\lib\jquery\dist\jquery.js" />
 		<None Include="wwwroot\lib\jquery\LICENSE.txt" />
 		<None Include="wwwroot\tpr\tpr.css.map" />
+
+		<Content Include="ThePensionsRegulator.GovUk.Frontend.targets">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="Styles\_variables.scss" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -330,12 +289,4 @@
       <UpToDateCheckInput Remove="Styles\_govuk-notification-banner.scss" />
 	</ItemGroup>
 	
-	<ItemGroup>
-		<Content Include="GovUk.Frontend.AspNetCore.Extensions.targets">
-			<Pack>true</Pack>
-			<PackagePath>build</PackagePath>
-		</Content>
-	  	<Content Include="Styles\_variables.scss" />
-	</ItemGroup>
-
 </Project>

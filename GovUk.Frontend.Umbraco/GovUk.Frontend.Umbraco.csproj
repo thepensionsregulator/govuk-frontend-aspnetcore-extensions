@@ -358,6 +358,9 @@
 		<Content Update="uSync\v9\DataTypes\GOVUKButtonType.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\DataTypes\GOVUKButtonStyle.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKCheckboxes.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

@@ -1,3 +1,9 @@
 ﻿.language-switcher { margin: 1rem 0; }
 .languageSelected { border-left: 4px solid #ccc; padding-left: 8px; }
 .languageNotSelected { padding-left: 12px; }
+
+.govuk-grid-row--dark-background {
+    background: gray;
+    padding-top: 15px;
+    margin: 0 0 30px 0;
+}

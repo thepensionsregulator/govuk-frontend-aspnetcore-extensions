@@ -1,6 +1,12 @@
 ﻿.languageSelected { border-left: 4px solid #ccc; padding-left: 8px; }
 .languageNotSelected { padding-left: 12px; }
 
+.govuk-grid-row--dark-background {
+    background: gray;
+    padding-top: 15px;
+    margin: 0 0 30px 0;
+}
+
 /*
     Show GOV.UK grid lines - enable using document.body.classList.add("debug-grid") in the DevTools console
 */

@@ -37,6 +37,19 @@
             max-width: none;
         }
 
+        .govuk-button--reversed {
+            background-color: $tpr-colour-white;
+            color: $tpr-colour-eastern-blue;
+
+            &:hover, 
+            &:active, 
+            &:hover:focus, 
+            &:active:focus {
+                background-color: transparent;
+                color: $tpr-colour-white;
+            }
+        }
+
         .govuk-button-group {
             justify-content: center;
         }
@@ -45,7 +58,7 @@
             display: flex;
             justify-content: center;
 
-           
+
             .govuk-button {
                 margin-bottom: 0;
             }
@@ -53,7 +66,7 @@
             .govuk-button-group {
                 justify-content: center;
                 margin-bottom: 0;
-            }    
+            }
         }
     }
 
@@ -62,7 +75,7 @@
     .govuk-notification-banner__link:link,
     .govuk-notification-banner__link,
     .govuk-link:link,
-    .govuk-link{
+    .govuk-link {
         color: $tpr-colour-white;
         text-decoration-thickness: 1px;
 

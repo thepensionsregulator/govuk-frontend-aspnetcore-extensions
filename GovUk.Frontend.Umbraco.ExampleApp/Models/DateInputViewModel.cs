@@ -9,9 +9,9 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         public DateInput? Page { get; set; }
 
         [Required(ErrorMessage = nameof(Field1))]
-        public DateTime? Field1 { get; set; }
+        public DateOnly? Field1 { get; set; }
 
         [Required(ErrorMessage = nameof(Field2))]
-        public DateTime? Field2 { get; set; }
+        public DateOnly? Field2 { get; set; }
     }
 }

@@ -6,10 +6,10 @@
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<IncludeRazorContentInPack>true</IncludeRazorContentInPack>
 		<Nullable>enable</Nullable>
-		<Version>1.0.0-pre0008</Version>
+		<Version>1.0.0-pre0010</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
-		<PackageValidationBaselineVersion>1.0.0-pre0008</PackageValidationBaselineVersion>
+		<PackageValidationBaselineVersion>1.0.0-pre0010</PackageValidationBaselineVersion>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.GovUk.Frontend</Title>
@@ -76,7 +76,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.SassCompiler" Version="1.55.0" />
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.58.1" />
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.0-beta4" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.10" />
@@ -222,7 +222,7 @@
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
-		<None Include="sasscompiler.json" />
+
 		<None Include="wwwroot\govuk\govuk-frontend.css.map" />
 		<None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
 		<None Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
@@ -287,6 +287,12 @@
 	
 	<ItemGroup>
       <UpToDateCheckInput Remove="Styles\_govuk-notification-banner.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Content Update="sasscompiler.json" Pack="false">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
 	</ItemGroup>
 	
 </Project>

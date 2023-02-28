@@ -1,26 +1,26 @@
 ﻿namespace GovUk.Frontend.Umbraco
 {
-    internal static class PropertyAliases
+    public static class PropertyAliases
     {
-        internal const string ModelProperty = "modelProperty";
-        internal const string CssClasses = "cssClasses";
-        internal const string CssClassesForRow = "cssClassesForRow";
-        internal const string CssClassesForColumn = "cssClassesForColumn";
-        internal const string ColumnSize = "columnSize";
-        internal const string ColumnSizeFromDesktop = "columnSizeFromDesktop";
-        internal const string ErrorMessageRequired = "errorMessageRequired";
-        internal const string ErrorMessageRegex = "errorMessageRegex";
-        internal const string ErrorMessageEmail = "errorMessageEmail";
-        internal const string ErrorMessagePhone = "errorMessagePhone";
-        internal const string ErrorMessageLength = "errorMessageLength";
-        internal const string ErrorMessageMinLength = "errorMessageMinLength";
-        internal const string ErrorMessageMaxLength = "errorMessageMaxLength";
-        internal const string ErrorMessageRange = "errorMessageRange";
-        internal const string ErrorMessageCompare = "errorMessageCompare";
-        internal const string ErrorMessage = "error";
-        internal const string FieldsetBlocks = "blocks";
-        internal const string FieldsetLegendIsPageHeading = "legendIsPageHeading";
-        internal const string FieldsetErrorsEnabled = "fieldsetErrors";
-        internal const string NotificationBannerBlocks = "blocks";
+        public const string ModelProperty = "modelProperty";
+        public const string CssClasses = "cssClasses";
+        public const string CssClassesForRow = "cssClassesForRow";
+        public const string CssClassesForColumn = "cssClassesForColumn";
+        public const string ColumnSize = "columnSize";
+        public const string ColumnSizeFromDesktop = "columnSizeFromDesktop";
+        public const string ErrorMessageRequired = "errorMessageRequired";
+        public const string ErrorMessageRegex = "errorMessageRegex";
+        public const string ErrorMessageEmail = "errorMessageEmail";
+        public const string ErrorMessagePhone = "errorMessagePhone";
+        public const string ErrorMessageLength = "errorMessageLength";
+        public const string ErrorMessageMinLength = "errorMessageMinLength";
+        public const string ErrorMessageMaxLength = "errorMessageMaxLength";
+        public const string ErrorMessageRange = "errorMessageRange";
+        public const string ErrorMessageCompare = "errorMessageCompare";
+        public const string ErrorMessage = "error";
+        public const string FieldsetBlocks = "blocks";
+        public const string FieldsetLegendIsPageHeading = "legendIsPageHeading";
+        public const string FieldsetErrorsEnabled = "fieldsetErrors";
+        public const string NotificationBannerBlocks = "blocks";
     }
 }

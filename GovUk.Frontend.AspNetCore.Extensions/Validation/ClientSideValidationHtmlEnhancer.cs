@@ -267,7 +267,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     }
 
                     // String Length
-                    var strLenAttr = modelProperty.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
+                    var strLenAttr = modelProperty.GetCustomAttributes(typeof(StringLengthAttribute), true).Cast<StringLengthAttribute>().FirstOrDefault();
                     if (strLenAttr != null)
                     {
                         targetElement.Attributes.Add("data-val-length", SelectBestErrorMessage(errorMessageLength, strLenAttr.ErrorMessage, localizer));

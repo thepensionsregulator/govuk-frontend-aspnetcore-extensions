@@ -18,10 +18,7 @@
     }
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
-    if (Model.Settings.Value<string>("layout") == "Horizontal")
-    {
-        cssClasses = (cssClasses + " govuk-radios--inline").TrimStart();
-    }
+    var cssClassesForRadios = (Model.Settings.Value<string>("layout") == "Horizontal") ? "govuk-radios--inline" : null;
     var fieldsetHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
     var fieldsetDescribedBy = string.IsNullOrEmpty(fieldsetHint) ? null : modelPropertyName + "-hint";
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
@@ -47,7 +44,7 @@
                     @await Html.PartialAsync("GOVUK/BlockList", blocks)
                 </div>
             }
-            <govuk-radios name="@modelPropertyName">
+            <govuk-radios name="@modelPropertyName" radios-class="@cssClassesForRadios">
                 @if (!string.IsNullOrWhiteSpace(fieldsetHint))
                 {
                     <govuk-radios-hint>@Html.Raw(fieldsetHint)</govuk-radios-hint>

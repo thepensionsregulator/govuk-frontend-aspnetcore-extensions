@@ -6,18 +6,26 @@
 <partial name="GOVUK/ErrorSummary" />
 
 <span class="govuk-caption-xl">Example application</span>
-<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
 
 <form asp-controller="Select" asp-action="Post" method="post" novalidate>
-    <govuk-client-side-validation>
-        <govuk-select asp-for="Field1">
-            <govuk-select-label>Field label</govuk-select-label>
-            <govuk-select-item value=""></govuk-select-item>
-            <govuk-select-item value="1">Item 1</govuk-select-item>
-            <govuk-select-item value="2">Item 2</govuk-select-item>
-            <govuk-select-item value="3">Item 3</govuk-select-item>
-        </govuk-select>
-    </govuk-client-side-validation>
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+            <govuk-client-side-validation>
+                <govuk-select asp-for="Field1">
+                    <govuk-select-label>Field label</govuk-select-label>
+                    <govuk-select-item value=""></govuk-select-item>
+                    <govuk-select-item value="1">Item 1</govuk-select-item>
+                    <govuk-select-item value="2">Item 2</govuk-select-item>
+                    <govuk-select-item value="3">Item 3</govuk-select-item>
+                </govuk-select>
+            </govuk-client-side-validation>
+        </div>
+    </div>
 
     <govuk-button>Submit</govuk-button>
 </form>

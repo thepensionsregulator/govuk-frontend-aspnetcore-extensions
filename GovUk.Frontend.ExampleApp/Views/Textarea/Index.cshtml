@@ -6,23 +6,30 @@
 <partial name="GOVUK/ErrorSummary" />
 
 <span class="govuk-caption-xl">Example application</span>
-<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
 
 <form asp-controller="Textarea" asp-action="Post" method="post" novalidate>
-    <govuk-client-side-validation>
-        <govuk-textarea asp-for="Field1">
-            <govuk-textarea-label>Field label</govuk-textarea-label>
-            <govuk-textarea-hint>This field must be full of numbers</govuk-textarea-hint>
-            <govuk-textarea-error-message />
-        </govuk-textarea>
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+            <govuk-client-side-validation>
+                <govuk-textarea asp-for="Field1">
+                    <govuk-textarea-label>Field label</govuk-textarea-label>
+                    <govuk-textarea-hint>This field must be full of numbers</govuk-textarea-hint>
+                    <govuk-textarea-error-message />
+                </govuk-textarea>
 
-        <govuk-character-count asp-for="Field2" max-length="100">
-            <govuk-character-count-label>Character count</govuk-character-count-label>
-            <govuk-character-count-hint>This has a 100 character limit</govuk-character-count-hint>
-            <govuk-character-count-error-message />
-        </govuk-character-count>
-    </govuk-client-side-validation>
-
+                <govuk-character-count asp-for="Field2" max-length="100">
+                    <govuk-character-count-label>Character count</govuk-character-count-label>
+                    <govuk-character-count-hint>This has a 100 character limit</govuk-character-count-hint>
+                    <govuk-character-count-error-message />
+                </govuk-character-count>
+            </govuk-client-side-validation>
+        </div>
+    </div>
     <govuk-button>Submit</govuk-button>
 </form>
 @section scripts {

@@ -1,14 +1,26 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Services;
 @using GovUk.Frontend.Umbraco.Typography
 @using HtmlAgilityPack
 @using Umbraco.Extensions
+@inject IContextAwareHostUpdater hostUpdater
 @{
     var html = Model.Content.Value<string>("text");
-    html = GovUkTypography.Apply(html);
+    if (string.IsNullOrWhiteSpace(html)) { return; }
+
+    var document = new HtmlDocument();
+    document.LoadHtml(GovUkTypography.Apply(html));
+    var links = document.DocumentNode.SelectNodes("//a");
+    if (links != null)
+    {
+        foreach (var link in links)
+        {
+            var attribute = link.Attributes["href"];
+            attribute.Value = hostUpdater.UpdateHost(attribute.Value, Context.Request.Host.Host);
+        }
+    }
+
 }
-@if (!string.IsNullOrWhiteSpace(html))
-{
-    @(Html.Raw(html))
-}
+@(Html.Raw(document.DocumentNode.OuterHtml))

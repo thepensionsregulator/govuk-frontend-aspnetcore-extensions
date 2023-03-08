@@ -2,25 +2,33 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
 @using Umbraco.Extensions
 @{
     var text = Model.Content.Value<string>("text");
     var classNames = Model.Settings.Value<string>("cssClasses");
+    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    ModelStateEntry? modelStateEntry = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+    }
     switch (Model.Settings.Value<string>("typeOfButton")) {
         case "Secondary":
-            <govuk-button class="govuk-button--secondary @classNames" type="button" id="@Model.Content.Key" value="@text">@text</govuk-button>
+            <govuk-button class="govuk-button--secondary @classNames" type="button" name="@modelPropertyName" id="@Model.Content.Key" value="@text">@text</govuk-button>
             break;
 
         case "Warning":
-            <govuk-button class="govuk-button--warning @classNames" type="button" id="@Model.Content.Key" value="@text">@text</govuk-button>
+            <govuk-button class="govuk-button--warning @classNames" type="button" name="@modelPropertyName" id="@Model.Content.Key" value="@text">@text</govuk-button>
             break;
 
         case "Reversed":
-            <govuk-button class="govuk-button--reversed @classNames" type="button" id="@Model.Content.Key" value="@text">@text</govuk-button>
+            <govuk-button class="govuk-button--reversed @classNames" type="button" name="@modelPropertyName" id="@Model.Content.Key" value="@text">@text</govuk-button>
             break;
 
         default:
-            <govuk-button class="@classNames" type="submit" id="@Model.Content.Key" value="@text">@text</govuk-button>
+            <govuk-button class="@classNames" type="submit" id="@Model.Content.Key" name="@modelPropertyName" value="@text">@text</govuk-button>
             break;
     }
 }

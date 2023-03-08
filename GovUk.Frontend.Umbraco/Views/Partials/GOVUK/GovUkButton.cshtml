@@ -3,10 +3,17 @@
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
 @using Umbraco.Extensions
 @{
     var text = Model.Content.Value<string>("text");
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    ModelStateEntry? modelStateEntry = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+    }
     var buttonType = Model.Settings.Value<string>("typeOfButton") == "Secondary" ? "button" : "submit";
     var buttonStyle = Model.Settings.Value<string[]>("styleOfButton") ?? Array.Empty<string>();
     if (buttonStyle.Contains("Secondary")) { buttonStyle[buttonStyle.IndexOf("Secondary")] = "govuk-button--secondary"; }
@@ -14,5 +21,5 @@
     if (buttonStyle.Contains("Reversed")) { buttonStyle[buttonStyle.IndexOf("Reversed")] = "govuk-button--reversed"; }
     if (buttonStyle.Length > 0 && !string.IsNullOrEmpty(cssClasses)) { cssClasses = " " + cssClasses; }
 
-    <govuk-button class="@string.Join(' ', buttonStyle)@cssClasses" type="@buttonType" id="@Model.Content.Key" value="@text">@text</govuk-button>
+    <govuk-button class="@string.Join(' ', buttonStyle)@cssClasses" type="@buttonType" name="@modelPropertyName" id="@Model.Content.Key" value="@text">@text</govuk-button>
 }

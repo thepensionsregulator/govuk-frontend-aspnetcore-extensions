@@ -13,9 +13,9 @@
 			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
 			<SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
 			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
-			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\</TargetFolder>
+			<TargetFolder>$(MsBuildThisFileDirectory)Styles\</TargetFolder>
 		</PropertyGroup>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-umbraco-rich-text-editor.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --load-path=$(SourceFolder) $(TargetFolder)css\govuk-umbraco-rich-text-editor.css"/>
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-umbraco-rich-text-editor.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --load-path=$(SourceFolder) $(TargetFolder)govuk-umbraco-rich-text-editor.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 

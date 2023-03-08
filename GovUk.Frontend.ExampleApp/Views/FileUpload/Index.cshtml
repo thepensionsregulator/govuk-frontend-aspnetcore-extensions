@@ -7,20 +7,24 @@
 <partial name="_LanguageSwitcher" />
 }
 
-<span class="govuk-caption-xl">GOV.UK Design System</span>
+<span class="govuk-caption-xl">Example application</span>
 
 <form asp-controller="FileUpload" asp-action="Post" method="post" enctype="multipart/form-data" novalidate>
-    <govuk-fieldset>
-            <govuk-fieldset-legend is-page-heading="true"  class="govuk-fieldset__legend--l">
-            File Upload
-        </govuk-fieldset-legend>
-        <govuk-client-side-validation>
-            <govuk-file-upload asp-for="File" input-accept=".csv">
-                <govuk-file-upload-label>Select a .csv file:</govuk-file-upload-label>
-                <govuk-file-upload-hint>(Only .csv files are allowed for file upload)</govuk-file-upload-hint>
-            </govuk-file-upload>
-        </govuk-client-side-validation>
-    </govuk-fieldset>
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider govuk-grid-row--tpr-divider-for-fieldset">
+        <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+            <govuk-fieldset>
+                    <govuk-fieldset-legend is-page-heading="true"  class="govuk-fieldset__legend--l">
+                    File Upload
+                </govuk-fieldset-legend>
+                <govuk-client-side-validation>
+                    <govuk-file-upload asp-for="File" input-accept=".csv">
+                        <govuk-file-upload-label>Select a .csv file:</govuk-file-upload-label>
+                        <govuk-file-upload-hint>(Only .csv files are allowed for file upload)</govuk-file-upload-hint>
+                    </govuk-file-upload>
+                </govuk-client-side-validation>
+            </govuk-fieldset>
+        </div>
+    </div>
 
     <govuk-button type="submit">Upload your file</govuk-button>
 

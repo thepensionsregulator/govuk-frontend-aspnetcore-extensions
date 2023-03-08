@@ -4,6 +4,7 @@
 @using GovUk.Frontend.AspNetCore.Extensions;
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
 @using Umbraco.Cms.Core.Models;
 @using Umbraco.Extensions
 @{
@@ -13,14 +14,14 @@
 {
     <govuk-task-list 
         id="@Model.Content.Key"
-        class="@(Model.Settings.Value<string>("cssClasses"))"
+        class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))"
     >
         @foreach (var task in tasks)
         {
             var hint = GovUkTypography.Apply(task.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
             var link = task.Content.Value<Link>("link")?.Url;
             var status = task.Settings.Value<string>("status")?.Replace(" ", string.Empty);
-            <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>("cssClasses"))">
+            <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>(PropertyAliases.CssClasses))">
                 <govuk-task-list-task-name>@(task.Content.Value<string>("taskName"))</govuk-task-list-task-name>
                 @if (!string.IsNullOrEmpty(hint))
                 {

@@ -4,14 +4,49 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Title>ThePensionsRegulator.$(AssemblyName)</Title>
+	<Version>1.0.0</Version>
+	<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
+		    This will help identify breaking changes where the major version should change. -->
+    <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
+	<Authors>rickmason-tpr</Authors>
+	<Company>The Pensions Regulator</Company>
+	<Description>Helper code for unit testing Umbraco applications, and in particular applications built using ThePensionsRegulator.GovUk.Frontend.Umbraco.</Description>
+	<Copyright>The Pensions Regulator</Copyright>
+	<PackageProjectUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</PackageProjectUrl>
+	<PackageIcon>tpr-nuget.png</PackageIcon>
+	<PackageReadmeFile>NuGetReadme.md</PackageReadmeFile>
+	<RepositoryUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</RepositoryUrl>
+	<RepositoryType>git</RepositoryType>
+	<PackageTags>gds govuk gov.uk umbraco blocklist testing unittest</PackageTags>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<IncludeSymbols>True</IncludeSymbols>
+	<PackageId>ThePensionsRegulator.$(AssemblyName)</PackageId>
+	<Product>ThePensionsRegulator.$(AssemblyName)</Product>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.18.1" />
+	<None Include="..\tpr-nuget.png">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	</None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Moq" Version="4.18.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NuGetReadme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,16 +1,29 @@
 ﻿@{
     ViewData["Title"] = "Button";
 }
-<span class="govuk-caption-xl">GOV.UK Design System</span>
-<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<p class="govuk-body">The following button styles are supported when using The Pensions Regulator branding. Combining button classes to produce other combinations is not yet supported.</p>
 
 <govuk-button-link is-start-button="true" href="/">Start now</govuk-button-link>
-<govuk-button-link is-start-button="false" href="/">Link to next page</govuk-button-link>
+
+<div class="govuk-button-group">
+    <govuk-button-link is-start-button="false" href="/">Link to next page</govuk-button-link>
+    <govuk-button-link is-start-button="false" class="govuk-button--secondary" href="/">Link to next page</govuk-button-link>
+    <govuk-button-link is-start-button="false" class="govuk-button--warning" href="/">Link to next page</govuk-button-link>
+    <govuk-button-link is-start-button="false" class="govuk-button--secondary govuk-button--warning" href="/">Secondary warning link</govuk-button-link>
+</div>
 
 <div class="govuk-button-group">
     <govuk-button type="submit">Default button</govuk-button>
     <govuk-button class="govuk-button--secondary" type="button">Secondary button</govuk-button>
     <govuk-button class="govuk-button--warning" type="button">Warning button</govuk-button>
+    <govuk-button class="govuk-button--secondary govuk-button--warning" type="button">Secondary warning button</govuk-button>
     <a href="/" class="govuk-link">Cancel</a>
 </div>
 

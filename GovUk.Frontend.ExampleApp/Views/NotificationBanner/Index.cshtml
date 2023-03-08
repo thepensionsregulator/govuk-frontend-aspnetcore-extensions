@@ -19,8 +19,12 @@
     <govuk-button class="govuk-button--reversed" type="button">Reversed button</govuk-button>
 </govuk-notification-banner>
 
-<span class="govuk-caption-xl">GOV.UK Design System</span>
-<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
 
 <p class="govuk-body">Avoid showing more than one notification banner on the same page. Instead, combine the messages in a single notification banner. 
     If the messages are too different to combine, only show the highest priority notification banner.</p>

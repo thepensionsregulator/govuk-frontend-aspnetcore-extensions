@@ -1,0 +1,20 @@
+﻿@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+@using GovUk.Frontend.Umbraco.Models;
+@using GovUk.Frontend.Umbraco.Typography;
+@model TprFooterLockupModel
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@{
+    var footerLogoAlt = Model.LogoAlternativeText();
+    if (string.IsNullOrEmpty(footerLogoAlt)) { footerLogoAlt = ComponentGenerator.FooterLogoDefaultAlt; }
+}
+@if (Model.ShowBackToTop)
+{
+    <tpr-back-to-top class="@Model.BackToTopClass()">@Model.BackToTopText()</tpr-back-to-top>
+}
+@if (Model.ShowFooter)
+{
+    <tpr-footer-bar class="@Model.FooterBarClass()" logo-alt="@footerLogoAlt" logo-href="@Model.LogoHref()" copyright="@Model.Copyright()">
+        @Html.Raw(GovUkTypography.Apply(Model.FooterBarContent(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+    </tpr-footer-bar>
+}

@@ -6,26 +6,30 @@
 @section language {
     <partial name="_LanguageSwitcher" />
 }
-    <span class="govuk-caption-xl">GOV.UK Design System</span>
+    <span class="govuk-caption-xl">Example application</span>
 
     <form asp-controller="CustomValidation" asp-action="Post" method="post" novalidate>
-        <govuk-fieldset>
-            <govuk-fieldset-legend class="govuk-fieldset__legend--l">
-                Custom Validation
-            </govuk-fieldset-legend>
-            <govuk-client-side-validation>
-                <govuk-input asp-for="Field1" type="number">
-                    <govuk-input-label>Number 1</govuk-input-label>
-                </govuk-input>
-                <govuk-input asp-for="Field2" type="number">
-                    <govuk-input-label>Number 2</govuk-input-label>
-                </govuk-input>
-                <govuk-input asp-for="Field3" type="number">
-                    <govuk-input-label>Number 3</govuk-input-label>
-                    <govuk-input-hint>Must be Number 1 + Number 2</govuk-input-hint>
-                </govuk-input>
-            </govuk-client-side-validation>
-        </govuk-fieldset>
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider govuk-grid-row--tpr-divider-for-fieldset">
+            <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+            <govuk-fieldset>
+                <govuk-fieldset-legend class="govuk-fieldset__legend--l">
+                    Custom Validation
+                </govuk-fieldset-legend>
+                <govuk-client-side-validation>
+                    <govuk-input asp-for="Field1" type="number">
+                        <govuk-input-label>Number 1</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input asp-for="Field2" type="number">
+                        <govuk-input-label>Number 2</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input asp-for="Field3" type="number">
+                        <govuk-input-label>Number 3</govuk-input-label>
+                        <govuk-input-hint>Must be Number 1 + Number 2</govuk-input-hint>
+                    </govuk-input>
+                </govuk-client-side-validation>
+            </govuk-fieldset>
+            </div>
+        </div>
 
         <govuk-button type="submit">Submit</govuk-button>
 

@@ -5,6 +5,14 @@
 		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
 		 -->
 	<Target Name="BuildSass" BeforeTargets="BeforeBuild">
+		<PropertyGroup>
+			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src</GovUkFrontEndFolder>
+		</PropertyGroup>
+		<Message Text="You are using the following version of GOV.UK Frontend. You can run 'git submodule update' to check for updates." Condition="Exists('$(GovUkFrontEndFolder)')" />
+		<Exec Command="git describe --tags" Condition="Exists('$(GovUkFrontEndFolder)')" WorkingDirectory="$(GovUkFrontEndFolder)" />
+		<Message Text="Installing GOV.UK Frontend submodule" Condition="!Exists('$(GovUkFrontEndFolder)')" />
+		<Exec Command="git submodule update --init" Condition="!Exists('$(GovUkFrontEndFolder)')" />
+
 		<Message Text="Run SassCompiler $(MSBuildProjectFullPath)" Importance="high"/>
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
 			<Output TaskParameter="Result" ItemName="SassCompilerVersion" />
@@ -12,7 +20,6 @@
 		<PropertyGroup>
 			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
 			<SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
-			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src</GovUkFrontEndFolder>
 			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
 			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\</TargetFolder>
 		</PropertyGroup>

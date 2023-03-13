@@ -14,21 +14,22 @@
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
+    var disabled = Model.Settings.Value<bool>("disabled").ToString().ToLower();
     switch (Model.Settings.Value<string>("typeOfButton")) {
         case "Secondary":
-            <govuk-button class="govuk-button--secondary @classNames" type="button" name="@modelPropertyName" id="@Model.Content.Key" value="@text">@text</govuk-button>
+            <govuk-button class="govuk-button--secondary @classNames" type="button" name="@modelPropertyName" id="@Model.Content.Key" value="@text" aria-disabled="@disabled">@text</govuk-button>
             break;
 
         case "Warning":
-            <govuk-button class="govuk-button--warning @classNames" type="button" name="@modelPropertyName" id="@Model.Content.Key" value="@text">@text</govuk-button>
+            <govuk-button class="govuk-button--warning @classNames" type="button" name="@modelPropertyName" id="@Model.Content.Key" value="@text" aria-disabled="@disabled">@text</govuk-button>
             break;
 
         case "Reversed":
-            <govuk-button class="govuk-button--reversed @classNames" type="button" name="@modelPropertyName" id="@Model.Content.Key" value="@text">@text</govuk-button>
+            <govuk-button class="govuk-button--reversed @classNames" type="button" name="@modelPropertyName" id="@Model.Content.Key" value="@text" aria-disabled="@disabled">@text</govuk-button>
             break;
 
         default:
-            <govuk-button class="@classNames" type="submit" id="@Model.Content.Key" name="@modelPropertyName" value="@text">@text</govuk-button>
+            <govuk-button class="@classNames" type="submit" id="@Model.Content.Key" name="@modelPropertyName" value="@text" aria-disabled="@disabled">@text</govuk-button>
             break;
     }
 }

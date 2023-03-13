@@ -5,10 +5,22 @@
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
 @using Umbraco.Extensions
 @{
-    var tasks = Umbraco.AssignedContentItem.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.Task);
-    var taskStatuses = tasks.Select(x => x.Settings.Value<string>("status")).Where(x => !string.IsNullOrEmpty(x)).Select(x => Enum.Parse<TaskListTaskStatus>(x!.Replace(" ",string.Empty), true)).ToList();
+    // Get task statuses from ModelState, put there by BlockList.cshtml. We can't go to Model.AssignedContentItem to find the tasks
+    // because that will give us the original BlockListItem, and we need the OverridableBlockListItem that may have been updated in the controller.
+    List<TaskListTaskStatus> taskStatuses = new();
+    ModelStateEntry? modelStateEntry = null;
+    var modelPropertyName = Model.Content.Key.ToString();
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        if (ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry) && !string.IsNullOrEmpty(modelStateEntry.AttemptedValue))
+        {
+            taskStatuses = modelStateEntry.AttemptedValue.Split(",").Select(x => Enum.Parse<TaskListTaskStatus>(x)).ToList();
+        }            
+    }
+
     var totalActionableTasks = taskStatuses.Count(x => x != TaskListTaskStatus.NotApplicable);
     var completedTasks = taskStatuses.Count(x => x == TaskListTaskStatus.Completed);
 

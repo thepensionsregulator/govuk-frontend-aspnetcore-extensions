@@ -1,8 +1,10 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<BlockListItem>>
+@using GovUk.Frontend.AspNetCore.Extensions;
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Services
 @using System.Text.RegularExpressions
+@using GovUk.Frontend.Umbraco.Validation;
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
@@ -12,6 +14,20 @@
     if (!blocks.Any()) { return; }
     string? previousRowClass = null, previousColumnClass = null;
     bool? previousIsGridRowBlock = null;
+
+    // Task list summaries automatically count the tasks they summarise. However, the status of each task is likely to be set in the controller,
+    // and this is the last point where we have access to the overridden properties of the tasks before rendering the task list summary.
+    // So we have to query the tasks here and pass the result down to the task list summary, which we can do using ModelState.
+    var taskListSummaries = blocks.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.TaskListSummary);
+    if (taskListSummaries.Any())
+    {
+        var tasks = blocks.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.Task);
+        var taskStatuses = tasks.Select(x => ((OverridableBlockListItem)x).Settings.Value<string>("status")).Where(x => !string.IsNullOrEmpty(x)).Select(x => Enum.Parse<TaskListTaskStatus>(x!.Replace(" ", string.Empty), true));
+        foreach (var taskListSummary in taskListSummaries)
+        {
+            ViewContext.ModelState.SetInitialValue(taskListSummary.Content.Key.ToString(), string.Join(",", taskStatuses));
+        }
+    }
 }
 @* Renders a partial view for each block.
    Renders blocks within a GOV.UK grid row, except where that block is a 'govukGridRow' in which case that task is delegated.

@@ -31,4 +31,4 @@ This is part of the [Task list pages](https://design-system.service.gov.uk/patte
 
 ## Umbraco
 
-When you add a 'Task list summary' component to a block list in Umbraco, it will automatically display the count of tasks for all 'Task list' components on the same page.
+When you add a 'Task list summary' component to a block list in Umbraco, it will automatically display the count of tasks for all 'Task list' components in the same block list or its descendants.

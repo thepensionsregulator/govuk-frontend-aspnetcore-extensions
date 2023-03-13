@@ -99,6 +99,7 @@
 		<Content Remove="uSync\v9\DataTypes\GOVUKCheckboxes.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKFieldHelpBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config" />
+		<Content Remove="uSync\v9\DataTypes\GOVUKGridColumnBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKGridColumnSize.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKGridRowBlockList.config" />
 		<Content Remove="uSync\v9\DataTypes\GOVUKGridRowBlockList.config" />
@@ -436,6 +437,9 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKGridColumnBlockList.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKGridColumnSize.config">

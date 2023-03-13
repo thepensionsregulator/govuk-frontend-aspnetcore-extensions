@@ -196,6 +196,15 @@
 		<None Include="uSync\v9\ContentTypes\govukcheckboxes.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govukerrormessage.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukinsettextsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktypographysettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govukcheckboxesdivider.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>

@@ -1,6 +1,11 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Button>
+﻿@using GovUk.Frontend.Umbraco.ExampleApp.Controllers;
+@using GovUk.Frontend.Umbraco.ExampleApp.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ButtonViewModel>
 @section head{
-	<title>@Model.Name</title>
+	<title>@Model.Page!.Name</title>
 }
 
-<partial name="GOVUK/BlockList" model="Model.Blocks" />
+@using (Html.BeginUmbracoForm<ButtonSurfaceController>(nameof(ButtonSurfaceController.Index), new { }, new { novalidate = "novalidate" }))
+{
+	<partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
+}

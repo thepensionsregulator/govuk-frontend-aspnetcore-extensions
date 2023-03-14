@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -66,6 +66,10 @@
 		<Content Remove="uSync\v9\ContentTypes\govukselectsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksinglecheckboxsettings.config" />
 		<Content Remove="uSync\v9\ContentTypes\govukskiplink.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuksummarycard.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuksummarycardaction.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuksummarycardsettings.config" />
+		<Content Remove="uSync\v9\ContentTypes\govuksummarylist.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksummarylist.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksummarylistaction.config" />
 		<Content Remove="uSync\v9\ContentTypes\govuksummarylistitem.config" />
@@ -196,12 +200,6 @@
 		<None Include="uSync\v9\ContentTypes\govukcheckboxes.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
-		<None Include="uSync\v9\ContentTypes\govukerrormessage.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
-		<None Include="uSync\v9\ContentTypes\govukinsettextsettings.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
 		<None Include="uSync\v9\ContentTypes\govuktypographysettings.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -228,6 +226,9 @@
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukdetailssettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukerrormessage.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukerrormessagesettings.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -276,6 +277,9 @@
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukinsettext.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govukinsettextsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukinsettextsettingsnogrid.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -352,6 +356,15 @@
 		<None Include="uSync\v9\ContentTypes\govukskiplink.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
+		<None Include="uSync\v9\ContentTypes\govuksummarycard.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuksummarycardaction.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuksummarycardsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="uSync\v9\ContentTypes\govuksummarylist.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
@@ -399,6 +412,9 @@
 		</None>
 		<None Include="uSync\v9\ContentTypes\govuktypography.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\ContentTypes\govuktypographysettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\ContentTypes\govukvalidationcustom.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -498,6 +514,9 @@
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKSelectOptions.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="uSync\v9\DataTypes\GOVUKSummaryCardActions.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="uSync\v9\DataTypes\GOVUKSummaryListActions.config">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>

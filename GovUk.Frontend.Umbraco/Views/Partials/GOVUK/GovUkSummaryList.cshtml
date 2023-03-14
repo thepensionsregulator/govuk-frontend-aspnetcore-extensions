@@ -24,7 +24,10 @@
                     @foreach (var action in actions)
                     {
                         var link = action.Content.Value<Link>("link");
-                        <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@(listItem.Content.Value<string>("itemKey"))">@(action.Content.Value<string>("text"))</govuk-summary-list-row-action>
+                        if (!string.IsNullOrEmpty(link?.Url))
+                        {
+                            <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@(listItem.Content.Value<string>("itemKey"))">@(action.Content.Value<string>("text"))</govuk-summary-list-row-action>
+                        }
                     }
                     </govuk-summary-list-row-actions>
                 }

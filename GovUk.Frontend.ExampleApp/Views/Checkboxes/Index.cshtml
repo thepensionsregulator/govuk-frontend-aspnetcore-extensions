@@ -6,37 +6,45 @@
 
 <partial name="GOVUK/ErrorSummary" />
 
-<span class="govuk-caption-xl">GOV.UK Design System</span>
+<span class="govuk-caption-xl">Example application</span>
 
 <form asp-controller="Checkboxes" asp-action="Post" method="post" novalidate>
-    <govuk-client-side-validation>
-        <govuk-checkboxes name="Field1">
-            <govuk-checkboxes-fieldset>
-                <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">Checkboxes</govuk-checkboxes-fieldset-legend>
-                <govuk-checkboxes-hint>This is the hint. If you don't set the legend as the page heading, you must apply <code>.govuk-fieldset__legend--for-field</code> if you want TPR styling.</govuk-checkboxes-hint>
-                <govuk-checkboxes-item value="1">Item one (reveals related question)
-                    <govuk-checkboxes-item-conditional>
-                        <govuk-input asp-for="Field2"><govuk-input-label>Answer this related question</govuk-input-label></govuk-input>
-                    </govuk-checkboxes-item-conditional>
-                </govuk-checkboxes-item>
-                <govuk-checkboxes-item value="2">Item two
-                    <govuk-checkboxes-item-hint>Optional hint text</govuk-checkboxes-item-hint>
-                </govuk-checkboxes-item>
-                <govuk-checkboxes-divider>or</govuk-checkboxes-divider>
-                <govuk-checkboxes-item value="3" input-data-behaviour="exclusive">Item three (cannot be combined with the other two)</govuk-checkboxes-item>
-            </govuk-checkboxes-fieldset>
-        </govuk-checkboxes>
-    </govuk-client-side-validation>
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider-for-fieldset">
+        <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+            <govuk-client-side-validation>
+                <govuk-checkboxes name="Field1">
+                    <govuk-checkboxes-fieldset>
+                        <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">Checkboxes</govuk-checkboxes-fieldset-legend>
+                        <govuk-checkboxes-hint>This is the hint. If you don't set the legend as the page heading, you must apply <code>.govuk-fieldset__legend--for-field</code> if you want TPR styling.</govuk-checkboxes-hint>
+                        <govuk-checkboxes-item value="1">Item one (reveals related question)
+                            <govuk-checkboxes-item-conditional>
+                                <govuk-input asp-for="Field2"><govuk-input-label>Answer this related question</govuk-input-label></govuk-input>
+                            </govuk-checkboxes-item-conditional>
+                        </govuk-checkboxes-item>
+                        <govuk-checkboxes-item value="2">Item two
+                            <govuk-checkboxes-item-hint>Optional hint text</govuk-checkboxes-item-hint>
+                        </govuk-checkboxes-item>
+                        <govuk-checkboxes-divider>or</govuk-checkboxes-divider>
+                        <govuk-checkboxes-item value="3" input-data-behaviour="exclusive">Item three (cannot be combined with the other two)</govuk-checkboxes-item>
+                    </govuk-checkboxes-fieldset>
+                </govuk-checkboxes>
+            </govuk-client-side-validation>
+        </div>
+    </div>
 
-    <h2 class="govuk-heading-m">Toggle a single option on or off</h2>
-    <govuk-client-side-validation>
-        <govuk-checkboxes asp-for="Field3">
-            <govuk-checkboxes-item value="yes">
-                I agree to something
-                <govuk-checkboxes-item-hint>You have to agree to this.</govuk-checkboxes-item-hint>
-            </govuk-checkboxes-item>
-        </govuk-checkboxes>
-    </govuk-client-side-validation>
+    <h2 class="govuk-heading-m">Toggle a single option on or off</h2> 
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+            <govuk-client-side-validation>
+                <govuk-checkboxes asp-for="Field3">
+                    <govuk-checkboxes-item value="yes">
+                        I agree to something
+                        <govuk-checkboxes-item-hint>You have to agree to this.</govuk-checkboxes-item-hint>
+                    </govuk-checkboxes-item>
+                </govuk-checkboxes>
+            </govuk-client-side-validation>
+        </div>
+    </div>
 
     <govuk-button>Submit</govuk-button>
 </form>

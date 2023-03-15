@@ -2,10 +2,12 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Extensions
 @{
     var text = Model.Content.Value<string>("text");
     var link = Model.Content.Value<Link>("link");
+    var cssClasses = (" " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
 }
-<a href="@link.Url" class="govuk-link" id="@Model.Content.Key">@text</a>
+<a href="@link.Url" class="govuk-link@(cssClasses)" id="@Model.Content.Key">@text</a>

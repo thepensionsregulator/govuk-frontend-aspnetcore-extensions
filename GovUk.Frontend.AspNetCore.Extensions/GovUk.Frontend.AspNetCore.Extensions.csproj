@@ -6,19 +6,35 @@
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<IncludeRazorContentInPack>true</IncludeRazorContentInPack>
 		<Nullable>enable</Nullable>
-		<Version>2.0.2</Version>
+		<Version>1.0.0</Version>
+		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
+		     This will help identify breaking changes where the major version should change. -->
+		<PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>ThePensionsRegulator.GovUk.Frontend</Title>
+		<Authors>rickmason-tpr</Authors>
+		<Company>The Pensions Regulator</Company>
+		<Description>Based on the GOV.UK Design System and GovUk.Frontend.AspNetCore. Adds extra features and components, including opt-in branding for The Pensions Regulator.</Description>
+		<Copyright>The Pensions Regulator</Copyright>
+		<PackageProjectUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</PackageProjectUrl>
+		<PackageIcon>tpr-nuget.png</PackageIcon>
+		<PackageReadmeFile>NuGetReadme.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>taghelpers gds govuk gov.uk</PackageTags>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageId>ThePensionsRegulator.GovUk.Frontend</PackageId>
+		<Product>ThePensionsRegulator.GovUk.Frontend</Product>
 	</PropertyGroup>
-
-	<ItemGroup>
-		<Content Remove="compilerconfig.json" />
-		<Content Remove="wwwroot\govuk\govuk-frontend.css.map" />
-		<Content Remove="wwwroot\tpr\tpr.css.map" />
-	</ItemGroup>
-
+	
 	<ItemGroup>
 		<None Remove="Styles\_govuk-back.scss" />
 		<None Remove="Styles\_govuk-button.scss" />
 		<None Remove="Styles\_govuk-caption.scss" />
+		<None Remove="Styles\_govuk-character-count.scss" />
 		<None Remove="Styles\_govuk-date-input.scss" />
 		<None Remove="Styles\_govuk-label.scss" />
 		<None Remove="Styles\_govuk-link.scss" />
@@ -37,6 +53,7 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Styles\_govuk-back.scss" />
+		<EmbeddedResource Include="Styles\_govuk-character-count.scss" />
 		<EmbeddedResource Include="Styles\_tpr-task-list.scss" />
 		<EmbeddedResource Include="Styles\_govuk-task-list.scss" />
 		<EmbeddedResource Include="Styles\_govuk-caption.scss" />
@@ -61,16 +78,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.SassCompiler" Version="1.55.0" />
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.58.1" />
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.0-beta4" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
 	</ItemGroup>
-
-	<PropertyGroup>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-	</PropertyGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
 		<ItemGroup>
@@ -101,6 +114,10 @@
 
 	<ItemGroup>
 		<UpToDateCheckInput Remove="Styles\tpr.scss" />
+		<None Update="NuGetReadme.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
 		<None Update="__tests__\govuk-validation-createErrorSummary.tests.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</None>
@@ -182,7 +199,32 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="compilerconfig.json" />
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\_base.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk</PackagePath>
+		</Content>
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\helpers\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk\helpers</PackagePath>
+		</Content>
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\tools\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk\tools</PackagePath>
+		</Content>
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\settings\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk\settings</PackagePath>
+		</Content>
+		<Content Include="$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src\govuk\vendor\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\govuk\vendor</PackagePath>
+		</Content>
+
+		<None Include="..\tpr-nuget.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+
 		<None Include="wwwroot\govuk\govuk-frontend.css.map" />
 		<None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
 		<None Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
@@ -193,10 +235,12 @@
 		<None Include="wwwroot\lib\jquery\dist\jquery.js" />
 		<None Include="wwwroot\lib\jquery\LICENSE.txt" />
 		<None Include="wwwroot\tpr\tpr.css.map" />
-	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Content\" />
+		<Content Include="ThePensionsRegulator.GovUk.Frontend.targets">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+		<Content Include="Styles\_variables.scss" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -238,13 +282,23 @@
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_govuk-table.scss" />
 	</ItemGroup>
-  
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Styles\_govuk-back.scss" />
-	</ItemGroup>
-  
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Styles\_govuk-notification-banner.scss" />
-  </ItemGroup>
 
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-back.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+      <UpToDateCheckInput Remove="Styles\_govuk-notification-banner.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Content Update="sasscompiler.json" Pack="false">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-character-count.scss" />
+	</ItemGroup>
+	
 </Project>

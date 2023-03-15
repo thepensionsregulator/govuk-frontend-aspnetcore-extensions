@@ -2,6 +2,7 @@
 {
     public static class ElementTypeAliases
     {
+        public const string Caption = "govukCaption";
         public const string DateInput = "govukDateInput";
         public const string DateInputSettings = "govukDateInputSettings";
         public const string ErrorMessage = "govukErrorMessage";
@@ -16,6 +17,7 @@
         public const string GridRowSettings = "govukGridRowSettings";
         public const string GridColumn = "govukGridColumn";
         public const string GridColumnSettings = "govukGridColumnSettings";
+        public const string PageHeading = "govukPageHeading";
         public const string Radios = "govukRadios";
         public const string Select = "govukSelect";
         public const string Task = "govukTask";

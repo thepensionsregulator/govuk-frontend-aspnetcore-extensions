@@ -38,7 +38,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 Page = new TextInput(CurrentPage, null)
             };
 
-            ModelState.SetInitialValue(nameof(TextInputViewModel.Field6), "Hidden field value");
+            ModelState.SetInitialValue(nameof(TextInputViewModel.Field7), "Hidden field value");
 
             return CurrentTemplate(viewModel);
         }

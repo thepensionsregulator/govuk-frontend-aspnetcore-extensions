@@ -2,6 +2,7 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
 @using Umbraco.Extensions
 @{
     if (!Int32.TryParse(Model.Settings.Value<string>("headingLevel")?.Replace("Heading ", string.Empty), out var headingLevel))
@@ -9,8 +10,9 @@
         headingLevel = 1;
     }
     var body = GovUkTypography.Apply(Model.Content.Value<string>("panelText"), new TypographyOptions { RemoveWrappingParagraph = true, BackgroundType = BackgroundType.Dark });
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
-<govuk-panel heading-level="@headingLevel">
+<govuk-panel heading-level="@headingLevel" class="@cssClasses">
     <govuk-panel-title>@(Model.Content.Value<string>("panelHeading"))</govuk-panel-title>
     @if (!string.IsNullOrEmpty(body)) 
     {

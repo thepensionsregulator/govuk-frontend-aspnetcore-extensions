@@ -1,41 +1,36 @@
 ﻿@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
+@using GovUk.Frontend.Umbraco.Models;
 @using GovUk.Frontend.Umbraco.Typography
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
 @{
     var home = Umbraco.ContentSingleAtXPath("//home");
-    var phase = home?.Value<string>("govukPhase");
-    var skipLink = string.IsNullOrEmpty(home?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : home?.Value<string>("govukSkipLinkText");
-    var headerLogoAlt = string.IsNullOrEmpty(home?.Value<string>("tprHeaderLogoAlt")) ? ComponentGenerator.HeaderLogoDefaultAlt : home?.Value<string>("tprHeaderLogoAlt");
-    var footerLogoAlt = string.IsNullOrEmpty(home?.Value<string>("tprFooterLogoAlt")) ? ComponentGenerator.FooterLogoDefaultAlt : home?.Value<string>("tprFooterLogoAlt");
+    var settings = Umbraco.ContentSingleAtXPath("//settings")!;
+    var useTPRstyles = settings?.Value<bool>("useTPRstyles") ?? true;
+    var headerLockup = new TprHeaderLockupModel(settings) { ShowHeader = useTPRstyles };
+    var footerLockup = new TprFooterLockupModel(settings);
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <partial name="TPR/Head" />
+    @if (useTPRstyles)
+    {
+        <partial name="TPR/Head" />
+    }
+    else
+    {
+        <partial name="GOVUK/Head" />
+    }
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("head", required: false)
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
-    <govuk-skip-link href="#main">@skipLink</govuk-skip-link>
-    <header role="banner">
-        @if (home != null && !string.IsNullOrEmpty(phase) && phase != "Live")
-        {
-            <govuk-phase-banner class="govuk-width-container">
-                <govuk-phase-banner-tag>@phase</govuk-phase-banner-tag>
-                @Html.Raw(GovUkTypography.Apply(home.Value("govukPhaseBannerText")?.ToString(), new TypographyOptions{ RemoveWrappingParagraph = true }))
-            </govuk-phase-banner>
-        }
-        <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(home?.Value<Link>("tprHeaderLogoHref")?.Url)" label="@(home?.Value<string?>("tprHeaderLabel"))">
-            @Html.Raw(GovUkTypography.Apply(home?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
-        </tpr-header-bar>
-        <tpr-context-bar context-1="@(home?.Value<string>("tprContext1"))" context-2="@(home?.Value<string>("tprContext2"))" context-3="@(home?.Value<string>("tprContext3"))" />
-    </header>
+    <partial name="TPR/TPRHeaderLockup" model="headerLockup" />
     <div class="tpr-main-wrapper">
         <div class="govuk-width-container">
             @RenderSection("language", required: false)
@@ -48,10 +43,10 @@
             </main>
         </div>
     </div>
-    <tpr-back-to-top href="#main">@Umbraco.GetDictionaryValue("Back to top")</tpr-back-to-top>
-    <tpr-footer-bar logo-alt="@footerLogoAlt" logo-href="@(home?.Value<Link>("tprFooterLogoHref")?.Url)" copyright="@(home?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))">
-        @Html.Raw(GovUkTypography.Apply(home?.Value("tprFooterContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
-    </tpr-footer-bar>
+    @if (useTPRstyles)
+    {
+        <partial name="TPR/TPRFooterLockup" model="footerLockup" />
+    }
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)
 </body>

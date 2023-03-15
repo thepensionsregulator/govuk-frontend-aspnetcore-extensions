@@ -2,8 +2,12 @@
     ViewData["Title"] = "Warning text";
 }
 
-<span class="govuk-caption-xl">GOV.UK Design System</span>
-<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
 
 <govuk-warning-text icon-fallback-text="Warning">
     Use the <a class="govuk-link" href="https://design-system.service.gov.uk/components/warning-text/">warning text</a> component when you need to warn users about something important, such as legal consequences of an action, or lack of action, that they might take.

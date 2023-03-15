@@ -1,3 +1,9 @@
+parameters:
+  - name: pushToNuGet
+    displayName: Push to nuget.org
+    type: boolean
+    default: false
+
 trigger:
   - develop
 
@@ -5,7 +11,6 @@ pool:
   vmImage: "windows-2022"
 
 variables:
-  - group: Azure DevOps Artifacts
   - name: solution
     value: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.sln"
   - name: buildPlatform
@@ -14,6 +19,8 @@ variables:
     value: "Release"
   - name: YARN_CACHE_FOLDER
     value: $(Pipeline.Workspace)/.yarn
+  - name: allowPush
+    value: $[in(variables['Build.SourceBranch'], 'refs/heads/release', 'refs/heads/develop')]
 
 resources:
   repositories:
@@ -28,6 +35,7 @@ resources:
 
 steps:
   - checkout: self
+    submodules: true
   - checkout: hooks
   - checkout: pipelines
 
@@ -36,14 +44,6 @@ steps:
       repoPath: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions
 
   - task: NuGetToolInstaller@1
-
-  - task: CmdLine@2
-    displayName: Setup govuk-frontend submodule
-    inputs:
-      script: |
-        git submodule init
-        git submodule update
-      workingDirectory: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions"
 
   - task: NodeTool@0
     inputs:
@@ -86,7 +86,7 @@ steps:
       includePreviewVersions: false
 
   - task: DotNetCoreCLI@2
-    displayName: "dotnet restore $(solution)"
+    displayName: dotnet restore
     inputs:
       command: "restore"
       projects: "$(solution)"
@@ -96,20 +96,29 @@ steps:
     parameters:
       path: "$(solution)"
 
+  # Build this project first to avoid a race condition with SASS compilation, where GovUk.Frontend.Umbraco depends upon this project completing first
   - task: DotNetCoreCLI@2
-    displayName: Build Extensions project
+    displayName: dotnet build
     inputs:
       command: "build"
-      projects: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.AspNetCore.Extensions/*.csproj"
+      arguments: --configuration $(buildConfiguration)
+      projects: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj
 
   - task: DotNetCoreCLI@2
-    displayName: dotnet test $(buildConfiguration)
+    displayName: dotnet build
+    inputs:
+      command: "build"
+      arguments: --configuration $(buildConfiguration)
+      projects: |
+        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj
+        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco.Testing\GovUk.Frontend.Umbraco.Testing.csproj
+
+  - task: DotNetCoreCLI@2
+    displayName: dotnet test
     inputs:
       command: test
-      projects: |
-        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco.Tests\GovUk.Frontend.Umbraco.Tests.csproj
-        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions.Tests\GovUk.Frontend.AspNetCore.Extensions.Tests.csproj
       arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
+      projects: "$(solution)"
 
   - task: PublishCodeCoverageResults@1
     displayName: "Publish code coverage"
@@ -118,22 +127,23 @@ steps:
       summaryFileLocation: $(Agent.TempDirectory)\**\coverage.cobertura.xml
       failIfCoverageEmpty: true
 
-  - task: DotNetCoreCLI@2
-    displayName: Packing project
+  - task: CopyFiles@2
+    displayName: Copy packages to staging folder
     inputs:
-      command: "pack"
-      packagesToPack: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.AspNetCore.Extensions/*.csproj"
-      versioningScheme: "byPrereleaseNumber"
-      majorVersion: "2"
-      minorVersion: "0"
-      patchVersion: "0"
+      SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions
+      Contents: |
+        **\bin\$(buildConfiguration)\ThePensionsRegulator.GovUk.Frontend*.nupkg
+        !**\bin\$(buildConfiguration)\ThePensionsRegulator.GovUk.Frontend*.symbols.nupkg
+      TargetFolder: $(Build.ArtifactStagingDirectory)
+      CleanTargetFolder: true
+      flattenFolders: true
 
-  - task: NuGetCommand@2
-    displayName: Pushing to internal nuget feed
-    inputs:
-      command: "push"
-      packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg"
-      nuGetFeedType: "internal"
-      publishVstsFeed: "$(PrivateNuGetFeed)"
-      versioningScheme: "off"
-      allowPackageConflicts: true
+  - ${{ if eq(parameters.pushToNuGet, true) }}:
+      - task: NuGetCommand@2
+        displayName: "Push to nuget.org"
+        condition: and(succeeded(), eq(variables.allowPush, true))
+        inputs:
+          command: push
+          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg"
+          nuGetFeedType: external
+          publishFeedCredentials: NUGET

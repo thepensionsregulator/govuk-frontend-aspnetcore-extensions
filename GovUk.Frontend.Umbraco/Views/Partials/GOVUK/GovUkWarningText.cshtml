@@ -2,11 +2,13 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
 @using Umbraco.Extensions
 @{
     var iconFallbackText = Model.Content.Value<string>("iconFallbackText");
     if (string.IsNullOrWhiteSpace(iconFallbackText)) { iconFallbackText = "Warning"; }
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
-<govuk-warning-text icon-fallback-text="@iconFallbackText" id="@Model.Content.Key">
+<govuk-warning-text icon-fallback-text="@iconFallbackText" id="@Model.Content.Key" class="@cssClasses">
     @Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("text"), new TypographyOptions{ RemoveWrappingParagraph = true }))
 </govuk-warning-text>

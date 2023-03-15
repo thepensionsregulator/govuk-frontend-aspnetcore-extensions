@@ -1,5 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 -->
-	<Import Project="$(ProjectDir)\..\GovUk.Frontend.Umbraco\GovUk.Frontend.targets" />
+	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019
+		 It copies files that would normally be installed by NuGet, but the example app uses a project reference to avoid a NuGet update cycle for every change during testing.
+	-->
+	<Target Name="CopyFilesFromGovUkFrontend" BeforeTargets="BeforeBuild">
+		<ItemGroup>
+			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\uSync\**" />
+			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\wwwroot\**" />
+			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\App_Plugins\**" />
+		</ItemGroup>
+
+		<Message Text="Copying files from GovUk.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
+		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" /> 
+		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
+	</Target>
 </Project>

@@ -19,7 +19,7 @@ $tpr-button-padding: 20px;
     line-height: govuk-px-to-rem(24);
     border-radius: 8px;
     box-shadow: none;
-    background: $tpr-colour-eastern-blue url(/_content/GovUK.Frontend.AspNetCore.Extensions/tpr/chevron_right_white_24dp.svg) right center no-repeat;
+    background: $tpr-colour-eastern-blue url(/_content/ThePensionsRegulator.GovUk.Frontend/tpr/chevron_right_white_24dp.svg) right center no-repeat;
     padding-left: $tpr-button-padding;
     padding-right: $tpr-button-padding *2;
 }
@@ -28,7 +28,7 @@ $tpr-button-padding: 20px;
     background-color: $tpr-colour-violet;
 }
 .govuk-button:focus:not(:active):not(:hover) {
-    background-image: url(/_content/GovUK.Frontend.AspNetCore.Extensions/tpr/chevron_right_eclipse_24dp.svg);
+    background-image: url(/_content/ThePensionsRegulator.GovUk.Frontend/tpr/chevron_right_eclipse_24dp.svg);
     color: $tpr-colour-eclipse;
 }
 .govuk-button:disabled {
@@ -83,6 +83,28 @@ input[type="file"]::file-selector-button {
 .govuk-button--warning:disabled {
     color: $tpr-colour-white;
     background-color: $tpr-colour-petite-orchid;
+}
+
+.govuk-button--warning.govuk-button--secondary,
+a.govuk-button--warning.govuk-button--secondary:link,
+a.govuk-button--warning.govuk-button--secondary:visited {
+    color: $tpr-colour-fire-brick;
+    background-color: $tpr-colour-white;
+    border-color: $tpr-colour-fire-brick;
+}
+
+.govuk-button--warning.govuk-button--secondary:hover,
+.govuk-button--warning.govuk-button--secondary:active,
+a.govuk-button--warning.govuk-button--secondary:hover,
+a.govuk-button--warning.govuk-button--secondary:active {
+    color: $tpr-colour-white;
+    background-color: $tpr-colour-fire-brick;
+    border-color: transparent;
+}
+
+.govuk-button--warning.govuk-button--secondary:disabled {
+    color: $tpr-colour-petite-orchid;
+    border-color: $tpr-colour-petite-orchid;
 }
 
 .govuk-button--reversed {

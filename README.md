@@ -18,6 +18,7 @@ This builds on [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://g
 
 - [Configure a new ASP.NET project](docs/aspnet/new-aspnet-project.md)
 - [Localisation and validation in ASP.NET projects](docs/aspnet/localisation-and-validation.md)
+- [Use SASS for CSS](docs/aspnet/sass.md)
 
 ## Umbraco
 
@@ -27,18 +28,5 @@ This builds on [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://g
 - [Validation](docs/umbraco/validation.md)
 - [Filter the block list](docs/umbraco/filter-blocks.md)
 - [Override property values](docs/umbraco/override-property-values.md)
-
-## Tests
-
-To run unit tests on the client-side validation JavaScript:
-
-```cmd
-yarn install
-yarn jest
-```
-
-To run unit tests on the .NET code:
-
-```cmd
-dotnet test
-```
+- [Umbraco unit testing](docs/umbraco/unit-testing.md)
+- [Use SASS for CSS](docs/aspnet/sass.md)

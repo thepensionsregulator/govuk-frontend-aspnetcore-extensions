@@ -2,12 +2,18 @@
     ViewData["Title"] = "Home";
 }
 
-<span class="govuk-caption-xl">GOV.UK Design System</span>
-<h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
 
-<p class="govuk-body">This text and this application is using <a class="govuk-link" href="https://design-system.service.gov.uk/styles/typography/">GOV.UK Design System typography</a> overlaid with customisations from the TPR brand.</p>
-<p class="govuk-body">This example application includes the following components:</p>
+<p class="govuk-body">This text and this application is using <a class="govuk-link" href="https://design-system.service.gov.uk/styles/typography/">GOV.UK Design System typography</a>.</p>
+<p class="govuk-body">This example application demonstrates GOV.UK Design System components and styling. An extra layer of styling is applied to demonstrate the TPR brand.</p>
+<p class="govuk-body">The following GOV.UK Design System components are implemented:</p>
 <ul class="govuk-list govuk-list--bullet">
+    <li>back to top (<a class="govuk-link" href="https://github.com/alphagov/govuk-design-system-backlog/issues/5">proposed for the GOV.UK Design System</a>, implemented to a TPR design on every page)</li>
     <li><a class="govuk-link" href="/button">button</a></li>
     <li><a class="govuk-link" href="/checkboxes">checkboxes</a></li>
     <li><a class="govuk-link" href="/customvalidation">custom validation</a></li>
@@ -18,6 +24,7 @@
     <li><a class="govuk-link" href="/notificationbanner">notification banner</a></li>
     <li><a class="govuk-link" href="/pagination">pagination</a></li>
     <li><a class="govuk-link" href="/panel">panel</a></li>
+    <li><a class="govuk-link" href="https://design-system.service.gov.uk/components/phase-banner/">phase banner</a></li>
     <li><a class="govuk-link" href="/radios">radios</a></li>
     <li><a class="govuk-link" href="/select">select</a></li>
     <li><a class="govuk-link" href="/summarylist">summary list</a></li>
@@ -26,4 +33,3 @@
     <li><a class="govuk-link" href="/textinput">text input</a> (demonstrates localisation)</li>
     <li><a class="govuk-link" href="/warningtext">warning text</a></li>
 </ul>
-<p class="govuk-body">This page also demonstrates the back to top component which is <a href="https://github.com/alphagov/govuk-design-system-backlog/issues/5">not yet part of the GOV.UK Design System</a>.</p>

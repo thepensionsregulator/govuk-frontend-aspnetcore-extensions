@@ -2,11 +2,13 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
 @using Umbraco.Extensions
 @{
     var caption = Model.Content.Value<string>("caption");
+    var cssClasses = ("govuk-caption-l " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
 }
 @if (!string.IsNullOrWhiteSpace(caption)) 
 {
-<span class="govuk-caption-l">@caption</span>
+<span class="@cssClasses">@caption</span>
 }

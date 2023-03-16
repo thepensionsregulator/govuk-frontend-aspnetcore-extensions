@@ -1,0 +1,54 @@
+﻿@import '_variables.scss';
+@import 'govuk/base';
+
+/* Change GOV.UK summary card styles where the TPR brand diverges from the GOV.UK Design System. */
+$tpr-summary-list-data-padding: govuk-spacing(2); /* padding on dt & dd is inherited from GOV.UK default stylesheet, but we need to match it */
+
+.govuk-summary-card {
+    border: none;
+}
+
+.govuk-summary-card__title-wrapper {
+    background: none;
+    padding: 0;
+    padding-bottom: govuk-px-to-rem(9);
+    border-bottom: 4px solid $tpr-colour-grey;
+}
+
+.govuk-summary-card__title {
+    font-size: govuk-px-to-rem(18);
+    font-weight: bold;
+    color: $tpr-colour-grey;
+    margin-right: 0;
+}
+
+// We want the heading to wrap, not the actions, so that the vertical bar between multiple actions
+// doesn't end up with the final action wrapping below it.
+@include govuk-media-query($from: tablet) {
+    .govuk-summary-card__title {
+        margin-right: govuk-spacing(4);
+    }
+
+    .govuk-summary-card__actions {
+        display: block;
+        white-space: nowrap;
+    }
+}
+
+.govuk-summary-card__content {
+    padding: 0 0 govuk-px-to-rem(47);
+    border-bottom: 1px solid $tpr-colour-very-light-grey;
+    margin-bottom: govuk-px-to-rem(59);
+}
+
+.govuk-summary-card .govuk-summary-list {
+    padding-top: $tpr-summary-list-data-padding;
+
+    @include govuk-media-query($from: tablet) {
+        padding-top: 0;
+    }
+}
+
+.govuk-summary-card .govuk-summary-list__row {
+    border: none;
+}

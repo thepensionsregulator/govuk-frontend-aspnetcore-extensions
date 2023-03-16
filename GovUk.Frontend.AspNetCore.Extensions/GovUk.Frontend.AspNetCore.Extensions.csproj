@@ -24,9 +24,11 @@
 		<None Remove="Styles\_govuk-link.scss" />
 		<None Remove="Styles\_govuk-panel.scss" />
 		<None Remove="Styles\_govuk-radios-checkboxes.scss" />
+		<None Remove="Styles\_govuk-summary-card.scss" />
 		<None Remove="Styles\_govuk-summary-list.scss" />
 		<None Remove="Styles\_govuk-task-list.scss" />
 		<None Remove="Styles\_tpr-grid.scss" />
+		<None Remove="Styles\_tpr-summary-card.scss" />
 		<None Remove="Styles\_tpr-task-list.scss" />
 		<None Remove="Styles\_variables.scss" />
 		<None Remove="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
@@ -37,6 +39,8 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Styles\_govuk-back.scss" />
+		<EmbeddedResource Include="Styles\_govuk-summary-card.scss" />
+		<EmbeddedResource Include="Styles\_tpr-summary-card.scss" />
 		<EmbeddedResource Include="Styles\_tpr-task-list.scss" />
 		<EmbeddedResource Include="Styles\_govuk-task-list.scss" />
 		<EmbeddedResource Include="Styles\_govuk-caption.scss" />
@@ -247,4 +251,13 @@
     <UpToDateCheckInput Remove="Styles\_govuk-notification-banner.scss" />
   </ItemGroup>
 
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-summary-card.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-summary-card.scss" />
+	</ItemGroup>
+	
 </Project>

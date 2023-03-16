@@ -1,0 +1,60 @@
+﻿@using GovUk.Frontend.Umbraco;
+@using GovUk.Frontend.Umbraco.Models;
+@using GovUk.Frontend.Umbraco.Typography;
+@using Umbraco.Cms.Core.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@{
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+    var cardTitle = Model.Content?.Value<string>("cardTitle");
+    if (!Int32.TryParse(Model.Settings?.Value<string>("headingLevel")?.Replace("Heading ", string.Empty), out var headingLevel))
+    {
+        headingLevel = 2;
+    }
+    var cardActionsModel = Model.Content?.Value<OverridableBlockListModel>("cardActions")!;
+    var cardActions = cardActionsModel.Filter(cardActionsModel);
+    var listItems = Model.Content?.Value<OverridableBlockListModel>("summaryListItems")!;
+}
+<govuk-summary-card id="@Model.Content?.Key" class="@cssClasses">
+    <govuk-summary-card-title heading-level="@headingLevel">@cardTitle</govuk-summary-card-title>
+    @if (cardActions.Any()) 
+    {
+        <govuk-summary-card-actions>
+        @foreach (var action in cardActions)
+        {
+            var link = action.Content.Value<Link>("link");
+            if (!string.IsNullOrEmpty(link?.Url))
+            {
+                <govuk-summary-card-action href="@(link.Url)" visually-hidden-text="@cardTitle">@(action.Content.Value<string>("text"))</govuk-summary-card-action>
+            }
+        }
+        </govuk-summary-card-actions>
+    }
+    <govuk-summary-list>
+        @foreach (var listItem in listItems.Filter(listItems))
+        {
+            <govuk-summary-list-row class="@(listItem.Settings.Value<string>(PropertyAliases.CssClasses))">
+                <govuk-summary-list-row-key>@(listItem.Content.Value<string>("itemKey"))</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@Html.Raw(GovUkTypography.Apply(listItem.Content.Value<string>("itemValue"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-summary-list-row-value>
+                @{
+                    var rowActionsModel = listItem.Content.Value<OverridableBlockListModel>("actions")!;
+                    var rowActions = rowActionsModel.Filter(rowActionsModel);
+                    if (rowActions.Any())
+                    {
+                        <govuk-summary-list-row-actions>
+                            @foreach (var action in rowActions)
+                            {
+                                var link = action.Content.Value<Link>("link");
+                                if (!string.IsNullOrEmpty(link?.Url))
+                                {
+                                    <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@(listItem.Content.Value<string>("itemKey"))">@(action.Content.Value<string>("text"))</govuk-summary-list-row-action>
+                                }
+                            }
+                        </govuk-summary-list-row-actions>
+                    }
+                }
+            </govuk-summary-list-row>
+        }
+    </govuk-summary-list>
+</govuk-summary-card>

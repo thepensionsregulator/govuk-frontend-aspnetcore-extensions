@@ -31,7 +31,7 @@ $tpr-button-padding: 20px;
     background-image: url(/_content/GovUK.Frontend.AspNetCore.Extensions/tpr/chevron_right_eclipse_24dp.svg);
     color: $tpr-colour-eclipse;
 }
-.govuk-button:disabled {
+.govuk-button:disabled, .govuk-button[aria-disabled=true] {
     color: $tpr-colour-white;
     background-color: $tpr-colour-regent-st-blue;
 }
@@ -53,7 +53,7 @@ a.govuk-button--secondary:hover {
     color: $tpr-colour-white;
     background-color: $tpr-colour-royal-blue;
 }
-.govuk-button--secondary:disabled {
+.govuk-button--secondary:disabled, .govuk-button--secondary[aria-disabled=true] {
     color: $tpr-colour-cornflower;
     background-color: $tpr-colour-white;
     border-color: $tpr-colour-cornflower;
@@ -80,7 +80,7 @@ input[type="file"]::file-selector-button {
     color: $tpr-colour-white;
     background-color: $tpr-colour-brick;
 }
-.govuk-button--warning:disabled {
+.govuk-button--warning:disabled, .govuk-button--warning[aria-disabled=true] {
     color: $tpr-colour-white;
     background-color: $tpr-colour-petite-orchid;
 }

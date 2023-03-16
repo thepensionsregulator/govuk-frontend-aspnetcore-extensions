@@ -370,6 +370,9 @@
 		<Content Update="uSync\v9\DataTypes\GOVUKFieldsetBlockList.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\DataTypes\GOVUKGridColumnBlockList.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKGridColumnSize.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

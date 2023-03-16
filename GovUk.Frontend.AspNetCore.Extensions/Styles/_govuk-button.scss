@@ -31,7 +31,7 @@ $tpr-button-padding: 20px;
     background-image: url(/_content/ThePensionsRegulator.GovUk.Frontend/tpr/chevron_right_eclipse_24dp.svg);
     color: $tpr-colour-eclipse;
 }
-.govuk-button:disabled {
+.govuk-button:disabled, .govuk-button[aria-disabled=true] {
     color: $tpr-colour-white;
     background-color: $tpr-colour-regent-st-blue;
 }
@@ -53,7 +53,7 @@ a.govuk-button--secondary:hover {
     color: $tpr-colour-white;
     background-color: $tpr-colour-royal-blue;
 }
-.govuk-button--secondary:disabled {
+.govuk-button--secondary:disabled, .govuk-button--secondary[aria-disabled=true] {
     color: $tpr-colour-cornflower;
     background-color: $tpr-colour-white;
     border-color: $tpr-colour-cornflower;
@@ -80,7 +80,7 @@ input[type="file"]::file-selector-button {
     color: $tpr-colour-white;
     background-color: $tpr-colour-brick;
 }
-.govuk-button--warning:disabled {
+.govuk-button--warning:disabled, .govuk-button--warning[aria-disabled=true] {
     color: $tpr-colour-white;
     background-color: $tpr-colour-petite-orchid;
 }
@@ -93,7 +93,7 @@ a.govuk-button--warning.govuk-button--secondary:visited {
     border-color: $tpr-colour-fire-brick;
 }
 
-.govuk-button--warning.govuk-button--secondary:hover,
+.govuk-button--warning.govuk-button--secondary:hover:not(:disabled):not([aria-disabled=true]),
 .govuk-button--warning.govuk-button--secondary:active,
 a.govuk-button--warning.govuk-button--secondary:hover,
 a.govuk-button--warning.govuk-button--secondary:active {
@@ -102,7 +102,7 @@ a.govuk-button--warning.govuk-button--secondary:active {
     border-color: transparent;
 }
 
-.govuk-button--warning.govuk-button--secondary:disabled {
+.govuk-button--warning.govuk-button--secondary:disabled, .govuk-button--warning.govuk-button--secondary[aria-disabled=true] {
     color: $tpr-colour-petite-orchid;
     border-color: $tpr-colour-petite-orchid;
 }

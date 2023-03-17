@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     /// <summary>
-    /// Represents the content area in the TPR header bar component.
+    /// Represents the copyright notice in the TPR footer bar component.
     /// </summary>
-    [HtmlTargetElement(TagName, ParentTag = TprHeaderBarTagHelper.TagName)]
+    [HtmlTargetElement(TagName, ParentTag = TprFooterBarTagHelper.TagName)]
 
-    public class TprHeaderBarContentTagHelper : TagHelper
+    public class TprFooterBarCopyrightTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-header-bar-content";
+        internal const string TagName = "tpr-footer-bar-copyright";
 
         /// <summary>
         /// Gets or sets whether to allow HTML content.
@@ -21,11 +21,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var barContext = context.GetContextItem<TprHeaderBarContext>();
+            var barContext = context.GetContextItem<TprFooterBarContext>();
 
             var childContent = await output.GetChildContentAsync();
 
-            barContext.SetContent(output.Attributes.ToAttributeDictionary(), childContent.Snapshot(), AllowHtml);
+            barContext.SetCopyright(output.Attributes.ToAttributeDictionary(), childContent.Snapshot(), AllowHtml);
 
             output.SuppressOutput();
         }

@@ -14,7 +14,11 @@
 }
 @if (Model.ShowFooter)
 {
-    <tpr-footer-bar class="@Model.FooterBarClass()" logo-alt="@footerLogoAlt" logo-href="@Model.LogoHref()" copyright="@Model.Copyright()">
-        @Html.Raw(GovUkTypography.Apply(Model.FooterBarContent(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+    <tpr-footer-bar class="@Model.FooterBarClass()">
+        <tpr-footer-bar-logo alt="@footerLogoAlt" href="@Model.LogoHref()"/>
+        <tpr-footer-bar-copyright>@Model.Copyright()</tpr-footer-bar-copyright>
+        <tpr-footer-bar-content allow-html="true">
+            @Html.Raw(GovUkTypography.Apply(Model.FooterBarContent(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+        </tpr-footer-bar-content>
     </tpr-footer-bar>
 }

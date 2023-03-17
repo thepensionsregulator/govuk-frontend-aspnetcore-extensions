@@ -46,7 +46,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
             headerContent.InnerHtml.AppendHtml(logoElement);
 
-            if (tprHeaderBar.Label != null && !string.IsNullOrEmpty(tprHeaderBar.Label.ToString()))
+            if (tprHeaderBar.Label != null && !string.IsNullOrWhiteSpace(tprHeaderBar.Label.ToString()))
             {
                 var labelElement = new TagBuilder("p");
                 if (tprHeaderBar.LabelAttributes != null) { labelElement.MergeAttributes(tprHeaderBar.LabelAttributes); }
@@ -63,7 +63,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                 headerContent.InnerHtml.AppendHtml(labelElement);
             }
 
-            if (tprHeaderBar.Content != null && !string.IsNullOrEmpty(tprHeaderBar.Content.ToString()))
+            if (tprHeaderBar.Content != null && !string.IsNullOrWhiteSpace(tprHeaderBar.Content.ToString()))
             {
                 var contentElement = new TagBuilder("div");
                 if (tprHeaderBar.ContentAttributes != null) { contentElement.MergeAttributes(tprHeaderBar.ContentAttributes); }

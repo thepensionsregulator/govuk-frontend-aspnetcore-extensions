@@ -11,7 +11,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
         TagBuilder GenerateBackToTopLink(string href, IHtmlContent content, AttributeDictionary? attributes);
         TagBuilder GenerateBackToMenu(string href, IHtmlContent content, AttributeDictionary? attributes);
         TagBuilder GenerateTprHeaderBar(TprHeaderBar tprHeaderBar);
-        TagBuilder GenerateTprFooterBar(string? logoHref, string logoAlt, IHtmlContent? content, string copyright, AttributeDictionary? attributes);
+        TagBuilder GenerateTprFooterBar(TprFooterBar tprFooterBar);
         TagBuilder GenerateTprContextBar(TprContextBar tprContextBar);
         TagBuilder GenerateTaskList(AttributeDictionary? attributes, IEnumerable<TaskListTask> tasks);
         TagBuilder GenerateTaskListSummary(TaskListSummary taskListSummary);

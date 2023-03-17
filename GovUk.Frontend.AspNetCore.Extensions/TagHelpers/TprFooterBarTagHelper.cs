@@ -10,16 +10,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     /// Generates a TPR footer bar component
     /// </summary>
     [HtmlTargetElement(TagName)]
+    [RestrictChildren(TprFooterBarLogoTagHelper.TagName, TprFooterBarCopyrightTagHelper.TagName, TprFooterBarContentTagHelper.TagName)]
     [OutputElementHint(ComponentGenerator.TprFooterBarElement)]
     public class TprFooterBarTagHelper : TagHelper
     {
         internal const string TagName = "tpr-footer-bar";
-
-        private const string LogoAltAttributeName = "logo-alt";
-        private const string LogoHrefAttributeName = "logo-href";
-        private const string CopyrightAttributeName = "copyright";
-
-        private string _logoAlt = ComponentGenerator.FooterLogoDefaultAlt;
 
         private readonly IGovUkHtmlGenerator _htmlGenerator;
 
@@ -36,39 +31,29 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
-        /// <summary>
-        /// The <c>alt</c> attribute for the TPR logo.
-        /// </summary>
-        [HtmlAttributeName(LogoAltAttributeName)]
-        public string LogoAlt
-        {
-            get => _logoAlt;
-            set => _logoAlt = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
-        }
-
-        /// <summary>
-        /// The <c>href</c> attribute for the link around the TPR logo.
-        /// </summary>
-        [HtmlAttributeName(LogoHrefAttributeName)]
-        public string? LogoHref { get; set; } = ComponentGenerator.HeaderLogoDefaultHref;
-
-        /// <summary>
-        /// The <c>href</c> attribute for the link around the TPR logo.
-        /// </summary>
-        [HtmlAttributeName(CopyrightAttributeName)]
-        public string Copyright { get; set; } = ComponentGenerator.CopyrightDefaultContent;
-
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            IHtmlContent? content = null;
+            var barContext = new TprFooterBarContext();
 
-            if (output.TagMode == TagMode.StartTagAndEndTag)
+            using (context.SetScopedContextItem(barContext))
             {
-                content = await output.GetChildContentAsync();
+                await output.GetChildContentAsync();
             }
 
-            var tagBuilder = _htmlGenerator.GenerateTprFooterBar(LogoHref, LogoAlt, content, Copyright, output.Attributes.ToAttributeDictionary());
+            var tagBuilder = _htmlGenerator.GenerateTprFooterBar(new TprFooterBar
+            {
+                FooterBarAttributes = output.Attributes.ToAttributeDictionary(),
+                LogoAttributes = barContext.LogoAttributes,
+                LogoHref = barContext.LogoHref ?? ComponentGenerator.FooterLogoDefaultHref,
+                LogoAlternativeText = barContext.LogoAlternativeText ?? ComponentGenerator.FooterLogoDefaultAlt,
+                CopyrightAttributes = barContext.CopyrightAttributes,
+                Copyright = barContext.Copyright ?? new HtmlString(ComponentGenerator.CopyrightDefaultContent),
+                CopyrightAllowHtml = barContext.CopyrightAllowHtml,
+                ContentAttributes = barContext.ContentAttributes,
+                Content = barContext.Content,
+                ContentAllowHtml = barContext.ContentAllowHtml
+            });
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

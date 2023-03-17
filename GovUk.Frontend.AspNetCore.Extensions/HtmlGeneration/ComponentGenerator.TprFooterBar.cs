@@ -1,8 +1,5 @@
 #nullable enable
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
@@ -14,31 +11,25 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
         internal const string FooterLogoDefaultHref = "https://www.thepensionsregulator.gov.uk";
         internal static string CopyrightDefaultContent = $"{DateTimeOffset.UtcNow.Year} The Pensions Regulator";
 
-        public virtual TagBuilder GenerateTprFooterBar(
-            string? logoHref,
-            string logoAlt,
-            IHtmlContent? content,
-            string copyright,
-            AttributeDictionary? attributes)
+        public virtual TagBuilder GenerateTprFooterBar(TprFooterBar tprFooterBar)
         {
-            Guard.ArgumentNotNullOrEmpty(nameof(logoAlt), logoAlt);
-
             var tagBuilder = new TagBuilder(TprFooterBarElement);
-            if (attributes != null) tagBuilder.MergeAttributes(attributes);
+            if (tprFooterBar.FooterBarAttributes != null) { tagBuilder.MergeAttributes(tprFooterBar.FooterBarAttributes); }
             tagBuilder.MergeCssClass("tpr-footer");
             tagBuilder.MergeAttribute("role", "contentinfo");
 
             var logoContainer = new TagBuilder("div");
             logoContainer.MergeCssClass("tpr-footer__footer-logo");
 
-            var logoIsLinked = !string.IsNullOrEmpty(logoHref);
+            var logoIsLinked = !string.IsNullOrEmpty(tprFooterBar.LogoHref);
             var logoElement = new TagBuilder(logoIsLinked ? "a" : "span");
-            if (logoIsLinked) { logoElement.Attributes.Add("href", logoHref); }
+            if (logoIsLinked) { logoElement.Attributes.Add("href", tprFooterBar.LogoHref); }
 
             var logo = new TagBuilder("img");
             logo.TagRenderMode = TagRenderMode.SelfClosing;
+            if (tprFooterBar.LogoAttributes != null) { logo.MergeAttributes(tprFooterBar.LogoAttributes); }
             logo.Attributes.Add("src", "/_content/ThePensionsRegulator.GovUk.Frontend/tpr/tpr-logo-footer.svg");
-            logo.Attributes.Add("alt", logoAlt);
+            logo.Attributes.Add("alt", tprFooterBar.LogoAlternativeText);
             logo.Attributes.Add("width", "126");
             logo.Attributes.Add("height", "47");
             logoElement.InnerHtml.AppendHtml(logo);
@@ -46,8 +37,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             logoContainer.InnerHtml.AppendHtml(logoElement);
             tagBuilder.InnerHtml.AppendHtml(logoContainer);
 
-            var hasContent = !(content as TagHelperContent)?.IsEmptyOrWhiteSpace ?? true;
-            var hasCopyright = !string.IsNullOrWhiteSpace(copyright);
+            var hasContent = (tprFooterBar.Content != null && !string.IsNullOrWhiteSpace(tprFooterBar.Content.ToString()));
+            var hasCopyright = (tprFooterBar.Copyright != null && !string.IsNullOrWhiteSpace(tprFooterBar.Copyright.ToString()));
 
             if (hasContent || hasCopyright)
             {
@@ -55,11 +46,19 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                 contentContainer.MergeCssClass("tpr-footer__content-container");
 
                 var contentElement = new TagBuilder("div");
+                if (tprFooterBar.ContentAttributes != null) { contentElement.MergeAttributes(tprFooterBar.ContentAttributes); }
                 contentElement.MergeCssClass("govuk-body");
                 contentElement.MergeCssClass("tpr-footer__content");
                 if (hasContent)
                 {
-                    contentElement.InnerHtml.AppendHtml(content!);
+                    if (tprFooterBar.ContentAllowHtml)
+                    {
+                        contentElement.InnerHtml.AppendHtml(tprFooterBar.Content!);
+                    }
+                    else
+                    {
+                        contentElement.InnerHtml.Append(tprFooterBar.Content!.ToString()!);
+                    }
                 }
                 else
                 {
@@ -70,9 +69,18 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                 if (hasCopyright)
                 {
                     var copyrightElement = new TagBuilder("p");
+                    if (tprFooterBar.CopyrightAttributes != null) { copyrightElement.MergeAttributes(tprFooterBar.CopyrightAttributes); }
                     copyrightElement.MergeCssClass("govuk-body");
                     copyrightElement.MergeCssClass("tpr-footer__copyright");
-                    copyrightElement.InnerHtml.AppendHtml("&copy; " + copyright);
+                    copyrightElement.InnerHtml.AppendHtml("&copy; ");
+                    if (tprFooterBar.CopyrightAllowHtml)
+                    {
+                        copyrightElement.InnerHtml.AppendHtml(tprFooterBar.Copyright!);
+                    }
+                    else
+                    {
+                        copyrightElement.InnerHtml.Append(tprFooterBar.Copyright!.ToString()!);
+                    }
                     contentContainer.InnerHtml.AppendHtml(copyrightElement);
                 }
                 tagBuilder.InnerHtml.AppendHtml(contentContainer);

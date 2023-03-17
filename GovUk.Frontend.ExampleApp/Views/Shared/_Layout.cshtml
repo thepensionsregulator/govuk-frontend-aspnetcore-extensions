@@ -16,7 +16,7 @@
             This is a new service - your <a href="#" class="govuk-link">feedback</a> will help us to improve it.
         </govuk-phase-banner>
         <tpr-header-bar>
-            <tpr-header-bar-content>
+            <tpr-header-bar-content allow-html="true">
                 <a class="govuk-link" href="#">A link</a>
                 <a class="govuk-link" href="#">Another link</a>
             </tpr-header-bar-content>
@@ -37,8 +37,10 @@
     </div>
     <tpr-back-to-top href="#main">Back to top</tpr-back-to-top>
     <tpr-footer-bar>
-        <a class="govuk-link" href="#">A link</a>
-        <a class="govuk-link" href="#">Another link</a>
+        <tpr-footer-bar-content allow-html="true">
+            <a class="govuk-link" href="#">A link</a>
+            <a class="govuk-link" href="#">Another link</a>
+        </tpr-footer-bar-content>
     </tpr-footer-bar>
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)

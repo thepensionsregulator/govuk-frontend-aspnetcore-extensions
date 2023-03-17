@@ -47,7 +47,7 @@
             <tpr-header-bar class="@Model.HeaderBarClass()">
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@Model.LogoHref()" />
                 <tpr-header-bar-label>@Model.HeaderBarLabel()</tpr-header-bar-label>
-                <tpr-header-bar-content>@Html.Raw(document.DocumentNode.OuterHtml)</tpr-header-bar-content>
+                <tpr-header-bar-content allow-html="true">@Html.Raw(document.DocumentNode.OuterHtml)</tpr-header-bar-content>
             </tpr-header-bar>
             <tpr-context-bar class="@Model.ContextBarClass()">
                 <tpr-context-bar-context-1 allow-html="true">@Html.Raw(GovUkTypography.Apply(@Model.Context1(), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>

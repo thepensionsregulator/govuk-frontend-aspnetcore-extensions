@@ -32,6 +32,7 @@ Configures the TPR logo, which links to The Pensions Regulator's website by defa
 | Attribute | Type     | Description                                                                                    |
 | --------- | -------- | ---------------------------------------------------------------------------------------------- |
 | `href`    | `string` | Sets the URL the logo links to, if any. Default is `https://www.thepensionsregulator.gov.uk/`. |
+| `alt`     | `string` | Sets the alternative text for the logo. Default is `The Pensions Regulator home page`.         |
 
 Must be inside a `<govuk-header-bar>` element.
 
@@ -49,9 +50,9 @@ Must be inside a `<govuk-header-bar>` element.
 
 Typically used for a menu of relevant links.
 
-| Attribute    | Type   | Description                                                      |
-| ------------ | ------ | ---------------------------------------------------------------- |
-| `allow-html` | `bool` | Sets whether to render HTML without escaping. Default is `true`. |
+| Attribute    | Type   | Description                                                       |
+| ------------ | ------ | ----------------------------------------------------------------- |
+| `allow-html` | `bool` | Sets whether to render HTML without escaping. Default is `false`. |
 
 Must be inside a `<govuk-header-bar>` element.
 

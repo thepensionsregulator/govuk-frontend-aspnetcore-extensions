@@ -10,7 +10,7 @@ This builds on [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://g
   - Back to top
   - Back to menu
   - TPR header
-  - TPR context bar
+  - [TPR context bar](/docs/components/tpr-context-bar.md)
   - TPR footer
 - Adding non-interactive components (for example [details](https://design-system.service.gov.uk/components/details/) and [inset text](https://design-system.service.gov.uk/components/inset-text/)) entirely in Umbraco
 - Configuring the text for interactive components (for example [text input](https://design-system.service.gov.uk/components/text-input/)) in Umbraco

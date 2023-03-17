@@ -162,6 +162,14 @@ $tpr-header-left-width-xl: 200px;
     margin: 0;
 }
 
+.tpr-context .govuk-link:link, .tpr-context .govuk-link:visited {
+    color: $tpr-colour-white;
+}
+.tpr-context .govuk-link:focus {
+    color: $govuk-focus-text-colour;
+    box-shadow: 0 -2px $govuk-focus-colour, 0 4px $tpr-colour-blue-marguerite;
+}
+
 // Required when the text inside .tpr-context__context-2 is short.
 .tpr-context__container {
     width: 100%; 

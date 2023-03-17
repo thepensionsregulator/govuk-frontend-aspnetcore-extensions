@@ -7,10 +7,10 @@
 @inject UmbracoHelper Umbraco
 @{
     var home = Umbraco.ContentSingleAtXPath("//home");
-    var settings = Umbraco.ContentSingleAtXPath("//settings")!;
+    var settings = Umbraco.ContentSingleAtXPath("//settings");
     var useTPRstyles = settings?.Value<bool>("useTPRstyles") ?? true;
-    var headerLockup = new TprHeaderLockupModel(settings) { ShowHeader = useTPRstyles };
-    var footerLockup = new TprFooterLockupModel(settings);
+    var headerLockup = new TprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
+    var footerLockup = new TprFooterLockupModel(settings!);
 }
 <!DOCTYPE html>
 <html lang="en">

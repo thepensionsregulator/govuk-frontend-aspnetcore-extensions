@@ -65,7 +65,7 @@ Create or edit a content node based on your document type, and you will be able 
 
 ![Editing TPR context bar content](/docs/images/tpr-context-bar-umbraco-content.png)
 
-Finally, pass that content node to the `TPRHeaderLockup` partial view on your layout to add the typical combination of [Skip link](https://design-system.service.gov.uk/components/skip-link/), [Phase banner](https://design-system.service.gov.uk/components/phase-banner/), TPR header bar and TPR context bar to your application.
+Finally, pass that content node to the `TPRHeaderLockup` partial view on your layout to add the typical combination of [Skip link](https://design-system.service.gov.uk/components/skip-link/), [Phase banner](https://design-system.service.gov.uk/components/phase-banner/), [TPR header bar](tpr-header-bar.md) and TPR context bar to your application.
 
 ```razor
 @using GovUk.Frontend.Umbraco.Models;

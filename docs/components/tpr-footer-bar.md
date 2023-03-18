@@ -17,6 +17,8 @@ The Pensions Regulator (TPR) uses the TPR footer bar as the footer on its web pa
 
 ![TPR footer bar](../images/tpr-footer-bar.png)
 
+[Run the Umbraco example application](docs/umbraco/run-example-application.md) and see 'The Pensions Regulator (TPR) header and footer' for more examples.
+
 ## API
 
 ### `<govuk-footer-bar>`

@@ -1,5 +1,5 @@
 ﻿@using Umbraco.Cms.Web.Common.PublishedModels;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<TprHeaderPage>
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderFooterTpr>
 @using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @using GovUk.Frontend.Umbraco.Typography
@@ -35,69 +35,128 @@
     <header role="banner">
         @if (useTPRstyles)
         {
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" label="@(settings?.Value<string?>("tprHeaderLabel"))">
-                @Html.Raw(GovUkTypography.Apply(settings?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label>@(settings?.Value<string?>("tprHeaderLabel"))</tpr-header-bar-label>
+                <tpr-header-bar-content allow-html="true">
+                    @Html.Raw(GovUkTypography.Apply(settings?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+                </tpr-header-bar-content>
             </tpr-header-bar>
-            <tpr-context-bar context-1="@(settings?.Value<string>("tprContext1"))" context-2="@(settings?.Value<string>("tprContext2"))" context-3="@(settings?.Value<string>("tprContext3"))" />
+            <tpr-context-bar>
+                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-2>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext2"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-2>
+                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+            </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithNoLabel" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" label="">
-                @Html.Raw(GovUkTypography.Apply(settings?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+                <tpr-header-bar-content allow-html="true">
+                    @Html.Raw(GovUkTypography.Apply(settings?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+                </tpr-header-bar-content>
             </tpr-header-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithNoLinks" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+            </tpr-header-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithNoLabelOrLinks" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="" label="" />
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+            </tpr-header-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveContextBarWithContext2ThatWraps" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" label="" />
-            <tpr-context-bar context-1="@(settings?.Value<string>("tprContext1"))" context-2="@Model.Context2TextThatWraps" context-3="@(settings?.Value<string>("tprContext3"))" />
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+            </tpr-header-bar>
+            <tpr-context-bar>
+                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-2>@Model.Context2TextThatWraps</tpr-context-bar-context-2>
+                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+            </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveContextBarWithoutContext1" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" label="" />
-            <tpr-context-bar context-2="@(settings?.Value<string>("tprContext2"))" context-3="@(settings?.Value<string>("tprContext3"))" />
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+            </tpr-header-bar>
+            <tpr-context-bar>
+                <tpr-context-bar-context-2>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext2"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-2>
+                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+            </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveContextBarWithoutContext2" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" label="" />
-            <tpr-context-bar context-1="@(settings?.Value<string>("tprContext1"))" context-3="@(settings?.Value<string>("tprContext3"))" />
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+            </tpr-header-bar>
+            <tpr-context-bar context-1="" context-3="">
+                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+            </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveContextBarWithoutContext3" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" label="" />
-            <tpr-context-bar context-1="@(settings?.Value<string>("tprContext1"))" context-2="@Model.Context2TextThatWraps" />
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+            </tpr-header-bar>
+            <tpr-context-bar>
+                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-2>@Model.Context2TextThatWraps</tpr-context-bar-context-2>
+            </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveContextBarWithoutContext1Or2" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" label="" />
-            <tpr-context-bar context-3="@(settings?.Value<string>("tprContext3"))" />
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+            </tpr-header-bar>
+            <tpr-context-bar>
+                <tpr-context-bar-context-1></tpr-context-bar-context-1>
+                <tpr-context-bar-context-2></tpr-context-bar-context-2>
+                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+            </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveContextBarWithoutContext1Or3" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" label="" />
-            <tpr-context-bar context-2="@Model.Context2TextThatWraps" />
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+            </tpr-header-bar>
+            <tpr-context-bar>
+                <tpr-context-bar-context-2>@Model.Context2TextThatWraps</tpr-context-bar-context-2>
+            </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveContextBarWithoutContext2Or3" />
             </div>
-            <tpr-header-bar logo-alt="@headerLogoAlt" logo-href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" label="" />
-            <tpr-context-bar context-1="@(settings?.Value<string>("tprContext1"))" />
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+            </tpr-header-bar>
+            <tpr-context-bar>
+                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
+            </tpr-context-bar>
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.FinalBlocks" />
             </div>
@@ -112,11 +171,18 @@
     <tpr-back-to-top href="#main">@Umbraco.GetDictionaryValue("Back to top")</tpr-back-to-top>
     @if (useTPRstyles)
     {
-        <tpr-footer-bar logo-alt="@footerLogoAlt" logo-href="@(settings?.Value<Link>("tprFooterLogoHref")?.Url)" copyright="@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))">
-            @Html.Raw(GovUkTypography.Apply(settings?.Value("tprFooterContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+        <tpr-footer-bar>
+            <tpr-footer-bar-logo alt="@footerLogoAlt" href="@(settings?.Value<Link>("tprFooterLogoHref")?.Url)" />
+            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+            <tpr-footer-bar-content allow-html="true">
+                @Html.Raw(GovUkTypography.Apply(settings?.Value("tprFooterContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+            </tpr-footer-bar-content>
         </tpr-footer-bar>
 
-        <tpr-footer-bar logo-alt="@footerLogoAlt" logo-href="" copyright="@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))" class="govuk-!-margin-top-5" />
+        <tpr-footer-bar class="govuk-!-margin-top-5">
+            <tpr-footer-bar-logo alt="@footerLogoAlt" href="" />
+            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+        </tpr-footer-bar>
     }
     <partial name="GOVUK/BodyClosing" />
 </body>

@@ -19,6 +19,8 @@ The red lines in this screenshot highlight the TPR header bar within the TPR hea
 
 ![TPR header bar within the TPR header](../images/tpr-header-bar.png)
 
+[Run the Umbraco example application](docs/umbraco/run-example-application.md) and see 'The Pensions Regulator (TPR) header and footer' for more examples.
+
 ## API
 
 ### `<govuk-header-bar>`

@@ -19,6 +19,8 @@ The red lines in this screenshot highlight the TPR context bar within the TPR he
 
 ![TPR context bar within the TPR header](../images/tpr-context-bar.png)
 
+[Run the Umbraco example application](docs/umbraco/run-example-application.md) and see 'The Pensions Regulator (TPR) header and footer' for more examples.
+
 ## API
 
 ### `<govuk-context-bar>`

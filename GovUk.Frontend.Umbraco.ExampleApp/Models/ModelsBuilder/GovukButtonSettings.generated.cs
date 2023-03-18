@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Button settings</summary>
 	[PublishedModel("govukButtonSettings")]
-	public partial class GovukButtonSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
+	public partial class GovukButtonSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukModelProperty
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -50,7 +50,22 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Type of button
+		/// Disabled: Adds aria-disabled="true" to the button. Your code should expect that the button may be used even in this state.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
+		[ImplementPropertyType("disabled")]
+		public virtual bool Disabled => this.Value<bool>(_publishedValueFallback, "disabled");
+
+		///<summary>
+		/// Style of button
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("styleOfButton")]
+		public virtual global::System.Collections.Generic.IEnumerable<string> StyleOfButton => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "styleOfButton");
+
+		///<summary>
+		/// Type of button: When you press Enter in a field, the first primary button in the form is activated. Secondary buttons always require JavaScript.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -96,5 +111,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClassesForColumn")]
 		public virtual string CssClassesForColumn => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetCssClassesForColumn(this, _publishedValueFallback);
+
+		///<summary>
+		/// Model property: The name of the property on the view model being bound to in the code.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("modelProperty")]
+		public virtual object ModelProperty => global::Umbraco.Cms.Web.Common.PublishedModels.GovukModelProperty.GetModelProperty(this, _publishedValueFallback);
 	}
 }

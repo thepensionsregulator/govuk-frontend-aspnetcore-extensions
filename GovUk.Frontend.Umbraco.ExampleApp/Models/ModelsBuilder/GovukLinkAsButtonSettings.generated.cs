@@ -57,12 +57,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool IsStartButton => this.Value<bool>(_publishedValueFallback, "isStartButton");
 
 		///<summary>
-		/// Type of button
+		/// Style of button
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("typeOfButton")]
-		public virtual string TypeOfButton => this.Value<string>(_publishedValueFallback, "typeOfButton");
+		[ImplementPropertyType("styleOfButton")]
+		public virtual global::System.Collections.Generic.IEnumerable<string> StyleOfButton => this.Value<global::System.Collections.Generic.IEnumerable<string>>(_publishedValueFallback, "styleOfButton");
 
 		///<summary>
 		/// CSS classes

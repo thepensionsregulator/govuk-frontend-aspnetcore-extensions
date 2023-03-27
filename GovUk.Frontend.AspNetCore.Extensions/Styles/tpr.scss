@@ -38,23 +38,23 @@
 @import '_open-sans.scss';
 
 // Override compiled GOV.UK styles to apply differences from the TPR UI Kit
-@import '_govuk-back.scss';
-@import '_govuk-button.scss';
-@import '_govuk-caption.scss';
-@import '_govuk-character-count.scss';
-@import '_govuk-date-input.scss';
-@import '_govuk-details.scss';
-@import '_govuk-fieldset.scss';
-@import '_govuk-input.scss';
-@import '_govuk-inset-text.scss';
-@import '_govuk-label.scss';
-@import '_govuk-link.scss';
-@import '_govuk-panel.scss';
-@import '_govuk-phase-banner.scss';
-@import '_govuk-radios-checkboxes.scss';
-@import '_govuk-summary-list.scss';
-@import '_govuk-table.scss';
-@import '_govuk-notification-banner.scss';
+@import '_tpr-back.scss';
+@import '_tpr-button.scss';
+@import '_tpr-caption.scss';
+@import '_tpr-character-count.scss';
+@import '_tpr-date-input.scss';
+@import '_tpr-details.scss';
+@import '_tpr-fieldset.scss';
+@import '_tpr-input.scss';
+@import '_tpr-inset-text.scss';
+@import '_tpr-label.scss';
+@import '_tpr-link.scss';
+@import '_tpr-panel.scss';
+@import '_tpr-phase-banner.scss';
+@import '_tpr-radios-checkboxes.scss';
+@import '_tpr-summary-list.scss';
+@import '_tpr-table.scss';
+@import '_tpr-notification-banner.scss';
 
 // Add different components and customisations that are not part of the GOV.UK Design System (or are in a later version than the one we're targeting)
 @import "_tpr-summary-card.scss";

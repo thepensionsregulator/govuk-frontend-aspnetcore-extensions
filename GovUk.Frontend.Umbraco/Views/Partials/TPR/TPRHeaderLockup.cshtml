@@ -8,7 +8,6 @@
 @using HtmlAgilityPack;
 @using Umbraco.Cms.Web.Common;
 @using Umbraco.Extensions;
-@inject UmbracoHelper Umbraco
 @inject IContextAwareHostUpdater hostUpdater
 @{
     var phase = Model.Phase();
@@ -45,10 +44,16 @@
         }
         @if (Model.ShowHeader)
         {
-            <tpr-header-bar class="@Model.HeaderBarClass()" logo-alt="@headerLogoAlt" logo-href="@Model.LogoHref()" label="@Model.HeaderBarLabel()">
-                @Html.Raw(document.DocumentNode.OuterHtml)
+            <tpr-header-bar class="@Model.HeaderBarClass()">
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@Model.LogoHref()" />
+                <tpr-header-bar-label>@Model.HeaderBarLabel()</tpr-header-bar-label>
+                <tpr-header-bar-content allow-html="true">@Html.Raw(document.DocumentNode.OuterHtml)</tpr-header-bar-content>
             </tpr-header-bar>
-            <tpr-context-bar class="@Model.ContextBarClass()" context-1="@Model.Context1()" context-2="@Model.Context2()" context-3="@Model.Context3()" />
+            <tpr-context-bar class="@Model.ContextBarClass()">
+                <tpr-context-bar-context-1 allow-html="true">@Html.Raw(GovUkTypography.Apply(@Model.Context1(), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-2 allow-html="true">@Html.Raw(GovUkTypography.Apply(@Model.Context2(), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-2>
+                <tpr-context-bar-context-3 allow-html="true">@Html.Raw(GovUkTypography.Apply(@Model.Context3(), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+            </tpr-context-bar>
         }
     </header>
 }

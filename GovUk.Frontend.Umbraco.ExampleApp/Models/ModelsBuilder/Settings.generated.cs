@@ -86,7 +86,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprContext1")]
-		public virtual string TprContext1 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar1.GetTprContext1(this, _publishedValueFallback);
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprContext1 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar1.GetTprContext1(this, _publishedValueFallback);
 
 		///<summary>
 		/// Context 2: Typically the name of the entity being edited in the application.
@@ -94,7 +94,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprContext2")]
-		public virtual string TprContext2 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar2.GetTprContext2(this, _publishedValueFallback);
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprContext2 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar2.GetTprContext2(this, _publishedValueFallback);
 
 		///<summary>
 		/// Context 3: Typically a reference number for the entity being edited in the application.
@@ -102,7 +102,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprContext3")]
-		public virtual string TprContext3 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar3.GetTprContext3(this, _publishedValueFallback);
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprContext3 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar3.GetTprContext3(this, _publishedValueFallback);
 
 		///<summary>
 		/// Content: A small number of links, or blank.

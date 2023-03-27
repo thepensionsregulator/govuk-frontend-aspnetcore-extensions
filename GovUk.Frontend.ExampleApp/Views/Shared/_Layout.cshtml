@@ -16,10 +16,16 @@
             This is a new service - your <a href="#" class="govuk-link">feedback</a> will help us to improve it.
         </govuk-phase-banner>
         <tpr-header-bar>
-            <a class="govuk-link" href="#">A link</a>
-            <a class="govuk-link" href="#">Another link</a>
+            <tpr-header-bar-content allow-html="true">
+                <a class="govuk-link" href="#">A link</a>
+                <a class="govuk-link" href="#">Another link</a>
+            </tpr-header-bar-content>
         </tpr-header-bar>
-        <tpr-context-bar context-1="Example app" context-2="Something being edited with a very long name that will always wrap even at full width" context-3="ID: 12345678" />
+        <tpr-context-bar>
+            <tpr-context-bar-context-1>Example app</tpr-context-bar-context-1>
+            <tpr-context-bar-context-2>Name of the thing being displayed or edited</tpr-context-bar-context-2>
+            <tpr-context-bar-context-3>ID: 12345678</tpr-context-bar-context-3>
+        </tpr-context-bar>
         @RenderSection("language", required: false)
     </header>
     <div class="tpr-main-wrapper">
@@ -31,8 +37,10 @@
     </div>
     <tpr-back-to-top href="#main">Back to top</tpr-back-to-top>
     <tpr-footer-bar>
-        <a class="govuk-link" href="#">A link</a>
-        <a class="govuk-link" href="#">Another link</a>
+        <tpr-footer-bar-content allow-html="true">
+            <a class="govuk-link" href="#">A link</a>
+            <a class="govuk-link" href="#">Another link</a>
+        </tpr-footer-bar-content>
     </tpr-footer-bar>
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)

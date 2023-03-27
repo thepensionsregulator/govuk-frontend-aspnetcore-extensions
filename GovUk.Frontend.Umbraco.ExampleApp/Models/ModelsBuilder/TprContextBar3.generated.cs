@@ -25,7 +25,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		/// <summary>Context 3</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		string TprContext3 { get; }
+		global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprContext3 { get; }
 	}
 
 	/// <summary>TPR context 3</summary>
@@ -65,11 +65,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprContext3")]
-		public virtual string TprContext3 => GetTprContext3(this, _publishedValueFallback);
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprContext3 => GetTprContext3(this, _publishedValueFallback);
 
 		/// <summary>Static getter for Context 3</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.0+daff988")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static string GetTprContext3(ITprContextBar3 that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprContext3");
+		public static global::Umbraco.Cms.Core.Strings.IHtmlEncodedString GetTprContext3(ITprContextBar3 that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(publishedValueFallback, "tprContext3");
 	}
 }

@@ -1,6 +1,7 @@
 using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.Threading.Tasks;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
@@ -8,14 +9,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     /// Generates a TPR context bar component
     /// </summary>
     [HtmlTargetElement(TagName)]
+    [RestrictChildren(TprContextBarContext1TagHelper.TagName, TprContextBarContext2TagHelper.TagName, TprContextBarContext3TagHelper.TagName)]
     [OutputElementHint(ComponentGenerator.TprContextBarElement)]
     public class TprContextBarTagHelper : TagHelper
     {
         internal const string TagName = "tpr-context-bar";
-
-        private const string Context1AttributeName = "context-1";
-        private const string Context2AttributeName = "context-2";
-        private const string Context3AttributeName = "context-3";
 
         private readonly IGovUkHtmlGenerator _htmlGenerator;
 
@@ -32,30 +30,33 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
-        /// <summary>
-        /// The text displayed at the left of the context bar.
-        /// </summary>
-        [HtmlAttributeName(Context1AttributeName)]
-        public string? Context1 { get; set; }
-
-        /// <summary>
-        /// The text displayed in the middle of the context bar.
-        /// </summary>
-        [HtmlAttributeName(Context2AttributeName)]
-        public string? Context2 { get; set; }
-
-        /// <summary>
-        /// The text displayed at the right of the context bar.
-        /// </summary>
-        [HtmlAttributeName(Context3AttributeName)]
-        public string? Context3 { get; set; }
-
         /// <inheritdoc/>
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (!string.IsNullOrWhiteSpace(Context1) || !string.IsNullOrWhiteSpace(Context2) || !string.IsNullOrWhiteSpace(Context3))
+            var barContext = new TprContextBarContext();
+
+            using (context.SetScopedContextItem(barContext))
             {
-                var tagBuilder = _htmlGenerator.GenerateTprContextBar(Context1, Context2, Context3, output.Attributes.ToAttributeDictionary());
+                await output.GetChildContentAsync();
+            }
+
+            if (!string.IsNullOrWhiteSpace(barContext.Context1Content?.ToString()) ||
+                !string.IsNullOrWhiteSpace(barContext.Context2Content?.ToString()) ||
+                !string.IsNullOrWhiteSpace(barContext.Context3Content?.ToString()))
+            {
+                var tagBuilder = _htmlGenerator.GenerateTprContextBar(new TprContextBar
+                {
+                    ContextBarAttributes = output.Attributes.ToAttributeDictionary(),
+                    Context1Attributes = barContext.Context1Attributes,
+                    Context1Content = barContext.Context1Content,
+                    Context1AllowHtml = barContext.Context1AllowHtml,
+                    Context2Attributes = barContext.Context2Attributes,
+                    Context2Content = barContext.Context2Content,
+                    Context2AllowHtml = barContext.Context2AllowHtml,
+                    Context3Attributes = barContext.Context3Attributes,
+                    Context3Content = barContext.Context3Content,
+                    Context3AllowHtml = barContext.Context3AllowHtml
+                });
 
                 output.TagName = tagBuilder.TagName;
                 output.TagMode = TagMode.StartTagAndEndTag;

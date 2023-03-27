@@ -10,16 +10,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     /// Generates a TPR header bar component
     /// </summary>
     [HtmlTargetElement(TagName)]
+    [RestrictChildren(TprHeaderBarLogoTagHelper.TagName, TprHeaderBarLabelTagHelper.TagName, TprHeaderBarContentTagHelper.TagName)]
     [OutputElementHint(ComponentGenerator.TprHeaderBarElement)]
     public class TprHeaderBarTagHelper : TagHelper
     {
         internal const string TagName = "tpr-header-bar";
-
-        private const string LabelAttributeName = "label";
-        private const string LogoAltAttributeName = "logo-alt";
-        private const string LogoHrefAttributeName = "logo-href";
-
-        private string _logoAlt = ComponentGenerator.HeaderLogoDefaultAlt;
 
         private readonly IGovUkHtmlGenerator _htmlGenerator;
 
@@ -36,39 +31,29 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
-        /// <summary>
-        /// The <c>alt</c> attribute for the TPR logo.
-        /// </summary>
-        [HtmlAttributeName(LogoAltAttributeName)]
-        public string LogoAlt
-        {
-            get => _logoAlt;
-            set => _logoAlt = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
-        }
-
-        /// <summary>
-        /// The <c>href</c> attribute for the link around the TPR logo.
-        /// </summary>
-        [HtmlAttributeName(LogoHrefAttributeName)]
-        public string? LogoHref { get; set; } = ComponentGenerator.HeaderLogoDefaultHref;
-
-        /// <summary>
-        /// The label displayed to the right of the logo.
-        /// </summary>
-        [HtmlAttributeName(LabelAttributeName)]
-        public string? Label { get; set; } = ComponentGenerator.DefaultHeaderLabel;
-
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            IHtmlContent? content = null;
+            var barContext = new TprHeaderBarContext();
 
-            if (output.TagMode == TagMode.StartTagAndEndTag)
+            using (context.SetScopedContextItem(barContext))
             {
-                content = await output.GetChildContentAsync();
+                await output.GetChildContentAsync();
             }
 
-            var tagBuilder = _htmlGenerator.GenerateTprHeaderBar(LogoHref, LogoAlt, Label, content, output.Attributes.ToAttributeDictionary());
+            var tagBuilder = _htmlGenerator.GenerateTprHeaderBar(new TprHeaderBar
+            {
+                HeaderBarAttributes = output.Attributes.ToAttributeDictionary(),
+                LogoAttributes = barContext.LogoAttributes,
+                LogoHref = barContext.LogoHref ?? ComponentGenerator.HeaderLogoDefaultHref,
+                LogoAlternativeText = barContext.LogoAlternativeText ?? ComponentGenerator.HeaderLogoDefaultAlt,
+                LabelAttributes = barContext.LabelAttributes,
+                Label = barContext.Label ?? new HtmlString(ComponentGenerator.DefaultHeaderLabel),
+                LabelAllowHtml = barContext.LabelAllowHtml,
+                ContentAttributes = barContext.ContentAttributes,
+                Content = barContext.Content,
+                ContentAllowHtml = barContext.ContentAllowHtml
+            });
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

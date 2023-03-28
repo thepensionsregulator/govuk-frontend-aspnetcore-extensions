@@ -31,8 +31,8 @@
 			</GovUkFrontendUmbracoGitIgnoreText>
 			<GovUkFrontendUmbracoGitIgnore Include="%(GovUkFrontendUmbracoGitIgnoreText.Text)" />
 		</ItemGroup>
-		<Message Text="Generating $(ProjectDir)App_Plugins\GovUk.Frontend.Umbraco\.gitignore" Importance="high" />
-		<WriteLinesToFile File="$(ProjectDir)App_Plugins\GovUk.Frontend.Umbraco\.gitignore" Lines="@(GovUkFrontendUmbracoGitIgnore)" Overwrite="True"/>
+		<Message Text="Generating $(ProjectDir)App_Plugins\GOVUK\.gitignore" Importance="high" />
+		<WriteLinesToFile File="$(ProjectDir)App_Plugins\GOVUK\.gitignore" Lines="@(GovUkFrontendUmbracoGitIgnore)" Overwrite="True"/>
 
 		<ItemGroup>
 			<GovUkFrontendUmbracoCssGitIgnoreText Include="GovUkFrontendUmbracoCssGitIgnoreText">

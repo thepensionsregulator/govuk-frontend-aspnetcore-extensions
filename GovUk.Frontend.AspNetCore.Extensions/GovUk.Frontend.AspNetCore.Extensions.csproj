@@ -313,4 +313,8 @@
 	  <UpToDateCheckInput Remove="Styles\_tpr-table.scss" />
 	</ItemGroup>
 	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-pagination.scss" />
+	</ItemGroup>
+	
 </Project>

@@ -59,7 +59,6 @@ namespace GovUk.Frontend.Umbraco.Testing
             return Mock.Get(publishedElement).SetupUmbracoTextboxPropertyValue(alias, value);
         }
 
-
         /// <summary>
         /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a textbox data type, and set its value.
         /// </summary>
@@ -69,6 +68,29 @@ namespace GovUk.Frontend.Umbraco.Testing
         public static Mock<T> SetupUmbracoTextboxPropertyValue<T>(this Mock<T> publishedElement, string alias, string? value) where T : class, IPublishedElement
         {
             return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateTextboxProperty);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using an integer data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+
+        public static Mock<T> SetupUmbracoIntegerPropertyValue<T>(this T publishedElement, string alias, int? value) where T : class, IPublishedElement
+        {
+            return Mock.Get(publishedElement).SetupUmbracoIntegerPropertyValue(alias, value);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using an integer data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+        public static Mock<T> SetupUmbracoIntegerPropertyValue<T>(this Mock<T> publishedElement, string alias, int? value) where T : class, IPublishedElement
+        {
+            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateIntegerProperty);
         }
 
         /// <summary>

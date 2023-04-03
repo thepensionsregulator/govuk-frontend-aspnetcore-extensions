@@ -2,14 +2,14 @@
 @using System.Web;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @model GovUk.Frontend.AspNetCore.Extensions.Models.PaginationModel
-@if (Model != null && Model.PageSize.HasValue && Model.TotalItems > Model.PageSize)
+@if (Model != null && Model.TotalItems > Model.PageSize)
 {
     var path = Model.Path ?? Context.Request.Path;
     var queryString = Model.QueryString ?? Context.Request.QueryString;
     var query = HttpUtility.ParseQueryString(queryString.ToString());
     query.Remove(Model.QueryStringParameter);
 
-    var totalPages = (int)Math.Ceiling((decimal)Model.TotalItems / Model.PageSize.Value);
+    var totalPages = Model.TotalPages();
     var previousPage = Model.PageNumber - 1;
     var nextPage = Model.PageNumber + 1;
 
@@ -25,7 +25,7 @@
 
     if (totalPages <= Model.LargeNumberOfPagesThreshold)
     {
-        <govuk-pagination landmark-label="@Model.LandmarkLabel">
+        <govuk-pagination landmark-label="@Model.LandmarkLabel" class="@Model.CssClasses">
             @if (Model.PageNumber > 1)
             {
                 var previousLabel = Model.PreviousPageLabel.Replace("{{page}}", previousPage.ToString(CultureInfo.InvariantCulture)).Replace("{{total}}", totalPages.ToString(CultureInfo.InvariantCulture));
@@ -40,7 +40,7 @@
     }
     else
     {
-        <govuk-pagination landmark-label="@Model.LandmarkLabel">
+        <govuk-pagination landmark-label="@Model.LandmarkLabel" class="@Model.CssClasses">
             @if (Model.PageNumber > 1)
             {
                 <govuk-pagination-previous href="@Html.Raw(previousHref)" />

@@ -229,6 +229,12 @@
 		<Content Update="uSync\v9\ContentTypes\govukpageheadingsettings.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukpagination.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukpaginationsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukpanel.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

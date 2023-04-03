@@ -52,6 +52,7 @@ There are several overloads for common property types. You should use these wher
 
 ```csharp
 _testContext.CurrentPage.SetupUmbracoTextboxPropertyValue("myTextPropertyAlias", "The text saved in the property");
+_testContext.CurrentPage.SetupUmbracoIntegerPropertyValue("myIntegerPropertyAlias", 123);
 _testContext.CurrentPage.SetupUmbracoBooleanPropertyValue("myTrueFalsePropertyAlias", true);
 _testContext.CurrentPage.SetupUmbracoMultiUrlPickerPropertyValue("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
 _testContext.CurrentPage.SetupUmbracoBlockListPropertyValue("myBlockListPropertyAlias", myBlockList);
@@ -62,6 +63,7 @@ If the above overloads don't meet your needs you can create a property directly.
 ```csharp
 var prop1 = UmbracoPropertyFactory.CreateProperty("myPropertyAlias", myPropertyType, string.Empty);
 var prop2 = UmbracoPropertyFactory.CreateTextboxProperty("myTextPropertyAlias", string.Empty);
+var prop2 = UmbracoPropertyFactory.CreateIntegerProperty("myIntegerPropertyAlias", 123);
 var prop3 = UmbracoPropertyFactory.CreateBooleanProperty("myTrueFalsePropertyAlias", true);
 var prop4 = UmbracoPropertyFactory.CreateMultiUrlPickerProperty("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
 var prop5 = UmbracoPropertyFactory.CreateBlockListProperty("myBlockListPropertyAlias", myBlockList);

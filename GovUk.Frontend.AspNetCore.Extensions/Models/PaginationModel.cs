@@ -14,9 +14,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Models
         public int PageNumber { get; set; } = 1;
 
         /// <summary>
-        /// The number of items per page. If <c>null</c> then pagination is not active.
+        /// The number of items per page.
         /// </summary>
-        public int? PageSize { get; set; }
+        public int PageSize { get; set; } = 10;
 
         /// <summary>
         /// The total number of items to be paginated.
@@ -28,11 +28,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Models
         /// </summary>
         public int TotalPages()
         {
-            if (!PageSize.HasValue)
+            if (PageSize <= 0 || TotalItems <= 0)
             {
                 return 1;
             }
-            return (int)Math.Ceiling((decimal)TotalItems / PageSize.Value);
+            return (int)Math.Ceiling((decimal)TotalItems / PageSize);
         }
 
         /// <summary>
@@ -77,5 +77,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Models
         /// The querystring that page links should target, if different from the querystring of the current request.
         /// </summary>
         public QueryString? QueryString { get; set; }
+
+        /// <summary>
+        /// A space-separated list of classes to apply to the pagination component.
+        /// </summary>
+        public string? CssClasses { get; set; }
     }
 }

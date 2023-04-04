@@ -7,13 +7,13 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-        <PackageReference Include="Umbraco.Cms" Version="10.4.0" />
+        <PackageReference Include="Umbraco.Cms" Version="10.4.2" />
     </ItemGroup>
 
     <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->
     <ItemGroup>
       <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
-      <PackageReference Include="uSync" Version="10.3.2" />
+      <PackageReference Include="uSync" Version="10.3.4" />
       <ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
       <ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
       <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) Or $(RuntimeIdentifier.StartsWith('win')) Or ('$(RuntimeIdentifier)' == '' And !$([MSBuild]::IsOSPlatform('osx')))" />

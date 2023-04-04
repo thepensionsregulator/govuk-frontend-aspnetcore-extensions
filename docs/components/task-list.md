@@ -22,9 +22,13 @@
 </govuk-task-list>
 ```
 
-This example has TPR styling applied:
+This example has GOV.UK styling:
 
-![Task list](../images/task-list.png)
+![GOV.UK task list](../images/task-list-govuk.png)
+
+This example has TPR styling:
+
+![TPR task list](../images/task-list.png)
 
 ## API
 

@@ -349,6 +349,9 @@
 		<Content Update="uSync\v9\ContentTypes\govukwarningtextsettings.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprbacktotop.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\tprcontextbar1.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

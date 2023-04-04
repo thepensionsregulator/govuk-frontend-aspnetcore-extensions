@@ -16,7 +16,7 @@ namespace GovUk.Frontend.Umbraco.Models
         public bool ShowBackToTop { get; init; } = true;
         public bool ShowFooter { get; init; } = true;
         public virtual string? BackToTopClass() => null;
-        public virtual string? BackToTopText() => _settings.Value<string>("tprBackToTopText");
+        public virtual string? BackToTopText() => string.IsNullOrEmpty(_settings.Value<string>("tprBackToTopText")) ? "Back to top" : _settings.Value<string>("tprBackToTopText");
         public virtual string? FooterBarClass() => null;
         public virtual string? LogoAlternativeText() => _settings.Value<string>("tprFooterLogoAlt");
         public virtual string? LogoHref() => _settings.Value<Link>("tprFooterLogoHref")?.Url;

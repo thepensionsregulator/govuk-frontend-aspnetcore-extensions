@@ -2,13 +2,15 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @using GovUk.Frontend.Umbraco.Models;
 @using GovUk.Frontend.Umbraco.Typography
+@using Microsoft.Extensions.Configuration;
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
+@inject IConfiguration Configuration 
 @{
     var home = Umbraco.ContentSingleAtXPath("//home");
     var settings = Umbraco.ContentSingleAtXPath("//settings");
-    var useTPRstyles = settings?.Value<bool>("useTPRstyles") ?? true;
+    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var headerLockup = new TprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
     var footerLockup = new TprFooterLockupModel(settings!);
 }

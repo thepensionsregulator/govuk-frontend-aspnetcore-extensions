@@ -28,7 +28,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Models
         /// </summary>
         public int TotalPages()
         {
-            if (!PageSize.HasValue)
+            if (!PageSize.HasValue || PageSize <= 0 || TotalItems <= 0)
             {
                 return 1;
             }

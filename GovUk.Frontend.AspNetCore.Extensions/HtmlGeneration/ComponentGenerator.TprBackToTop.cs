@@ -11,7 +11,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
         internal const string BackToTopLinkElement = "a";
         internal const string BackToTopLinkDefaultHref = "#";
 
-        public virtual TagBuilder GenerateBackToTopLink(
+        public virtual TagBuilder GenerateTprBackToTop(
             string href,
             IHtmlContent content,
             AttributeDictionary? attributes)

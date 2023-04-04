@@ -13,7 +13,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
         internal const string BackToMenuLinkElement = "a";
         internal const string BackToMenuDefaultHref = "#";
 
-        public virtual TagBuilder GenerateBackToMenu(
+        public virtual TagBuilder GenerateTprBackToMenu(
             string href,
             IHtmlContent content,
             AttributeDictionary? attributes)
@@ -24,7 +24,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             var tagBuilder = new TagBuilder(BackToMenuElement);
             if (attributes != null) tagBuilder.MergeAttributes(attributes);
             tagBuilder.MergeCssClass("govuk-body");
-            tagBuilder.MergeCssClass("govuk-back-to-menu");
+            tagBuilder.MergeCssClass("tpr-back-to-menu");
 
             var linkBuilder = new TagBuilder(BackToMenuLinkElement);
             linkBuilder.MergeCssClass("govuk-link");

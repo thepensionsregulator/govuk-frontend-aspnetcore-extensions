@@ -72,6 +72,8 @@
                                                     blocks[i+1].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
                                                     blocks[i+1].Content.ContentType.Alias));
 
+    var pathToView = (blocks[i].Content.ContentType.Alias.StartsWith("GOVUK", StringComparison.OrdinalIgnoreCase) ? "GOVUK/" : "TPR/") + blocks[i].Content.ContentType.Alias;
+
     @if (filteredModel.RenderGrid && !isGridRowBlock && !sameAsPrevious) { 
         @:<div class="@rowClass"> 
         @:<div class="@columnClass"> 
@@ -80,7 +82,7 @@
     {
         @:<div class="@fieldsetErrorClasses"> 
     }
-    @await Html.PartialAsync("GOVUK/" + blocks[i].Content.ContentType.Alias, block)
+    @await Html.PartialAsync(pathToView, block)
     @if (!string.IsNullOrEmpty(fieldsetErrorClasses))
     {
         @:</div> 

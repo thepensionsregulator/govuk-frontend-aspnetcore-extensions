@@ -85,10 +85,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Update="uSync\v9\ContentTypes\govukbacktomenu.config">
+		<Content Update="uSync\v9\ContentTypes\tprbacktomenu.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
-		<Content Update="uSync\v9\ContentTypes\govukbacktomenusettings.config">
+		<Content Update="uSync\v9\ContentTypes\tprbacktomenusettings.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukbutton.config">

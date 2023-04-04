@@ -7,7 +7,7 @@ In testing users were confused by a standard 'Cancel' link as they weren't sure 
 ## Example
 
 ```razor
-<govuk-back-to-menu href="/">Back to menu (your progress for section xxx will be lost)</govuk-back-to-menu>
+<tpr-back-to-menu href="/">Back to menu (your progress for section xxx will be lost)</tpr-back-to-menu>
 ```
 
 This example has GOV.UK styling:

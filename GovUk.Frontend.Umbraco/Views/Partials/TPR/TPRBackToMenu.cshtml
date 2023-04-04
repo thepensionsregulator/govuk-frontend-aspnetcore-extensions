@@ -13,4 +13,4 @@
     link.Url = hostUpdater.UpdateHost(link.Url, Context.Request.Host.Host);
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
-<govuk-back-to-menu href="@link.Url" id="@Model.Content.Key" class="@cssClasses">@text</govuk-back-to-menu>
+<tpr-back-to-menu href="@link.Url" id="@Model.Content.Key" class="@cssClasses">@text</tpr-back-to-menu>

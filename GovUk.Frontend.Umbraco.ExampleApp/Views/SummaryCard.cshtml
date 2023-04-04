@@ -1,6 +1,7 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SummaryCard>
+﻿@using GovUk.Frontend.Umbraco.ExampleApp.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SummaryCardViewModel>
 @section head{
-	<title>@Model.Name</title>
+	<title>@Model.Page!.Name</title>
 }
 
 <partial name="GOVUK/BlockList" model="Model.Blocks" />

@@ -111,7 +111,7 @@ function createGovUkValidator() {
       const currentErrors = [].slice.call(list.querySelectorAll("a"));
 
       const updatedErrors = [].slice
-        .call(document.querySelectorAll(".govuk-error-message"))
+        .call(document.querySelectorAll(".govuk-error-message:not(.govuk-character-count__status)"))
         .map(function (error) {
           const link = document.createElement("a");
           const prefix = error.querySelector(".govuk-visually-hidden");

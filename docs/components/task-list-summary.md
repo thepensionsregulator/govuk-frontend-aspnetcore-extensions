@@ -14,7 +14,13 @@ This is part of the [Task list pages](https://design-system.service.gov.uk/patte
        completed-tasks="5" />
 ```
 
-![Panel](../images/task-list-summary.png)
+This example has GOV.UK styling:
+
+![GOV.UK task list summary](../images/task-list-summary-govuk.png)
+
+This example has TPR styling:
+
+![TPR task list summary](../images/task-list-summary.png)
 
 ## API
 

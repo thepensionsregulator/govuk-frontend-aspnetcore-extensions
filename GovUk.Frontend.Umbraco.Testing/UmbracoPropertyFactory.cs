@@ -16,6 +16,7 @@ namespace GovUk.Frontend.Umbraco.Testing
         private const int TEXTBOX_DATA_TYPE_ID = 2;
         private const int BOOLEAN_DATA_TYPE_ID = 3;
         private const int MULTI_URL_PICKER_DATA_TYPE_ID = 4;
+        private const int INTEGER_DATA_TYPE_ID = 5;
 
         /// <summary>
         /// Mock an Umbraco property and set its value.
@@ -44,7 +45,7 @@ namespace GovUk.Frontend.Umbraco.Testing
         /// <param name="propertyEditorAlias">The alias of the Umbraco property editor used by the data type.</param>
         /// <param name="configuration">An internal Umbraco configuration object specific to the property type.</param>
         /// <returns>The mocked Umbraco property type.</returns>
-        public static PublishedPropertyType CreatePropertyType(int dataTypeId, string propertyEditorAlias, object configuration)
+        public static PublishedPropertyType CreatePropertyType(int dataTypeId, string propertyEditorAlias, object? configuration)
         {
             var propertyType = new Mock<IPropertyType>();
             propertyType.SetupGet(x => x.DataTypeId).Returns(dataTypeId);
@@ -71,6 +72,18 @@ namespace GovUk.Frontend.Umbraco.Testing
         public static IPublishedProperty CreateTextboxProperty(string propertyAlias, string? value)
         {
             return CreateProperty(propertyAlias, CreatePropertyType(TEXTBOX_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration()), value);
+        }
+
+
+        /// <summary>
+        /// Mock an Umbraco property using a integer data type, and set its value.
+        /// </summary>
+        /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The mocked Umbraco property.</returns>
+        public static IPublishedProperty CreateIntegerProperty(string propertyAlias, int? value)
+        {
+            return CreateProperty(propertyAlias, CreatePropertyType(INTEGER_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.Integer, null), value);
         }
 
         /// <summary>

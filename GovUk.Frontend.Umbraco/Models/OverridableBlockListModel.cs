@@ -16,6 +16,11 @@ namespace GovUk.Frontend.Umbraco.Models
         private readonly List<OverridableBlockListItem> _items = new();
 
         /// <summary>
+        /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
+        /// </summary>
+        public OverridableBlockListModel() : this(Array.Empty<BlockListItem>()) { }
+
+        /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/>
         /// </summary>
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>

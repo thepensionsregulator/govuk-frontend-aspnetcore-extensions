@@ -1,10 +1,22 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Configuration;
+@inject IConfiguration Configuration
+@{
+    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
+    @if (useTPRstyles)
+    {
         <partial name="TPR/Head" />
+    }
+    else
+    {
+        <partial name="GOVUK/Head" />
+    }
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body class="govuk-template__body ">
@@ -15,17 +27,20 @@
             <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
             This is a new service - your <a href="#" class="govuk-link">feedback</a> will help us to improve it.
         </govuk-phase-banner>
-        <tpr-header-bar>
-            <tpr-header-bar-content allow-html="true">
-                <a class="govuk-link" href="#">A link</a>
-                <a class="govuk-link" href="#">Another link</a>
-            </tpr-header-bar-content>
-        </tpr-header-bar>
-        <tpr-context-bar>
-            <tpr-context-bar-context-1>Example app</tpr-context-bar-context-1>
-            <tpr-context-bar-context-2>Name of the thing being displayed or edited</tpr-context-bar-context-2>
-            <tpr-context-bar-context-3>ID: 12345678</tpr-context-bar-context-3>
-        </tpr-context-bar>
+        @if (useTPRstyles)
+        {
+            <tpr-header-bar>
+                <tpr-header-bar-content allow-html="true">
+                    <a class="govuk-link" href="#">A link</a>
+                    <a class="govuk-link" href="#">Another link</a>
+                </tpr-header-bar-content>
+            </tpr-header-bar>
+            <tpr-context-bar>
+                <tpr-context-bar-context-1>Example app</tpr-context-bar-context-1>
+                <tpr-context-bar-context-2>Name of the thing being displayed or edited</tpr-context-bar-context-2>
+                <tpr-context-bar-context-3>ID: 12345678</tpr-context-bar-context-3>
+            </tpr-context-bar>
+        }
         @RenderSection("language", required: false)
     </header>
     <div class="tpr-main-wrapper">
@@ -35,13 +50,16 @@
             </main>
         </div>
     </div>
-    <tpr-back-to-top href="#main">Back to top</tpr-back-to-top>
-    <tpr-footer-bar>
-        <tpr-footer-bar-content allow-html="true">
+    @if (useTPRstyles)
+    {
+        <tpr-back-to-top href="#main">Back to top</tpr-back-to-top>
+        <tpr-footer-bar>
+            <tpr-footer-bar-content allow-html="true">
             <a class="govuk-link" href="#">A link</a>
             <a class="govuk-link" href="#">Another link</a>
         </tpr-footer-bar-content>
-    </tpr-footer-bar>
+        </tpr-footer-bar>
+    }
     <partial name="GOVUK/BodyClosing" />
     @RenderSection("scripts", required: false)
 </body>

@@ -47,8 +47,6 @@
    If you are using form components your page should look more like this:
 
    ```csharp
-   <partial name="GOVUK/ErrorSummary" />
-
    @using (Html.BeginUmbracoForm<HomeSurfaceController>(nameof(HomeSurfaceController.Index), new {}, new { novalidate="novalidate" }))
    {
      <partial name="GOVUK/BlockList" model="Model.Blocks" />

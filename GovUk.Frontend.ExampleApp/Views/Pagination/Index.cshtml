@@ -1,18 +1,78 @@
-﻿@{
+﻿@using GovUk.Frontend.AspNetCore.Extensions.Models;
+@{
+    var pagination = new PaginationModel
+    {
+        PageNumber = 1,
+        PageSize = 10,
+        TotalItems = 50
+    };
+
+    if (Context.Request.Query.ContainsKey("page") && int.TryParse(Context.Request.Query["page"], out var pageNumber))
+    {
+        if (pageNumber >= 0)
+        {
+            pagination.PageNumber = pageNumber;
+        }
+    }
+
+    if (Context.Request.Query.ContainsKey("items") && int.TryParse(Context.Request.Query["items"], out var items))
+    {
+        if (items >= 0)
+        {
+            pagination.TotalItems = items;
+        }
+    }
+
+    var smallOrLarge = (pagination.TotalItems > (pagination.PageSize * 10)) ? "large" : "small";
+
     ViewData["Title"] = "Pagination";
+    if (pagination.TotalPages() > 1) { ViewData["Title"] += $" (page {pagination.PageNumber} of {pagination.TotalPages()})"; }
 }
 
-<span class="govuk-caption-xl">Example application</span>
 <div class="govuk-grid-row govuk-grid-row--tpr-divider">
     <div class="govuk-grid-column govuk-grid-column-full">
-        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+        <span class="govuk-caption-xl">Example application</span>
+        <h1 class="govuk-heading-l">Pagination</h1>
     </div>
 </div>
 
-<govuk-pagination>
-    <govuk-pagination-previous href="#" />
-    <govuk-pagination-item href="#">1</govuk-pagination-item>
-    <govuk-pagination-item href="#" is-current="true">2</govuk-pagination-item>
-    <govuk-pagination-item href="#">3</govuk-pagination-item>
-    <govuk-pagination-next href="#" />
-</govuk-pagination>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">
+            The GOV.UK Design System recommends using pagination differently depending on how many pages there are.
+            A pagination partial view expects a <i>PaginationModel</i> and applies this and other pagination logic for you.
+            See the Razor source of this page for an example.
+        </p>
+        <p class="govuk-body">
+            There are behaviours not covered by the partial view which you should implement:
+        </p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>Redirect users to the first page if they enter a URL of a page that no longer exists.</li>
+            <li>Show the page number in the page &lt;title&gt; so that screen reader users know they’ve navigated to a different page. For example, ‘Search results (page 1 of 4)’.</li>
+        </ul>
+
+        @if (pagination.TotalItems > pagination.PageSize)
+        {
+            <h2 class="govuk-heading-m">Pagination for a @smallOrLarge number of pages</h2>
+            <partial name="GOVUK/Pagination" model="pagination" />
+        }
+        else
+        {
+            <h2 class="govuk-heading-m">Pagination for a single page of items</h2>
+            <p class="govuk-body">Pagination should not appear at all when there are not enough items for a second page.</p>
+        }
+
+        <h2 class="govuk-heading-m">Change the number of pages</h2>
+        <p class="govuk-body">This example displays 10 items per page. The pagination style changes when there are more than 10 pages.</p>
+    </div>
+</div>
+<form action="@Context.Request.Path" method="get">
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+            <govuk-input name="items" input-class="govuk-input--width-3" value="@pagination.TotalItems">
+                <govuk-input-label>Number of items</govuk-input-label>
+            </govuk-input>
+        </div>
+    </div>
+    <govuk-button>Submit</govuk-button>
+</form>

@@ -48,9 +48,13 @@
 </govuk-summary-card>
 ```
 
-This example has TPR styling applied:
+This example has GOV.UK styling:
 
-![Summary card with actions](../images/summary-card-with-actions.png)
+![GOV.UK summary card with actions](../images/summary-card-with-actions-govuk.png)
+
+This example has TPR styling:
+
+![TPR summary card with actions](../images/summary-card-with-actions.png)
 
 ## Example - without actions
 
@@ -94,9 +98,13 @@ This example has TPR styling applied:
 </govuk-summary-card>
 ```
 
-This example has TPR styling applied:
+This example has GOV.UK styling:
 
-![Summary card without actions](../images/summary-card-without-actions.png)
+![GOVUK summary card without actions](../images/summary-card-without-actions-govuk.png)
+
+This example has TPR styling:
+
+![TPR summary card without actions](../images/summary-card-without-actions.png)
 
 ## API
 

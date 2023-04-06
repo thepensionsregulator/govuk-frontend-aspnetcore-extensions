@@ -26,6 +26,7 @@ namespace GovUk.Frontend.Umbraco
             services.AddGovUkFrontendExtensions(configureOptions);
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
             services.AddTransient<IUmbracoPublishedContentAccessor, UmbracoPublishedContentAccessor>();
+            services.AddTransient<IUmbracoPaginationFactory, UmbracoPaginationFactory>();
             services.AddMvc(options =>
             {
                 options.Filters.Add<RemoveBlockListSettingsErrorsActionFilter>();

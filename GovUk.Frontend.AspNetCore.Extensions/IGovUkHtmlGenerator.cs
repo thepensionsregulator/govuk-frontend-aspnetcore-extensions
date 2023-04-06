@@ -8,8 +8,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions
 {
     internal interface IGovUkHtmlGenerator
     {
-        TagBuilder GenerateBackToTopLink(string href, IHtmlContent content, AttributeDictionary? attributes);
-        TagBuilder GenerateBackToMenu(string href, IHtmlContent content, AttributeDictionary? attributes);
+        TagBuilder GenerateTprBackToTop(string href, IHtmlContent content, AttributeDictionary? attributes);
+        TagBuilder GenerateTprBackToMenu(string href, IHtmlContent content, AttributeDictionary? attributes);
         TagBuilder GenerateTprHeaderBar(TprHeaderBar tprHeaderBar);
         TagBuilder GenerateTprFooterBar(TprFooterBar tprFooterBar);
         TagBuilder GenerateTprContextBar(TprContextBar tprContextBar);

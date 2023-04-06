@@ -260,4 +260,8 @@
 	  <UpToDateCheckInput Remove="Styles\_tpr-summary-card.scss" />
 	</ItemGroup>
 	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-pagination.scss" />
+	</ItemGroup>
+	
 </Project>

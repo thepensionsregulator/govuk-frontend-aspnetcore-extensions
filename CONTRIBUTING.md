@@ -38,3 +38,11 @@ To run unit tests on the .NET code:
 ```cmd
 dotnet test
 ```
+
+## Publish a new version to nuget.org
+
+Tag the commit you want to publish from. Name your tag using semantic versioning. For example, if you are upgrading all packages from v1.0.0 to v2.0.0, your tag should be `v2.0.0`. If you are upgrading only one package then append the package name - for example `v2.0.0-ThePensionsRegulator.GovUk.Frontend`.
+
+To publish to nuget.org, run `azure-pipelines.yml` based on the tag.
+
+Add details of the release to the [Releases](https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions/releases) section on Github.

@@ -1,5 +1,4 @@
-﻿@import '_variables.scss';
-@import 'govuk/base';
+﻿@import 'govuk/base';
 
 .govuk-task-list-summary {
     @include govuk-responsive-margin(6, "bottom");
@@ -11,7 +10,7 @@
 
 .govuk-task-list-summary__completed-tasks,
 .govuk-task-list-summary__total-tasks {
-    font-weight: $tpr-font-weight-bold;
+    font-weight: bold;
 }
 
 // Task list component SASS from a pre-release GOV.UK Design System pull request https://github.com/alphagov/govuk-frontend/pull/2261

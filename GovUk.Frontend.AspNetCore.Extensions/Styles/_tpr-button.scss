@@ -1,8 +1,8 @@
-﻿@import '_variables.scss';
+﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
 /* Change GOV.UK button styles where the TPR brand diverges from the GOV.UK Design System. 
-   More changes (eg focus colour) are in _variables.scss which is applied before GOV.UK classes 
+   More changes (eg focus colour) are in _tpr-variables.scss which is applied before GOV.UK classes 
    are compiled. Changes in this file target situations where GOV.UK source uses generic GOV.UK
    tools like the govuk-colour() mixin that might apply more widely than buttons, rather than 
    defining a specific variable.

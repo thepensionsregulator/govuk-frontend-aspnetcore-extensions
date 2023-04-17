@@ -152,7 +152,7 @@ steps:
         condition: and(succeeded(), eq(variables.allowPush, true))
         inputs:
           command: push
-          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/ThePensionsRegulator.GovUk.Frontend.nupkg"
+          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/ThePensionsRegulator.GovUk.Frontend.*.nupkg"
           nuGetFeedType: external
           publishFeedCredentials: NUGET
 
@@ -162,7 +162,7 @@ steps:
         condition: and(succeeded(), eq(variables.allowPush, true))
         inputs:
           command: push
-          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/ThePensionsRegulator.GovUk.Frontend.Umbraco.nupkg"
+          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/ThePensionsRegulator.GovUk.Frontend.Umbraco.*.nupkg"
           nuGetFeedType: external
           publishFeedCredentials: NUGET
 
@@ -172,6 +172,6 @@ steps:
         condition: and(succeeded(), eq(variables.allowPush, true))
         inputs:
           command: push
-          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing.nupkg"
+          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing.*.nupkg"
           nuGetFeedType: external
           publishFeedCredentials: NUGET

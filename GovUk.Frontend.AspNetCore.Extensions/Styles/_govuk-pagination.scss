@@ -1,11 +1,4 @@
-﻿/* Fix a bug in GovUk.Frontend.AspNetCore 1.0.0-beta4 where there is a missing space character after the SVG. 
-   Add the spacing using CSS instead. */
-.govuk-pagination--block .govuk-pagination__icon--prev,
-.govuk-pagination--block .govuk-pagination__icon--next {
-    margin-right: 15px;
-}
-
-/* GOV.UK Design System documentation says not to show the ellipsis on small screens but govuk-frontend
+﻿/* GOV.UK Design System documentation says not to show the ellipsis on small screens but govuk-frontend
    doesn't implement that.
 */
 @include govuk-media-query($until: tablet) {

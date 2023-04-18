@@ -12,6 +12,6 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         public DateOnly? Field1 { get; set; }
 
         [Required(ErrorMessage = nameof(Field2))]
-        public DateOnly? Field2 { get; set; }
+        public DateTime? Field2 { get; set; }
     }
 }

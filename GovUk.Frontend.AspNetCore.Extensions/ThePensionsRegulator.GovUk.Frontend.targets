@@ -5,22 +5,22 @@
 			<Output TaskParameter="Result" ItemName="ThePensionsRegulatorGovUkFrontendVersion" />
 		</XmlPeek>
 		<PropertyGroup>
-			<ThePensionsRegulatorGovUkFrontend>@(ThePensionsRegulatorGovUkFrontend)</ThePensionsRegulatorGovUkFrontend>
-			<SassFilesPath>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(ThePensionsRegulatorGovUkFrontend)\contentFiles\any\net6.0\Styles\</SassFilesPath>
+			<ThePensionsRegulatorGovUkFrontendVersion>@(ThePensionsRegulatorGovUkFrontendVersion)</ThePensionsRegulatorGovUkFrontendVersion>
+			<ThePensionsRegulatorGovUkFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(ThePensionsRegulatorGovUkFrontendVersion)\contentFiles\any\net6.0\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
 		</PropertyGroup>
 		<ItemGroup>
-			<SassFilesFromThePensionsRegulatorGovUkFrontend Include="$(SassFilesPath)**\*.scss" />
+			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(ThePensionsRegulatorGovUkFrontendSassFolder)**\*.scss" />
 		</ItemGroup>
 
-		<Message Text="Copying files from $(SassFilesPath) to $(ProjectDir)" Importance="high" />
-		<Copy SourceFiles="@(SassFilesFromThePensionsRegulatorGovUkFrontend)"
+		<Message Text="Copying files from $(ThePensionsRegulatorGovUkFrontendSassFolder) to $(ProjectDir)" Importance="high" />
+		<Copy SourceFiles="@(ThePensionsRegulatorGovUkFrontendSassFiles)"
 			DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)" />
 
 		<Message Text="Generating $(ProjectDir)Styles\.gitignore" Importance="high" />
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendGitIgnoreText Include="ThePensionsRegulatorGovUkFrontendGitIgnoreText">
 				<Text>
-_variables.scss
+_tpr-variables.scss
 govuk
 				</Text>
 			</ThePensionsRegulatorGovUkFrontendGitIgnoreText>

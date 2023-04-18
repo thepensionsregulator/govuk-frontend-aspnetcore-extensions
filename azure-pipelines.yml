@@ -135,43 +135,45 @@ steps:
       summaryFileLocation: $(Agent.TempDirectory)\**\coverage.cobertura.xml
       failIfCoverageEmpty: true
 
-  - task: CopyFiles@2
-    displayName: Copy packages to staging folder
-    inputs:
-      SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions
-      Contents: |
-        **\bin\$(buildConfiguration)\ThePensionsRegulator.GovUk.Frontend*.nupkg
-        !**\bin\$(buildConfiguration)\ThePensionsRegulator.GovUk.Frontend*.symbols.nupkg
-      TargetFolder: $(Build.ArtifactStagingDirectory)
-      CleanTargetFolder: true
-      flattenFolders: true
-
   - ${{ if eq(parameters.pushGovUkToNuGet, true) }}:
-      - task: NuGetCommand@2
-        displayName: "Push ThePensionsRegulator.GovUk.Frontend to nuget.org"
-        condition: and(succeeded(), eq(variables.allowPush, true))
+      - task: CopyFiles@2
+        displayName: Copy GovUk.Frontend package to staging folder
         inputs:
-          command: push
-          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/ThePensionsRegulator.GovUk.Frontend.*.nupkg"
-          nuGetFeedType: external
-          publishFeedCredentials: NUGET
+          SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\bin\$(buildConfiguration)
+          Contents: |
+            ThePensionsRegulator.GovUk.Frontend*.nupkg
+            !ThePensionsRegulator.GovUk.Frontend*.symbols.nupkg
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
 
   - ${{ if eq(parameters.pushUmbracoToNuGet, true) }}:
-      - task: NuGetCommand@2
-        displayName: "Push ThePensionsRegulator.GovUk.Frontend.Umbraco to nuget.org"
-        condition: and(succeeded(), eq(variables.allowPush, true))
+      - task: CopyFiles@2
+        displayName: Copy GovUk.Frontend.Umbraco package to staging folder
         inputs:
-          command: push
-          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/ThePensionsRegulator.GovUk.Frontend.Umbraco.*.nupkg"
-          nuGetFeedType: external
-          publishFeedCredentials: NUGET
+          SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\bin\$(buildConfiguration)
+          Contents: |
+            ThePensionsRegulator.GovUk.Frontend*.nupkg
+            !ThePensionsRegulator.GovUk.Frontend*.symbols.nupkg
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
 
   - ${{ if eq(parameters.pushTestingToNuGet, true) }}:
+      - task: CopyFiles@2
+        displayName: Copy GovUk.Frontend.Umbraco.Testing package to staging folder
+        inputs:
+          SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco.Testing\bin\$(buildConfiguration)
+          Contents: |
+            ThePensionsRegulator.GovUk.Frontend*.nupkg
+            !ThePensionsRegulator.GovUk.Frontend*.symbols.nupkg
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+
+  - ${{ if or(eq(parameters.pushGovUkToNuGet, true), eq(parameters.pushUmbracoToNuGet, true), eq(parameters.pushTestingToNuGet, true)) }}:
       - task: NuGetCommand@2
-        displayName: "Push ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing to nuget.org"
+        displayName: "Push to nuget.org"
         condition: and(succeeded(), eq(variables.allowPush, true))
         inputs:
           command: push
-          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing.*.nupkg"
+          packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg"
           nuGetFeedType: external
           publishFeedCredentials: NUGET

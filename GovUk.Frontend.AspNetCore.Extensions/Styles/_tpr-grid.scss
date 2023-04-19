@@ -108,6 +108,7 @@
 
     @include govuk-media-query($from: desktop) {
         .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column-#{$width}-from-desktop > .govuk-form-group > *,
+        .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column-#{$width}-from-desktop > .govuk-character-count > .govuk-form-group > *,
         .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width}-from-desktop > fieldset > *,
         .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width}-from-desktop > .govuk-form-group > fieldset > * {
             width: govuk-grid-width($width);

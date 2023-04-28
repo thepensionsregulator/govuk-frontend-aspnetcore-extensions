@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Routing;
 using Moq;
+using System.Security.Claims;
 using System.Security.Principal;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
@@ -21,6 +22,7 @@ namespace GovUk.Frontend.Umbraco.Testing
     public class UmbracoTestContext
     {
         private const string TEMPLATE_NAME = "MockTemplate";
+        private ClaimsPrincipal _currentPrincipal;
 
         /// <summary>
         /// HTTP-specific information about this HTTP request.
@@ -43,6 +45,11 @@ namespace GovUk.Frontend.Umbraco.Testing
         public Mock<ICompositeViewEngine> CompositeViewEngine { get; private init; } = new();
 
         /// <summary>
+        /// The Umbraco context returned by <see cref="UmbracoContextAccessor"/>. 
+        /// </summary>
+        public Mock<IUmbracoContext> UmbracoContext { get; private init; } = new();
+
+        /// <summary>
         /// Provides access to a TryGetUmbracoContext bool method that will return <c>true</c> if the "current" <see cref="IUmbracoContext"/> is not null. Provides a Clear() method that will clear the current UmbracoContext object. Provides a Set() method that will set the current UmbracoContext object.
         /// </summary>
         public Mock<IUmbracoContextAccessor> UmbracoContextAccessor { get; private init; } = new();
@@ -63,17 +70,62 @@ namespace GovUk.Frontend.Umbraco.Testing
         public Mock<IPublishedContent> CurrentPage { get; private init; }
 
         /// <summary>
-        /// Gets or sets the object used to manage user session data for this request.
+        /// Gets the object used to manage user session data for this request.
         /// </summary>
         public Mock<ISession> Session { get; private init; } = new();
+
+        /// <summary>
+        /// The request which is the result of Umbraco routing.
+        /// </summary>
+        public Mock<IPublishedRequest> PublishedRequest { get; private init; } = new();
 
         /// <summary>
         /// Provides access to Umbraco's cache of current published content.
         /// </summary>
         public Mock<IPublishedContentCache> PublishedContentCache { get; private init; } = new();
 
+        /// <summary>
+        /// The identity associated with the default value of <see cref="CurrentPrincipal"/>.
+        /// </summary>
+        public Mock<IIdentity> CurrentIdentity { get; private init; } = new();
+
+        /// <summary>
+        /// The current user.
+        /// </summary>
+        public ClaimsPrincipal CurrentPrincipal
+        {
+            get
+            {
+                return _currentPrincipal;
+            }
+            set
+            {
+                _currentPrincipal = value;
+                HttpContext.Setup(x => x.User).Returns(_currentPrincipal);
+
+                // Configure Umbraco to get the currently logged-in member based on the same user
+                // by mocking responses to the steps taken internally by MembershipHelper.GetCurrentUser()
+                Thread.CurrentPrincipal = _currentPrincipal;
+            }
+        }
+
+        /// <summary>
+        /// Provides easy access to operations involving Languages and Dictionary.
+        /// </summary>
+        public Mock<ILocalizationService> LocalizationService { get; private init; } = new();
+
+        /// <summary>
+        /// The view returned by the <see cref="CompositeViewEngine"/>.
+        /// </summary>
+        public Mock<IView> View { get; private init; } = new();
+
+
+        // Disable 'Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.'
+        // so that we can use the CurrentPrincipal setter to assign _currentPrincipal.
+#pragma warning disable CS8618
         public UmbracoTestContext()
         {
+#pragma warning restore CS8618
             CurrentPage = UmbracoContentFactory.CreateContent<IPublishedContent>("MockDocumentType");
 
             SetupHttpContext();
@@ -86,18 +138,20 @@ namespace GovUk.Frontend.Umbraco.Testing
             };
 
             CompositeViewEngine.Setup(x => x.FindView(ControllerContext, TEMPLATE_NAME, false))
-                .Returns(ViewEngineResult.Found(TEMPLATE_NAME, Mock.Of<IView>()));
+                .Returns(ViewEngineResult.Found(TEMPLATE_NAME, View.Object));
 
-            var umbracoContextMock = new Mock<IUmbracoContext>();
-            umbracoContextMock.Setup(context => context.Content).Returns(PublishedContentCache.Object);
-            umbracoContextMock.Setup(context => context.PublishedRequest).Returns(HttpContext.Object.Features.Get<UmbracoRouteValues>()!.PublishedRequest);
+            UmbracoContext.SetupGet(context => context.Content).Returns(PublishedContentCache.Object);
+            UmbracoContext.SetupGet(context => context.PublishedRequest).Returns(HttpContext.Object.Features.Get<UmbracoRouteValues>()!.PublishedRequest);
 
-            var umbracoContext = umbracoContextMock.Object;
-            UmbracoContextAccessor.Setup(x => x.TryGetUmbracoContext(out umbracoContext)).Returns(true);
+            var umbracoContextAccessorResult = UmbracoContext.Object;
+            UmbracoContextAccessor.Setup(x => x.TryGetUmbracoContext(out umbracoContextAccessorResult)).Returns(true);
 
             ServiceContext = ServiceContext.CreatePartial(
-                localizationService: Mock.Of<ILocalizationService>()
+                localizationService: LocalizationService.Object
             );
+
+            CurrentIdentity.SetupGet(x => x.IsAuthenticated).Returns(false);
+            CurrentPrincipal = new GenericPrincipal(CurrentIdentity.Object, Array.Empty<string>());
         }
 
         private void SetupHttpContext()
@@ -108,23 +162,12 @@ namespace GovUk.Frontend.Umbraco.Testing
             Request.SetupGet(x => x.Headers).Returns(new HeaderDictionary());
 
             HttpContext.SetupGet(x => x.Request).Returns(Request.Object);
-
-            var identity = new Mock<IIdentity>();
-            identity.Setup(x => x.IsAuthenticated).Returns(false);
-            var user = new GenericPrincipal(identity.Object, Array.Empty<string>());
-            HttpContext.Setup(x => x.User).Returns(user);
-
-            // Configure Umbraco to get the currently logged-in member based on the same user
-            // by mocking responses to the steps taken internally by MembershipHelper.GetCurrentUser()
-            Thread.CurrentPrincipal = user;
-
             HttpContext.SetupGet(x => x.Session).Returns(Session.Object);
 
-            var publishedRequest = new Mock<IPublishedRequest>();
-            publishedRequest.Setup(request => request.PublishedContent).Returns(CurrentPage.Object);
+            PublishedRequest.SetupGet(request => request.PublishedContent).Returns(CurrentPage.Object);
 
             var features = new FeatureCollection();
-            features.Set(new UmbracoRouteValues(publishedRequest.Object, new ControllerActionDescriptor(), TEMPLATE_NAME));
+            features.Set(new UmbracoRouteValues(PublishedRequest.Object, new ControllerActionDescriptor(), TEMPLATE_NAME));
             HttpContext.SetupGet(x => x.Features).Returns(features);
 
         }

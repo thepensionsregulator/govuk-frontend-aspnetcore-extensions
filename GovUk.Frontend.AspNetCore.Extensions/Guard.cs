@@ -8,7 +8,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
     /// <summary>
     /// Copied from GovUk.Frontend.AspNetCore
     /// </summary>
-    internal static class Guard
+    public static class Guard
     {
         public static T ArgumentNotNull<T>(string argName, [NotNull] T? argValue)
             where T : class

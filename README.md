@@ -1,4 +1,4 @@
-# govuk-frontend-aspnetcore-extensions
+# GOV.UK Design System for ASP.NET MVC and Umbraco
 
 This builds on [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore) by James Gunn, adding support for:
 

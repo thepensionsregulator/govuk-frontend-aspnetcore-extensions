@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Date input settings</summary>
 	[PublishedModel("govukDateInputSettings")]
-	public partial class GovukDateInputSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLegendIsPageHeading, IGovukModelProperty, IGovukValidationCustom, IGovukValidationRequired
+	public partial class GovukDateInputSettings : PublishedElementModel, IDateErrorMessages, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLegendIsPageHeading, IGovukModelProperty, IGovukValidationCustom, IGovukValidationRequired
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -48,6 +48,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
+
+		///<summary>
+		/// Display name: Overrides the default field name used in error messages. (To configure date-specific error messages, set "Date day", "Date month", "Date year", "Date must include", "Date must be a real date" and "Date and" dictionary values.)
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("displayName")]
+		public virtual string DisplayName => global::Umbraco.Cms.Web.Common.PublishedModels.DateErrorMessages.GetDisplayName(this, _publishedValueFallback);
 
 		///<summary>
 		/// CSS classes

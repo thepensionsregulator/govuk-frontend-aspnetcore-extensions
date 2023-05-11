@@ -8,6 +8,7 @@
         public const string CssClassesForColumn = "cssClassesForColumn";
         public const string ColumnSize = "columnSize";
         public const string ColumnSizeFromDesktop = "columnSizeFromDesktop";
+        public const string DisplayName = "DisplayName";
         public const string ErrorMessageRequired = "errorMessageRequired";
         public const string ErrorMessageRegex = "errorMessageRegex";
         public const string ErrorMessageEmail = "errorMessageEmail";

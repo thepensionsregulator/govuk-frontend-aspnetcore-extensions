@@ -317,4 +317,8 @@
 	  <UpToDateCheckInput Remove="Styles\_tpr-variables.scss" />
 	</ItemGroup>
 	
+	<ItemGroup>
+	  <Folder Include="ModelBinding\" />
+	</ItemGroup>
+	
 </Project>

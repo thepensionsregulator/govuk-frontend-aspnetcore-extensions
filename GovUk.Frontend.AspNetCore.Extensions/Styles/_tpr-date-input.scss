@@ -1,7 +1,7 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
-/* Change GOV.UK date input styles where the TPR brand diverges from the GOV.UK Design System. */
+// Change GOV.UK date input styles where the TPR brand diverges from the GOV.UK Design System.
 .govuk-label.govuk-date-input__label {
     font-weight: $tpr-font-weight-semi-bold;
 }

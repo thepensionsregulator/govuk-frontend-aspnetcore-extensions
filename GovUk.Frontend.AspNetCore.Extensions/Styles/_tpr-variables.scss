@@ -1,6 +1,5 @@
-﻿/* The default font for the GOV.UK Design System, 'GDS Transport', is not licenced for use on many .gov.uk domains,
-   (see https://design-system.service.gov.uk/styles/typography/) so replace it with 'Open Sans' from Google Fonts.
-*/
+﻿// The default font for the GOV.UK Design System, 'GDS Transport', is not licenced for use on many .gov.uk domains,
+// (see https://design-system.service.gov.uk/styles/typography/) so replace it with 'Open Sans' from Google Fonts.
 $govuk-font-family: 'Open Sans', Arial, sans-serif;
 $tpr-font-weight-regular: normal;
 $tpr-font-weight-semi-bold: 600; // browsers should use 'Open Sans Semi Bold'
@@ -8,7 +7,7 @@ $tpr-font-weight-bold: 700; // browsers should use 'Open Sans Bold'
 $govuk-font-weight-regular: $tpr-font-weight-regular;
 $govuk-font-weight-bold: $tpr-font-weight-bold;
 
-/* TPR brand colours */
+// TPR brand colours
 $tpr-colour-lime: #cdd500;
 $tpr-colour-violet: #483b8b;
 $tpr-colour-blue-marguerite: #7469ba;
@@ -37,13 +36,11 @@ $tpr-colour-eclipse: #3d3d3d;
 $tpr-colour-zambezi: #585858;
 $tpr-colour-black: #000000;
 
-/* Change the colours on GOV.UK components where TPR brand colours diverge from 
-   the GOV.UK Design System. Colours are changed in two ways:
-   - here, before GOV.UK classes are compiled, targeting situations where GOV.UK source
-     defines a variable for the specific situation
-   - in _tpr-*.scss for individual components, after GOV.UK classes are compiled
-*/
-
+// Change the colours on GOV.UK components where TPR brand colours diverge from 
+// the GOV.UK Design System. Colours are changed in two ways:
+// - here, before GOV.UK classes are compiled, targeting situations where GOV.UK source
+//   defines a variable for the specific situation
+// - in _tpr-*.scss for individual components, after GOV.UK classes are compiled
 $govuk-text-colour: $tpr-colour-eclipse;
 $govuk-link-colour: $tpr-colour-royal-blue;
 $govuk-link-visited-colour: $tpr-colour-violet;
@@ -54,22 +51,20 @@ $govuk-input-border-colour: $tpr-colour-eclipse;
 $govuk-focus-colour: $tpr-colour-tangerine-yellow;
 $govuk-error-colour: $tpr-colour-fire-brick;
 
-/* Change the default typography sizing where the TPR brand diverges from the
-   GOV.UK Design System. GOV.UK code uses the govuk-font() mixin. It passes in the 
-   index and device (eg 80 and 'tablet') and gets back a font-size and line-height.
-   Some GOV.UK classes like .govuk-body-s are not going to work, but that is the TPR brand.
+// Change the default typography sizing where the TPR brand diverges from the
+// GOV.UK Design System. GOV.UK code uses the govuk-font() mixin. It passes in the 
+// index and device (eg 80 and 'tablet') and gets back a font-size and line-height.
+// Some GOV.UK classes like .govuk-body-s are not going to work, but that is the TPR brand.
 
-   Original settings are at https://github.com/alphagov/govuk-frontend/blob/4b5ed0ada3b64722ae2074dfa0db5d4d3a45cb79/package/govuk/settings/_typography-responsive.scss#L70
+// Original settings are at https://github.com/alphagov/govuk-frontend/blob/4b5ed0ada3b64722ae2074dfa0db5d4d3a45cb79/package/govuk/settings/_typography-responsive.scss#L70
 
-   Further typography changes are made in _tpr-*.scss for individual components, 
-   after GOV.UK classes are compiled.
+// Further typography changes are made in _tpr-*.scss for individual components, 
+// after GOV.UK classes are compiled.
 
-   .govuk-heading-xl uses 48
-   .govuk-heading-l uses 36                  --> h1
-   .govuk-heading-m and .govuk-body-l use 24 --> h2 or large body text
-   .govuk-heading-s and .govuk-body-m use 19 --> h3 or body text
-
-*/
+// .govuk-heading-xl uses 48
+// .govuk-heading-l uses 36                  --> h1
+// .govuk-heading-m and .govuk-body-l use 24 --> h2 or large body text
+// .govuk-heading-s and .govuk-body-m use 19 --> h3 or body text
 $govuk-typography-scale: (
   80: (
     null: (

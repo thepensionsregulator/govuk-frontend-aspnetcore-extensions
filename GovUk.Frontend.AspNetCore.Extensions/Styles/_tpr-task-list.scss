@@ -15,14 +15,19 @@
 .govuk-task-list__link {
     text-decoration: none;
 }
+
 .govuk-task-list__link:hover {
     text-decoration: underline;
+}
+
+.govuk-task-list__link:visited {
+    color: $govuk-link-colour;
 }
 
 .govuk-task-list__status {
     font-weight: bold;
     padding: govuk-spacing(1) govuk-spacing(4);
-    min-width: 8.25rem; 
+    min-width: 8.25rem;
     text-align: center;
 }
 

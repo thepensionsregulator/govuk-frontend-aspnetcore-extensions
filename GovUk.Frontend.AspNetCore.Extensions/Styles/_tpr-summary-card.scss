@@ -1,8 +1,8 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
-/* Change GOV.UK summary card styles where the TPR brand diverges from the GOV.UK Design System. */
-$tpr-summary-list-data-padding: govuk-spacing(2); /* padding on dt & dd is inherited from GOV.UK default stylesheet, but we need to match it */
+// Change GOV.UK summary card styles where the TPR brand diverges from the GOV.UK Design System.
+$tpr-summary-list-data-padding: govuk-spacing(2); // padding on dt & dd is inherited from GOV.UK default stylesheet, but we need to match it 
 
 .govuk-summary-card {
     border: none;

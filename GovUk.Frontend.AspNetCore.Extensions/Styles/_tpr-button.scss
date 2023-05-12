@@ -1,15 +1,14 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
-/* Change GOV.UK button styles where the TPR brand diverges from the GOV.UK Design System. 
-   More changes (eg focus colour) are in _tpr-variables.scss which is applied before GOV.UK classes 
-   are compiled. Changes in this file target situations where GOV.UK source uses generic GOV.UK
-   tools like the govuk-colour() mixin that might apply more widely than buttons, rather than 
-   defining a specific variable.
-
-   The chevron image is from Material UI https://fonts.google.com/icons?selected=Material+Icons+Outlined:chevron_right
-   Using a background image means no extra HTML is required and no extra characters are exposed to assistive technology.
-*/
+// Change GOV.UK button styles where the TPR brand diverges from the GOV.UK Design System. 
+// More changes (eg focus colour) are in _tpr-variables.scss which is applied before GOV.UK classes 
+// are compiled. Changes in this file target situations where GOV.UK source uses generic GOV.UK
+// tools like the govuk-colour() mixin that might apply more widely than buttons, rather than 
+// defining a specific variable.
+//
+// The chevron image is from Material UI https://fonts.google.com/icons?selected=Material+Icons+Outlined:chevron_right
+// Using a background image means no extra HTML is required and no extra characters are exposed to assistive technology.
 $tpr-button-padding: 20px;
 
 .govuk-button, input[type="file"]::file-selector-button {
@@ -43,7 +42,7 @@ $tpr-button-padding: 20px;
     box-shadow: none;
 }
 
-/* Only for links styled as secondary buttons, we need the extra weight of the a. selector to override GOV.UK color */
+// Only for links styled as secondary buttons, we need the extra weight of the a. selector to override GOV.UK color 
 a.govuk-button--secondary:link, a.govuk-button--secondary:visited {
     color: $tpr-colour-royal-blue;
 }
@@ -59,7 +58,7 @@ a.govuk-button--secondary:hover {
     border-color: $tpr-colour-cornflower;
 }
 
-/* Remove chevron where it's not wanted */
+// Remove chevron where it's not wanted
 .govuk-button--start,
 .govuk-button--secondary,
 input[type="file"]::file-selector-button {

@@ -1,15 +1,17 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderFooterTpr>
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderFooterTpr>
+@using Microsoft.Extensions.Configuration;
+@using Umbraco.Cms.Web.Common.PublishedModels;
 @using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @using GovUk.Frontend.Umbraco.Typography
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
+@inject IConfiguration Configuration
 @{
 	Layout = null;
     var home = Umbraco.ContentSingleAtXPath("//home");
     var settings = Umbraco.ContentSingleAtXPath("//settings");
-    var useTPRstyles = settings?.Value<bool>("useTPRstyles") ?? true;
+    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var skipLink = string.IsNullOrEmpty(settings?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : settings?.Value<string>("govukSkipLinkText");
     var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? ComponentGenerator.HeaderLogoDefaultAlt : settings?.Value<string>("tprHeaderLogoAlt");
     var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? ComponentGenerator.FooterLogoDefaultAlt : settings?.Value<string>("tprFooterLogoAlt");

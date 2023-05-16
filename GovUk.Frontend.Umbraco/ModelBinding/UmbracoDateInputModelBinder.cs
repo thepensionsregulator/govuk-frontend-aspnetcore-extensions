@@ -1,6 +1,8 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.ModelBinding;
+using GovUk.Frontend.Umbraco.Models;
+using GovUk.Frontend.Umbraco.Services;
 using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,6 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Umbraco.Cms.Core.Dictionary;
+using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ModelBinding
 {
@@ -82,7 +87,10 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 }
                 else
                 {
-                    var errorMessage = GetModelStateErrorMessage(parseErrors, bindingContext.ModelMetadata);
+                    var contentAccessor = bindingContext.HttpContext.RequestServices.GetRequiredService<IUmbracoPublishedContentAccessor>()!;
+                    var cultureDictionary = bindingContext.HttpContext.RequestServices.GetRequiredService<ICultureDictionary>()!;
+
+                    var errorMessage = GetModelStateErrorMessage(contentAccessor.PublishedContent, cultureDictionary, parseErrors, bindingContext.ModelMetadata);
                     bindingContext.ModelState.AddModelError(bindingContext.ModelName, errorMessage);
 
                     bindingContext.Result = ModelBindingResult.Failed();
@@ -93,35 +101,40 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         }
 
         // internal for testing
-        internal static string GetModelStateErrorMessage(DateInputParseErrors parseErrors, ModelMetadata modelMetadata)
+        internal static string GetModelStateErrorMessage(IPublishedContent umbracoContent, ICultureDictionary umbracoDictionary, DateInputParseErrors parseErrors, ModelMetadata modelMetadata)
         {
             Debug.Assert(parseErrors != DateInputParseErrors.None);
             Debug.Assert(parseErrors != (DateInputParseErrors.MissingDay | DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingYear));
 
-            var displayName = UmbracoContentHelper.GetSettingsValue(modelMetadata.PropertyName, PropertyAliases.DisplayName) ?? modelMetadata.PropertyName;
+            string? displayName = null;
+            if (!string.IsNullOrEmpty(modelMetadata.PropertyName))
+            {
+                displayName = umbracoContent.FindBlockByBoundProperty(modelMetadata.PropertyName)?.Settings?.Value<string>(PropertyAliases.DisplayName)?.Trim();
+            }
+            if (string.IsNullOrEmpty(displayName)) { displayName = modelMetadata.PropertyName; }
 
-            var mustBeARealDateText = (UmbracoContentHelper.GetDictionaryValue(DictionaryConstants.DateMustBeARealDate) ?? "must be a real date").Trim();
+            var mustBeARealDateText = (umbracoDictionary[DictionaryConstants.DateMustBeARealDate] ?? "must be a real date").Trim();
 
             var missingComponents = new List<string>();
 
             if ((parseErrors & DateInputParseErrors.MissingDay) != 0)
             {
-                missingComponents.Add((UmbracoContentHelper.GetDictionaryValue(DictionaryConstants.DateDay) ?? "day").Trim());
+                missingComponents.Add((umbracoDictionary[DictionaryConstants.DateDay] ?? "day").Trim());
             }
             if ((parseErrors & DateInputParseErrors.MissingMonth) != 0)
             {
-                missingComponents.Add((UmbracoContentHelper.GetDictionaryValue(DictionaryConstants.DateMonth) ?? "month").Trim());
+                missingComponents.Add((umbracoDictionary[DictionaryConstants.DateMonth] ?? "month").Trim());
             }
             if ((parseErrors & DateInputParseErrors.MissingYear) != 0)
             {
-                missingComponents.Add((UmbracoContentHelper.GetDictionaryValue(DictionaryConstants.DateYear) ?? "year").Trim());
+                missingComponents.Add((umbracoDictionary[DictionaryConstants.DateYear] ?? "year").Trim());
             }
 
             if (missingComponents.Count > 0)
             {
                 Debug.Assert(missingComponents.Count <= 2);
-                string mustIncludeText = (UmbracoContentHelper.GetDictionaryValue(DictionaryConstants.DateMustInclude) ?? "must include a").Trim();
-                string andText = (UmbracoContentHelper.GetDictionaryValue(DictionaryConstants.DateAnd) ?? "and").Trim();
+                string mustIncludeText = (umbracoDictionary[DictionaryConstants.DateMustInclude] ?? "must include a").Trim();
+                string andText = (umbracoDictionary[DictionaryConstants.DateAnd] ?? "and").Trim();
                 andText = $" {andText} ";
 
                 return $"{displayName} {mustIncludeText} {string.Join(andText, missingComponents)}";

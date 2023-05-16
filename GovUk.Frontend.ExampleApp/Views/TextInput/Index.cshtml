@@ -10,19 +10,16 @@
     <partial name="_LanguageSwitcher"/>
 }
 
-<partial name="GOVUK/ErrorSummary" />
-
-<span class="govuk-caption-xl">Example application</span>
-<div class="govuk-grid-row govuk-grid-row--tpr-divider">
-    <div class="govuk-grid-column govuk-grid-column-full">
-        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
-    </div>
-</div>
-
-<p class="govuk-body">To demonstrate localisation, use the language switcher to change the language of error messages.</p>
-<p class="govuk-body">You must apply <code>.govuk-fieldset__legend--for-fieldset</code> if you want TPR styling.</p>
-
 <form asp-controller="TextInput" asp-action="Post" method="post" novalidate>
+    <span class="govuk-caption-xl">Example application</span>
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-full">
+            <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+        </div>
+    </div>
+
+    <p class="govuk-body">To demonstrate localisation, use the language switcher to change the language of error messages.</p>
+    <p class="govuk-body">You must apply <code>.govuk-fieldset__legend--for-fieldset</code> if you want TPR styling.</p>
     <govuk-client-side-validation>
         <govuk-fieldset>
             <govuk-fieldset-legend class="govuk-fieldset__legend--for-fieldset">The first two fields are in a fieldset</govuk-fieldset-legend>

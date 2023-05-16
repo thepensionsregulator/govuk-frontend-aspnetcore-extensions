@@ -4,15 +4,12 @@
     ViewData["Title"] = "Checkboxes";
 }
 
-<partial name="GOVUK/ErrorSummary" />
-
-<span class="govuk-caption-xl">Example application</span>
-
 <form asp-controller="Checkboxes" asp-action="Post" method="post" novalidate>
+    <span class="govuk-caption-xl">Example application</span>
     <div class="govuk-grid-row govuk-grid-row--tpr-divider-for-fieldset">
         <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
             <govuk-client-side-validation>
-                <govuk-checkboxes name="Field1">
+                <govuk-checkboxes asp-for="Field1">
                     <govuk-checkboxes-fieldset>
                         <govuk-checkboxes-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">Checkboxes</govuk-checkboxes-fieldset-legend>
                         <govuk-checkboxes-hint>This is the hint. If you don't set the legend as the page heading, you must apply <code>.govuk-fieldset__legend--for-field</code> if you want TPR styling.</govuk-checkboxes-hint>

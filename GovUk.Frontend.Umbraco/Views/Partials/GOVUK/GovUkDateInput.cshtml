@@ -11,13 +11,27 @@
 @{
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
+    int? attemptedDay = null, attemptedMonth = null, attemptedYear = null;
+    string? errorMessage = null;
     DateTime? dateValue = null;
     if (!string.IsNullOrEmpty(modelPropertyName))
     {
-        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+        if (ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry))
+        {
         if (DateTime.TryParse(modelStateEntry?.AttemptedValue, out var date))
         {
             dateValue = date;            
+        }
+            else
+            {
+                if (Int32.TryParse(modelStateEntry!.GetModelStateForProperty("Day")?.AttemptedValue, out var parsedDay)) { attemptedDay = parsedDay; }
+                if (Int32.TryParse(modelStateEntry!.GetModelStateForProperty("Month")?.AttemptedValue, out var parsedMonth)) { attemptedMonth = parsedMonth; }
+                if (Int32.TryParse(modelStateEntry!.GetModelStateForProperty("Year")?.AttemptedValue, out var parsedYear)) { attemptedYear = parsedYear; }
+    }
+            if (modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
+            {
+                errorMessage = string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage));
+            }
         }
     }
     var cssClass = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
@@ -45,19 +59,38 @@
                     @await Html.PartialAsync("GOVUK/BlockList", blocks)
                 </div>
             }
+            @if (dateValue.HasValue)
+            {
             <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
                 @if (!string.IsNullOrWhiteSpace(hint))
                 {
                     <govuk-date-input-hint>@Html.Raw(hint)</govuk-date-input-hint>
                 }
-                @if (modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
+                    @if (!string.IsNullOrEmpty(errorMessage))
                 {
-                    <govuk-date-input-error-message>@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-date-input-error-message>
+                        <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
                 }
                 <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" />
                 <govuk-date-input-month maxlength="2" aria-invalid="@ariaInvalid" />
                 <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" />
             </govuk-date-input>
+            }
+            else
+            {
+                <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName">
+                    @if (!string.IsNullOrWhiteSpace(hint))
+                    {
+                        <govuk-date-input-hint>@Html.Raw(hint)</govuk-date-input-hint>
+                    }
+                    @if (!string.IsNullOrEmpty(errorMessage))
+                    {
+                        <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
+                    }
+                    <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedDay" />
+                    <govuk-date-input-month maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedMonth" />
+                    <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" value="@attemptedYear" />
+                </govuk-date-input>
+            }
         </govuk-fieldset>
     </govuk-client-side-validation>
 </div>

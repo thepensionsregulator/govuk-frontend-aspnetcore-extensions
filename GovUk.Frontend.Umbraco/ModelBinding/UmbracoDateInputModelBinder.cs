@@ -1,6 +1,7 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.ModelBinding;
+using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -51,6 +52,12 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 return Task.CompletedTask;
             }
 
+            // If some validation exists where a fully-parsable date is an invalid value, using SetInitialValue here allows the date to repopulate
+            // without affecting validation. If SetModelValue is used then the date repopulates, but can never pass validation.
+            bindingContext.ModelState.SetInitialValue(dayModelName, dayValueProviderResult.FirstValue!);
+            bindingContext.ModelState.SetInitialValue(monthModelName, monthValueProviderResult.FirstValue!);
+            bindingContext.ModelState.SetInitialValue(yearModelName, yearValueProviderResult.FirstValue!);
+
             var parseErrors = Parse(
                 dayValueProviderResult.FirstValue,
                 monthValueProviderResult.FirstValue,
@@ -61,16 +68,13 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             {
                 Debug.Assert(date.HasValue);
                 var model = _dateInputModelConverter.CreateModelFromDate(modelType, date!.Value);
+                bindingContext.ModelState.SetInitialValue(bindingContext.ModelName, date!.Value.ToString("yyyy-MM-dd"));
                 bindingContext.Result = ModelBindingResult.Success(model);
             }
             else
             {
                 var parseErrorsProvider = bindingContext.HttpContext.RequestServices.GetRequiredService<DateInputParseErrorsProvider>();
                 parseErrorsProvider.SetErrorsForModel(bindingContext.ModelName, parseErrors);
-
-                bindingContext.ModelState.SetModelValue(dayModelName, dayValueProviderResult);
-                bindingContext.ModelState.SetModelValue(monthModelName, monthValueProviderResult);
-                bindingContext.ModelState.SetModelValue(yearModelName, yearValueProviderResult);
 
                 if (_dateInputModelConverter.TryCreateModelFromErrors(modelType, parseErrors, out var model))
                 {
@@ -110,7 +114,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             }
             if ((parseErrors & DateInputParseErrors.MissingYear) != 0)
             {
-               missingComponents.Add((UmbracoContentHelper.GetDictionaryValue(DictionaryConstants.DateYear) ?? "year").Trim());
+                missingComponents.Add((UmbracoContentHelper.GetDictionaryValue(DictionaryConstants.DateYear) ?? "year").Trim());
             }
 
             if (missingComponents.Count > 0)

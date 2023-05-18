@@ -18,24 +18,24 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	// Mixin Content Type with alias "dateErrorMessages"
-	/// <summary>Date input error message settings</summary>
-	public partial interface IDateErrorMessages : IPublishedElement
+	// Mixin Content Type with alias "govukValidationRange"
+	/// <summary>Validation (Range)</summary>
+	public partial interface IGovukValidationRange : IPublishedElement
 	{
-		/// <summary>Display name</summary>
+		/// <summary>Numeric or date range</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		string DisplayName { get; }
+		string ErrorMessageRange { get; }
 	}
 
-	/// <summary>Date input error message settings</summary>
-	[PublishedModel("dateErrorMessages")]
-	public partial class DateErrorMessages : PublishedElementModel, IDateErrorMessages
+	/// <summary>Validation (Range)</summary>
+	[PublishedModel("govukValidationRange")]
+	public partial class GovukValidationRange : PublishedElementModel, IGovukValidationRange
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
-		public new const string ModelTypeAlias = "dateErrorMessages";
+		public new const string ModelTypeAlias = "govukValidationRange";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
@@ -44,14 +44,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<DateErrorMessages, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<GovukValidationRange, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public DateErrorMessages(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public GovukValidationRange(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -60,16 +60,16 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Display name: Overrides the default field name used in error messages. (To configure date-specific error messages, set "Date day", "Date month", "Date year", "Date must include", "Date must be a real date" and "Date and" dictionary values.)
+		/// Numeric or date range: Sets the message displayed if the field is set by the code to require a number or date in a given range.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("displayName")]
-		public virtual string DisplayName => GetDisplayName(this, _publishedValueFallback);
+		[ImplementPropertyType("errorMessageRange")]
+		public virtual string ErrorMessageRange => GetErrorMessageRange(this, _publishedValueFallback);
 
-		/// <summary>Static getter for Display name</summary>
+		/// <summary>Static getter for Numeric or date range</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static string GetDisplayName(IDateErrorMessages that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "displayName");
+		public static string GetErrorMessageRange(IGovukValidationRange that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "errorMessageRange");
 	}
 }

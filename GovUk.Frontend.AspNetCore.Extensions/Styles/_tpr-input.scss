@@ -1,12 +1,12 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
-/* Telephone number fields should be no longer than their expected input. */
+// Telephone number fields should be no longer than their expected input.
 .govuk-input[type='tel'] {
     max-width: 13em;
 }
 
-/* When a field prefix or suffix is used, to align with the TPR brand, remove the helpful border and background that make it stand out. */
+// When a field prefix or suffix is used, to align with the TPR brand, remove the helpful border and background that make it stand out.
 .govuk-input__prefix, 
 .govuk-input__suffix {
     border-color: transparent;

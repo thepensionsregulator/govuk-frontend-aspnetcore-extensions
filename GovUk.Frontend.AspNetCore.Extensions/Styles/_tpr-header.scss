@@ -227,9 +227,8 @@ $tpr-header-left-width-xl: 200px;
     }
 }
 
-/* Align spacing changes with those in .tpr-header inherited from .govuk-width-container. 
-   Calculations copied from the govuk-width-container mixin: https://github.com/alphagov/govuk-frontend/blob/137b806d7c308f98f75f8c78ecfdb7f760b27d39/package/govuk/objects/_width-container.scss
-*/
+// Align spacing changes with those in .tpr-header inherited from .govuk-width-container. 
+// Calculations copied from the govuk-width-container mixin: https://github.com/alphagov/govuk-frontend/blob/137b806d7c308f98f75f8c78ecfdb7f760b27d39/package/govuk/objects/_width-container.scss
 @include govuk-media-query($from: tablet) {
     @supports (margin: unquote("max(calc(0px))")) {
         .tpr-context__context-1,

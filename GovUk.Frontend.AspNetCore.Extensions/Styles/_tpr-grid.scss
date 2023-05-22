@@ -1,10 +1,8 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
-/*
-    govuk-frontend includes width overrides like .govuk-!-width-two-thirds which apply from tablet upwards.
-    Add similar override classes that apply from desktop.
-*/
+// govuk-frontend includes width overrides like .govuk-!-width-two-thirds which apply from tablet upwards.
+// Add similar override classes that apply from desktop.
 @each $width in map-keys($govuk-grid-widths) {
     .govuk-\!-width-#{$width}-from-desktop {
         @include govuk-media-query($from: desktop) {
@@ -13,11 +11,9 @@
     }
 }
 
-/* 
-    Modifier for .govuk-grid-row which adds a decorative divider after the row with padding above and margin below. 
-    Use ::after so we can align the divider with content but don't need to mess with the margin & padding of 
-    .govuk-grid-row, which disrupts GOV.UK grid layout.
-*/
+// Modifier for .govuk-grid-row which adds a decorative divider after the row with padding above and margin below. 
+// Use ::after so we can align the divider with content but don't need to mess with the margin & padding of 
+// .govuk-grid-row, which disrupts GOV.UK grid layout.
 @mixin tpr-divider {
     padding-bottom: govuk-spacing(4);
     border-bottom: 1px solid $tpr-colour-very-light-grey;
@@ -36,8 +32,7 @@
     margin-right: $govuk-gutter-half;
 }
 
-/* Add a background box to highlight a section of content.
-*/
+// Add a background box to highlight a section of content.
 .govuk-grid-row--tpr-box {
     padding-left: $govuk-gutter-half;
     padding-right: $govuk-gutter-half;
@@ -49,10 +44,9 @@
     @include govuk-responsive-margin(6, "bottom");
 }
 
-/* .govuk-grid-row--tpr-box can be combined with .govuk-grid-row--tpr-divider. 
-    In that case the padding applied for .govuk-grid-row--tpr-box creates space equivalent to the margins 
-    applied for .govuk-grid-row--tpr-divider, so remove the margins.
-*/
+// .govuk-grid-row--tpr-box can be combined with .govuk-grid-row--tpr-divider. 
+//  In that case the padding applied for .govuk-grid-row--tpr-box creates space equivalent to the margins 
+//  applied for .govuk-grid-row--tpr-divider, so remove the margins.
 .govuk-grid-row--tpr-divider.govuk-grid-row--tpr-box::after {
     margin-left: 0;
     margin-right: 0;
@@ -63,9 +57,8 @@
 }
 
 
-/* .govuk-grid-row--tpr-divider and .govuk-grid-column--tpr-box both apply padding-bottom, so remove any bottom padding or 
-    margin from the last element inside either one so that we get one spacer, not the combination of both.
-*/
+// .govuk-grid-row--tpr-divider and .govuk-grid-column--tpr-box both apply padding-bottom, so remove any bottom padding or 
+//  margin from the last element inside either one so that we get one spacer, not the combination of both.
 .govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child,
 .govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child,
 .govuk-grid-row--tpr-box > .govuk-grid-column > :last-child,
@@ -75,21 +68,20 @@
 }
 
 
-/* There is a special case where the label or legend is the page heading (see https://design-system.service.gov.uk/components/fieldset/).
-   In this case .govuk-grid-row--tpr-divider will not work because the HTML structure is different. 
-   .govuk-grid-row--tpr-divider-for-label-as-heading or .govuk-grid-row--tpr-divider-for-fieldset must be applied to the .govuk-grid-row instead.
-
-   1. First this overrides the column width chosen for the .govuk-grid-row. It must be 100% for the divider to span the page.
-
-   2. The column width is applied instead to elements that make up the field, or within the fieldset. 
-
-      Very specific selectors are used so that nested fieldsets are not matched. Selectors target text input, textarea, date input, fieldset,
-      and radio and checkbox group components of the GOV.UK Design System. All are repeated in *-from-desktop versions.
-
-      Components placed inside a fieldset should typically have .govuk-grid-column-full applied, since the desired width comes from their container element.
-
-   3. Finally, the divider is applied to the h1 (for labels) or legend (for fieldsets) element, which is set to 100% wide so that the divider spans the page.
-*/
+// There is a special case where the label or legend is the page heading (see https://design-system.service.gov.uk/components/fieldset/).
+// In this case .govuk-grid-row--tpr-divider will not work because the HTML structure is different. 
+// .govuk-grid-row--tpr-divider-for-label-as-heading or .govuk-grid-row--tpr-divider-for-fieldset must be applied to the .govuk-grid-row instead.
+//
+// 1. First this overrides the column width chosen for the .govuk-grid-row. It must be 100% for the divider to span the page.
+//
+// 2. The column width is applied instead to elements that make up the field, or within the fieldset. 
+//
+//    Very specific selectors are used so that nested fieldsets are not matched. Selectors target text input, textarea, date input, fieldset,
+//    and radio and checkbox group components of the GOV.UK Design System. All are repeated in *-from-desktop versions.
+//
+//    Components placed inside a fieldset should typically have .govuk-grid-column-full applied, since the desired width comes from their container element.
+//
+// 3. Finally, the divider is applied to the h1 (for labels) or legend (for fieldsets) element, which is set to 100% wide so that the divider spans the page.
 .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column,
 .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column {
     width: 100%;
@@ -128,17 +120,16 @@
     @include tpr-divider;
 }
 
-/* Remove bottom margin in these cases as the tpr-divider creates enough space between the element and the divider. */
+// Remove bottom margin in these cases as the tpr-divider creates enough space between the element and the divider.
 .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column > .govuk-form-group > h1 > label,
 .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column > .govuk-form-group > textarea {
     margin-bottom: 0;
 }
 
-/*
-    Columns with alternating white and grey backgrounds.
-    Columns should have a *-from-desktop grid width applied, eg govuk-grid-column-one-third-from-desktop for a three column layout.
-    Switch to flexbox for desktop layouts so that, when columns are active, column backgrounds extend the full height of the column.
-*/
+
+// Columns with alternating white and grey backgrounds.
+// Columns should have a *-from-desktop grid width applied, eg govuk-grid-column-one-third-from-desktop for a three column layout.
+// Switch to flexbox for desktop layouts so that, when columns are active, column backgrounds extend the full height of the column.
 
 .govuk-grid-row--tpr-columns > .govuk-grid-column > .govuk-grid-row > .govuk-grid-column {
     @include govuk-responsive-padding(4, "top"); // space above and below text in the column is required on a non-white background
@@ -160,16 +151,12 @@
     background: $tpr-colour-white-smoke;
 }
 
-/* 
-    Keep the set of columns away from the browser edge - particularly relevant in error state where you want to see the error border.
-*/
+// Keep the set of columns away from the browser edge - particularly relevant in error state where you want to see the error border.
 .govuk-grid-row--tpr-columns > .govuk-grid-column {
     margin-left:0;
 }
 
-/* 
-    If a .govuk-grid-row or .govuk-grid-column is put into an error state that means red borders should extend to all its children.
-*/
+// If a .govuk-grid-row or .govuk-grid-column is put into an error state that means red borders should extend to all its children.
 .govuk-grid-row.govuk-form-group--error {
     margin-left: 0;
 

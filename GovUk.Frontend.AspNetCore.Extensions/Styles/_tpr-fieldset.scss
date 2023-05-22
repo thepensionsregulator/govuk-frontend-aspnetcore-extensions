@@ -1,13 +1,12 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
-/* Change GOV.UK fieldset styles where the TPR brand diverges from the GOV.UK Design System. 
-   
-   Legends should look like h2. They need to be bolder than GOV.UK because we make .govuk-label bold.
-   However we need to be careful not to affect legends used as the page heading or a label for a 
-   single question (radios, checkboxes and date inputs). Use custom classes that are inert without a
-   TPR stylesheet to achieve this.
-*/
+// Change GOV.UK fieldset styles where the TPR brand diverges from the GOV.UK Design System. 
+// 
+// Legends should look like h2. They need to be bolder than GOV.UK because we make .govuk-label bold.
+// However we need to be careful not to affect legends used as the page heading or a label for a 
+// single question (radios, checkboxes and date inputs). Use custom classes that are inert without a
+// TPR stylesheet to achieve this.
 .govuk-fieldset__legend--for-fieldset {
     @extend .govuk-fieldset__legend--m;
 }

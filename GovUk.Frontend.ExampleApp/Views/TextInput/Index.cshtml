@@ -23,42 +23,45 @@
 <p class="govuk-body">You must apply <code>.govuk-fieldset__legend--for-fieldset</code> if you want TPR styling.</p>
 
 <form asp-controller="TextInput" asp-action="Post" method="post" novalidate>
-    <govuk-client-side-validation>
-        <govuk-fieldset>
-            <govuk-fieldset-legend class="govuk-fieldset__legend--for-fieldset">The first two fields are in a fieldset</govuk-fieldset-legend>
-                <govuk-input asp-for="Field1">
-                    <govuk-input-label>@_shared["field_label"]</govuk-input-label>
-                    <govuk-input-hint>This field must be numeric, and between 5 and 20 characters</govuk-input-hint>
-                </govuk-input>
-                <govuk-input asp-for="Field2">
-                    <govuk-input-label>Another field</govuk-input-label>
-                    <govuk-input-hint>This must be the same as the first, like confirming an email address</govuk-input-hint>
-                </govuk-input>
-        </govuk-fieldset>
-
-        <govuk-input asp-for="Field3">
-            <govuk-input-label>Email address</govuk-input-label>
-            <govuk-input-hint>This field be an email address between 5 and 100 characters</govuk-input-hint>
-        </govuk-input>
-
-         <govuk-input asp-for="Field4">
-            <govuk-input-label>Phone validation</govuk-input-label>
-            <govuk-input-hint>This must be a phone number</govuk-input-hint>
-        </govuk-input>
-    </govuk-client-side-validation>
-
     <div class="govuk-grid-row govuk-grid-row--tpr-divider">
         <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
             <govuk-client-side-validation>
+                <govuk-fieldset>
+                    <govuk-fieldset-legend class="govuk-fieldset__legend--for-fieldset">The first two fields are in a fieldset</govuk-fieldset-legend>
+                        <govuk-input asp-for="Field1">
+                            <govuk-input-label>@_shared["field_label"]</govuk-input-label>
+                            <govuk-input-hint>This field must be numeric, and between 5 and 20 characters</govuk-input-hint>
+                        </govuk-input>
+                        <govuk-input asp-for="Field2">
+                            <govuk-input-label>Another field</govuk-input-label>
+                            <govuk-input-hint>This must be the same as the first, like confirming an email address</govuk-input-hint>
+                        </govuk-input>
+                </govuk-fieldset>
+
+                <govuk-input asp-for="Field3">
+                    <govuk-input-label>Email address</govuk-input-label>
+                    <govuk-input-hint>This field be an email address between 5 and 100 characters</govuk-input-hint>
+                </govuk-input>
+
+                <govuk-input asp-for="Field4">
+                    <govuk-input-label>Phone validation</govuk-input-label>
+                    <govuk-input-hint>This must be a phone number</govuk-input-hint>
+                </govuk-input>
+                
                 <govuk-input asp-for="Field5" input-class="govuk-input--width-3">
                     <govuk-input-label>Range validation</govuk-input-label>
                     <govuk-input-hint>This must be a number between 5 and 50, and there is a field prefix and suffix</govuk-input-hint>
                     <govuk-input-prefix>+/-</govuk-input-prefix>
                     <govuk-input-suffix>%</govuk-input-suffix>
                 </govuk-input>
+
+                <govuk-input asp-for="Field6" class="govuk-input--width-10">
+                    <govuk-input-label>UK postcode</govuk-input-label>
+                </govuk-input>
             </govuk-client-side-validation>
         </div>
     </div>
+
 
     <govuk-button>Submit</govuk-button>
 </form>

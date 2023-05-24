@@ -30,7 +30,7 @@ We add support for:
   - [Select](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/select.md)
   - [Skip link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/skip-link.md)
   - [Textarea](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/textarea.md)
-  - [Text input](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/text-input.md)
+  - [Text input](/docs/components/text-input.md)
 
 - Additional components:
 

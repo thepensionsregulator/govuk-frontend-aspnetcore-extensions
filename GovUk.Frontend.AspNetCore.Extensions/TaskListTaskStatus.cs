@@ -7,6 +7,7 @@
         Incomplete,
         Completed,
         NotApplicable,
-        Error
+        Error,
+        Unconfirmed
     }
 }

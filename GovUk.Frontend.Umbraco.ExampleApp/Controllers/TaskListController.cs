@@ -31,6 +31,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                                                          x.Settings.Value<string>(nameof(GovukTaskSettings.CssClasses))!.Contains("yet-another-thing")) as OverridableBlockListItem;
             if (target != null)
             {
+                target.Content.OverrideValue(nameof(GovukTask.StatusText), "Done");
                 target.Settings.OverrideValue(nameof(GovukTaskSettings.Status), TaskListTaskStatus.Completed.ToString());
             }
 

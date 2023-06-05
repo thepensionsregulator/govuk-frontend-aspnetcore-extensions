@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Textarea settings</summary>
 	[PublishedModel("govukTextareaSettings")]
-	public partial class GovukTextareaSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLabelIsPageHeading, IGovukModelProperty, IGovukValidationCustom, IGovukValidationRequired, IGovukValidationText
+	public partial class GovukTextareaSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLabelIsPageHeading, IGovukModelProperty, IGovukValidationCustom, IGovukValidationRange, IGovukValidationRequired, IGovukValidationText
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -150,6 +150,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string CustomError3 => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationCustom.GetCustomError3(this, _publishedValueFallback);
 
 		///<summary>
+		/// Numeric or date range: Sets the message displayed if the field is set by the code to require a number or date in a given range.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageRange")]
+		public virtual string ErrorMessageRange => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationRange.GetErrorMessageRange(this, _publishedValueFallback);
+
+		///<summary>
 		/// Required: Sets the message displayed if the field is set by the code to be required.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
@@ -204,14 +212,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("errorMessagePhone")]
 		public virtual string ErrorMessagePhone => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessagePhone(this, _publishedValueFallback);
-
-		///<summary>
-		/// Numeric range: Sets the message displayed if the field is set by the code to require a number in a given range.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageRange")]
-		public virtual string ErrorMessageRange => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationText.GetErrorMessageRange(this, _publishedValueFallback);
 
 		///<summary>
 		/// Pattern: Sets the message displayed if the field is set by the code to require a regular expression pattern to be matched.

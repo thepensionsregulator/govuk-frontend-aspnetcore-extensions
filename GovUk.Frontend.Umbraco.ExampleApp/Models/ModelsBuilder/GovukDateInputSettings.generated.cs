@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Date input settings</summary>
 	[PublishedModel("govukDateInputSettings")]
-	public partial class GovukDateInputSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLegendIsPageHeading, IGovukModelProperty, IGovukValidationCustom, IGovukValidationRequired
+	public partial class GovukDateInputSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLegendIsPageHeading, IGovukModelProperty, IGovukValidationCustom, IGovukValidationDisplayName, IGovukValidationRange, IGovukValidationRequired
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -127,6 +127,22 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("customError3")]
 		public virtual string CustomError3 => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationCustom.GetCustomError3(this, _publishedValueFallback);
+
+		///<summary>
+		/// Display name: Used in error messages where the value is the wrong type (eg 'abc' in a date field). Defaults to the model property name if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("displayName")]
+		public virtual string DisplayName => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationDisplayName.GetDisplayName(this, _publishedValueFallback);
+
+		///<summary>
+		/// Numeric or date range: Sets the message displayed if the field is set by the code to require a number or date in a given range.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageRange")]
+		public virtual string ErrorMessageRange => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationRange.GetErrorMessageRange(this, _publishedValueFallback);
 
 		///<summary>
 		/// Required: Sets the message displayed if the field is set by the code to be required.

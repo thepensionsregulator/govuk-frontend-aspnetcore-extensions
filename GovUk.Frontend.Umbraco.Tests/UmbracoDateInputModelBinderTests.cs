@@ -110,6 +110,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         [TestCase("1", "4", "0")]
         [TestCase("1", "4", "-1")]
         [TestCase("1", "4", "10000")]
+        [TestCase("x", "y", "z")]
         public async Task BindModelAsync_MissingOrInvalidComponents_FailsBinding(string day, string month, string year)
         {
             // Arrange
@@ -236,7 +237,10 @@ namespace GovUk.Frontend.Umbraco.Tests
         }
 
         [TestCase("", "4", "2020", DateInputParseErrors.MissingDay)]
+        [TestCase(null, "4", "2020", DateInputParseErrors.MissingDay)]
         [TestCase("1", "", "2020", DateInputParseErrors.MissingMonth)]
+        [TestCase("1", null, "2020", DateInputParseErrors.MissingMonth)]
+        [TestCase("1", "4", null, DateInputParseErrors.MissingYear)]
         [TestCase("1", "4", "", DateInputParseErrors.MissingYear)]
         [TestCase("0", "4", "2020", DateInputParseErrors.InvalidDay)]
         [TestCase("-1", "4", "2020", DateInputParseErrors.InvalidDay)]

@@ -1,0 +1,30 @@
+﻿using Moq;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Services;
+
+namespace GovUk.Frontend.Umbraco.Testing
+{
+    public static class UmbracoDictionaryFactory
+    {
+        public static void AddDictionaryValue(this Mock<ILocalizationService> localizationService, string key, string value, int languageId = 2)
+        {
+            var dictionaryTranslation = new Mock<IDictionaryTranslation>();
+            dictionaryTranslation
+                .Setup(x => x.LanguageId)
+                .Returns(languageId);
+
+            dictionaryTranslation
+                .Setup(x => x.Value)
+                .Returns(value);
+
+            var dictionaryItem = new Mock<IDictionaryItem>();
+            dictionaryItem
+                .Setup(x => x.Translations)
+                .Returns(new[] { dictionaryTranslation.Object });
+
+            localizationService
+               .Setup(x => x.GetDictionaryItemByKey(key))
+               .Returns(dictionaryItem.Object);
+        }
+    }
+}

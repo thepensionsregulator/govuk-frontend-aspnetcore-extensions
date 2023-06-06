@@ -4,9 +4,9 @@ using Umbraco.Cms.Core.Services;
 
 namespace GovUk.Frontend.Umbraco.Testing
 {
-    public static class UmbracoDictionaryFactory
+    public static class LocalizationServiceExtensions
     {
-        public static void AddDictionaryValue(this Mock<ILocalizationService> localizationService, string key, string value, int languageId = 2)
+        public static Mock<ILocalizationService> SetupUmbracoDictionaryItem(this Mock<ILocalizationService> localizationService, string key, string value, int languageId = 2)
         {
             var dictionaryTranslation = new Mock<IDictionaryTranslation>();
             dictionaryTranslation
@@ -25,6 +25,13 @@ namespace GovUk.Frontend.Umbraco.Testing
             localizationService
                .Setup(x => x.GetDictionaryItemByKey(key))
                .Returns(dictionaryItem.Object);
+
+            return localizationService;
+        }
+
+        public static Mock<ILocalizationService> SetupUmbracoDictionaryItem(this ILocalizationService localizationService, string key, string value, int languageId = 2)
+        {
+            return Mock.Get(localizationService).SetupUmbracoDictionaryItem(key, value, languageId);
         }
     }
 }

@@ -74,6 +74,8 @@ Add the 'Task list' component to a block list, and add 'Task' components to the 
 
 Adding formatting (for example, bold text) in the task name is not currently supported in Umbraco.
 
-The status can be set in the settings of each 'Task', but usually you would [override the status property](/docs/umbraco/override-property-values.md) in code. Setting a status other than those in the `TaskListTaskStatus` enum is not currently supported.
+The status can be set in the settings of each 'Task', but usually you would [override the status property](/docs/umbraco/override-property-values.md) in code.
 
 The default text of each status can be changed or localised by adding a dictionary entry called `Task list - {status}`. For example, change 'Incomplete' to 'In progress' by creating a dictionary entry called `Task list - Incomplete` and setting the value to 'In progress'.
+
+Use the 'Status text' property to override the status text for an individual task when using the dictionary entry is not flexible enough for your application.

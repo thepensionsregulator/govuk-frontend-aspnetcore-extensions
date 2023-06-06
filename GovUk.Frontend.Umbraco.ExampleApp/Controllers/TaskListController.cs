@@ -32,6 +32,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             if (target != null)
             {
                 target.Settings.OverrideValue(nameof(GovukTaskSettings.Status), TaskListTaskStatus.Completed.ToString());
+                target.Settings.OverrideValue(nameof(GovukTaskSettings.StatusText), "Done");
             }
 
             return CurrentTemplate(viewModel);

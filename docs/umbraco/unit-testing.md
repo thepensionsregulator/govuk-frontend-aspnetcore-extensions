@@ -141,3 +141,14 @@ var fieldsetBlocks1 = fieldset1.Content.Value<OverridableBlockListModel>(nameof(
 var fieldset2 = ((OverridableBlockListItem)blockList.FindBlockByContentTypeAlias(GovukFieldset.ModelTypeAlias));
 var fieldsetBlocks2 = fieldset2.Content.Value<OverridableBlockListModel>(nameof(GovukFieldset.Blocks));
 ```
+
+## Mock Umbraco Dictionary items
+`LocalizationServiceExtensions` provides an easy way to mock an Umbraco dictionary. You can add as many dictionary values as needed using a fluent syntax. You can also provide different translations.
+
+```csharp
+var dictionary = new Mock<ILocalizationService>();
+
+dictionary
+    .AddDictionaryValue("myKey", "myValue") // languageId defaults to 2 - English GB
+    .AddDictionaryValue("myKey", "myValue", 1); // Setting languageId to 1 - English US
+```

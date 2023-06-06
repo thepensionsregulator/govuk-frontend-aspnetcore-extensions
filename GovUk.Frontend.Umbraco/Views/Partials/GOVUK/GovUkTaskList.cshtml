@@ -20,6 +20,7 @@
         {
             var hint = GovUkTypography.Apply(task.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
             var link = task.Content.Value<Link>("link")?.Url;
+            var statusText = task.Settings.Value<string>("statusText");
             var status = task.Settings.Value<string>("status")?.Replace(" ", string.Empty);
             <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>(PropertyAliases.CssClasses))">
                 <govuk-task-list-task-name>@(task.Content.Value<string>("taskName"))</govuk-task-list-task-name>
@@ -29,8 +30,17 @@
                 }
                 @if (Enum.TryParse<TaskListTaskStatus>(status, true, out var parsedStatus))
                 {
-                    var defaultTextForStatus = ComponentGenerator.TaskListTaskStatusText(parsedStatus);
-                    <govuk-task-list-task-status status="@parsedStatus">@Umbraco.GetDictionaryValue($"Task list - {defaultTextForStatus}", defaultTextForStatus)</govuk-task-list-task-status>
+                    var textForStatus = string.Empty;
+                    if (!string.IsNullOrEmpty(statusText))
+                    {
+                        textForStatus = statusText;
+                    }
+                    else
+                    {
+                        var defaultTextForStatus = ComponentGenerator.TaskListTaskStatusText(parsedStatus);
+                        textForStatus = @Umbraco.GetDictionaryValue($"Task list - {defaultTextForStatus}", defaultTextForStatus);
+                    }
+                    <govuk-task-list-task-status status="@parsedStatus">@textForStatus</govuk-task-list-task-status>
                 }
             </govuk-task-list-task>
         }

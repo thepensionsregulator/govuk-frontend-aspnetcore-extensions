@@ -58,6 +58,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string Status => this.Value<string>(_publishedValueFallback, "status");
 
 		///<summary>
+		/// Status Text: Defaults to the value of 'Status' in sentence case if left blank. Default status text can be customised in the dictionary.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("statusText")]
+		public virtual string StatusText => this.Value<string>(_publishedValueFallback, "statusText");
+
+		///<summary>
 		/// CSS classes
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]

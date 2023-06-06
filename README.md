@@ -22,7 +22,7 @@ We add support for:
   - [Button](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/button.md)
   - [Checkboxes](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/checkboxes.md)
   - [Character count](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/character-count.md)
-  - [Date input](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/date-input.md)
+  - [Date input](/docs/components/date-input.md)
   - [Error message](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/error-message.md)
   - [Pagination](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/pagination.md)
   - [Phase banner](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/phase-banner.md)

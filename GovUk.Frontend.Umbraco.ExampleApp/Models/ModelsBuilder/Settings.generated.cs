@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Settings</summary>
 	[PublishedModel("settings")]
-	public partial class Settings : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprFooter, ITprHeader
+	public partial class Settings : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprBackToTop, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprFooter, ITprHeader
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -50,13 +50,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Use The Pensions Regulator styles
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
-		[ImplementPropertyType("useTPRStyles")]
-		public virtual bool UseTprstyles => this.Value<bool>(_publishedValueFallback, "useTPRStyles");
-
-		///<summary>
 		/// Phase
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
@@ -79,6 +72,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("govukSkipLinkText")]
 		public virtual string GovukSkipLinkText => global::Umbraco.Cms.Web.Common.PublishedModels.GovukSkipLink.GetGovukSkipLinkText(this, _publishedValueFallback);
+
+		///<summary>
+		/// Back to top text: Defaults to 'Back to top' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprBackToTopText")]
+		public virtual string TprBackToTopText => global::Umbraco.Cms.Web.Common.PublishedModels.TprBackToTop.GetTprBackToTopText(this, _publishedValueFallback);
 
 		///<summary>
 		/// Context 1: Typically the name of the application or the mode it's in.

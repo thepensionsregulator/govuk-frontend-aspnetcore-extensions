@@ -1,3 +1,4 @@
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,7 @@ namespace GovUk.Frontend.Umbraco
                 { typeof(MinLengthAttribute), PropertyAliases.ErrorMessageMinLength },
                 { typeof(MaxLengthAttribute), PropertyAliases.ErrorMessageMaxLength },
                 { typeof(RangeAttribute), PropertyAliases.ErrorMessageRange },
+                { typeof(DateRangeAttribute), PropertyAliases.ErrorMessageRange },
                 { typeof(CompareAttribute), PropertyAliases.ErrorMessageCompare }
             }));
 

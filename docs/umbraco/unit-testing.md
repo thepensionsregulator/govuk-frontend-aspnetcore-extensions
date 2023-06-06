@@ -143,13 +143,14 @@ var fieldsetBlocks2 = fieldset2.Content.Value<OverridableBlockListModel>(nameof(
 ```
 
 ## Mock Umbraco Dictionary Factory
-`UmbracoDictionaryFactory` provides an easy way to mock an Umbraco dictionary. You can add as many dictionary values as needed. You can also provide different translations.
+`LocalizationServiceExtensions` provides an easy way to mock an Umbraco dictionary. You can add as many dictionary values as needed using a fluent syntax. You can also provide different translations.
 
 ```csharp
 
 var dictionary = new Mock<ILocalizationService>();
 
-dictionary.AddDictionaryValue("myKey", "myValue"); // languageId defaults to 2 - English GB
-dictionary.AddDictionaryValue("myKey", "myValue", 1); // Setting languageId to 1 - English US
+dictionary
+    .AddDictionaryValue("myKey", "myValue") // languageId defaults to 2 - English GB
+    .AddDictionaryValue("myKey", "myValue", 1); // Setting languageId to 1 - English US
 
 ```

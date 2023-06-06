@@ -39,7 +39,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static BlockListItem? FindBlockByBoundProperty(this IEnumerable<BlockListItem> blockList, string propertyName)
         {
-            return RecursivelyFindBlock(blockList, x => x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == propertyName);
+            return RecursivelyFindBlock(blockList, x => x.Settings?.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == propertyName);
         }
 
         /// <summary>

@@ -55,11 +55,9 @@
 6. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `GovUk.Frontend.AspNetCore.Extensions`.
 
    ```csharp
-   <partial name="GOVUK/ErrorSummary" />
-
-   <h1 class="govuk-heading-l">My form</h1>
-
    <form asp-controller="Home" asp-action="Post" method="post" novalidate>
+       <h1 class="govuk-heading-l">My form</h1>
+
        <govuk-client-side-validation>
            <govuk-input asp-for="MyModelProperty">
                <govuk-input-label>Field label</govuk-input-label>

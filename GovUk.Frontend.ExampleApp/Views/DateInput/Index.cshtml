@@ -3,18 +3,15 @@
     ViewData["Title"] = "Date input";
 }
 
-<partial name="GOVUK/ErrorSummary" />
-
-<span class="govuk-caption-xl">Example application</span>
-
 <form asp-controller="DateInput" asp-action="Post" method="post" novalidate>
+    <span class="govuk-caption-xl">Example application</span>
     <div class="govuk-grid-row govuk-grid-row--tpr-divider-for-fieldset">
         <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
             <govuk-client-side-validation>
                 <govuk-date-input asp-for="Field1">
                     <govuk-date-input-fieldset>
                         <govuk-date-input-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">Date input</govuk-date-input-fieldset-legend>
-                        <govuk-date-input-hint>This is the hint for field 1. The previous heading is also the legend.</govuk-date-input-hint>
+                        <govuk-date-input-hint>Enter a date in the 2020s. This is the hint. The previous heading is also the legend.</govuk-date-input-hint>
                     </govuk-date-input-fieldset>
                 </govuk-date-input>
             </govuk-client-side-validation>

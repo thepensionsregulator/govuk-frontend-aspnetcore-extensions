@@ -52,11 +52,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string ErrorMessagePhone { get; }
 
-		/// <summary>Numeric range</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		string ErrorMessageRange { get; }
-
 		/// <summary>Pattern</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -171,19 +166,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static string GetErrorMessagePhone(IGovukValidationText that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "errorMessagePhone");
-
-		///<summary>
-		/// Numeric range: Sets the message displayed if the field is set by the code to require a number in a given range.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageRange")]
-		public virtual string ErrorMessageRange => GetErrorMessageRange(this, _publishedValueFallback);
-
-		/// <summary>Static getter for Numeric range</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
-		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static string GetErrorMessageRange(IGovukValidationText that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "errorMessageRange");
 
 		///<summary>
 		/// Pattern: Sets the message displayed if the field is set by the code to require a regular expression pattern to be matched.

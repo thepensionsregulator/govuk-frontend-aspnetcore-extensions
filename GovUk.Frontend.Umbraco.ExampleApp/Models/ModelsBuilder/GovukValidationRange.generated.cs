@@ -18,14 +18,24 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Back to menu</summary>
-	[PublishedModel("govukBackToMenu")]
-	public partial class GovukBackToMenu : PublishedElementModel, IGovukLink
+	// Mixin Content Type with alias "govukValidationRange"
+	/// <summary>Validation (Range)</summary>
+	public partial interface IGovukValidationRange : IPublishedElement
+	{
+		/// <summary>Numeric or date range</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string ErrorMessageRange { get; }
+	}
+
+	/// <summary>Validation (Range)</summary>
+	[PublishedModel("govukValidationRange")]
+	public partial class GovukValidationRange : PublishedElementModel, IGovukValidationRange
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
-		public new const string ModelTypeAlias = "govukBackToMenu";
+		public new const string ModelTypeAlias = "govukValidationRange";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
@@ -34,14 +44,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<GovukBackToMenu, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<GovukValidationRange, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public GovukBackToMenu(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public GovukValidationRange(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,19 +60,16 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Link
+		/// Numeric or date range: Sets the message displayed if the field is set by the code to require a number or date in a given range.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("link")]
-		public virtual global::Umbraco.Cms.Core.Models.Link Link => global::Umbraco.Cms.Web.Common.PublishedModels.GovukLink.GetLink(this, _publishedValueFallback);
+		[ImplementPropertyType("errorMessageRange")]
+		public virtual string ErrorMessageRange => GetErrorMessageRange(this, _publishedValueFallback);
 
-		///<summary>
-		/// Text
-		///</summary>
+		/// <summary>Static getter for Numeric or date range</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("text")]
-		public virtual string Text => global::Umbraco.Cms.Web.Common.PublishedModels.GovukLink.GetText(this, _publishedValueFallback);
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetErrorMessageRange(IGovukValidationRange that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "errorMessageRange");
 	}
 }

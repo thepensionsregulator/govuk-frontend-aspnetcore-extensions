@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 {
@@ -13,17 +14,38 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
     /// </remarks>
     public class DateRangeAttribute : ValidationAttribute
     {
-        private readonly RangeAttribute _rangeAttribute;
-
         /// <summary>
-        /// Create a new <see cref="RangeAttribute"/>
+        /// Create a new <see cref="DateRangeAttribute"/>
         /// </summary>
         /// <param name="minimum">An ISO 8601 date string in the format YYYY-MM-DD</param>
         /// <param name="maximum">An ISO 8601 date string in the format YYYY-MM-DD</param>
         public DateRangeAttribute(string minimum, string maximum)
         {
-            _rangeAttribute = new RangeAttribute(typeof(DateTime), minimum, maximum);
+            if (DateTime.TryParse(minimum, out var parsedMinimum))
+            {
+                Minimum = parsedMinimum;
+            }
+            else
+            {
+                throw new ArgumentException($"{nameof(minimum)} could not be parsed as a {nameof(DateTime)}", nameof(minimum));
+            }
+            if (DateTime.TryParse(maximum, out var parsedMaximum))
+            {
+                Maximum = parsedMaximum;
+            }
+            else
+            {
+                throw new ArgumentException($"{nameof(maximum)} could not be parsed as a {nameof(DateTime)}", nameof(maximum));
+            }
         }
+
+        /// <summary>
+        /// Create a new <see cref="DateRangeAttribute"/> where the minimum and maximum dates are set using the <see cref="Minimum"/> and <see cref="Maximum"/> properties
+        /// </summary>
+        protected DateRangeAttribute() { }
+
+        protected DateTime? Minimum { get; set; }
+        protected DateTime? Maximum { get; set; }
 
         public override bool IsValid(object? value)
         {
@@ -31,7 +53,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             {
                 value = ((DateOnly)value).ToDateTime(new TimeOnly());
             }
-            return _rangeAttribute.IsValid(value);
+
+            if (!Minimum.HasValue) { throw new InvalidOperationException($"The {nameof(Minimum)} property cannot be null"); }
+            if (!Maximum.HasValue) { throw new InvalidOperationException($"The {nameof(Maximum)} property cannot be null"); }
+
+            var rangeAttribute = new RangeAttribute(typeof(DateTime), Minimum.Value.ToString("o", CultureInfo.InvariantCulture), Maximum.Value.ToString("o", CultureInfo.InvariantCulture));
+            return rangeAttribute.IsValid(value);
         }
     }
 }

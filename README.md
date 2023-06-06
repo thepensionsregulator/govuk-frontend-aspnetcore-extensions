@@ -69,6 +69,7 @@ ASP.NET support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend](h
 - [Override property values](docs/umbraco/override-property-values.md)
 - [Umbraco unit testing](docs/umbraco/unit-testing.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
+- [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)
 
 Umbraco support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 

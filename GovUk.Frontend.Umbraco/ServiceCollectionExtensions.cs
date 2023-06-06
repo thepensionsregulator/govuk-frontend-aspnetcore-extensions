@@ -1,9 +1,11 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
+using GovUk.Frontend.Umbraco.ModelBinding;
 using GovUk.Frontend.Umbraco.Services;
 using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
 namespace GovUk.Frontend.Umbraco
 {
@@ -24,12 +26,20 @@ namespace GovUk.Frontend.Umbraco
             }
 
             services.AddGovUkFrontendExtensions(configureOptions);
+
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
             services.AddTransient<IUmbracoPublishedContentAccessor, UmbracoPublishedContentAccessor>();
             services.AddTransient<IUmbracoPaginationFactory, UmbracoPaginationFactory>();
             services.AddMvc(options =>
             {
                 options.Filters.Add<RemoveBlockListSettingsErrorsActionFilter>();
+                // Replace the custom date model binder from the base project with a copy that has
+                // been modified to make the error messages configurable in Umbraco
+                var govukDateBinder = options.ModelBinderProviders.FirstOrDefault(x => x.GetType().FullName == "GovUk.Frontend.AspNetCore.ModelBinding.DateInputModelBinderProvider");
+                if (govukDateBinder != null) { options.ModelBinderProviders.Remove(govukDateBinder); }
+                var govukOptions = new GovUkFrontendAspNetCoreOptions();
+                configureOptions(govukOptions);
+                options.ModelBinderProviders.Insert(0, new UmbracoDateInputModelBinderProvider(govukOptions));
             });
 
             return services;

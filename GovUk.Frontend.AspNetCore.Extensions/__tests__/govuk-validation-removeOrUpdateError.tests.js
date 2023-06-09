@@ -74,6 +74,69 @@ describe("removeOrUpdateError", () => {
     expect(document.querySelector(".govuk-error-message")).toBeNull();
   });
 
+  it("removes an existing error message from a date input if all three fields are valid", () => {
+    document.body.innerHTML = `<div class="govuk-form-group govuk-form-group--error" id="form-group-for-date-input">
+        <fieldset class="govuk-fieldset" role="group">
+          <p class="govuk-error-message"></p>
+          <div class="govuk-date-input" id="Field1">
+            <div class="govuk-form-group">
+              <input class="govuk-date-input__input govuk-input" id="Field1.Day" />
+            </div>
+            <div class="govuk-form-group">
+              <input class="govuk-date-input__input govuk-input" id="Field1.Month" />
+            </div>
+            <div class="govuk-form-group">
+              <input class="govuk-date-input__input govuk-input" id="Field1.Year" />
+            </div>
+          </div>
+        </fieldset>
+      </div>`;
+
+    const testSubject = govuk();
+    mockCalledFunctions(
+      testSubject,
+      () => document.querySelector(".govuk-error-message"),
+      () => document.getElementById("form-group-for-date-input")
+    );
+
+    testSubject.removeOrUpdateError(document.getElementById("Field1.Day"));
+
+    expect(document.querySelector(".govuk-error-message")).toBeNull();
+  });
+
+  it("does not remove an existing error message from a date input if at least one of the fields is invalid", () => {
+    document.body.innerHTML = `<div class="govuk-form-group govuk-form-group--error" id="form-group-for-date-input">
+        <fieldset class="govuk-fieldset" role="group">
+          <p class="govuk-error-message" id="original-error"></p>
+          <div class="govuk-date-input" id="Field1">
+            <div class="govuk-form-group">
+              <input class="govuk-date-input__input govuk-input" id="Field1.Day" />
+            </div>
+            <div class="govuk-form-group">
+              <input class="govuk-date-input__input govuk-input" id="Field1.Month" />
+            </div>
+            <div class="govuk-form-group">
+              <input class="govuk-date-input__input govuk-input govuk-input--error" id="Field1.Year" aria-invalid="true" />
+            </div>
+          </div>
+        </fieldset>
+      </div>`;
+
+    const testSubject = govuk();
+    mockCalledFunctions(
+      testSubject,
+      () => document.querySelector(".govuk-error-message"),
+      () => document.getElementById("form-group-for-date-input")
+    );
+
+    const originalError = document.getElementById("original-error");
+
+    testSubject.removeOrUpdateError(document.getElementById("Field1.Day"));
+
+    const currentError = document.querySelector(".govuk-error-message");
+    expect(currentError).toBe(originalError);
+  });
+
   it("updates the page title and error summary", () => {
     document.body.innerHTML = '<input class="govuk-input" />';
 

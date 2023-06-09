@@ -21,7 +21,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
         /// <param name="maximum">An ISO 8601 date string in the format YYYY-MM-DD</param>
         public DateRangeAttribute(string minimum, string maximum)
         {
-            if (DateTime.TryParse(minimum, out var parsedMinimum))
+            if (DateTime.TryParse(minimum, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var parsedMinimum))
             {
                 Minimum = parsedMinimum;
             }
@@ -29,7 +29,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             {
                 throw new ArgumentException($"{nameof(minimum)} could not be parsed as a {nameof(DateTime)}", nameof(minimum));
             }
-            if (DateTime.TryParse(maximum, out var parsedMaximum))
+            if (DateTime.TryParse(maximum, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var parsedMaximum))
             {
                 Maximum = parsedMaximum;
             }
@@ -57,7 +57,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             if (!Minimum.HasValue) { throw new InvalidOperationException($"The {nameof(Minimum)} property cannot be null"); }
             if (!Maximum.HasValue) { throw new InvalidOperationException($"The {nameof(Maximum)} property cannot be null"); }
 
-            var rangeAttribute = new RangeAttribute(typeof(DateTime), Minimum.Value.ToString("o", CultureInfo.InvariantCulture), Maximum.Value.ToString("o", CultureInfo.InvariantCulture));
+            var rangeAttribute = new RangeAttribute(typeof(DateTime), Minimum.Value.ToString("s", CultureInfo.InvariantCulture), Maximum.Value.ToString("s", CultureInfo.InvariantCulture));
             return rangeAttribute.IsValid(value);
         }
     }

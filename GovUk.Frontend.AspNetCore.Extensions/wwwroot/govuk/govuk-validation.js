@@ -111,7 +111,11 @@ function createGovUkValidator() {
       const currentErrors = [].slice.call(list.querySelectorAll("a"));
 
       const updatedErrors = [].slice
-        .call(document.querySelectorAll(".govuk-error-message:not(.govuk-character-count__status)"))
+        .call(
+          document.querySelectorAll(
+            ".govuk-error-message:not(.govuk-character-count__status)"
+          )
+        )
         .map(function (error) {
           const link = document.createElement("a");
           const prefix = error.querySelector(".govuk-visually-hidden");
@@ -445,31 +449,40 @@ function createGovUkValidator() {
       element.classList.remove("govuk-textarea--error");
       element.classList.remove("govuk-select--error");
 
-      const errorMessage = govuk.errorMessageForElement(element);
-      if (errorMessage) {
-        errorMessage.parentElement.removeChild(errorMessage);
-        let describedBy = element.getAttribute("aria-describedby");
-        if (describedBy) {
-          describedBy = describedBy.split(" ");
-          const idToRemove = describedBy.indexOf(errorMessage.id);
-          if (idToRemove > -1) {
-            describedBy.splice(idToRemove, 1);
-          }
-          if (describedBy.length) {
-            element.setAttribute("aria-describedby", describedBy.join(" "));
-          } else {
-            element.removeAttribute("aria-describedby");
+      const isDateField = element.classList.contains("govuk-date-input__input");
+      const formGroup = govuk.formGroupForElement(element);
+      let nextError = null;
+      if (formGroup) {
+        nextError = formGroup.querySelector(
+          ".govuk-input--error, .govuk-textarea--error, .govuk-select--error"
+        );
+      }
+
+      const isDateFieldWithMoreErrors = isDateField && formGroup && nextError;
+
+      if (!isDateFieldWithMoreErrors) {
+        const errorMessage = govuk.errorMessageForElement(element);
+        if (errorMessage) {
+          errorMessage.parentElement.removeChild(errorMessage);
+          let describedBy = element.getAttribute("aria-describedby");
+          if (describedBy) {
+            describedBy = describedBy.split(" ");
+            const idToRemove = describedBy.indexOf(errorMessage.id);
+            if (idToRemove > -1) {
+              describedBy.splice(idToRemove, 1);
+            }
+            if (describedBy.length) {
+              element.setAttribute("aria-describedby", describedBy.join(" "));
+            } else {
+              element.removeAttribute("aria-describedby");
+            }
           }
         }
       }
       govuk.updateErrorSummary();
       govuk.updateTitle();
 
-      const formGroup = govuk.formGroupForElement(element);
       if (formGroup) {
-        const nextError = formGroup.querySelector(
-          ".govuk-input--error, .govuk-textarea--error, .govuk-select--error"
-        );
         if (!nextError) {
           formGroup.classList.remove("govuk-form-group--error");
         } else {

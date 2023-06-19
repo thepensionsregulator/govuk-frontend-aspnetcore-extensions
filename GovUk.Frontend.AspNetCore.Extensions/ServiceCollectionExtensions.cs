@@ -28,6 +28,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
             services.AddSingleton<IStartupFilter, EmbedContentFolderStartupFilter>();
             services.AddMvc(options =>
             {
+                options.ModelBinderProviders.Insert(0, new NormalisedStringModelBinderProvider());
                 options.ModelBinderProviders.Insert(0, new UkPostcodeModelBinderProvider());
             });
 

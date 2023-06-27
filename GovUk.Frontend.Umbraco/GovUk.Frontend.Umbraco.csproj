@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.$(AssemblyName)</Title>
-		<Version>3.1.0</Version>
+		<Version>3.1.1</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
@@ -59,6 +59,7 @@
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.58.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="6.0.3" />
 		<PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.1" />
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 		<PackageReference Include="Umbraco.Cms.Core" Version="10.4.2" />

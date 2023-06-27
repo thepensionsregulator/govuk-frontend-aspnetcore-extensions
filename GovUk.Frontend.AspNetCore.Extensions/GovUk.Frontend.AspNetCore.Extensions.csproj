@@ -83,7 +83,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.58.1" />
-		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.0-rc1" />
+		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.0.1" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="6.0.10" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />

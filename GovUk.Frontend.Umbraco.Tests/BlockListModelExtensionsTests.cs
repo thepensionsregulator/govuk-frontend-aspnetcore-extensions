@@ -72,6 +72,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             var matchingBlockContent1 = new Mock<IOverridablePublishedElement>();
             matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
+#nullable disable
             var matchingBlock1 = new OverridableBlockListItem(
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
                 x => (IOverridablePublishedElement)x
@@ -84,6 +85,7 @@ namespace GovUk.Frontend.Umbraco.Tests
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
                 x => (IOverridablePublishedElement)x
             );
+#nullable enable
 
             var grandChildBlockList = new BlockListModel(new[] { matchingBlock1, matchingBlock2 });
 
@@ -139,9 +141,11 @@ namespace GovUk.Frontend.Umbraco.Tests
             var blockContent = new Mock<IPublishedElement>();
             blockContent.SetupGet(x => x.ContentType).Returns(contentType.Object);
 
+#nullable disable
             var blockList = new BlockListModel(new List<BlockListItem> {
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), blockContent.Object, null, null)
             });
+#nullable enable
 
             // Act
             var result = BlockListModelExtensions.FindBlockByContentTypeAlias(blockList, "myAlias");
@@ -156,10 +160,12 @@ namespace GovUk.Frontend.Umbraco.Tests
             var childContent = new Mock<IOverridablePublishedElement>();
             childContent.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
+#nullable disable
             var childBlockItem = new OverridableBlockListItem(
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), childContent.Object, null, null),
                 x => (IOverridablePublishedElement)x
             );
+#nullable disable
 
             var childBlockList = new OverridableBlockListModel(new[] { childBlockItem }, null, x => (IOverridablePublishedElement)x);
 

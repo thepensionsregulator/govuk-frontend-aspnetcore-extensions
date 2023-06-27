@@ -51,7 +51,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             childBlockListContent.Setup(x => x.Value<BlockListModel>("grandchildBlocks", null, null, default, default)).Returns(grandChildBlockList);
 
             var factoryCalls = 0;
-            Func<IPublishedElement, IOverridablePublishedElement> factory = x =>
+            Func<IPublishedElement?, IOverridablePublishedElement?> factory = x =>
             {
                 factoryCalls++;
                 switch (factoryCalls)

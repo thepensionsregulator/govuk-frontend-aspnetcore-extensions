@@ -14,43 +14,43 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
     {
         private class DefaultModel
         {
-            public string DefaultModelProperty { get; set; }
+            public string? DefaultModelProperty { get; set; }
             public DateTime DateTimeProperty { get; set; }
         };
 
         private class ModelFromModelType
         {
-            public string ModelFromModelTypeProperty { get; set; }
+            public string? ModelFromModelTypeProperty { get; set; }
         };
 
         private class ExampleControllerWithDefaultModel
         {
-            public IActionResult Index() => null;
+            public IActionResult? Index() => null;
         }
 
         private class ExampleControllerWithModelType
         {
             [ModelType(typeof(ModelFromModelType))]
-            public IActionResult Index() => null;
+            public IActionResult? Index() => null;
         }
 
         private class ChildModel
         {
-            public string ChildModelProperty { get; set; }
+            public string? ChildModelProperty { get; set; }
         }
 
         private class ParentModel
         {
-            public string ParentModelProperty { get; set; }
-            public ChildModel Child { get; set; }
+            public string? ParentModelProperty { get; set; }
+            public ChildModel? Child { get; set; }
         }
 
         private class IterativeModel
         {
-            public string Field { get; set; }
-            public IList<ChildModel> List { get; set; }
+            public string? Field { get; set; }
+            public IList<ChildModel>? List { get; set; }
 
-            public string[] Array { get; set; }
+            public string[] Array { get; set; } = System.Array.Empty<string>();
         }
 
 
@@ -62,9 +62,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             {
                 ActionDescriptor = new ControllerActionDescriptor
                 {
-                    MethodInfo = typeof(ExampleControllerWithDefaultModel).GetMethod("Index"),
+                    MethodInfo = typeof(ExampleControllerWithDefaultModel).GetMethod("Index")!,
                 },
+#nullable disable
                 ViewData = null
+#nullable enable
             };
 
             Assert.Throws<InvalidOperationException>(() => modelPropertyResolver.ResolveModelType(viewContext));
@@ -83,16 +85,21 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         {
             var modelPropertyResolver = new ModelPropertyResolver();
             var viewContext = new ViewContext();
-            var metadataProvider = new FakeMetadataProvider(typeof(DefaultModel));
             viewContext.ActionDescriptor = new ControllerActionDescriptor
             {
-                MethodInfo = typeof(ExampleControllerWithDefaultModel).GetMethod("Index"),
+                MethodInfo = typeof(ExampleControllerWithDefaultModel).GetMethod("Index")!,
             };
-            viewContext.ViewData = new ViewDataDictionary(metadataProvider, new ModelStateDictionary());
+            viewContext.ViewData = CreateViewData();
 
             var modelType = modelPropertyResolver.ResolveModelType(viewContext);
 
             Assert.AreEqual(modelType, typeof(DefaultModel));
+        }
+
+        private static ViewDataDictionary CreateViewData()
+        {
+            var metadataProvider = new FakeMetadataProvider(typeof(DefaultModel));
+            return new ViewDataDictionary(metadataProvider, new ModelStateDictionary());
         }
 
         [Test]
@@ -100,12 +107,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         {
             var modelPropertyResolver = new ModelPropertyResolver();
             var viewContext = new ViewContext();
-            var metadataProvider = new FakeMetadataProvider(typeof(DefaultModel));
             viewContext.ActionDescriptor = new ControllerActionDescriptor
             {
-                MethodInfo = typeof(ExampleControllerWithModelType).GetMethod("Index")
+                MethodInfo = typeof(ExampleControllerWithModelType).GetMethod("Index")!
             };
-            viewContext.ViewData = new ViewDataDictionary(metadataProvider, new ModelStateDictionary());
+            viewContext.ViewData = CreateViewData();
 
             var modelType = modelPropertyResolver.ResolveModelType(viewContext);
 
@@ -172,9 +178,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(IterativeModel), "List[0].ChildModelProperty");
             Assert.AreEqual(childProperty.DeclaringType, typeof(ChildModel));
-            
-            var childType = typeof(IterativeModel).GetProperty("List").PropertyType.GenericTypeArguments[0];
-            Assert.AreEqual(typeof(ChildModel),childType);
+
+            var childType = typeof(IterativeModel).GetProperty("List")!.PropertyType.GenericTypeArguments[0];
+            Assert.AreEqual(typeof(ChildModel), childType);
             Assert.AreEqual(childProperty.Name, nameof(ChildModel.ChildModelProperty));
         }
 
@@ -184,7 +190,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(IterativeModel), "Array[0]");
-            Assert.AreEqual(childProperty.PropertyType, typeof(IterativeModel).GetProperty("Array").PropertyType);
+            Assert.AreEqual(childProperty.PropertyType, typeof(IterativeModel).GetProperty("Array")!.PropertyType);
             Assert.AreEqual(childProperty.Name, nameof(IterativeModel.Array));
         }
 

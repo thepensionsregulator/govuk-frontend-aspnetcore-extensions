@@ -40,7 +40,7 @@ namespace GovUk.Frontend.Umbraco.Testing
         /// </summary>
         public static OverridableBlockListModel CreateOverridableBlockListModel(IEnumerable<BlockListItem> blockListItems)
         {
-            return new OverridableBlockListModel(blockListItems, null, x => (IOverridablePublishedElement)x);
+            return new OverridableBlockListModel(blockListItems, null, OverridableBlockListItem.NoopPublishedElementFactory);
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace GovUk.Frontend.Umbraco.Testing
         /// </summary>
         public static OverridableBlockListItem CreateOverridableBlock(IPublishedElement content)
         {
-            return new OverridableBlockListItem(CreateBlock(content), x => (IOverridablePublishedElement)x);
+            return new OverridableBlockListItem(CreateBlock(content), OverridableBlockListItem.NoopPublishedElementFactory);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace GovUk.Frontend.Umbraco.Testing
         /// </summary>
         public static OverridableBlockListItem CreateOverridableBlock(IPublishedElement content, IPublishedElement settings)
         {
-            return new OverridableBlockListItem(CreateBlock(content, settings), x => (IOverridablePublishedElement)x);
+            return new OverridableBlockListItem(CreateBlock(content, settings), OverridableBlockListItem.NoopPublishedElementFactory);
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace GovUk.Frontend.Umbraco.Testing
         /// </summary>
         public static OverridableBlockListItem CreateOverridableBlock(string contentTypeAliasForContent)
         {
-            return new OverridableBlockListItem(CreateBlock(CreateContentOrSettings(contentTypeAliasForContent).Object), x => (IOverridablePublishedElement)x);
+            return new OverridableBlockListItem(CreateBlock(CreateContentOrSettings(contentTypeAliasForContent).Object), OverridableBlockListItem.NoopPublishedElementFactory);
         }
 
         /// <summary>

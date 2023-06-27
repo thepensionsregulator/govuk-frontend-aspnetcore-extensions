@@ -119,10 +119,10 @@ namespace GovUk.Frontend.Umbraco.Tests
                     Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), errorMessageContent.Object,
                     Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), errorMessageSettings.Object
                     ),
-                x => (IOverridablePublishedElement)x
+                OverridableBlockListItem.NoopPublishedElementFactory
                 );
 
-            var fieldsetBlocks = new OverridableBlockListModel(new[] { errorMessageBlock }, null, x => (IOverridablePublishedElement)x);
+            var fieldsetBlocks = new OverridableBlockListModel(new[] { errorMessageBlock }, null, OverridableBlockListItem.NoopPublishedElementFactory);
             var fieldsetContentProperties = new[] { UmbracoPropertyFactory.CreateBlockListProperty(PropertyAliases.FieldsetBlocks, fieldsetBlocks) };
             fieldsetContent.SetupGet(x => x.Properties).Returns(fieldsetContentProperties);
             fieldsetContent.Setup(x => x.GetProperty(PropertyAliases.FieldsetBlocks)).Returns(fieldsetContentProperties[0]);
@@ -133,7 +133,7 @@ namespace GovUk.Frontend.Umbraco.Tests
                     Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), fieldsetContent.Object,
                     Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), fieldsetSettings.Object
                     ),
-                x => (IOverridablePublishedElement)x
+                OverridableBlockListItem.NoopPublishedElementFactory
             );
             return fieldsetBlock;
         }

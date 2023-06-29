@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 {
-    public class IsCompaniesHouseNumberAttributeTest
+    public class CompaniesHouseCompanyNumberAttributeTest
     {
         [Test]
         [TestCase("AA123456")]
@@ -44,7 +44,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         private void TestNumber(string? input, bool expected)
         {
             // Arrange
-            var attribute = new IsCompaniesHouseNumberAttribute();
+            var attribute = new CompaniesHouseCompanyNumberAttribute();
 
             // Act
             var result = attribute.IsValid(input);

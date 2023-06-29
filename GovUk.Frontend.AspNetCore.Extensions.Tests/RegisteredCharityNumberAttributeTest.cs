@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 {
-    public class IsRegisteredCharityNumberAttributeTest
+    public class RegisteredCharityNumberAttributeTest
     {
         [Test]
         [TestCase("123456")]
@@ -46,7 +46,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         private void TestNumber(string? input, bool expected)
         {
             // Arrange
-            var attribute = new IsRegisteredCharityNumberAttribute();
+            var attribute = new RegisteredCharityNumberAttribute();
 
             // Act
             var result = attribute.IsValid(input);

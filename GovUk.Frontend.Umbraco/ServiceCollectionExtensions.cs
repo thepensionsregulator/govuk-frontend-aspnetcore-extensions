@@ -2,9 +2,10 @@ using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.Umbraco.ModelBinding;
 using GovUk.Frontend.Umbraco.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
-using System.Linq;
 using ThePensionsRegulator.Umbraco;
 
 namespace GovUk.Frontend.Umbraco
@@ -30,16 +31,7 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
             services.AddTransient<IUmbracoPublishedContentAccessor, UmbracoPublishedContentAccessor>();
             services.AddTransient<IUmbracoPaginationFactory, UmbracoPaginationFactory>();
-            services.AddMvc(options =>
-            {
-                // Replace the custom date model binder from the base project with a copy that has
-                // been modified to make the error messages configurable in Umbraco
-                var govukDateBinder = options.ModelBinderProviders.FirstOrDefault(x => x.GetType().FullName == "GovUk.Frontend.AspNetCore.ModelBinding.DateInputModelBinderProvider");
-                if (govukDateBinder != null) { options.ModelBinderProviders.Remove(govukDateBinder); }
-                var govukOptions = new GovUkFrontendAspNetCoreOptions();
-                configureOptions(govukOptions);
-                options.ModelBinderProviders.Insert(0, new UmbracoDateInputModelBinderProvider(govukOptions, null));
-            });
+            services.AddSingleton<IConfigureOptions<MvcOptions>, ModelBindingMvcConfiguration>();
 
             return services;
         }

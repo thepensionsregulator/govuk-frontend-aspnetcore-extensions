@@ -37,7 +37,6 @@ namespace GovUk.Frontend.Umbraco.Tests
                 );
 
             var provider = new UmbracoBlockListValidationMetadataProvider(Mock.Of<IUmbracoContextAccessor>(),
-                Mock.Of<IPublishedValueFallback>(),
                 typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired);
 
             var result = provider.RecursivelyGetBlockLists(new List<IPublishedProperty> { UmbracoPropertyFactory.CreateBlockListProperty("blocks", parentBlockList) });

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Umbraco.Cms.Core.Models.Blocks;
+﻿using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 using Constants = Umbraco.Cms.Core.Constants;
 
-namespace GovUk.Frontend.Umbraco.Models
+namespace ThePensionsRegulator.Umbraco.BlockLists
 {
     public static class PublishedContentExtensions
     {
@@ -17,7 +14,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>An IEnumerable of 0 or more matching block lists</returns>
         public static IEnumerable<BlockListModel> FindBlockLists(this IPublishedContent content)
         {
-            return FindBlockLists(content, null);
+            return content.FindBlockLists(null);
         }
 
         /// <summary>

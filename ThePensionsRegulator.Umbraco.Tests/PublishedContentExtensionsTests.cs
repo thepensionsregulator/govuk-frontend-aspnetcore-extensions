@@ -1,12 +1,9 @@
-﻿using GovUk.Frontend.Umbraco.Models;
-using GovUk.Frontend.Umbraco.Testing;
-using NUnit.Framework;
-using System;
-using System.Linq;
+﻿using GovUk.Frontend.Umbraco.Testing;
+using ThePensionsRegulator.Umbraco.BlockLists;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Tests
+namespace ThePensionsRegulator.Umbraco.Tests
 {
     [TestFixture]
     public class PublishedContentExtensionsTests

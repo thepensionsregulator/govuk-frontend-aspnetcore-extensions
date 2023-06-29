@@ -1,6 +1,6 @@
 ﻿using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Services
+namespace ThePensionsRegulator.Umbraco
 {
     public interface IUmbracoPublishedContentAccessor
     {

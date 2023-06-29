@@ -1,7 +1,6 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ModelBinding;
 using GovUk.Frontend.Umbraco.ModelBinding;
-using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -13,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using ThePensionsRegulator.Umbraco;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
 

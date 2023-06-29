@@ -68,6 +68,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
+		<ProjectReference Include="..\ThePensionsRegulator.Umbraco\ThePensionsRegulator.Umbraco.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

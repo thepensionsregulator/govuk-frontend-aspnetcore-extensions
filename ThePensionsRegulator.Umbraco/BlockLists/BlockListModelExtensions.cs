@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Umbraco.Cms.Core;
+﻿using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
-namespace GovUk.Frontend.Umbraco.Models
+namespace ThePensionsRegulator.Umbraco.BlockLists
 {
     public static class BlockListModelExtensions
     {
@@ -30,7 +27,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static BlockListItem? FindBlock(this IEnumerable<BlockListItem> blockList, Func<BlockListItem, bool> matcher)
         {
-            return FindBlock(blockList, matcher, null);
+            return blockList.FindBlock(matcher, null);
         }
 
         /// <summary>
@@ -58,7 +55,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static BlockListItem? FindBlock(this IEnumerable<BlockListModel> blockLists, Func<BlockListItem, bool> matcher)
         {
-            return FindBlock(blockLists, matcher, null);
+            return blockLists.FindBlock(matcher, null);
         }
 
         /// <summary>
@@ -70,7 +67,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocks(this IEnumerable<BlockListItem> blockList, Func<BlockListItem, bool> matcher, IPublishedValueFallback? publishedValueFallback)
         {
-            return RecursivelyFindBlocks(blockList, matcher, false, publishedValueFallback);
+            return blockList.RecursivelyFindBlocks(matcher, false, publishedValueFallback);
         }
 
         /// <summary>
@@ -81,7 +78,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocks(this IEnumerable<BlockListItem> blockList, Func<BlockListItem, bool> matcher)
         {
-            return FindBlocks(blockList, matcher, null);
+            return blockList.FindBlocks(matcher, null);
         }
 
         /// <summary>
@@ -91,7 +88,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocks(this IEnumerable<BlockListItem> blockList)
         {
-            return FindBlocks(blockList, x => true, null);
+            return blockList.FindBlocks(x => true, null);
         }
 
         /// <summary>
@@ -114,7 +111,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocks(this IEnumerable<BlockListModel> blockLists, Func<BlockListItem, bool> matcher)
         {
-            return FindBlocks(blockLists, matcher, null);
+            return blockLists.FindBlocks(matcher, null);
         }
 
         /// <summary>
@@ -124,53 +121,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocks(this IEnumerable<BlockListModel> blockLists)
         {
-            return FindBlocks(blockLists, x => true, null);
-        }
-
-        /// <summary>
-        /// Recursively find the first block in a block list that is bound to a model property using the 'Model property' Umbraco property in the block's settings
-        /// </summary>
-        /// <param name="blockList">The block list to search</param>
-        /// <param name="propertyName">The name of the property on the view model (use <c>nameof(model.MyProperty)</c>)</param>
-        /// <param name="publishedValueFallback">The published value fallback strategy</param>
-        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
-        public static BlockListItem? FindBlockByBoundProperty(this IEnumerable<BlockListItem> blockList, string propertyName, IPublishedValueFallback? publishedValueFallback)
-        {
-            return RecursivelyFindBlock(blockList, x => x.Settings?.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == propertyName, publishedValueFallback);
-        }
-
-        /// <summary>
-        /// Recursively find the first block in a block list that is bound to a model property using the 'Model property' Umbraco property in the block's settings
-        /// </summary>
-        /// <param name="blockList">The block list to search</param>
-        /// <param name="propertyName">The name of the property on the view model (use <c>nameof(model.MyProperty)</c>)</param>
-        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
-        public static BlockListItem? FindBlockByBoundProperty(this IEnumerable<BlockListItem> blockList, string propertyName)
-        {
-            return FindBlockByBoundProperty(blockList, propertyName, null);
-        }
-
-        /// <summary>
-        /// Recursively find the first block in a set of block lists that is bound to a model property using the 'Model property' Umbraco property in the block's settings
-        /// </summary>
-        /// <param name="blockLists">The block lists to search</param>
-        /// <param name="propertyName">The name of the property on the view model (use <c>nameof(model.MyProperty)</c>)</param>
-        /// <param name="publishedValueFallback">The published value fallback strategy</param>
-        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
-        public static BlockListItem? FindBlockByBoundProperty(this IEnumerable<BlockListModel> blockLists, string propertyName, IPublishedValueFallback? publishedValueFallback)
-        {
-            return FindBlock(blockLists, x => x.Settings?.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == propertyName, publishedValueFallback);
-        }
-
-        /// <summary>
-        /// Recursively find the first block in a set of block lists that is bound to a model property using the 'Model property' Umbraco property in the block's settings
-        /// </summary>
-        /// <param name="blockLists">The block lists to search</param>
-        /// <param name="propertyName">The name of the property on the view model (use <c>nameof(model.MyProperty)</c>)</param>
-        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
-        public static BlockListItem? FindBlockByBoundProperty(this IEnumerable<BlockListModel> blockLists, string propertyName)
-        {
-            return FindBlockByBoundProperty(blockLists, propertyName, null);
+            return blockLists.FindBlocks(x => true, null);
         }
 
         /// <summary>
@@ -193,7 +144,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static BlockListItem? FindBlockByContentTypeAlias(this IEnumerable<BlockListItem> blockList, string alias)
         {
-            return FindBlockByContentTypeAlias(blockList, alias, null);
+            return blockList.FindBlockByContentTypeAlias(alias, null);
         }
 
 
@@ -222,7 +173,7 @@ namespace GovUk.Frontend.Umbraco.Models
 
         private static BlockListItem? RecursivelyFindBlock(IEnumerable<BlockListItem> blockList, Func<BlockListItem, bool> matcher, IPublishedValueFallback? publishedValueFallback)
         {
-            return RecursivelyFindBlocks(blockList, matcher, true, publishedValueFallback).FirstOrDefault();
+            return blockList.RecursivelyFindBlocks(matcher, true, publishedValueFallback).FirstOrDefault();
         }
 
         private static IList<BlockListItem> RecursivelyFindBlocks(this IEnumerable<BlockListItem> blockList, Func<BlockListItem, bool> matcher, bool returnFirstMatchOnly, IPublishedValueFallback? publishedValueFallback)
@@ -248,7 +199,7 @@ namespace GovUk.Frontend.Umbraco.Models
                     {
                         IEnumerable<BlockListItem>? childBlocks = (block as OverridableBlockListItem)?.Content.Value<OverridableBlockListModel>(blockProperty.Alias);
                         if (childBlocks == null) { childBlocks = blockProperty.Value<BlockListModel>(publishedValueFallback ?? new NoopPublishedValueFallback()); }
-                        var result = RecursivelyFindBlocks(childBlocks!, matcher, returnFirstMatchOnly, publishedValueFallback);
+                        var result = childBlocks!.RecursivelyFindBlocks(matcher, returnFirstMatchOnly, publishedValueFallback);
                         if (result.Any())
                         {
                             matchedBlocks.AddRange(result);

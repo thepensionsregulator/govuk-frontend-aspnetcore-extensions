@@ -1,8 +1,7 @@
-﻿using System;
-using Umbraco.Cms.Core.Models.PublishedContent;
+﻿using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 
-namespace GovUk.Frontend.Umbraco.Services
+namespace ThePensionsRegulator.Umbraco
 {
     /// <summary>
     /// Accessor for the published content node matching the current request

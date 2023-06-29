@@ -1,6 +1,6 @@
-﻿using GovUk.Frontend.Umbraco.Testing;
-using Moq;
+﻿using Moq;
 using ThePensionsRegulator.Umbraco.BlockLists;
+using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;

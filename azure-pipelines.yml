@@ -12,7 +12,7 @@ parameters:
     type: boolean
     default: false
   - name: pushTestingToNuGet
-    displayName: Push ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing to nuget.org
+    displayName: Push ThePensionsRegulator.Umbraco.Testing to nuget.org
     type: boolean
     default: false
 
@@ -123,7 +123,7 @@ steps:
       arguments: --configuration $(buildConfiguration)
       projects: |
         $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj
-        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco.Testing\GovUk.Frontend.Umbraco.Testing.csproj
+        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco.Testing\ThePensionsRegulator.Umbraco.Testing.csproj
 
   - task: DotNetCoreCLI@2
     displayName: dotnet test
@@ -174,12 +174,12 @@ steps:
 
   - ${{ if eq(parameters.pushTestingToNuGet, true) }}:
       - task: CopyFiles@2
-        displayName: Copy GovUk.Frontend.Umbraco.Testing package to staging folder
+        displayName: Copy ThePensionsRegulator.Umbraco.Testing package to staging folder
         inputs:
-          SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco.Testing\bin\$(buildConfiguration)
+          SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco.Testing\bin\$(buildConfiguration)
           Contents: |
-            ThePensionsRegulator.GovUk.Frontend*.nupkg
-            !ThePensionsRegulator.GovUk.Frontend*.symbols.nupkg
+            ThePensionsRegulator.Umbraco.Testing*.nupkg
+            !ThePensionsRegulator.Umbraco.Testing*.symbols.nupkg
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 

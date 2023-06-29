@@ -79,9 +79,9 @@ Umbraco GOV.UK Design System support is published on NuGet as [ThePensionsRegula
 
 ![ThePensionsRegulator.GovUk.Frontend.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 
-Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing)
+Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbraco.Testing](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco.Testing)
 
-![ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing)
+![ThePensionsRegulator.Umbraco.Testing on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco.Testing)
 
 ## Disclaimer
 

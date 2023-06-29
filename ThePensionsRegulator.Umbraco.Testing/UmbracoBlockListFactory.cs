@@ -1,11 +1,10 @@
 ﻿using Moq;
-using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.BlockLists;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Core = Umbraco.Cms.Core;
 
-namespace GovUk.Frontend.Umbraco.Testing
+namespace ThePensionsRegulator.Umbraco.Testing
 {
     /// <summary>
     /// Create block list models and block list items

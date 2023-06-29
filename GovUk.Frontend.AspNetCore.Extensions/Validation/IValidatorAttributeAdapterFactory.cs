@@ -6,7 +6,7 @@
 
     public interface IValidatorAttributeAdapterFactory
     {
-        public IAttributeAdapter Create(ValidationAttribute attribute, IStringLocalizer localizer);
+        public IAttributeAdapter Create(ValidationAttribute attribute, IStringLocalizer? localizer);
         public bool CanAdapt(ValidationAttribute attribute);
     }
 }

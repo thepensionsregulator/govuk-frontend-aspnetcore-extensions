@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Localization;
-using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace GovUk.Frontend.ExampleApp.Models.Validators
 {
     public class CustomValidatorAttributeAdapter : AttributeAdapterBase<CustomValidatorAttribute>
     {
-        public CustomValidatorAttributeAdapter(CustomValidatorAttribute attribute, IStringLocalizer stringLocalizer) : base(attribute, stringLocalizer) { }
+        public CustomValidatorAttributeAdapter(CustomValidatorAttribute attribute, IStringLocalizer? stringLocalizer) : base(attribute, stringLocalizer) { }
 
         public override void AddValidation(ClientModelValidationContext context)
         {

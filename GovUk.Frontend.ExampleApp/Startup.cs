@@ -1,18 +1,18 @@
 using GovUk.Frontend.AspNetCore.Extensions;
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.ExampleApp.Models.Validators;
+using GovUk.Frontend.ExampleSharedResource;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using GovUk.Frontend.ExampleSharedResource;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
-using GovUk.Frontend.ExampleApp.Models.Validators;
-using Microsoft.AspNetCore.Mvc.DataAnnotations;
-using GovUk.Frontend.AspNetCore.Extensions.Validation;
 
 namespace GovUk.Frontend.ExampleApp
 {
@@ -46,8 +46,8 @@ namespace GovUk.Frontend.ExampleApp
                         var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName!);
 
                         return new DataAnnotationStringLocalizer(
-                            factory?.Create(type),
-                            factory?.Create(nameof(SharedResource), assemblyName.Name!)
+                            factory.Create(type),
+                            factory.Create(nameof(SharedResource), assemblyName.Name!)
                         );
                     };
                 });

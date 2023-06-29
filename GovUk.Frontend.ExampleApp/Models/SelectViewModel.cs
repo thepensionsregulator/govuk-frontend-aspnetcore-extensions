@@ -5,6 +5,6 @@ namespace GovUk.Frontend.ExampleApp.Models
     public class SelectViewModel
     {
         [Required(ErrorMessage = "This field is required")]
-        public string Field1 { get; set; }
+        public string? Field1 { get; set; }
     }
 }

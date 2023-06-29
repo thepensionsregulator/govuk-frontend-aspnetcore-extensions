@@ -1,5 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
+using GovUk.Frontend.AspNetCore.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Umbraco.Cms.Core.Models.PublishedContent;
 

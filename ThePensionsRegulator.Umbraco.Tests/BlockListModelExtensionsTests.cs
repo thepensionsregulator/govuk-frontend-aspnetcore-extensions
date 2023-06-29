@@ -24,7 +24,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             var result = BlockListModelExtensions.FindBlock(blockList, x => x.Content.GetProperty("MyTextProperty") != null);
 
             // Assert
-            Assert.AreEqual(blockList.First(), result);
+            Assert.That(result, Is.EqualTo(blockList.First()));
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             var result = BlockListModelExtensions.FindBlock(parentBlockList, x => x.Content.GetProperty("MyTextProperty") != null);
 
             // Assert
-            Assert.AreEqual(grandChildBlockList.First(), result);
+            Assert.That(result, Is.EqualTo(grandChildBlockList.First()));
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             var results = BlockListModelExtensions.FindBlocks(blockList.BlockList, x => x.Content.GetProperty("MyTextProperty") != null).ToList();
 
             // Assert
-            Assert.AreEqual(2, results.Count());
+            Assert.That(results.Count(), Is.EqualTo(2));
             Assert.Contains(blockList.BlocksToMatch[0], results);
             Assert.Contains(blockList.BlocksToMatch[1], results);
         }
@@ -81,15 +81,19 @@ namespace ThePensionsRegulator.Umbraco.Tests
             matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
             var matchingBlock1 = new OverridableBlockListItem(
-                            new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
-                            x => (IOverridablePublishedElement)x
+#nullable disable            
+                new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
+#nullable enable
+                            OverridableBlockListItem.NoopPublishedElementFactory
                         );
             var matchingBlockContent2 = new Mock<IOverridablePublishedElement>();
             matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
             var matchingBlock2 = new OverridableBlockListItem(
+#nullable disable            
                         new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
-                        x => (IOverridablePublishedElement)x
+#nullable enable
+                        OverridableBlockListItem.NoopPublishedElementFactory
                     );
             var grandChildBlockList = new BlockListModel(new[] { matchingBlock1, matchingBlock2 });
 
@@ -122,7 +126,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             var results = BlockListModelExtensions.FindBlocks(new[] { blockList1.BlockList, blockList2.BlockList }, x => x.Content.GetProperty("MyTextProperty") != null).ToList();
 
             // Assert
-            Assert.AreEqual(4, results.Count());
+            Assert.That(results.Count(), Is.EqualTo(4));
             Assert.Contains(blockList1.BlocksToMatch[0], results);
             Assert.Contains(blockList1.BlocksToMatch[1], results);
             Assert.Contains(blockList2.BlocksToMatch[0], results);
@@ -138,14 +142,16 @@ namespace ThePensionsRegulator.Umbraco.Tests
             blockContent.SetupGet(x => x.ContentType).Returns(contentType.Object);
 
             var blockList = new BlockListModel(new List<BlockListItem> {
+#nullable disable            
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), blockContent.Object, null, null)
+#nullable enable
             });
 
             // Act
             var result = BlockListModelExtensions.FindBlockByContentTypeAlias(blockList, "myAlias");
 
             // Assert
-            Assert.AreEqual(blockList.First(), result);
+            Assert.That(result, Is.EqualTo(blockList.First()));
         }
 
         [Test]
@@ -155,11 +161,13 @@ namespace ThePensionsRegulator.Umbraco.Tests
             childContent.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
             var childBlockItem = new OverridableBlockListItem(
+#nullable disable
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), childContent.Object, null, null),
-                x => (IOverridablePublishedElement)x
+#nullable enable
+                OverridableBlockListItem.NoopPublishedElementFactory
             );
 
-            var childBlockList = new OverridableBlockListModel(new[] { childBlockItem }, null, x => (IOverridablePublishedElement)x);
+            var childBlockList = new OverridableBlockListModel(new[] { childBlockItem }, null, OverridableBlockListItem.NoopPublishedElementFactory);
 
             var parentContent = new Mock<IOverridablePublishedElement>();
             var parentProperties = new[] { UmbracoPropertyFactory.CreateBlockListProperty("childBlocks", childBlockList) };
@@ -168,10 +176,12 @@ namespace ThePensionsRegulator.Umbraco.Tests
             parentContent.Setup(x => x.Value<OverridableBlockListModel>("childBlocks", null, null, It.IsAny<Fallback>(), null)).Returns(childBlockList);
 
             var parentBlockItem = new OverridableBlockListItem(
+#nullable disable
                 new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), parentContent.Object, null, null),
-                x => (IOverridablePublishedElement)x
+#nullable enable
+                OverridableBlockListItem.NoopPublishedElementFactory
             );
-            var parentBlockList = new OverridableBlockListModel(new[] { parentBlockItem }, null, x => (IOverridablePublishedElement)x);
+            var parentBlockList = new OverridableBlockListModel(new[] { parentBlockItem }, null, OverridableBlockListItem.NoopPublishedElementFactory);
 
 
             // Act

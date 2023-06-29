@@ -23,7 +23,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             var results = content.Object.FindBlockLists().ToList();
 
             // Assert
-            Assert.AreEqual(2, results.Count);
+            Assert.That(results.Count, Is.EqualTo(2));
             Assert.Contains(blockList1, results);
             Assert.Contains(blockList2, results);
         }

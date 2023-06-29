@@ -23,7 +23,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        public OverridableBlockListModel(IEnumerable<BlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>>? filter = null, Func<IPublishedElement, IOverridablePublishedElement>? publishedElementFactory = null)
+        public OverridableBlockListModel(IEnumerable<BlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>>? filter = null, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
         {
             Filter = filter ?? (x => x);
             var factory = publishedElementFactory ?? OverridableBlockListItem.DefaultPublishedElementFactory;

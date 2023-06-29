@@ -1,0 +1,7 @@
+﻿@import '_tpr-variables.scss';
+@import 'govuk/base';
+
+// Change GOV.UK button group styles where the TPR brand diverges from the GOV.UK Design System.
+.govuk-button-group .govuk-link {
+    font-weight: $tpr-font-weight-semi-bold;
+}

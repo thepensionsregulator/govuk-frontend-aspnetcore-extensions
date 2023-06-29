@@ -65,26 +65,36 @@ namespace GovUk.Frontend.Umbraco.Tests
             Assert.AreEqual(grandChildBlockList.First(), result);
         }
 
-
         [Test]
         public void Multiple_matching_blocks_are_matched_in_descendant_block_list()
+        {
+            var blockList = CreateBlockListHierarchyWithMultipleMatchingBlocks();
+
+            // Act
+            var results = BlockListModelExtensions.FindBlocks(blockList.BlockList, x => x.Content.GetProperty("MyTextProperty") != null).ToList();
+
+            // Assert
+            Assert.AreEqual(2, results.Count());
+            Assert.Contains(blockList.BlocksToMatch[0], results);
+            Assert.Contains(blockList.BlocksToMatch[1], results);
+        }
+
+        private static (BlockListModel BlockList, IList<BlockListItem> BlocksToMatch) CreateBlockListHierarchyWithMultipleMatchingBlocks()
         {
             var matchingBlockContent1 = new Mock<IOverridablePublishedElement>();
             matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
             var matchingBlock1 = new OverridableBlockListItem(
-                new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
-                x => (IOverridablePublishedElement)x
-            );
-
+                            new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
+                            x => (IOverridablePublishedElement)x
+                        );
             var matchingBlockContent2 = new Mock<IOverridablePublishedElement>();
             matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
 
             var matchingBlock2 = new OverridableBlockListItem(
-                new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
-                x => (IOverridablePublishedElement)x
-            );
-
+                        new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
+                        x => (IOverridablePublishedElement)x
+                    );
             var grandChildBlockList = new BlockListModel(new[] { matchingBlock1, matchingBlock2 });
 
             var childBlockList = UmbracoBlockListFactory.CreateBlockListModel(
@@ -96,20 +106,31 @@ namespace GovUk.Frontend.Umbraco.Tests
                 );
 
             var parentBlockList = UmbracoBlockListFactory.CreateBlockListModel(
-                UmbracoBlockListFactory.CreateBlock(
-                    UmbracoBlockListFactory.CreateContentOrSettings()
-                    .SetupUmbracoBlockListPropertyValue("childBlocks", childBlockList)
-                    .Object
-                    )
-                );
+                    UmbracoBlockListFactory.CreateBlock(
+                        UmbracoBlockListFactory.CreateContentOrSettings()
+                        .SetupUmbracoBlockListPropertyValue("childBlocks", childBlockList)
+                        .Object
+                        )
+                    );
+
+            return (parentBlockList, new List<BlockListItem> { matchingBlock1, matchingBlock2 });
+        }
+
+        [Test]
+        public void Multiple_matching_blocks_are_matched_in_multiple_descendant_block_lists()
+        {
+            var blockList1 = CreateBlockListHierarchyWithMultipleMatchingBlocks();
+            var blockList2 = CreateBlockListHierarchyWithMultipleMatchingBlocks();
 
             // Act
-            var results = BlockListModelExtensions.FindBlocks(parentBlockList, x => x.Content.GetProperty("MyTextProperty") != null).ToList();
+            var results = BlockListModelExtensions.FindBlocks(new[] { blockList1.BlockList, blockList2.BlockList }, x => x.Content.GetProperty("MyTextProperty") != null).ToList();
 
             // Assert
-            Assert.AreEqual(2, results.Count());
-            Assert.Contains(matchingBlock1, results);
-            Assert.Contains(matchingBlock2, results);
+            Assert.AreEqual(4, results.Count());
+            Assert.Contains(blockList1.BlocksToMatch[0], results);
+            Assert.Contains(blockList1.BlocksToMatch[1], results);
+            Assert.Contains(blockList2.BlocksToMatch[0], results);
+            Assert.Contains(blockList2.BlocksToMatch[1], results);
         }
 
         [Test]

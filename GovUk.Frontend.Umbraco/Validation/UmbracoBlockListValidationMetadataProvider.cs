@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+﻿using GovUk.Frontend.Umbraco.Models;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
@@ -14,9 +14,10 @@ namespace GovUk.Frontend.Umbraco.Validation
     public class UmbracoBlockListValidationMetadataProvider : IValidationMetadataProvider
     {
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
+        private readonly IPublishedValueFallback _publishedValueFallback;
         private readonly Dictionary<Type, string> _attributeTypes;
 
-        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, Type attributeType, string errorMessagePropertyAlias)
+        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback, Type attributeType, string errorMessagePropertyAlias)
         {
             if (attributeType is null)
             {
@@ -29,12 +30,14 @@ namespace GovUk.Frontend.Umbraco.Validation
             }
 
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
+            _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
             _attributeTypes = new Dictionary<Type, string> { { attributeType, errorMessagePropertyAlias } };
         }
 
-        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, Dictionary<Type, string> attributeTypes)
+        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback, Dictionary<Type, string> attributeTypes)
         {
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
+            _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
             _attributeTypes = attributeTypes ?? throw new ArgumentNullException(nameof(attributeTypes));
         }
 
@@ -45,59 +48,35 @@ namespace GovUk.Frontend.Umbraco.Validation
             if (umbracoContext == null) { return; }
             if (umbracoContext.PublishedRequest?.PublishedContent == null) { return; }
 
-            var blockLists = RecursivelyGetBlockLists(umbracoContext.PublishedRequest.PublishedContent.Properties);
-            UpdateValidationAttributeErrorMessages(blockLists, context.ValidationMetadata.ValidatorMetadata, _attributeTypes);
+            var blocks = umbracoContext.PublishedRequest.PublishedContent.FindBlockLists(_publishedValueFallback).FindBlocks(x => true, _publishedValueFallback);
+            UpdateValidationAttributeErrorMessages(blocks, context.ValidationMetadata.ValidatorMetadata, _attributeTypes);
         }
 
-        internal IEnumerable<BlockListModel> RecursivelyGetBlockLists(IEnumerable<IPublishedProperty> properties)
+        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<BlockListItem> blocks, IList<object> validationAttributes, Dictionary<Type, string> attributeTypes)
         {
-            var blockLists = new List<BlockListModel>();
-            RecursivelyGetBlockLists(properties, blockLists);
-            return blockLists;
-        }
-
-        private void RecursivelyGetBlockLists(IEnumerable<IPublishedProperty> properties, List<BlockListModel> allBlockLists)
-        {
-            var newBlockLists = properties.Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue()).Select(x => x.Value<BlockListModel>(null)).OfType<BlockListModel>();
-            if (newBlockLists.Any())
+            foreach (var attribute in validationAttributes)
             {
-                allBlockLists.AddRange(newBlockLists);
-
-                foreach (var blockList in newBlockLists)
+                foreach (var attributeType in attributeTypes.Keys)
                 {
-                    RecursivelyGetBlockLists(blockList.SelectMany(block => block.Content.Properties), allBlockLists);
-                }
-            }
-        }
-
-        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<BlockListModel> blockLists, IList<object> validationAttributes, Dictionary<Type, string> attributeTypes)
-        {
-            foreach (var blockList in blockLists)
-            {
-                foreach (var attribute in validationAttributes)
-                {
-                    foreach (var attributeType in attributeTypes.Keys)
+                    if (attribute.GetType().IsAssignableTo(attributeType))
                     {
-                        if (attribute.GetType().IsAssignableTo(attributeType))
-                        {
-                            UpdateValidationAttributeErrorMessage(blockList, attribute, attributeTypes[attributeType]);
-                        }
+                        UpdateValidationAttributeErrorMessage(blocks, attribute, attributeTypes[attributeType]);
                     }
                 }
             }
         }
 
-        private static void UpdateValidationAttributeErrorMessage(BlockListModel blockList, object attribute, string errorMessagePropertyAlias)
+        private static void UpdateValidationAttributeErrorMessage(IEnumerable<BlockListItem> blocks, object attribute, string errorMessagePropertyAlias)
         {
             var validationAttribute = attribute as ValidationAttribute;
             if (validationAttribute == null) { return; }
 
-            var blocks = blockList.Where(x => x.Settings != null &&
+            var boundBlocks = blocks.Where(x => x.Settings != null &&
                                               x.Settings.GetProperty(PropertyAliases.ModelProperty) != null &&
                                               x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == validationAttribute.ErrorMessage);
-            if (blocks == null) { return; }
+            if (boundBlocks == null) { return; }
 
-            foreach (var block in blocks)
+            foreach (var block in boundBlocks)
             {
                 string? customError;
                 if (block.Content.ContentType.Alias == ElementTypeAliases.ErrorMessage)

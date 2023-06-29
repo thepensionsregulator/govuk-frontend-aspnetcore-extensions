@@ -39,7 +39,7 @@ namespace GovUk.Frontend.Umbraco
                 if (govukDateBinder != null) { options.ModelBinderProviders.Remove(govukDateBinder); }
                 var govukOptions = new GovUkFrontendAspNetCoreOptions();
                 configureOptions(govukOptions);
-                options.ModelBinderProviders.Insert(0, new UmbracoDateInputModelBinderProvider(govukOptions));
+                options.ModelBinderProviders.Insert(0, new UmbracoDateInputModelBinderProvider(govukOptions, null));
             });
 
             return services;

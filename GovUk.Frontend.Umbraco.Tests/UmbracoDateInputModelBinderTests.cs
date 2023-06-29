@@ -38,7 +38,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             var converterMock = new Mock<DateInputModelConverter>();
             converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
 
-            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object);
+            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object, Mock.Of<IPublishedValueFallback>());
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -75,7 +75,7 @@ namespace GovUk.Frontend.Umbraco.Tests
                 .Returns(new DateOnly(2020, 4, 1))
                 .Verifiable();
 
-            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object);
+            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object, Mock.Of<IPublishedValueFallback>());
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -145,7 +145,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             var converterMock = new Mock<DateInputModelConverter>();
             converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
 
-            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object);
+            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object, Mock.Of<IPublishedValueFallback>());
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -193,7 +193,7 @@ namespace GovUk.Frontend.Umbraco.Tests
                 .Returns(true)
                 .Verifiable();
 
-            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object);
+            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object, Mock.Of<IPublishedValueFallback>());
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -230,7 +230,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
 
             // Act
-            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IPublishedContent>(), Mock.Of<ICultureDictionary>(), parseErrors, modelMetadata);
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IPublishedContent>(), Mock.Of<IPublishedValueFallback>(), Mock.Of<ICultureDictionary>(), parseErrors, modelMetadata);
 
             // Assert
             Assert.AreEqual(expectedMessage, result);

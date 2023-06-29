@@ -317,4 +317,8 @@
 	  <UpToDateCheckInput Remove="Styles\_tpr-variables.scss" />
 	</ItemGroup>
 	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-button-group.scss" />
+	</ItemGroup>
+	
 </Project>

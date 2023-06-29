@@ -1,4 +1,4 @@
-# Date input
+# Text input
 
 For examples see [ASP.NET syntax for the Text input component](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/text-input.md).
 

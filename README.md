@@ -71,7 +71,11 @@ ASP.NET support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend](h
 - [Use SASS for CSS](docs/aspnet/sass.md)
 - [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)
 
-Umbraco support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
+Umbraco utility functions are published on NuGet as [ThePensionsRegulator.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco)
+
+![ThePensionsRegulator.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco)
+
+Umbraco GOV.UK Design System support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 
 ![ThePensionsRegulator.GovUk.Frontend.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 

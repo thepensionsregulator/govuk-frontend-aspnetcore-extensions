@@ -127,8 +127,7 @@ _testContext.CurrentPage.SetupUmbracoBlockListPropertyValue("myBlockListProperty
 When writing unit tests with blocks you may see the following error:
 
 > System.TypeInitializationException : The type initializer for 'Umbraco.Extensions.FriendlyPublishedElementExtensions' threw an exception.
-
-      ----> System.ArgumentNullException : Value cannot be null. (Parameter 'provider')
+> ----> System.ArgumentNullException : Value cannot be null. (Parameter 'provider')
 
 This is thrown by the built-in `.Value<T>` extension method. To resolve this your code may need to cast a block to `OverridableBlockListItem`, which overrides this extension method with one that works during testing.
 
@@ -143,6 +142,7 @@ var fieldsetBlocks2 = fieldset2.Content.Value<OverridableBlockListModel>(nameof(
 ```
 
 ## Mock Umbraco Dictionary items
+
 `LocalizationServiceExtensions` provides an easy way to mock an Umbraco dictionary. You can add as many dictionary values as needed using a fluent syntax. You can also provide different translations.
 
 ```csharp

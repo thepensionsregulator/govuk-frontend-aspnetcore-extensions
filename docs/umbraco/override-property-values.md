@@ -14,7 +14,7 @@ public class MyDocumentTypeViewModel
 }
 
 /// Controller
-using GovUk.Frontend.Umbraco.Models
+using ThePensionsRegulator.Umbraco.BlockLists;
 using System.Linq;
 
 viewModel.OverriddenBlocks = new OverridableBlockListModel(viewModel.Page.Blocks);

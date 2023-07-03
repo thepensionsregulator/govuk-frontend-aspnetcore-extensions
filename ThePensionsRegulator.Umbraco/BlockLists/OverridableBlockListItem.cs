@@ -1,8 +1,7 @@
-﻿using System;
-using Umbraco.Cms.Core.Models.Blocks;
+﻿using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Models
+namespace ThePensionsRegulator.Umbraco.BlockLists
 {
     public class OverridableBlockListItem : BlockListItem
     {

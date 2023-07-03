@@ -1,11 +1,12 @@
-﻿using GovUk.Frontend.Umbraco.Models;
-using GovUk.Frontend.Umbraco.Services;
+﻿using GovUk.Frontend.Umbraco.Services;
 using GovUk.Frontend.Umbraco.Testing;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Linq;
+using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.BlockLists;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;

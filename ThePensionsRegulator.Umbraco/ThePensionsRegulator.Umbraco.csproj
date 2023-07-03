@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>$(AssemblyName)</Title>
+    <Authors>rickmason-tpr</Authors>
+    <Company>The Pensions Regulator</Company>
+    <Description>Utility classes for working with Umbraco, including filtering blocks and overriding property values in block lists.</Description>
+    <Copyright>The Pensions Regulator</Copyright>
+    <PackageProjectUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</PackageProjectUrl>
+    <PackageIcon>tpr-nuget.png</PackageIcon>
+    <PackageReadmeFile>NuGetReadme.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>umbraco blocklist</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>True</IncludeSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\tpr-nuget.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="NuGetReadme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Cms.Core" Version="10.4.2" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.4.2" />
+  </ItemGroup>
+
+</Project>

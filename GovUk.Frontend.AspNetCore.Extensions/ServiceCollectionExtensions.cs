@@ -1,3 +1,4 @@
+using GovUk.Frontend.AspNetCore.Extensions.Configuration;
 using GovUk.Frontend.AspNetCore.Extensions.ModelBinding;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
                 options.ModelBinderProviders.Insert(0, new NormalisedStringModelBinderProvider());
                 options.ModelBinderProviders.Insert(0, new UkPostcodeModelBinderProvider());
             });
+            services.AddSingleton(new GovUkFrontendAspNetCoreOptionsProvider(configureOptions));
 
             return services;
         }

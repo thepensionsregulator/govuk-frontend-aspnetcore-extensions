@@ -6,10 +6,10 @@
 		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
 		<IncludeRazorContentInPack>true</IncludeRazorContentInPack>
 		<Nullable>enable</Nullable>
-		<Version>3.1.3</Version>
+		<Version>4.0.0</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
-		<PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
+		<PackageValidationBaselineVersion>4.0.0</PackageValidationBaselineVersion>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.GovUk.Frontend</Title>

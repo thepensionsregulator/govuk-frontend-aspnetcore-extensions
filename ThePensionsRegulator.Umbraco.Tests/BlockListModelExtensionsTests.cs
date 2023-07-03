@@ -9,19 +9,21 @@ namespace ThePensionsRegulator.Umbraco.Tests
 {
     public class BlockListModelExtensionsTests
     {
+        private const string EXAMPLE_TEXTBOX_PROPERTY_ALIAS = "MyTextProperty";
+
         [Test]
         public void Block_is_matched_in_root_block_list()
         {
             var blockList = UmbracoBlockListFactory.CreateBlockListModel(
                 UmbracoBlockListFactory.CreateBlock(
                     UmbracoBlockListFactory.CreateContentOrSettings()
-                    .SetupUmbracoTextboxPropertyValue("MyTextProperty", "value")
+                    .SetupUmbracoTextboxPropertyValue(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "value")
                     .Object
                 )
             );
 
             // Act
-            var result = BlockListModelExtensions.FindBlock(blockList, x => x.Content.GetProperty("MyTextProperty") != null);
+            var result = BlockListModelExtensions.FindBlock(blockList, x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
 
             // Assert
             Assert.That(result, Is.EqualTo(blockList.First()));
@@ -33,7 +35,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             var grandChildBlockList = UmbracoBlockListFactory.CreateBlockListModel(
                 UmbracoBlockListFactory.CreateBlock(
                     UmbracoBlockListFactory.CreateContentOrSettings()
-                    .SetupUmbracoTextboxPropertyValue("MyTextProperty", "value")
+                    .SetupUmbracoTextboxPropertyValue(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "value")
                     .Object
                 )
             );
@@ -55,7 +57,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             );
 
             // Act
-            var result = BlockListModelExtensions.FindBlock(parentBlockList, x => x.Content.GetProperty("MyTextProperty") != null);
+            var result = BlockListModelExtensions.FindBlock(parentBlockList, x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
 
             // Assert
             Assert.That(result, Is.EqualTo(grandChildBlockList.First()));
@@ -67,7 +69,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             var blockList = CreateBlockListHierarchyWithMultipleMatchingBlocks();
 
             // Act
-            var results = BlockListModelExtensions.FindBlocks(blockList.BlockList, x => x.Content.GetProperty("MyTextProperty") != null).ToList();
+            var results = BlockListModelExtensions.FindBlocks(blockList.BlockList, x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null).ToList();
 
             // Assert
             Assert.That(results.Count(), Is.EqualTo(2));
@@ -78,7 +80,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
         private static (BlockListModel BlockList, IList<BlockListItem> BlocksToMatch) CreateBlockListHierarchyWithMultipleMatchingBlocks()
         {
             var matchingBlockContent1 = new Mock<IOverridablePublishedElement>();
-            matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
+            matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS", "value"));
 
             var matchingBlock1 = new OverridableBlockListItem(
 #nullable disable            
@@ -87,7 +89,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
                             OverridableBlockListItem.NoopPublishedElementFactory
                         );
             var matchingBlockContent2 = new Mock<IOverridablePublishedElement>();
-            matchingBlockContent1.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
+            matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "value"));
 
             var matchingBlock2 = new OverridableBlockListItem(
 #nullable disable            
@@ -123,7 +125,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             var blockList2 = CreateBlockListHierarchyWithMultipleMatchingBlocks();
 
             // Act
-            var results = BlockListModelExtensions.FindBlocks(new[] { blockList1.BlockList, blockList2.BlockList }, x => x.Content.GetProperty("MyTextProperty") != null).ToList();
+            var results = BlockListModelExtensions.FindBlocks(new[] { blockList1.BlockList, blockList2.BlockList }, x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null).ToList();
 
             // Assert
             Assert.That(results.Count(), Is.EqualTo(4));
@@ -158,7 +160,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
         public void OverridableBlockListModel_returns_OverridableBlockListItem()
         {
             var childContent = new Mock<IOverridablePublishedElement>();
-            childContent.Setup(x => x.GetProperty("MyTextProperty")).Returns(UmbracoPropertyFactory.CreateTextboxProperty("MyTextProperty", "value"));
+            childContent.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "value"));
 
             var childBlockItem = new OverridableBlockListItem(
 #nullable disable
@@ -185,7 +187,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
 
 
             // Act
-            var result = BlockListModelExtensions.FindBlock(parentBlockList, x => x.Content.GetProperty("MyTextProperty") != null);
+            var result = BlockListModelExtensions.FindBlock(parentBlockList, x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
 
             // Assert
             Assert.IsInstanceOf<OverridableBlockListItem>(result);

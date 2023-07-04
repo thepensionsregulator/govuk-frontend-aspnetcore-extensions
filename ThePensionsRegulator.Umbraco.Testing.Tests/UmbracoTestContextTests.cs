@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace GovUk.Frontend.Umbraco.Testing.Tests
+namespace ThePensionsRegulator.Umbraco.Testing.Tests
 {
     [TestFixture]
     public class UmbracoTestContextTests

@@ -1,6 +1,6 @@
 # Umbraco unit testing
 
-Add `ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing` NuGet package.
+Add `ThePensionsRegulator.Umbraco.Testing` NuGet package.
 
 Examples on this page are shown with NUnit, but these helper classes should work with any testing framework. However [Moq](https://github.com/moq/moq4) is required for mocking with these helper classes.
 
@@ -9,7 +9,7 @@ Examples on this page are shown with NUnit, but these helper classes should work
 Create an instance of `UmbracoTestContext` in your setup method. This will give you access to an Umbraco context that mocks a page request.
 
 ```csharp
-using GovUk.Frontend.Umbraco.Testing;
+using ThePensionsRegulator.Umbraco.Testing;
 
 private UmbracoTestContext _testContext;
 private ExampleController _controllerUnderTest;

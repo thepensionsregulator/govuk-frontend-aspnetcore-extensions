@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
-    <ProjectReference Include="..\GovUk.Frontend.Umbraco.Testing\GovUk.Frontend.Umbraco.Testing.csproj" />
+    <ProjectReference Include="..\ThePensionsRegulator.Umbraco.Testing\ThePensionsRegulator.Umbraco.Testing.csproj" />
   </ItemGroup>
 
 </Project>

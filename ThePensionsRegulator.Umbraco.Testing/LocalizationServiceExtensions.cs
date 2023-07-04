@@ -2,7 +2,7 @@
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 
-namespace GovUk.Frontend.Umbraco.Testing
+namespace ThePensionsRegulator.Umbraco.Testing
 {
     public static class LocalizationServiceExtensions
     {

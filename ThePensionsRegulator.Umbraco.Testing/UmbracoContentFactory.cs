@@ -1,7 +1,7 @@
 ﻿using Moq;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Testing
+namespace ThePensionsRegulator.Umbraco.Testing
 {
     public static class UmbracoContentFactory
     {

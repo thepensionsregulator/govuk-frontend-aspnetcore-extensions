@@ -35,7 +35,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         }
         public bool TryGetValue(string key, [NotNullWhen(true)] out byte[]? value)
         {
-            if (_sessionStorage[key] != null)
+            if (_sessionStorage.ContainsKey(key) && _sessionStorage[key] != null)
             {
                 var valueAsString = _sessionStorage[key].ToString();
                 if (valueAsString is not null)

@@ -29,4 +29,20 @@ govuk
 		<WriteLinesToFile File="$(ProjectDir)Styles\.gitignore" Lines="@(ThePensionsRegulatorGovUkFrontendGitIgnore)" Overwrite="True"/>
 	</Target>
 
+	<!-- In pipeline builds if a CSS file exists AspNetCore.SassCompiler won't overwrite it with the generated version, 
+	     so look for SCSS files which will generate CSS files, and delete the equivalent CSS file first -->
+	<Target Name="ThePensionsRegulatorGovUkFrontend_CleanGeneratedCss" BeforeTargets="Compile Sass">
+		<ItemGroup>
+			<ScssSourceFiles Include="$(MSBuildProjectDirectory)\Styles\*.scss" Exclude="$(MSBuildProjectDirectory)\Styles\_tpr-variables.scss"/>
+		</ItemGroup>
+		<ItemGroup>
+			<FilesToDeleteStep1 Include="@(ScssSourceFiles->Replace('$(MSBuildProjectDirectory)\Styles', '$(MSBuildProjectDirectory)\wwwroot\css'))" />
+		</ItemGroup>
+		<ItemGroup>
+			<FilesToDeleteStep2 Include="@(FilesToDeleteStep1->Replace('.scss', '.css'))" />
+		</ItemGroup>
+
+		<Delete Files="@(FilesToDeleteStep2)"  />
+	</Target>
+
 </Project>

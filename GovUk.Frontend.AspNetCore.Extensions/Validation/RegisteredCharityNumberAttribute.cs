@@ -11,7 +11,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
         public RegisteredCharityNumberAttribute()
             : base($@"{SIX_NUMBERS_ONLY}|{SEVEN_NUMBERS_ONLY}|{SC_PREFIX_AND_SIX_NUMBERS}")
         {
-            ErrorMessage = "Enter a valid registered charity number";
+            ErrorMessage = "Enter a registered charity number in the correct format, such as 123456, 1234567 or SC123456";
         }
     }
 }

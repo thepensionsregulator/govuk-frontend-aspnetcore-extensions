@@ -2,6 +2,7 @@
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace GovUk.Frontend.Umbraco.ModelBinding
 {
@@ -11,12 +12,14 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
     public class UmbracoDateInputModelBinderProvider : IModelBinderProvider
     {
         private readonly DateInputModelConverter[] _dateInputModelConverters;
+        private readonly IPublishedValueFallback? _publishedValueFallback;
 
-        public UmbracoDateInputModelBinderProvider(GovUkFrontendAspNetCoreOptions options)
+        public UmbracoDateInputModelBinderProvider(GovUkFrontendAspNetCoreOptions options, IPublishedValueFallback? publishedValueFallback)
         {
             Guard.ArgumentNotNull(nameof(options), options);
 
             _dateInputModelConverters = options.DateInputModelConverters.ToArray();
+            _publishedValueFallback = publishedValueFallback;
         }
 
         public IModelBinder? GetBinder(ModelBinderProviderContext context)
@@ -29,7 +32,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             {
                 if (converter.CanConvertModelType(modelType))
                 {
-                    return new UmbracoDateInputModelBinder(converter);
+                    return new UmbracoDateInputModelBinder(converter, _publishedValueFallback);
                 }
             }
 

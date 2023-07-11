@@ -6,9 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
-using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
-using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp
 {
@@ -58,7 +57,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="env">The web hosting environment.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback)
         {
             if (env.IsDevelopment())
             {
@@ -81,7 +80,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                 });
 
 
-            app.UseGovUkFrontendUmbracoExtensions(mvcOptions, umbracoContextAccessor);
+            app.UseGovUkFrontendUmbracoExtensions(mvcOptions, umbracoContextAccessor, publishedValueFallback);
         }
     }
 }

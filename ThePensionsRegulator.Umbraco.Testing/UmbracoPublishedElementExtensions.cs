@@ -1,12 +1,11 @@
-﻿using GovUk.Frontend.Umbraco.Models;
-using Moq;
+﻿using Moq;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Testing
+namespace ThePensionsRegulator.Umbraco.Testing
 {
     public static class UmbracoPublishedElementExtensions
     {

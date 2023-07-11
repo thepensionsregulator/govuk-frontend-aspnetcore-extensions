@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace GovUk.Frontend.ExampleApp.Models.Validators
 {
@@ -15,15 +15,19 @@ namespace GovUk.Frontend.ExampleApp.Models.Validators
             Property2 = property2;
         }
 
-        protected override ValidationResult IsValid(object value, ValidationContext context)
+        protected override ValidationResult? IsValid(object? value, ValidationContext context)
         {
             object instance = context.ObjectInstance;
             Type type = instance.GetType();
 
-            var prop1 = int.Parse(type.GetProperty(Property1).GetValue(instance)?.ToString());
-            var prop2 = int.Parse(type.GetProperty(Property2).GetValue(instance)?.ToString());
+            var valueToValidate = value != null ? value.ToString() : null;
+            var integerToValidate = !string.IsNullOrEmpty(valueToValidate) ? int.Parse(valueToValidate) : (int?)null;
+            var value1 = type.GetProperty(Property1)?.GetValue(instance)?.ToString();
+            var value2 = type.GetProperty(Property2)?.GetValue(instance)?.ToString();
+            var prop1 = !string.IsNullOrEmpty(value1) ? int.Parse(value1) : (int?)null;
+            var prop2 = !string.IsNullOrEmpty(value2) ? int.Parse(value2) : (int?)null;
 
-            if (value != null && int.Parse(value.ToString()) == prop1 + prop2)
+            if (integerToValidate.HasValue && integerToValidate == prop1 + prop2)
             {
                 return ValidationResult.Success;
             }
@@ -32,5 +36,5 @@ namespace GovUk.Frontend.ExampleApp.Models.Validators
                 return new ValidationResult(ErrorMessage);
             }
         }
-    }    
+    }
 }

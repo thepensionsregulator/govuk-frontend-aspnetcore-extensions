@@ -1,14 +1,15 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.ModelBinding;
-using GovUk.Frontend.Umbraco.Models;
-using GovUk.Frontend.Umbraco.Services;
+using GovUk.Frontend.Umbraco.BlockLists;
 using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.BlockLists;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
@@ -25,10 +26,12 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private const string YearComponentName = "Year";
 
         private readonly DateInputModelConverter _dateInputModelConverter;
+        private readonly IPublishedValueFallback? _publishedValueFallback;
 
-        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter)
+        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter, IPublishedValueFallback? publishedValueFallback)
         {
             _dateInputModelConverter = Guard.ArgumentNotNull(nameof(dateInputModelConverter), dateInputModelConverter);
+            _publishedValueFallback = publishedValueFallback;
         }
 
         public Task BindModelAsync(ModelBindingContext bindingContext)
@@ -89,7 +92,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                     var contentAccessor = bindingContext.HttpContext.RequestServices.GetRequiredService<IUmbracoPublishedContentAccessor>()!;
                     var cultureDictionary = bindingContext.HttpContext.RequestServices.GetRequiredService<ICultureDictionary>()!;
 
-                    var errorMessage = GetModelStateErrorMessage(contentAccessor.PublishedContent, cultureDictionary, parseErrors, bindingContext.ModelMetadata);
+                    var errorMessage = GetModelStateErrorMessage(contentAccessor.PublishedContent, _publishedValueFallback, cultureDictionary, parseErrors, bindingContext.ModelMetadata);
                     bindingContext.ModelState.AddModelError(bindingContext.ModelName, errorMessage);
 
                     bindingContext.Result = ModelBindingResult.Failed();
@@ -100,7 +103,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         }
 
         // internal for testing
-        internal static string GetModelStateErrorMessage(IPublishedContent umbracoContent, ICultureDictionary umbracoDictionary, DateInputParseErrors parseErrors, ModelMetadata modelMetadata)
+        internal static string GetModelStateErrorMessage(IPublishedContent umbracoContent, IPublishedValueFallback? publishedValueFallback, ICultureDictionary umbracoDictionary, DateInputParseErrors parseErrors, ModelMetadata modelMetadata)
         {
             Debug.Assert(parseErrors != DateInputParseErrors.None);
             Debug.Assert(parseErrors != (DateInputParseErrors.MissingDay | DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingYear));
@@ -108,7 +111,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             string? displayName = null;
             if (!string.IsNullOrEmpty(modelMetadata.PropertyName))
             {
-                displayName = umbracoContent.FindBlockByBoundProperty(modelMetadata.PropertyName)?.Settings?.Value<string>(PropertyAliases.DisplayName)?.Trim();
+                displayName = umbracoContent.FindBlockLists(publishedValueFallback).FindBlockByBoundProperty(modelMetadata.PropertyName)?.Settings?.Value<string>(PropertyAliases.DisplayName)?.Trim();
             }
             if (string.IsNullOrEmpty(displayName)) { displayName = modelMetadata.PropertyName; }
 

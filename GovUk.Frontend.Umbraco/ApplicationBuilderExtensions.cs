@@ -6,20 +6,23 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 
 namespace GovUk.Frontend.Umbraco
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseGovUkFrontendUmbracoExtensions(this IApplicationBuilder app, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor)
+        public static IApplicationBuilder UseGovUkFrontendUmbracoExtensions(this IApplicationBuilder app, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback)
         {
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
 
-            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor, new Dictionary<Type, string>
+            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor,
+                publishedValueFallback,
+                new Dictionary<Type, string>
             {
                 { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired },
                 { typeof(RegularExpressionAttribute),  PropertyAliases.ErrorMessageRegex },

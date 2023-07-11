@@ -14,7 +14,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Routing;
 
-namespace GovUk.Frontend.Umbraco.Testing
+namespace ThePensionsRegulator.Umbraco.Testing
 {
     /// <summary>
     /// A mock Umbraco environment with a current page request
@@ -23,6 +23,7 @@ namespace GovUk.Frontend.Umbraco.Testing
     {
         private const string TEMPLATE_NAME = "MockTemplate";
         private ClaimsPrincipal _currentPrincipal;
+        private FakeSessionState _sessionState = new();
 
         /// <summary>
         /// HTTP-specific information about this HTTP request.
@@ -154,15 +155,31 @@ namespace GovUk.Frontend.Umbraco.Testing
             CurrentPrincipal = new GenericPrincipal(CurrentIdentity.Object, Array.Empty<string>());
         }
 
+        delegate void SessionTryGetValueCallback(string key, out byte[]? value);
+        delegate bool SessionTryGetValueReturns(string key, out byte[]? value);
+
         private void SetupHttpContext()
         {
             Request.SetupGet(x => x.Scheme).Returns("https");
             Request.SetupGet(x => x.Host).Returns(new HostString("example.org"));
             Request.SetupGet(x => x.Query).Returns(new QueryCollection());
             Request.SetupGet(x => x.Headers).Returns(new HeaderDictionary());
-
             HttpContext.SetupGet(x => x.Request).Returns(Request.Object);
+
+            // Setup session as a mock which is pre-configured to store and retrieve values from a fake session state
             HttpContext.SetupGet(x => x.Session).Returns(Session.Object);
+
+            Session.Setup(x => x.Set(It.IsAny<string>(), It.IsAny<byte[]>()))
+                .Callback<string, byte[]>((key, value) => _sessionState.Set(key, value));
+            Session.Setup(x => x.TryGetValue(It.IsAny<string>(), out It.Ref<byte[]?>.IsAny))
+                .Callback(new SessionTryGetValueCallback((string key, out byte[]? value) =>
+                {
+                    _sessionState.TryGetValue(key, out value);
+                }))
+                .Returns(new SessionTryGetValueReturns((string key, out byte[]? value) => _sessionState.TryGetValue(key, out value)));
+            Session.Setup(x => x.Remove(It.IsAny<string>())).Callback<string>(key => _sessionState.Remove(key));
+            Session.Setup(x => x.Clear()).Callback(() => _sessionState.Clear());
+            Session.Setup(x => x.Keys).Returns(_sessionState.Keys);
 
             PublishedRequest.SetupGet(request => request.PublishedContent).Returns(CurrentPage.Object);
 

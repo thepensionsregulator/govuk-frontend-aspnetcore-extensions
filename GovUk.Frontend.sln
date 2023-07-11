@@ -23,9 +23,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.AspNetCore.E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.ExampleSharedResource", "SharedResourceLibrary\GovUk.Frontend.ExampleSharedResource.csproj", "{9E55BF8E-A29A-462C-AB98-AE73AB6F722C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco.Testing", "GovUk.Frontend.Umbraco.Testing\GovUk.Frontend.Umbraco.Testing.csproj", "{94C814E0-28CB-48B4-9C31-D29F611EFF4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco.Testing", "ThePensionsRegulator.Umbraco.Testing\ThePensionsRegulator.Umbraco.Testing.csproj", "{94C814E0-28CB-48B4-9C31-D29F611EFF4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GovUk.Frontend.Umbraco.Testing.Tests", "GovUk.Frontend.Umbraco.Testing.Tests\GovUk.Frontend.Umbraco.Testing.Tests.csproj", "{1EE40980-0B7B-4ABE-9114-FBB0903473DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco.Testing.Tests", "ThePensionsRegulator.Umbraco.Testing.Tests\ThePensionsRegulator.Umbraco.Testing.Tests.csproj", "{1EE40980-0B7B-4ABE-9114-FBB0903473DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco", "ThePensionsRegulator.Umbraco\ThePensionsRegulator.Umbraco.csproj", "{D3D20332-3DBE-403B-8111-DDAE8AFF952B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco.Tests", "ThePensionsRegulator.Umbraco.Tests\ThePensionsRegulator.Umbraco.Tests.csproj", "{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,14 @@ Global
 		{1EE40980-0B7B-4ABE-9114-FBB0903473DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EE40980-0B7B-4ABE-9114-FBB0903473DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EE40980-0B7B-4ABE-9114-FBB0903473DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3D20332-3DBE-403B-8111-DDAE8AFF952B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3D20332-3DBE-403B-8111-DDAE8AFF952B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3D20332-3DBE-403B-8111-DDAE8AFF952B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3D20332-3DBE-403B-8111-DDAE8AFF952B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

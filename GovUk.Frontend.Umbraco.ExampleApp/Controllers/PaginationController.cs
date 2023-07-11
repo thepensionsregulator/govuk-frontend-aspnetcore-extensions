@@ -1,6 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
-using GovUk.Frontend.Umbraco.Models;
 using GovUk.Frontend.Umbraco.Services;
 using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using ThePensionsRegulator.Umbraco.BlockLists;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;

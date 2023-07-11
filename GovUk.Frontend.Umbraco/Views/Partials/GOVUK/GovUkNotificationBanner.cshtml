@@ -4,6 +4,7 @@
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Umbraco.BlockLists;
 @using Umbraco.Extensions
 @{
     if (!Enum.TryParse(typeof(NotificationBannerType), Model.Settings.Value<string>("type"), out var bannerType))

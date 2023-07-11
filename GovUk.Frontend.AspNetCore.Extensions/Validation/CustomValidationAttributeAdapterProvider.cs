@@ -16,7 +16,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             this._serviceProvider = serviceProvider;
         }
 
-        public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
+        public IAttributeAdapter? GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer? stringLocalizer)
         {
             var factory = _serviceProvider.GetServices<IValidatorAttributeAdapterFactory>().FirstOrDefault(s => s.CanAdapt(attribute));
 

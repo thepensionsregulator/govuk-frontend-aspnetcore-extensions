@@ -19,7 +19,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
         public CompaniesHouseCompanyNumberAttribute() : base($@"{EIGHT_NUMBERS_ONLY}|{TWO_CHARS_SIX_NUMBERS}|{ONE_CHAR_SEVEN_NUMBERS}")
         {
-            ErrorMessage = "Enter a valid companies house number";
+            ErrorMessage = "Enter a company number in the correct format, such as 12345678, AA123456 or A1234567";
         }
     }
 }

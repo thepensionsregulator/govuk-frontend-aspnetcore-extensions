@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Session;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -23,7 +28,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
     {
         private const string TEMPLATE_NAME = "MockTemplate";
         private ClaimsPrincipal _currentPrincipal;
-        private FakeSessionState _sessionState = new();
+        private DistributedSession _sessionState = new(new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions())), Guid.NewGuid().ToString(), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30), () => true, Mock.Of<ILoggerFactory>(), true);
 
         /// <summary>
         /// HTTP-specific information about this HTTP request.

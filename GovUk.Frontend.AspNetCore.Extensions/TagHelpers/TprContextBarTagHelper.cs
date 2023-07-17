@@ -65,6 +65,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
                 output.MergeAttributes(tagBuilder);
                 output.Content.SetHtmlContent(tagBuilder.InnerHtml);
             }
+            else
+            {
+                output.SuppressOutput();
+            }
         }
     }
 }

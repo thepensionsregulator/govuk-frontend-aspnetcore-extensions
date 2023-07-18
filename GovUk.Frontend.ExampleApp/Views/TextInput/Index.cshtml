@@ -56,6 +56,19 @@
                   <govuk-input-label>UK postcode</govuk-input-label>
               </govuk-input>
 
+
+                <govuk-input asp-for="Field7" >
+                    <govuk-input-label>Companies house company number</govuk-input-label>
+                    <govuk-input-hint>This must be either be
+                        <ul>
+                            <li>8 numbers or</li>
+                            <li>2 letters and 6 numbers or</li>
+                            <li>1 letter and 7 numbers</li>
+                        </ul>
+                    </govuk-input-hint>
+                    
+                </govuk-input>
+
                 <govuk-input asp-for="Field8" >
                     <govuk-input-label>Registered charity number</govuk-input-label>
                     <govuk-input-hint>

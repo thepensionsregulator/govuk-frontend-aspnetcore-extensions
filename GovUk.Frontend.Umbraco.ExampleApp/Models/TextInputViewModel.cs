@@ -34,6 +34,9 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         [UkPostcode(ErrorMessage = nameof(Field8))]
         public string? Field8 { get; set; }
 
+        [CompaniesHouseCompanyNumber(ErrorMessage = nameof(Field9))]
+        public string? Field9 { get; set; }
+
         [RegisteredCharityNumber(ErrorMessage = nameof(Field10))]
         public string? Field10 { get; set; }
     }

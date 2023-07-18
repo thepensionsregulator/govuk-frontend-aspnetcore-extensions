@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace GovUk.Frontend.AspNetCore.Extensions
 {
-    internal interface IGovUkHtmlGenerator
+    public interface IGovUkHtmlGenerator
     {
         TagBuilder GenerateTprBackToTop(string href, IHtmlContent content, AttributeDictionary? attributes);
         TagBuilder GenerateTprBackToMenu(string href, IHtmlContent content, AttributeDictionary? attributes);

@@ -26,5 +26,8 @@ namespace GovUk.Frontend.ExampleApp.Models
 
         [UkPostcode]
         public string? Field6 { get; set; }
+
+        [CompaniesHouseCompanyNumber(ErrorMessage = "Enter a valid company number")]
+        public string? Field7 { get; set; }
     }
 }

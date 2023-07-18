@@ -68,6 +68,18 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
         }
 
         [Test]
+        public void Key_not_in_session_returns_null()
+        {
+            var testContext = new UmbracoTestContext();
+            const string key = "test";
+
+            Assert.That(testContext.Session.Object.Keys.Contains(key), Is.False);
+
+            var result = testContext.Session.Object.Get(key);
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
         public void Can_remove_session_data()
         {
             var testContext = new UmbracoTestContext();

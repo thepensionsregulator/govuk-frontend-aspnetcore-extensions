@@ -1,6 +1,6 @@
 ﻿using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Models
+namespace ThePensionsRegulator.Umbraco
 {
     /// <summary>
     /// A wrapper for <see cref="IPublishedElement"/> which allows property values to be overridden.

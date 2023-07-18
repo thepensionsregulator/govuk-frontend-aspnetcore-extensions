@@ -7,7 +7,7 @@
 
     public class CustomValidatorAttributeAdapterFactory : ValidatorAttributeAdapterFactory<CustomValidatorAttribute>
     {
-        public override IAttributeAdapter Create(ValidationAttribute attribute, IStringLocalizer localizer)
+        public override IAttributeAdapter Create(ValidationAttribute attribute, IStringLocalizer? localizer)
         {
             return new CustomValidatorAttributeAdapter((CustomValidatorAttribute)attribute, localizer);
         }

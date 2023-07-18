@@ -5,14 +5,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	<Title>ThePensionsRegulator.$(AssemblyName)</Title>
-	<Version>3.2.0</Version>
+	<Title>$(AssemblyName)</Title>
+	<Version>4.0.1</Version>
 	<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		    This will help identify breaking changes where the major version should change. -->
-    <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>4.0.0</PackageValidationBaselineVersion>
 	<Authors>rickmason-tpr</Authors>
 	<Company>The Pensions Regulator</Company>
-	<Description>Helper code for unit testing Umbraco applications, and in particular applications built using ThePensionsRegulator.GovUk.Frontend.Umbraco.</Description>
+	<Description>Helper code for unit testing Umbraco applications, and in particular applications built using ThePensionsRegulator.Umbraco.</Description>
 	<Copyright>The Pensions Regulator</Copyright>
 	<PackageProjectUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</PackageProjectUrl>
 	<PackageIcon>tpr-nuget.png</PackageIcon>
@@ -22,8 +22,8 @@
 	<PackageTags>gds govuk gov.uk umbraco blocklist testing unittest</PackageTags>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<IncludeSymbols>True</IncludeSymbols>
-	<PackageId>ThePensionsRegulator.$(AssemblyName)</PackageId>
-	<Product>ThePensionsRegulator.$(AssemblyName)</Product>
+	<PackageId>$(AssemblyName)</PackageId>
+	<Product>$(AssemblyName)</Product>
   </PropertyGroup>
 
   <ItemGroup>
@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
+    <ProjectReference Include="..\ThePensionsRegulator.Umbraco\ThePensionsRegulator.Umbraco.csproj" />
   </ItemGroup>
 
   <ItemGroup>

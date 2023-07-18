@@ -15,7 +15,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             modelState.SetInitialValue("fieldname", "value");
 
             Assert.True(modelState.ContainsKey("fieldname"));
-            Assert.AreEqual("value", modelState["fieldname"].AttemptedValue);
+            Assert.AreEqual("value", modelState["fieldname"]!.AttemptedValue);
             Assert.True(modelState.IsValid);
         }
 
@@ -27,7 +27,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             modelState.SetInitialValue("fieldname", new StringValues(new[] { "value1", "value2" }));
 
             Assert.True(modelState.ContainsKey("fieldname"));
-            Assert.AreEqual("value1,value2", modelState["fieldname"].AttemptedValue);
+            Assert.AreEqual("value1,value2", modelState["fieldname"]!.AttemptedValue);
             Assert.True(modelState.IsValid);
         }
     }

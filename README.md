@@ -47,7 +47,7 @@ We add support for:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
   - [File upload](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/file-upload.md)
 
-We target [GDS Frontend v4.3.0](https://github.com/alphagov/govuk-frontend/releases/tag/v4.3.0) in line with James Gunn's base project. We also include 'Summary card' from [GDS Frontend v4.5.0](https://github.com/alphagov/govuk-frontend/releases/tag/v4.5.0) and 'Task list' based on [govuk-frontend pre-release code](https://github.com/alphagov/govuk-design-system/pull/1994).
+We target [GDS Frontend v4.4.1](https://github.com/alphagov/govuk-frontend/releases/tag/v4.4.1) in line with James Gunn's base project. We also include 'Summary card' from [GDS Frontend v4.5.0](https://github.com/alphagov/govuk-frontend/releases/tag/v4.5.0) and 'Task list' based on [govuk-frontend pre-release code](https://github.com/alphagov/govuk-design-system/pull/1994).
 
 ## ASP.NET projects without Umbraco
 
@@ -71,13 +71,17 @@ ASP.NET support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend](h
 - [Use SASS for CSS](docs/aspnet/sass.md)
 - [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)
 
-Umbraco support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
+Umbraco utility functions are published on NuGet as [ThePensionsRegulator.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco)
+
+![ThePensionsRegulator.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco)
+
+Umbraco GOV.UK Design System support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 
 ![ThePensionsRegulator.GovUk.Frontend.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 
-Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing)
+Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbraco.Testing](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco.Testing)
 
-![ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend.Umbraco.Testing)
+![ThePensionsRegulator.Umbraco.Testing on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco.Testing)
 
 ## Disclaimer
 

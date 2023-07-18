@@ -11,19 +11,18 @@
 // Using a background image means no extra HTML is required and no extra characters are exposed to assistive technology.
 $tpr-button-padding: 20px;
 
-.govuk-button, input[type="file"]::file-selector-button {
-    color: $tpr-colour-white;
+.govuk-button, .govuk-file-upload::file-selector-button {
+    color: $govuk-button-text-colour;
     border-width: 1px;
     border-color: transparent;
     line-height: govuk-px-to-rem(24);
     border-radius: 8px;
     box-shadow: none;
-    background: $tpr-colour-eastern-blue url(/_content/ThePensionsRegulator.GovUk.Frontend/tpr/chevron_right_white_24dp.svg) right center no-repeat;
+    background: $govuk-button-background-colour url(/_content/ThePensionsRegulator.GovUk.Frontend/tpr/chevron_right_white_24dp.svg) right center no-repeat;
     padding-left: $tpr-button-padding;
     padding-right: $tpr-button-padding *2;
 }
-.govuk-button:hover, .govuk-button:active, input[type="file"]::file-selector-button:hover {
-    color: $tpr-colour-white;
+.govuk-button:hover, .govuk-button:active, .govuk-file-upload::file-selector-button:hover {
     background-color: $tpr-colour-violet;
 }
 .govuk-button:focus:not(:active):not(:hover) {
@@ -31,7 +30,6 @@ $tpr-button-padding: 20px;
     color: $tpr-colour-eclipse;
 }
 .govuk-button:disabled, .govuk-button[aria-disabled=true] {
-    color: $tpr-colour-white;
     background-color: $tpr-colour-regent-st-blue;
 }
 
@@ -47,9 +45,11 @@ a.govuk-button--secondary:link, a.govuk-button--secondary:visited {
     color: $tpr-colour-royal-blue;
 }
 
-.govuk-button--secondary:hover, .govuk-button--secondary:active,
+.govuk-button--secondary:hover,
+.govuk-button--secondary:link:active,
+.govuk-button--secondary:visited:active,
 a.govuk-button--secondary:hover {
-    color: $tpr-colour-white;
+    color: $govuk-button-text-colour;
     background-color: $tpr-colour-royal-blue;
 }
 .govuk-button--secondary:disabled, .govuk-button--secondary[aria-disabled=true] {
@@ -72,15 +72,12 @@ input[type="file"]::file-selector-button {
 }
 
 .govuk-button--warning {
-    color: $tpr-colour-white;
     background-color: $tpr-colour-fire-brick;
 }
 .govuk-button--warning:hover, .govuk-button--warning:focus, .govuk-button--warning:active {
-    color: $tpr-colour-white;
     background-color: $tpr-colour-brick;
 }
 .govuk-button--warning:disabled, .govuk-button--warning[aria-disabled=true] {
-    color: $tpr-colour-white;
     background-color: $tpr-colour-petite-orchid;
 }
 
@@ -96,7 +93,7 @@ a.govuk-button--warning.govuk-button--secondary:visited {
 .govuk-button--warning.govuk-button--secondary:active,
 a.govuk-button--warning.govuk-button--secondary:hover,
 a.govuk-button--warning.govuk-button--secondary:active {
-    color: $tpr-colour-white;
+    color: $govuk-button-text-colour;
     background-color: $tpr-colour-fire-brick;
     border-color: transparent;
 }
@@ -110,7 +107,7 @@ a.govuk-button--warning.govuk-button--secondary:active {
     background-color: transparent;
     background-image: none;
     padding-right: govuk-spacing(4);
-    color: $tpr-colour-white;
+    color: $govuk-button-text-colour;
     border-color: $tpr-colour-white;
 
     &:hover,

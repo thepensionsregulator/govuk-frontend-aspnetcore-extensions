@@ -1,48 +1,18 @@
-﻿using GovUk.Frontend.Umbraco.Testing;
-using GovUk.Frontend.Umbraco.Validation;
+﻿using GovUk.Frontend.Umbraco.Validation;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.Web;
 
 namespace GovUk.Frontend.Umbraco.Tests
 {
     public class UmbracoBlockListValidationMetadataProviderTests
     {
-        [Test]
-        public void Nested_blocklists_are_found_recursively()
-        {
-            var grandChildBlockList = UmbracoBlockListFactory.CreateBlockListModel(Array.Empty<BlockListItem>());
-
-            var childBlockList = UmbracoBlockListFactory.CreateBlockListModel(
-                UmbracoBlockListFactory.CreateBlock(
-                    UmbracoBlockListFactory.CreateContentOrSettings()
-                    .SetupUmbracoBlockListPropertyValue("blocks", grandChildBlockList)
-                    .Object
-                    )
-                );
-
-            var parentBlockList = UmbracoBlockListFactory.CreateBlockListModel(
-                UmbracoBlockListFactory.CreateBlock(
-                    UmbracoBlockListFactory.CreateContentOrSettings()
-                    .SetupUmbracoBlockListPropertyValue("blocks", childBlockList)
-                    .Object
-                    )
-                );
-
-            var provider = new UmbracoBlockListValidationMetadataProvider(Mock.Of<IUmbracoContextAccessor>(), typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired);
-
-            var result = provider.RecursivelyGetBlockLists(new List<IPublishedProperty> { UmbracoPropertyFactory.CreateBlockListProperty("blocks", parentBlockList) });
-
-            Assert.AreEqual(3, result.Count());
-        }
-
         [Test]
         public void Attribute_error_message_is_updated_from_display_text_when_block_is_error_message()
         {
@@ -58,10 +28,8 @@ namespace GovUk.Frontend.Umbraco.Tests
 
             var errorBlock = new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), errorBlockContent.Object, Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), errorBlockSettings.Object);
 
-            var blockList = new BlockListModel(new[] { errorBlock });
-
             var attribute = new RequiredAttribute { ErrorMessage = "Field1" };
-            UmbracoBlockListValidationMetadataProvider.UpdateValidationAttributeErrorMessages(new[] { blockList },
+            UmbracoBlockListValidationMetadataProvider.UpdateValidationAttributeErrorMessages(new[] { errorBlock },
                 new List<object> { attribute },
                 new Dictionary<Type, string> { { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired } });
 
@@ -83,10 +51,8 @@ namespace GovUk.Frontend.Umbraco.Tests
 
             var textInputBlock = new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), textInputContent.Object, Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), textInputSettings.Object);
 
-            var blockList = new BlockListModel(new[] { textInputBlock });
-
             var attribute = new RequiredAttribute { ErrorMessage = "Field1" };
-            UmbracoBlockListValidationMetadataProvider.UpdateValidationAttributeErrorMessages(new[] { blockList },
+            UmbracoBlockListValidationMetadataProvider.UpdateValidationAttributeErrorMessages(new[] { textInputBlock },
                 new List<object> { attribute },
                 new Dictionary<Type, string> { { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired } });
 
@@ -96,18 +62,16 @@ namespace GovUk.Frontend.Umbraco.Tests
         [Test]
         public void Attribute_error_message_is_not_updated_from_settings_when_modelProperty_does_not_match()
         {
-            var blockList = UmbracoBlockListFactory.CreateBlockListModel(
-                UmbracoBlockListFactory.CreateBlock(
-                    UmbracoBlockListFactory.CreateContentOrSettings().Object,
-                    UmbracoBlockListFactory.CreateContentOrSettings()
-                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.ModelProperty, "Field1")
-                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.ErrorMessageRequired, "Custom required error")
-                    .Object
-                    )
-            );
+            var block = UmbracoBlockListFactory.CreateBlock(
+                            UmbracoBlockListFactory.CreateContentOrSettings().Object,
+                            UmbracoBlockListFactory.CreateContentOrSettings()
+                            .SetupUmbracoTextboxPropertyValue(PropertyAliases.ModelProperty, "Field1")
+                            .SetupUmbracoTextboxPropertyValue(PropertyAliases.ErrorMessageRequired, "Custom required error")
+                            .Object
+                        );
 
             var attribute = new RequiredAttribute { ErrorMessage = "Original error" };
-            UmbracoBlockListValidationMetadataProvider.UpdateValidationAttributeErrorMessages(new[] { blockList },
+            UmbracoBlockListValidationMetadataProvider.UpdateValidationAttributeErrorMessages(new[] { block },
                 new List<object> { attribute },
                 new Dictionary<Type, string> { { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired } });
 

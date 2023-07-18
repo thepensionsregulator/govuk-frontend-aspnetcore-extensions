@@ -1,12 +1,10 @@
-﻿using GovUk.Frontend.Umbraco.Models;
-using GovUk.Frontend.Umbraco.Testing;
-using Moq;
-using NUnit.Framework;
-using System;
+﻿using Moq;
+using ThePensionsRegulator.Umbraco.BlockLists;
+using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Tests
+namespace ThePensionsRegulator.Umbraco.Tests
 {
     public class OverridableBlockListModelTests
     {
@@ -51,7 +49,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             childBlockListContent.Setup(x => x.Value<BlockListModel>("grandchildBlocks", null, null, default, default)).Returns(grandChildBlockList);
 
             var factoryCalls = 0;
-            Func<IPublishedElement, IOverridablePublishedElement> factory = x =>
+            Func<IPublishedElement?, IOverridablePublishedElement?> factory = x =>
             {
                 factoryCalls++;
                 switch (factoryCalls)

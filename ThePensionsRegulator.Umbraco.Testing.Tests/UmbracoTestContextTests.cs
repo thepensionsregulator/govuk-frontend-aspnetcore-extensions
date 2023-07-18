@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace GovUk.Frontend.Umbraco.Testing.Tests
+namespace ThePensionsRegulator.Umbraco.Testing.Tests
 {
     [TestFixture]
     public class UmbracoTestContextTests
@@ -49,6 +50,61 @@ namespace GovUk.Frontend.Umbraco.Testing.Tests
             var claims = controller.User.Claims;
 
             Assert.That(claims.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void Can_set_and_get_session_data()
+        {
+            var testContext = new UmbracoTestContext();
+            const string key = "test";
+            const string data = "hello world";
+
+            testContext.Session.Object.SetString(key, data);
+
+            Assert.That(testContext.Session.Object.Keys.Contains(key), Is.True);
+
+            var result = testContext.Session.Object.GetString(key);
+            Assert.That(result, Is.EqualTo(data));
+        }
+
+        [Test]
+        public void Key_not_in_session_returns_null()
+        {
+            var testContext = new UmbracoTestContext();
+            const string key = "test";
+
+            Assert.That(testContext.Session.Object.Keys.Contains(key), Is.False);
+
+            var result = testContext.Session.Object.Get(key);
+            Assert.That(result, Is.Null);
+        }
+
+        [Test]
+        public void Can_remove_session_data()
+        {
+            var testContext = new UmbracoTestContext();
+            const string key = "test";
+            const string data = "hello world";
+
+            testContext.Session.Object.SetString(key, data);
+            testContext.Session.Object.Remove(key);
+
+            Assert.That(testContext.Session.Object.Keys.Contains(key), Is.False);
+        }
+
+        [Test]
+        public void Can_clear_session_data()
+        {
+            var testContext = new UmbracoTestContext();
+            const string key1 = "test1";
+            const string key2 = "test2";
+            const string data = "hello world";
+
+            testContext.Session.Object.SetString(key1, data);
+            testContext.Session.Object.SetString(key2, data);
+            testContext.Session.Object.Clear();
+
+            Assert.That(testContext.Session.Object.Keys.Count, Is.EqualTo(0));
         }
     }
 }

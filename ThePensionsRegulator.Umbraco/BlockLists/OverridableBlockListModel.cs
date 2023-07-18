@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Models
+namespace ThePensionsRegulator.Umbraco.BlockLists
 {
     /// <summary>
     /// An adapter for a <see cref="BlockListModel" /> which supports filtering out blocks and overriding property values
@@ -26,7 +23,7 @@ namespace GovUk.Frontend.Umbraco.Models
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        public OverridableBlockListModel(IEnumerable<BlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>>? filter = null, Func<IPublishedElement, IOverridablePublishedElement>? publishedElementFactory = null)
+        public OverridableBlockListModel(IEnumerable<BlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>>? filter = null, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
         {
             Filter = filter ?? (x => x);
             var factory = publishedElementFactory ?? OverridableBlockListItem.DefaultPublishedElementFactory;

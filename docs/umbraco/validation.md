@@ -68,7 +68,7 @@ public class MyDocumentTypeViewModel
 
 If the standard validation support does not meet your needs you can add an 'Error message' block in the block list editor. Select a view model property in the settings for the 'Error message' block, and it will appear only when that property is invalid in `ModelState`.
 
-### Validate multiple fields together
+## Validate multiple fields together
 
 If you need to validate several fields together, place the fields inside a 'Fieldset' block. Add a property on your view model which calculates and validates a value derived from all the relevant fields. (If your requirement is more complex you could build an instance of a class and apply a [custom validation attribute](<https://learn.microsoft.com/en-us/previous-versions/aspnet/cc668224(v=vs.100)>).)
 

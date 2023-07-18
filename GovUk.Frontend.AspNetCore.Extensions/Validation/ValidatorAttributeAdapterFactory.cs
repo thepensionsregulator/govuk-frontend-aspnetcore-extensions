@@ -18,6 +18,6 @@
             }
         }
 
-        public abstract IAttributeAdapter Create(ValidationAttribute attribute, IStringLocalizer localizer);
+        public abstract IAttributeAdapter Create(ValidationAttribute attribute, IStringLocalizer? localizer);
     }
 }

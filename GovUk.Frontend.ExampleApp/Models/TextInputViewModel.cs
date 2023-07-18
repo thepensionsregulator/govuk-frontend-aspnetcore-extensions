@@ -29,5 +29,8 @@ namespace GovUk.Frontend.ExampleApp.Models
 
         [CompaniesHouseCompanyNumber(ErrorMessage = "Enter a valid company number")]
         public string? Field7 { get; set; }
+
+        [RegisteredCharityNumber(ErrorMessage = "Enter a valid registered charity number")]
+        public string? Field8 { get; set; }
     }
 }

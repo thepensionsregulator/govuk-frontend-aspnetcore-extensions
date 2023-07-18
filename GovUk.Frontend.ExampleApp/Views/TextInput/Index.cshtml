@@ -55,6 +55,18 @@
               <govuk-input asp-for="Field6" class="govuk-input--width-10">
                   <govuk-input-label>UK postcode</govuk-input-label>
               </govuk-input>
+
+                <govuk-input asp-for="Field8" >
+                    <govuk-input-label>Registered charity number</govuk-input-label>
+                    <govuk-input-hint>
+                        This must be either be
+                        <ul>
+                            <li>6 numbers or</li>
+                            <li>7 numbers or</li>
+                            <li>the letters SC followed by 6 numbers</li>
+                        </ul>
+                    </govuk-input-hint>
+                </govuk-input>
           </govuk-client-side-validation>
         </div>
     </div>

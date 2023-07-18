@@ -16,6 +16,10 @@ namespace GovUk.Frontend.Umbraco.Models
         public bool ShowSkipLink { get; init; } = true;
         public bool ShowPhaseBanner { get; init; } = true;
         public bool ShowHeader { get; init; } = true;
+        public bool HeaderBarContentAllowHtml { get; init; } = true;
+        public bool Context1AllowHtml { get; init; } = true;
+        public bool Context2AllowHtml { get; init; } = true;
+        public bool Context3AllowHtml { get; init; } = true;
         public virtual string? SkipLinkClass() => null;
         public virtual string? SkipLinkHref() => "#main";
         public virtual string? SkipLinkText() => _settings.Value<string>("govukSkipLinkText");

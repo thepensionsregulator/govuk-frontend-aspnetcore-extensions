@@ -1,5 +1,6 @@
 using GovUk.Frontend.AspNetCore.Extensions.Configuration;
 using GovUk.Frontend.AspNetCore.Extensions.ModelBinding;
+using GovUk.Frontend.AspNetCore.Extensions.Security;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
             services.AddGovUkFrontend(configureOptions);
             services.AddTransient<IClientSideValidationHtmlEnhancer, ClientSideValidationHtmlEnhancer>();
             services.AddTransient<IModelPropertyResolver, ModelPropertyResolver>();
+            services.AddScoped<INonceProvider, NonceProvider>();
             services.AddSingleton<IStartupFilter, EmbedContentFolderStartupFilter>();
             services.AddMvc(options =>
             {

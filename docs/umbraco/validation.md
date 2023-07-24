@@ -89,3 +89,7 @@ public class MyDocumentTypeViewModel
 Add an 'Error message' block directly inside the 'Fieldset' block, and on the settings for the 'Error message' block select the calculated property as the 'Model property'. When this property is invalid in `ModelState` the whole fieldset will be invalid.
 
 If you need an 'Error message' block inside a 'Fieldset' block without this behaviour, you can disable it on the settings of the 'Fieldset' block.
+
+## Validating UK postcodes, Companies House company numbers and registered charity numbers
+
+See the [Text input](../components/text-input.md) component for details of validators included with the `ThePensionsRegulator.GovUk.Frontend` package.

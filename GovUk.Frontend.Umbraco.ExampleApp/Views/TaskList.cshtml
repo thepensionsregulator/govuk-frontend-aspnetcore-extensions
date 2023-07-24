@@ -1,7 +1,6 @@
-﻿@using GovUk.Frontend.Umbraco.ExampleApp.Models;
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<TaskListViewModel>
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<TaskList>
 @section head{
-	<title>@Model.Page!.Name</title>
+	<title>@Model.Name</title>
 }
 
 <partial name="GOVUK/BlockList" model="Model.Blocks" />

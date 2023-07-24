@@ -55,6 +55,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tasks")]
-		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel Tasks => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "tasks");
+		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel Tasks => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "tasks");
 	}
 }

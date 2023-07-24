@@ -1,6 +1,6 @@
 # Populate initial values
 
-If you need to select or populate values on your initial GET request, use the `ModelState.SetInitialValues` extension method:
+If you need to select or populate values on your initial GET request, use the `ModelState.SetInitialValue` extension method:
 
 ```csharp
 /// Controller

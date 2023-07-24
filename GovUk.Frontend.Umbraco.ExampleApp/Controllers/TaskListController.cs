@@ -1,6 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
@@ -17,18 +16,14 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         {
         }
 
-        [ModelType(typeof(TaskListViewModel))]
+        [ModelType(typeof(TaskList))]
         public override IActionResult Index()
         {
-            var viewModel = new TaskListViewModel
-            {
-                Page = new TaskList(CurrentPage, null)
-            };
+            var viewModel = new TaskList(CurrentPage, null);
 
             // Override content in the block list
-            viewModel.Blocks = new OverridableBlockListModel(viewModel.Page.Blocks!);
-            var target = viewModel.Blocks.FindBlock(x => x.Content.ContentType.Alias == GovukTask.ModelTypeAlias &&
-                                                         x.Settings.Value<string>(nameof(GovukTaskSettings.CssClasses))!.Contains("yet-another-thing")) as OverridableBlockListItem;
+            var target = viewModel.Blocks!.FindBlock(x => x.Content.ContentType.Alias == GovukTask.ModelTypeAlias &&
+                                                         x.Settings.Value<string>(nameof(GovukTaskSettings.CssClasses))!.Contains("yet-another-thing"));
             if (target != null)
             {
                 target.Settings.OverrideValue(nameof(GovukTaskSettings.Status), TaskListTaskStatus.Completed.ToString());

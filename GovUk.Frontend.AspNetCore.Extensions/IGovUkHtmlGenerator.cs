@@ -13,7 +13,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
         TagBuilder GenerateTprHeaderBar(TprHeaderBar tprHeaderBar);
         TagBuilder GenerateTprFooterBar(TprFooterBar tprFooterBar);
         TagBuilder GenerateTprContextBar(TprContextBar tprContextBar);
-        TagBuilder GenerateTaskList(AttributeDictionary? attributes, IEnumerable<TaskListTask> tasks);
+        TagBuilder GenerateTaskList(AttributeDictionary? attributes, IEnumerable<TaskListSection> sections);
         TagBuilder GenerateTaskListSummary(TaskListSummary taskListSummary);
         TagBuilder GenerateSummaryCard(SummaryCard summaryCard);
     }

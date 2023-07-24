@@ -9,7 +9,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     /// Generates a GOV.UK task list component.
     /// </summary>
     [HtmlTargetElement(TagName)]
-    [RestrictChildren(TaskListTaskTagHelper.TagName)]
+    [RestrictChildren(TaskListSectionTagHelper.TagName)]
     [OutputElementHint(ComponentGenerator.TaskListElement)]
     public class TaskListTagHelper : TagHelper
     {
@@ -44,7 +44,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 
             var tagBuilder = _htmlGenerator.GenerateTaskList(
                 output.Attributes.ToAttributeDictionary(),
-                taskListContext.Tasks);
+                taskListContext.Sections);
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

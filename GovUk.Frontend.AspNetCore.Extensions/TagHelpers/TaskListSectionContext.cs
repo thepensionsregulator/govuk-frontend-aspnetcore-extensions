@@ -1,36 +1,40 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
-    internal class TaskListContext
+    internal class TaskListSectionContext
     {
-        private readonly List<TaskListSection> _sections;
-
         public (AttributeDictionary Attributes, HtmlString? Content) Name { get; internal set; }
 
-        public TaskListContext()
+        private readonly List<TaskListTask> _tasks;
+
+        public TaskListSectionContext()
         {
-            _sections = new List<TaskListSection>();
+            _tasks = new List<TaskListTask>();
         }
 
-        public IReadOnlyList<TaskListSection> Sections => _sections;
+        public IReadOnlyList<TaskListTask> Tasks => _tasks;
 
-        public void AddSection(TaskListSection section)
+        public void AddTask(TaskListTask task)
         {
-            Guard.ArgumentNotNull(nameof(section), section);
+            Guard.ArgumentNotNull(nameof(task), task);
 
-            _sections.Add(section);
+            _tasks.Add(task);
         }
 
         public void ThrowIfIncomplete()
         {
-            if (Sections.Count < 1)
+            if (Tasks.Count < 1)
             {
                 throw ExceptionHelper.AChildElementMustBeProvided(TaskListSectionTagHelper.TagName);
             }
         }
-    }   
+    }
 }

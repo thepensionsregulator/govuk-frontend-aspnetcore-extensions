@@ -9,41 +9,56 @@
 @using Umbraco.Cms.Core.Models;
 @using Umbraco.Extensions
 @{
-    var tasks = Model.Content.Value<OverridableBlockListModel>("tasks")!;
+    var sections = Model.Content.Value<OverridableBlockListModel>("sections")!;
 }
-@if (tasks.Any())
+
+@if (sections.Any())
 {
-    <govuk-task-list 
-        id="@Model.Content.Key"
-        class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))"
-    >
-        @foreach (var task in tasks)
+    <govuk-task-list>
+        @foreach(var section in sections)
         {
-            var hint = GovUkTypography.Apply(task.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-            var link = task.Content.Value<Link>("link")?.Url;
-            var statusText = task.Settings.Value<string>("statusText");
-            var status = task.Settings.Value<string>("status")?.Replace(" ", string.Empty);
-            <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>(PropertyAliases.CssClasses))">
-                <govuk-task-list-task-name>@(task.Content.Value<string>("taskName"))</govuk-task-list-task-name>
-                @if (!string.IsNullOrEmpty(hint))
-                {
-                    <govuk-task-list-task-hint>@Html.Raw(hint)</govuk-task-list-task-hint>
-                }
-                @if (Enum.TryParse<TaskListTaskStatus>(status, true, out var parsedStatus))
-                {
-                    var textForStatus = string.Empty;
-                    if (!string.IsNullOrEmpty(statusText))
+            var name = section.Content.Value<string>("sectionName");
+            <govuk-task-list-section>
+                <govuk-task-list-section-name>@name</govuk-task-list-section-name>
+
+                @{
+                    var tasks = section.Content.Value<OverridableBlockListModel>("sectionTasks")!;
+                    if (tasks.Any())
                     {
-                        textForStatus = statusText;
+                        @foreach (var task in tasks)
+                        {
+                            var hint = GovUkTypography.Apply(task.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+                            var link = task.Content.Value<Link>("link")?.Url;
+                            var statusText = task.Settings.Value<string>("statusText");
+                            var status = task.Settings.Value<string>("status")?.Replace(" ", string.Empty);
+                            <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>(PropertyAliases.CssClasses))">
+                                <govuk-task-list-task-name>@(task.Content.Value<string>("taskName"))</govuk-task-list-task-name>
+                                @if (!string.IsNullOrEmpty(hint))
+                                {
+                                    <govuk-task-list-task-hint>@Html.Raw(hint)</govuk-task-list-task-hint>
+                                }
+                                @if (Enum.TryParse<TaskListTaskStatus>(status, true, out var parsedStatus))
+                                {
+                                    var textForStatus = string.Empty;
+                                    if (!string.IsNullOrEmpty(statusText))
+                                    {
+                                        textForStatus = statusText;
+                                    }
+                                    else
+                                    {
+                                        var defaultTextForStatus = ComponentGenerator.TaskListTaskStatusText(parsedStatus);
+                                        textForStatus = @Umbraco.GetDictionaryValue($"Task list - {defaultTextForStatus}", defaultTextForStatus);
+                                    }
+                                    <govuk-task-list-task-status status="@parsedStatus">@textForStatus</govuk-task-list-task-status>
+                                }
+                            </govuk-task-list-task>
+                        }
+                        
                     }
-                    else
-                    {
-                        var defaultTextForStatus = ComponentGenerator.TaskListTaskStatusText(parsedStatus);
-                        textForStatus = @Umbraco.GetDictionaryValue($"Task list - {defaultTextForStatus}", defaultTextForStatus);
-                    }
-                    <govuk-task-list-task-status status="@parsedStatus">@textForStatus</govuk-task-list-task-status>
                 }
-            </govuk-task-list-task>
+
+            </govuk-task-list-section>
+      
         }
     </govuk-task-list>
 }

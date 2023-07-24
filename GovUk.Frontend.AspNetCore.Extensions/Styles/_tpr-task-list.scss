@@ -1,6 +1,19 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
+.govuk-task-list__section {
+    display: table;
+    @include govuk-font($size:24, $weight: bold);
+}
+
+.govuk-task-list__section-number {
+    display: table-cell;
+
+    @include govuk-media-query($from: tablet) {
+        min-width: govuk-spacing(7);
+        padding-right: 0;
+    }
+}
 // Change GOV.UK task list styles where the TPR brand diverges from the GOV.UK Design System.
 .govuk-task-list__item--with-link:hover {
     background-color: $tpr-colour-whisper;

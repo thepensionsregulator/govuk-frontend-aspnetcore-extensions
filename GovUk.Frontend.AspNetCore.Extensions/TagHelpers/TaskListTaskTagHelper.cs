@@ -7,7 +7,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     /// <summary>
     /// Represents an task in a GOV.UK task list component.
     /// </summary>
-    [HtmlTargetElement(TagName, ParentTag = TaskListTagHelper.TagName)]
+    [HtmlTargetElement(TagName, ParentTag = TaskListSectionTagHelper.TagName)]
     [RestrictChildren(TaskListTaskNameTagHelper.TagName, TaskListTaskHintTagHelper.TagName, TaskListTaskStatusTagHelper.TagName)]
     [OutputElementHint(ComponentGenerator.TaskListTaskElement)]
     public class TaskListTaskTagHelper : TagHelper
@@ -24,7 +24,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var taskListContext = context.GetContextItem<TaskListContext>();
+            var taskListContext = context.GetContextItem<TaskListSectionContext>();
 
             var taskContext = new TaskListTaskContext();
 

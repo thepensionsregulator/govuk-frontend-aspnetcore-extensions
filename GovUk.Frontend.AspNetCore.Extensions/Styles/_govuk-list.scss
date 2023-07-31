@@ -1,0 +1,21 @@
+﻿/* Extra list styles not in govuk-frontend, but available in the Umbraco UI and therefore supported */
+.govuk-list--lower-alpha {
+    padding-left: govuk-spacing(4);
+    list-style-type: lower-alpha
+}
+.govuk-list--lower-greek {
+    padding-left: govuk-spacing(4);
+    list-style-type: lower-greek;
+}
+.govuk-list--lower-roman {
+    padding-left: govuk-spacing(4);
+    list-style-type: lower-roman;
+}
+.govuk-list--upper-alpha {
+    padding-left: govuk-spacing(4);
+    list-style-type: upper-alpha;
+}
+.govuk-list--upper-roman {
+    padding-left: govuk-spacing(4);
+    list-style-type: upper-roman;
+}

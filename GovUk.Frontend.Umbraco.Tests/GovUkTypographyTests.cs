@@ -130,6 +130,37 @@ namespace GovUk.Frontend.Umbraco.Tests
         }
 
         [Test]
+        public void Style_attribute_is_removed_from_ordered_lists()
+        {
+            var html = "<ol style=\"list-style-type: lower-alpha;\"><li>Item 1</li><li>Item 2</li></ol><ol style=\"color: red;\"><li>Item 3</li><li>Item 4</li></ol>";
+
+            var result = GovUkTypography.Apply(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//ol").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
+        }
+
+        [TestCase("lower-alpha")]
+        [TestCase("lower-greek")]
+        [TestCase("lower-roman")]
+        [TestCase("upper-alpha")]
+        [TestCase("upper-roman")]
+        public void Permitted_style_attribute_is_converted_to_class_from_ordered_lists(string listStyleType)
+        {
+            var html = $"<ol style=\"list-style-type: {listStyleType};\"><li>Item 1</li><li>Item 2</li></ol>";
+
+            var result = GovUkTypography.Apply(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//ol").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//ol[contains(@class,'govuk-list--{listStyleType}')]").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
+        }
+
+        [Test]
         public void Single_wrapping_paragraph_is_removed_if_requested()
         {
             var html = "<p>Some content</p>";

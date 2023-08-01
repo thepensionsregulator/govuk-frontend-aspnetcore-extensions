@@ -7,8 +7,9 @@ namespace GovUk.Frontend.Umbraco.Tests
 {
     public class BlockListModelExtensionsTests
     {
-        [Test]
-        public void Block_is_matched_by_model_property()
+        [TestCase("Field1", true)]
+        [TestCase("Field2", false)]
+        public void Block_is_matched_by_model_property(string propertyName, bool expected)
         {
             var blockList = UmbracoBlockListFactory.CreateBlockListModel(
                 UmbracoBlockListFactory.CreateBlock(
@@ -20,10 +21,112 @@ namespace GovUk.Frontend.Umbraco.Tests
                 );
 
             // Act
-            var result = BlockListModelExtensions.FindBlockByBoundProperty(blockList, "Field1");
+            var result = BlockListModelExtensions.FindBlockByBoundProperty(blockList, propertyName);
 
             // Assert
-            Assert.AreEqual(blockList.First(), result);
+            if (expected)
+            {
+                Assert.AreEqual(blockList.First(), result);
+            }
+            else
+            {
+                Assert.Null(result);
+            }
+        }
+
+        [TestCase("example-b", true)]
+        [TestCase("example-c", false)]
+        public void Block_is_matched_by_class(string className, bool expected)
+        {
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings().Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClasses, "example-a example-b")
+                    .Object
+                    )
+                );
+
+            // Act
+            var result = BlockListModelExtensions.FindBlockByClass(blockList, className);
+
+            // Assert
+            if (expected)
+            {
+                Assert.AreEqual(blockList.First(), result);
+            }
+            else
+            {
+                Assert.Null(result);
+            }
+        }
+
+        [TestCase("example-b", true)]
+        [TestCase("example-c", true)]
+        [TestCase("example-f", false)]
+        public void Block_is_matched_by_class_from_multiple_block_lists(string className, bool expected)
+        {
+            var blockList1 = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings().Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClasses, "example-a example-b")
+                    .Object
+                    )
+                );
+            var blockList2 = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings().Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClasses, "example-c example-d")
+                    .Object
+                    )
+                );
+
+            var blockLists = new[] { blockList1, blockList2 };
+
+            // Act
+            var result = BlockListModelExtensions.FindBlockByClass(blockLists, className);
+
+            // Assert
+            if (expected)
+            {
+                Assert.NotNull(result);
+            }
+            else
+            {
+                Assert.Null(result);
+            }
+        }
+
+        [TestCase("example-b", 2)]
+        [TestCase("example-f", 0)]
+        public void Multiple_blocks_are_matched_by_class_from_multiple_block_lists(string className, int expected)
+        {
+            var blockList1 = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings().Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClasses, "example-a example-b")
+                    .Object
+                    )
+                );
+            var blockList2 = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings().Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings()
+                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClasses, "example-b example-d")
+                    .Object
+                    )
+                );
+
+            var blockLists = new[] { blockList1, blockList2 };
+
+            // Act
+            var result = BlockListModelExtensions.FindBlocksByClass(blockLists, className);
+
+            // Assert
+            Assert.That(result.Count(), Is.EqualTo(expected));
         }
     }
 }

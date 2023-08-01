@@ -24,6 +24,15 @@ namespace ThePensionsRegulator.Umbraco.Tests
 		}
 
 		[Test]
+		public void Null_publishedElement_returns_empty_TokenList()
+		{
+			var list = new TokenList(null, PROPERTY_ALIAS);
+
+			Assert.That(list.Count, Is.EqualTo(0));
+			Assert.That(list.ToString(), Is.EqualTo(string.Empty));
+		}
+
+		[Test]
 		public void Class_list_is_tokenised()
 		{
 			var tokenList = CreateOverridableTokenList();

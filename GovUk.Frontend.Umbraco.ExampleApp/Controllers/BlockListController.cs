@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.Umbraco.BlockLists;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -31,7 +32,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             viewModel.Page.Blocks!.Filter = blocks => blocks.Where(block => block.Settings.Value<string>("cssClassesForRow") != "filter-this");
 
             // Override content in the block list
-            var topLevelBlockToOverride = viewModel.Page.Blocks.First(x => x.Settings.Value<string>("cssClassesForRow") == "override-this");
+            var topLevelBlockToOverride = viewModel.Page.Blocks.First(x => x.GridRowClassList().Contains("override-this"));
             topLevelBlockToOverride.Content.OverrideValue("text", GovukTypography.Apply("<p><strong>This text is overridden.</strong></p>"));
 
             // Override content in a nested block list
@@ -39,7 +40,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             var col = row.Content.Value<OverridableBlockListModel>("blocks")?.LastOrDefault(x => x.Content.ContentType.Alias == "govukGridColumn");
             if (col != null)
             {
-                var nestedBlockToOverride = col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.Settings.Value<string>("cssClassesForRow") == "override-this");
+                var nestedBlockToOverride = col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"));
                 if (nestedBlockToOverride != null)
                 {
                     nestedBlockToOverride.Content.OverrideValue("text", GovukTypography.Apply("<p><strong>This text is overridden.</strong></p>"));

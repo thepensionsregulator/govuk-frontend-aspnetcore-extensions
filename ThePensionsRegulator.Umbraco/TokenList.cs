@@ -10,7 +10,7 @@ namespace ThePensionsRegulator.Umbraco
 	/// </summary>
 	public class TokenList : IList<string>
 	{
-		private readonly IPublishedElement _publishedElement;
+		private readonly IPublishedElement? _publishedElement;
 		private readonly IOverridablePublishedElement? _overridablePublishedElement;
 		private readonly string _propertyName;
 		private readonly List<string> _tokens = new();
@@ -26,15 +26,14 @@ namespace ThePensionsRegulator.Umbraco
 		/// <param name="propertyName">The name of the Umbraco property where the tokens are stored.</param>
 		/// <param name="separator">The string with which tokens are separated in the property value.</param>
 		/// <exception cref="ArgumentException">Thrown is <c>propertyName</c> is <c>null</c> or an empty string.</exception>
-		/// <exception cref="ArgumentNullException">Thrown if <c>publishedElement</c> is <c>null</c>.</exception>
-		public TokenList(IPublishedElement publishedElement, string propertyName, string separator = " ")
+		public TokenList(IPublishedElement? publishedElement, string propertyName, string separator = " ")
 		{
 			if (string.IsNullOrEmpty(propertyName))
 			{
 				throw new ArgumentException($"'{nameof(propertyName)}' cannot be null or empty.", nameof(propertyName));
 			}
 
-			_publishedElement = publishedElement ?? throw new ArgumentNullException(nameof(publishedElement));
+			_publishedElement = publishedElement;
 			_overridablePublishedElement = _publishedElement as IOverridablePublishedElement;
 			_isReadOnly = _overridablePublishedElement == null;
 			_propertyName = propertyName;
@@ -43,12 +42,16 @@ namespace ThePensionsRegulator.Umbraco
 
 		private void Tokenise()
 		{
-			var raw = _isReadOnly ? _publishedElement.Value<string>(_propertyName) : _overridablePublishedElement!.Value<string>(_propertyName);
+			var raw = _isReadOnly ? _publishedElement?.Value<string>(_propertyName) : _overridablePublishedElement!.Value<string>(_propertyName);
 			_tokens.Clear();
 			if (!string.IsNullOrEmpty(raw))
 			{
 				raw = _regex.Replace(raw, _separator).Trim();
 				_tokens.AddRange(raw.Split(_separator));
+			}
+			else
+			{
+				_tokens.Clear();
 			}
 			_tokensCurrent = true;
 		}

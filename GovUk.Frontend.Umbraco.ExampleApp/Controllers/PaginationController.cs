@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.Umbraco.BlockLists;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using GovUk.Frontend.Umbraco.Services;
 using GovUk.Frontend.Umbraco.Validation;
@@ -70,23 +71,23 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     if (pagination.TotalItems > (pagination.PageSize * pagination.LargeNumberOfPagesThreshold))
                     {
                         filter = x => x.Where(block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
-                            (block.Settings.Value<string>(nameof(GovukTypographySettings.CssClassesForRow)) != "tpr-pagination-small" &&
-                            block.Settings.Value<string>(nameof(GovukTypographySettings.CssClassesForRow)) != "tpr-pagination-none")
+                            (!block.GridRowClassList().Contains("tpr-pagination-small") &&
+                            !block.GridRowClassList().Contains("tpr-pagination-none"))
                         );
                     }
                     else
                     {
                         filter = x => x.Where(block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
-                            (block.Settings.Value<string>(nameof(GovukTypographySettings.CssClassesForRow)) != "tpr-pagination-none" &&
-                            block.Settings.Value<string>(nameof(GovukTypographySettings.CssClassesForRow)) != "tpr-pagination-large")
+                            (!block.GridRowClassList().Contains("tpr-pagination-none") &&
+                            !block.GridRowClassList().Contains("tpr-pagination-large"))
                         );
                     }
                 }
                 else
                 {
                     filter = x => x.Where(block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
-                        (block.Settings.Value<string>(nameof(GovukTypographySettings.CssClassesForRow)) != "tpr-pagination-small" &&
-                        block.Settings.Value<string>(nameof(GovukTypographySettings.CssClassesForRow)) != "tpr-pagination-large")
+                        (!block.GridRowClassList().Contains("tpr-pagination-small") &&
+                        !block.GridRowClassList().Contains("tpr-pagination-large"))
                     );
                 }
                 viewModel.Page.Blocks!.Filter = filter;

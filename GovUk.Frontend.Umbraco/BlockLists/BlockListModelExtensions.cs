@@ -100,6 +100,52 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		}
 
 		/// <summary>
+		/// Recursively find the first block in a block list that has the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static OverridableBlockListItem? FindBlockByGridRowClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			return blockList.FindBlock(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a block list that has the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static OverridableBlockListItem? FindBlockByGridRowClass(this IEnumerable<OverridableBlockListItem> blockList, string className)
+		{
+			return blockList.FindBlockByGridRowClass(className, null);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a block list that has the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static OverridableBlockListItem? FindBlockByGridColumnClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			return blockList.FindBlock(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a block list that has the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static OverridableBlockListItem? FindBlockByGridColumnClass(this IEnumerable<OverridableBlockListItem> blockList, string className)
+		{
+			return blockList.FindBlockByGridColumnClass(className, null);
+		}
+
+		/// <summary>
 		/// Recursively find the first block in a block list that has the expected class in the 'cssClasses' Umbraco property in the block's settings
 		/// </summary>
 		/// <param name="blockList">The block list to search</param>
@@ -120,6 +166,52 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		public static BlockListItem? FindBlockByClass(this IEnumerable<BlockListItem> blockList, string className)
 		{
 			return blockList.FindBlockByClass(className, null);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a block list that has the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static BlockListItem? FindBlockByGridRowClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			return blockList.FindBlock(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a block list that has the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static BlockListItem? FindBlockByGridRowClass(this IEnumerable<BlockListItem> blockList, string className)
+		{
+			return blockList.FindBlockByGridRowClass(className, null);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a block list that has the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static BlockListItem? FindBlockByGridColumnClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			return blockList.FindBlock(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a block list that has the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static BlockListItem? FindBlockByGridColumnClass(this IEnumerable<BlockListItem> blockList, string className)
+		{
+			return blockList.FindBlockByGridColumnClass(className, null);
 		}
 
 		/// <summary>
@@ -148,6 +240,56 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		}
 
 		/// <summary>
+		/// Recursively find the first block in a set of block lists that has the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static OverridableBlockListItem? FindBlockByGridRowClass(this IEnumerable<OverridableBlockListModel> blockLists, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			var blocks = new List<OverridableBlockListItem>();
+			foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
+			return blocks.FindBlock(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a set of block lists that has the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static OverridableBlockListItem? FindBlockByGridRowClass(this IEnumerable<OverridableBlockListModel> blockLists, string className)
+		{
+			return blockLists.FindBlockByGridRowClass(className, null);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a set of block lists that has the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static OverridableBlockListItem? FindBlockByGridColumnClass(this IEnumerable<OverridableBlockListModel> blockLists, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			var blocks = new List<OverridableBlockListItem>();
+			foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
+			return blocks.FindBlock(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a set of block lists that has the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static OverridableBlockListItem? FindBlockByGridColumnClass(this IEnumerable<OverridableBlockListModel> blockLists, string className)
+		{
+			return blockLists.FindBlockByGridColumnClass(className, null);
+		}
+
+		/// <summary>
 		/// Recursively find the first block in a set of block lists that has the expected class in the 'cssClasses' Umbraco property in the block's settings
 		/// </summary>
 		/// <param name="blockLists">The block lists to search</param>
@@ -173,6 +315,56 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		}
 
 		/// <summary>
+		/// Recursively find the first block in a set of block lists that has the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static BlockListItem? FindBlockByGridRowClass(this IEnumerable<BlockListModel> blockLists, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			var blocks = new List<BlockListItem>();
+			foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
+			return blocks.FindBlock(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a set of block lists that has the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static BlockListItem? FindBlockByGridRowClass(this IEnumerable<BlockListModel> blockLists, string className)
+		{
+			return blockLists.FindBlockByGridRowClass(className, null);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a set of block lists that has the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static BlockListItem? FindBlockByGridColumnClass(this IEnumerable<BlockListModel> blockLists, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			var blocks = new List<BlockListItem>();
+			foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
+			return blocks.FindBlock(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the first block in a set of block lists that has the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static BlockListItem? FindBlockByGridColumnClass(this IEnumerable<BlockListModel> blockLists, string className)
+		{
+			return blockLists.FindBlockByGridColumnClass(className, null);
+		}
+
+		/// <summary>
 		/// Recursively find the blocks in a block list and any decendant block lists that have the expected class in the 'cssClasses' Umbraco property in the block's settings
 		/// </summary>
 		/// <param name="blockList">The block list to search</param>
@@ -181,7 +373,7 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
 		public static IEnumerable<OverridableBlockListItem> FindBlocksByClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
 		{
-			return blockList.FindBlocks(x => ((OverridableBlockListItem)x).ClassList().Contains(className), publishedValueFallback);
+			return blockList.FindBlocks(x => x.ClassList().Contains(className), publishedValueFallback);
 		}
 
 		/// <summary>
@@ -192,7 +384,53 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
 		public static IEnumerable<OverridableBlockListItem> FindBlocksByClass(this IEnumerable<OverridableBlockListItem> blockList, string className)
 		{
-			return blockList.FindBlocks(x => ((OverridableBlockListItem)x).ClassList().Contains(className), null);
+			return blockList.FindBlocks(x => x.ClassList().Contains(className), null);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a block list and any decendant block lists that have the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
+		public static IEnumerable<OverridableBlockListItem> FindBlocksByGridRowClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			return blockList.FindBlocks(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a block list and any decendant block lists that have the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
+		public static IEnumerable<OverridableBlockListItem> FindBlocksByGridRowClass(this IEnumerable<OverridableBlockListItem> blockList, string className)
+		{
+			return blockList.FindBlocks(x => x.GridRowClassList().Contains(className), null);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a block list and any decendant block lists that have the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
+		public static IEnumerable<OverridableBlockListItem> FindBlocksByGridColumnClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			return blockList.FindBlocks(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a block list and any decendant block lists that have the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
+		public static IEnumerable<OverridableBlockListItem> FindBlocksByGridColumnClass(this IEnumerable<OverridableBlockListItem> blockList, string className)
+		{
+			return blockList.FindBlocks(x => x.GridColumnClassList().Contains(className), null);
 		}
 
 		/// <summary>
@@ -216,6 +454,52 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		public static IEnumerable<BlockListItem> FindBlocksByClass(this IEnumerable<BlockListItem> blockList, string className)
 		{
 			return blockList.FindBlocks(x => x.ClassList().Contains(className), null);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a block list and any decendant block lists that have the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
+		public static IEnumerable<BlockListItem> FindBlocksByGridRowClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			return blockList.FindBlocks(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a block list and any decendant block lists that have the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
+		public static IEnumerable<BlockListItem> FindBlocksByGridRowClass(this IEnumerable<BlockListItem> blockList, string className)
+		{
+			return blockList.FindBlocks(x => x.GridRowClassList().Contains(className), null);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a block list and any decendant block lists that have the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
+		public static IEnumerable<BlockListItem> FindBlocksByGridColumnClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			return blockList.FindBlocks(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a block list and any decendant block lists that have the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockList">The block list to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>An IEnumerable of 0 or more matching blocks</returns>
+		public static IEnumerable<BlockListItem> FindBlocksByGridColumnClass(this IEnumerable<BlockListItem> blockList, string className)
+		{
+			return blockList.FindBlocks(x => x.GridColumnClassList().Contains(className), null);
 		}
 
 		/// <summary>
@@ -244,6 +528,56 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		}
 
 		/// <summary>
+		/// Recursively find the blocks in a set of block lists and any decendant block lists that have the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static IEnumerable<OverridableBlockListItem> FindBlocksByGridRowClass(this IEnumerable<OverridableBlockListModel> blockLists, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			var blocks = new List<OverridableBlockListItem>();
+			foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
+			return blocks.FindBlocks(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a set of block lists and any decendant block lists that have the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static IEnumerable<OverridableBlockListItem> FindBlocksByGridRowClass(this IEnumerable<OverridableBlockListModel> blockLists, string className)
+		{
+			return blockLists.FindBlocksByGridRowClass(className, null);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a set of block lists and any decendant block lists that have the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static IEnumerable<OverridableBlockListItem> FindBlocksByGridColumnClass(this IEnumerable<OverridableBlockListModel> blockLists, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			var blocks = new List<OverridableBlockListItem>();
+			foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
+			return blocks.FindBlocks(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a set of block lists and any decendant block lists that have the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static IEnumerable<OverridableBlockListItem> FindBlocksByGridColumnClass(this IEnumerable<OverridableBlockListModel> blockLists, string className)
+		{
+			return blockLists.FindBlocksByGridColumnClass(className, null);
+		}
+
+		/// <summary>
 		/// Recursively find the blocks in a set of block lists and any decendant block lists that have the expected class in the 'cssClasses' Umbraco property in the block's settings
 		/// </summary>
 		/// <param name="blockLists">The block lists to search</param>
@@ -266,6 +600,56 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		public static IEnumerable<BlockListItem> FindBlocksByClass(this IEnumerable<BlockListModel> blockLists, string className)
 		{
 			return blockLists.FindBlocksByClass(className, null);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a set of block lists and any decendant block lists that have the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static IEnumerable<BlockListItem> FindBlocksByGridRowClass(this IEnumerable<BlockListModel> blockLists, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			var blocks = new List<BlockListItem>();
+			foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
+			return blocks.FindBlocks(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a set of block lists and any decendant block lists that have the expected class in the 'cssClassesForRow' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static IEnumerable<BlockListItem> FindBlocksByGridRowClass(this IEnumerable<BlockListModel> blockLists, string className)
+		{
+			return blockLists.FindBlocksByGridRowClass(className, null);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a set of block lists and any decendant block lists that have the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <param name="publishedValueFallback">The published value fallback strategy</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static IEnumerable<BlockListItem> FindBlocksByGridColumnClass(this IEnumerable<BlockListModel> blockLists, string className, IPublishedValueFallback? publishedValueFallback)
+		{
+			var blocks = new List<BlockListItem>();
+			foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
+			return blocks.FindBlocks(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+		}
+
+		/// <summary>
+		/// Recursively find the blocks in a set of block lists and any decendant block lists that have the expected class in the 'cssClassesForColumn' Umbraco property in the block's settings
+		/// </summary>
+		/// <param name="blockLists">The block lists to search</param>
+		/// <param name="className">The name of the class to search for</param>
+		/// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
+		public static IEnumerable<BlockListItem> FindBlocksByGridColumnClass(this IEnumerable<BlockListModel> blockLists, string className)
+		{
+			return blockLists.FindBlocksByGridColumnClass(className, null);
 		}
 	}
 }

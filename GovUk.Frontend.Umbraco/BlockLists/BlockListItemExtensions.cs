@@ -20,7 +20,7 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		/// </summary>
 		/// <param name="blockListItem">A block with a "cssClasses" property in its settings.</param>
 		/// <returns>An overridable list of classes.</returns>
-		public static TokenList ClassListForGridRow(this BlockListItem blockListItem)
+		public static TokenList GridRowClassList(this BlockListItem blockListItem)
 		{
 			return new TokenList(blockListItem.Settings, PropertyAliases.CssClassesForRow);
 		}
@@ -30,7 +30,7 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 		/// </summary>
 		/// <param name="blockListItem">A block with a "cssClasses" property in its settings.</param>
 		/// <returns>An overridable list of classes.</returns>
-		public static TokenList ClassListForGridColumn(this BlockListItem blockListItem)
+		public static TokenList GridColumnClassList(this BlockListItem blockListItem)
 		{
 			return new TokenList(blockListItem.Settings, PropertyAliases.CssClassesForColumn);
 		}

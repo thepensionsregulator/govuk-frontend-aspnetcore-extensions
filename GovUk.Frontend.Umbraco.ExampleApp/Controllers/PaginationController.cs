@@ -89,17 +89,13 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                         block.Settings.Value<string>(nameof(GovukTypographySettings.CssClassesForRow)) != "tpr-pagination-large")
                     );
                 }
-                viewModel.Blocks = new OverridableBlockListModel(viewModel.Page.Blocks!, filter);
-                var overridableBlock = (OverridableBlockListItem)viewModel.Blocks.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)!;
+                viewModel.Page.Blocks!.Filter = filter;
+                var overridableBlock = viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)!;
                 overridableBlock!.Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
                 ModelState.SetInitialValue(nameof(viewModel.Items), pagination.TotalItems.ToString(CultureInfo.InvariantCulture));
 
                 viewModel.PageTitle = viewModel.Page.Name;
                 if (pagination.TotalPages() > 1) { viewModel.PageTitle += $" (page {pagination.PageNumber} of {pagination.TotalPages()})"; }
-            }
-            else
-            {
-                viewModel.Blocks = new OverridableBlockListModel(viewModel.Page.Blocks!);
             }
 
             return CurrentTemplate(viewModel);

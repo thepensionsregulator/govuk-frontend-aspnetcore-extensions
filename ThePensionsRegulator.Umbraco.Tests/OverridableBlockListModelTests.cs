@@ -1,4 +1,5 @@
 ﻿using Moq;
+using System.ComponentModel;
 using ThePensionsRegulator.Umbraco.BlockLists;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.Blocks;
@@ -70,6 +71,47 @@ namespace ThePensionsRegulator.Umbraco.Tests
             // Assert
             Assert.NotNull(convertedChildBlockList);
             Assert.NotNull(convertedGrandChildBlockList);
+        }
+
+        [Test]
+        public void Indexer_acts_on_unfiltered_blocks()
+        {
+            // Arrange
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                                UmbracoBlockListFactory.CreateOverridableBlock(
+                                    UmbracoBlockListFactory.CreateContentOrSettings("alias").Object
+                                    )
+                                );
+
+            blockList.Filter = blocks => Array.Empty<OverridableBlockListItem>();
+
+            // Act + Assert
+            Assert.That(() => blockList[0], Throws.Nothing);
+        }
+
+        [Test]
+        public void Can_cast_to_BlockListModel()
+        {
+            // Arrange
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                                UmbracoBlockListFactory.CreateOverridableBlock(
+                                    UmbracoBlockListFactory.CreateContentOrSettings("alias").Object
+                                    )
+                                );
+
+            // Act
+            var model = (BlockListModel)blockList;
+
+            Assert.That(model, Is.Not.Null);
+            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
+        }
+
+        [Test]
+        public void Can_convert_to_BlockListModel()
+        {
+            var converter = TypeDescriptor.GetConverter(new OverridableBlockListModel());
+
+            Assert.That(converter.GetType(), Is.EqualTo(typeof(OverridableBlockListTypeConverter)));
         }
     }
 }

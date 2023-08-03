@@ -5,7 +5,7 @@
     <title>@Model.PageTitle</title>
 }
 <form action="@Context.Request.Path" method="get">
-    <partial name="GOVUK/BlockList" model="Model.Blocks" />
+    <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
 </form>
 @section scripts {
     <partial name="GOVUK/Validation" />

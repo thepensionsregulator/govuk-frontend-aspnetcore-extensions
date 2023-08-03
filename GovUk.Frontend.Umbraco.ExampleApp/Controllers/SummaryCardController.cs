@@ -1,5 +1,4 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
@@ -16,18 +15,14 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         {
         }
 
-        [ModelType(typeof(SummaryCardViewModel))]
+        [ModelType(typeof(SummaryCard))]
         public override IActionResult Index()
         {
-            var viewModel = new SummaryCardViewModel
-            {
-                Page = new SummaryCard(CurrentPage, null)
-            };
+            var viewModel = new SummaryCard(CurrentPage, null);
 
             // Override content in the block list
-            viewModel.Blocks = new OverridableBlockListModel(viewModel.Page.Blocks!);
-            var target = viewModel.Blocks.FindBlock(x => x.Content.ContentType.Alias == GovukSummaryListItem.ModelTypeAlias &&
-                                                         x.Settings.Value<string>(nameof(GovukSummaryListItemSettings.CssClasses))!.Contains("full-name")) as OverridableBlockListItem;
+            var target = viewModel.Blocks!.FindBlock(x => x.Content.ContentType.Alias == GovukSummaryListItem.ModelTypeAlias &&
+                                                         x.Settings.Value<string>(nameof(GovukSummaryListItemSettings.CssClasses))!.Contains("full-name"));
             if (target != null)
             {
                 target.Content.OverrideValue(nameof(GovukSummaryListItem.ItemValue), "Sarah Smith");

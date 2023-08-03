@@ -55,7 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cardActions")]
-		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel CardActions => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "cardActions");
+		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel CardActions => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "cardActions");
 
 		///<summary>
 		/// Card title
@@ -71,6 +71,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("summaryListItems")]
-		public virtual global::Umbraco.Cms.Core.Models.Blocks.BlockListModel SummaryListItems => this.Value<global::Umbraco.Cms.Core.Models.Blocks.BlockListModel>(_publishedValueFallback, "summaryListItems");
+		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel SummaryListItems => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "summaryListItems");
 	}
 }

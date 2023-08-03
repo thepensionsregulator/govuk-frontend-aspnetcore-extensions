@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using ThePensionsRegulator.Umbraco.BlockLists;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
@@ -27,16 +28,14 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             };
 
             // Filter out a block in the block list
-            viewModel.OverriddenBlocks = new OverridableBlockListModel(viewModel.Page.Blocks!,
-                blocks => blocks.Where(block => block.Settings.Value<string>("cssClassesForRow") != "filter-this")
-            );
+            viewModel.Page.Blocks!.Filter = blocks => blocks.Where(block => block.Settings.Value<string>("cssClassesForRow") != "filter-this");
 
             // Override content in the block list
-            var topLevelBlockToOverride = viewModel.OverriddenBlocks.First(x => x.Settings.Value<string>("cssClassesForRow") == "override-this");
+            var topLevelBlockToOverride = viewModel.Page.Blocks.First(x => x.Settings.Value<string>("cssClassesForRow") == "override-this");
             topLevelBlockToOverride.Content.OverrideValue("text", GovukTypography.Apply("<p><strong>This text is overridden.</strong></p>"));
 
             // Override content in a nested block list
-            var row = viewModel.OverriddenBlocks.First(x => x.Content.ContentType.Alias == "govukGridRow");
+            var row = viewModel.Page.Blocks.First(x => x.Content.ContentType.Alias == "govukGridRow");
             var col = row.Content.Value<OverridableBlockListModel>("blocks")?.LastOrDefault(x => x.Content.ContentType.Alias == "govukGridColumn");
             if (col != null)
             {

@@ -1,8 +1,8 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.Umbraco.BlockLists;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
-using ThePensionsRegulator.Umbraco.BlockLists;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
@@ -21,12 +21,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             var viewModel = new SummaryCard(CurrentPage, null);
 
             // Override content in the block list
-            var target = viewModel.Blocks!.FindBlock(x => x.Content.ContentType.Alias == GovukSummaryListItem.ModelTypeAlias &&
-                                                         x.Settings.Value<string>(nameof(GovukSummaryListItemSettings.CssClasses))!.Contains("full-name"));
-            if (target != null)
-            {
-                target.Content.OverrideValue(nameof(GovukSummaryListItem.ItemValue), "Sarah Smith");
-            }
+            viewModel.Blocks!.FindBlockByClass("full-name")?.Content.OverrideValue(nameof(GovukSummaryListItem.ItemValue), "Sarah Smith");
 
             return CurrentTemplate(viewModel);
         }

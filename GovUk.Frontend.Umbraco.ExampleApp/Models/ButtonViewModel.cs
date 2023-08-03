@@ -2,8 +2,8 @@
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 {
-	public class ButtonViewModel
-	{
-		public Button? Page { get; set; }
-	}
+    public class ButtonViewModel
+    {
+        public Button? Page { get; set; }
+    }
 }

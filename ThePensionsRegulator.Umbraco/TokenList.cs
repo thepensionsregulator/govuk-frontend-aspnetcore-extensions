@@ -49,19 +49,16 @@ namespace ThePensionsRegulator.Umbraco
 				raw = _regex.Replace(raw, _separator).Trim();
 				_tokens.AddRange(raw.Split(_separator));
 			}
-			else
-			{
-				_tokens.Clear();
-			}
 			_tokensCurrent = true;
 		}
 
 		/// <summary>
-		/// Determines the index of a specific token in the list.
+		/// Gets or sets the token at the specified index.
 		/// </summary>
-		/// <param name="index">The token to locate in the list.</param>
-		/// <returns>The index of the token if found in the list; otherwise, -1.</returns>
-		/// <exception cref="NotSupportedException">Thrown when setting if the list is read-only.</exception>
+		/// <param name="index">The zero-based index of the token to get or set..</param>
+		/// <returns>The token at the specified index.</returns>
+		/// <exception cref="ArgumentOutOfRangeException">Thrown if the index is not a valid index in the list.</exception>
+		/// <exception cref="NotSupportedException">Thrown if the property is set and the list is read-only.</exception>
 		public string this[int index]
 		{
 			get

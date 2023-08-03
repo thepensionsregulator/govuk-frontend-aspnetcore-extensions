@@ -9,25 +9,21 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 {
-	public class SummaryCardController : RenderController
-	{
-		public SummaryCardController(ILogger<RenderController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor) : base(logger, compositeViewEngine, umbracoContextAccessor)
-		{
-		}
+    public class SummaryCardController : RenderController
+    {
+        public SummaryCardController(ILogger<RenderController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor) : base(logger, compositeViewEngine, umbracoContextAccessor)
+        {
+        }
 
-		[ModelType(typeof(SummaryCard))]
-		public override IActionResult Index()
-		{
-			var viewModel = new SummaryCard(CurrentPage, null);
+        [ModelType(typeof(SummaryCard))]
+        public override IActionResult Index()
+        {
+            var viewModel = new SummaryCard(CurrentPage, null);
 
-			// Override content in the block list
-			var target = viewModel.Blocks!.FindBlockByClass("full-name");
-			if (target != null)
-			{
-				target.Content.OverrideValue(nameof(GovukSummaryListItem.ItemValue), "Sarah Smith");
-			}
+            // Override content in the block list
+            viewModel.Blocks!.FindBlockByClass("full-name")?.Content.OverrideValue(nameof(GovukSummaryListItem.ItemValue), "Sarah Smith");
 
-			return CurrentTemplate(viewModel);
-		}
-	}
+            return CurrentTemplate(viewModel);
+        }
+    }
 }

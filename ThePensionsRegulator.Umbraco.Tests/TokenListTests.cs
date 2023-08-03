@@ -68,7 +68,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
 		}
 
 		[Test]
-		public void Can_find_by_index()
+		public void Can_find_index_of_token()
 		{
 			var tokenList = CreateOverridableTokenList();
 

@@ -5,6 +5,7 @@
 @using GovUk.Frontend.Umbraco.Models
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using ThePensionsRegulator.Umbraco.BlockLists;
+@using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
@@ -21,5 +22,5 @@
 }
 @if (showError)
 {
-    <govuk-error-message id="@id" class="@cssClass">@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("error"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-error-message>
+    <govuk-error-message id="@id" class="@cssClass">@GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("error"))</govuk-error-message>
 }

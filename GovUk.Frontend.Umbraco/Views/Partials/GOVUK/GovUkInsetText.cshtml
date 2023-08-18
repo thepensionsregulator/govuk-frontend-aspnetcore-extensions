@@ -4,8 +4,9 @@
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using ThePensionsRegulator.Umbraco.BlockLists;
+@using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
 }
-<govuk-inset-text id="@Model.Content.Key" class="@cssClass">@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("text"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-inset-text>
+<govuk-inset-text id="@Model.Content.Key" class="@cssClass">@GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("text"))</govuk-inset-text>

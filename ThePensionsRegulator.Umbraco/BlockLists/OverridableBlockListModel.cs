@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.ComponentModel;
+using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -18,6 +19,8 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
         /// </summary>
         public OverridableBlockListModel() : this(Array.Empty<BlockListItem>()) { }
+
+        private IEnumerable<IPropertyValueFormatter>? _propertyValueFormatters;
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/>
@@ -63,6 +66,31 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
                 _items.Add(overridableItem);
             }
 
+        }
+
+        /// <summary>
+        /// Property value formatters which may be applied when a property is overridden with a new value.
+        /// </summary>
+        /// <remarks>
+        /// This should remain internal and is intended to be set by <see cref="OverridableBlockListPropertyValueConverter"/> to pass down to each <see cref="OverridablePublishedElement"/>,
+        /// because the property value converter is the nearest place that can inject the property value formatters registered with the dependency injection container.
+        /// </remarks>
+        internal IEnumerable<IPropertyValueFormatter>? PropertyValueFormatters
+        {
+            get
+            {
+                return _propertyValueFormatters;
+            }
+            set
+            {
+                _propertyValueFormatters = value;
+
+                foreach (var item in _items)
+                {
+                    if (item.Content is OverridablePublishedElement content) { content.PropertyValueFormatters = PropertyValueFormatters; }
+                    if (item.Settings is OverridablePublishedElement settings) { settings.PropertyValueFormatters = PropertyValueFormatters; }
+                }
+            }
         }
 
         /// <summary>

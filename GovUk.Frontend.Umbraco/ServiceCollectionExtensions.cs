@@ -1,12 +1,14 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.Umbraco.ModelBinding;
+using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
 using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.PropertyEditors;
 
 namespace GovUk.Frontend.Umbraco
 {
@@ -32,6 +34,8 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IUmbracoPublishedContentAccessor, UmbracoPublishedContentAccessor>();
             services.AddTransient<IUmbracoPaginationFactory, UmbracoPaginationFactory>();
             services.AddSingleton<IConfigureOptions<MvcOptions>, ModelBindingMvcConfiguration>();
+            services.AddTransient<IPropertyValueFormatter, GovUkTypographyPropertyValueFormatter>();
+            services.AddTransient<IPropertyValueFormatter, HostNamePropertyValueFormatter>();
 
             return services;
         }

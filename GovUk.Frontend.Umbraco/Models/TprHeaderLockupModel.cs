@@ -1,5 +1,7 @@
-﻿using Umbraco.Cms.Core.Models;
+﻿using GovUk.Frontend.Umbraco.Typography;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Strings;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.Models
@@ -25,15 +27,15 @@ namespace GovUk.Frontend.Umbraco.Models
         public virtual string? SkipLinkText() => _settings.Value<string>("govukSkipLinkText");
         public virtual string? PhaseBannerClass() => null;
         public virtual string? Phase() => _settings.Value<string>("govukPhase");
-        public virtual string? PhaseBannerText() => _settings.Value<string>("govukPhaseBannerText");
+        public virtual string? PhaseBannerText() => GovUkTypography.RemoveWrappingParagraph(_settings.Value<IHtmlEncodedString>("govukPhaseBannerText")).ToHtmlString();
         public virtual string? HeaderBarClass() => null;
         public virtual string? LogoAlternativeText() => _settings.Value<string>("tprHeaderLogoAlt");
         public virtual string? LogoHref() => _settings.Value<Link>("tprHeaderLogoHref")?.Url;
         public virtual string? HeaderBarLabel() => _settings.Value<string?>("tprHeaderLabel");
-        public virtual string? HeaderBarContent() => _settings.Value<string>("tprHeaderContent");
+        public virtual string? HeaderBarContent() => GovUkTypography.RemoveWrappingParagraphs(_settings.Value<IHtmlEncodedString>("tprHeaderContent")).ToHtmlString();
         public virtual string? ContextBarClass() => null;
-        public virtual string? Context1() => _settings.Value<string>("tprContext1");
-        public virtual string? Context2() => _settings.Value<string>("tprContext2");
-        public virtual string? Context3() => _settings.Value<string>("tprContext3");
+        public virtual string? Context1() => GovUkTypography.RemoveWrappingParagraphs(_settings.Value<IHtmlEncodedString>("tprContext1")).ToHtmlString();
+        public virtual string? Context2() => GovUkTypography.RemoveWrappingParagraphs(_settings.Value<IHtmlEncodedString>("tprContext2")).ToHtmlString();
+        public virtual string? Context3() => GovUkTypography.RemoveWrappingParagraphs(_settings.Value<IHtmlEncodedString>("tprContext3")).ToHtmlString();
     }
 }

@@ -47,6 +47,28 @@ namespace ThePensionsRegulator.Umbraco.Testing
         }
 
         /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a rich text data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+        public static Mock<T> SetupUmbracoRichTextPropertyValue<T>(this T publishedElement, string alias, string? value) where T : class, IPublishedElement
+        {
+            return Mock.Get(publishedElement).SetupUmbracoRichTextPropertyValue(alias, value);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a rich text data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+        public static Mock<T> SetupUmbracoRichTextPropertyValue<T>(this Mock<T> publishedElement, string alias, string? value) where T : class, IPublishedElement
+        {
+            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateRichTextProperty);
+        }
+
+        /// <summary>
         /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a textbox data type, and set its value.
         /// </summary>
         /// <param name="alias">The alias of the Umbraco property to mock.</param>

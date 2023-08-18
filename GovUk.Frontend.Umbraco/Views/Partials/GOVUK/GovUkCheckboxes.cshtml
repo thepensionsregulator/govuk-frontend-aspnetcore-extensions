@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using ThePensionsRegulator.Umbraco.BlockLists;
 @using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
     var checkboxes = Model.Content.Value<OverridableBlockListModel>("checkboxes")!;
@@ -18,8 +19,8 @@
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
-    var fieldsetHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
-    var fieldsetDescribedBy = string.IsNullOrEmpty(fieldsetHint) ? null : modelPropertyName + "-hint";
+    var fieldsetHint = GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("hint"));
+    var fieldsetDescribedBy = string.IsNullOrWhiteSpace(fieldsetHint.ToHtmlString()) ? null : modelPropertyName + "-hint";
     var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var selectedValues = new List<string>();
@@ -46,9 +47,9 @@
             }
             <govuk-checkboxes name="@modelPropertyName">
                 @{
-                    if (!string.IsNullOrWhiteSpace(fieldsetHint))
+                    if (!string.IsNullOrWhiteSpace(fieldsetHint.ToHtmlString()))
                     {
-                        <govuk-checkboxes-hint>@Html.Raw(fieldsetHint)</govuk-checkboxes-hint>
+                        <govuk-checkboxes-hint>@fieldsetHint</govuk-checkboxes-hint>
                     }
                     if (modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
                     {
@@ -65,13 +66,13 @@
                             if (block.Settings.Value<bool>("exclusive"))
                             {
                                 var value = block.Content.Value<string>("value") ?? string.Empty;
-                                var checkboxHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+                                var checkboxHint = GovUkTypography.RemoveWrappingParagraph(block.Content.Value<IHtmlEncodedString>("hint"));
                                 <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" input-data-behaviour="exclusive" input-aria-invalid="@ariaInvalid">
                                     @(block.Content.Value<string>("label"))
                                     @{
-                                        if (!string.IsNullOrWhiteSpace(checkboxHint))
+                                        if (!string.IsNullOrWhiteSpace(checkboxHint.ToHtmlString()))
                                         {
-                                            <govuk-checkboxes-item-hint>@Html.Raw(checkboxHint)</govuk-checkboxes-item-hint>
+                                            <govuk-checkboxes-item-hint>@checkboxHint</govuk-checkboxes-item-hint>
                                         }
                                         var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
                                         if (conditional.Any())
@@ -86,13 +87,13 @@
                             else
                             {
                                 var value = block.Content.Value<string>("value") ?? string.Empty;
-                                var checkboxHint = GovUkTypography.Apply(block.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+                                var checkboxHint = GovUkTypography.RemoveWrappingParagraph(block.Content.Value<IHtmlEncodedString>("hint"));
                                 <govuk-checkboxes-item value="@value" checked="@(selectedValues.Contains(value.ToUpperInvariant()))" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" input-aria-invalid="@ariaInvalid">
                                     @(block.Content.Value<string>("label"))
                                     @{
-                                        if (!string.IsNullOrWhiteSpace(checkboxHint))
+                                        if (!string.IsNullOrWhiteSpace(checkboxHint.ToHtmlString()))
                                         {
-                                            <govuk-checkboxes-item-hint>@Html.Raw(checkboxHint)</govuk-checkboxes-item-hint>
+                                            <govuk-checkboxes-item-hint>@checkboxHint</govuk-checkboxes-item-hint>
                                         }
                                         var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
                                         if (conditional.Any())

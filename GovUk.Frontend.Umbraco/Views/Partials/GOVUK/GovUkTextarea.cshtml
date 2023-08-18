@@ -11,6 +11,7 @@
 @using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using ThePensionsRegulator.Umbraco.BlockLists;
+@using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
@@ -23,7 +24,7 @@
     if (rows < 2) { rows = 5; }
     var label = Model.Content.Value<string>("label")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
-    var hint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var hint = GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("hint"));
     var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
 <govuk-client-side-validation
@@ -39,15 +40,15 @@
     @if (Model.Settings.Value<bool>("showCharacterCount"))
     {
         var threshold = Model.Settings.Value<int?>("characterCountThreshold");
-        var modelProperty = propertyResolver.ResolveModelProperty(propertyResolver.ResolveModelType(ViewContext), modelPropertyName);
-        var maxLengthAttr = modelProperty.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
-        var stringLengthAttr = modelProperty.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
+        var modelProperty = !string.IsNullOrEmpty(modelPropertyName) ? propertyResolver.ResolveModelProperty(propertyResolver.ResolveModelType(ViewContext), modelPropertyName) : null;
+        var maxLengthAttr = modelProperty?.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
+        var stringLengthAttr = modelProperty?.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
         int? maxLength = maxLengthAttr != null ? maxLengthAttr.Length : stringLengthAttr != null ? stringLengthAttr.MaximumLength : null;
         <govuk-character-count name="@modelPropertyName" form-group-class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))" rows="@rows" max-length="@maxLength" threshold="@threshold" textarea-aria-invalid="@invalid">
             <govuk-character-count-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@label</govuk-character-count-label>
-            @if (!string.IsNullOrWhiteSpace(hint))
+            @if (!string.IsNullOrWhiteSpace(hint.ToHtmlString()))
             {
-                <govuk-character-count-hint>@Html.Raw(hint)</govuk-character-count-hint>
+                <govuk-character-count-hint>@hint</govuk-character-count-hint>
             }
             <govuk-character-count-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR) ? string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null)</govuk-character-count-error-message>
             <govuk-character-count-value>@modelStateEntry?.AttemptedValue</govuk-character-count-value>
@@ -57,9 +58,9 @@
     {
         <govuk-textarea name="@modelPropertyName" class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))" rows="@rows" textarea-aria-invalid="@invalid">
             <govuk-textarea-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@label</govuk-textarea-label>
-            @if (!string.IsNullOrWhiteSpace(hint))
+            @if (!string.IsNullOrWhiteSpace(hint.ToHtmlString()))
             {
-                <govuk-textarea-hint>@Html.Raw(hint)</govuk-textarea-hint>
+                <govuk-textarea-hint>@hint</govuk-textarea-hint>
             }
             <govuk-textarea-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR) ? string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null)</govuk-textarea-error-message>
             <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>

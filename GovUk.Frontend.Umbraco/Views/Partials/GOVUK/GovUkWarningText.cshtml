@@ -4,6 +4,7 @@
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
 @using ThePensionsRegulator.Umbraco.BlockLists;
+@using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
     var iconFallbackText = Model.Content.Value<string>("iconFallbackText");
@@ -11,5 +12,5 @@
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
 <govuk-warning-text icon-fallback-text="@iconFallbackText" id="@Model.Content.Key" class="@cssClasses">
-    @Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("text"), new TypographyOptions{ RemoveWrappingParagraph = true }))
+    @GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("text"))
 </govuk-warning-text>

@@ -10,7 +10,6 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
-using GovukTypography = GovUk.Frontend.Umbraco.Typography.GovUkTypography;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 {
@@ -33,7 +32,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             // Override content in the block list
             viewModel.Page.Blocks.First(x => x.GridRowClassList().Contains("override-this"))?
-                .Content.OverrideValue("text", GovukTypography.Apply("<p><strong>This text is overridden.</strong></p>"));
+                .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
 
             // Override content in a nested block list
             var row = viewModel.Page.Blocks.First(x => x.Content.ContentType.Alias == "govukGridRow");
@@ -41,7 +40,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             if (col != null)
             {
                 col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"))?
-                    .Content.OverrideValue("text", GovukTypography.Apply("<p><strong>This text is overridden.</strong></p>"));
+                    .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
             }
 
             return CurrentTemplate(viewModel);

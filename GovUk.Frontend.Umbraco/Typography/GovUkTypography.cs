@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System.Collections.Generic;
 using System.Linq;
+using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.Typography
 {
@@ -18,7 +19,7 @@ namespace GovUk.Frontend.Umbraco.Typography
 				ApplyClass(document, "//a", "govuk-link");
 				if (options.BackgroundType == BackgroundType.Dark)
 				{
-					ApplyClass(document, "//a", "govuk-link--inverse");
+					ApplyInverseClasses(document);
 				}
 
 				var allHeadingClasses = new[] { "govuk-heading-xl", "govuk-heading-l", "govuk-heading-m", "govuk-heading-s" };
@@ -105,6 +106,28 @@ namespace GovUk.Frontend.Umbraco.Typography
 			return document.DocumentNode.OuterHtml;
 		}
 
+		public static IHtmlEncodedString RemoveWrappingParagraphs(IHtmlEncodedString? html)
+		{
+			if (!string.IsNullOrWhiteSpace(html?.ToHtmlString()))
+			{
+				var document = new HtmlDocument();
+				document.LoadHtml(html.ToHtmlString());
+				return new HtmlEncodedString(RemoveWrappingParagraphs(document));
+			}
+			return new HtmlEncodedString(string.Empty);
+		}
+
+		public static IHtmlEncodedString RemoveWrappingParagraph(IHtmlEncodedString? html)
+		{
+			if (!string.IsNullOrWhiteSpace(html?.ToHtmlString()))
+			{
+				var document = new HtmlDocument();
+				document.LoadHtml(html.ToHtmlString());
+				return new HtmlEncodedString(RemoveWrappingParagraph(document));
+			}
+			return new HtmlEncodedString(string.Empty);
+		}
+
 		/// <summary>
 		/// TinyMCE automatically surrounds text in a paragraph. Remove that paragraph.
 		/// </summary>
@@ -119,6 +142,23 @@ namespace GovUk.Frontend.Umbraco.Typography
 				return document.DocumentNode.FirstChild.InnerHtml;
 			}
 			return document.DocumentNode.OuterHtml;
+		}
+
+		public static IHtmlEncodedString ApplyInverseClasses(IHtmlEncodedString html)
+		{
+			if (!string.IsNullOrWhiteSpace(html?.ToHtmlString()))
+			{
+				var document = new HtmlDocument();
+				document.LoadHtml(html.ToHtmlString());
+				ApplyInverseClasses(document);
+				return new HtmlEncodedString(document.DocumentNode.OuterHtml);
+			}
+			return new HtmlEncodedString(string.Empty);
+		}
+
+		private static void ApplyInverseClasses(HtmlDocument document)
+		{
+			ApplyClass(document, "//a", "govuk-link--inverse");
 		}
 
 		private static void ApplyClass(HtmlDocument doc, string xpath, string className, IEnumerable<string>? unlessTheseClassesAreApplied = null)

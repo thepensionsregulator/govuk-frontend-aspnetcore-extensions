@@ -13,7 +13,7 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors
         /// </summary>
         /// <param name="value">The value to format</param>
         /// <returns>The formatted value</returns>
-        object FormatValue(object? value);
+        object FormatValue(object value);
 
         /// <summary>
         /// Gets a value indicating whether the formatter supports a property type.

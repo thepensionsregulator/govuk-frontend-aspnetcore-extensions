@@ -9,7 +9,7 @@ using Umbraco.Cms.Core.Strings;
 namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
     [TestFixture]
-    public class HostNamePropertyValueFormatterTests
+    public class HostNameInRichTextEditorPropertyValueFormatterTests
     {
         [Test]
         public void Accepts_string_or_HtmlEncodedString_as_input_and_replaces_links()
@@ -25,7 +25,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var hostUpdater = new Mock<IContextAwareHostUpdater>();
             hostUpdater.Setup(x => x.UpdateHost("https://example.org", context.HttpContext.Object.Request.Host.Host)).Returns("https://example.com");
 
-            var formatter = new HostNamePropertyValueFormatter(accessor.Object, hostUpdater.Object);
+            var formatter = new HostNameInRichTextEditorPropertyValueFormatter(accessor.Object, hostUpdater.Object);
 
             // Act
             var resultOfString = formatter.FormatValue(INPUT);

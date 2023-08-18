@@ -9,7 +9,7 @@ using Umbraco.Cms.Core.Web;
 namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
 {
     /// <summary>
-    /// A property value converter for rich text fields using TinyMCE which does the built-in conversion and then applies any 
+    /// A property value converter for rich text properties using TinyMCE which does the built-in conversion and then applies any 
     /// <see cref="IPropertyValueFormatter"/> instances registered with the dependency injection container.
     /// </summary>
     public class RichTextEditorPropertyValueConverter : RteMacroRenderingValueConverter

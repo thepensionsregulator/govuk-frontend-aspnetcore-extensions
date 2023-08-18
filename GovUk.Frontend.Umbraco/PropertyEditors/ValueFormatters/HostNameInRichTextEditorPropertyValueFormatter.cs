@@ -12,12 +12,12 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
     /// <summary>
     /// Apply the configured <see cref="IContextAwareHostUpdater"/> to links in HTML from the Umbraco rich text editor
     /// </summary>
-    public class HostNamePropertyValueFormatter : IPropertyValueFormatter
+    public class HostNameInRichTextEditorPropertyValueFormatter : IPropertyValueFormatter
     {
         private readonly string? _hostName;
         private readonly IContextAwareHostUpdater _contextAwareHostUpdater;
 
-        public HostNamePropertyValueFormatter(IHttpContextAccessor httpContextAccessor, IContextAwareHostUpdater contextAwareHostUpdater)
+        public HostNameInRichTextEditorPropertyValueFormatter(IHttpContextAccessor httpContextAccessor, IContextAwareHostUpdater contextAwareHostUpdater)
         {
             if (httpContextAccessor == null) { throw new ArgumentNullException(nameof(httpContextAccessor)); }
             _hostName = httpContextAccessor.HttpContext?.Request?.Host.Host;
@@ -36,7 +36,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         /// This property type should return <see cref="IHtmlEncodedString"/> but accept <c>string</c> as well so that
         /// it is possible to provide a string of HTML to <see cref="OverridablePublishedElement.OverrideValue(string, object)"/>.
         /// </remarks>
-        public object FormatValue(object? value)
+        public object FormatValue(object value)
         {
             if (value is null) { return string.Empty; }
             var html = value is IHtmlEncodedString encoded ? encoded.ToHtmlString() : value.ToString();

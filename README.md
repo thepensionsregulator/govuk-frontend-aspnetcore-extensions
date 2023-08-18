@@ -59,29 +59,35 @@ ASP.NET support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend](h
 
 ![ThePensionsRegulator.GovUk.Frontend on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend)
 
-## Umbraco
+## Building applications with Umbraco
+
+We provide features for building applications with Umbraco, particularly for working with block lists. These are not dependent on the GOV.UK Design System (but some examples do refer to GOV.UK Design System components).
 
 - [Run the Umbraco example application](docs/umbraco/run-example-application.md)
-- [Configure a new Umbraco project](docs/umbraco/new-umbraco-project.md)
-- [Populate initial values](docs/umbraco/populate-initial-values.md)
-- [Validation](docs/umbraco/validation.md)
 - [Filter the block list](docs/umbraco/filter-blocks.md)
+- [Format property values](docs/umbraco/format-property-values.md)
 - [Override property values](docs/umbraco/override-property-values.md)
 - [Umbraco unit testing](docs/umbraco/unit-testing.md)
-- [Use SASS for CSS](docs/aspnet/sass.md)
-- [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)
 
-Umbraco utility functions are published on NuGet as [ThePensionsRegulator.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco)
+Umbraco features not dependent upon the GOV.UK Design System are published on NuGet as [ThePensionsRegulator.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco)
 
 ![ThePensionsRegulator.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco)
-
-Umbraco GOV.UK Design System support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
-
-![ThePensionsRegulator.GovUk.Frontend.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 
 Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbraco.Testing](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco.Testing)
 
 ![ThePensionsRegulator.Umbraco.Testing on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco.Testing)
+
+## Using the GOV.UK Design System in Umbraco
+
+- [Configure a new Umbraco project](docs/umbraco/new-umbraco-project.md)
+- [Populate initial values](docs/umbraco/populate-initial-values.md)
+- [Validation](docs/umbraco/validation.md)
+- [Use SASS for CSS](docs/aspnet/sass.md)
+- [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)
+
+Umbraco GOV.UK Design System support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
+
+![ThePensionsRegulator.GovUk.Frontend.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 
 ## Disclaimer
 

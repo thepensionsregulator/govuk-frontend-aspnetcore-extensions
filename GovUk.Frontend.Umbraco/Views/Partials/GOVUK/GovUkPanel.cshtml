@@ -11,12 +11,12 @@
     {
         headingLevel = 1;
     }
-    var body = GovUkTypography.ApplyInverseClasses(Model.Content.Value<IHtmlEncodedString>("panelText"));
+    var body = Model.Content.Value<IHtmlEncodedString>("panelText");
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
 <govuk-panel heading-level="@headingLevel" class="@cssClasses">
     <govuk-panel-title>@(Model.Content.Value<string>("panelHeading"))</govuk-panel-title>
-    @if (!string.IsNullOrEmpty(body.ToHtmlString())) 
+    @if (!string.IsNullOrEmpty(body?.ToHtmlString())) 
     {
         <govuk-panel-body>@body</govuk-panel-body>
     }

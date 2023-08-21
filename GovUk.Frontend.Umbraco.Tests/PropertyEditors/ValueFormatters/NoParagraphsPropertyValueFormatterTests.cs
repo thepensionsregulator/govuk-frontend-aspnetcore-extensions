@@ -8,16 +8,16 @@ using Umbraco.Cms.Core.Strings;
 namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
     [TestFixture]
-    public class GovUkTypographyPropertyValueFormatterTests
+    public class NoParagraphsPropertyValueFormatterTests
     {
-        [TestCase(Constants.PropertyEditors.Aliases.TinyMce, true)]
+        [TestCase(Constants.PropertyEditors.Aliases.TinyMce, false)]
         [TestCase(PropertyEditorAliases.GovUkInlineRichText, false)]
         [TestCase(PropertyEditorAliases.GovUkInlineInverseRichText, false)]
-        [TestCase(PropertyEditorAliases.TprHeaderFooterRichText, false)]
+        [TestCase(PropertyEditorAliases.TprHeaderFooterRichText, true)]
         public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)
         {
             // Arrange
-            var formatter = new GovUkTypographyPropertyValueFormatter();
+            var formatter = new NoParagraphsPropertyValueFormatter();
             var propertyType = UmbracoPropertyFactory.CreatePropertyType(1, propertyEditorAlias, new RichTextConfiguration());
 
             // Act
@@ -31,9 +31,9 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
         public void Accepts_string_or_HtmlEncodedString_as_input()
         {
             // Arrange
-            const string INPUT = "<p>Example</p>";
-            const string EXPECTED = "<p class=\"govuk-body\">Example</p>";
-            var formatter = new GovUkTypographyPropertyValueFormatter();
+            const string INPUT = "<p>Example</p><p>Example</p>";
+            const string EXPECTED = "ExampleExample";
+            var formatter = new NoParagraphsPropertyValueFormatter();
 
             // Act
             var resultOfString = formatter.FormatValue(INPUT);

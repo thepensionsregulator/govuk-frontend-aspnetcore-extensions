@@ -1,7 +1,6 @@
 using GovUk.Frontend.Umbraco.Typography;
 using HtmlAgilityPack;
 using NUnit.Framework;
-using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.Tests
 {
@@ -40,20 +39,6 @@ namespace GovUk.Frontend.Umbraco.Tests
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link')]").Count);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link--inverse')]").Count);
         }
-
-        [Test]
-        public void Inverse_link_class_is_added_by_ApplyInverseClasses()
-        {
-            var html = new HtmlEncodedString("<p><a href=\"https://example.org\">Some link</a></p>");
-
-            var result = GovUkTypography.ApplyInverseClasses(html);
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link')]").Count);
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link--inverse')]").Count);
-        }
-
 
         [Test]
         public void Heading_medium_class_is_added_to_H2()

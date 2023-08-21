@@ -438,6 +438,9 @@
 		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorInline.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorInlineAndInverse.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorText.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
@@ -474,7 +477,7 @@
 		<Content Update="uSync\v9\DataTypes\GOVUKTrueOrFalseDefaultsToTrue.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRRichTextEditorTPRHeader.config">
+		<Content Update="uSync\v9\DataTypes\TPRRichTextEditorHeaderAndFooter.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>

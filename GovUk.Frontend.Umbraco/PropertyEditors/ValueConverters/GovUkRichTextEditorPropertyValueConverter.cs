@@ -20,6 +20,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueConverters
         private readonly List<string> _propertyEditorAliases = new List<string> {
             Constants.PropertyEditors.Aliases.TinyMce,
             PropertyEditorAliases.GovUkInlineRichText,
+            PropertyEditorAliases.GovUkInlineInverseRichText,
             PropertyEditorAliases.TprHeaderFooterRichText
         };
 

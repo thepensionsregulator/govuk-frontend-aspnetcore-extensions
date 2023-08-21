@@ -435,16 +435,19 @@
 		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditor.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
-		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorLarge.config">
+		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorInline.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorText.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorPhaseBanner.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
-		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorSummaryList.config">
+		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorSummaryListItem.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
-		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorTaskList.config">
+		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorTask.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKSelectOptions.config">

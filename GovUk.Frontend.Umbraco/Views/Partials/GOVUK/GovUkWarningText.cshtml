@@ -11,6 +11,4 @@
     if (string.IsNullOrWhiteSpace(iconFallbackText)) { iconFallbackText = "Warning"; }
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
-<govuk-warning-text icon-fallback-text="@iconFallbackText" id="@Model.Content.Key" class="@cssClasses">
-    @GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("text"))
-</govuk-warning-text>
+<govuk-warning-text icon-fallback-text="@iconFallbackText" id="@Model.Content.Key" class="@cssClasses">@(Model.Content.Value<IHtmlEncodedString>("text"))</govuk-warning-text>

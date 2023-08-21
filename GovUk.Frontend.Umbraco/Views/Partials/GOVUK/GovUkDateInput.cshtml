@@ -39,8 +39,8 @@
     var cssClass = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var hint = GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("hint"));
-    var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hint.ToHtmlString()) ? null : modelPropertyName + "-hint";
+    var hint = Model.Content.Value<IHtmlEncodedString>("hint");
+    var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hint?.ToHtmlString()) ? null : modelPropertyName + "-hint";
     var isInvalid = modelStateEntry?.Errors.Any() ?? false;
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
     var invalidClass = isInvalid ? " govuk-form-group--error" : null;
@@ -65,7 +65,7 @@
             @if (dateValue.HasValue)
             {
                 <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
-                    @if (!string.IsNullOrWhiteSpace(hint.ToHtmlString()))
+                    @if (!string.IsNullOrWhiteSpace(hint?.ToHtmlString()))
                     {
                         <govuk-date-input-hint>@hint</govuk-date-input-hint>
                     }
@@ -81,7 +81,7 @@
             else
             {
                 <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName">
-                    @if (!string.IsNullOrWhiteSpace(hint.ToHtmlString()))
+                    @if (!string.IsNullOrWhiteSpace(hint?.ToHtmlString()))
                     {
                         <govuk-date-input-hint>@hint</govuk-date-input-hint>
                     }

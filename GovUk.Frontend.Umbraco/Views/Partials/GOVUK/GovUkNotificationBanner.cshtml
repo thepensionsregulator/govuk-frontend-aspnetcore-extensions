@@ -12,7 +12,7 @@
     {
         bannerType = NotificationBannerType.Default;
     }
-    var heading = GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("heading"));
+    var heading = Model.Content.Value<IHtmlEncodedString>("heading");
     var text = Model.Content.Value<IHtmlEncodedString>("text");
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.NotificationBannerBlocks);
     var classNames = Model.Settings.Value<string>("cssClasses");
@@ -22,13 +22,13 @@
     {
         <govuk-notification-banner-title>@(Model.Settings.Value<string>("title"))</govuk-notification-banner-title>
     }
-    @if (string.IsNullOrWhiteSpace(text?.ToHtmlString()) && !string.IsNullOrWhiteSpace(heading.ToHtmlString()))
+    @if (string.IsNullOrWhiteSpace(text?.ToHtmlString()) && !string.IsNullOrWhiteSpace(heading?.ToHtmlString()))
     {
         <p class="govuk-notification-banner__heading">@heading</p>
     }
     else 
     {
-        if (!string.IsNullOrEmpty(heading.ToHtmlString()))
+        if (!string.IsNullOrEmpty(heading?.ToHtmlString()))
         {
             <h3 class="govuk-notification-banner__heading">@heading</h3> 
         }

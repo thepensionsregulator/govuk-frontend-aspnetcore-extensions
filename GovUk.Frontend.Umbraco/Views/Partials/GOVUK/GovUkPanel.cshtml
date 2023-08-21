@@ -11,7 +11,7 @@
     {
         headingLevel = 1;
     }
-    var body = GovUkTypography.ApplyInverseClasses(GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("panelText")));
+    var body = GovUkTypography.ApplyInverseClasses(Model.Content.Value<IHtmlEncodedString>("panelText"));
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
 <govuk-panel heading-level="@headingLevel" class="@cssClasses">

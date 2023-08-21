@@ -11,5 +11,5 @@
 }
 <govuk-details id="@Model.Content.Key" class="@cssClasses">
     <govuk-details-summary>@(Model.Content.Value<string>("summary"))</govuk-details-summary>
-    <govuk-details-text>@GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("text"))</govuk-details-text>
+    <govuk-details-text>@(Model.Content.Value<IHtmlEncodedString>("text"))</govuk-details-text>
 </govuk-details>

@@ -38,7 +38,7 @@
         {
             <govuk-summary-list-row class="@(listItem.Settings.Value<string>(PropertyAliases.CssClasses))">
                 <govuk-summary-list-row-key>@(listItem.Content.Value<string>("itemKey"))</govuk-summary-list-row-key>
-                <govuk-summary-list-row-value>@GovUkTypography.RemoveWrappingParagraph(listItem.Content.Value<IHtmlEncodedString>("itemValue"))</govuk-summary-list-row-value>
+                <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>("itemValue"))</govuk-summary-list-row-value>
                 @{
                     var rowActionsModel = listItem.Content.Value<OverridableBlockListModel>("actions")!;
                     var rowActions = rowActionsModel.Filter(rowActionsModel);

@@ -20,13 +20,13 @@
     >
         @foreach (var task in tasks)
         {
-            var hint = GovUkTypography.RemoveWrappingParagraph(task.Content.Value<IHtmlEncodedString>("hint"));
+            var hint = task.Content.Value<IHtmlEncodedString>("hint");
             var link = task.Content.Value<Link>("link")?.Url;
             var statusText = task.Settings.Value<string>("statusText");
             var status = task.Settings.Value<string>("status")?.Replace(" ", string.Empty);
             <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>(PropertyAliases.CssClasses))">
                 <govuk-task-list-task-name>@(task.Content.Value<string>("taskName"))</govuk-task-list-task-name>
-                @if (!string.IsNullOrEmpty(hint.ToHtmlString()))
+                @if (!string.IsNullOrEmpty(hint?.ToHtmlString()))
                 {
                     <govuk-task-list-task-hint>@hint</govuk-task-list-task-hint>
                 }

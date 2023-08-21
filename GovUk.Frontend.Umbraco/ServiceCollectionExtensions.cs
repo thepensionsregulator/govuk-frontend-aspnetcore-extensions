@@ -35,6 +35,8 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IUmbracoPaginationFactory, UmbracoPaginationFactory>();
             services.AddSingleton<IConfigureOptions<MvcOptions>, ModelBindingMvcConfiguration>();
             services.AddTransient<IPropertyValueFormatter, GovUkTypographyPropertyValueFormatter>();
+            services.AddTransient<IPropertyValueFormatter, GovUkTypographyNoParagraphPropertyValueFormatter>();
+            services.AddTransient<IPropertyValueFormatter, GovUkTypographyNoParagraphsPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, HostNameInRichTextEditorPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();
 

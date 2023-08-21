@@ -9,4 +9,4 @@
 @{
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
 }
-<govuk-inset-text id="@Model.Content.Key" class="@cssClass">@GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("text"))</govuk-inset-text>
+<govuk-inset-text id="@Model.Content.Key" class="@cssClass">@(Model.Content.Value<IHtmlEncodedString>("text"))</govuk-inset-text>

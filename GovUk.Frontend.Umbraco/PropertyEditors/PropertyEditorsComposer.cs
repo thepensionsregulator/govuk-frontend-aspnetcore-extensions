@@ -1,8 +1,8 @@
-﻿using Umbraco.Cms.Core.Composing;
+﻿using ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters;
+using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
-using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
 
-namespace ThePensionsRegulator.Umbraco.PropertyEditors
+namespace GovUk.Frontend.Umbraco.PropertyEditors
 {
     /// <summary>
     /// Remove previously-registered property value converters so that replacements in this project are used instead.
@@ -11,8 +11,7 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors
     {
         public void Compose(IUmbracoBuilder builder)
         {
-            builder.PropertyValueConverters().Remove<RteMacroRenderingValueConverter>();
-            builder.PropertyValueConverters().Remove<MultiUrlPickerValueConverter>();
+            builder.PropertyValueConverters().Remove<RichTextEditorPropertyValueConverter>();
         }
     }
 }

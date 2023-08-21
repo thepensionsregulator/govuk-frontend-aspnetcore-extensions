@@ -22,5 +22,5 @@
 }
 @if (showError)
 {
-    <govuk-error-message id="@id" class="@cssClass">@GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("error"))</govuk-error-message>
+    <govuk-error-message id="@id" class="@cssClass">@(Model.Content.Value<string>("error"))</govuk-error-message>
 }

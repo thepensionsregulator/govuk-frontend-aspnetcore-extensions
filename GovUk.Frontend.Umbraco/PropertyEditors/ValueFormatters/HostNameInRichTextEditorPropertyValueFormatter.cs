@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -16,6 +17,11 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
     {
         private readonly string? _hostName;
         private readonly IContextAwareHostUpdater _contextAwareHostUpdater;
+        private readonly List<string> _propertyEditorAliases = new List<string> {
+            Constants.PropertyEditors.Aliases.TinyMce,
+            PropertyEditorAliases.GovUkInlineRichText,
+            PropertyEditorAliases.TprHeaderFooterRichText
+        };
 
         public HostNameInRichTextEditorPropertyValueFormatter(IHttpContextAccessor httpContextAccessor, IContextAwareHostUpdater contextAwareHostUpdater)
         {
@@ -29,7 +35,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         }
 
         /// <inheritdoc />
-        public bool IsFormatter(IPublishedPropertyType propertyType) => Constants.PropertyEditors.Aliases.TinyMce.Equals(propertyType.EditorAlias);
+        public bool IsFormatter(IPublishedPropertyType propertyType) => _propertyEditorAliases.Contains(propertyType.EditorAlias);
 
         /// <inheritdoc />
         /// <remarks>

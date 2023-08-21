@@ -175,7 +175,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         }
 
         [Test]
-        public void Single_wrapping_paragraph_is_removed_by_Apply_if_requested()
+        public void Single_wrapping_paragraph_is_removed_if_requested()
         {
             var html = "<p>Some content</p>";
 
@@ -197,16 +197,6 @@ namespace GovUk.Frontend.Umbraco.Tests
         }
 
         [Test]
-        public void Single_wrapping_paragraph_is_removed_by_RemoveWrappingParagraph()
-        {
-            var html = new HtmlEncodedString("<p>Some content</p>");
-
-            var result = GovUkTypography.RemoveWrappingParagraph(html);
-
-            Assert.AreEqual("Some content", result.ToHtmlString());
-        }
-
-        [Test]
         public void Multiple_wrapping_paragraphs_are_not_removed_if_not_requested()
         {
             var html = "<p>Some content</p><p>Some content</p>";
@@ -219,7 +209,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         }
 
         [Test]
-        public void Multiple_wrapping_paragraphs_are_removed_by_Apply_if_requested()
+        public void Multiple_wrapping_paragraphs_are_removed_if_requested()
         {
             var html = "<p>Some content</p><p>Some content</p>";
 
@@ -231,7 +221,7 @@ namespace GovUk.Frontend.Umbraco.Tests
         }
 
         [Test]
-        public void Multiple_wrapping_paragraphs_are_left_alone_by_single_removal_request_by_Apply()
+        public void Multiple_wrapping_paragraphs_are_left_alone_by_single_removal_request()
         {
             var html = "<p>Some content</p><p>Some content</p>";
 
@@ -239,28 +229,6 @@ namespace GovUk.Frontend.Umbraco.Tests
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result);
-            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
-        }
-
-        [Test]
-        public void Multiple_wrapping_paragraphs_are_removed_by_RemoveWrappingParagraphs()
-        {
-            var html = new HtmlEncodedString("<p>Some content</p><p>Some content</p>");
-
-            var result = GovUkTypography.RemoveWrappingParagraphs(html);
-
-            Assert.AreEqual("Some contentSome content", result.ToHtmlString());
-        }
-
-        [Test]
-        public void Multiple_wrapping_paragraphs_are_left_alone_by_RemoveWrappingParagraph()
-        {
-            var html = new HtmlEncodedString("<p>Some content</p><p>Some content</p>");
-
-            var result = GovUkTypography.RemoveWrappingParagraph(html);
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
             Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
         }
 

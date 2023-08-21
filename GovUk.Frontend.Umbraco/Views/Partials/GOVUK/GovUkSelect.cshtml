@@ -21,14 +21,14 @@
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
-    var hint = GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("hint"));
+    var hint = Model.Content.Value<IHtmlEncodedString>("hint");
     var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-select name="@modelPropertyName" class="@cssClass" select-aria-invalid="@invalid">
         <govuk-select-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@(Model.Content.Value<string>("label"))</govuk-select-label>
-        @if (!string.IsNullOrWhiteSpace(hint.ToHtmlString()))
+        @if (!string.IsNullOrWhiteSpace(hint?.ToHtmlString()))
         {
             <govuk-select-hint>@hint</govuk-select-hint>
         }

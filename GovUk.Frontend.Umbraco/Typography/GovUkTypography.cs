@@ -106,28 +106,6 @@ namespace GovUk.Frontend.Umbraco.Typography
 			return document.DocumentNode.OuterHtml;
 		}
 
-		public static IHtmlEncodedString RemoveWrappingParagraphs(IHtmlEncodedString? html)
-		{
-			if (!string.IsNullOrWhiteSpace(html?.ToHtmlString()))
-			{
-				var document = new HtmlDocument();
-				document.LoadHtml(html.ToHtmlString());
-				return new HtmlEncodedString(RemoveWrappingParagraphs(document));
-			}
-			return new HtmlEncodedString(string.Empty);
-		}
-
-		public static IHtmlEncodedString RemoveWrappingParagraph(IHtmlEncodedString? html)
-		{
-			if (!string.IsNullOrWhiteSpace(html?.ToHtmlString()))
-			{
-				var document = new HtmlDocument();
-				document.LoadHtml(html.ToHtmlString());
-				return new HtmlEncodedString(RemoveWrappingParagraph(document));
-			}
-			return new HtmlEncodedString(string.Empty);
-		}
-
 		/// <summary>
 		/// TinyMCE automatically surrounds text in a paragraph. Remove that paragraph.
 		/// </summary>
@@ -144,7 +122,7 @@ namespace GovUk.Frontend.Umbraco.Typography
 			return document.DocumentNode.OuterHtml;
 		}
 
-		public static IHtmlEncodedString ApplyInverseClasses(IHtmlEncodedString html)
+		public static IHtmlEncodedString ApplyInverseClasses(IHtmlEncodedString? html)
 		{
 			if (!string.IsNullOrWhiteSpace(html?.ToHtmlString()))
 			{

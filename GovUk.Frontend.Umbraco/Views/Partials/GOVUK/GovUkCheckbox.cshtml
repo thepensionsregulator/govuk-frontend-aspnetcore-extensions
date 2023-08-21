@@ -19,7 +19,7 @@
     }
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var value = Model.Content.Value<string>("value");
-    var checkboxHint = GovUkTypography.RemoveWrappingParagraph(Model.Content.Value<IHtmlEncodedString>("hint"));
+    var checkboxHint = Model.Content.Value<IHtmlEncodedString>("hint");
     var conditional = Model.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
     var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }

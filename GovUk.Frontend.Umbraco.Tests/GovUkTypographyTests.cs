@@ -40,7 +40,6 @@ namespace GovUk.Frontend.Umbraco.Tests
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link--inverse')]").Count);
         }
 
-
         [Test]
         public void Heading_medium_class_is_added_to_H2()
         {
@@ -181,7 +180,6 @@ namespace GovUk.Frontend.Umbraco.Tests
             doc.LoadHtml(result);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//p").Count);
         }
-
 
         [Test]
         public void Multiple_wrapping_paragraphs_are_not_removed_if_not_requested()

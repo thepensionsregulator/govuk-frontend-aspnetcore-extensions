@@ -51,6 +51,7 @@ _testContext.CurrentPage.SetupUmbracoPropertyValue("myPropertyAlias", "The text 
 There are several overloads for common property types. You should use these where possible to get a more complete mocked instance.
 
 ```csharp
+_testContext.CurrentPage.SetupUmbracoRichTextPropertyValue("myRichTextPropertyAlias", "<p>The HTML saved in the property</p>");
 _testContext.CurrentPage.SetupUmbracoTextboxPropertyValue("myTextPropertyAlias", "The text saved in the property");
 _testContext.CurrentPage.SetupUmbracoIntegerPropertyValue("myIntegerPropertyAlias", 123);
 _testContext.CurrentPage.SetupUmbracoBooleanPropertyValue("myTrueFalsePropertyAlias", true);
@@ -62,6 +63,7 @@ If the above overloads don't meet your needs you can create a property directly.
 
 ```csharp
 var prop1 = UmbracoPropertyFactory.CreateProperty("myPropertyAlias", myPropertyType, string.Empty);
+var prop2 = UmbracoPropertyFactory.CreateRichTextProperty("myRichTextPropertyAlias", string.Empty);
 var prop2 = UmbracoPropertyFactory.CreateTextboxProperty("myTextPropertyAlias", string.Empty);
 var prop2 = UmbracoPropertyFactory.CreateIntegerProperty("myIntegerPropertyAlias", 123);
 var prop3 = UmbracoPropertyFactory.CreateBooleanProperty("myTrueFalsePropertyAlias", true);

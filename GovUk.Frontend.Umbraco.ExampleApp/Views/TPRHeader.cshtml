@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderFooterTpr>
 @using Microsoft.Extensions.Configuration;
+@using Umbraco.Cms.Core.Strings;
 @using Umbraco.Cms.Web.Common.PublishedModels;
 @using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
@@ -41,13 +42,13 @@
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
                 <tpr-header-bar-label>@(settings?.Value<string?>("tprHeaderLabel"))</tpr-header-bar-label>
                 <tpr-header-bar-content allow-html="true">
-                    @Html.Raw(GovUkTypography.Apply(settings?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+                    @(settings?.Value<IHtmlEncodedString>("tprHeaderContent"))
                 </tpr-header-bar-content>
             </tpr-header-bar>
             <tpr-context-bar>
-                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
-                <tpr-context-bar-context-2>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext2"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-2>
-                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+                <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-2>@(settings?.Value<IHtmlEncodedString>("tprContext2"))</tpr-context-bar-context-2>
+                <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
             </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
@@ -57,7 +58,7 @@
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
                 <tpr-header-bar-label></tpr-header-bar-label>
                 <tpr-header-bar-content allow-html="true">
-                    @Html.Raw(GovUkTypography.Apply(settings?.Value("tprHeaderContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+                    @(settings?.Value<IHtmlEncodedString>("tprHeaderContent"))
                 </tpr-header-bar-content>
             </tpr-header-bar>
 
@@ -84,9 +85,9 @@
                 <tpr-header-bar-label></tpr-header-bar-label>
             </tpr-header-bar>
             <tpr-context-bar>
-                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
                 <tpr-context-bar-context-2>@Model.Context2TextThatWraps</tpr-context-bar-context-2>
-                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+                <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
             </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
@@ -97,8 +98,8 @@
                 <tpr-header-bar-label></tpr-header-bar-label>
             </tpr-header-bar>
             <tpr-context-bar>
-                <tpr-context-bar-context-2>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext2"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-2>
-                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+                <tpr-context-bar-context-2>@(settings?.Value<IHtmlEncodedString>("tprContext2"))</tpr-context-bar-context-2>
+                <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
             </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
@@ -109,8 +110,8 @@
                 <tpr-header-bar-label></tpr-header-bar-label>
             </tpr-header-bar>
             <tpr-context-bar context-1="" context-3="">
-                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
-                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+                <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
             </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
@@ -121,7 +122,7 @@
                 <tpr-header-bar-label></tpr-header-bar-label>
             </tpr-header-bar>
             <tpr-context-bar>
-                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
                 <tpr-context-bar-context-2>@Model.Context2TextThatWraps</tpr-context-bar-context-2>
             </tpr-context-bar>
 
@@ -135,7 +136,7 @@
             <tpr-context-bar>
                 <tpr-context-bar-context-1></tpr-context-bar-context-1>
                 <tpr-context-bar-context-2></tpr-context-bar-context-2>
-                <tpr-context-bar-context-3>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext3"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-3>
+                <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
             </tpr-context-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
@@ -157,7 +158,7 @@
                 <tpr-header-bar-label></tpr-header-bar-label>
             </tpr-header-bar>
             <tpr-context-bar>
-                <tpr-context-bar-context-1>@Html.Raw(GovUkTypography.Apply(@settings?.Value<string>("tprContext1"), new TypographyOptions { RemoveWrappingParagraphs = true }))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
             </tpr-context-bar>
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.FinalBlocks" />
@@ -177,7 +178,7 @@
             <tpr-footer-bar-logo alt="@footerLogoAlt" href="@(settings?.Value<Link>("tprFooterLogoHref")?.Url)" />
             <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
             <tpr-footer-bar-content allow-html="true">
-                @Html.Raw(GovUkTypography.Apply(settings?.Value("tprFooterContent")?.ToString(), new TypographyOptions{ RemoveWrappingParagraphs = true }))
+                @(settings?.Value<IHtmlEncodedString>("tprFooterContent"))
             </tpr-footer-bar-content>
         </tpr-footer-bar>
 

@@ -4,11 +4,12 @@
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
 @using ThePensionsRegulator.Umbraco.BlockLists;
+@using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
 <govuk-details id="@Model.Content.Key" class="@cssClasses">
     <govuk-details-summary>@(Model.Content.Value<string>("summary"))</govuk-details-summary>
-    <govuk-details-text>@Html.Raw(GovUkTypography.Apply(Model.Content.Value<string>("text"), new TypographyOptions{ RemoveWrappingParagraph = true }))</govuk-details-text>
+    <govuk-details-text>@(Model.Content.Value<IHtmlEncodedString>("text"))</govuk-details-text>
 </govuk-details>

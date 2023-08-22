@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using ThePensionsRegulator.Umbraco.BlockLists;
 @using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
@@ -18,7 +19,7 @@
     }
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var value = Model.Content.Value<string>("value");
-    var checkboxHint = GovUkTypography.Apply(Model.Content.Value<string>("hint"), new TypographyOptions { RemoveWrappingParagraph = true });
+    var checkboxHint = Model.Content.Value<IHtmlEncodedString>("hint");
     var conditional = Model.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
     var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
@@ -31,9 +32,9 @@
         }
         <govuk-checkboxes-item value="@value" checked="@(modelStateEntry?.AttemptedValue?.ToUpperInvariant() == value?.ToUpperInvariant())" input-aria-invalid="@invalid">
             @(Model.Content.Value<string>("label"))
-            @if (!string.IsNullOrWhiteSpace(checkboxHint)) 
+            @if (!string.IsNullOrWhiteSpace(checkboxHint.ToHtmlString())) 
             {
-                <govuk-checkboxes-item-hint>@Html.Raw(checkboxHint)</govuk-checkboxes-item-hint>
+                <govuk-checkboxes-item-hint>@checkboxHint</govuk-checkboxes-item-hint>
             }
             @if (conditional.Any()){
                 <govuk-checkboxes-item-conditional>

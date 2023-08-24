@@ -5,13 +5,13 @@
     /// </summary>
     public class SelectOption
     {
-        public SelectOption(string text, string value)
+        public SelectOption(string value, string label)
         {
-            Text = text;
+            Label = label;
             Value = value;
         }
 
-        public string Text { get; init; }
+        public string Label { get; init; }
         public string Value { get; init; }
     }
 }

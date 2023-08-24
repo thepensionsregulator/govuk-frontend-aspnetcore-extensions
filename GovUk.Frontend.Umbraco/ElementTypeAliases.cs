@@ -19,6 +19,9 @@
         public const string GridColumnSettings = "govukGridColumnSettings";
         public const string PageHeading = "govukPageHeading";
         public const string Radios = "govukRadios";
+        public const string Radio = "govukRadio";
+        public const string RadioSettings = "govukRadioSettings";
+        public const string RadiosDivider = "govukRadiosDivider";
         public const string Select = "govukSelect";
         public const string SelectOption = "govukSelectOption";
         public const string TaskListSummary = "govukTaskListSummary";

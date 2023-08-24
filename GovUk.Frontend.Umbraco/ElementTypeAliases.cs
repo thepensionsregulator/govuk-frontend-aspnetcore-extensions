@@ -26,6 +26,11 @@
         public const string RadiosDivider = "govukRadiosDivider";
         public const string Select = "govukSelect";
         public const string SelectOption = "govukSelectOption";
+        public const string SummaryCard = "govukSummaryCard";
+        public const string SummaryList = "govukSummaryList";
+        public const string SummaryListItem = "govukSummaryListItem";
+        public const string SummaryListItemSettings = "govukSummaryListItemSettings";
+        public const string SummaryListAction = "govukSummaryListAction";
         public const string TaskListSummary = "govukTaskListSummary";
         public const string Task = "govukTask";
         public const string Typography = "govukTypography";

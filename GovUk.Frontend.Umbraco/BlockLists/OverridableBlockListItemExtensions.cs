@@ -22,7 +22,7 @@ namespace GovUk.Frontend.Umbraco.BlockLists
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
         public static void OverrideCheckboxes(this IOverridablePublishedElement blockContent, IEnumerable<CheckboxItemBase> items, IPublishedSnapshotAccessor publishedSnapshotAccessor)
         {
-            GuardOverrideChildBlocks(nameof(OverrideCheckboxes), ElementTypeAliases.Checkboxes, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+            GuardOverrideChildBlocks(nameof(OverrideCheckboxes), new List<string> { ElementTypeAliases.Checkboxes }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
 
             var blockListItems = new List<OverridableBlockListItem>();
             foreach (var item in items)
@@ -67,7 +67,7 @@ namespace GovUk.Frontend.Umbraco.BlockLists
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
         public static void OverrideRadioButtons(this IOverridablePublishedElement blockContent, IEnumerable<RadioItemBase> items, IPublishedSnapshotAccessor publishedSnapshotAccessor)
         {
-            GuardOverrideChildBlocks(nameof(OverrideRadioButtons), ElementTypeAliases.Radios, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+            GuardOverrideChildBlocks(nameof(OverrideRadioButtons), new List<string> { ElementTypeAliases.Radios }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
 
             var blockListItems = new List<OverridableBlockListItem>();
             foreach (var item in items)
@@ -107,12 +107,12 @@ namespace GovUk.Frontend.Umbraco.BlockLists
         /// Replaces the select options configured in Umbraco with those supplied as an argument.
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Select component.</param>
-        /// <param name="items">The select options to display.</param>
+        /// <param name="items">The select options.</param>
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
         public static void OverrideSelectOptions(this IOverridablePublishedElement blockContent, IEnumerable<SelectOption> items, IPublishedSnapshotAccessor publishedSnapshotAccessor)
         {
-            GuardOverrideChildBlocks(nameof(OverrideSelectOptions), ElementTypeAliases.Select, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+            GuardOverrideChildBlocks(nameof(OverrideSelectOptions), new List<string> { ElementTypeAliases.Select }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
 
             var blockListItems = new List<OverridableBlockListItem>();
             foreach (var item in items)
@@ -127,6 +127,76 @@ namespace GovUk.Frontend.Umbraco.BlockLists
             }
 
             blockContent.OverrideValue(PropertyAliases.SelectOptions, new OverridableBlockListModel(blockListItems));
+        }
+
+        /// <summary>
+        /// Replaces the summary card actions configured in Umbraco with those supplied as an argument.
+        /// </summary>
+        /// <param name="blockContent">The content of a block list item based on the GOV.UK Summary card component.</param>
+        /// <param name="items">The summary card actions.</param>
+        /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
+        public static void OverrideSummaryCardActions(this IOverridablePublishedElement blockContent, IEnumerable<SummaryListAction> items, IPublishedSnapshotAccessor publishedSnapshotAccessor)
+        {
+            GuardOverrideChildBlocks(nameof(OverrideSummaryListItems), new List<string> { ElementTypeAliases.SummaryCard }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+
+            var blockListItems = new List<OverridableBlockListItem>();
+            foreach (var item in items)
+            {
+                var actionFields = new Dictionary<string, object?>()
+                {
+                    { PropertyAliases.SummaryListActionLink, item.Link },
+                    { PropertyAliases.SummaryListActionLinkText, item.LinkText }
+                };
+
+                blockListItems.Add(CreateBlockListItem(ElementTypeAliases.SummaryListAction, actionFields, null, null, publishedSnapshotAccessor));
+            }
+
+            blockContent.OverrideValue(PropertyAliases.SummaryCardActions, new OverridableBlockListModel(blockListItems));
+        }
+
+        /// <summary>
+        /// Replaces the summary list items configured in Umbraco with those supplied as an argument.
+        /// </summary>
+        /// <param name="blockContent">The content of a block list item based on the GOV.UK Summary list component.</param>
+        /// <param name="items">The summary list items.</param>
+        /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
+        public static void OverrideSummaryListItems(this IOverridablePublishedElement blockContent, IEnumerable<SummaryListItem> items, IPublishedSnapshotAccessor publishedSnapshotAccessor)
+        {
+            GuardOverrideChildBlocks(nameof(OverrideSummaryListItems), new List<string> { ElementTypeAliases.SummaryList, ElementTypeAliases.SummaryCard }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+
+            var blockListItems = new List<OverridableBlockListItem>();
+            foreach (var item in items)
+            {
+                var actions = new List<OverridableBlockListItem>();
+                foreach (var action in item.Actions)
+                {
+                    var actionFields = new Dictionary<string, object?>()
+                    {
+                        { PropertyAliases.SummaryListActionLink, action.Link },
+                        { PropertyAliases.SummaryListActionLinkText, action.LinkText }
+                    };
+
+                    actions.Add(CreateBlockListItem(ElementTypeAliases.SummaryListAction, actionFields, null, null, publishedSnapshotAccessor));
+                }
+
+                var contentFields = new Dictionary<string, object?>()
+                {
+                    { PropertyAliases.SummaryListItemKey, item.Key },
+                    { PropertyAliases.SummaryListItemValue, item.Value },
+                    { PropertyAliases.SummaryListItemActions, new OverridableBlockListModel(actions) }
+                };
+
+                var settingsFields = new Dictionary<string, object?>()
+                {
+                    { PropertyAliases.CssClasses, item.CssClasses }
+                };
+
+                blockListItems.Add(CreateBlockListItem(ElementTypeAliases.SummaryListItem, contentFields, ElementTypeAliases.SummaryListItemSettings, settingsFields, publishedSnapshotAccessor));
+            }
+
+            blockContent.OverrideValue(blockContent.ContentType.Alias == ElementTypeAliases.SummaryList ? PropertyAliases.SummaryListItems : PropertyAliases.SummaryCardListItems, new OverridableBlockListModel(blockListItems));
         }
 
         private static OverridableBlockListItem CreateBlockListItem(
@@ -149,11 +219,11 @@ namespace GovUk.Frontend.Umbraco.BlockLists
             return new OverridableBlockListItem(blockListItem);
         }
 
-        private static void GuardOverrideChildBlocks(string methodName, string expectedAlias, string? actualAlias, IPublishedSnapshotAccessor publishedSnapshotAccessor)
+        private static void GuardOverrideChildBlocks(string methodName, List<string> expectedAliases, string? actualAlias, IPublishedSnapshotAccessor publishedSnapshotAccessor)
         {
-            if (actualAlias != expectedAlias)
+            if (actualAlias is null || !expectedAliases.Contains(actualAlias))
             {
-                throw new ArgumentException($"{methodName} may only be called on a block of element type {expectedAlias}. Element type was {actualAlias}.");
+                throw new ArgumentException($"{methodName} may only be called on a block of element types {string.Join(",", expectedAliases)}. Element type was {actualAlias}.");
             }
 
             if (publishedSnapshotAccessor is null)

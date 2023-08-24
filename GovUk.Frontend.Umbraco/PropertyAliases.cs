@@ -37,5 +37,13 @@
         public const string SelectOptions = "options";
         public const string SelectOptionValue = "value";
         public const string SelectOptionLabel = "label";
+        public const string SummaryCardActions = "cardActions";
+        public const string SummaryCardListItems = "summaryListItems";
+        public const string SummaryListItems = "items";
+        public const string SummaryListItemKey = "itemKey";
+        public const string SummaryListItemValue = "itemValue";
+        public const string SummaryListItemActions = "actions";
+        public const string SummaryListActionLink = "link";
+        public const string SummaryListActionLinkText = "text";
     }
 }

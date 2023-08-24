@@ -14,7 +14,7 @@ We add support for:
   - [Inset text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/inset-text.md)
   - [Notification banner](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/notification-banner.md)
   - [Panel](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/panel.md)
-  - [Summary list](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/summary-list.md)
+  - [Summary list](/docs/components/summary-list.md)
   - [Warning text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/warning-text.md)
 
 - Configuring the text for the following components in Umbraco:

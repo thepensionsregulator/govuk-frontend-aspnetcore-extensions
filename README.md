@@ -27,7 +27,7 @@ We add support for:
   - [Pagination](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/pagination.md)
   - [Phase banner](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/phase-banner.md)
   - [Radios](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/radios.md)
-  - [Select](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/select.md)
+  - [Select](/docs/components/select.md)
   - [Skip link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/skip-link.md)
   - [Textarea](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/textarea.md)
   - [Text input](/docs/components/text-input.md)

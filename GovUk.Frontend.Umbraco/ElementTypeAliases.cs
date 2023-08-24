@@ -20,6 +20,7 @@
         public const string PageHeading = "govukPageHeading";
         public const string Radios = "govukRadios";
         public const string Select = "govukSelect";
+        public const string SelectOption = "govukSelectOption";
         public const string TaskListSummary = "govukTaskListSummary";
         public const string Task = "govukTask";
         public const string Typography = "govukTypography";

@@ -23,5 +23,6 @@
         public const string FieldsetLegendIsPageHeading = "legendIsPageHeading";
         public const string FieldsetErrorsEnabled = "fieldsetErrors";
         public const string NotificationBannerBlocks = "blocks";
+        public const string SelectOptions = "options";
     }
 }

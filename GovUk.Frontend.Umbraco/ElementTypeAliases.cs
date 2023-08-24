@@ -3,14 +3,16 @@
     public static class ElementTypeAliases
     {
         public const string Caption = "govukCaption";
+        public const string Checkboxes = "govukCheckboxes";
+        public const string Checkbox = "govukCheckbox";
+        public const string CheckboxSettings = "govukCheckboxSettings";
+        public const string CheckboxesDivider = "govukCheckboxesDivider";
         public const string DateInput = "govukDateInput";
         public const string DateInputSettings = "govukDateInputSettings";
         public const string ErrorMessage = "govukErrorMessage";
         public const string ErrorMessageSettings = "govukErrorMessageSettings";
         public const string Fieldset = "govukFieldset";
         public const string FieldsetSettings = "govukFieldsetSettings";
-        public const string Checkbox = "govukCheckbox";
-        public const string Checkboxes = "govukCheckboxes";
         public const string TextInput = "govukTextInput";
         public const string Textarea = "govukTextarea";
         public const string GridRow = "govukGridRow";

@@ -20,7 +20,7 @@ We add support for:
 - Configuring the text for the following components in Umbraco:
 
   - [Button](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/button.md)
-  - [Checkboxes](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/checkboxes.md)
+  - [Checkboxes](/docs/components/checkboxes.md)
   - [Character count](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/character-count.md)
   - [Date input](/docs/components/date-input.md)
   - [Error message](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/error-message.md)

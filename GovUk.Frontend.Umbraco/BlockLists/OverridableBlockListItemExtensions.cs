@@ -14,6 +14,51 @@ namespace GovUk.Frontend.Umbraco.BlockLists
     public static class OverridableBlockListItemExtensions
     {
         /// <summary>
+        /// Replaces the checkboxes configured in Umbraco with those supplied as an argument.
+        /// </summary>
+        /// <param name="blockContent">The content of a block list item based on the GOV.UK Checkboxes component.</param>
+        /// <param name="items">The checkboxes.</param>
+        /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
+        public static void OverrideCheckboxes(this IOverridablePublishedElement blockContent, IEnumerable<CheckboxItemBase> items, IPublishedSnapshotAccessor publishedSnapshotAccessor)
+        {
+            GuardOverrideChildBlocks(nameof(OverrideCheckboxes), ElementTypeAliases.Checkboxes, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+
+            var blockListItems = new List<OverridableBlockListItem>();
+            foreach (var item in items)
+            {
+                if (item is Checkbox checkbox)
+                {
+                    var contentFields = new Dictionary<string, object?>()
+                    {
+                        { PropertyAliases.CheckboxLabel, checkbox.Label },
+                        { PropertyAliases.CheckboxValue, checkbox.Value },
+                        { PropertyAliases.Hint, checkbox.Hint },
+                        { PropertyAliases.CheckboxConditionalBlocks, checkbox.ConditionalBlocks }
+                    };
+
+                    var settingsFields = new Dictionary<string, object?>()
+                    {
+                        { PropertyAliases.CssClasses, checkbox.CssClasses }
+                    };
+
+                    blockListItems.Add(CreateBlockListItem(ElementTypeAliases.Checkbox, contentFields, ElementTypeAliases.CheckboxSettings, settingsFields, publishedSnapshotAccessor));
+                }
+                else if (item is CheckboxesDivider divider)
+                {
+                    var contentFields = new Dictionary<string, object?>()
+                    {
+                        { PropertyAliases.CheckboxesDividerText, divider.Text }
+                    };
+
+                    blockListItems.Add(CreateBlockListItem(ElementTypeAliases.CheckboxesDivider, contentFields, null, null, publishedSnapshotAccessor));
+                }
+            }
+
+            blockContent.OverrideValue(PropertyAliases.Checkboxes, new OverridableBlockListModel(blockListItems));
+        }
+
+        /// <summary>
         /// Replaces the radio buttons configured in Umbraco with those supplied as an argument.
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Radios component.</param>

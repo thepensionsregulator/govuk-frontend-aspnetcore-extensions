@@ -3,6 +3,11 @@
     public static class PropertyAliases
     {
         public const string ModelProperty = "modelProperty";
+        public const string Checkboxes = "checkboxes";
+        public const string CheckboxValue = "value";
+        public const string CheckboxLabel = "label";
+        public const string CheckboxConditionalBlocks = "conditionalBlocks";
+        public const string CheckboxesDividerText = "text";
         public const string CssClasses = "cssClasses";
         public const string CssClassesForRow = "cssClassesForRow";
         public const string CssClassesForColumn = "cssClassesForColumn";

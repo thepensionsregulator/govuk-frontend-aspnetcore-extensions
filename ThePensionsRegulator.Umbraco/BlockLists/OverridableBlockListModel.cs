@@ -4,6 +4,7 @@ using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Umbraco.BlockLists
 {
@@ -14,6 +15,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
     public class OverridableBlockListModel : IEnumerable<OverridableBlockListItem>
     {
         private readonly List<OverridableBlockListItem> _items = new();
+        private static Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> DefaultFilter = (x => x);
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
@@ -35,7 +37,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
                 throw new ArgumentNullException(nameof(blockListItems));
             }
 
-            Filter = filter ?? (x => x);
+            _filter = filter ?? DefaultFilter;
             var factory = publishedElementFactory ?? OverridableBlockListItem.DefaultPublishedElementFactory;
 
             // Take the IEnumerable<BlockListItem> (which is probably a BlockListModel) and convert each item to an OverridableBlockListItem,
@@ -53,11 +55,11 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
                             var nestedBlockList = overridableItem.Content.Value<BlockListModel>(prop.Alias);
                             if (nestedBlockList != null)
                             {
-                                overriddenNestedBlockList = new OverridableBlockListModel(nestedBlockList, Filter, factory);
+                                overriddenNestedBlockList = new OverridableBlockListModel(nestedBlockList, _filter, factory);
                             }
                             else
                             {
-                                overriddenNestedBlockList = new OverridableBlockListModel(Array.Empty<BlockListItem>(), Filter, factory);
+                                overriddenNestedBlockList = new OverridableBlockListModel(Array.Empty<BlockListItem>(), _filter, factory);
                             }
                         }
                         overridableItem.Content.OverrideValue(prop.Alias, overriddenNestedBlockList);
@@ -66,6 +68,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
                 _items.Add(overridableItem);
             }
 
+            CopyFilterToDecendantBlockLists(_items, _filter);
         }
 
         /// <summary>
@@ -93,10 +96,37 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
             }
         }
 
+        private Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> _filter = DefaultFilter;
+
         /// <summary>
         /// The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.
         /// </summary>
-        public Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> Filter { get; set; }
+        public Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> Filter
+        {
+            get { return _filter; }
+            set
+            {
+                _filter = value;
+
+                CopyFilterToDecendantBlockLists(_items, _filter);
+            }
+        }
+
+        private void CopyFilterToDecendantBlockLists(IEnumerable<OverridableBlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> filter)
+        {
+            foreach (var blockListItem in blockListItems)
+            {
+                var models = blockListItem.Content.Properties
+                    .Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue())
+                    .Select(x => blockListItem.Content.Value<OverridableBlockListModel>(x.Alias))
+                    .OfType<OverridableBlockListModel>();
+                foreach (var model in models)
+                {
+                    model.Filter = filter;
+                    CopyFilterToDecendantBlockLists(model, filter);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the block list with items not matching <see cref="Filter"/> removed.

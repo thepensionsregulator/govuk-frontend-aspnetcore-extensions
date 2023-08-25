@@ -1,6 +1,7 @@
 ﻿using GovUk.Frontend.Umbraco.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.BlockLists;
 using Umbraco.Cms.Core;
@@ -11,7 +12,7 @@ using Umbraco.Cms.Infrastructure.ModelsBuilder;
 
 namespace GovUk.Frontend.Umbraco.BlockLists
 {
-    public static class OverridableBlockListItemExtensions
+    public static class IOverridablePublishedElementExtensions
     {
         /// <summary>
         /// Replaces the checkboxes configured in Umbraco with those supplied as an argument.
@@ -140,19 +141,7 @@ namespace GovUk.Frontend.Umbraco.BlockLists
         {
             GuardOverrideChildBlocks(nameof(OverrideSummaryListItems), new List<string> { ElementTypeAliases.SummaryCard }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
 
-            var blockListItems = new List<OverridableBlockListItem>();
-            foreach (var item in items)
-            {
-                var actionFields = new Dictionary<string, object?>()
-                {
-                    { PropertyAliases.SummaryListActionLink, item.Link },
-                    { PropertyAliases.SummaryListActionLinkText, item.LinkText }
-                };
-
-                blockListItems.Add(CreateBlockListItem(ElementTypeAliases.SummaryListAction, actionFields, null, null, publishedSnapshotAccessor));
-            }
-
-            blockContent.OverrideValue(PropertyAliases.SummaryCardActions, new OverridableBlockListModel(blockListItems));
+            blockContent.OverrideValue(PropertyAliases.SummaryCardActions, CreateSummaryListActionBlocks(items, publishedSnapshotAccessor));
         }
 
         /// <summary>
@@ -169,23 +158,11 @@ namespace GovUk.Frontend.Umbraco.BlockLists
             var blockListItems = new List<OverridableBlockListItem>();
             foreach (var item in items)
             {
-                var actions = new List<OverridableBlockListItem>();
-                foreach (var action in item.Actions)
-                {
-                    var actionFields = new Dictionary<string, object?>()
-                    {
-                        { PropertyAliases.SummaryListActionLink, action.Link },
-                        { PropertyAliases.SummaryListActionLinkText, action.LinkText }
-                    };
-
-                    actions.Add(CreateBlockListItem(ElementTypeAliases.SummaryListAction, actionFields, null, null, publishedSnapshotAccessor));
-                }
-
                 var contentFields = new Dictionary<string, object?>()
                 {
                     { PropertyAliases.SummaryListItemKey, item.Key },
                     { PropertyAliases.SummaryListItemValue, item.Value },
-                    { PropertyAliases.SummaryListItemActions, new OverridableBlockListModel(actions) }
+                    { PropertyAliases.SummaryListItemActions, CreateSummaryListActionBlocks(item.Actions, publishedSnapshotAccessor) }
                 };
 
                 var settingsFields = new Dictionary<string, object?>()
@@ -196,17 +173,40 @@ namespace GovUk.Frontend.Umbraco.BlockLists
                 blockListItems.Add(CreateBlockListItem(ElementTypeAliases.SummaryListItem, contentFields, ElementTypeAliases.SummaryListItemSettings, settingsFields, publishedSnapshotAccessor));
             }
 
-            blockContent.OverrideValue(blockContent.ContentType.Alias == ElementTypeAliases.SummaryList ? PropertyAliases.SummaryListItems : PropertyAliases.SummaryCardListItems, new OverridableBlockListModel(blockListItems));
+            blockContent.OverrideValue(blockContent.ContentType!.Alias == ElementTypeAliases.SummaryList ? PropertyAliases.SummaryListItems : PropertyAliases.SummaryCardListItems, new OverridableBlockListModel(blockListItems));
+        }
+
+        private static OverridableBlockListModel CreateSummaryListActionBlocks(IEnumerable<SummaryListAction> items, IPublishedSnapshotAccessor publishedSnapshotAccessor)
+        {
+            var blockListItems = new List<OverridableBlockListItem>();
+            foreach (var item in items)
+            {
+                var actionFields = new Dictionary<string, object?>()
+                {
+                    { PropertyAliases.SummaryListActionLink, item.Link },
+                    { PropertyAliases.SummaryListActionLinkText, item.LinkText }
+                };
+
+                blockListItems.Add(CreateBlockListItem(ElementTypeAliases.SummaryListAction, actionFields, null, null, publishedSnapshotAccessor));
+            }
+
+            return new OverridableBlockListModel(blockListItems);
         }
 
         private static OverridableBlockListItem CreateBlockListItem(
-            string contentTypeAlias, Dictionary<string, object?> contentFields,
-            string? settingsTypeAlias, Dictionary<string, object?>? settingsFields,
+            string contentTypeAlias, Dictionary<string, object?> contentProperties,
+            string? settingsTypeAlias, Dictionary<string, object?>? settingsProperties,
             IPublishedSnapshotAccessor publishedSnapshotAccessor)
         {
-            var content = new PublishedElement(PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, PublishedItemType.Content, contentTypeAlias)!, Guid.NewGuid(), contentFields, false);
-            var hasSettings = !string.IsNullOrEmpty(settingsTypeAlias) && settingsFields is not null;
-            var settings = hasSettings ? new PublishedElement(PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, PublishedItemType.Content, settingsTypeAlias!)!, Guid.NewGuid(), settingsFields!, false) : null;
+            // Create a new block list item with the supplied properties but null values. It's not appropriate to put the values into the block list item properties because
+            // the supplied values will be of the type expected after property value conversion, but the properties should contain raw values before property value conversion.
+            var hasSettings = !string.IsNullOrEmpty(settingsTypeAlias) && settingsProperties is not null;
+            Dictionary<string, object?> originalContent = new(contentProperties.Select(x => new KeyValuePair<string, object?>(x.Key, null)));
+            Dictionary<string, object?>? originalSettings = hasSettings ? new(settingsProperties!.Select(x => new KeyValuePair<string, object?>(x.Key, null))) : null;
+
+            var content = new PublishedElement(PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, PublishedItemType.Content, contentTypeAlias)!, Guid.NewGuid(), originalContent, false);
+            var settings = hasSettings ? new PublishedElement(PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, PublishedItemType.Content, settingsTypeAlias!)!, Guid.NewGuid(), originalSettings!, false) : null;
+
             var blockListItem = new BlockListItem(
                                 Udi.Create("element", Guid.NewGuid()),
                                 content,
@@ -216,7 +216,21 @@ namespace GovUk.Frontend.Umbraco.BlockLists
 #nullable enable
                             );
 
-            return new OverridableBlockListItem(blockListItem);
+            // Override the null values with the supplied values.
+            var overridable = new OverridableBlockListItem(blockListItem);
+            foreach (var field in contentProperties.Keys.Where(x => contentProperties[x] is not null))
+            {
+                overridable.Content.OverrideValue(field, contentProperties[field]!);
+            }
+            if (hasSettings)
+            {
+                foreach (var field in settingsProperties!.Keys.Where(x => settingsProperties[x] is not null))
+                {
+                    overridable.Settings.OverrideValue(field, settingsProperties[field]!);
+                }
+            }
+
+            return overridable;
         }
 
         private static void GuardOverrideChildBlocks(string methodName, List<string> expectedAliases, string? actualAlias, IPublishedSnapshotAccessor publishedSnapshotAccessor)

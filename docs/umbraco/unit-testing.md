@@ -40,6 +40,17 @@ public void SetUp()
 var otherPage = UmbracoContentFactory.CreateContent<IPublishedContent>();
 ```
 
+## Mock Umbraco content types
+
+Mock Umbraco content types by adding them to the `UmbracoTestContext` using a fluent interface.
+
+```csharp
+_testContext = new UmbracoTestContext()
+        .SetupContentType("myContentTypeAlias");
+
+var contentType = _testContext.ContentTypes["myContentTypeAlias"].Object;
+```
+
 ## Mock Umbraco property values
 
 Extension methods allow you to mock property values on any content node. For example, with an `UmbracoTestContext` instantiated as shown above:

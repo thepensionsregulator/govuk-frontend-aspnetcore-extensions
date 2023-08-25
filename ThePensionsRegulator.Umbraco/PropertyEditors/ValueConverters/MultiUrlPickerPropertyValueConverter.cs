@@ -1,5 +1,4 @@
 ﻿using Umbraco.Cms.Core.Logging;
-using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
@@ -30,18 +29,9 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
         }
 
-        public override object ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object? source, bool preview)
-        {
-            // When the value is overridden using IOverridablePublishedElement.OverrideValue the converted type may be supplied, so just pass it through.
-            if (source is Link || source is IEnumerable<Link>) { return source; }
-            return base.ConvertSourceToIntermediate(owner, propertyType, source, preview);
-        }
-
         /// <inheritdoc />
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
-            // When the value is overridden using IOverridablePublishedElement.OverrideValue the converted type may be supplied, so just pass it through.
-            if (inter is Link || inter is IEnumerable<Link>) { return inter; }
             var value = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
 
             return value is null ? null : _propertyValueFormatters.ApplyFormatters(propertyType, value);

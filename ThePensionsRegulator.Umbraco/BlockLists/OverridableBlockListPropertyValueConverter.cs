@@ -28,18 +28,9 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
             return baseType == typeof(BlockListModel) ? typeof(OverridableBlockListModel) : baseType;
         }
 
-        public override object? ConvertSourceToIntermediate(IPublishedElement owner, IPublishedPropertyType propertyType, object? source, bool preview)
-        {
-            // When the value is overridden using IOverridablePublishedElement.OverrideValue the converted type may be supplied, so just pass it through.
-            if (source is BlockListModel || source is OverridableBlockListModel) { return source; }
-            return base.ConvertSourceToIntermediate(owner, propertyType, source, preview);
-        }
-
         /// <inheritdoc />
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
-            // When the value is overridden using IOverridablePublishedElement.OverrideValue the converted type may be supplied, so just pass it through.
-            if (inter is BlockListModel || inter is OverridableBlockListModel) { return inter; }
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
             return baseModel is BlockListModel ? new OverridableBlockListModel((BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
         }

@@ -13,8 +13,6 @@
 @{
     var options = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SelectOptions)!;
 
-    var wtf = options.FilteredBlocks();
-
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
     if (!string.IsNullOrEmpty(modelPropertyName))

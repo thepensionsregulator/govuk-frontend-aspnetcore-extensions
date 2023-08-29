@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="ThePensionsRegulatorFrontendUmbraco" AfterTargets="ThePensionsRegulatorGovUkFrontendUmbraco">
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend.Umbraco']/@Version">
+			<Output TaskParameter="Result" ItemName="TprFrontendUmbracoVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<TprFrontendUmbracoVersion>@(TprFrontendUmbracoVersion)</TprFrontendUmbracoVersion>
+			<ContentFilesPath>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\contentFiles\any\net6.0\</ContentFilesPath>		
+		</PropertyGroup>
+		<ItemGroup>
+			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
+			<ContentFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
+		</ItemGroup>
+
+		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high" />
+		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(ContentFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
+
+		<ItemGroup>
+			<TprFrontendUmbracoUSyncGitIgnoreText Include="TprFrontendUmbracoUSyncGitIgnoreText">
+				<Text>
+**/govuk*.config
+**/GOVUK*.config
+**/tpr*.config
+**/TPR*.config
+				</Text>
+			</TprFrontendUmbracoUSyncGitIgnoreText>
+			<TprFrontendUmbracoUSyncGitIgnore Include="%(TprFrontendUmbracoUSyncGitIgnoreText.Text)" />
+		</ItemGroup>
+		<Message Text="Generating $(ProjectDir)uSync\.gitignore" Importance="high" />
+		<WriteLinesToFile File="$(ProjectDir)uSync\.gitignore" Lines="@(TprFrontendUmbracoUSyncGitIgnore)" Overwrite="True"/>
+	</Target>
+
+</Project>

@@ -4,7 +4,7 @@ using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 
-namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
+namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
 {
     /// <summary>
     /// Apply GOV.UK typography classes to HTML from the Umbraco rich text editor, and remove all paragraph elements.

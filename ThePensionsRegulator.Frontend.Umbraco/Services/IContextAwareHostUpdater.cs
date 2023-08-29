@@ -1,4 +1,4 @@
-﻿namespace GovUk.Frontend.Umbraco.Services
+﻿namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {
     public interface IContextAwareHostUpdater
     {

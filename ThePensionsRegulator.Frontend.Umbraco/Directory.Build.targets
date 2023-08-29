@@ -4,7 +4,7 @@
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
 		 because in Release configuration it removes the comments that are needed to configure the Umbraco rich text editor.
 		 -->
-	<Target Name="GovUkFrontendUmbraco_BuildSass" BeforeTargets="BeforeBuild">
+	<Target Name="TprFrontendUmbraco_BuildSass" BeforeTargets="BeforeBuild">
 		<Message Text="Run SassCompiler $(MSBuildProjectFullPath)" Importance="high"/>
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
 			<Output TaskParameter="Result" ItemName="SassCompilerVersion" />

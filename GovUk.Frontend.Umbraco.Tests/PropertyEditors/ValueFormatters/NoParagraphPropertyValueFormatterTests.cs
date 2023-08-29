@@ -13,7 +13,6 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
         [TestCase(Constants.PropertyEditors.Aliases.TinyMce, false)]
         [TestCase(PropertyEditorAliases.GovUkInlineRichText, true)]
         [TestCase(PropertyEditorAliases.GovUkInlineInverseRichText, false)]
-        [TestCase(PropertyEditorAliases.TprHeaderFooterRichText, false)]
         public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)
         {
             // Arrange

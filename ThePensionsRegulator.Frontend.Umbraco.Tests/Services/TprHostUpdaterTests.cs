@@ -1,7 +1,6 @@
-﻿using GovUk.Frontend.Umbraco.Services;
-using NUnit.Framework;
+﻿using ThePensionsRegulator.Frontend.Umbraco.Services;
 
-namespace GovUk.Frontend.Umbraco.Tests
+namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
     public class TprHostUpdaterTests
     {

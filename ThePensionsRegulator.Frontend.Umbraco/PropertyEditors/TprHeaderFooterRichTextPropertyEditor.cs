@@ -8,7 +8,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Templates;
 using Umbraco.Cms.Infrastructure.Templates;
 
-namespace GovUk.Frontend.Umbraco.PropertyEditors
+namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors
 {
     /// <summary>
     /// A rich text property editor identical to the default Umbraco rich text property editor.

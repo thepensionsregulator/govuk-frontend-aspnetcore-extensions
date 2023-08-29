@@ -1,0 +1,126 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<Nullable>enable</Nullable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>ThePensionsRegulator.$(AssemblyName)</Title>
+		<Version>5.0.0-beta001</Version>
+		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
+		     This will help identify breaking changes where the major version should change. -->
+		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>
+		<Authors>rickmason-tpr</Authors>
+		<Company>The Pensions Regulator</Company>
+		<Description>Umbraco support for components targeted at The Pensions Regulator.</Description>
+		<Copyright>The Pensions Regulator</Copyright>
+		<PackageProjectUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</RepositoryUrl>
+		<PackageReadmeFile>NuGetReadme.md</PackageReadmeFile>
+		<PackageIcon>tpr-nuget.png</PackageIcon>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>gds govuk gov.uk umbraco blocklist</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<IncludeSymbols>True</IncludeSymbols>
+		<PackageId>ThePensionsRegulator.$(AssemblyName)</PackageId>
+		<Product>ThePensionsRegulator.$(AssemblyName)</Product>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Remove="sasscompiler.json" />
+		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
+		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
+		  <PackagePath>build</PackagePath>
+		  <Pack>true</Pack>
+		</Content>
+		<Content Include="Styles\govuk-umbraco-rich-text-editor.css">
+			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
+			<Pack>true</Pack>
+		</Content>
+		<Content Include="Styles\govuk-umbraco-rich-text-editor.css.map">
+			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
+			<Pack>true</Pack>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.58.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="6.0.3" />
+		<PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.1" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+		<PackageReference Include="Umbraco.Cms.Core" Version="10.4.2" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.4.2" />
+		<PackageReference Include="Umbraco.Cms.Web.Common" Version="10.4.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
+		<ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
+		<ProjectReference Include="..\ThePensionsRegulator.Frontend\ThePensionsRegulator.Frontend.csproj" />
+		<ProjectReference Include="..\ThePensionsRegulator.Umbraco\ThePensionsRegulator.Umbraco.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Styles\govuk-umbraco-rich-text-editor.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\tpr-nuget.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+		<None Include="sasscompiler.json" />
+		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
+		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="uSync\v9\ContentTypes\tprbacktomenu.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprbacktomenusettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprbacktotop.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprcontextbar1.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprcontextbar2.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprcontextbar3.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprfooter.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprheader.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\DataTypes\TPRRichTextEditorHeaderAndFooter.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="NuGetReadme.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	  <None Update="Styles\govuk-umbraco-rich-text-editor.scss">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	</ItemGroup>
+</Project>

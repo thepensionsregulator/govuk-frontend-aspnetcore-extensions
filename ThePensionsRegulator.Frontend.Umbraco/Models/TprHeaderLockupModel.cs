@@ -3,7 +3,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Extensions;
 
-namespace GovUk.Frontend.Umbraco.Models
+namespace ThePensionsRegulator.Frontend.Umbraco.Models
 {
     public class TprHeaderLockupModel
     {

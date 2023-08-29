@@ -8,6 +8,8 @@
 			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\uSync\**" />
 			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\wwwroot\**" />
 			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\App_Plugins\**" />
+			<uSyncFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\uSync\**" />
+			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\wwwroot\**" />
 		</ItemGroup>
 
 		<Message Text="Copying files from GovUk.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
@@ -17,5 +19,10 @@
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Message Text="Copying files from ThePensionsRegulator.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
+		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 </Project>

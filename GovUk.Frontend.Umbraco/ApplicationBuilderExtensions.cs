@@ -13,7 +13,7 @@ namespace GovUk.Frontend.Umbraco
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseGovUkFrontendUmbracoExtensions(this IApplicationBuilder app, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback)
+        public static IApplicationBuilder UseGovUkFrontendUmbraco(this IApplicationBuilder app, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback)
         {
             if (app == null)
             {

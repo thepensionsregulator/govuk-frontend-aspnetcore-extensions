@@ -11,7 +11,8 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    var options = Model.Content.Value<OverridableBlockListModel>("options")!;
+    var options = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SelectOptions)!;
+
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
     if (!string.IsNullOrEmpty(modelPropertyName))
@@ -21,7 +22,7 @@
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
-    var hint = Model.Content.Value<IHtmlEncodedString>("hint");
+    var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
 <govuk-client-side-validation
@@ -33,10 +34,10 @@
             <govuk-select-hint>@hint</govuk-select-hint>
         }
         <govuk-select-error-message>@(modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR) ? string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null)</govuk-select-error-message>
-        @foreach (var block in options.Filter(options))
+        @foreach (var block in options.FilteredBlocks())
         {
-            var value = block.Content.Value<string>("value");
-            <govuk-select-item value="@value" selected="@(value == attemptedValue)">@(block.Content.Value<string>("label"))</govuk-select-item>
+            var value = block.Content.Value<string>(PropertyAliases.SelectOptionValue);
+            <govuk-select-item value="@value" selected="@(value == attemptedValue)">@(block.Content.Value<string>(PropertyAliases.SelectOptionLabel))</govuk-select-item>
         }
     </govuk-select>
 </govuk-client-side-validation>

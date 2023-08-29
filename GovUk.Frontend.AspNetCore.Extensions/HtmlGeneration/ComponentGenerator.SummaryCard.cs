@@ -1,5 +1,3 @@
-#nullable enable
-
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration

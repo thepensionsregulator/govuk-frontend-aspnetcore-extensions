@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbrac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco.Tests", "ThePensionsRegulator.Umbraco.Tests\ThePensionsRegulator.Umbraco.Tests.csproj", "{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Frontend", "ThePensionsRegulator.Frontend\ThePensionsRegulator.Frontend.csproj", "{46179407-2938-411E-B499-5049A1EE5FDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThePensionsRegulator.Frontend.Tests", "ThePensionsRegulator.Frontend.Tests\ThePensionsRegulator.Frontend.Tests.csproj", "{12723393-1626-4868-A0C0-526B6215449B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,14 @@ Global
 		{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46179407-2938-411E-B499-5049A1EE5FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46179407-2938-411E-B499-5049A1EE5FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46179407-2938-411E-B499-5049A1EE5FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46179407-2938-411E-B499-5049A1EE5FDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12723393-1626-4868-A0C0-526B6215449B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12723393-1626-4868-A0C0-526B6215449B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12723393-1626-4868-A0C0-526B6215449B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12723393-1626-4868-A0C0-526B6215449B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -55,9 +55,13 @@ We target [GDS Frontend v4.4.1](https://github.com/alphagov/govuk-frontend/relea
 - [Localisation and validation in ASP.NET projects](docs/aspnet/localisation-and-validation.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
 
-ASP.NET support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend)
+ASP.NET support for GOV.UK Design System components is published on NuGet as [ThePensionsRegulator.GovUk.Frontend](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend)
 
 ![ThePensionsRegulator.GovUk.Frontend on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend)
+
+ASP.NET support for The Pensions Regulator components, and The Pensions Regulator styling of GOV.UK components, is published on NuGet as [ThePensionsRegulator.Frontend](https://www.nuget.org/packages/ThePensionsRegulator.Frontend)
+
+![ThePensionsRegulator.Frontend on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Frontend)
 
 ## Building applications with Umbraco
 

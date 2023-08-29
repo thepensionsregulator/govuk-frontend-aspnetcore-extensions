@@ -1,10 +1,9 @@
-#nullable enable
-using System;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System;
 
-namespace GovUk.Frontend.AspNetCore
+namespace GovUk.Frontend.AspNetCore.Extensions
 {
-    internal static class TagHelperContextExtensions
+    public static class TagHelperContextExtensions
     {
         public static TItem GetContextItem<TItem>(this TagHelperContext context)
         {
@@ -33,7 +32,7 @@ namespace GovUk.Frontend.AspNetCore
                 throw new ArgumentNullException(nameof(item));
             }
 
-            return SetScopedContextItem(context, typeof(TItem), item);
+            return context.SetScopedContextItem(typeof(TItem), item);
         }
 
         public static IDisposable SetScopedContextItem(

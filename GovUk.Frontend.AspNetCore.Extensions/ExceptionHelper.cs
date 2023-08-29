@@ -1,10 +1,9 @@
-#nullable enable
 using System;
 using System.Linq;
 
 namespace GovUk.Frontend.AspNetCore
 {
-    internal static class ExceptionHelper
+    public static class ExceptionHelper
     {
         public static InvalidOperationException AChildElementMustBeProvided(string childElementTagName) =>
             new InvalidOperationException($"A <{childElementTagName}> element must be provided.");

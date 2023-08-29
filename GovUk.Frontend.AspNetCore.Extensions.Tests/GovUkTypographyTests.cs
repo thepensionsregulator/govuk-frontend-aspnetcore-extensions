@@ -1,8 +1,8 @@
-using GovUk.Frontend.Umbraco.Typography;
+using GovUk.Frontend.AspNetCore.Extensions.Typography;
 using HtmlAgilityPack;
 using NUnit.Framework;
 
-namespace GovUk.Frontend.Umbraco.Tests
+namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 {
     public class GovUkTypographyTests
     {
@@ -126,95 +126,6 @@ namespace GovUk.Frontend.Umbraco.Tests
             doc.LoadHtml(result);
             Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//ol[contains(@class,'govuk-list')]").Count);
             Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//ol[contains(@class,'govuk-list--number')]").Count);
-        }
-
-        [Test]
-        public void Style_attribute_is_removed_from_ordered_lists()
-        {
-            var html = "<ol style=\"list-style-type: lower-alpha;\"><li>Item 1</li><li>Item 2</li></ol><ol style=\"color: red;\"><li>Item 3</li><li>Item 4</li></ol>";
-
-            var result = GovUkTypography.Apply(html);
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(result);
-            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//ol").Count);
-            Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
-        }
-
-        [TestCase("lower-alpha")]
-        [TestCase("lower-greek")]
-        [TestCase("lower-roman")]
-        [TestCase("upper-alpha")]
-        [TestCase("upper-roman")]
-        public void Permitted_style_attribute_is_converted_to_class_from_ordered_lists(string listStyleType)
-        {
-            var html = $"<ol style=\"list-style-type: {listStyleType};\"><li>Item 1</li><li>Item 2</li></ol>";
-
-            var result = GovUkTypography.Apply(html);
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(result);
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//ol").Count);
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//ol[contains(@class,'govuk-list--{listStyleType}')]").Count);
-            Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
-        }
-
-        [Test]
-        public void Single_wrapping_paragraph_is_removed_if_requested()
-        {
-            var html = "<p>Some content</p>";
-
-            var result = GovUkTypography.Apply(html, new TypographyOptions { RemoveWrappingParagraph = true });
-
-            Assert.AreEqual("Some content", result);
-        }
-
-        [Test]
-        public void Single_wrapping_paragraph_is_not_removed_if_not_requested()
-        {
-            var html = "<p>Some content</p>";
-
-            var result = GovUkTypography.Apply(html);
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(result);
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//p").Count);
-        }
-
-        [Test]
-        public void Multiple_wrapping_paragraphs_are_not_removed_if_not_requested()
-        {
-            var html = "<p>Some content</p><p>Some content</p>";
-
-            var result = GovUkTypography.Apply(html);
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(result);
-            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
-        }
-
-        [Test]
-        public void Multiple_wrapping_paragraphs_are_removed_if_requested()
-        {
-            var html = "<p>Some content</p><p>Some content</p>";
-
-            var result = GovUkTypography.Apply(html, new TypographyOptions { RemoveWrappingParagraphs = true });
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(result);
-            Assert.AreEqual("Some contentSome content", result);
-        }
-
-        [Test]
-        public void Multiple_wrapping_paragraphs_are_left_alone_by_single_removal_request()
-        {
-            var html = "<p>Some content</p><p>Some content</p>";
-
-            var result = GovUkTypography.Apply(html, new TypographyOptions { RemoveWrappingParagraph = true });
-
-            var doc = new HtmlDocument();
-            doc.LoadHtml(result);
-            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
         }
 
         [Test]

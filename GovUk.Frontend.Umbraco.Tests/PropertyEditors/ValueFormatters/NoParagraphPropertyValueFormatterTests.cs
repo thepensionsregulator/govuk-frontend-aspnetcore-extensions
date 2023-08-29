@@ -42,5 +42,37 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             Assert.That(((HtmlEncodedString)resultOfString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
             Assert.That(((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
         }
+
+        [Test]
+        public void Single_wrapping_paragraph_is_removed()
+        {
+            TinyMCEValueFormattersTestHelper.SingleWrappingParagraphIsRemoved(
+                new NoParagraphPropertyValueFormatter());
+        }
+
+        [Test]
+        public void Multiple_wrapping_paragraphs_are_left_alone()
+        {
+            TinyMCEValueFormattersTestHelper.MultipleWrappingParagraphsAreLeftAlone(
+                 new NoParagraphPropertyValueFormatter());
+        }
+
+        [Test]
+        public void Style_attribute_is_removed_from_ordered_lists()
+        {
+            TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromOrderedLists(
+                new NoParagraphPropertyValueFormatter());
+        }
+
+        [TestCase("lower-alpha")]
+        [TestCase("lower-greek")]
+        [TestCase("lower-roman")]
+        [TestCase("upper-alpha")]
+        [TestCase("upper-roman")]
+        public void Permitted_style_attribute_is_converted_to_class_from_ordered_lists(string listStyleType)
+        {
+            TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassFromOrderedLists(
+                new NoParagraphPropertyValueFormatter(), listStyleType);
+        }
     }
 }

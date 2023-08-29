@@ -42,5 +42,23 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             Assert.That(((HtmlEncodedString)resultOfString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
             Assert.That(((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
         }
+
+        [Test]
+        public void Style_attribute_is_removed_from_ordered_lists()
+        {
+            TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromOrderedLists(
+                new GovUkTypographyPropertyValueFormatter());
+        }
+
+        [TestCase("lower-alpha")]
+        [TestCase("lower-greek")]
+        [TestCase("lower-roman")]
+        [TestCase("upper-alpha")]
+        [TestCase("upper-roman")]
+        public void Permitted_style_attribute_is_converted_to_class_from_ordered_lists(string listStyleType)
+        {
+            TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassFromOrderedLists(
+                new GovUkTypographyPropertyValueFormatter(), listStyleType);
+        }
     }
 }

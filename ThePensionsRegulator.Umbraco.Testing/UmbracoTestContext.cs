@@ -10,6 +10,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
+using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Security.Principal;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -61,6 +62,16 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IUmbracoContextAccessor> UmbracoContextAccessor { get; private init; } = new();
 
         /// <summary>
+        /// Provides access to a TryGetPublishedSnapshot bool method that will return true if the "current" <see cref="IPublishedSnapshot" /> is not null.
+        /// </summary>
+        public Mock<IPublishedSnapshotAccessor> PublishedSnapshotAccessor { get; private init; } = new();
+
+        /// <summary>
+        /// A published snapshot is a point-in-time capture of the current state of everything that is "published".
+        /// </summary>
+        public Mock<IPublishedSnapshot> PublishedSnapshot { get; private init; } = new();
+
+        /// <summary>
         /// Provides access to the current <see cref="IVariationContextAccessor.VariationContext"/>
         /// </summary>
         public Mock<IVariationContextAccessor> VariationContextAccessor { get; private init; } = new();
@@ -89,6 +100,14 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// Provides access to Umbraco's cache of current published content.
         /// </summary>
         public Mock<IPublishedContentCache> PublishedContentCache { get; private init; } = new();
+
+        private readonly Dictionary<string, Mock<IPublishedContentType>> _contentTypes = new();
+
+        /// <summary>
+        /// Each content type represents an <see cref="IPublishedElement" /> type. Use <see cref="SetupContentType(string)" /> to add a content type.
+        /// </summary>
+        public IReadOnlyDictionary<string, Mock<IPublishedContentType>> ContentTypes { get; private set; } =
+            new ReadOnlyDictionary<string, Mock<IPublishedContentType>>(new Dictionary<string, Mock<IPublishedContentType>>());
 
         /// <summary>
         /// The identity associated with the default value of <see cref="CurrentPrincipal"/>.
@@ -156,10 +175,19 @@ namespace ThePensionsRegulator.Umbraco.Testing
                 localizationService: LocalizationService.Object
             );
 
+            PublishedSnapshot.Setup(x => x.Content).Returns(PublishedContentCache.Object);
+            PublishedSnapshotAccessor.Setup(x => x.TryGetPublishedSnapshot(out It.Ref<IPublishedSnapshot>.IsAny!))
+                .Callback(new TryGetPublishedSnapshotCallback((out IPublishedSnapshot snapshot) =>
+                {
+                    snapshot = PublishedSnapshot.Object;
+                }))
+                .Returns(true);
+
             CurrentIdentity.SetupGet(x => x.IsAuthenticated).Returns(false);
             CurrentPrincipal = new GenericPrincipal(CurrentIdentity.Object, Array.Empty<string>());
         }
 
+        delegate void TryGetPublishedSnapshotCallback(out IPublishedSnapshot snapshot);
         delegate void SessionTryGetValueCallback(string key, out byte[]? value);
         delegate bool SessionTryGetValueReturns(string key, out byte[]? value);
 
@@ -191,7 +219,22 @@ namespace ThePensionsRegulator.Umbraco.Testing
             var features = new FeatureCollection();
             features.Set(new UmbracoRouteValues(PublishedRequest.Object, new ControllerActionDescriptor(), TEMPLATE_NAME));
             HttpContext.SetupGet(x => x.Features).Returns(features);
+        }
 
+        /// <summary>
+        /// Adds a new content type to <see cref="ContentTypes"/> and other mocks within the <see cref="UmbracoTestContext"/>.
+        /// </summary>
+        /// <param name="contentTypeAlias">The alias of the content type.</param>
+        /// <returns>The updated test context.</returns>
+        public UmbracoTestContext SetupContentType(string contentTypeAlias)
+        {
+            var contentType = new Mock<IPublishedContentType>();
+            contentType.Setup(x => x.Alias).Returns(contentTypeAlias);
+            PublishedContentCache.Setup(x => x.GetContentType(contentTypeAlias)).Returns(contentType.Object);
+
+            ContentTypes = new ReadOnlyDictionary<string, Mock<IPublishedContentType>>(_contentTypes);
+
+            return this;
         }
     }
 }

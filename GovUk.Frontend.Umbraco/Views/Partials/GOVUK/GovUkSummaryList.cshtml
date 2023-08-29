@@ -9,26 +9,26 @@
 @using Umbraco.Extensions
 @{
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
-    var listItems = Model.Content.Value<OverridableBlockListModel>("items")!;
+    var listItems = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItems)!;
 }
 <govuk-summary-list id="@Model.Content.Key" class="@cssClasses">
     @foreach (var listItem in listItems.Filter(listItems))
     {
         <govuk-summary-list-row class="@(listItem.Settings.Value<string>(PropertyAliases.CssClasses))">
-            <govuk-summary-list-row-key>@(listItem.Content.Value<string>("itemKey"))</govuk-summary-list-row-key>
-            <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>("itemValue"))</govuk-summary-list-row-value>
+            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</govuk-summary-list-row-key>
+            <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
             @{
-                var actionsModel = listItem.Content.Value<OverridableBlockListModel>("actions")!;
+                var actionsModel = listItem.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions)!;
                 var actions = actionsModel.Filter(actionsModel);
                 if (actions.Any()) 
                 {
                     <govuk-summary-list-row-actions>
                     @foreach (var action in actions)
                     {
-                        var link = action.Content.Value<Link>("link");
+                        var link = action.Content.Value<Link>(PropertyAliases.SummaryListActionLink);
                         if (!string.IsNullOrEmpty(link?.Url))
                         {
-                            <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@(listItem.Content.Value<string>("itemKey"))">@(action.Content.Value<string>("text"))</govuk-summary-list-row-action>
+                            <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))">@(action.Content.Value<string>(PropertyAliases.SummaryListActionLinkText))</govuk-summary-list-row-action>
                         }
                     }
                     </govuk-summary-list-row-actions>

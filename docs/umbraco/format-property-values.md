@@ -8,7 +8,7 @@ A property value formatter is a similar feature introduced by this project, whic
 
 ### Step 1: The property value converter
 
-The property value converter for the property type needs to inject `IEnumerable<IPropertyValueFormatter>` and call its `ApplyFormatters` method to update the property value. Default property value converters don't do this. If you create a new property value converter that does apply property value formatters, the new property value converter will be discovered automatically. If there is an existing property value converter for the property type you need to remove that first. The [property value converter](https://docs.umbraco.com/umbraco-cms/extending/property-editors/property-value-converters/) documentation explains how to do this.
+The property value converter for the property type needs to inject `IEnumerable<IPropertyValueFormatter>` and call its `ApplyFormatters` method to update the property value. Default property value converters don't do this. If you create a new property value converter that does apply property value formatters, the new property value converter will be discovered automatically. If there is an existing property value converter for the property type you need to remove that first. The [property value converter documentation](https://docs.umbraco.com/umbraco-cms/extending/property-editors/property-value-converters/) explains how to do this.
 
 ```csharp
 using Umbraco.Cms.Core.PropertyEditors;
@@ -50,6 +50,8 @@ public class ExamplePropertyValueFormatter : IPropertyValueFormatter
     public object FormatValue(object? value) => value;
 }
 ```
+
+`IsFormatter` sets which property editor(s) this property value formatter can handle values from. The same property editor(s) should be handled by a single property value converter. `FormatValue` must handle and return the type or types returned by `GetPropertyValueType` on that property value converter.
 
 Register the `IPropertyValueFormatter` with dependency injection. You can register multiple formatters by mapping `IPropertyValueFormatter` to each one as shown below.
 

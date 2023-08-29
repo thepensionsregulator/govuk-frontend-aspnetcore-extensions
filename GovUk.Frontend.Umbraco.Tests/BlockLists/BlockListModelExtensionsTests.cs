@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System.Linq;
 using ThePensionsRegulator.Umbraco.Testing;
 
-namespace GovUk.Frontend.Umbraco.Tests
+namespace GovUk.Frontend.Umbraco.Tests.BlockLists
 {
     public class BlockListModelExtensionsTests
     {
@@ -21,7 +21,7 @@ namespace GovUk.Frontend.Umbraco.Tests
                 );
 
             // Act
-            var result = BlockListModelExtensions.FindBlockByBoundProperty(blockList, propertyName);
+            var result = blockList.FindBlockByBoundProperty(propertyName);
 
             // Assert
             if (expected)
@@ -48,7 +48,7 @@ namespace GovUk.Frontend.Umbraco.Tests
                 );
 
             // Act
-            var result = BlockListModelExtensions.FindBlockByClass(blockList, className);
+            var result = blockList.FindBlockByClass(className);
 
             // Assert
             if (expected)
@@ -86,7 +86,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             var blockLists = new[] { blockList1, blockList2 };
 
             // Act
-            var result = BlockListModelExtensions.FindBlockByClass(blockLists, className);
+            var result = blockLists.FindBlockByClass(className);
 
             // Assert
             if (expected)
@@ -123,7 +123,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             var blockLists = new[] { blockList1, blockList2 };
 
             // Act
-            var result = BlockListModelExtensions.FindBlocksByClass(blockLists, className);
+            var result = blockLists.FindBlocksByClass(className);
 
             // Assert
             Assert.That(result.Count(), Is.EqualTo(expected));

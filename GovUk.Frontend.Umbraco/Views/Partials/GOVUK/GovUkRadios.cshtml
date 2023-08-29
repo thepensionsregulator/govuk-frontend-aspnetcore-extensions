@@ -11,7 +11,7 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    var radioButtons = Model.Content.Value<OverridableBlockListModel>("radioButtons")!;
+    var radioButtons = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.RadioButtons)!;
     var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
     if (!string.IsNullOrEmpty(modelPropertyName))
@@ -21,7 +21,7 @@
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     var cssClassesForRadios = (Model.Settings.Value<string>("layout") == "Horizontal") ? "govuk-radios--inline" : null;
-    var fieldsetHint = Model.Content.Value<IHtmlEncodedString>("hint");
+    var fieldsetHint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(fieldsetHint?.ToHtmlString()) ? null : modelPropertyName + "-hint";
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
@@ -57,18 +57,18 @@
                 }
                 @foreach (var block in radioButtons.Filter(radioButtons))
                 {
-                    if (block.Content.ContentType.Alias == "govukRadiosDivider")
+                    if (block.Content.ContentType.Alias == ElementTypeAliases.RadiosDivider)
                     {
-                        <govuk-radios-divider>@(string.IsNullOrWhiteSpace(block.Content.Value<string>("text")) ? "or" : block.Content.Value<string>("text"))</govuk-radios-divider>
+                        <govuk-radios-divider>@(string.IsNullOrWhiteSpace(block.Content.Value<string>(PropertyAliases.RadiosDividerText)) ? "or" : block.Content.Value<string>(PropertyAliases.RadiosDividerText))</govuk-radios-divider>
                     }
                     else
                     {
-                        var value = block.Content.Value<string>("value") ?? string.Empty;
-                        var radioHint = block.Content.Value<IHtmlEncodedString>("hint");
-                        var conditional = block.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
+                        var value = block.Content.Value<string>(PropertyAliases.RadioButtonValue) ?? string.Empty;
+                        var radioHint = block.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
+                        var conditional = block.Content.Value<OverridableBlockListModel>(PropertyAliases.RadioConditionalBlocks)!;
 
                         <govuk-radios-item value="@value" class="@(block.Settings.Value<string>(PropertyAliases.CssClasses))" checked="@(value.ToUpperInvariant() == attemptedValue)" input-aria-invalid="@ariaInvalid">
-                            @(block.Content.Value<string>("label"))
+                            @(block.Content.Value<string>(PropertyAliases.RadioButtonLabel))
                             @if (!string.IsNullOrWhiteSpace(radioHint?.ToHtmlString()))
                             {
                                 <govuk-radios-item-hint>@radioHint</govuk-radios-item-hint>

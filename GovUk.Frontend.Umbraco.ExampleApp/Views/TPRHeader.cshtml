@@ -4,7 +4,6 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Cms.Web.Common.PublishedModels;
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
-@using GovUk.Frontend.Umbraco.Typography
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject IConfiguration Configuration
@@ -14,8 +13,8 @@
     var settings = Umbraco.ContentSingleAtXPath("//settings");
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var skipLink = string.IsNullOrEmpty(settings?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : settings?.Value<string>("govukSkipLinkText");
-    var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? ComponentGenerator.HeaderLogoDefaultAlt : settings?.Value<string>("tprHeaderLogoAlt");
-    var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? ComponentGenerator.FooterLogoDefaultAlt : settings?.Value<string>("tprFooterLogoAlt");
+    var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprHeaderLogoAlt");
+    var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -73,7 +72,7 @@
                 <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithNoLabelOrLinks" />
             </div>
             <tpr-header-bar>
-                <tpr-header-bar-logo alt="@headerLogoAlt" href="" />
+                <tpr-header-bar-logo alt="The Pensions Regulator logo" href="" />
                 <tpr-header-bar-label></tpr-header-bar-label>
             </tpr-header-bar>
 
@@ -183,7 +182,7 @@
         </tpr-footer-bar>
 
         <tpr-footer-bar class="govuk-!-margin-top-5">
-            <tpr-footer-bar-logo alt="@footerLogoAlt" href="" />
+            <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
             <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
         </tpr-footer-bar>
     }

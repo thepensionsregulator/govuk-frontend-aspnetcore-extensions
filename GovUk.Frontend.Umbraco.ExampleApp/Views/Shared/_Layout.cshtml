@@ -1,6 +1,5 @@
 ﻿@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
-@using GovUk.Frontend.Umbraco.Typography
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.Umbraco.Models;
 @using Umbraco.Cms.Core.Models
@@ -11,8 +10,8 @@
     var home = Umbraco.ContentSingleAtXPath("//home");
     var settings = Umbraco.ContentSingleAtXPath("//settings");
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
-    var headerLockup = new TprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
-    var footerLockup = new TprFooterLockupModel(settings!);
+    var headerLockup = new UmbracoTprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
+    var footerLockup = new UmbracoTprFooterLockupModel(settings!);
 }
 <!DOCTYPE html>
 <html lang="en">

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
+using ThePensionsRegulator.Frontend.Umbraco;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 
@@ -46,10 +47,14 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                 .AddComposers()
                 .Build();
 
-            services.AddGovUkFrontendUmbracoExtensions(options =>
+            if (_config.GetValue<bool>("TPRStyles"))
             {
-                options.AddImportsToHtml = false;
-            });
+                services.AddTprFrontendUmbraco();
+            }
+            else
+            {
+                services.AddGovUkFrontendUmbraco();
+            }
         }
 
         /// <summary>
@@ -80,7 +85,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                 });
 
 
-            app.UseGovUkFrontendUmbracoExtensions(mvcOptions, umbracoContextAccessor, publishedValueFallback);
+            app.UseTprFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
         }
     }
 }

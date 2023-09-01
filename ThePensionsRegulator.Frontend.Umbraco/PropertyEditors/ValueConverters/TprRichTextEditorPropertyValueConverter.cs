@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using GovUk.Frontend.Umbraco.PropertyEditors.ValueConverters;
+using System.Collections.Generic;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
-using ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters;
-using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Macros;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Templates;
 using Umbraco.Cms.Core.Web;
 
-namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueConverters
+namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueConverters
 {
     /// <summary>
     /// A property value converter for rich text properties using TinyMCE which does the built-in conversion and then applies any 
@@ -15,17 +14,11 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueConverters
     /// </summary>
     /// <remarks>The property editors supported by this property value converter are all identical.
     /// They exist to apply different property value formatters depending on the property.</remarks>
-    public class GovUkRichTextEditorPropertyValueConverter : RichTextEditorPropertyValueConverter
+    public class TprRichTextEditorPropertyValueConverter : GovUkRichTextEditorPropertyValueConverter
     {
-        private readonly List<string> _propertyEditorAliases = new List<string> {
-            Constants.PropertyEditors.Aliases.TinyMce,
-            PropertyEditorAliases.GovUkInlineRichText,
-            PropertyEditorAliases.GovUkInlineInverseRichText
-        };
+        private readonly List<string> _propertyEditorAliases = new();
 
-        protected IEnumerable<string> GovUkPropertyEditorAliases() => _propertyEditorAliases;
-
-        public GovUkRichTextEditorPropertyValueConverter(IUmbracoContextAccessor umbracoContextAccessor,
+        public TprRichTextEditorPropertyValueConverter(IUmbracoContextAccessor umbracoContextAccessor,
             IMacroRenderer macroRenderer,
             HtmlLocalLinkParser linkParser,
             HtmlUrlParser urlParser,
@@ -33,6 +26,8 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueConverters
             IEnumerable<IPropertyValueFormatter> propertyValueFormatters) :
             base(umbracoContextAccessor, macroRenderer, linkParser, urlParser, imageSourceParser, propertyValueFormatters)
         {
+            _propertyEditorAliases.AddRange(GovUkPropertyEditorAliases());
+            _propertyEditorAliases.Add(PropertyEditorAliases.TprHeaderFooterRichText);
         }
 
         /// <inheritdoc />

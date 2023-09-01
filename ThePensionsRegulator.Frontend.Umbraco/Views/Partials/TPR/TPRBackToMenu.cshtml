@@ -1,18 +1,17 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @addTagHelper *, ThePensionsRegulator.Frontend
 @using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
-@inject IContextAwareHostUpdater hostUpdater
-@using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Typography
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Frontend.Umbraco.Services;
 @using ThePensionsRegulator.Umbraco.BlockLists;
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Extensions
 @{
     var text = Model.Content.Value<string>("text");
     var link = Model.Content.Value<Link>("link");
-    link.Url = hostUpdater.UpdateHost(link.Url, Context.Request.Host.Host);
+    if (link is null) { return; }
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
 <tpr-back-to-menu href="@link.Url" id="@Model.Content.Key" class="@cssClasses">@text</tpr-back-to-menu>

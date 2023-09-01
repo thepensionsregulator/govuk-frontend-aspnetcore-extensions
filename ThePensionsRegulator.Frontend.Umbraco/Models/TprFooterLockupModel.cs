@@ -4,7 +4,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Extensions;
 
-namespace GovUk.Frontend.Umbraco.Models
+namespace ThePensionsRegulator.Frontend.Umbraco.Models
 {
     public class TprFooterLockupModel
     {
@@ -12,7 +12,7 @@ namespace GovUk.Frontend.Umbraco.Models
 
         public TprFooterLockupModel(IPublishedContent settings)
         {
-            _settings = settings ?? throw new System.ArgumentNullException(nameof(settings));
+            _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
         public bool ShowBackToTop { get; init; } = true;
         public bool ShowFooter { get; init; } = true;

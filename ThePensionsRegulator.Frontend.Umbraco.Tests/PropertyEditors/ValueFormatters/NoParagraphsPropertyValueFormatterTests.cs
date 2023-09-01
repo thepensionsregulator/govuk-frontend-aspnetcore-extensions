@@ -1,18 +1,17 @@
-﻿using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
-using NUnit.Framework;
+﻿using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Strings;
 
-namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
+namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
     [TestFixture]
     public class NoParagraphsPropertyValueFormatterTests
     {
         [TestCase(Constants.PropertyEditors.Aliases.TinyMce, false)]
-        [TestCase(PropertyEditorAliases.GovUkInlineRichText, false)]
-        [TestCase(PropertyEditorAliases.GovUkInlineInverseRichText, false)]
+        [TestCase(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineRichText, false)]
+        [TestCase(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineInverseRichText, false)]
         [TestCase(PropertyEditorAliases.TprHeaderFooterRichText, true)]
         public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)
         {

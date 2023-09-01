@@ -1,5 +1,10 @@
-﻿/* Import the govuk-frontend stylesheet so that the rich text editor can look like the GOV.UK Design System.*/
-@use '../../GovUk.Frontend.AspNetCore.Extensions/wwwroot/govuk/govuk-frontend.css';
+﻿/* Import the TPR stylesheet (which includes govuk-frontend) so that the rich text editor can look like the GOV.UK Design System with TPR branding.*/
+@use '../../ThePensionsRegulator.Frontend/wwwroot/tpr/tpr.css';
+
+/* The TPR sticky footer applies a 100% height to these, but we do not want that to apply in the rich text editor 
+   as it causes it to grow beyond its configured size.
+*/
+html, body { height: auto; }
 
 /* The following styles appear in the style select dropdown when enabled, using the names defined in the `umb_name` comments.
    position: static is specified only so that the selector is included in the compiled stylesheet along with the comment.
@@ -27,5 +32,9 @@ h3.govuk-heading-s {
 
 /**umb_name:Paragraph*/
 p.govuk-body {
+    position: static;
+}
+/**umb_name:Add Link*/
+p.tpr-add-link {
     position: static;
 }

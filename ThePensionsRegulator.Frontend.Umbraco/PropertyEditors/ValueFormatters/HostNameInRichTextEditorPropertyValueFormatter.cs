@@ -1,14 +1,14 @@
-﻿using GovUk.Frontend.Umbraco.Services;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 
-namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
+namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
 {
     /// <summary>
     /// Apply the configured <see cref="IContextAwareHostUpdater"/> to links in HTML from the Umbraco rich text editor
@@ -19,8 +19,8 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         private readonly IContextAwareHostUpdater _contextAwareHostUpdater;
         private readonly List<string> _propertyEditorAliases = new List<string> {
             Constants.PropertyEditors.Aliases.TinyMce,
-            PropertyEditorAliases.GovUkInlineRichText,
-            PropertyEditorAliases.GovUkInlineInverseRichText,
+            GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineRichText,
+            GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineInverseRichText,
             PropertyEditorAliases.TprHeaderFooterRichText
         };
 

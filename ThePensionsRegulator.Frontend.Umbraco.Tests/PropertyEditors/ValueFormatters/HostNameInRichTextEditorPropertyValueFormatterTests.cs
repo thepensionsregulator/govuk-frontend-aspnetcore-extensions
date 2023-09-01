@@ -1,12 +1,11 @@
-﻿using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
-using GovUk.Frontend.Umbraco.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Moq;
-using NUnit.Framework;
+using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
+using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Strings;
 
-namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
+namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
     [TestFixture]
     public class HostNameInRichTextEditorPropertyValueFormatterTests

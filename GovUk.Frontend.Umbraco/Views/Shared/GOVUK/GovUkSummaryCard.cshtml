@@ -14,7 +14,7 @@
         headingLevel = 2;
     }
     var cardActionsModel = Model.Content?.Value<OverridableBlockListModel>(PropertyAliases.SummaryCardActions)!;
-    var cardActions = cardActionsModel.Filter(cardActionsModel);
+    var cardActions = cardActionsModel.FilteredBlocks();
     var listItems = Model.Content?.Value<OverridableBlockListModel>(PropertyAliases.SummaryCardListItems)!;
 }
 <govuk-summary-card id="@Model.Content?.Key" class="@cssClasses">
@@ -33,14 +33,14 @@
         </govuk-summary-card-actions>
     }
     <govuk-summary-list>
-        @foreach (var listItem in listItems.Filter(listItems))
+        @foreach (var listItem in listItems.FilteredBlocks())
         {
             <govuk-summary-list-row class="@(listItem.Settings.Value<string>(PropertyAliases.CssClasses))">
                 <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</govuk-summary-list-row-key>
                 <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
                 @{
                     var rowActionsModel = listItem.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions)!;
-                    var rowActions = rowActionsModel.Filter(rowActionsModel);
+                    var rowActions = rowActionsModel.FilteredBlocks();
                     if (rowActions.Any())
                     {
                         <govuk-summary-list-row-actions>

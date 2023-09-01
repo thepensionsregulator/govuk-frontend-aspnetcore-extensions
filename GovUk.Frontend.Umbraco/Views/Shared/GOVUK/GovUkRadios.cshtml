@@ -54,7 +54,7 @@
                 {
                     <govuk-radios-error-message>@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-radios-error-message>
                 }
-                @foreach (var block in radioButtons.Filter(radioButtons))
+                @foreach (var block in radioButtons.FilteredBlocks())
                 {
                     if (block.Content.ContentType.Alias == ElementTypeAliases.RadiosDivider)
                     {

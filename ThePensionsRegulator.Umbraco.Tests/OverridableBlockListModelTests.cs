@@ -102,7 +102,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             // Arrange
             var blockLists = CreateThreeNestedOverridableBlockLists();
 
-            var filter = new Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>>(x => x.Reverse());
+            var filter = new Func<OverridableBlockListItem, bool>(block => true);
 
             // Act
             var model = new OverridableBlockListModel(blockLists.ParentBlockList, filter);
@@ -123,7 +123,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             // Arrange
             var blockLists = CreateThreeNestedOverridableBlockLists();
 
-            var filter = new Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>>(x => x.Reverse());
+            var filter = new Func<OverridableBlockListItem, bool>(block => true);
 
             // Act
             var model = new OverridableBlockListModel(blockLists.ParentBlockList, null);
@@ -146,7 +146,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
                                     )
                                 );
 
-            blockList.Filter = blocks => Array.Empty<OverridableBlockListItem>();
+            blockList.Filter = block => false;
 
             // Act + Assert
             Assert.That(() => blockList[0], Throws.Nothing);

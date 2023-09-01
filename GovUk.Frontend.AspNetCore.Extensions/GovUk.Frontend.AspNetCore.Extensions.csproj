@@ -44,6 +44,8 @@
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.1.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
+		<PackageReference Include="Smidge.InMemory" Version="4.3.0" />
+		<PackageReference Include="Smidge.Nuglify" Version="4.3.0" />
 	</ItemGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
@@ -165,6 +167,14 @@
 	
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_govuk-list.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-radios.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-checkboxes.scss" />
 	</ItemGroup>
 	
 </Project>

@@ -1,0 +1,8 @@
+﻿/* The default style is width: 40px, which works fine if the divider is "or" but not for anything longer. 
+   Padding is set in px to match the size of checkboxes, which is set in px.
+*/
+.govuk-checkboxes__divider {
+    width: auto;
+    text-align: left;
+    padding-left: 12px;
+}

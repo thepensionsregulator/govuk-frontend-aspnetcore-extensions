@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace ThePensionsRegulator.Frontend.Umbraco.Services
+namespace ThePensionsRegulator.Frontend.Services
 {
     /// <summary>
     /// Updates the host for a TPR service so that, for example, links to service.tpr.local can be transformed to service.thepensionsregulator.gov.uk in production

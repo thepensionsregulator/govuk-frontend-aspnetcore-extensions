@@ -1,4 +1,4 @@
-﻿using ThePensionsRegulator.Frontend.Umbraco.Services;
+﻿using ThePensionsRegulator.Frontend.Services;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {

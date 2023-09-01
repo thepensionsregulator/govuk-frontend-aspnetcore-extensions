@@ -1,0 +1,24 @@
+﻿@using ThePensionsRegulator.Frontend.HtmlGeneration;
+@using ThePensionsRegulator.Frontend.Models;
+@model TprFooterLockupModel
+@addTagHelper *, ThePensionsRegulator.Frontend
+@{
+    var backToTop = Model.BackToTopText;
+    if (string.IsNullOrEmpty(backToTop)) { backToTop = ComponentGenerator.BackToTopLinkDefaultContent; }
+    var footerLogoAlt = Model.LogoAlternativeText;
+    if (string.IsNullOrEmpty(footerLogoAlt) && !string.IsNullOrEmpty(Model.LogoHref)) { footerLogoAlt = ComponentGenerator.FooterLogoDefaultAlt; }
+}
+@if (Model.ShowBackToTop)
+{
+    <tpr-back-to-top class="@Model.BackToTopClass">@backToTop</tpr-back-to-top>
+}
+@if (Model.ShowFooter)
+{
+    <tpr-footer-bar class="@Model.FooterBarClass">
+        <tpr-footer-bar-logo alt="@footerLogoAlt" href="@Model.LogoHref"/>
+        <tpr-footer-bar-copyright>@Model.Copyright</tpr-footer-bar-copyright>
+        <tpr-footer-bar-content allow-html="true">
+            @Html.Raw(Model.FooterBarContent)
+        </tpr-footer-bar-content>
+    </tpr-footer-bar>
+}

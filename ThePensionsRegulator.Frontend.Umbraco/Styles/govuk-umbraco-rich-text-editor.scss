@@ -1,5 +1,5 @@
 ﻿/* Import the TPR stylesheet (which includes govuk-frontend) so that the rich text editor can look like the GOV.UK Design System with TPR branding.*/
-@use '../../GovUk.Frontend.AspNetCore.Extensions/wwwroot/tpr/tpr.css';
+@use '../../ThePensionsRegulator.Frontend/wwwroot/tpr/tpr.css';
 
 /* The TPR sticky footer applies a 100% height to these, but we do not want that to apply in the rich text editor 
    as it causes it to grow beyond its configured size.

@@ -15,7 +15,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Models
         {
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
-        public override string? BackToTopText => string.IsNullOrEmpty(_settings.Value<string>("tprBackToTopText")) ? "Back to top" : _settings.Value<string>("tprBackToTopText");
+        public override string BackToTopText => string.IsNullOrEmpty(_settings.Value<string>("tprBackToTopText")) ? "Back to top" : _settings.Value<string>("tprBackToTopText")!;
         public override string? LogoAlternativeText => _settings.Value<string>("tprFooterLogoAlt");
         public override string? LogoHref => _settings.Value<Link>("tprFooterLogoHref")?.Url;
         public override string? Copyright => _settings.Value<string?>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString());

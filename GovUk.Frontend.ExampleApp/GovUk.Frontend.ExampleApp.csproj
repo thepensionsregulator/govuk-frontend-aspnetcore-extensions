@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
     <ProjectReference Include="..\SharedResourceLibrary\GovUk.Frontend.ExampleSharedResource.csproj" />
+    <ProjectReference Include="..\ThePensionsRegulator.Frontend\ThePensionsRegulator.Frontend.csproj" />
   </ItemGroup>
 
   <ItemGroup>

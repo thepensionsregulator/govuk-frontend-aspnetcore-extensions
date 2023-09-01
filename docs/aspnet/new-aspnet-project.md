@@ -1,6 +1,6 @@
 # Configure a new ASP.NET project
 
-1. Add `ThePensionsRegulator.GovUk.Frontend` NuGet package.
+1. Add `ThePensionsRegulator.GovUk.Frontend` and `ThePensionsRegulator.Frontend` NuGet packages. You must explicitly install both packages in order for MSBuild actions to run, even though the first is a transative dependency of the second. Note that the second one is only required if you're building an application for The Pensions Regulator.
 
 2. In `Startup.cs` add the following to the `ConfigureServices` method:
 
@@ -11,11 +11,11 @@
    {
        // Other code here
 
-       services.AddGovUkFrontendExtensions(options =>
-       {
-           // Avoid adding scripts which require 'unsafe-inline' in the content security policy
-           options.AddImportsToHtml = false;
-       });
+       // If you're using GOV.UK components and styles only, add the following line
+       services.AddGovUkFrontendExtensions();
+
+       // If you're using TPR components and styles, add this line instead
+       services.AddTprFrontend();
    }
    ```
 
@@ -46,6 +46,7 @@
    ```csharp
    @addTagHelper *, GovUk.Frontend.AspNetCore
    @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+   @addTagHelper *, ThePensionsRegulator.Frontend
    ```
 
 5. [Add validation rules to your model](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0) as you normally would for ASP.NET, using attributes from the [System.ComponentModel.DataAnnotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) namespace.

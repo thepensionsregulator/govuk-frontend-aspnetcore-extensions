@@ -4,7 +4,7 @@
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
 		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
 		 -->
-	<Target Name="BuildSass" BeforeTargets="BeforeBuild">
+	<Target Name="GovUkFrontend_BuildSass" BeforeTargets="BeforeBuild">
 		<PropertyGroup>
 			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src</GovUkFrontEndFolder>
 		</PropertyGroup>
@@ -24,7 +24,6 @@
 			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\</TargetFolder>
 		</PropertyGroup>
 		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-frontend.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(SourceFolder) $(TargetFolder)govuk\govuk-frontend.css"/>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)tpr.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(SourceFolder) $(TargetFolder)tpr\tpr.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using ThePensionsRegulator.Frontend;
 
 namespace GovUk.Frontend.ExampleApp
 {
@@ -29,10 +30,14 @@ namespace GovUk.Frontend.ExampleApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddGovUkFrontendExtensions(options =>
+            if (Configuration.GetValue<bool>("TPRStyles"))
             {
-                options.AddImportsToHtml = false;
-            });
+                services.AddTprFrontend();
+            }
+            else
+            {
+                services.AddGovUkFrontendExtensions();
+            }
 
             // Comment out this section to avoid using the Localization
             services.AddLocalization(p => p.ResourcesPath = "Resources");

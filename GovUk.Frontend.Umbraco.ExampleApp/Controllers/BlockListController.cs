@@ -28,7 +28,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             };
 
             // Filter out a block in the block list
-            viewModel.Page.Blocks!.Filter = blocks => blocks.Where(block => block.Settings.Value<string>("cssClassesForRow") != "filter-this");
+            viewModel.Page.Blocks!.Filter = block => block.Settings.Value<string>("cssClassesForRow") != "filter-this";
 
             // Override content in the block list
             viewModel.Page.Blocks.First(x => x.GridRowClassList().Contains("override-this"))?

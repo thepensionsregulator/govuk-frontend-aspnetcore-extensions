@@ -54,7 +54,7 @@
                     {
                         <govuk-checkboxes-error-message>@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-checkboxes-error-message>
                     }
-                    foreach (var block in checkboxes.Filter(checkboxes))
+                    foreach (var block in checkboxes.FilteredBlocks())
                     {
                         if (block.Content.ContentType.Alias == ElementTypeAliases.CheckboxesDivider)
                         {

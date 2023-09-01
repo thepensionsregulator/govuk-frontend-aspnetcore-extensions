@@ -8,10 +8,9 @@ using ThePensionsRegulator.Umbraco.BlockLists
 
 var viewModel = new MyDocumentType(CurrentPage, null);
 
-viewModel.Blocks!.Filter = model =>
-    model.Where(block =>
+viewModel.Blocks!.Filter = block =>
         block.Content.ContentType.Alias != GovukRadio.ModelTypeAlias ||
-        ((GovukRadio)block.Content).Value != "not-relevant");
+        ((GovukRadio)block.Content).Value != "not-relevant";
 
 /// View
 <partial name="GOVUK/BlockList" model="Model.Blocks" />

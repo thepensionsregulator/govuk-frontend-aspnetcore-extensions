@@ -2,8 +2,8 @@ using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.Umbraco;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
-using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 
 namespace ThePensionsRegulator.Frontend.Umbraco

@@ -1,4 +1,4 @@
-﻿/* Import the TPR stylesheet (which includes govuk-frontend) so that the rich text editor can look like the GOV.UK Design System with TPR branding.*/
+﻿/* Import the govuk-frontend stylesheet so that the rich text editor can look like the GOV.UK Design System.*/
 @use '../../GovUk.Frontend.AspNetCore.Extensions/wwwroot/govuk/govuk-frontend.css';
 
 /* The following styles appear in the style select dropdown when enabled, using the names defined in the `umb_name` comments.

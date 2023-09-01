@@ -49,7 +49,7 @@ public class MyDocumentTypeController : RenderController
 In your shared layout, or just the views where you need it, add the following partial view just before the closing `body` tag.
 
 ```html
-<partial name="GOVUK/Validation" />
+<partial name="GOVUK/UmbracoValidation" />
 ```
 
 [Add validation rules to your model](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0) as you normally would for ASP.NET, using attributes from the [System.ComponentModel.DataAnnotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) namespace.

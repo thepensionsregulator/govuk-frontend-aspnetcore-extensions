@@ -83,6 +83,10 @@
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
+		<Content Include="ThePensionsRegulator.Frontend.props">
+			<Pack>true</Pack>
+			<PackagePath>build;buildTransitive</PackagePath>
+		</Content>
 
 		<Content Include="ThePensionsRegulator.Frontend.targets">
 			<Pack>true</Pack>

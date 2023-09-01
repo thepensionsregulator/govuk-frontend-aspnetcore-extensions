@@ -7,6 +7,9 @@ parameters:
     displayName: Push ThePensionsRegulator.Umbraco to nuget.org
     type: boolean
     default: false
+  - name: pushTprToNuGet
+    displayName: Push ThePensionsRegulator.Frontend to nuget.org
+    default: false
   - name: pushGovUkUmbracoToNuGet
     displayName: Push ThePensionsRegulator.GovUk.Frontend.Umbraco to nuget.org
     type: boolean
@@ -114,7 +117,7 @@ steps:
     inputs:
       command: "build"
       arguments: --configuration $(buildConfiguration)
-      projects: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj
+      projects: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend\ThePensionsRegulator.Frontend.csproj
 
   - task: DotNetCoreCLI@2
     displayName: dotnet build
@@ -161,6 +164,17 @@ steps:
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
+  - ${{ if eq(parameters.pushTprToNuGet, true) }}:
+      - task: CopyFiles@2
+        displayName: Copy ThePensionsRegulator.Frontend package to staging folder
+        inputs:
+          SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend\bin\$(buildConfiguration)
+          Contents: |
+            ThePensionsRegulator.Frontend*.nupkg
+            !ThePensionsRegulator.Frontend*.symbols.nupkg
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+          flattenFolders: true
+
   - ${{ if eq(parameters.pushGovUkUmbracoToNuGet, true) }}:
       - task: CopyFiles@2
         displayName: Copy GovUk.Frontend.Umbraco package to staging folder
@@ -183,7 +197,7 @@ steps:
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
-  - ${{ if or(eq(parameters.pushGovUkToNuGet, true), eq(parameters.pushUmbracoToNuGet, true), eq(parameters.pushGovUkUmbracoToNuGet, true), eq(parameters.pushTestingToNuGet, true)) }}:
+  - ${{ if or(eq(parameters.pushGovUkToNuGet, true), eq(parameters.pushUmbracoToNuGet, true), eq(parameters.pushTprToNuGet, true), eq(parameters.pushGovUkUmbracoToNuGet, true), eq(parameters.pushTestingToNuGet, true)) }}:
       - task: NuGetCommand@2
         displayName: "Push to nuget.org"
         condition: and(succeeded(), eq(variables.allowPush, true))

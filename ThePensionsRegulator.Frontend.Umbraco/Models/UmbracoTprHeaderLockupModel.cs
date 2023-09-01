@@ -15,7 +15,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Models
             _settings = settings ?? throw new System.ArgumentNullException(nameof(settings));
         }
 
-        public override string? SkipLinkText => _settings.Value<string>("govukSkipLinkText");
+        public override string SkipLinkText => string.IsNullOrEmpty(_settings.Value<string>("govukSkipLinkText")) ? "Skip to main content" : _settings.Value<string>("govukSkipLinkText")!;
         public override string? Phase => _settings.Value<string>("govukPhase");
         public override string? PhaseBannerText => _settings.Value<IHtmlEncodedString>("govukPhaseBannerText")?.ToHtmlString();
         public override string? LogoAlternativeText => _settings.Value<string>("tprHeaderLogoAlt");

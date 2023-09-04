@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core.Models.Blocks;
+﻿using ThePensionsRegulator.Umbraco.Blocks;
+using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Blocks

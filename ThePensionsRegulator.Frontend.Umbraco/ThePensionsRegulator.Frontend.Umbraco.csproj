@@ -109,6 +109,12 @@
 		<Content Update="uSync\v9\ContentTypes\tprheader.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprimage.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\DataTypes\TPRBlockGrid.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRRichTextEditorHeaderAndFooter.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

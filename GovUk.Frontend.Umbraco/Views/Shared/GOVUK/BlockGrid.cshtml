@@ -1,0 +1,16 @@
+﻿@using Umbraco.Extensions
+@using Umbraco.Cms.Core.Models.Blocks
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridModel>
+@{
+    if (Model?.Any() != true) { return; }
+
+    // get the number of columns defined for the grid
+    var gridColumns = Model.GridColumns;
+
+    <div class="umb-block-grid"
+     data-grid-columns="@(Model.GridColumns?.ToString() ?? "12");"
+     style="--umb-block-grid--grid-columns: @(Model.GridColumns?.ToString() ?? "12");">
+        <partial name="GOVUK/BlockGridItems" />
+    </div>
+}

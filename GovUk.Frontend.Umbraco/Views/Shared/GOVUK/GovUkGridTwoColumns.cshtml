@@ -1,0 +1,36 @@
+﻿@using Umbraco.Cms.Core.Models.Blocks;
+@using Umbraco.Cms.Core.Models.PublishedContent;
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockGridItem>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var item = Model;
+
+        var gridItem = item as BlockGridItem;
+
+        // get the content and settings of the block
+        var content = item.Content;
+        var settings = item.Settings;
+        // get the areas of the block
+        var areas = gridItem?.Areas;
+        // get the dimensions of the block
+        var rowSpan = gridItem?.RowSpan;
+        var columnSpan = gridItem?.ColumnSpan;
+
+        if (areas != null && areas.Any())
+        {
+<div class="umb-block-grid__area-container govuk-grid-row"
+     style="--umb-block-grid--area-grid-columns: @(gridItem!.AreaGridColumns?.ToString() ?? gridItem!.GridColumns?.ToString() ?? "12");">
+    @foreach (var area in areas)
+    {
+        <div class="umb-block-grid__area govuk-grid-column govuk-grid-column-one-half"
+         data-area-col-span="@area.ColumnSpan"
+         data-area-row-span="@area.RowSpan"
+         data-area-alias="@area.Alias"
+         style="--umb-block-grid--grid-columns: @gridItem!.ColumnSpan;--umb-block-grid--area-column-span: @gridItem!.ColumnSpan; --umb-block-grid--area-row-span: @gridItem!.RowSpan;">
+            <partial name="GOVUK/BlockGridItems" model="area" />
+        </div>
+    }
+</div>
+        }
+    }

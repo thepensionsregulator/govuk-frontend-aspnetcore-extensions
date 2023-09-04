@@ -1,0 +1,11 @@
+﻿@using GovUk.Frontend.Umbraco.ExampleApp.Controllers;
+@using GovUk.Frontend.Umbraco.ExampleApp.Models;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockGridViewModel>
+@section head{
+	<title>@Model.Page!.Name</title>
+}
+
+@using (Html.BeginUmbracoForm<BlockGridSurfaceController>(nameof(BlockGridSurfaceController.Index), new { }, new { novalidate = "novalidate" }))
+{
+	<partial name="GOVUK/BlockGrid" model="Model.Page!.Blocks" />
+}

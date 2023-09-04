@@ -15,7 +15,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
     public class OverridableBlockListModel : IEnumerable<OverridableBlockListItem>
     {
         private readonly List<OverridableBlockListItem> _items = new();
-        private static Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> DefaultFilter = (x => x);
+        private static Func<OverridableBlockListItem, bool> DefaultFilter = (x => true);
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
@@ -30,7 +30,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        public OverridableBlockListModel(IEnumerable<BlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>>? filter = null, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
+        public OverridableBlockListModel(IEnumerable<BlockListItem> blockListItems, Func<OverridableBlockListItem, bool>? filter = null, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
         {
             if (blockListItems is null)
             {
@@ -96,12 +96,12 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
             }
         }
 
-        private Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> _filter = DefaultFilter;
+        private Func<OverridableBlockListItem, bool> _filter = DefaultFilter;
 
         /// <summary>
         /// The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.
         /// </summary>
-        public Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> Filter
+        public Func<OverridableBlockListItem, bool> Filter
         {
             get { return _filter; }
             set
@@ -112,7 +112,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
             }
         }
 
-        private void CopyFilterToDecendantBlockLists(IEnumerable<OverridableBlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> filter)
+        private void CopyFilterToDecendantBlockLists(IEnumerable<OverridableBlockListItem> blockListItems, Func<OverridableBlockListItem, bool> filter)
         {
             foreach (var blockListItem in blockListItems)
             {
@@ -134,7 +134,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
         /// <returns></returns>
         public IEnumerable<OverridableBlockListItem> FilteredBlocks()
         {
-            return Filter(_items);
+            return _items.Where(Filter);
         }
 
         /// <summary>

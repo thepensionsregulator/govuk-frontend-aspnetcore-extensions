@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;

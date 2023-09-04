@@ -1,10 +1,11 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Models;
-using Umbraco.Cms.Core.Models.Blocks;
+using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.Blocks;
 
 namespace GovUk.Frontend.Umbraco.Services
 {
     public interface IUmbracoPaginationFactory
     {
-        PaginationModel CreateFromPaginationBlock(BlockListItem block);
+        PaginationModel CreateFromPaginationBlock(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block);
     }
 }

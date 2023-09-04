@@ -1,8 +1,10 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
 @using ThePensionsRegulator.Umbraco.BlockLists;
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using ThePensionsRegulator.Umbraco;
 @using Umbraco.Extensions
 @{
     var caption = Model.Content.Value<string>("caption");

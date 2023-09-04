@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.BlockLists;
-using Umbraco.Cms.Core.Models.Blocks;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.Services
@@ -16,9 +17,9 @@ namespace GovUk.Frontend.Umbraco.Services
         /// <param name="fieldsetBlock">A block that potentially represents a fieldset</param>
         /// <param name="modelState">ModelState containing errors for the current request</param>
         /// <returns></returns>
-        public static IEnumerable<BlockListItem> FindFieldsetErrors(OverridableBlockListItem fieldsetBlock, ModelStateDictionary modelState)
+        public static IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> FindFieldsetErrors(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> fieldsetBlock, ModelStateDictionary modelState)
         {
-            if (fieldsetBlock?.Content?.ContentType?.Alias != ElementTypeAliases.Fieldset) { return Array.Empty<BlockListItem>(); }
+            if (fieldsetBlock?.Content?.ContentType?.Alias != ElementTypeAliases.Fieldset) { return Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>(); }
 
             bool.TryParse(fieldsetBlock.Settings.GetProperty(PropertyAliases.FieldsetErrorsEnabled)?.GetValue()?.ToString(), out var fieldsetErrorsEnabled);
             var blocksWithinFieldset = fieldsetBlock.Content.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks);
@@ -29,7 +30,7 @@ namespace GovUk.Frontend.Umbraco.Services
                                                        && !string.IsNullOrEmpty(x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString())
                                                        && invalidFields.Contains(x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString()));
             }
-            return Array.Empty<BlockListItem>();
+            return Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
         }
     }
 }

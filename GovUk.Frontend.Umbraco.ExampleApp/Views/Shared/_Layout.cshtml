@@ -20,11 +20,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @if (useTPRstyles)
     {
-        <partial name="TPR/Head" />
+        <partial name="TPR/UmbracoHead" />
     }
     else
     {
-        <partial name="GOVUK/Head" />
+        <partial name="GOVUK/UmbracoHead" />
     }
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("head", required: false)
@@ -48,7 +48,7 @@
     {
         <partial name="TPR/TPRFooterLockup" model="footerLockup" />
     }
-    <partial name="GOVUK/BodyClosing" />
+    <partial name="TPR/UmbracoBodyClosing" />
     @RenderSection("scripts", required: false)
 </body>
 @await SmidgeHelper.JsHereAsync(debug: true)

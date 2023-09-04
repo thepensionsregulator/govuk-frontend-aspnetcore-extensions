@@ -33,13 +33,13 @@
      <body class="govuk-template__body ">
        <partial name="GOVUK/BodyOpen" />
        <main>@RenderBody()</main>
-       <partial name="GOVUK/BodyClosing" />
+       <partial name="TPR/BodyClosing" />
        <partial name="GOVUK/Validation" />
      </body>
    </html>
    ```
 
-   Note that `TPR/Head` imports TPR styles on top of the GOV.UK Design System. You can use the partial `GOVUK/Head` instead to use the GOV.UK Design System styles only.
+   Note that `TPR/Head` and `TPR/BodyClosing` imports TPR styles and scripts on top of the GOV.UK Design System. Use the partials `GOVUK/Head` and `GOVUK/BodyClosing` instead to use the GOV.UK Design System styles only.
 
 4. Add the following to your `Views/_ViewImports.cshtml` file:
 

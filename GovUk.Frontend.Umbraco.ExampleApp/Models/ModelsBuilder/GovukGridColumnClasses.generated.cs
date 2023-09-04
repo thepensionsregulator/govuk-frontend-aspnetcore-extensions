@@ -96,7 +96,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public static string GetColumnSizeFromDesktop(IGovukGridColumnClasses that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "columnSizeFromDesktop");
 
 		///<summary>
-		/// CSS classes for column
+		/// CSS classes for column: Applied to the grid column which contains this component and other adjacent components that have the same setting.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

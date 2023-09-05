@@ -14,6 +14,7 @@
     "~/App_Plugins/GOVUK/govuk.css"
   ],
   "javascript": [
-    "~/App_Plugins/GOVUK/govuk.controller.js"
+    "~/App_Plugins/GOVUK/govuk.controller.js",
+    "~/App_Plugins/GOVUK/blocks/controllers/govukPageHeading.controller.js"
   ]
 }

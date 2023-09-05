@@ -14,6 +14,7 @@
 		<ItemGroup>
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
 			<WwwrootFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
+			<PluginFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
 		</ItemGroup>
 
 		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high" />
@@ -21,6 +22,8 @@
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 
 		<!-- Look for the PackageReference to ThePensionsRegulator.GovUk.Frontend to get the current version. If it's missing then 
 		     ThePensionsRegulator.GovUk.Frontend is a transitive dependency of this package, and will have been unable to copy 
@@ -130,6 +133,18 @@
 		<!-- Generate .gitignore files so that files from the ThePensionsRegulator.Frontend.Umbraco package are not committed to the consuming project's source control. 
 			 There's no need to generate one for wwwroot\css because this package depends on ThePensionsRegulator.GovUk.Frontend.Umbraco, which already did that.
 		-->
+		<ItemGroup>
+			<TprFrontendUmbracoGitIgnoreText Include="TprFrontendUmbracoGitIgnoreText">
+				<Text>
+					*
+					!.gitignore
+				</Text>
+			</TprFrontendUmbracoGitIgnoreText>
+			<TprFrontendUmbracoGitIgnore Include="%(TprFrontendUmbracoGitIgnoreText.Text)" />
+		</ItemGroup>
+		<Message Text="Generating $(ProjectDir)App_Plugins\ThePensionsRegulator.Frontend.Umbraco\.gitignore" Importance="high" />
+		<WriteLinesToFile File="$(ProjectDir)App_Plugins\ThePensionsRegulator.Frontend.Umbraco\.gitignore" Lines="@(TprFrontendUmbracoGitIgnore)" Overwrite="True"/>
+		
 		<ItemGroup>
 			<TprFrontendUmbracoUSyncGitIgnoreText Include="TprFrontendUmbracoUSyncGitIgnoreText">
 				<Text>

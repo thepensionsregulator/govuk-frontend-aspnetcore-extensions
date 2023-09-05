@@ -1,4 +1,4 @@
-﻿using GovUk.Frontend.Umbraco.BlockLists;
+﻿using GovUk.Frontend.Umbraco.Blocks;
 using NUnit.Framework;
 using System.Linq;
 using ThePensionsRegulator.Umbraco.Testing;

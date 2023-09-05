@@ -5,7 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.BlockLists;
+using ThePensionsRegulator.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;

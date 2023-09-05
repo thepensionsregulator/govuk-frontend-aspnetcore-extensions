@@ -63,7 +63,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("options")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel Options => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "options");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel Options => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "options");
 
 		///<summary>
 		/// Hint

@@ -55,7 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveContextBarWithContext2ThatWraps")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveContextBarWithContext2ThatWraps => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithContext2ThatWraps");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveContextBarWithContext2ThatWraps => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithContext2ThatWraps");
 
 		///<summary>
 		/// Above context bar without context 1
@@ -63,7 +63,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveContextBarWithoutContext1")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveContextBarWithoutContext1 => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext1");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveContextBarWithoutContext1 => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext1");
 
 		///<summary>
 		/// Above context bar without context 1 or 2
@@ -71,7 +71,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveContextBarWithoutContext1Or2")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveContextBarWithoutContext1Or2 => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext1Or2");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveContextBarWithoutContext1Or2 => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext1Or2");
 
 		///<summary>
 		/// Above context bar without context 1 or 3
@@ -79,7 +79,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveContextBarWithoutContext1Or3")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveContextBarWithoutContext1Or3 => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext1Or3");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveContextBarWithoutContext1Or3 => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext1Or3");
 
 		///<summary>
 		/// Above context bar without context 2
@@ -87,7 +87,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveContextBarWithoutContext2")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveContextBarWithoutContext2 => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext2");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveContextBarWithoutContext2 => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext2");
 
 		///<summary>
 		/// Above context bar without context 2 or 3
@@ -95,7 +95,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveContextBarWithoutContext2Or3")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveContextBarWithoutContext2Or3 => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext2Or3");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveContextBarWithoutContext2Or3 => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext2Or3");
 
 		///<summary>
 		/// Above context bar without context 3
@@ -103,7 +103,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveContextBarWithoutContext3")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveContextBarWithoutContext3 => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext3");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveContextBarWithoutContext3 => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext3");
 
 		///<summary>
 		/// Above header with no label
@@ -111,7 +111,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveHeaderWithNoLabel")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveHeaderWithNoLabel => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveHeaderWithNoLabel");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveHeaderWithNoLabel => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveHeaderWithNoLabel");
 
 		///<summary>
 		/// Above header with no label or links
@@ -119,7 +119,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveHeaderWithNoLabelOrLinks")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveHeaderWithNoLabelOrLinks => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveHeaderWithNoLabelOrLinks");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveHeaderWithNoLabelOrLinks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveHeaderWithNoLabelOrLinks");
 
 		///<summary>
 		/// Above header with no links
@@ -127,7 +127,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("aboveHeaderWithNoLinks")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel AboveHeaderWithNoLinks => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "aboveHeaderWithNoLinks");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveHeaderWithNoLinks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveHeaderWithNoLinks");
 
 		///<summary>
 		/// Context 2 text that wraps
@@ -143,7 +143,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("finalBlocks")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel FinalBlocks => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "finalBlocks");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel FinalBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "finalBlocks");
 
 		///<summary>
 		/// GOV.UK blocks
@@ -151,6 +151,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("govukBlocks")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel GovukBlocks => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "govukBlocks");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel GovukBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "govukBlocks");
 	}
 }

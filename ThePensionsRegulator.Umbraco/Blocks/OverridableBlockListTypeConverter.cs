@@ -2,7 +2,7 @@
 using System.Globalization;
 using Umbraco.Cms.Core.Models.Blocks;
 
-namespace ThePensionsRegulator.Umbraco.BlockLists
+namespace ThePensionsRegulator.Umbraco.Blocks
 {
     internal class OverridableBlockListTypeConverter : TypeConverter
     {

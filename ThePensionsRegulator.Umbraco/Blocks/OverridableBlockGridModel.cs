@@ -158,11 +158,6 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             return ((IEnumerable)_items).GetEnumerator();
         }
 
-        internal object FindBlock(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> x, bool v)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// The number of columns in the grid.
         /// </summary>

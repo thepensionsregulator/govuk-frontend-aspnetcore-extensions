@@ -82,6 +82,7 @@
 		  <PackagePath>\</PackagePath>
 		</None>
 		<None Include="sasscompiler.json" />
+		<None Include="wwwroot\css\govuk-list.css" />
 		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
 		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
 	</ItemGroup>
@@ -463,5 +464,9 @@
 	  <None Update="Styles\govuk-umbraco-rich-text-editor.scss">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-list.scss" />
 	</ItemGroup>
 </Project>

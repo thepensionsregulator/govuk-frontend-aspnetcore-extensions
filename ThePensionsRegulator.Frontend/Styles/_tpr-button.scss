@@ -18,7 +18,7 @@ $tpr-button-padding: 20px;
     line-height: govuk-px-to-rem(24);
     border-radius: 8px;
     box-shadow: none;
-    background: $govuk-button-background-colour url(/_content/ThePensionsRegulator.GovUk.Frontend/tpr/chevron_right_white_24dp.svg) right center no-repeat;
+    background: $govuk-button-background-colour url(/_content/ThePensionsRegulator.Frontend/tpr/chevron_right_white_24dp.svg) right center no-repeat;
     padding-left: $tpr-button-padding;
     padding-right: $tpr-button-padding *2;
 }
@@ -26,7 +26,7 @@ $tpr-button-padding: 20px;
     background-color: $tpr-colour-violet;
 }
 .govuk-button:focus:not(:active):not(:hover) {
-    background-image: url(/_content/ThePensionsRegulator.GovUk.Frontend/tpr/chevron_right_eclipse_24dp.svg);
+    background-image: url(/_content/ThePensionsRegulator.Frontend/tpr/chevron_right_eclipse_24dp.svg);
     color: $tpr-colour-eclipse;
 }
 .govuk-button:disabled, .govuk-button[aria-disabled=true] {

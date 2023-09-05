@@ -4,19 +4,19 @@ using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
-using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Core.Serialization;
 
-namespace ThePensionsRegulator.Umbraco.BlockLists
+namespace ThePensionsRegulator.Umbraco.Blocks
 {
     /// <summary>
-    /// A property value converter which ensures that ModelsBuilder models represent a block list as an <see cref="OverridableBlockListModel" />.
+    /// A property value converter which ensures that ModelsBuilder models represent a block grid as an <see cref="OverridableBlockGridModel" />.
     /// </summary>
-    public class OverridableBlockListPropertyValueConverter : BlockListPropertyValueConverter
+    public class OverridableBlockGridPropertyValueConverter : BlockGridPropertyValueConverter
     {
         private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
 
-        public OverridableBlockListPropertyValueConverter(IProfilingLogger proflog, BlockEditorConverter blockConverter, IContentTypeService contentTypeService, IEnumerable<IPropertyValueFormatter> propertyValueFormatters)
-            : base(proflog, blockConverter, contentTypeService)
+        public OverridableBlockGridPropertyValueConverter(IProfilingLogger proflog, BlockEditorConverter blockConverter, IJsonSerializer jsonSerializer, IEnumerable<IPropertyValueFormatter> propertyValueFormatters)
+            : base(proflog, blockConverter, jsonSerializer)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
         }
@@ -25,14 +25,14 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
         {
             var baseType = base.GetPropertyValueType(propertyType);
-            return baseType == typeof(BlockListModel) ? typeof(OverridableBlockListModel) : baseType;
+            return baseType == typeof(BlockGridModel) ? typeof(OverridableBlockGridModel) : baseType;
         }
 
         /// <inheritdoc />
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
-            return baseModel is BlockListModel ? new OverridableBlockListModel((BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
+            return baseModel is BlockGridModel ? new OverridableBlockGridModel((BlockGridModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
         }
     }
 }

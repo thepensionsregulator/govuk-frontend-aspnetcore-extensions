@@ -1,11 +1,11 @@
 ﻿using Moq;
-using ThePensionsRegulator.Umbraco.BlockLists;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace ThePensionsRegulator.Umbraco.Tests
 {
-	public class PublishedElementExtensionsTests
+    public class PublishedElementExtensionsTests
 	{
 		[Test]
 		public void IPublishedElement_is_converted_to_ModelsBuilder_model()

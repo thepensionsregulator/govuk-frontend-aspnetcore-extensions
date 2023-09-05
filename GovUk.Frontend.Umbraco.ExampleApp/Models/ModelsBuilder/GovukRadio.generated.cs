@@ -55,7 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("conditionalBlocks")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel ConditionalBlocks => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "conditionalBlocks");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel ConditionalBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "conditionalBlocks");
 
 		///<summary>
 		/// Label

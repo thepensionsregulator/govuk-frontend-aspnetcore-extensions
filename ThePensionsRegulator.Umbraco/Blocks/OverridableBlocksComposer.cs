@@ -2,13 +2,14 @@
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
 
-namespace ThePensionsRegulator.Umbraco.BlockLists
+namespace ThePensionsRegulator.Umbraco.Blocks
 {
-    public class OverridableBlockListComposer : IComposer
+    public class OverridableBlocksComposer : IComposer
     {
         public void Compose(IUmbracoBuilder builder)
         {
             builder.PropertyValueConverters().Remove<BlockListPropertyValueConverter>();
+            builder.PropertyValueConverters().Remove<BlockGridPropertyValueConverter>();
         }
     }
 }

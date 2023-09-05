@@ -1,12 +1,11 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.Umbraco.BlockLists;
+using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
 using System.Linq;
-using ThePensionsRegulator.Umbraco.BlockLists;
-using Umbraco.Cms.Core.Models.PublishedContent;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;

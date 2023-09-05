@@ -404,8 +404,6 @@ FodyWeavers.xsd
 **/umbraco/
 !docs/umbraco
 **/Smidge/
-**/App_Plugins/*
-!**/App_Plugins/GOVUK
 appsettings-schema.json
 ood.flag
 

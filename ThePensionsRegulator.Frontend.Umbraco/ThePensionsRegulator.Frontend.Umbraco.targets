@@ -11,6 +11,7 @@
 		<ItemGroup>
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
 			<ContentFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
+			<PluginFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
 		</ItemGroup>
 
 		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high" />
@@ -18,7 +19,21 @@
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(ContentFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 
+		<ItemGroup>
+			<TprFrontendUmbracoGitIgnoreText Include="TprFrontendUmbracoGitIgnoreText">
+				<Text>
+					*
+					!.gitignore
+				</Text>
+			</TprFrontendUmbracoGitIgnoreText>
+			<TprFrontendUmbracoGitIgnore Include="%(TprFrontendUmbracoGitIgnoreText.Text)" />
+		</ItemGroup>
+		<Message Text="Generating $(ProjectDir)App_Plugins\ThePensionsRegulator.Frontend.Umbraco\.gitignore" Importance="high" />
+		<WriteLinesToFile File="$(ProjectDir)App_Plugins\ThePensionsRegulator.Frontend.Umbraco\.gitignore" Lines="@(TprFrontendUmbracoGitIgnore)" Overwrite="True"/>
+		
 		<ItemGroup>
 			<TprFrontendUmbracoUSyncGitIgnoreText Include="TprFrontendUmbracoUSyncGitIgnoreText">
 				<Text>

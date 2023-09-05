@@ -10,6 +10,7 @@
 			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\App_Plugins\**" />
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\uSync\**" />
 			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\wwwroot\**" />
+			<PluginFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
 		<Message Text="Copying files from GovUk.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
@@ -24,5 +25,7 @@
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 </Project>

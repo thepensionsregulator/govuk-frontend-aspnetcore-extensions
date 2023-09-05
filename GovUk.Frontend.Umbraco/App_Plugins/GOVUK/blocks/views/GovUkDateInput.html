@@ -1,0 +1,31 @@
+﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit date input component">
+    <fieldset class="govuk-fieldset govuk-date-input__fieldset" role="group" aria-hidden="true">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--for-field" ng-bind-html="block.data.legend"></legend>
+        <p class="backoffice-additional-blocks" ng-if="!block.data.fieldsetBlocks.contentData">No blocks.</p>
+        <p class="backoffice-additional-blocks" ng-if="block.data.fieldsetBlocks.contentData.length===1">1 block.</p>
+        <p class="backoffice-additional-blocks" ng-if="block.data.fieldsetBlocks.contentData.length>1">{{checkbox.fieldsetBlocks.contentData.length}} blocks.</p>
+        <div class="govuk-form-group">
+            <div class="govuk-hint" ng-bind-html="block.data.hint" ng-if="block.data.hint"></div>
+            <div class="govuk-date-input">
+                <div class="govuk-date-input__item">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label">Day</label>
+                        <input class="govuk-date-input__input govuk-input govuk-input--width-2" inputmode="numeric" type="text" />
+                    </div>
+                </div>
+                <div class="govuk-date-input__item">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label">Month</label>
+                        <input class="govuk-date-input__input govuk-input govuk-input--width-2" inputmode="numeric" type="text" />
+                    </div>
+                </div>
+                <div class="govuk-date-input__item">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label govuk-date-input__label">Year</label>
+                        <input class="govuk-date-input__input govuk-input govuk-input--width-4" inputmode="numeric" type="text" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

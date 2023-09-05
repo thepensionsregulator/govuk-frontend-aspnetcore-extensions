@@ -13,6 +13,7 @@
 @using (Html.BeginUmbracoForm<TextInputSurfaceController>(nameof(TextInputSurfaceController.Index), new {}, new { novalidate="novalidate" }))
 {
     <partial name="GOVUK/BlockList" model="Model.Page!.Blocks" />
+    <partial name="GOVUK/BlockGrid" model="Model.Page.Grid" />
 }
 @section scripts {
     <partial name="GOVUK/UmbracoValidation" />

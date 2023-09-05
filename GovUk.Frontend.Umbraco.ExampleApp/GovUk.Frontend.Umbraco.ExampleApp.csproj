@@ -6,6 +6,14 @@
 	</PropertyGroup>
 
     <ItemGroup>
+      <Content Remove="wwwroot\_content\.gitignore" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="wwwroot\_content\.gitignore" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
         <PackageReference Include="Umbraco.Cms" Version="10.4.2" />
     </ItemGroup>

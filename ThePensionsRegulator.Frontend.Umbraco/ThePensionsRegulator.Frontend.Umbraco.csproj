@@ -5,7 +5,7 @@
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<Title>ThePensionsRegulator.$(AssemblyName)</Title>
+		<Title>$(AssemblyName)</Title>
 		<Version>5.0.0-beta001</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
@@ -22,14 +22,12 @@
 		<PackageTags>gds govuk gov.uk umbraco blocklist</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<IncludeSymbols>True</IncludeSymbols>
-		<PackageId>ThePensionsRegulator.$(AssemblyName)</PackageId>
-		<Product>ThePensionsRegulator.$(AssemblyName)</Product>
+		<PackageId>$(AssemblyName)</PackageId>
+		<Product>$(AssemblyName)</Product>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Content Remove="sasscompiler.json" />
-		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
-		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -43,6 +41,10 @@
 		</Content>
 		<Content Include="Styles\govuk-umbraco-rich-text-editor.css.map">
 			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
+			<Pack>true</Pack>
+		</Content>
+		<Content Include="Styles\tpr-blocks.css">
+			<PackagePath>contentFiles\any\net6.0\Content\tpr</PackagePath>
 			<Pack>true</Pack>
 		</Content>
 	</ItemGroup>
@@ -80,8 +82,6 @@
 		  <PackagePath>\</PackagePath>
 		</None>
 		<None Include="sasscompiler.json" />
-		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
-		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -131,8 +131,9 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
-	  <None Update="Styles\govuk-umbraco-rich-text-editor.scss">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
 	</ItemGroup>
 </Project>

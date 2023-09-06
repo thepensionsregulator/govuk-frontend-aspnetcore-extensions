@@ -1,4 +1,5 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<BlockListItem>>
+@inject IEnumerable<IPartialViewPathProvider> pathProviders;
 @using GovUk.Frontend.AspNetCore.Extensions;
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
@@ -73,7 +74,21 @@
                                                     blocks[i+1].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
                                                     blocks[i+1].Content.ContentType.Alias));
 
-    var pathToView = (blocks[i].Content.ContentType.Alias.StartsWith("GOVUK", StringComparison.OrdinalIgnoreCase) ? "GOVUK/" : "TPR/") + blocks[i].Content.ContentType.Alias;
+    var pathToView = string.Empty;
+    foreach (var pathProvider in pathProviders)
+    {
+        if (pathProvider.IsProvider(blocks[i]))
+        {
+            pathToView = pathProvider.BuildPartialViewPath(blocks[i]);
+            break;
+        }
+    }
+    if (string.IsNullOrEmpty(pathToView)) 
+    { 
+        throw new InvalidOperationException(
+            $"No {nameof(IPartialViewPathProvider)} was found to provide a path for the block with content key {blocks[i].Content.Key}, of content type {blocks[i].Content.ContentType.Alias}"
+        ); 
+    }
 
     @if (filteredModel.RenderGrid && !isGridRowBlock && !sameAsPrevious) { 
         @:<div class="@rowClass"> 

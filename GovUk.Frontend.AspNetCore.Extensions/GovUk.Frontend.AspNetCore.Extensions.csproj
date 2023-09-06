@@ -166,10 +166,6 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-list.scss" />
-	</ItemGroup>
-	
-	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_govuk-radios.scss" />
 	</ItemGroup>
 	

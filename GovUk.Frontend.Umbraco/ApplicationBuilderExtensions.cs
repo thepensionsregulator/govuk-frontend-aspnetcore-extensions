@@ -3,6 +3,7 @@ using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Smidge;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -35,6 +36,22 @@ namespace GovUk.Frontend.Umbraco
                 { typeof(DateRangeAttribute), PropertyAliases.ErrorMessageRange },
                 { typeof(CompareAttribute), PropertyAliases.ErrorMessageCompare }
             }));
+
+            app.UseSmidge(bundles =>
+            {
+                bundles.CreateCss("govuk-frontend-css",
+                    "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-frontend.css",
+                    "~/_content/ThePensionsRegulator.GovUk.Frontend.Umbraco/css/govuk-list.css");
+
+                bundles.CreateJs("govuk-frontend-js", "~/govuk-frontend-4.4.1.min.js",
+                  "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-js-init.js");
+
+                bundles.CreateJs("govuk-frontend-validation", "/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery/dist/jquery.min.js",
+                  "/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery-validation/dist/jquery.validate.min.js",
+                  "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-validation.js",
+                  "/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js");
+
+            });
 
             return app;
         }

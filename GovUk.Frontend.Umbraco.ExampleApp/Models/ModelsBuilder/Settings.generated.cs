@@ -122,7 +122,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string TprFooterCopyright => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterCopyright(this, _publishedValueFallback);
 
 		///<summary>
-		/// Logo alternative text: Defaults to 'Go to The Pensions Regulator website' if left blank.
+		/// Logo alternative text: Defaults to 'The Pensions Regulator home page' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -154,7 +154,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string TprHeaderLabel => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderLabel(this, _publishedValueFallback);
 
 		///<summary>
-		/// Logo alternative text: Defaults to 'Go to The Pensions Regulator website' if left blank.
+		/// Logo alternative text: Defaults to 'The Pensions Regulator home page' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.4.2+c5fe779")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

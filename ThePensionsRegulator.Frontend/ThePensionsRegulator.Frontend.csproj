@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -90,9 +90,12 @@
 
 		<Content Include="ThePensionsRegulator.Frontend.targets">
 			<Pack>true</Pack>
-			<PackagePath>build</PackagePath>
+			<PackagePath>build;buildTransitive</PackagePath>
 		</Content>
-		<Content Include="Styles\_tpr-variables.scss" />
+		<Content Include="Styles\_tpr-variables.scss">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\net6.0\Styles\tpr</PackagePath>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>

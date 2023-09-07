@@ -11,11 +11,10 @@
 		</XmlPeek>
 		<PropertyGroup>
 			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
-			<SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
-			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
-			<TargetFolder>$(MsBuildThisFileDirectory)Styles\</TargetFolder>
+			<SassCompilerPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassCompilerPath>
+			<SassPath>$(MsBuildThisFileDirectory)Styles\</SassPath>
 		</PropertyGroup>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-umbraco-rich-text-editor.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --load-path=$(SourceFolder) $(TargetFolder)govuk-umbraco-rich-text-editor.css"/>
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)govuk-umbraco-backoffice.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --load-path=$(SassPath) $(SassPath)govuk-umbraco-backoffice.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 

@@ -1,8 +1,8 @@
 # Configure a new Umbraco project
 
 1. Ensure you have .NET 6.0.5 (SDK version 6.0.300) or better installed. Run `dotnet --list-sdks` to check.
-2. Add `ThePensionsRegulator.GovUk.Frontend` and `ThePensionsRegulator.GovUk.Frontend.Umbraco` NuGet packages. You must explicitly install both packages in order for MSBuild actions to run, even though the first is a transative dependency of the second.
-3. If you are working on a project for The Pensions Regulator, add `ThePensionsRegulator.Frontend` and `ThePensionsRegulator.Frontend.Umbraco` NuGet packages. You must explicitly install both packages in order for MSBuild actions to run, even though the first is a transative dependency of the second.
+2. Add `ThePensionsRegulator.GovUk.Frontend.Umbraco` NuGet package.
+3. If you are working on a project for The Pensions Regulator add the `ThePensionsRegulator.Frontend.Umbraco` NuGet package. If your application should look like GOV.UK add `ThePensionsRegulator.GovUk.Frontend.Umbraco` NuGet package instead.
 4. If you are working on a project for The Pensions Regulator, copy `Install-TPRGitHooks.ps1` to your repository and run it.
 5. In your Umbraco project install [uSync for Umbraco](https://jumoo.co.uk/usync/) using NuGet.
 6. In `appsettings.json` add the following configuration:

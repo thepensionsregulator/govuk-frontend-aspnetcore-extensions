@@ -19,14 +19,15 @@
 		<Message Text="Not copying govuk-frontend SASS files to the Styles folder because ThePensionsRegulator.GovUk.Frontend is a transitive dependency. These may be copied by the package that references ThePensionsRegulator.GovUk.Frontend or you may need to add a direct reference to ThePensionsRegulator.GovUk.Frontend." Importance="high"
 			     Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==0"/>
 		
+		<!-- The following copy task is also configured in ThePensionsRegulator.Frontend.targets, ThePensionsRegulator.GovUk.Frontend.Umbraco.targets 
+		     and ThePensionsRegulator.Frontend.Umbraco.targets in case this package is referenced as a transitive dependency -->
 		<Message Text="Copying govuk-frontend SASS files from $(ThePensionsRegulatorGovUkFrontendSassFolder) to $(ProjectDir)" Importance="high"
 			     Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==1"/>
 		<Copy SourceFiles="@(ThePensionsRegulatorGovUkFrontendSassFiles)"
 			  DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
 			  Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==1"/>
 
-		<!-- Generate a .gitignore so that govuk-frontend SASS files are not committed to the consuming project's source control,
-		     as they should always be copied from the package. -->
+		<!-- Generate a .gitignore so that govuk-frontend SASS files copied from this package are not committed to the consuming project's source control. -->
 		<Message Text="Generating $(ProjectDir)Styles\govuk\.gitignore" Importance="high" />
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendGitIgnoreText Include="ThePensionsRegulatorGovUkFrontendGitIgnoreText">

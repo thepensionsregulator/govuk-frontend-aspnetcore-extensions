@@ -1,6 +1,6 @@
 # Configure a new ASP.NET project
 
-1. If you're building an application for The Pensions Regulator add the `ThePensionsRegulator.Frontend` NuGet package. If your application should look like GOV.UK add `ThePensionsRegulator.GovUk.Frontend` NuGet package instead.
+1. If you're working on a project for The Pensions Regulator add the `ThePensionsRegulator.Frontend` NuGet package. If your application should look like GOV.UK add `ThePensionsRegulator.GovUk.Frontend` NuGet package instead.
 
 2. In `Startup.cs` add the following to the `ConfigureServices` method:
 

@@ -87,6 +87,7 @@ Update the `*.csproj` file to add the `<package-name>.props` file to the package
     <PackagePath>build;buildTransitive</PackagePath>
 </Content>
 ```
+
 ## Tests
 
 To run unit tests on the client-side validation JavaScript:

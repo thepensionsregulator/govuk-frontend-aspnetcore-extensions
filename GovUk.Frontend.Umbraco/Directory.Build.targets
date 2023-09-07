@@ -13,8 +13,11 @@
 			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
 			<SassCompilerPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassCompilerPath>
 			<SassPath>$(MsBuildThisFileDirectory)Styles\</SassPath>
+			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src</GovUkFrontEndFolder>
+			<WwwrootPath>$(MsBuildThisFileDirectory)wwwroot\govuk\</WwwrootPath>
 		</PropertyGroup>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)govuk-umbraco-backoffice.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --load-path=$(SassPath) $(SassPath)govuk-umbraco-backoffice.css"/>
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)govuk-frontend.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(SassPath) $(WwwrootPath)govuk-frontend.css"/>
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)govuk-umbraco-backoffice.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(SassPath) $(SassPath)govuk-umbraco-backoffice.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 

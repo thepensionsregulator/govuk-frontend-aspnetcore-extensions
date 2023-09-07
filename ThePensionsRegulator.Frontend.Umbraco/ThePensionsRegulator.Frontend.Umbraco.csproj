@@ -117,6 +117,9 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
+	  <None Update="Styles\tpr.scss">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
 	  <None Update="Styles\govuk-umbraco-backoffice.scss">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </None>
@@ -124,5 +127,9 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\govuk-umbraco-backoffice.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
 	</ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 ﻿/* Import the govuk-frontend stylesheet so that the rich text editor can look like the GOV.UK Design System.*/
-@use '../../GovUk.Frontend.AspNetCore.Extensions/wwwroot/govuk/govuk-frontend.css';
+@import "../../GovUk.Frontend.AspNetCore.Extensions/Styles/govuk-frontend.scss";
 
 /* The following styles appear in the style select dropdown when enabled, using the names defined in the `umb_name` comments.
    position: static is specified only so that the selector is included in the compiled stylesheet along with the comment.

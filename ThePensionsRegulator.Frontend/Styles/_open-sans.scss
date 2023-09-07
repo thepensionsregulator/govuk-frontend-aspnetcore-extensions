@@ -3,7 +3,7 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(./open-sans-regular.woff2) format("woff2");
+    src: local("Open Sans Regular"), local("OpenSans-Regular"), url(/_content/ThePensionsRegulator.Frontend/tpr/open-sans-regular.woff2) format("woff2");
 }
 
 @font-face {
@@ -11,7 +11,7 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local("Open Sans Semi-Bold"), local("OpenSans-SemiBold"), url(./open-sans-semi-bold.woff2) format("woff2");
+    src: local("Open Sans Semi-Bold"), local("OpenSans-SemiBold"), url(/_content/ThePensionsRegulator.Frontend/tpr/open-sans-semi-bold.woff2) format("woff2");
 }
 
 @font-face {
@@ -19,5 +19,5 @@
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(./open-sans-bold.woff2) format("woff2");
+    src: local("Open Sans Bold"), local("OpenSans-Bold"), url(/_content/ThePensionsRegulator.Frontend/tpr/open-sans-bold.woff2) format("woff2");
 }

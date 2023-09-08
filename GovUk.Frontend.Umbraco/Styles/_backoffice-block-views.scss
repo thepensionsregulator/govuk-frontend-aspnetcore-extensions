@@ -1,0 +1,19 @@
+﻿/* Add spacing around custom backoffice views of block content. */
+.backoffice-block-view {
+    margin: 20px 20px 0;
+}
+.backoffice-block-view p,
+.backoffice-block-view.govuk-heading-l {
+    margin-top: 0;
+}
+.backoffice-block-view.govuk-caption-l,
+.backoffice-block-view.govuk-inset-text,
+.backoffice-block-view.govuk-panel,
+.backoffice-block-view.govuk-details,
+.backoffice-block-view.govuk-notification-banner {
+    margin-bottom: 20px;
+}
+.backoffice-block-view.govuk-panel,
+.backoffice-block-view > .govuk-notification-banner__content {
+    padding-bottom: 0;
+}

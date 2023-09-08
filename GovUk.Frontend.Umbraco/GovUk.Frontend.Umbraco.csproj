@@ -482,4 +482,12 @@
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_govuk-list.scss" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_backoffice-block-views.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_backoffice-rich-text-formats.scss" />
+	</ItemGroup>
 </Project>

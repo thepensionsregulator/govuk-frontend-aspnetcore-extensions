@@ -9,7 +9,6 @@
 			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\App_Plugins\**" />
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\uSync\**" />
 			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\govuk-umbraco-backoffice.css" />
-			<BlocksCssFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\tpr-blocks.css" />
 			<PluginFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
@@ -23,8 +22,6 @@
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\css\govuk-umbraco-backoffice.css" />
-		<Copy SourceFiles="@(BlocksCssFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)wwwroot\_content\ThePensionsRegulator.Frontend.Umbraco\tpr\tpr-blocks.css" />
 		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>

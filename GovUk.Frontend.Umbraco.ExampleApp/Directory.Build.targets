@@ -8,7 +8,7 @@
 			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\uSync\**" />
 			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\App_Plugins\**" />
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\uSync\**" />
-			<TinyMCEFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\govuk-umbraco-rich-text-editor.css" />
+			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\govuk-umbraco-backoffice.css" />
 			<BlocksCssFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\tpr-blocks.css" />
 			<PluginFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
@@ -21,8 +21,8 @@
 		<Message Text="Copying files from ThePensionsRegulator.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
 		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
-		<Copy SourceFiles="@(TinyMCEFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)wwwroot\css\govuk-umbraco-rich-text-editor.css" />
+		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)wwwroot\css\govuk-umbraco-backoffice.css" />
 		<Copy SourceFiles="@(BlocksCssFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\_content\ThePensionsRegulator.Frontend.Umbraco\tpr\tpr-blocks.css" />
 		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"

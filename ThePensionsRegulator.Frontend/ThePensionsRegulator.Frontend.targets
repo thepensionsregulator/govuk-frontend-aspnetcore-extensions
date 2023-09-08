@@ -1,32 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Target Name="ThePensionsRegulatorFrontend" AfterTargets="ThePensionsRegulatorGovUkFrontend">
+		<!-- Look for the PackageReference to this package to get the current version.
+			 Use that version to find the NuGet package folder, and copy SASS files to the Styles folder in the consuming project.
+			 If this package is a transitive dependency the PackageReference will not be found, so show a message.
+		-->
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend']/@Version">
-			<Output TaskParameter="Result" ItemName="ThePensionsRegulatorFrontendVersion" />
+			<Output TaskParameter="Result" ItemName="TprFrontendVersion" />
 		</XmlPeek>
 		<PropertyGroup>
-			<ThePensionsRegulatorFrontendVersion>@(ThePensionsRegulatorGovUkFrontendVersion)</ThePensionsRegulatorFrontendVersion>
-			<ThePensionsRegulatorFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(ThePensionsRegulatorFrontendVersion)\contentFiles\any\net6.0\Styles\</ThePensionsRegulatorFrontendSassFolder>
+			<TprFrontendVersion>@(TprFrontendVersion)</TprFrontendVersion>
+			<HasPackageReferenceForTprFrontend Condition="@(TprFrontendVersion->Count() )==0">false</HasPackageReferenceForTprFrontend>
+			<TprFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendVersion)\contentFiles\any\net6.0\Styles\</TprFrontendSassFolder>
 		</PropertyGroup>
 		<ItemGroup>
-			<ThePensionsRegulatorFrontendSassFiles Include="$(ThePensionsRegulatorFrontendSassFolder)**\*.scss" />
+			<TprFrontendSassFiles Include="$(TprFrontendSassFolder)**\*.scss" />
 		</ItemGroup>
 
-		<Message Text="Copying files from $(ThePensionsRegulatorFrontendSassFolder) to $(ProjectDir)" Importance="high" />
-		<Copy SourceFiles="@(ThePensionsRegulatorFrontendSassFiles)"
-			DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Message Text="Not copying files from ThePensionsRegulator.Frontend because it is a transitive dependency. These may be copied by the package that references ThePensionsRegulator.Frontend or you may need to add a direct reference to ThePensionsRegulator.Frontend." Importance="high"
+		         Condition="$(HasPackageReferenceForTprFrontend) == false"/>
 
-		<Message Text="Generating $(ProjectDir)Styles\.gitignore" Importance="high" />
+		<!-- The following copy task is also configured in ThePensionsRegulator.Frontend.Umbraco.targets in case this package is referenced as a transitive dependency -->
+		<Message Text="Copying SASS files from $(TprFrontendSassFolder) to $(ProjectDir)" Importance="high" 
+				 Condition="$(HasPackageReferenceForTprFrontend) != false"/>
+		<Copy SourceFiles="@(TprFrontendSassFiles)"
+			  DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="$(HasPackageReferenceForTprFrontend) != false"/>
+
+
+		<!-- Look for the PackageReference to ThePensionsRegulator.GovUk.Frontend to get the current version. If it's missing then 
+		     ThePensionsRegulator.GovUk.Frontend is a transitive dependency of this package, and will have been unable to copy 
+			 govuk-frontend SASS files to the Styles folder of the consuming project.
+			 
+			 If ThePensionsRegulator.GovUk.Frontend is a transitive dependency find its version in the metadata of ThePensionsRegulator.Frontend. 
+			 Use the version of ThePensionsRegulator.GovUk.Frontend to find its NuGet package folder, and copy govuk-frontend SASS files to the 
+			 Styles folder in the consuming project.
+		-->
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend']/@Version"
+				 Condition="$(HasPackageReferenceForTprFrontend) != false">
+			<Output TaskParameter="Result" ItemName="TprGovUkFrontendVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<HasPackageReferenceForTprGovUkFrontend Condition="$(HasPackageReferenceForTprFrontend) != false and @(TprGovUkFrontendVersion->Count() )==0">false</HasPackageReferenceForTprGovUkFrontend>
+		</PropertyGroup>
+		<XmlPeek XmlInputPath="$(UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendVersion)\thepensionsregulator.frontend.nuspec"
+			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = 'net6.0']/nu:dependency[@id = 'ThePensionsRegulator.GovUk.Frontend']/@version"
+			 Namespaces="&lt;Namespace Prefix='nu' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd' /&gt;"
+			 Condition="$(HasPackageReferenceForTprFrontend) != false and $(HasPackageReferenceForTprGovUkFrontend) == false">
+			<Output TaskParameter="Result" ItemName="TprGovUkFrontendVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<TprGovUkFrontendVersion Condition="$(HasPackageReferenceForTprFrontend) != false">@(TprGovUkFrontendVersion)</TprGovUkFrontendVersion>
+			<TprGovUkFrontendSassFolder Condition="$(HasPackageReferenceForTprFrontend) != false">$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(TprGovUkFrontendVersion)\contentFiles\any\net6.0\Styles\</TprGovUkFrontendSassFolder>
+		</PropertyGroup>
+		<ItemGroup>
+			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(TprGovUkFrontendSassFolder)**\*.scss" Condition="$(HasPackageReferenceForTprFrontend) != false" />
+		</ItemGroup>
+		<Message Text="Detected ThePensionsRegulator.GovUk.Frontend as a transitive dependency. Copying govuk-frontend SASS files from $(TprGovUkFrontendSassFolder) to $(ProjectDir)." Importance="high"
+			     Condition="$(HasPackageReferenceForTprFrontend) != false and $(HasPackageReferenceForTprGovUkFrontend) == false" />
+		<Copy SourceFiles="@(ThePensionsRegulatorGovUkFrontendSassFiles)"
+		      DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="$(HasPackageReferenceForTprFrontend) != false and $(HasPackageReferenceForTprGovUkFrontend) == false" />
+
+		<!-- Generate a .gitignore so that SASS files from the ThePensionsRegulator.Frontend package are not committed to the consuming project's source control. -->
+		<Message Text="Generating $(ProjectDir)Styles\tpr\.gitignore" Importance="high" />
 		<ItemGroup>
 			<ThePensionsRegulatorFrontendGitIgnoreText Include="ThePensionsRegulatorFrontendGitIgnoreText">
 				<Text>
-_tpr-variables.scss
-govuk
+*
+!.gitignore
 				</Text>
 			</ThePensionsRegulatorFrontendGitIgnoreText>
 			<ThePensionsRegulatorFrontendGitIgnore Include="%(ThePensionsRegulatorFrontendGitIgnoreText.Text)" />
 		</ItemGroup>
-		<WriteLinesToFile File="$(ProjectDir)Styles\.gitignore" Lines="@(ThePensionsRegulatorFrontendGitIgnore)" Overwrite="True"/>
+		<WriteLinesToFile File="$(ProjectDir)Styles\tpr\.gitignore" Lines="@(ThePensionsRegulatorFrontendGitIgnore)" Overwrite="True"/>
 	</Target>
-
 </Project>

@@ -411,8 +411,8 @@ ood.flag
 appsettings.Development.json
 
 # CSS files generated from SASS
-govuk-umbraco-rich-text-editor.css
-govuk-umbraco-rich-text-editor.css.map
+govuk-umbraco-backoffice.css
+govuk-umbraco-backoffice.css.map
 govuk-frontend*.css
 govuk-frontend*.css.map
 tpr.css*

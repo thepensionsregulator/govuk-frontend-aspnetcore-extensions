@@ -6,7 +6,7 @@ You can use GOV.UK and TPR SASS styles and utilities in your project when you ad
 2. Create your SASS file in the `Styles` folder of your application. You can add imports at the top of your file to make GOV.UK and TPR styles and utilities available:
 
    ```sass
-   @import '_tpr-variables.scss';
+   @import 'tpr/_tpr-variables.scss';
    @import 'govuk/base';
    ```
 

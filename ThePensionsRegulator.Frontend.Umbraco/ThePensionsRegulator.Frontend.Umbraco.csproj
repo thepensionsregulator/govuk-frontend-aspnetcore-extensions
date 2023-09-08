@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -32,14 +32,14 @@
 
 	<ItemGroup>
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
-		  <PackagePath>build</PackagePath>
+		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
 		</Content>
-		<Content Include="Styles\govuk-umbraco-rich-text-editor.css">
+		<Content Include="Styles\govuk-umbraco-backoffice.css">
 			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
 			<Pack>true</Pack>
 		</Content>
-		<Content Include="Styles\govuk-umbraco-rich-text-editor.css.map">
+		<Content Include="Styles\govuk-umbraco-backoffice.css.map">
 			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
 			<Pack>true</Pack>
 		</Content>
@@ -70,10 +70,6 @@
 		<ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
 		<ProjectReference Include="..\ThePensionsRegulator.Frontend\ThePensionsRegulator.Frontend.csproj" />
 		<ProjectReference Include="..\ThePensionsRegulator.Umbraco\ThePensionsRegulator.Umbraco.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<UpToDateCheckInput Remove="Styles\govuk-umbraco-rich-text-editor.scss" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -131,5 +127,19 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
+	  <None Update="Styles\tpr.scss">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="Styles\govuk-umbraco-backoffice.scss">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\govuk-umbraco-backoffice.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
 	</ItemGroup>
 </Project>

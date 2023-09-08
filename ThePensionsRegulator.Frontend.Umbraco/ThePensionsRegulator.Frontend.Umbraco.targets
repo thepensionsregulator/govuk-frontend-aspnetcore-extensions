@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Target Name="ThePensionsRegulatorFrontendUmbraco" AfterTargets="ThePensionsRegulatorGovUkFrontendUmbraco">
+	<Target Name="ThePensionsRegulatorFrontendUmbraco" AfterTargets="ThePensionsRegulatorFrontend;ThePensionsRegulatorGovUkFrontendUmbraco">
+		<!-- Look for the PackageReference to this package to get the current version.
+			 Use that version to find the NuGet package folder, and copy files to the consuming project.
+		-->
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend.Umbraco']/@Version">
 			<Output TaskParameter="Result" ItemName="TprFrontendUmbracoVersion" />
 		</XmlPeek>
@@ -10,18 +13,126 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
-			<ContentFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
+			<WwwrootFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
 			<PluginFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
 		</ItemGroup>
 
 		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high" />
 		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
-		<Copy SourceFiles="@(ContentFilesFromTprFrontendUmbraco)"
+		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 
+		<!-- Look for the PackageReference to ThePensionsRegulator.GovUk.Frontend to get the current version. If it's missing then 
+		     ThePensionsRegulator.GovUk.Frontend is a transitive dependency of this package, and will have been unable to copy 
+			 govuk-frontend SASS files to the Styles folder of the consuming project.
+			 
+			 If ThePensionsRegulator.GovUk.Frontend is a transitive dependency find its version in the metadata of ThePensionsRegulator.Frontend.Umbraco. 
+			 Use the version of ThePensionsRegulator.GovUk.Frontend to find its NuGet package folder, and copy govuk-frontend SASS files to the 
+			 Styles folder in the consuming project.
+		-->
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend']/@Version">
+			<Output TaskParameter="Result" ItemName="TprGovUkFrontendVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<HasPackageReferenceForTprGovUkFrontend Condition="@(TprGovUkFrontendVersion->Count() )==0">false</HasPackageReferenceForTprGovUkFrontend>
+		</PropertyGroup>
+		<XmlPeek XmlInputPath="$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\thepensionsregulator.frontend.umbraco.nuspec"
+			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = 'net6.0']/nu:dependency[@id = 'ThePensionsRegulator.GovUk.Frontend']/@version"
+			 Namespaces="&lt;Namespace Prefix='nu' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd' /&gt;"
+			 Condition="$(HasPackageReferenceForTprGovUkFrontend) == false">
+			<Output TaskParameter="Result" ItemName="TprGovUkFrontendVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<TprGovUkFrontendVersion>@(TprGovUkFrontendVersion)</TprGovUkFrontendVersion>
+			<TprGovUkFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(TprGovUkFrontendVersion)\contentFiles\any\net6.0\Styles\</TprGovUkFrontendSassFolder>
+		</PropertyGroup>
+		<ItemGroup>
+			<TprGovUkFrontendSassFiles Include="$(TprGovUkFrontendSassFolder)**\*.scss" />
+		</ItemGroup>
+		<Message Text="Detected ThePensionsRegulator.GovUk.Frontend as a transitive dependency. Copying govuk-frontend SASS files from $(TprGovUkFrontendSassFolder) to $(ProjectDir)." Importance="high"
+			     Condition="$(HasPackageReferenceForTprGovUkFrontend) == false" />
+		<Copy SourceFiles="@(TprGovUkFrontendSassFiles)"
+		      DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="$(HasPackageReferenceForTprGovUkFrontend) == false" />
+
+		<!-- Look for the PackageReference to ThePensionsRegulator.Frontend to get the current version. If it's missing then 
+		     ThePensionsRegulator.Frontend is a transitive dependency of this package, and will have been unable to copy 
+			 its files to the consuming project.
+			 
+			 If ThePensionsRegulator.Frontend is a transitive dependency find its version in the metadata of ThePensionsRegulator.Frontend.Umbraco. 
+			 Use the version of ThePensionsRegulator.Frontend to find its NuGet package folder, and copy its files to the consuming project.
+		-->
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend']/@Version">
+			<Output TaskParameter="Result" ItemName="TprFrontendVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<HasPackageReferenceForTprFrontend Condition="@(TprFrontendVersion->Count() )==0">false</HasPackageReferenceForTprFrontend>
+		</PropertyGroup>
+		<XmlPeek XmlInputPath="$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\thepensionsregulator.frontend.umbraco.nuspec"
+			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = 'net6.0']/nu:dependency[@id = 'ThePensionsRegulator.Frontend']/@version"
+			 Namespaces="&lt;Namespace Prefix='nu' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd' /&gt;"
+			 Condition="$(HasPackageReferenceForTprFrontend) == false">
+			<Output TaskParameter="Result" ItemName="TprFrontendVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<TprFrontendVersion>@(TprFrontendVersion)</TprFrontendVersion>
+			<TprFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendVersion)\contentFiles\any\net6.0\Styles\</TprFrontendSassFolder>
+		</PropertyGroup>
+		<ItemGroup>
+			<TprFrontendSassFiles Include="$(TprFrontendSassFolder)**\*.scss" />
+		</ItemGroup>
+		<Message Text="Detected ThePensionsRegulator.Frontend as a transitive dependency. Copying files from $(TprFrontendSassFolder) to $(ProjectDir)." Importance="high"
+			     Condition="$(HasPackageReferenceForTprFrontend) == false" />
+		<Copy SourceFiles="@(TprFrontendSassFiles)"
+		      DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="$(HasPackageReferenceForTprFrontend) == false" />
+
+		<!-- Look for the PackageReference to ThePensionsRegulator.GovUk.Frontend.Umbraco to get the current version. If it's missing then 
+		     ThePensionsRegulator.GovUk.Frontend.Umbraco is a transitive dependency of this package, and will have been unable to copy 
+			 its files to the consuming project.
+			 
+			 If ThePensionsRegulator.GovUk.Frontend.Umbraco is a transitive dependency find its version in the metadata of ThePensionsRegulator.Frontend.Umbraco. 
+			 Use the version of ThePensionsRegulator.GovUk.Frontend.Umbraco to find its NuGet package folder, and copy its files to the consuming project.
+		-->
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend.Umbraco']/@Version">
+			<Output TaskParameter="Result" ItemName="GovUkFrontendUmbracoVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<HasPackageReferenceForGovUkFrontendUmbraco Condition="@(GovUkFrontendUmbracoVersion->Count() )==0">false</HasPackageReferenceForGovUkFrontendUmbraco>
+		</PropertyGroup>
+		<XmlPeek XmlInputPath="$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\thepensionsregulator.frontend.umbraco.nuspec"
+			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = 'net6.0']/nu:dependency[@id = 'ThePensionsRegulator.GovUk.Frontend.Umbraco']/@version"
+			 Namespaces="&lt;Namespace Prefix='nu' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd' /&gt;"
+			 Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false">
+			<Output TaskParameter="Result" ItemName="GovUkFrontendUmbracoVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<GovUkFrontendUmbracoVersion>@(GovUkFrontendUmbracoVersion)</GovUkFrontendUmbracoVersion>
+			<GovUkFrontendUmbracoContentFiles>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend.umbraco\$(GovUkFrontendUmbracoVersion)\contentFiles\any\net6.0\</GovUkFrontendUmbracoContentFiles>
+		</PropertyGroup>
+		<ItemGroup>
+			<uSyncFilesFromGovUkFrontendUmbraco Include="$(GovUkFrontendUmbracoContentFiles)uSync\**" />
+			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(GovUkFrontendUmbracoContentFiles)Content\**" />
+			<PluginFilesFromGovUkFrontendUmbraco Include="$(GovUkFrontendUmbracoContentFiles)App_Plugins\**" />
+		</ItemGroup>
+		<Message Text="Detected ThePensionsRegulator.GovUk.Frontend.Umbraco as a transitive dependency. Copying files from $(GovUkFrontendUmbracoContentFiles) to $(ProjectDir)." Importance="high"
+			     Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false" />
+		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
+		      DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false" />
+		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
+		      DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false" />
+		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
+		      DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false" />
+
+		<!-- Generate .gitignore files so that files from the ThePensionsRegulator.Frontend.Umbraco package are not committed to the consuming project's source control. 
+			 There's no need to generate one for wwwroot\css because this package depends on ThePensionsRegulator.GovUk.Frontend.Umbraco, which already did that.
+		-->
 		<ItemGroup>
 			<TprFrontendUmbracoGitIgnoreText Include="TprFrontendUmbracoGitIgnoreText">
 				<Text>
@@ -48,5 +159,4 @@
 		<Message Text="Generating $(ProjectDir)uSync\.gitignore" Importance="high" />
 		<WriteLinesToFile File="$(ProjectDir)uSync\.gitignore" Lines="@(TprFrontendUmbracoUSyncGitIgnore)" Overwrite="True"/>
 	</Target>
-
 </Project>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -28,8 +28,6 @@
 
 	<ItemGroup>
 		<Content Remove="sasscompiler.json" />
-		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
-		<Content Remove="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,15 +35,16 @@
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />
 		<Content Include="App_Plugins\GOVUK\package.manifest" />
+		<Content Include="Styles\_govuk-list.scss" />
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.targets">
-		  <PackagePath>build</PackagePath>
+		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
 		</Content>
-		<Content Include="Styles\govuk-umbraco-rich-text-editor.css">
+		<Content Include="Styles\govuk-umbraco-backoffice.css">
 			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
 			<Pack>true</Pack>
 		</Content>
-		<Content Include="Styles\govuk-umbraco-rich-text-editor.css.map">
+		<Content Include="Styles\govuk-umbraco-backoffice.css.map">
 			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
 			<Pack>true</Pack>
 		</Content>
@@ -73,18 +72,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<UpToDateCheckInput Remove="Styles\govuk-umbraco-rich-text-editor.scss" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<None Include="..\tpr-nuget.png">
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
 		<None Include="sasscompiler.json" />
-		<None Include="wwwroot\css\govuk-list.css" />
-		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css" />
-		<None Include="wwwroot\css\govuk-umbraco-rich-text-editor.css.map" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -467,9 +459,24 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
-	  <None Update="Styles\govuk-umbraco-rich-text-editor.scss">
+	  <None Update="Styles\govuk-frontend.scss">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </None>
+	  <None Update="Styles\govuk-umbraco-backoffice.scss">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-list.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\govuk-umbraco-backoffice.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\govuk-frontend.scss" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -143,7 +143,7 @@
 
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.targets">
 			<Pack>true</Pack>
-			<PackagePath>build</PackagePath>
+			<PackagePath>build;buildTransitive</PackagePath>
 		</Content>
 	</ItemGroup>
 

@@ -40,8 +40,7 @@ namespace GovUk.Frontend.Umbraco
             app.UseSmidge(bundles =>
             {
                 bundles.CreateCss("govuk-frontend-css",
-                    "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-frontend.css",
-                    "~/_content/ThePensionsRegulator.GovUk.Frontend.Umbraco/css/govuk-list.css");
+                    "/_content/ThePensionsRegulator.GovUk.Frontend.Umbraco/govuk/govuk-frontend.css");
 
                 bundles.CreateJs("govuk-frontend-js", "~/govuk-frontend-4.4.1.min.js",
                   "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-js-init.js");

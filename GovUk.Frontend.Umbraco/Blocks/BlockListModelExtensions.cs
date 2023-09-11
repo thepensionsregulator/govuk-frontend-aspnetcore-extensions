@@ -85,7 +85,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static OverridableBlockListItem? FindBlockByClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlock(x => x.ClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlock(x => x.Settings.ClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static OverridableBlockListItem? FindBlockByGridRowClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlock(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlock(x => x.Settings.GridRowClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static OverridableBlockListItem? FindBlockByGridColumnClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlock(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlock(x => x.Settings.GridColumnClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static BlockListItem? FindBlockByClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlock(x => x.ClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlock(x => x.Settings.ClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -177,7 +177,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static BlockListItem? FindBlockByGridRowClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlock(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlock(x => x.Settings.GridRowClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static BlockListItem? FindBlockByGridColumnClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlock(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlock(x => x.Settings.GridColumnClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<OverridableBlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlock(x => x.ClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlock(x => x.Settings.ClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<OverridableBlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlock(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlock(x => x.Settings.GridRowClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -275,7 +275,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<OverridableBlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlock(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlock(x => x.Settings.GridColumnClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -300,7 +300,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<BlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlock(x => x.ClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlock(x => x.Settings.ClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<BlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlock(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlock(x => x.Settings.GridRowClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<BlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlock(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlock(x => x.Settings.GridColumnClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -373,7 +373,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<OverridableBlockListItem> FindBlocksByClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlocks(x => x.ClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlocks(x => x.Settings.ClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -384,7 +384,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<OverridableBlockListItem> FindBlocksByClass(this IEnumerable<OverridableBlockListItem> blockList, string className)
         {
-            return blockList.FindBlocks(x => x.ClassList().Contains(className), null);
+            return blockList.FindBlocks(x => x.Settings.ClassList().Contains(className), null);
         }
 
         /// <summary>
@@ -396,7 +396,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<OverridableBlockListItem> FindBlocksByGridRowClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlocks(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlocks(x => x.Settings.GridRowClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -407,7 +407,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<OverridableBlockListItem> FindBlocksByGridRowClass(this IEnumerable<OverridableBlockListItem> blockList, string className)
         {
-            return blockList.FindBlocks(x => x.GridRowClassList().Contains(className), null);
+            return blockList.FindBlocks(x => x.Settings.GridRowClassList().Contains(className), null);
         }
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<OverridableBlockListItem> FindBlocksByGridColumnClass(this IEnumerable<OverridableBlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlocks(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlocks(x => x.Settings.GridColumnClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -430,7 +430,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<OverridableBlockListItem> FindBlocksByGridColumnClass(this IEnumerable<OverridableBlockListItem> blockList, string className)
         {
-            return blockList.FindBlocks(x => x.GridColumnClassList().Contains(className), null);
+            return blockList.FindBlocks(x => x.Settings.GridColumnClassList().Contains(className), null);
         }
 
         /// <summary>
@@ -442,7 +442,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocksByClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlocks(x => x.ClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlocks(x => x.Settings.ClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocksByClass(this IEnumerable<BlockListItem> blockList, string className)
         {
-            return blockList.FindBlocks(x => x.ClassList().Contains(className), null);
+            return blockList.FindBlocks(x => x.Settings.ClassList().Contains(className), null);
         }
 
         /// <summary>
@@ -465,7 +465,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocksByGridRowClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlocks(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlocks(x => x.Settings.GridRowClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -476,7 +476,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocksByGridRowClass(this IEnumerable<BlockListItem> blockList, string className)
         {
-            return blockList.FindBlocks(x => x.GridRowClassList().Contains(className), null);
+            return blockList.FindBlocks(x => x.Settings.GridRowClassList().Contains(className), null);
         }
 
         /// <summary>
@@ -488,7 +488,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocksByGridColumnClass(this IEnumerable<BlockListItem> blockList, string className, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.FindBlocks(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+            return blockList.FindBlocks(x => x.Settings.GridColumnClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -499,7 +499,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocksByGridColumnClass(this IEnumerable<BlockListItem> blockList, string className)
         {
-            return blockList.FindBlocks(x => x.GridColumnClassList().Contains(className), null);
+            return blockList.FindBlocks(x => x.Settings.GridColumnClassList().Contains(className), null);
         }
 
         /// <summary>
@@ -513,7 +513,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<OverridableBlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlocks(x => x.ClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlocks(x => x.Settings.ClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<OverridableBlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlocks(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlocks(x => x.Settings.GridRowClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -563,7 +563,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<OverridableBlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlocks(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlocks(x => x.Settings.GridColumnClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -588,7 +588,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<BlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlocks(x => x.ClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlocks(x => x.Settings.ClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -613,7 +613,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<BlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlocks(x => x.GridRowClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlocks(x => x.Settings.GridRowClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>
@@ -638,7 +638,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocks = new List<BlockListItem>();
             foreach (var blockList in blockLists) { blocks.AddRange(blockList); }
-            return blocks.FindBlocks(x => x.GridColumnClassList().Contains(className), publishedValueFallback);
+            return blocks.FindBlocks(x => x.Settings.GridColumnClassList().Contains(className), publishedValueFallback);
         }
 
         /// <summary>

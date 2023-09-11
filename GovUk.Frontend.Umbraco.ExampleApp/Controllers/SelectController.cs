@@ -45,7 +45,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             viewModel.Page.Blocks!.FindBlockByClass("external-data")!
                 .Content
-                .OverrideSelectOptions(optionsFromDataSource, _publishedSnapshotAccessor, viewModel.Page.Blocks.Filter);
+                .OverrideSelectOptions(optionsFromDataSource, _publishedSnapshotAccessor, viewModel.Page.Blocks!.Filter);
 
             return CurrentTemplate(viewModel);
         }

@@ -31,15 +31,16 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         }
 
         /// <summary>
-        /// Recursively find the first matching block in a block list and any decendant block lists.
+        /// Recursively find the first matching block in a set of blocks and any decendant block lists.
         /// </summary>
-        /// <param name="blockList">The block list to search</param>
-        /// <param name="matcher">A function which returns <c>true</c> for a matching block and <c>false</c> otherwise</param>
-        /// <param name="publishedValueFallback">The published value fallback strategy</param>
-        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
-        public static BlockListItem? FindBlock(this IEnumerable<BlockListItem> blockList, Func<IBlockReference<IPublishedElement, IPublishedElement>, bool> matcher, IPublishedValueFallback? publishedValueFallback)
+        /// <param name="blockList">The blocks to search.</param>
+        /// <param name="matcher">A function which returns <c>true</c> for a matching block and <c>false</c> otherwise.</param>
+        /// <param name="publishedValueFallback">The published value fallback strategy.</param>
+        /// <returns>The first matching block, or <c>null</c> if no blocks are matched.</returns>
+        public static T? FindBlock<T>(this IEnumerable<T> blockList, Func<T, bool> matcher, IPublishedValueFallback? publishedValueFallback)
+             where T : class, IBlockReference<IPublishedElement, IPublishedElement>
         {
-            return RecursivelyFindBlock(blockList, matcher, publishedValueFallback);
+            return (T?)RecursivelyFindBlock(blockList, matcher, publishedValueFallback);
         }
 
         /// <summary>
@@ -50,7 +51,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static BlockListItem? FindBlock(this IEnumerable<BlockListItem> blockList, Func<IBlockReference<IPublishedElement, IPublishedElement>, bool> matcher)
         {
-            return blockList.FindBlock(matcher, null);
+            return blockList.FindBlock<BlockListItem>(matcher, null);
         }
 
         /// <summary>
@@ -65,7 +66,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             foreach (var blockList in blockLists)
             {
                 var block = RecursivelyFindBlock(blockList, matcher, publishedValueFallback);
-                if (block != null) { return block; }
+                if (block != null) { return (BlockListItem?)block; }
             }
             return null;
         }
@@ -110,7 +111,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         /// <summary>
         /// Recursively find all blocks in a set of blocks and any decendant block lists.
         /// </summary>
-        /// <param name="blocks">The block list to search.</param>
+        /// <param name="blocks">The blocks to search.</param>
         /// <returns>An IEnumerable of 0 or more matching blocks.</returns>
         public static IEnumerable<T> FindBlocks<T>(this IEnumerable<T> blocks)
             where T : class, IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>
@@ -127,7 +128,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         /// <returns>An IEnumerable of 0 or more matching blocks</returns>
         public static IEnumerable<BlockListItem> FindBlocks(this IEnumerable<BlockListItem> blockList, Func<IBlockReference<IPublishedElement, IPublishedElement>, bool> matcher, IPublishedValueFallback? publishedValueFallback)
         {
-            return blockList.RecursivelyFindBlocks(matcher, false, publishedValueFallback);
+            return blockList.RecursivelyFindBlocks<BlockListItem>(matcher, false, publishedValueFallback);
         }
 
         /// <summary>
@@ -185,51 +186,43 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         }
 
         /// <summary>
-        /// Recursively find the first block in a block list where the content is of a given element type.
+        /// Recursively find the first block in a set of blocks and any decendant block lists where the content is of a given element type.
         /// </summary>
-        /// <param name="blockList">The block list to search</param>
-        /// <param name="alias">The alias of element type for the content of the block</param>
-        /// <param name="publishedValueFallback">The published value fallback strategy</param>
-        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
-        public static OverridableBlockListItem? FindBlockByContentTypeAlias(this IEnumerable<OverridableBlockListItem> blockList, string alias, IPublishedValueFallback? publishedValueFallback)
+        /// <param name="blocks">The block list to search.</param>
+        /// <param name="alias">The alias of element type for the content of the block.</param>
+        /// <param name="publishedValueFallback">The published value fallback strategy.</param>
+        /// <returns>The first matching block, or <c>null</c> if no blocks are matched.</returns>
+        public static T? FindBlockByContentTypeAlias<T>(this IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> blocks, string alias, IPublishedValueFallback? publishedValueFallback)
+             where T : class, IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>
         {
-            return (OverridableBlockListItem?)RecursivelyFindBlock(blockList, x => x.Content.ContentType.Alias == alias, publishedValueFallback);
+            var baseBlocks = blocks.Select(x => x as IBlockReference<IPublishedElement, IPublishedElement>).OfType<IBlockReference<IPublishedElement, IPublishedElement>>();
+            return (T?)RecursivelyFindBlock(baseBlocks, x => x.Content.ContentType.Alias == alias, publishedValueFallback);
         }
 
         /// <summary>
-        /// Recursively find the first block in a block list where the content is of a given element type.
+        /// Recursively find the first block in a set of blocks and any decendant block lists where the content is of a given element type.
         /// </summary>
-        /// <param name="blockList">The block list to search</param>
-        /// <param name="alias">The alias of element type for the content of the block</param>
-        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
-        public static OverridableBlockListItem? FindBlockByContentTypeAlias(this IEnumerable<OverridableBlockListItem> blockList, string alias)
+        /// <param name="blocks">The blocks to search.</param>
+        /// <param name="alias">The alias of element type for the content of the block.</param>
+        /// <param name="publishedValueFallback">The published value fallback strategy.</param>
+        /// <returns>The first matching block, or <c>null</c> if no blocks are matched.</returns>
+        public static T? FindBlockByContentTypeAlias<T>(this IEnumerable<T> blocks, string alias, IPublishedValueFallback? publishedValueFallback)
+             where T : class, IBlockReference<IPublishedElement, IPublishedElement>
         {
-            return blockList.FindBlockByContentTypeAlias(alias, null);
+            return (T?)RecursivelyFindBlock(blocks, x => x.Content.ContentType.Alias == alias, publishedValueFallback);
         }
 
         /// <summary>
-        /// Recursively find the first block in a block list where the content is of a given element type.
+        /// Recursively find the first block in a set of blocks and any decendant block lists where the content is of a given element type.
         /// </summary>
-        /// <param name="blockList">The block list to search</param>
-        /// <param name="alias">The alias of element type for the content of the block</param>
-        /// <param name="publishedValueFallback">The published value fallback strategy</param>
-        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
-        public static BlockListItem? FindBlockByContentTypeAlias(this IEnumerable<BlockListItem> blockList, string alias, IPublishedValueFallback? publishedValueFallback)
+        /// <param name="blocks">The blocks to search.</param>
+        /// <param name="alias">The alias of element type for the content of the block.</param>
+        /// <returns>The first matching block, or <c>null</c> if no blocks are matched.</returns>
+        public static T? FindBlockByContentTypeAlias<T>(this IEnumerable<T> blocks, string alias)
+             where T : class, IBlockReference<IPublishedElement, IPublishedElement>
         {
-            return RecursivelyFindBlock(blockList, x => x.Content.ContentType.Alias == alias, publishedValueFallback);
+            return blocks.FindBlockByContentTypeAlias(alias, null);
         }
-
-        /// <summary>
-        /// Recursively find the first block in a block list where the content is of a given element type.
-        /// </summary>
-        /// <param name="blockList">The block list to search</param>
-        /// <param name="alias">The alias of element type for the content of the block</param>
-        /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
-        public static BlockListItem? FindBlockByContentTypeAlias(this IEnumerable<BlockListItem> blockList, string alias)
-        {
-            return blockList.FindBlockByContentTypeAlias(alias, null);
-        }
-
 
         /// <summary>
         /// Recursively find the first block in a set of block lists where the content is of a given element type.
@@ -254,13 +247,14 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             return blockLists.FindBlocks().FindBlockByContentTypeAlias(alias, null);
         }
 
-        private static BlockListItem? RecursivelyFindBlock(IEnumerable<BlockListItem> blockList, Func<IBlockReference<IPublishedElement, IPublishedElement>, bool> matcher, IPublishedValueFallback? publishedValueFallback)
+        private static T? RecursivelyFindBlock<T>(IEnumerable<T> blockList, Func<T, bool> matcher, IPublishedValueFallback? publishedValueFallback)
+            where T : IBlockReference<IPublishedElement, IPublishedElement>
         {
             return blockList.RecursivelyFindBlocks(matcher, true, publishedValueFallback).FirstOrDefault();
         }
 
         private static IList<T> RecursivelyFindBlocks<T>(this IEnumerable<T> blocks,
-            Func<IBlockReference<IPublishedElement, IPublishedElement>, bool> matcher,
+            Func<T, bool> matcher,
             bool returnFirstMatchOnly,
             IPublishedValueFallback? publishedValueFallback)
             where T : IBlockReference<IPublishedElement, IPublishedElement>

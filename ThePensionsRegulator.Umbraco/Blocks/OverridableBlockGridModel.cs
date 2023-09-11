@@ -37,6 +37,11 @@ namespace ThePensionsRegulator.Umbraco.Blocks
                 throw new ArgumentNullException(nameof(blockGridItems));
             }
 
+            if (blockGridItems is BlockGridModel grid)
+            {
+                GridColumns = grid.GridColumns;
+            }
+
             _filter = filter ?? DefaultFilter;
             var factory = publishedElementFactory ?? OverridableBlockListItem.DefaultPublishedElementFactory;
 

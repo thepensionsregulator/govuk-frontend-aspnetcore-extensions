@@ -1,16 +1,19 @@
-﻿@using Umbraco.Extensions
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<BlockGridItem>>
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using Umbraco.Extensions
 @using Umbraco.Cms.Core.Models.Blocks
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridModel>
 @{
-    if (Model?.Any() != true) { return; }
+    var filteredModel = Model as OverridableBlockGridModel ?? new OverridableBlockGridModel(Model, null);
+    var blocks = filteredModel.FilteredBlocks().ToList();
+    if (!blocks.Any()) { return; }
 
     // get the number of columns defined for the grid
-    var gridColumns = Model.GridColumns;
+    var gridColumns = filteredModel.GridColumns;
 
     <div class="umb-block-grid"
-     data-grid-columns="@(Model.GridColumns?.ToString() ?? "12");"
-     style="--umb-block-grid--grid-columns: @(Model.GridColumns?.ToString() ?? "12");">
-        <partial name="GOVUK/BlockGridItems" />
+         data-grid-columns="@(filteredModel.GridColumns?.ToString() ?? "12");"
+         style="--umb-block-grid--grid-columns: @(filteredModel.GridColumns?.ToString() ?? "12");">
+        <partial name="GOVUK/BlockGridItems" model="filteredModel" />
     </div>
 }

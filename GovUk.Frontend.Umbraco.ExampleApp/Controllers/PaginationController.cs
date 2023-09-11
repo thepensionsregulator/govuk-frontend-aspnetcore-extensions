@@ -63,19 +63,30 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     return Redirect(path + (query.Count > 0 ? "?" + query.ToString() : string.Empty));
                 }
 
-                Func<OverridableBlockListItem, bool> filter;
+                Func<OverridableBlockListItem, bool> blockListFilter;
+                Func<OverridableBlockGridItem, bool> blockGridFilter;
                 if (pagination.TotalItems > pagination.PageSize)
                 {
                     if (pagination.TotalItems > (pagination.PageSize * pagination.LargeNumberOfPagesThreshold))
                     {
-                        filter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
+                        blockListFilter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
+                            (!block.Settings.GridRowClassList().Contains("tpr-pagination-small") &&
+                            !block.Settings.GridRowClassList().Contains("tpr-pagination-none")
+                        );
+
+                        blockGridFilter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
                             (!block.Settings.GridRowClassList().Contains("tpr-pagination-small") &&
                             !block.Settings.GridRowClassList().Contains("tpr-pagination-none")
                         );
                     }
                     else
                     {
-                        filter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
+                        blockListFilter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
+                            (!block.Settings.GridRowClassList().Contains("tpr-pagination-none") &&
+                            !block.Settings.GridRowClassList().Contains("tpr-pagination-large")
+                        );
+
+                        blockGridFilter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
                             (!block.Settings.GridRowClassList().Contains("tpr-pagination-none") &&
                             !block.Settings.GridRowClassList().Contains("tpr-pagination-large")
                         );
@@ -83,14 +94,24 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 }
                 else
                 {
-                    filter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
+                    blockListFilter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
+                        (!block.Settings.GridRowClassList().Contains("tpr-pagination-small") &&
+                        !block.Settings.GridRowClassList().Contains("tpr-pagination-large")
+                    );
+
+                    blockGridFilter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
                         (!block.Settings.GridRowClassList().Contains("tpr-pagination-small") &&
                         !block.Settings.GridRowClassList().Contains("tpr-pagination-large")
                     );
                 }
-                viewModel.Page.Blocks!.Filter = filter;
+                viewModel.Page.Blocks!.Filter = blockListFilter;
                 viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)?
                     .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
+
+                viewModel.Page.Grid!.Filter = blockGridFilter;
+                viewModel.Page.Grid.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)?
+                    .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
+
                 ModelState.SetInitialValue(nameof(viewModel.Items), pagination.TotalItems.ToString(CultureInfo.InvariantCulture));
 
                 viewModel.PageTitle = viewModel.Page.PageHeadingOrName();

@@ -4,7 +4,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests
+namespace GovUk.Frontend.Umbraco.Tests
 {
     public class FakeMetadataProvider : IModelMetadataProvider
     {

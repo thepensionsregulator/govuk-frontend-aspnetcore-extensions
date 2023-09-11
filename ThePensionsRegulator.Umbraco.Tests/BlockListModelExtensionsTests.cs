@@ -77,6 +77,21 @@ namespace ThePensionsRegulator.Umbraco.Tests
             Assert.Contains(blockList.BlocksToMatch[1], results);
         }
 
+        [Test]
+        public void Multiple_matching_blocks_are_matched_in_descendant_block_list_on_OverridableBlockListModel()
+        {
+            var blockList = CreateBlockListHierarchyWithMultipleMatchingBlocks();
+            var overridableBlockList = new OverridableBlockListModel(blockList.BlockList);
+
+            // Act
+            var results = BlockListModelExtensions.FindBlocks(overridableBlockList, x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null).ToList();
+
+            // Assert
+            Assert.That(results.Count(), Is.EqualTo(2));
+            Assert.Contains(blockList.BlocksToMatch[0], results);
+            Assert.Contains(blockList.BlocksToMatch[1], results);
+        }
+
         private static (BlockListModel BlockList, IList<BlockListItem> BlocksToMatch) CreateBlockListHierarchyWithMultipleMatchingBlocks()
         {
             var matchingBlockContent1 = new Mock<IOverridablePublishedElement>();

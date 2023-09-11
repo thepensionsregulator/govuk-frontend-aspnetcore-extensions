@@ -45,5 +45,7 @@
         public const string SummaryListItemActions = "actions";
         public const string SummaryListActionLink = "link";
         public const string SummaryListActionLinkText = "text";
+        public const string TaskListTasks = "tasks";
+        public const string TaskListTaskStatus = "status";
     }
 }

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using System.Linq;
 using ThePensionsRegulator.Umbraco.Testing;
 
-namespace GovUk.Frontend.Umbraco.Tests.BlockLists
+namespace GovUk.Frontend.Umbraco.Tests.Blocks
 {
     public class BlockListModelExtensionsTests
     {

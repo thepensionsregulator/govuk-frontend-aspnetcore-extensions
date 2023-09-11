@@ -30,7 +30,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             viewModel.Page.Blocks!.Filter = block => block.Settings.Value<string>("cssClassesForRow") != "filter-this";
 
             // Override content in the block list
-            viewModel.Page.Blocks.First(x => x.GridRowClassList().Contains("override-this"))?
+            viewModel.Page.Blocks.First(x => x.Settings.GridRowClassList().Contains("override-this"))?
                 .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
 
             // Override content in a nested block list
@@ -38,7 +38,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             var col = row.Content.Value<OverridableBlockListModel>("blocks")?.LastOrDefault(x => x.Content.ContentType.Alias == "govukGridColumn");
             if (col != null)
             {
-                col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"))?
+                col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.Settings.GridRowClassList().Contains("override-this"))?
                     .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
             }
 

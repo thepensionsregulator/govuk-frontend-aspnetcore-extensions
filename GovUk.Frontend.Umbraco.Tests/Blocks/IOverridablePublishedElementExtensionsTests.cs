@@ -13,7 +13,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Strings;
 
-namespace GovUk.Frontend.Umbraco.Tests.BlockLists
+namespace GovUk.Frontend.Umbraco.Tests.Blocks
 {
     [TestFixture]
     public class IOverridablePublishedElementExtensionsTests

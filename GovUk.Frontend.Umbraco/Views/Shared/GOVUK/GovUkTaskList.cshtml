@@ -6,12 +6,11 @@
 @using GovUk.Frontend.Umbraco;
 @using ThePensionsRegulator.Umbraco.Blocks;
 @using ThePensionsRegulator.Umbraco;
-@using ThePensionsRegulator.Umbraco.Blocks;
 @using Umbraco.Cms.Core.Models;
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    var tasks = Model.Content.Value<OverridableBlockListModel>("tasks")!;
+    var tasks = Model.Content.Value<OverridableBlockListModel>("tasks")!.FilteredBlocks();
 }
 @if (tasks.Any())
 {

@@ -69,23 +69,23 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     if (pagination.TotalItems > (pagination.PageSize * pagination.LargeNumberOfPagesThreshold))
                     {
                         filter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
-                            (!block.GridRowClassList().Contains("tpr-pagination-small") &&
-                            !block.GridRowClassList().Contains("tpr-pagination-none")
+                            (!block.Settings.GridRowClassList().Contains("tpr-pagination-small") &&
+                            !block.Settings.GridRowClassList().Contains("tpr-pagination-none")
                         );
                     }
                     else
                     {
                         filter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
-                            (!block.GridRowClassList().Contains("tpr-pagination-none") &&
-                            !block.GridRowClassList().Contains("tpr-pagination-large")
+                            (!block.Settings.GridRowClassList().Contains("tpr-pagination-none") &&
+                            !block.Settings.GridRowClassList().Contains("tpr-pagination-large")
                         );
                     }
                 }
                 else
                 {
                     filter = block => block.Content.ContentType.Alias != GovukTypography.ModelTypeAlias ||
-                        (!block.GridRowClassList().Contains("tpr-pagination-small") &&
-                        !block.GridRowClassList().Contains("tpr-pagination-large")
+                        (!block.Settings.GridRowClassList().Contains("tpr-pagination-small") &&
+                        !block.Settings.GridRowClassList().Contains("tpr-pagination-large")
                     );
                 }
                 viewModel.Page.Blocks!.Filter = filter;

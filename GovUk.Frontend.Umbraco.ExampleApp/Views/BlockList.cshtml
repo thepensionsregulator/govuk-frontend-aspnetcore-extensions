@@ -1,7 +1,0 @@
-﻿@using GovUk.Frontend.Umbraco.ExampleApp.Models
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockListViewModel>
-@section head{
-	<title>@Model.Page!.Name</title>
-}
-
-<partial name="GOVUK/BlockList" model="Model.Page!.Blocks" />

@@ -5,7 +5,7 @@ using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace ThePensionsRegulator.Umbraco.Tests
+namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 {
     public class OverridableBlockListModelTests
     {
@@ -165,6 +165,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
             // Act
             var model = (BlockListModel)blockList;
 
+            // Assert
             Assert.That(model, Is.Not.Null);
             Assert.That(model.Count, Is.EqualTo(blockList.Count()));
         }
@@ -175,6 +176,79 @@ namespace ThePensionsRegulator.Umbraco.Tests
             var converter = TypeDescriptor.GetConverter(new OverridableBlockListModel());
 
             Assert.That(converter.GetType(), Is.EqualTo(typeof(OverridableBlockListTypeConverter)));
+        }
+
+        [Test]
+        public void Can_cast_to_IEnumerable_of_OverridableBlockListItem()
+        {
+            // Arrange
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                                UmbracoBlockListFactory.CreateOverridableBlock(
+                                    UmbracoBlockListFactory.CreateContentOrSettings("alias").Object
+                                    )
+                                );
+
+            // Act
+            var model = (IEnumerable<OverridableBlockListItem>)blockList;
+
+            // Assert
+            Assert.That(model, Is.Not.Null);
+            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
+        }
+
+        [Test]
+        public void Can_cast_to_IEnumerable_of_BlockListItem()
+        {
+            // Arrange
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                                UmbracoBlockListFactory.CreateOverridableBlock(
+                                    UmbracoBlockListFactory.CreateContentOrSettings("alias").Object
+                                    )
+                                );
+
+            // Act
+            var model = (IEnumerable<BlockListItem>)blockList;
+
+            // Assert
+            Assert.That(model, Is.Not.Null);
+            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
+        }
+
+        [Test]
+        public void Can_cast_to_IEnumerable_of_IOverridableBlockReference()
+        {
+            // Arrange
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                                UmbracoBlockListFactory.CreateOverridableBlock(
+                                    UmbracoBlockListFactory.CreateContentOrSettings("alias").Object
+                                    )
+                                );
+
+            // Act
+            var model = (IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>)blockList;
+
+            // Assert
+            Assert.That(model, Is.Not.Null);
+            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
+        }
+
+
+        [Test]
+        public void Can_cast_to_IEnumerable_of_IBlockReference()
+        {
+            // Arrange
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                                UmbracoBlockListFactory.CreateOverridableBlock(
+                                    UmbracoBlockListFactory.CreateContentOrSettings("alias").Object
+                                    )
+                                );
+
+            // Act
+            var model = (IEnumerable<IBlockReference<IPublishedElement, IPublishedElement>>)blockList;
+
+            // Assert
+            Assert.That(model, Is.Not.Null);
+            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
         }
     }
 }

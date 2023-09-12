@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using NUnit.Framework;
 using System.Collections.Generic;
+using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -24,7 +25,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             public ExampleModelsBuilderModel? Page { get; set; }
         }
 
-        private static OverridableBlockListModel CreateBlockListWithTaskListSummaryAndTaskList()
+        private static OverridableBlockListModel CreateBlockListWithTaskListSummaryAndTaskList(OverridableBlockListModel blockListOfTasks)
         {
             var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(new[] {
                 // Task list summary
@@ -35,14 +36,14 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 UmbracoBlockListFactory.CreateOverridableBlock(
                     UmbracoBlockListFactory.CreateContentOrSettings(ElementTypeAliases.TaskList)
                     .SetupUmbracoBlockListPropertyValue(PropertyAliases.TaskListTasks,
-                        CreateBlockListOfTasks())
+                        blockListOfTasks)
                     .Object
                     )
             });
             return blockList;
         }
 
-        private static OverridableBlockGridModel CreateBlockGridWithTaskListSummaryAndTaskList()
+        private static OverridableBlockGridModel CreateBlockGridWithTaskListSummaryAndTaskList(OverridableBlockListModel blockListOfTasks)
         {
             var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(new[] {
                 // Task list summary
@@ -53,7 +54,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 UmbracoBlockGridFactory.CreateOverridableBlock(
                     UmbracoBlockGridFactory.CreateContentOrSettings(ElementTypeAliases.TaskList)
                     .SetupUmbracoBlockListPropertyValue(PropertyAliases.TaskListTasks,
-                        CreateBlockListOfTasks())
+                        blockListOfTasks)
                     .Object
                     )
             });
@@ -108,7 +109,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void Task_statuses_added_to_ModelState_from_BlockList_in_PublishedContentModel()
         {
             // Arrange
-            var blockList = CreateBlockListWithTaskListSummaryAndTaskList();
+            var blockList = CreateBlockListWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
@@ -129,7 +130,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void Task_statuses_added_to_ModelState_from_BlockList_in_PublishedContentModel_as_property_of_viewModel()
         {
             // Arrange
-            var blockList = CreateBlockListWithTaskListSummaryAndTaskList();
+            var blockList = CreateBlockListWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
@@ -150,7 +151,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void Task_statuses_added_to_ModelState_from_BlockGrid_in_PublishedContentModel()
         {
             // Arrange
-            var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList();
+            var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockGridPropertyValue(nameof(ExampleModelsBuilderModel.BlockGrid), blockGrid);
@@ -171,7 +172,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void Task_statuses_added_to_ModelState_from_BlockGrid_in_PublishedContentModel_as_property_of_viewModel()
         {
             // Arrange
-            var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList();
+            var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockGridPropertyValue(nameof(ExampleModelsBuilderModel.BlockGrid), blockGrid);
@@ -192,7 +193,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void BlockList_filter_is_applied_for_tasks()
         {
             // Arrange
-            var blockList = CreateBlockListWithTaskListSummaryAndTaskList();
+            var blockList = CreateBlockListWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
             blockList.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings.Value<string>(PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
@@ -214,7 +215,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void BlockGrid_filter_is_applied_for_tasks()
         {
             // Arrange
-            var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList();
+            var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
             blockGrid.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings.Value<string>(PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
@@ -230,6 +231,39 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             Assert.That(context.ModelState.ContainsKey(blockGrid[0].Content.Key.ToString()));
             Assert.That(context.ModelState[blockGrid[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("Completed,Incomplete"));
+        }
+
+        [Test]
+        public void Overridden_status_is_applied_for_tasks()
+        {
+            // Arrange
+            var blockListOfTasks = UmbracoBlockListFactory.CreateOverridableBlockListModel(new[]
+            {
+                UmbracoBlockListFactory.CreateOverridableBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings(ElementTypeAliases.Task).Object,
+                    // Must use a non-mocked OverridablePublishedElement for this test
+                    new OverridablePublishedElement(UmbracoContentFactory.CreateContent<IPublishedElement>(ElementTypeAliases.TaskSettings)
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.TaskListTaskStatus, TaskListTaskStatus.Completed.ToString())
+                    .Object)
+                )
+            });
+            blockListOfTasks[0].Settings.OverrideValue(PropertyAliases.TaskListTaskStatus, TaskListTaskStatus.NotStarted.ToString());
+
+            var blockList = CreateBlockListWithTaskListSummaryAndTaskList(blockListOfTasks);
+
+            var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
+                .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
+
+            var actionFilter = new TaskListSummaryActionFilter();
+            var model = new ExampleModelsBuilderModel(content.Object, new NoopPublishedValueFallback());
+            var context = CreateActionExecutedContext(model);
+
+            // Act
+            actionFilter.OnActionExecuted(context);
+
+            // Assert
+            Assert.That(context.ModelState.ContainsKey(blockList[0].Content.Key.ToString()));
+            Assert.That(context.ModelState[blockList[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("NotStarted"));
         }
     }
 }

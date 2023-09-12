@@ -17,7 +17,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
     /// and this is the last point where we have access to the overridden properties of the tasks before rendering the task list summary.
     /// So we have to query the tasks here and pass the result down to the task list summary, which we can do using ModelState.
     /// </summary>
-    internal class TaskListSummaryActionFilter : IActionFilter
+    public class TaskListSummaryActionFilter : IActionFilter
     {
         public void OnActionExecuted(ActionExecutedContext context)
         {
@@ -63,7 +63,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     }
                 }
 
-                var taskListSummaries = blocks.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.TaskListSummary);
+                var taskListSummaries = blocks.FindBlocksByContentTypeAlias(ElementTypeAliases.TaskListSummary);
                 if (taskListSummaries.Any())
                 {
                     Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> combinedFilter = block =>
@@ -72,8 +72,14 @@ namespace GovUk.Frontend.Umbraco.Blocks
                         if (block is OverridableBlockGridItem gridItem) { return blockGridFilter(gridItem); }
                         return true;
                     };
-                    var tasks = blocks.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.Task)
-                        .Where(combinedFilter);
+                    Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>?> blockSelector = block =>
+                    {
+                        if (block is OverridableBlockListItem listItem) { return listItem; }
+                        if (block is OverridableBlockGridItem gridItem) { return gridItem; }
+                        return null;
+                    };
+                    var tasks = blocks.FindBlocksByContentTypeAlias(ElementTypeAliases.Task)
+                        .Where(combinedFilter).Select(blockSelector).OfType<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
                     var taskStatuses = tasks
                         .Select(x => x.Settings.Value<string>(PropertyAliases.TaskListTaskStatus))
                         .Where(x => !string.IsNullOrEmpty(x))

@@ -12,7 +12,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
 		/// <returns>A page title.</returns>
 		public static string? PageHeadingOrName(this PublishedContentModel content)
 		{
-			var pageHeading = (OverridableBlockListItem?)content.FindBlockLists().FindBlockByContentTypeAlias(ElementTypeAliases.PageHeading);
+			var pageHeading = content.FindOverridableBlockModels().FindBlockByContentTypeAlias(ElementTypeAliases.PageHeading);
 			if (pageHeading is not null)
 			{
 				var text = pageHeading.Content.Value<string>(PropertyAliases.PageHeading);

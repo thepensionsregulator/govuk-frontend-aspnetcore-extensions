@@ -3,6 +3,8 @@ using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
+using System.Linq;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
@@ -24,21 +26,31 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 Page = new BlockGrid(CurrentPage, null)
             };
 
-            // Filter out a block in the block list
-            //viewModel.Page.Blocks!.Filter = block => block.Settings.Value<string>("cssClassesForRow") != "filter-this";
+            // Filter out a block within the block grid, and in an area within the block grid,
+            // and in a block list within an area within the block grid (the third option in the select)
+            viewModel.Page.Blocks!.Filter = block => block.Settings?.Value<string>("cssClasses") != "filter-this" && block.Content.Value<string>("label") != "three";
 
-            // Override content in the block list
-            //viewModel.Page.Blocks.First(x => x.GridRowClassList().Contains("override-this"))?
-            //    .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
+            // Override a value for a block inside an area inside a block grid by searching the grid object
+            var textInputBlock = viewModel.Page.Blocks!.FindBlockByContentTypeAlias(GovukTextInput.ModelTypeAlias);
+            if (textInputBlock != null)
+            {
+                textInputBlock.Content.OverrideValue(nameof(GovukTextarea.Hint), "This hint in overridden by accessing the block from the BlockGridModel.");
+            }
 
-            // Override content in a nested block list
-            //var row = viewModel.Page.Blocks.First(x => x.Content.ContentType.Alias == "govukGridRow");
-            //var col = row.Content.Value<OverridableBlockListModel>("blocks")?.LastOrDefault(x => x.Content.ContentType.Alias == "govukGridColumn");
-            //if (col != null)
-            //{
-            //    col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"))?
-            //        .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
-            //}
+            // Override a value for a block inside an area inside a block grid by searching the area object
+            var firstArea = viewModel.Page.Blocks!.First(x => x.Areas.Any()).Areas.First();
+            var textareaBlock = firstArea.FindBlockByContentTypeAlias(GovukTextarea.ModelTypeAlias);
+            if (textareaBlock != null)
+            {
+                textareaBlock.Content.OverrideValue(nameof(GovukTextarea.Hint), "This hint in overridden by accessing the block via the area.");
+            }
+
+            // Override a value for a block inside a block list inside an area inside a block grid
+            var selectOption = viewModel.Page.Blocks!.FindBlockByContentTypeAlias(GovukSelectOption.ModelTypeAlias);
+            if (selectOption != null)
+            {
+                selectOption.Content.OverrideValue(nameof(GovukSelectOption.Label), "overridden");
+            }
 
             return CurrentTemplate(viewModel);
         }

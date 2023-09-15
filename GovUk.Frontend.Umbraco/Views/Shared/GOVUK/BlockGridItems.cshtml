@@ -5,8 +5,9 @@
 @inject IEnumerable<IPartialViewPathProvider> pathProviders;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    var filteredModel = Model as OverridableBlockGridModel ?? new OverridableBlockGridModel(Model, null);
-    var blocks = filteredModel.FilteredBlocks().ToList();
+    var gridModel = Model as OverridableBlockGridModel;
+    var areaModel = Model as OverridableBlockGridArea;
+    var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(Model, null).FilteredBlocks()).ToList();
     if (!blocks.Any()) { return; }
 }
 

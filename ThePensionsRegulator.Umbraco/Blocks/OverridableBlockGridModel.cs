@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
@@ -12,10 +11,8 @@ namespace ThePensionsRegulator.Umbraco.Blocks
     /// An adapter for a <see cref="BlockGridModel" /> which supports filtering out blocks and overriding property values
     /// </summary>
     [TypeConverter(typeof(OverridableBlockGridTypeConverter))]
-    public class OverridableBlockGridModel : IEnumerable<OverridableBlockGridItem>
+    public class OverridableBlockGridModel : OverridableBlockModel<OverridableBlockGridItem>
     {
-        private readonly List<OverridableBlockGridItem> _items = new();
-        private static Func<OverridableBlockGridItem, bool> DefaultFilter = x => true;
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockGridModel"/> with no items.
@@ -30,7 +27,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         /// <param name="blockGridItems">A block grid (typically a <see cref="BlockGridModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        public OverridableBlockGridModel(IEnumerable<BlockGridItem> blockGridItems, Func<OverridableBlockGridItem, bool>? filter = null, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
+        public OverridableBlockGridModel(IEnumerable<BlockGridItem> blockGridItems, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
         {
             if (blockGridItems is null)
             {
@@ -42,38 +39,35 @@ namespace ThePensionsRegulator.Umbraco.Blocks
                 GridColumns = grid.GridColumns;
             }
 
-            _filter = filter ?? DefaultFilter;
+            BaseFilter = filter ?? DefaultFilter;
             var factory = publishedElementFactory ?? OverridableBlockListItem.DefaultPublishedElementFactory;
 
-            // Take the IEnumerable<BlockListItem> (which is probably a BlockListModel) and convert each item to an OverridableBlockListItem,
-            // and each nested block list to an OverridableBlockListModel populated with OverridableBlockListItems.
+            // Take the IEnumerable<BlockGridItem> (which is probably a BlockGridModel) and convert each item to an OverridableBlockGridItem,
+            // and each nested block grid or block list to an OverridableBlockGridModel or OverridableBlockListModel
+            // populated with OverridableBlockGridItems or OverridableBlockListItems.
             foreach (var item in blockGridItems)
             {
                 var overridableItem = item as OverridableBlockGridItem ?? new OverridableBlockGridItem(item, factory);
-                foreach (var prop in overridableItem.Content.Properties)
+                foreach (var property in overridableItem.Content.Properties)
                 {
-                    if (prop.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockGrid)
-                    {
-                        var overriddenNestedBlockGrid = overridableItem.Content.Value<OverridableBlockGridModel>(prop.Alias);
-                        if (overriddenNestedBlockGrid == null)
-                        {
-                            var nestedBlockGrid = overridableItem.Content.Value<BlockGridModel>(prop.Alias);
-                            if (nestedBlockGrid != null)
-                            {
-                                overriddenNestedBlockGrid = new OverridableBlockGridModel(nestedBlockGrid, _filter, factory);
-                            }
-                            else
-                            {
-                                overriddenNestedBlockGrid = new OverridableBlockGridModel(Array.Empty<BlockGridItem>(), _filter, factory);
-                            }
-                        }
-                        overridableItem.Content.OverrideValue(prop.Alias, overriddenNestedBlockGrid);
-                    }
+                    ConvertBlockModelPropertyToOverridable<BlockGridModel, OverridableBlockGridModel>(
+                        Constants.PropertyEditors.Aliases.BlockGrid,
+                        overridableItem,
+                        property,
+                        blockGrid => new OverridableBlockGridModel(blockGrid, BaseFilter, factory),
+                        () => new OverridableBlockGridModel(Array.Empty<BlockGridItem>(), BaseFilter, factory));
+                    ConvertBlockModelPropertyToOverridable<BlockListModel, OverridableBlockListModel>(
+                        Constants.PropertyEditors.Aliases.BlockList,
+                        overridableItem,
+                        property,
+                        blockList => new OverridableBlockListModel(blockList, BaseFilter, factory),
+                        () => new OverridableBlockListModel(Array.Empty<BlockListItem>(), BaseFilter, factory));
                 }
-                _items.Add(overridableItem);
+                Items.Add(overridableItem);
             }
 
-            CopyFilterToDecendantBlockLists(_items, _filter);
+            CopyFilterToDescendantBlockLists(Items, BaseFilter);
+            CopyFilterToAreas(Items.SelectMany(item => item.Areas), BaseFilter);
         }
 
         /// <summary>
@@ -93,43 +87,47 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             {
                 _propertyValueFormatters = value;
 
-                foreach (var item in _items)
+                foreach (var item in Items)
                 {
                     if (item.Content is OverridablePublishedElement content) { content.PropertyValueFormatters = PropertyValueFormatters; }
                     if (item.Settings is OverridablePublishedElement settings) { settings.PropertyValueFormatters = PropertyValueFormatters; }
+
+                    if (item is OverridableBlockGridItem gridItem)
+                    {
+                        foreach (var area in gridItem.Areas)
+                        {
+                            foreach (var areaItem in area)
+                            {
+                                if (areaItem.Content is OverridablePublishedElement areaItemContent) { areaItemContent.PropertyValueFormatters = PropertyValueFormatters; }
+                                if (areaItem.Settings is OverridablePublishedElement areaItemSettings) { areaItemSettings.PropertyValueFormatters = PropertyValueFormatters; }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        private Func<OverridableBlockGridItem, bool> _filter = DefaultFilter;
 
         /// <summary>
         /// The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.
         /// </summary>
-        public Func<OverridableBlockGridItem, bool> Filter
+        public Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> Filter
         {
-            get { return _filter; }
+            get { return BaseFilter; }
             set
             {
-                _filter = value;
+                BaseFilter = value;
 
-                CopyFilterToDecendantBlockLists(_items, _filter);
+                CopyFilterToDescendantBlockLists(Items, BaseFilter);
+                CopyFilterToAreas(Items.SelectMany(item => item.Areas), BaseFilter);
             }
         }
 
-        private void CopyFilterToDecendantBlockLists(IEnumerable<OverridableBlockGridItem> blockGridItems, Func<OverridableBlockGridItem, bool> filter)
+        private void CopyFilterToAreas(IEnumerable<OverridableBlockGridArea> areas, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> filter)
         {
-            foreach (var blockGridItem in blockGridItems)
+            foreach (var area in areas)
             {
-                var models = blockGridItem.Content.Properties
-                    .Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockGrid && x.HasValue())
-                    .Select(x => blockGridItem.Content.Value<OverridableBlockGridModel>(x.Alias))
-                    .OfType<OverridableBlockGridModel>();
-                foreach (var model in models)
-                {
-                    model.Filter = filter;
-                    CopyFilterToDecendantBlockLists(model, filter);
-                }
+                area.Filter = filter;
             }
         }
 
@@ -139,28 +137,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         /// <returns></returns>
         public IEnumerable<OverridableBlockGridItem> FilteredBlocks()
         {
-            return _items.Where(Filter);
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the unfiltered list of blocks
-        /// </summary>
-        public IEnumerator<OverridableBlockGridItem> GetEnumerator()
-        {
-            return _items.GetEnumerator();
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the unfiltered list of blocks
-        /// </summary>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IEnumerable)_items).GetEnumerator();
-        }
-
-        internal object FindBlock(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> x, bool v)
-        {
-            throw new NotImplementedException();
+            return Items.Where(Filter).Select(block => block as OverridableBlockGridItem).OfType<OverridableBlockGridItem>();
         }
 
         /// <summary>
@@ -176,17 +153,6 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         {
             var blockGrid = model.FilteredBlocks().ToList<BlockGridItem>();
             return new BlockGridModel(blockGrid, model.GridColumns);
-        }
-
-        /// <summary>
-        /// Gets or sets a block from the unfiltered list of blocks.
-        /// </summary>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        public OverridableBlockGridItem this[int index]
-        {
-            get => _items[index];
-            set => _items[index] = value;
         }
     }
 }

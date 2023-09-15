@@ -19,7 +19,7 @@
     }
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var value = Model.Content.Value<string>("value");
-    var checkboxHint = Model.Content.Value<IHtmlEncodedString>("hint");
+    var checkboxHint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var conditional = Model.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
     var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }
@@ -32,7 +32,7 @@
         }
         <govuk-checkboxes-item value="@value" checked="@(modelStateEntry?.AttemptedValue?.ToUpperInvariant() == value?.ToUpperInvariant())" input-aria-invalid="@invalid">
             @(Model.Content.Value<string>("label"))
-            @if (!string.IsNullOrWhiteSpace(checkboxHint.ToHtmlString())) 
+            @if (!string.IsNullOrWhiteSpace(checkboxHint?.ToHtmlString())) 
             {
                 <govuk-checkboxes-item-hint>@checkboxHint</govuk-checkboxes-item-hint>
             }

@@ -321,6 +321,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
                     if (returnFirstMatchOnly) { return matchedBlocks; }
                 }
 
+                // The block may have more blocks within a child block list
                 foreach (var blockProperty in block.Content.Properties)
                 {
                     if (blockProperty.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && blockProperty.HasValue())
@@ -332,6 +333,21 @@ namespace ThePensionsRegulator.Umbraco.Blocks
                         {
                             matchedBlocks.AddRange(result);
                         }
+                    }
+                }
+
+                // The block may have more blocks within areas
+                if (block is OverridableBlockGridItem gridBlock && gridBlock.Areas.Any())
+                {
+                    foreach (var area in gridBlock.Areas)
+                    {
+                        IEnumerable<T>? childBlocks = (IEnumerable<T>?)area;
+                        var result = RecursivelyFindBlocks(childBlocks!, matcher, returnFirstMatchOnly, publishedValueFallback);
+                        if (result.Any())
+                        {
+                            matchedBlocks.AddRange(result);
+                        }
+
                     }
                 }
             }

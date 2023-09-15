@@ -5,7 +5,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 {
     [TestFixture]
-    public class PublishedContentExtensionsTests
+    public class PublishedElementExtensionsTests
     {
         [Test]
         public void Finds_multiple_mixed_block_lists_and_grids()

@@ -230,7 +230,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 
             // Assert
             Assert.That(context.ModelState.ContainsKey(blockGrid[0].Content.Key.ToString()));
-            Assert.That(context.ModelState[blockGrid[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("Completed,Incomplete"));
+            Assert.That(context.ModelState[blockGrid[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("Completed"));
         }
 
         [Test]

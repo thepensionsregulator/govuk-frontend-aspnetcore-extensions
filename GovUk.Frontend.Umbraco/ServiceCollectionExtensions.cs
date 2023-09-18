@@ -37,6 +37,7 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IPropertyValueFormatter, GovUkTypographyPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphInversePropertyValueFormatter>();
+            services.AddTransient<IPartialViewPathProvider, GovUkPartialViewPathProvider>();
 
             return services;
         }

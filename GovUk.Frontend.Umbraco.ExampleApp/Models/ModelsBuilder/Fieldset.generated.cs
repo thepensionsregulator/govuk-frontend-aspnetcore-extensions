@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Fieldset</summary>
-    [PublishedModel("fieldset")]
+	/// <summary>Fieldset</summary>
+	[PublishedModel("fieldset")]
 	public partial class Fieldset : PublishedContentModel
 	{
 		// helpers

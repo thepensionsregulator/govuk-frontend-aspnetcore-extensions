@@ -80,6 +80,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Update="uSync\v9\ContentTypes\govukgridonequarterthreequarters.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridonethirdtwothirds.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridthreequartersonequarter.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridtwoequalcolumns.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridtwothirdsonethird.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govuklinksettings.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
@@ -375,6 +390,9 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKGridColumnSize.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\DataTypes\GOVUKGridColumnStacking.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKGridRowBlockList.config">

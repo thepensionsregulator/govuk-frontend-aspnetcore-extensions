@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Summary list</summary>
-    [PublishedModel("govukSummaryList")]
+	/// <summary>Summary list</summary>
+	[PublishedModel("govukSummaryList")]
 	public partial class GovukSummaryList : PublishedElementModel
 	{
 		// helpers

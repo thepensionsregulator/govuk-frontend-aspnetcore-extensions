@@ -1,22 +1,19 @@
-﻿@using ThePensionsRegulator.Umbraco.Blocks;
+﻿@using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Umbraco.Blocks;
 @using Umbraco.Cms.Core.Models.Blocks;
 @using Umbraco.Cms.Core.Models.PublishedContent;
 @using Umbraco.Extensions
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BlockGridItem>
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@{
-    var gridItem = Model as OverridableBlockGridItem ?? new OverridableBlockGridItem(Model);
-    var areas = gridItem?.Areas;
-
-    if (areas is not null && areas.Any())
-    {
-<div class="govuk-grid-row">
-    @foreach (var area in areas)
-    {
-        <div class="govuk-grid-column govuk-grid-column-one-half">
-            <partial name="GOVUK/BlockGrid" model="area" />
-        </div>
-    }
-</div>
-    }
+@if (Model.Areas is not null && Model.Areas.Any())
+{
+    var breakpointClass = Model.Settings.Value<string>(PropertyAliases.StackColumns) == "Mobile and tablet" ? "-from-desktop" : string.Empty;
+    <div class="govuk-grid-row">
+        @foreach (var area in Model.Areas)
+        {
+            <div class="govuk-grid-column govuk-grid-column-one-half@(breakpointClass)">
+                <partial name="GOVUK/BlockGrid" model="area" />
+            </div>
+        }
+    </div>
 }

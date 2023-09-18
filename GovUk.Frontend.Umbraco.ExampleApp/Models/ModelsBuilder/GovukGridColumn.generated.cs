@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Grid column</summary>
-    [PublishedModel("govukGridColumn")]
+	/// <summary>Grid column</summary>
+	[PublishedModel("govukGridColumn")]
 	public partial class GovukGridColumn : PublishedElementModel
 	{
 		// helpers

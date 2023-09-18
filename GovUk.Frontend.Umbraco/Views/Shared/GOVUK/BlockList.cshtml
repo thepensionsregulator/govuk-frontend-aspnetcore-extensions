@@ -25,7 +25,6 @@
 *@
 @for (var i = 0; i < blocks.Count; i++)
 {
-    var block = blocks[i];
     if (blocks[i]?.ContentUdi == null) { continue; }
 
     var isGridRowBlock = blocks[i].Content.ContentType.Alias == ElementTypeAliases.GridRow;
@@ -84,7 +83,7 @@
     {
         @:<div class="@fieldsetErrorClasses"> 
     }
-    @await Html.PartialAsync(pathToView, block)
+    @await Html.PartialAsync(pathToView, blocks[i])
     @if (!string.IsNullOrEmpty(fieldsetErrorClasses))
     {
         @:</div> 

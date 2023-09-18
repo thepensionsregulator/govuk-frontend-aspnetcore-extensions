@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Inset text</summary>
-    [PublishedModel("insetText")]
+	/// <summary>Inset text</summary>
+	[PublishedModel("insetText")]
 	public partial class InsetText : PublishedContentModel
 	{
 		// helpers

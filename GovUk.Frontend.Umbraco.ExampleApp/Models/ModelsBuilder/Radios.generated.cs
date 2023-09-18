@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Radios</summary>
-    [PublishedModel("radios")]
+	/// <summary>Radios</summary>
+	[PublishedModel("radios")]
 	public partial class Radios : PublishedContentModel
 	{
 		// helpers

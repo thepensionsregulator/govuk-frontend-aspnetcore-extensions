@@ -1,5 +1,5 @@
-﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus">
-    <fieldset class="govuk-fieldset govuk-date-input__fieldset" role="group">
+﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit date input component">
+    <fieldset class="govuk-fieldset govuk-date-input__fieldset" role="group" aria-hidden="true">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--for-field" ng-bind-html="block.data.legend"></legend>
         <p class="backoffice-additional-blocks" ng-if="!block.data.fieldsetBlocks.contentData">No blocks.</p>
         <p class="backoffice-additional-blocks" ng-if="block.data.fieldsetBlocks.contentData.length===1">1 block.</p>

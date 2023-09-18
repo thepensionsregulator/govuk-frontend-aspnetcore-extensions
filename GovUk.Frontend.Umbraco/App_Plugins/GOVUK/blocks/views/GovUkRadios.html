@@ -1,5 +1,5 @@
-﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus">
-    <fieldset class="govuk-fieldset govuk-radios__fieldset">
+﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit radios component">
+    <fieldset class="govuk-fieldset govuk-radios__fieldset" aria-hidden="true">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--for-field" ng-bind-html="block.data.legend"></legend>
         <div class="govuk-form-group">
             <p class="backoffice-additional-blocks" ng-if="!block.data.fieldsetBlocks.contentData">No blocks.</p>

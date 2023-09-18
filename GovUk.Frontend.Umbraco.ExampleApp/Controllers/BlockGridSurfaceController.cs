@@ -32,15 +32,6 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         [ModelType(typeof(BlockGridViewModel))]
         public IActionResult Index(BlockGridViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                //if (viewModel?.Page?.NextPage != null)
-                //{
-                //    Response.StatusCode = 303;
-                //    Response.GetTypedHeaders().Location = new Uri(viewModel.Page.NextPage.Url(), UriKind.RelativeOrAbsolute);
-                //}
-            }
-
             return View("BlockGrid", viewModel);
         }
 

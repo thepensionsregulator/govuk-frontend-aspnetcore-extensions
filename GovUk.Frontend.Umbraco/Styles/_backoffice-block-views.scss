@@ -6,14 +6,54 @@
 .backoffice-block-view.govuk-heading-l {
     margin-top: 0;
 }
+.backoffice-block-view .govuk-button,
 .backoffice-block-view.govuk-caption-l,
-.backoffice-block-view.govuk-inset-text,
-.backoffice-block-view.govuk-panel,
 .backoffice-block-view.govuk-details,
-.backoffice-block-view.govuk-notification-banner {
+.backoffice-block-view.govuk-error-message,
+.backoffice-block-view.govuk-fieldset,
+.backoffice-block-view.govuk-form-group:not(.backoffice-block-view-textarea),
+.backoffice-block-view.govuk-inset-text,
+.backoffice-block-view.govuk-notification-banner,
+.backoffice-block-view.govuk-panel,
+.backoffice-block-view.govuk-summary-list {
     margin-bottom: 20px;
 }
 .backoffice-block-view.govuk-panel,
 .backoffice-block-view > .govuk-notification-banner__content {
     padding-bottom: 0;
+}
+.backoffice-block-view.govuk-fieldset {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    min-height: 20px;
+}
+
+.backoffice-additional-blocks {
+    border: 1px dashed #ccc;
+    padding: 10px;
+}
+
+.govuk-checkboxes__item > .backoffice-additional-blocks,
+.govuk-radios__item > .backoffice-additional-blocks {
+    margin: 5px 0 0 15px;
+}
+.backoffice-block-view.govuk-notification-banner .backoffice-additional-blocks {
+    margin-bottom: 20px;
+}
+
+.backoffice-block-view .govuk-summary-list__row:not(.govuk-summary-list__row--no-actions) > :last-child {
+    padding-right: 40px;
+}
+
+.backoffice-block-view.govuk-summary-card .govuk-summary-list__row:not(.govuk-summary-list__row--no-actions) > :last-child {
+    padding-right: 0;
+}
+
+.backoffice-block-view .govuk-summary-card__content {
+    padding-bottom: 0;
+    margin-bottom: 20px;
+}
+
+.backoffice-block-view .govuk-textarea {
+    margin-bottom: 0;
 }

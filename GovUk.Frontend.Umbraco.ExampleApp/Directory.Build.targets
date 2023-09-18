@@ -8,7 +8,7 @@
 			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\uSync\**" />
 			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\App_Plugins\**" />
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\uSync\**" />
-			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\govuk-umbraco-backoffice.css" />
+			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\govuk-umbraco-backoffice.css*" />
 			<PluginFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
@@ -21,7 +21,7 @@
 		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)wwwroot\css\govuk-umbraco-backoffice.css" />
+			DestinationFiles="$(ProjectDir)wwwroot\css\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>

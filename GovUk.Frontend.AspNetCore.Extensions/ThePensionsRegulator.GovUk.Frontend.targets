@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<Target Name="ThePensionsRegulatorGovUkFrontend" BeforeTargets="BeforeBuild">
+		<!-- Look for the PackageReference to this package to get the current version.
+			 Use that version to find the NuGet package folder, and copy govuk-frontend SASS files to the Styles folder in the consuming project.
+			 If this package is a transitive dependency the PackageReference will not be found, so show a message.
+		-->
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend']/@Version">
 			<Output TaskParameter="Result" ItemName="ThePensionsRegulatorGovUkFrontendVersion" />
 		</XmlPeek>
@@ -12,20 +16,29 @@
 			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(ThePensionsRegulatorGovUkFrontendSassFolder)**\*.scss" />
 		</ItemGroup>
 
-		<Message Text="Copying files from $(ThePensionsRegulatorGovUkFrontendSassFolder) to $(ProjectDir)" Importance="high" />
+		<Message Text="Not copying govuk-frontend SASS files to the Styles folder because ThePensionsRegulator.GovUk.Frontend is a transitive dependency. These may be copied by the package that references ThePensionsRegulator.GovUk.Frontend or you may need to add a direct reference to ThePensionsRegulator.GovUk.Frontend." Importance="high"
+			     Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==0"/>
+		
+		<!-- The following copy task is also configured in ThePensionsRegulator.Frontend.targets, ThePensionsRegulator.GovUk.Frontend.Umbraco.targets 
+		     and ThePensionsRegulator.Frontend.Umbraco.targets in case this package is referenced as a transitive dependency -->
+		<Message Text="Copying govuk-frontend SASS files from $(ThePensionsRegulatorGovUkFrontendSassFolder) to $(ProjectDir)" Importance="high"
+			     Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==1"/>
 		<Copy SourceFiles="@(ThePensionsRegulatorGovUkFrontendSassFiles)"
-			DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)" />
+			  DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==1"/>
 
-		<Message Text="Generating $(ProjectDir)Styles\.gitignore" Importance="high" />
+		<!-- Generate a .gitignore so that govuk-frontend SASS files copied from this package are not committed to the consuming project's source control. -->
+		<Message Text="Generating $(ProjectDir)Styles\govuk\.gitignore" Importance="high" />
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendGitIgnoreText Include="ThePensionsRegulatorGovUkFrontendGitIgnoreText">
 				<Text>
-govuk
+*
+!.gitignore
 				</Text>
 			</ThePensionsRegulatorGovUkFrontendGitIgnoreText>
 			<ThePensionsRegulatorGovUkFrontendGitIgnore Include="%(ThePensionsRegulatorGovUkFrontendGitIgnoreText.Text)" />
 		</ItemGroup>
-		<WriteLinesToFile File="$(ProjectDir)Styles\.gitignore" Lines="@(ThePensionsRegulatorGovUkFrontendGitIgnore)" Overwrite="True"/>
+		<WriteLinesToFile File="$(ProjectDir)Styles\govuk\.gitignore" Lines="@(ThePensionsRegulatorGovUkFrontendGitIgnore)" Overwrite="True"/>
 	</Target>
 
 	<!-- In pipeline builds if a CSS file exists AspNetCore.SassCompiler won't overwrite it with the generated version, 

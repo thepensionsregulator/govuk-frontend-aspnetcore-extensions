@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -44,8 +44,6 @@
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.1.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
-		<PackageReference Include="Smidge.InMemory" Version="4.3.0" />
-		<PackageReference Include="Smidge.Nuglify" Version="4.3.0" />
 	</ItemGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
@@ -143,7 +141,7 @@
 
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.targets">
 			<Pack>true</Pack>
-			<PackagePath>build</PackagePath>
+			<PackagePath>build;buildTransitive</PackagePath>
 		</Content>
 	</ItemGroup>
 

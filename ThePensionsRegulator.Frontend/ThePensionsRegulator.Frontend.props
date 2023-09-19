@@ -1,5 +1,5 @@
 ﻿<Project>
-  <Import Project="Microsoft.AspNetCore.StaticWebAssets.props" />
+	<Import Project="../build/Microsoft.AspNetCore.StaticWebAssets.props" />
 	<ItemGroup>
 		<StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico))">
 			<SourceType>Package</SourceType>

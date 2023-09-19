@@ -30,17 +30,10 @@ function createGovUkValidator() {
     },
 
     /**
-     * Ensures the page title is prefixed with the data-govuk-error-prefix attribute, or 'Error: ' when there is at least one .govuk-error-message displayed
+     * Ensures the page title is prefixed with 'Error: ' when there is at least one .govuk-error-message displayed
      */
-      updateTitle: function () {
-        const getPrefix = document.querySelector("[data-govuk-error-prefix]")
-        let prefix = ""
-          if (getPrefix == null) {
-              prefix = "Error: "
-          }
-          else {
-              prefix = getPrefix.getAttribute("data-govuk-error-prefix");
-          }
+    updateTitle: function () {
+      const prefix = "Error: ";
       const hasError = [].slice
         .call(document.querySelectorAll(".govuk-error-message"))
         .filter(function (error) {

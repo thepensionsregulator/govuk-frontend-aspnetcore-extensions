@@ -18,5 +18,11 @@
   },
   "resolutions": {
     "json5": "2.2.2"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "node": "^20.6.0"
   }
 }

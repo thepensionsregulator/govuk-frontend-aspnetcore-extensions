@@ -2,7 +2,6 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @model TextInputViewModel
 
-@inject IViewLocalizer localizer;
 @inject IHtmlLocalizer<SharedResource> _shared;
 @{
     ViewData["Title"] = "Text input";
@@ -11,7 +10,7 @@
     <partial name="_LanguageSwitcher"/>
 }
 
-    <form asp-controller="TextInput" asp-action="Post" method="post" novalidate data-govuk-error-prefix=@localizer["Error:"]>
+<form asp-controller="TextInput" asp-action="Post" method="post" novalidate>
     <span class="govuk-caption-xl">Example application</span>
     <div class="govuk-grid-row govuk-grid-row--tpr-divider">
         <div class="govuk-grid-column govuk-grid-column-full">

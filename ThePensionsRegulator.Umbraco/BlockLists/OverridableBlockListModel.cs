@@ -68,7 +68,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
 				_items.Add(overridableItem);
 			}
 
-			CopyFilterToDescendantBlockLists(_items, _filter);
+			CopyFilterToDecendantBlockLists(_items, _filter);
 		}
 
 		/// <summary>
@@ -108,11 +108,11 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
 			{
 				_filter = value;
 
-				CopyFilterToDescendantBlockLists(_items, _filter);
+				CopyFilterToDecendantBlockLists(_items, _filter);
 			}
 		}
 
-		private void CopyFilterToDescendantBlockLists(IEnumerable<OverridableBlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> filter)
+		private void CopyFilterToDecendantBlockLists(IEnumerable<OverridableBlockListItem> blockListItems, Func<IEnumerable<OverridableBlockListItem>, IEnumerable<OverridableBlockListItem>> filter)
 		{
 			foreach (var blockListItem in blockListItems)
 			{
@@ -123,7 +123,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
 				foreach (var model in models)
 				{
 					model.Filter = filter;
-					CopyFilterToDescendantBlockLists(model, filter);
+					CopyFilterToDecendantBlockLists(model, filter);
 				}
 			}
 		}

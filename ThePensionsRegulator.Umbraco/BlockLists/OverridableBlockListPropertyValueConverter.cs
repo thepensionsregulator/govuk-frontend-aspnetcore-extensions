@@ -34,5 +34,8 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
             return baseModel is BlockListModel ? new OverridableBlockListModel((BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
         }
-    }
+
+		/// <inheritdoc />
+		public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Snapshot;
+	}
 }

@@ -31,7 +31,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             }
             if (content?.Properties is null)
             {
-                throw new ArgumentException(nameof(content), $"{nameof(content)}.{nameof(content.Properties)} cannot be null");
+                throw new ArgumentException($"{nameof(content)}.{nameof(content.Properties)} cannot be null", nameof(content));
             }
 
             return content.Properties

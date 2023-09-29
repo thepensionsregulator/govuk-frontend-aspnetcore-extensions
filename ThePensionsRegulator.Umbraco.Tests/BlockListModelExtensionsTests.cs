@@ -1,5 +1,5 @@
 ﻿using Moq;
-using ThePensionsRegulator.Umbraco.BlockLists;
+using ThePensionsRegulator.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;

@@ -3,7 +3,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 using Constants = Umbraco.Cms.Core.Constants;
 
-namespace ThePensionsRegulator.Umbraco.BlockLists
+namespace ThePensionsRegulator.Umbraco.Blocks
 {
     public static class PublishedContentExtensions
     {
@@ -31,7 +31,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
             }
             if (content?.Properties is null)
             {
-                throw new ArgumentException(nameof(content), $"{nameof(content)}.{nameof(content.Properties)} cannot be null");
+                throw new ArgumentException($"{nameof(content)}.{nameof(content.Properties)} cannot be null", nameof(content));
             }
 
             return content.Properties

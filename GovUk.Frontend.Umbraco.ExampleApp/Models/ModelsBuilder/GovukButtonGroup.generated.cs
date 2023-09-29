@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Button group</summary>
-	[PublishedModel("govukButtonGroup")]
+    /// <summary>Button group</summary>
+    [PublishedModel("govukButtonGroup")]
 	public partial class GovukButtonGroup : PublishedElementModel
 	{
 		// helpers
@@ -55,6 +55,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("buttons")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel Buttons => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "buttons");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel Buttons => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "buttons");
 	}
 }

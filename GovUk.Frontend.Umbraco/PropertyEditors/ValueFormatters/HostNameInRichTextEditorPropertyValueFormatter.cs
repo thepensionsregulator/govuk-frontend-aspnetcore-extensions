@@ -49,7 +49,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
             var html = value is IHtmlEncodedString encoded ? encoded.ToHtmlString() : value.ToString();
             var document = new HtmlDocument();
             document.LoadHtml(html);
-            var links = document.DocumentNode.SelectNodes("//a");
+            var links = document.DocumentNode.SelectNodes("//a[@href]");
             if (links != null)
             {
                 foreach (var link in links)

@@ -34,5 +34,27 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             Assert.That(((HtmlEncodedString)resultOfString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
             Assert.That(((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
         }
+
+        [Test]
+        public void Ignores_anchor_link_targets()
+        {
+            // Arrange
+            const string INPUT = "<p><a id='some-id'>Example</a></p>";
+
+            var context = new UmbracoTestContext();
+            var accessor = new Mock<IHttpContextAccessor>();
+            accessor.Setup(x => x.HttpContext).Returns(context.HttpContext.Object);
+
+            var hostUpdater = new Mock<IContextAwareHostUpdater>();
+            hostUpdater.Setup(x => x.UpdateHost("https://example.org", context.HttpContext.Object.Request.Host.Host)).Returns("https://example.com");
+
+            var formatter = new HostNameInRichTextEditorPropertyValueFormatter(accessor.Object, hostUpdater.Object);
+
+            // Act
+            var result = formatter.FormatValue(INPUT);
+
+            // Assert
+            Assert.That(((HtmlEncodedString)result)?.ToHtmlString(), Is.EqualTo(INPUT));
+        }
     }
 }

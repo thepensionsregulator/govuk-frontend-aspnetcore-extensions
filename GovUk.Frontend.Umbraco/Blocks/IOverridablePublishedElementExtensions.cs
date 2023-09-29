@@ -3,14 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.BlockLists;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Infrastructure.ModelsBuilder;
 
-namespace GovUk.Frontend.Umbraco.BlockLists
+namespace GovUk.Frontend.Umbraco.Blocks
 {
     public static class IOverridablePublishedElementExtensions
     {

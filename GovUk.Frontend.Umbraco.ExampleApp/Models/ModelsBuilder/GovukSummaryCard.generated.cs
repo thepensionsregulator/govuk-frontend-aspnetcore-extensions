@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Summary card</summary>
-	[PublishedModel("govukSummaryCard")]
+    /// <summary>Summary card</summary>
+    [PublishedModel("govukSummaryCard")]
 	public partial class GovukSummaryCard : PublishedElementModel
 	{
 		// helpers
@@ -55,7 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cardActions")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel CardActions => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "cardActions");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel CardActions => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "cardActions");
 
 		///<summary>
 		/// Card title
@@ -71,6 +71,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("summaryListItems")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel SummaryListItems => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "summaryListItems");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel SummaryListItems => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "summaryListItems");
 	}
 }

@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Summary list item</summary>
-	[PublishedModel("govukSummaryListItem")]
+    /// <summary>Summary list item</summary>
+    [PublishedModel("govukSummaryListItem")]
 	public partial class GovukSummaryListItem : PublishedElementModel
 	{
 		// helpers
@@ -55,7 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("actions")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel Actions => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "actions");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel Actions => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "actions");
 
 		///<summary>
 		/// Key: A description or label of a piece of information, like ‘Name’

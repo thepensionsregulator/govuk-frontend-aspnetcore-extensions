@@ -1,6 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Models;
 using Microsoft.AspNetCore.Http;
-using ThePensionsRegulator.Umbraco.BlockLists;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models.Blocks;
 
 namespace GovUk.Frontend.Umbraco.Services

@@ -3,7 +3,7 @@ using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
-namespace ThePensionsRegulator.Umbraco.BlockLists
+namespace ThePensionsRegulator.Umbraco.Blocks
 {
     public static class BlockListModelExtensions
     {
@@ -200,7 +200,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched</returns>
         public static OverridableBlockListItem? FindBlockByContentTypeAlias(this IEnumerable<OverridableBlockListItem> blockList, string alias)
         {
-            return (OverridableBlockListItem?)blockList.FindBlockByContentTypeAlias(alias, null);
+            return blockList.FindBlockByContentTypeAlias(alias, null);
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
                     {
                         IEnumerable<T>? childBlocks = (IEnumerable<T>?)((block as OverridableBlockListItem)?.Content.Value<OverridableBlockListModel>(blockProperty.Alias));
                         if (childBlocks == null) { childBlocks = (IEnumerable<T>?)blockProperty.Value<BlockListModel>(publishedValueFallback ?? new NoopPublishedValueFallback()); }
-                        var result = childBlocks!.RecursivelyFindBlocks<T>(matcher, returnFirstMatchOnly, publishedValueFallback);
+                        var result = childBlocks!.RecursivelyFindBlocks(matcher, returnFirstMatchOnly, publishedValueFallback);
                         if (result.Any())
                         {
                             matchedBlocks.AddRange(result);

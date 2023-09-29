@@ -1,7 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
-@using ThePensionsRegulator.Umbraco.BlockLists;
+@using ThePensionsRegulator.Umbraco.Blocks;
 @using Umbraco.Extensions
 @{
     var cssClass = ("govuk-heading-l " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();

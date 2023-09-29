@@ -1,4 +1,4 @@
-﻿using ThePensionsRegulator.Umbraco.BlockLists;
+﻿using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.Models

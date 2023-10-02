@@ -2,7 +2,7 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ErrorMessageViewModel>
 @section head{
-	<title>@Model.Page?.Name</title>
+    <title>@Model.Page?.PageHeadingOrName()</title>
 }
 @using (Html.BeginUmbracoForm<ErrorMessageSurfaceController>(nameof(ErrorMessageSurfaceController.Index), new { }, new { novalidate = "novalidate" }))
 {

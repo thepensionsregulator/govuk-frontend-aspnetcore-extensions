@@ -3,7 +3,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Blocks
 {
-    public class OverridableBlockListItem : BlockListItem
+    public class OverridableBlockListItem : BlockListItem, IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>
     {
         public static Func<IPublishedElement?, IOverridablePublishedElement?> DefaultPublishedElementFactory { get => publishedElement => publishedElement != null ? new OverridablePublishedElement(publishedElement) : null; }
         public static Func<IPublishedElement?, IOverridablePublishedElement?> NoopPublishedElementFactory { get => publishedElement => (IOverridablePublishedElement?)publishedElement; }

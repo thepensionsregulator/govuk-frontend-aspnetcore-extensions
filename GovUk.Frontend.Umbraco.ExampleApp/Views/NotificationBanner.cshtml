@@ -2,7 +2,7 @@
 @using Smidge
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<NotificationBanner>
 @section head{
-	<title>@Model.Name</title>
+    <title>@Model.PageHeadingOrName()</title>
 }
 @{
     SmidgeHelper.RequiresJs(new JavaScriptFile { FilePath = "~/js/NotificationBanner.js", Order = 0 });

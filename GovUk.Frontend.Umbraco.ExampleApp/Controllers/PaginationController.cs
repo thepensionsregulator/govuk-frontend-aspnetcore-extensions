@@ -93,7 +93,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
                 ModelState.SetInitialValue(nameof(viewModel.Items), pagination.TotalItems.ToString(CultureInfo.InvariantCulture));
 
-                viewModel.PageTitle = viewModel.Page.Name;
+                viewModel.PageTitle = viewModel.Page.PageHeadingOrName();
                 if (pagination.TotalPages() > 1) { viewModel.PageTitle += $" (page {pagination.PageNumber} of {pagination.TotalPages()})"; }
             }
 

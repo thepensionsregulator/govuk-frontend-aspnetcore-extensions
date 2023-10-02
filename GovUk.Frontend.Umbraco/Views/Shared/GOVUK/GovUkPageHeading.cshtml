@@ -5,5 +5,10 @@
 @using Umbraco.Extensions
 @{
     var cssClass = ("govuk-heading-l " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
+    var heading = Model.Content.Value<string>(PropertyAliases.PageHeading);
+    if (string.IsNullOrWhiteSpace(heading))
+    {
+        heading = Umbraco.AssignedContentItem.Name;
+    }
 }
-<h1 class="@cssClass">@Umbraco.AssignedContentItem.Name</h1>
+<h1 class="@cssClass">@heading</h1>

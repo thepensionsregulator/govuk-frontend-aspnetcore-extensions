@@ -80,11 +80,12 @@ var prop2 = UmbracoPropertyFactory.CreateIntegerProperty("myIntegerPropertyAlias
 var prop3 = UmbracoPropertyFactory.CreateBooleanProperty("myTrueFalsePropertyAlias", true);
 var prop4 = UmbracoPropertyFactory.CreateMultiUrlPickerProperty("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
 var prop5 = UmbracoPropertyFactory.CreateBlockListProperty("myBlockListPropertyAlias", myBlockList);
+var prop5 = UmbracoPropertyFactory.CreateBlockGridProperty("myBlockGridPropertyAlias", myBlockGrid);
 ```
 
-## Mock Umbraco block lists
+## Mock Umbraco block lists and block grids
 
-`UmbracoBlockListFactory` makes it easy to mock blocks in a block list. You can add as many properties as you need to the block content and settings using the extension methods described above in a fluent syntax.
+`UmbracoBlockListFactory` and `UmbracoBlockGridFactory` make it easy to mock blocks in a block list or block grid. You can add as many properties as you need to the block content and settings using the extension methods described above in a fluent syntax.
 
 ```csharp
 var blockList = UmbracoBlockListFactory.CreateBlockListModel(

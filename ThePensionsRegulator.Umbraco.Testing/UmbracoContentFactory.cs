@@ -22,6 +22,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
                 publishedContent.Setup(x => x.ContentType).Returns(contentType.Object);
             }
 
+            publishedContent.Setup(x => x.Key).Returns(Guid.NewGuid());
             publishedContent.Setup(x => x.Properties).Returns(new List<IPublishedProperty>());
             return publishedContent;
         }

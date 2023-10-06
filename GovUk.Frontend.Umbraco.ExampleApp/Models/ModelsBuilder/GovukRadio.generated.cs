@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Radio</summary>
-	[PublishedModel("govukRadio")]
+    /// <summary>Radio</summary>
+    [PublishedModel("govukRadio")]
 	public partial class GovukRadio : PublishedElementModel, IGovukHint
 	{
 		// helpers
@@ -55,7 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("conditionalBlocks")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel ConditionalBlocks => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "conditionalBlocks");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel ConditionalBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "conditionalBlocks");
 
 		///<summary>
 		/// Label

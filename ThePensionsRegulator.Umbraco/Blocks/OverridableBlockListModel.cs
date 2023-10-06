@@ -6,7 +6,7 @@ using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
-namespace ThePensionsRegulator.Umbraco.BlockLists
+namespace ThePensionsRegulator.Umbraco.Blocks
 {
     /// <summary>
     /// An adapter for a <see cref="BlockListModel" /> which supports filtering out blocks and overriding property values
@@ -15,7 +15,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
     public class OverridableBlockListModel : IEnumerable<OverridableBlockListItem>
     {
         private readonly List<OverridableBlockListItem> _items = new();
-        private static Func<OverridableBlockListItem, bool> DefaultFilter = (x => true);
+        private static Func<OverridableBlockListItem, bool> DefaultFilter = x => true;
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.

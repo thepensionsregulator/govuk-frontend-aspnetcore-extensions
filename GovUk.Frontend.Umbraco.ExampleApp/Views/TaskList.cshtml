@@ -1,6 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<TaskList>
 @section head{
-	<title>@Model.Name</title>
+	<title>@Model.PageHeadingOrName()</title>
 }
 
 <partial name="GOVUK/BlockList" model="Model.Blocks" />

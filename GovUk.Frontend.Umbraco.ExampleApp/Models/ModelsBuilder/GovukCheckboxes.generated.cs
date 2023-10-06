@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Checkboxes</summary>
-	[PublishedModel("govukCheckboxes")]
+    /// <summary>Checkboxes</summary>
+    [PublishedModel("govukCheckboxes")]
 	public partial class GovukCheckboxes : PublishedElementModel, IGovukHint, IGovukLegend
 	{
 		// helpers
@@ -55,7 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("checkboxes")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel Checkboxes => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "checkboxes");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel Checkboxes => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "checkboxes");
 
 		///<summary>
 		/// Blocks: Help specific to this set of checkboxes.
@@ -63,7 +63,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("fieldsetBlocks")]
-		public virtual global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel FieldsetBlocks => this.Value<global::ThePensionsRegulator.Umbraco.BlockLists.OverridableBlockListModel>(_publishedValueFallback, "fieldsetBlocks");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel FieldsetBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "fieldsetBlocks");
 
 		///<summary>
 		/// Hint

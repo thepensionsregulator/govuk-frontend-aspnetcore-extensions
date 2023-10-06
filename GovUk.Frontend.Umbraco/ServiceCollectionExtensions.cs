@@ -3,6 +3,7 @@ using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.Umbraco.ModelBinding;
 using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.Services;
+using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -34,6 +35,7 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IUmbracoPublishedContentAccessor, UmbracoPublishedContentAccessor>();
             services.AddTransient<IUmbracoPaginationFactory, UmbracoPaginationFactory>();
             services.AddSingleton<IConfigureOptions<MvcOptions>, ModelBindingMvcConfiguration>();
+            services.AddSingleton<IConfigureOptions<MvcOptions>, RemoveSettingsErrorsMvcConfiguration>();
             services.AddTransient<IPropertyValueFormatter, GovUkTypographyPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphInversePropertyValueFormatter>();

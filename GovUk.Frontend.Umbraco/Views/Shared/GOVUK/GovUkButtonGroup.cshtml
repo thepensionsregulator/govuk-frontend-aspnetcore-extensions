@@ -1,8 +1,9 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockListItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
-@using ThePensionsRegulator.Umbraco.BlockLists;
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Blocks;
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @using System.Linq

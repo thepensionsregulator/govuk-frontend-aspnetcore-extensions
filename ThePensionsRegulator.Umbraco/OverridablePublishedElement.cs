@@ -1,4 +1,4 @@
-﻿using ThePensionsRegulator.Umbraco.BlockLists;
+﻿using ThePensionsRegulator.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;

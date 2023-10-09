@@ -2,7 +2,7 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @section head{
-	<title>@Model.Page!.Name</title>
+    <title>@Model.Page!.PageHeadingOrName()</title>
 }
 @using (Html.BeginUmbracoForm<DateInputSurfaceController>(nameof(DateInputSurfaceController.Index), new {}, new { novalidate="novalidate" }))
 {

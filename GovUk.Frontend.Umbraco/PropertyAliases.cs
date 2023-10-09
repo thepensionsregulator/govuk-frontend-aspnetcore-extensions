@@ -29,6 +29,7 @@
         public const string FieldsetErrorsEnabled = "fieldsetErrors";
         public const string Hint = "hint";
         public const string NotificationBannerBlocks = "blocks";
+        public const string PageHeading = "text";
         public const string RadioButtons = "radioButtons";
         public const string RadioButtonValue = "value";
         public const string RadioButtonLabel = "label";

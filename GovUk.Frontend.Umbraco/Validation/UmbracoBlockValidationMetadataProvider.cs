@@ -3,21 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
-using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.Validation
 {
-    public class UmbracoBlockListValidationMetadataProvider : IValidationMetadataProvider
+    public class UmbracoBlockValidationMetadataProvider : IValidationMetadataProvider
     {
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
         private readonly IPublishedValueFallback _publishedValueFallback;
         private readonly Dictionary<Type, string> _attributeTypes;
 
-        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback, Type attributeType, string errorMessagePropertyAlias)
+        public UmbracoBlockValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback, Type attributeType, string errorMessagePropertyAlias)
         {
             if (attributeType is null)
             {
@@ -34,7 +34,7 @@ namespace GovUk.Frontend.Umbraco.Validation
             _attributeTypes = new Dictionary<Type, string> { { attributeType, errorMessagePropertyAlias } };
         }
 
-        public UmbracoBlockListValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback, Dictionary<Type, string> attributeTypes)
+        public UmbracoBlockValidationMetadataProvider(IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback, Dictionary<Type, string> attributeTypes)
         {
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
             _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
@@ -48,11 +48,13 @@ namespace GovUk.Frontend.Umbraco.Validation
             if (umbracoContext == null) { return; }
             if (umbracoContext.PublishedRequest?.PublishedContent == null) { return; }
 
-            var blocks = umbracoContext.PublishedRequest.PublishedContent.FindBlockLists(_publishedValueFallback).FindBlocks(x => true, _publishedValueFallback);
+            var blocks = umbracoContext.PublishedRequest.PublishedContent.FindOverridableBlockModels(_publishedValueFallback).FindBlocks(x => true, _publishedValueFallback);
+            if (!blocks.Any()) { return; }
+
             UpdateValidationAttributeErrorMessages(blocks, context.ValidationMetadata.ValidatorMetadata, _attributeTypes);
         }
 
-        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<BlockListItem> blocks, IList<object> validationAttributes, Dictionary<Type, string> attributeTypes)
+        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> blocks, IList<object> validationAttributes, Dictionary<Type, string> attributeTypes)
         {
             foreach (var attribute in validationAttributes)
             {
@@ -66,7 +68,7 @@ namespace GovUk.Frontend.Umbraco.Validation
             }
         }
 
-        private static void UpdateValidationAttributeErrorMessage(IEnumerable<BlockListItem> blocks, object attribute, string errorMessagePropertyAlias)
+        private static void UpdateValidationAttributeErrorMessage(IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> blocks, object attribute, string errorMessagePropertyAlias)
         {
             var validationAttribute = attribute as ValidationAttribute;
             if (validationAttribute == null) { return; }

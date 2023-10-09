@@ -2,7 +2,7 @@
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.Blocks;
 
-namespace ThePensionsRegulator.Umbraco.Tests
+namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 {
     public class OverridableBlockListTypeConverterTests
     {

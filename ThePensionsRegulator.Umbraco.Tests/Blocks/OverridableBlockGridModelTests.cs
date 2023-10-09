@@ -134,6 +134,9 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             var childBlockGrid = model[0].Content.Value<OverridableBlockGridModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
             Assert.That(childBlockGrid!.Filter, Is.EqualTo(filter));
+
+            var grandchildBlockGrid = childBlockGrid[0].Content.Value<OverridableBlockGridModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
+            Assert.That(grandchildBlockGrid!.Filter, Is.EqualTo(filter));
         }
 
         [Test]

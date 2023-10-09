@@ -150,7 +150,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 }
 
                 var modelPropertyName = targetElement.Attributes["name"]?.Value;
-                if (string.IsNullOrEmpty(modelPropertyName)) { continue; }
+                if (string.IsNullOrEmpty(modelPropertyName) || modelPropertyName == ".Day" || modelPropertyName == ".Month" || modelPropertyName == ".Year") { continue; }
                 PropertyInfo? modelProperty;
                 if (modelPropertyName.EndsWith(".Day") || modelPropertyName.EndsWith(".Month") || modelPropertyName.EndsWith(".Year"))
                 {

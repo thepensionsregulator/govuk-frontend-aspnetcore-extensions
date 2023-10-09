@@ -200,6 +200,45 @@ namespace ThePensionsRegulator.Umbraco.Testing
             return publishedElement;
         }
 
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a block grid data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The block grid to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+        public static Mock<TModel> SetupUmbracoBlockGridPropertyValue<TModel, TBlockGrid>(this TModel publishedElement, string alias, TBlockGrid? value)
+           where TModel : class, IPublishedElement
+           where TBlockGrid : class, IEnumerable<BlockGridItem>
+        {
+            return Mock.Get(publishedElement).SetupUmbracoBlockGridPropertyValue(alias, value);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a block grid data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The block grid to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+        public static Mock<TModel> SetupUmbracoBlockGridPropertyValue<TModel, TBlockGrid>(this Mock<TModel> publishedElement, string alias, TBlockGrid? value)
+        where TModel : class, IPublishedElement
+        where TBlockGrid : class, IEnumerable<BlockGridItem>
+        {
+            publishedElement.SetupUmbracoProperty(UmbracoPropertyFactory.CreateBlockGridProperty(alias, value));
+            var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
+            if (overridablePublishedElement != null)
+            {
+                overridablePublishedElement.Setup(x => x.Value<TBlockGrid>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
+                overridablePublishedElement.Setup(x => x.Value<IEnumerable<BlockGridItem>>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
+
+                var readOnlyValue = value as ReadOnlyCollection<BlockGridItem>;
+                if (readOnlyValue != null)
+                {
+                    overridablePublishedElement.Setup(x => x.Value<ReadOnlyCollection<BlockGridItem>>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(readOnlyValue);
+                }
+            }
+            return publishedElement;
+        }
+
         private static Mock<TModel> SetupUmbracoPropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, TProperty?, IPublishedProperty> createPropertyWithPropertyType)
             where TModel : class, IPublishedElement
         {

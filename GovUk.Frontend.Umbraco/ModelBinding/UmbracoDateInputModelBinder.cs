@@ -1,5 +1,4 @@
-﻿using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions;
+﻿using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.ModelBinding;
 using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.Validation;
@@ -12,7 +11,6 @@ using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ModelBinding
 {
@@ -111,7 +109,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             string? displayName = null;
             if (!string.IsNullOrEmpty(modelMetadata.PropertyName))
             {
-                displayName = umbracoContent.FindBlockLists(publishedValueFallback).FindBlockByBoundProperty(modelMetadata.PropertyName)?.Settings?.Value<string>(PropertyAliases.DisplayName)?.Trim();
+                displayName = umbracoContent.FindOverridableBlockModels(publishedValueFallback).FindBlockByBoundProperty(modelMetadata.PropertyName)?.Settings?.Value<string>(PropertyAliases.DisplayName)?.Trim();
             }
             if (string.IsNullOrEmpty(displayName)) { displayName = modelMetadata.PropertyName; }
 

@@ -1,5 +1,4 @@
-﻿using Umbraco.Cms.Core.Models.Blocks;
-using Umbraco.Cms.Core.Models.PublishedContent;
+﻿using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 using Constants = Umbraco.Cms.Core.Constants;
 
@@ -8,22 +7,23 @@ namespace ThePensionsRegulator.Umbraco.Blocks
     public static class PublishedContentExtensions
     {
         /// <summary>
-        /// Finds block lists that are direct children of an <see cref="IPublishedContent"/>
+        /// Finds block lists and block grids that are direct children of an <see cref="IPublishedContent"/>.
         /// </summary>
-        /// <param name="content">The <see cref="IPublishedContent"/> to search</param>
-        /// <returns>An IEnumerable of 0 or more matching block lists</returns>
-        public static IEnumerable<BlockListModel> FindBlockLists(this IPublishedContent content)
+        /// <param name="content">The <see cref="IPublishedContent"/> to search.</param>
+        /// <returns>An IEnumerable of 0 or more matching block lists and block grids.</returns>
+        public static IEnumerable<IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>> FindOverridableBlockModels(this IPublishedContent content)
         {
-            return content.FindBlockLists(null);
+            return content.FindOverridableBlockModels(null);
         }
 
         /// <summary>
-        /// Finds block lists that are direct children of an <see cref="IPublishedContent"/>
+        /// Finds block lists and block grids that are direct children of an <see cref="IPublishedContent"/>.
         /// </summary>
-        /// <param name="content">The <see cref="IPublishedContent"/> to search</param>
-        /// <param name="publishedValueFallback">The published value fallback strategy</param>
-        /// <returns>An IEnumerable of 0 or more matching block lists</returns>
-        public static IEnumerable<BlockListModel> FindBlockLists(this IPublishedContent content, IPublishedValueFallback? publishedValueFallback)
+        /// <param name="content">The <see cref="IPublishedContent"/> to search.</param>
+        /// <param name="publishedValueFallback">The published value fallback strategy.</param>
+        /// <returns>An IEnumerable of 0 or more matching block lists and block grids.</returns>
+        public static IEnumerable<IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>> FindOverridableBlockModels(
+            this IPublishedContent content, IPublishedValueFallback? publishedValueFallback)
         {
             if (content is null)
             {
@@ -31,13 +31,19 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             }
             if (content?.Properties is null)
             {
-                throw new ArgumentException($"{nameof(content)}.{nameof(content.Properties)} cannot be null", nameof(content));
+                throw new ArgumentException(nameof(content), $"{nameof(content)}.{nameof(content.Properties)} cannot be null");
             }
 
+            Func<IPublishedProperty, IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>?> select = x =>
+            {
+                return x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList ?
+                                x.Value<OverridableBlockListModel>(publishedValueFallback ?? new NoopPublishedValueFallback()) :
+                                x.Value<OverridableBlockGridModel>(publishedValueFallback ?? new NoopPublishedValueFallback());
+            };
             return content.Properties
-                .Where(x => x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && x.HasValue())
-                .Select(x => x.Value<BlockListModel>(publishedValueFallback ?? new NoopPublishedValueFallback()))
-                .OfType<BlockListModel>();
+                .Where(x => (x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList || x.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockGrid) && x.HasValue())
+                .Select(select)
+                .OfType<IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>>();
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Primitives;
 using NUnit.Framework;
 
-namespace GovUk.Frontend.Umbraco.Tests
+namespace GovUk.Frontend.Umbraco.Tests.Validation
 {
     public class ModelStateExtensionsTests
     {

@@ -17,7 +17,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
     /// Only overridable types are supported because ModelsBuilder is configured to use overridable types, so the built-in types
     /// are rarely encountered. 
     /// </remarks>
-    public static class BlockModelCollectionExtensions
+    public static class OverridableBlockModelExtensions
     {
         #region FindBlock
         /// <summary>

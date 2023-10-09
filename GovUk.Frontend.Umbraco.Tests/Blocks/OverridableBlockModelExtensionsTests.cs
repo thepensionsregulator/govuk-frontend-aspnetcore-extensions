@@ -5,14 +5,14 @@ using ThePensionsRegulator.Umbraco.Testing;
 
 namespace GovUk.Frontend.Umbraco.Tests.Blocks
 {
-    public class BlockListModelExtensionsTests
+    public class OverridableBlockModelExtensionsTests
     {
         [TestCase("Field1", true)]
         [TestCase("Field2", false)]
         public void Block_is_matched_by_model_property(string propertyName, bool expected)
         {
-            var blockList = UmbracoBlockListFactory.CreateBlockListModel(
-                UmbracoBlockListFactory.CreateBlock(
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateOverridableBlock(
                     UmbracoBlockListFactory.CreateContentOrSettings().Object,
                     UmbracoBlockListFactory.CreateContentOrSettings()
                     .SetupUmbracoTextboxPropertyValue(PropertyAliases.ModelProperty, "Field1")

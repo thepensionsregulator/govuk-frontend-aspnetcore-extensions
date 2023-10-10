@@ -3,9 +3,9 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 {
-    public class BlockListViewModel
+    public class FilterAndOverrideBlocksViewModel
     {
-        public BlockList? Page { get; set; }
+        public FilterAndOverrideBlocks? Page { get; set; }
 
         [Required(ErrorMessage = nameof(Field1))]
         public string? Field1 { get; set; }

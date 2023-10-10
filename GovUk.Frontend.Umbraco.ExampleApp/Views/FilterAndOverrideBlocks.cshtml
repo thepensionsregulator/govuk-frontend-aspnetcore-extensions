@@ -1,0 +1,8 @@
+﻿@using GovUk.Frontend.Umbraco.ExampleApp.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FilterAndOverrideBlocksViewModel>
+@section head{
+	<title>@Model.Page!.PageHeadingOrName()</title>
+}
+
+<partial name="GOVUK/BlockList" model="Model.Page!.BlockList" />
+<partial name="GOVUK/BlockGrid" model="Model.Page!.Grid" />

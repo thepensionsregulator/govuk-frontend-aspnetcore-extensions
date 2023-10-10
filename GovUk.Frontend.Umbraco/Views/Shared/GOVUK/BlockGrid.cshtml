@@ -1,19 +1,34 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<BlockGridItem>>
+﻿@using GovUk.Frontend.Umbraco.Services;
 @using ThePensionsRegulator.Umbraco.Blocks;
-@using Umbraco.Extensions
 @using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<BlockGridItem>>
+@inject IEnumerable<IPartialViewPathProvider> pathProviders;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    var filteredModel = Model as OverridableBlockGridModel ?? new OverridableBlockGridModel(Model, null);
-    var blocks = filteredModel.FilteredBlocks().ToList();
+    var gridModel = Model as OverridableBlockGridModel;
+    var blocks = (gridModel?.FilteredBlocks() ?? new OverridableBlockGridModel(Model, null).FilteredBlocks()).ToList();
     if (!blocks.Any()) { return; }
 
-    // get the number of columns defined for the grid
-    var gridColumns = filteredModel.GridColumns;
+    for (var i = 0; i < blocks.Count; i++)
+    {
+        if (blocks[i]?.ContentUdi == null) { continue; }
 
-    <div class="umb-block-grid"
-         data-grid-columns="@(filteredModel.GridColumns?.ToString() ?? "12");"
-         style="--umb-block-grid--grid-columns: @(filteredModel.GridColumns?.ToString() ?? "12");">
-        <partial name="GOVUK/BlockGridItems" model="filteredModel" />
-    </div>
+        var pathToView = string.Empty;
+        foreach (var pathProvider in pathProviders)
+        {
+            if (pathProvider.IsProvider(blocks[i]))
+            {
+                pathToView = pathProvider.BuildPartialViewPath(blocks[i]);
+                break;
+            }
+        }
+        if (string.IsNullOrEmpty(pathToView))
+        {
+            throw new InvalidOperationException(
+                $"No {nameof(IPartialViewPathProvider)} was found to provide a path for the block with content key {blocks[i].Content.Key}, of content type {blocks[i].Content.ContentType.Alias}"
+            );
+        }
+
+        @await Html.PartialAsync(pathToView, blocks[i])
+    }
 }

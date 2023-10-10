@@ -42,6 +42,12 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
 
             viewModel.Page.Grid.First(x => x.Settings.GridRowClassList().Contains("override-this"))?
+
+            // Override content in the block list and block grid
+            viewModel.Page.BlockList.First(x => x.GridRowClassList().Contains("override-this"))?
+                .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
+
+            viewModel.Page.Grid.First(x => x.GridRowClassList().Contains("override-this"))?
                 .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
 
             // Override content in a nested block list
@@ -50,6 +56,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             if (col != null)
             {
                 col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.Settings.GridRowClassList().Contains("override-this"))?
+                col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"))?
                     .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
             }
 

@@ -1,14 +1,8 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.Umbraco.Blocks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Routing;
 using NUnit.Framework;
-using System.Collections.Generic;
+using System;
+using System.Linq;
 using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
@@ -18,13 +12,8 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 namespace GovUk.Frontend.Umbraco.Tests.Blocks
 {
     [TestFixture]
-    public class TaskListSummaryActionFilterTests
+    public class TaskListTaskStatusProviderTests
     {
-        private class ExampleViewModel
-        {
-            public ExampleModelsBuilderModel? Page { get; set; }
-        }
-
         private static OverridableBlockListModel CreateBlockListWithTaskListSummaryAndTaskList(OverridableBlockListModel blockListOfTasks)
         {
             var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(new[] {
@@ -50,7 +39,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 UmbracoBlockGridFactory.CreateOverridableBlock(
                   UmbracoBlockGridFactory.CreateContentOrSettings(ElementTypeAliases.TaskListSummary).Object
                     ),
-                // Task list with two tasks
+                // Task list with block list of tasks
                 UmbracoBlockGridFactory.CreateOverridableBlock(
                     UmbracoBlockGridFactory.CreateContentOrSettings(ElementTypeAliases.TaskList)
                     .SetupUmbracoBlockListPropertyValue(PropertyAliases.TaskListTasks,
@@ -81,32 +70,20 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                                 );
         }
 
-        private static ActionExecutedContext CreateActionExecutedContext(object model)
-        {
-            var modelState = new ModelStateDictionary();
-            var context = new ActionExecutedContext(new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor(), modelState), new List<IFilterMetadata>(), new { });
-            var result = new ViewResult();
-            var metadataProvider = new FakeMetadataProvider(typeof(ExampleModelsBuilderModel));
-            var viewData = new ViewDataDictionary(metadataProvider, modelState);
-            viewData.Model = model;
-            result.ViewData = viewData;
-            context.Result = result;
-            return context;
-        }
-
         [Test]
-        public void Null_model_does_not_throw()
+        public void Null_content_throws_ArgumentNullException()
         {
             // Arrange
-            var actionFilter = new TaskListSummaryActionFilter();
-            var context = new ActionExecutedContext(new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor()), new List<IFilterMetadata>(), new { });
+            var provider = new TaskListTaskStatusProvider();
 
             // Act
-            Assert.DoesNotThrow(() => actionFilter.OnActionExecuted(context));
+#nullable disable
+            Assert.Throws<ArgumentNullException>(() => provider.FindTaskStatuses(null));
+#nullable enable
         }
 
         [Test]
-        public void Task_statuses_added_to_ModelState_from_BlockList_in_PublishedContentModel()
+        public void Task_statuses_returned_from_BlockList()
         {
             // Arrange
             var blockList = CreateBlockListWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
@@ -114,41 +91,19 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
 
-            var actionFilter = new TaskListSummaryActionFilter();
-            var model = new ExampleModelsBuilderModel(content.Object, new NoopPublishedValueFallback());
-            var context = CreateActionExecutedContext(model);
+            var provider = new TaskListTaskStatusProvider();
 
             // Act
-            actionFilter.OnActionExecuted(context);
+            var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(context.ModelState.ContainsKey(blockList[0].Content.Key.ToString()));
-            Assert.That(context.ModelState[blockList[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("Completed,Incomplete"));
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Contains(TaskListTaskStatus.Completed));
+            Assert.That(result.Contains(TaskListTaskStatus.Incomplete));
         }
 
         [Test]
-        public void Task_statuses_added_to_ModelState_from_BlockList_in_PublishedContentModel_as_property_of_viewModel()
-        {
-            // Arrange
-            var blockList = CreateBlockListWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
-
-            var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
-                .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
-
-            var actionFilter = new TaskListSummaryActionFilter();
-            var model = new ExampleViewModel { Page = new ExampleModelsBuilderModel(content.Object, new NoopPublishedValueFallback()) };
-            var context = CreateActionExecutedContext(model);
-
-            // Act
-            actionFilter.OnActionExecuted(context);
-
-            // Assert
-            Assert.That(context.ModelState.ContainsKey(blockList[0].Content.Key.ToString()));
-            Assert.That(context.ModelState[blockList[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("Completed,Incomplete"));
-        }
-
-        [Test]
-        public void Task_statuses_added_to_ModelState_from_BlockGrid_in_PublishedContentModel()
+        public void Task_statuses_returned_from_BlockGrid()
         {
             // Arrange
             var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
@@ -156,37 +111,15 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockGridPropertyValue(nameof(ExampleModelsBuilderModel.BlockGrid), blockGrid);
 
-            var actionFilter = new TaskListSummaryActionFilter();
-            var model = new ExampleModelsBuilderModel(content.Object, new NoopPublishedValueFallback());
-            var context = CreateActionExecutedContext(model);
+            var provider = new TaskListTaskStatusProvider();
 
             // Act
-            actionFilter.OnActionExecuted(context);
+            var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(context.ModelState.ContainsKey(blockGrid[0].Content.Key.ToString()));
-            Assert.That(context.ModelState[blockGrid[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("Completed,Incomplete"));
-        }
-
-        [Test]
-        public void Task_statuses_added_to_ModelState_from_BlockGrid_in_PublishedContentModel_as_property_of_viewModel()
-        {
-            // Arrange
-            var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
-
-            var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
-                .SetupUmbracoBlockGridPropertyValue(nameof(ExampleModelsBuilderModel.BlockGrid), blockGrid);
-
-            var actionFilter = new TaskListSummaryActionFilter();
-            var model = new ExampleViewModel { Page = new ExampleModelsBuilderModel(content.Object, new NoopPublishedValueFallback()) };
-            var context = CreateActionExecutedContext(model);
-
-            // Act
-            actionFilter.OnActionExecuted(context);
-
-            // Assert
-            Assert.That(context.ModelState.ContainsKey(blockGrid[0].Content.Key.ToString()));
-            Assert.That(context.ModelState[blockGrid[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("Completed,Incomplete"));
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Contains(TaskListTaskStatus.Completed));
+            Assert.That(result.Contains(TaskListTaskStatus.Incomplete));
         }
 
         [Test]
@@ -199,20 +132,18 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
 
-            var actionFilter = new TaskListSummaryActionFilter();
-            var model = new ExampleModelsBuilderModel(content.Object, new NoopPublishedValueFallback());
-            var context = CreateActionExecutedContext(model);
+            var provider = new TaskListTaskStatusProvider();
 
             // Act
-            actionFilter.OnActionExecuted(context);
+            var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(context.ModelState.ContainsKey(blockList[0].Content.Key.ToString()));
-            Assert.That(context.ModelState[blockList[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("Completed"));
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Contains(TaskListTaskStatus.Completed));
         }
 
         [Test]
-        public void BlockGrid_filter_is_applied_for_tasks()
+        public void BlockGrid_filter_is_not_applied_for_tasks_which_are_block_list_items()
         {
             // Arrange
             var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
@@ -221,16 +152,15 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockGridPropertyValue(nameof(ExampleModelsBuilderModel.BlockGrid), blockGrid);
 
-            var actionFilter = new TaskListSummaryActionFilter();
-            var model = new ExampleModelsBuilderModel(content.Object, new NoopPublishedValueFallback());
-            var context = CreateActionExecutedContext(model);
+            var provider = new TaskListTaskStatusProvider();
 
             // Act
-            actionFilter.OnActionExecuted(context);
+            var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(context.ModelState.ContainsKey(blockGrid[0].Content.Key.ToString()));
-            Assert.That(context.ModelState[blockGrid[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("Completed,Incomplete"));
+            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Contains(TaskListTaskStatus.Completed));
+            Assert.That(result.Contains(TaskListTaskStatus.Incomplete));
         }
 
         [Test]
@@ -254,16 +184,14 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
 
-            var actionFilter = new TaskListSummaryActionFilter();
-            var model = new ExampleModelsBuilderModel(content.Object, new NoopPublishedValueFallback());
-            var context = CreateActionExecutedContext(model);
+            var provider = new TaskListTaskStatusProvider();
 
             // Act
-            actionFilter.OnActionExecuted(context);
+            var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(context.ModelState.ContainsKey(blockList[0].Content.Key.ToString()));
-            Assert.That(context.ModelState[blockList[0].Content.Key.ToString()]!.AttemptedValue, Is.EqualTo("NotStarted"));
+            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Contains(TaskListTaskStatus.NotStarted));
         }
     }
 }

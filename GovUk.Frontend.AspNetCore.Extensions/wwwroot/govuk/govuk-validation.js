@@ -33,14 +33,16 @@ function createGovUkValidator() {
      * Ensures the page title is prefixed with the data-govuk-error-prefix attribute, or 'Error: ' when there is at least one .govuk-error-message displayed
      */
       updateTitle: function () {
-          const getPrefix = document.querySelector("[data-govuk-error-prefix]");
+          const titleTag = document.getElementsByTagName("title")[0];
+          const getPrefix = titleTag.getAttribute("gfa-error-prefix");
           let prefix = "";
-          if (getPrefix == null) {
+          if (getPrefix == null && titleTag.getAttribute("data-govuk-error-prefix") == null) {
               prefix = "Error: "
           }
           else {
-              prefix = getPrefix.getAttribute("data-govuk-error-prefix");
+              prefix = titleTag.getAttribute("data-govuk-error-prefix")
           };
+         
       const hasError = [].slice
         .call(document.querySelectorAll(".govuk-error-message"))
         .filter(function (error) {

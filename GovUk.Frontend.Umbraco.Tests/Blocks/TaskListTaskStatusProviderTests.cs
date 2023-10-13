@@ -143,7 +143,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         }
 
         [Test]
-        public void BlockGrid_filter_is_not_applied_for_tasks_which_are_block_list_items()
+        public void BlockGrid_filter_is_applied_for_tasks()
         {
             // Arrange
             var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
@@ -158,9 +158,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result.Contains(TaskListTaskStatus.Completed));
-            Assert.That(result.Contains(TaskListTaskStatus.Incomplete));
         }
 
         [Test]

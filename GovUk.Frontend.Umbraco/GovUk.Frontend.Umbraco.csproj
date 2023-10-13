@@ -347,6 +347,9 @@
 		<Content Update="uSync\v9\ContentTypes\govukwarningtextsettings.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\DataTypes\GOVUKBlockGrid.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKBlockList.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

@@ -1,0 +1,19 @@
+﻿@using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using Umbraco.Cms.Core.Models.Blocks;
+@using Umbraco.Cms.Core.Models.PublishedContent;
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@if (Model.Areas is not null && Model.Areas.Count() == 2)
+{
+    var breakpointClass = Model.Settings.Value<string>(PropertyAliases.StackColumns) == "Mobile and tablet" ? "-from-desktop" : string.Empty;
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column govuk-grid-column-three-quarters@(breakpointClass)">
+            <partial name="GOVUK/BlockGrid" model="@(Model.Areas[0])" />
+        </div>
+        <div class="govuk-grid-column govuk-grid-column-one-quarter@(breakpointClass)">
+            <partial name="GOVUK/BlockGrid" model="@(Model.Areas[1])" />
+        </div>
+    </div>
+}

@@ -1,5 +1,6 @@
 ﻿using Moq;
 using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.PropertyEditors;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
@@ -130,6 +131,72 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             Assert.That(result, Is.EqualTo(grandChildBlockList.First()));
         }
 
+        [Test]
+        public void Block_is_matched_in_area_of_OverridableBlockGridModel()
+        {
+            // Arrange
+            const string BLOCK_ALIAS = "targetBlock";
+
+            var formatter = Mock.Of<IPropertyValueFormatter>();
+            var block = UmbracoBlockGridFactory.CreateOverridableBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("alias").Object
+                );
+            block.Areas = new List<OverridableBlockGridArea> {
+                new OverridableBlockGridArea(new []
+                {
+                    UmbracoBlockGridFactory.CreateOverridableBlock(
+                        UmbracoBlockGridFactory.CreateContentOrSettings(BLOCK_ALIAS).Object
+                    )
+                }, "area", 1,1)
+            };
+
+            var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
+
+            // Act
+            var result = blockGrid.FindBlock(block => block.Content.ContentType.Alias == BLOCK_ALIAS);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Content.ContentType.Alias, Is.EqualTo(BLOCK_ALIAS));
+        }
+
+        [Test]
+        public void Block_is_matched_in_descendant_block_list_in_area_of_OverridableBlockGridModel()
+        {
+            // Arrange
+            const string BLOCK_ALIAS = "targetBlock";
+            const string CHILD_BLOCK_LIST_ALIAS = "childBlocks";
+
+            var formatter = Mock.Of<IPropertyValueFormatter>();
+            var block = UmbracoBlockGridFactory.CreateOverridableBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("alias").Object
+                );
+            block.Areas = new List<OverridableBlockGridArea> {
+                new OverridableBlockGridArea(new []
+                {
+                    UmbracoBlockGridFactory.CreateOverridableBlock(
+                        UmbracoBlockGridFactory.CreateContentOrSettings("alias")
+                        .SetupUmbracoBlockListPropertyValue(CHILD_BLOCK_LIST_ALIAS,
+                            UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                                UmbracoBlockListFactory.CreateOverridableBlock(
+                                    UmbracoBlockListFactory.CreateContentOrSettings(BLOCK_ALIAS).Object
+                                )
+                            )
+                        )
+                        .Object
+                    )
+                }, "area", 1,1)
+            };
+
+            var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
+
+            // Act
+            var result = blockGrid.FindBlock(block => block.Content.ContentType.Alias == BLOCK_ALIAS);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Content.ContentType.Alias, Is.EqualTo(BLOCK_ALIAS));
+        }
 
         [Test]
         public void Block_is_matched_in_multiple_OverridableBlockListModels()

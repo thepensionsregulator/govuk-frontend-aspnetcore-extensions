@@ -34,22 +34,22 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             };
 
             // Filter out a block in the block list and block grid
-            viewModel.Page.BlockList!.Filter = block => block.Settings.Value<string>("cssClassesForRow") != "filter-this";
-            viewModel.Page.Grid!.Filter = block => block.Settings.Value<string>("cssClassesForRow") != "filter-this";
+            viewModel.Page.BlockList!.Filter = block => block.Settings?.Value<string>(nameof(GovukGrid.CssClassesForRow)) != "filter-this";
+            viewModel.Page.Grid!.Filter = block => block.Settings?.Value<string>(nameof(GovukGrid.CssClassesForRow)) != "filter-this";
 
             // Override content in the block list and block grid
             viewModel.Page.BlockList.First(x => x.GridRowClassList().Contains("override-this"))?
-                .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
+                .Content.OverrideValue(nameof(GovukTypography.Text), "<p><strong>This text is overridden.</strong></p>");
 
             viewModel.Page.Grid.First(x => x.GridRowClassList().Contains("override-this"))?
-                .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
+                .Content.OverrideValue(nameof(GovukTypography.Text), "<p><strong>This text is overridden.</strong></p>");
 
             // Override content in a nested block list
-            var row = viewModel.Page.BlockList.First(x => x.Content.ContentType.Alias == "govukGridRow");
-            var col = row.Content.Value<OverridableBlockListModel>("blocks")?.LastOrDefault(x => x.Content.ContentType.Alias == "govukGridColumn");
+            var row = viewModel.Page.BlockList.First(x => x.Content.ContentType.Alias == GovukGridRow.ModelTypeAlias);
+            var col = row.Content.Value<OverridableBlockListModel>(nameof(GovukGridRow.Blocks))?.LastOrDefault(x => x.Content.ContentType.Alias == GovukGridColumn.ModelTypeAlias);
             if (col != null)
             {
-                col.Content.Value<OverridableBlockListModel>("blocks")?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"))?
+                col.Content.Value<OverridableBlockListModel>(nameof(GovukGridColumn.Blocks))?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"))?
                     .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
             }
 

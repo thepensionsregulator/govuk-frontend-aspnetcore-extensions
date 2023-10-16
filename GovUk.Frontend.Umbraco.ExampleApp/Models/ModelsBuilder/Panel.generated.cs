@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Panel</summary>
-    [PublishedModel("panel")]
+	/// <summary>Panel</summary>
+	[PublishedModel("panel")]
 	public partial class Panel : PublishedContentModel
 	{
 		// helpers

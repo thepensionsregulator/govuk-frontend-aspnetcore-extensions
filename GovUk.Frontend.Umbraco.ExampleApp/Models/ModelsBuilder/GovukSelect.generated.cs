@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Select</summary>
-    [PublishedModel("govukSelect")]
+	/// <summary>Select</summary>
+	[PublishedModel("govukSelect")]
 	public partial class GovukSelect : PublishedElementModel, IGovukHint
 	{
 		// helpers

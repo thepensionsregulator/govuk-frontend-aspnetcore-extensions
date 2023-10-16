@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Button group</summary>
-    [PublishedModel("govukButtonGroup")]
+	/// <summary>Button group</summary>
+	[PublishedModel("govukButtonGroup")]
 	public partial class GovukButtonGroup : PublishedElementModel
 	{
 		// helpers

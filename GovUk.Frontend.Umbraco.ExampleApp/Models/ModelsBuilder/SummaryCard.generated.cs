@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Summary card</summary>
-    [PublishedModel("summaryCard")]
+	/// <summary>Summary card</summary>
+	[PublishedModel("summaryCard")]
 	public partial class SummaryCard : PublishedContentModel
 	{
 		// helpers

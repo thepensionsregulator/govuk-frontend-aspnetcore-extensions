@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.Web;
+using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
@@ -63,7 +64,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     return Redirect(path + (query.Count > 0 ? "?" + query.ToString() : string.Empty));
                 }
 
-                Func<OverridableBlockListItem, bool> filter;
+                Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> filter;
                 if (pagination.TotalItems > pagination.PageSize)
                 {
                     if (pagination.TotalItems > (pagination.PageSize * pagination.LargeNumberOfPagesThreshold))
@@ -91,6 +92,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 viewModel.Page.Blocks!.Filter = filter;
                 viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)?
                     .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
+
                 ModelState.SetInitialValue(nameof(viewModel.Items), pagination.TotalItems.ToString(CultureInfo.InvariantCulture));
 
                 viewModel.PageTitle = viewModel.Page.PageHeadingOrName();

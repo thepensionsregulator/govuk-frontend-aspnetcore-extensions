@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Fieldset</summary>
-    [PublishedModel("govukFieldset")]
+	/// <summary>Fieldset</summary>
+	[PublishedModel("govukFieldset")]
 	public partial class GovukFieldset : PublishedElementModel, IGovukLegend
 	{
 		// helpers

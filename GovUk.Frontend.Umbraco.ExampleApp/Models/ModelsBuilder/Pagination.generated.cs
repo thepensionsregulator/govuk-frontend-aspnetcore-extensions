@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Pagination</summary>
-    [PublishedModel("pagination")]
+	/// <summary>Pagination</summary>
+	[PublishedModel("pagination")]
 	public partial class Pagination : PublishedContentModel
 	{
 		// helpers

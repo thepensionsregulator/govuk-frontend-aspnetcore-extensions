@@ -93,6 +93,10 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)?
                     .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
 
+                viewModel.Page.Grid!.Filter = filter;
+                viewModel.Page.Grid.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)?
+                    .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
+
                 ModelState.SetInitialValue(nameof(viewModel.Items), pagination.TotalItems.ToString(CultureInfo.InvariantCulture));
 
                 viewModel.PageTitle = viewModel.Page.PageHeadingOrName();

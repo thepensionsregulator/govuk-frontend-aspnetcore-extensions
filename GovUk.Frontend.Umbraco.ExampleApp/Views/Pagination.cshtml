@@ -6,6 +6,7 @@
 }
 <form action="@Context.Request.Path" method="get">
     <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
+    <partial name="GOVUK/BlockGrid" model="Model.Page.Grid" />
 </form>
 @section scripts {
     <partial name="GOVUK/UmbracoValidation" />

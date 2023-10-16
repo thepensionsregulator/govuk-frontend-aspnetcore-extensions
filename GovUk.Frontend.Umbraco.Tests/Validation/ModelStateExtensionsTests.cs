@@ -30,5 +30,24 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
             Assert.AreEqual("value1,value2", modelState["fieldname"]!.AttemptedValue);
             Assert.True(modelState.IsValid);
         }
+
+        [Test]
+        public void Inital_value_is_set_when_initial_value_is_null()
+        {
+            // Arrange
+            var modelState = new ModelStateDictionary();
+            var key = "myKey";
+
+            // Act
+            modelState.SetInitialValue(key, (string?)null);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.True(modelState.ContainsKey(key));
+                Assert.True(modelState.IsValid);
+                Assert.That(modelState[key]!.AttemptedValue, Is.Null);
+            });
+        }
     }
 }

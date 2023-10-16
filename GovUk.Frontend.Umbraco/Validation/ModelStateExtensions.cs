@@ -31,7 +31,7 @@ namespace GovUk.Frontend.Umbraco.Validation
         /// <param name="key">The name attribute of the field in the HTML</param>
         /// <param name="initialValues">The initial value to select or populate</param>
         /// <exception cref="ArgumentNullException">modelState</exception>
-        public static void SetInitialValue(this ModelStateDictionary modelState, string key, string initialValue)
+        public static void SetInitialValue(this ModelStateDictionary modelState, string key, string? initialValue)
         {
             if (modelState is null)
             {

@@ -4,9 +4,9 @@ const errorPlaceholderHtml =
 const errorHtml =
     '<p class="govuk-error-message" id="some-field-error" data-valmsg-for="some-field" data-valmsg-replace="false"><span class="govuk-visually-hidden">Error:</span> A real error</p>';
 const attribute =
-    '<p class="govuk-error-message" id="some-field-error" data-valmsg-for="some-field" data-valmsg-replace="false" data-govuk-error-prefix="Prefix: "> A real error</p>';
+    '<p class="govuk-error-message" gfa-error-prefix="Error:" id="some-field-error" data-valmsg-for="some-field" data-valmsg-replace="false" data-govuk-error-prefix="Error: "> A real error</p>';
 const attributePlaceholderHtml =
-    '<p class="govuk-error-message" id="some-field-error" data-valmsg-for="some-field" data-valmsg-replace="false" data-govuk-error-prefix="Prefix: "><span class="govuk-visually-hidden">Error:</span></p>';
+    '<p class="govuk-error-message" id="some-field-error" gfa-error-prefix="Error:" data-valmsg-for="some-field" data-valmsg-replace="false" data-govuk-error-prefix="Error: "><span class="govuk-visually-hidden">Error:</span></p>';
 
 describe("updateTitle", () => {
   it("should not add Error: when there is an empty error placeholder", () => {
@@ -51,7 +51,7 @@ describe("updateTitle", () => {
 
         govuk().updateTitle();
 
-        expect(document.title).toBe("Prefix: Example");
+        expect(document.title).toBe("Error: Example");
     });
 
     it("should not add Prefix: using data-govuk-error-prefix when there is an empty error placeholder", () => {

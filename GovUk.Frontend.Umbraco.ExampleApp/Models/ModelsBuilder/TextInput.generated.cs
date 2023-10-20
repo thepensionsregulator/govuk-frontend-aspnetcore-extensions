@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Text input</summary>
-    [PublishedModel("textInput")]
+	/// <summary>Text input</summary>
+	[PublishedModel("textInput")]
 	public partial class TextInput : PublishedContentModel
 	{
 		// helpers

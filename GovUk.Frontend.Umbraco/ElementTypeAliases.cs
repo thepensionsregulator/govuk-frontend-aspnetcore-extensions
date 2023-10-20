@@ -32,7 +32,9 @@
         public const string SummaryListItemSettings = "govukSummaryListItemSettings";
         public const string SummaryListAction = "govukSummaryListAction";
         public const string TaskListSummary = "govukTaskListSummary";
+        public const string TaskList = "govukTaskList";
         public const string Task = "govukTask";
+        public const string TaskSettings = "govukTaskSettings";
         public const string Typography = "govukTypography";
         public const string TypographySettings = "govukTypographySettings";
     }

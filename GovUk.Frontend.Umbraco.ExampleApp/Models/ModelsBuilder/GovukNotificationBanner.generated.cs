@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Notification banner</summary>
-    [PublishedModel("govukNotificationBanner")]
+	/// <summary>Notification banner</summary>
+	[PublishedModel("govukNotificationBanner")]
 	public partial class GovukNotificationBanner : PublishedElementModel
 	{
 		// helpers

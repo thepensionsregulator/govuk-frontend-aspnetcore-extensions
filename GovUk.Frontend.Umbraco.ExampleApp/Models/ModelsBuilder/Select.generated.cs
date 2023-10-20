@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Select</summary>
-    [PublishedModel("select")]
+	/// <summary>Select</summary>
+	[PublishedModel("select")]
 	public partial class Select : PublishedContentModel
 	{
 		// helpers

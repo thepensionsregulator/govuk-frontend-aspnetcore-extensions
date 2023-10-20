@@ -18,6 +18,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         private const int MULTI_URL_PICKER_DATA_TYPE_ID = 4;
         private const int INTEGER_DATA_TYPE_ID = 5;
         private const int RICH_TEXT_DATA_TYPE_ID = 6;
+        private const int BLOCKGRID_DATA_TYPE_ID = 7;
 
         /// <summary>
         /// Mock an Umbraco property and set its value.
@@ -107,6 +108,17 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public static IPublishedProperty CreateBlockListProperty(string propertyAlias, IEnumerable<BlockListItem>? value)
         {
             return CreateProperty(propertyAlias, CreatePropertyType(BLOCKLIST_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.BlockList, new BlockListConfiguration()), value);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property using a block grid data type, and set its value.
+        /// </summary>
+        /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The block grid to assign to the mocked Umbraco property.</param>
+        /// <returns>The mocked Umbraco property.</returns>
+        public static IPublishedProperty CreateBlockGridProperty(string propertyAlias, IEnumerable<BlockGridItem>? value)
+        {
+            return CreateProperty(propertyAlias, CreatePropertyType(BLOCKGRID_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.BlockGrid, new BlockGridConfiguration()), value);
         }
 
         /// <summary>

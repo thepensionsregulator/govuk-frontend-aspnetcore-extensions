@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Error message</summary>
-    [PublishedModel("errorMessage")]
+	/// <summary>Error message</summary>
+	[PublishedModel("errorMessage")]
 	public partial class ErrorMessage : PublishedContentModel
 	{
 		// helpers

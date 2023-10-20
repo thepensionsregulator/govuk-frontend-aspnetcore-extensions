@@ -1,0 +1,103 @@
+﻿@using GovUk.Frontend.Umbraco.Services;
+@using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using Umbraco.Cms.Core.Models.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<BlockGridItem>>
+@inject IEnumerable<IPartialViewPathProvider> pathProviders;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var gridModel = Model as OverridableBlockGridModel;
+    var areaModel = Model as OverridableBlockGridArea;
+    var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(Model, null).FilteredBlocks()).ToList();
+    if (!blocks.Any()) { return; }
+
+    string? previousRowClass = null, previousColumnClass = null;
+    bool? previousIsGridAreasBlock = null;
+}
+@* Renders a partial view for each block.
+   Renders blocks within a GOV.UK grid row, except where that block has areas in which case that task is delegated.
+   Combines sibling rows with identical classes to simplify the HTML, but also to reduce instances where the grid rows
+   interfere with the spacing between components. Spacing (particularly for inset text) can rely on margin collapsing and
+   wrapping every component in a grid row prevents that from working because the components no longer directly follow each other.
+*@
+
+
+@for (var i = 0; i < blocks.Count; i++)
+{
+    if (blocks[i]?.ContentUdi == null) { continue; }
+
+    var isGridAreasBlock = blocks[i].Areas.Any();
+    string rowClass = GovUkGridClassBuilder.BuildGridRowClass(blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
+    var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
+                        blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSize),
+                        blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),
+                        blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
+                        blocks[i].Content.ContentType.Alias,
+                        areaModel != null);
+
+    // If this block is a fieldset and there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
+    // But only if the 'legendIsPageHeading' setting is false, otherwise it's done in GovUkFieldset.cshtml.
+    var fieldsetErrors = GovUkFieldsetErrorFinder.FindFieldsetErrors(blocks[i], ViewContext.ModelState);
+    string? fieldsetErrorClasses = null;
+    if (fieldsetErrors.Any())
+    {
+        var legendIsPageHeading = blocks[i].Settings?.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading) ?? false;
+        if (!legendIsPageHeading)
+        {
+            fieldsetErrorClasses = "govuk-form-group govuk-form-group--error";
+        }
+    }
+
+    var sameAsPrevious = (isGridAreasBlock == previousIsGridAreasBlock && rowClass == previousRowClass && columnClass == previousColumnClass);
+
+    var sameAsNext = (i < blocks.Count - 1 &&
+                          isGridAreasBlock == (blocks[i + 1].Areas.Any()) &&
+                          rowClass == GovUkGridClassBuilder.BuildGridRowClass(blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForRow)) &&
+                          columnClass == GovUkGridClassBuilder.BuildGridColumnClass(
+                                                    blocks[i + 1].Settings?.Value<string>(PropertyAliases.ColumnSize),
+                                                    blocks[i + 1].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),
+                                                    blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
+                                                    blocks[i + 1].Content.ContentType.Alias,
+                                                    areaModel != null));
+
+    var pathToView = string.Empty;
+    foreach (var pathProvider in pathProviders)
+    {
+        if (pathProvider.IsProvider(blocks[i]))
+        {
+            pathToView = pathProvider.BuildPartialViewPath(blocks[i]);
+            break;
+        }
+    }
+    if (string.IsNullOrEmpty(pathToView))
+    {
+        throw new InvalidOperationException(
+        $"No {nameof(IPartialViewPathProvider)} was found to provide a path for the block with content key {blocks[i].Content.Key}, of content type {blocks[i].Content.ContentType.Alias}"
+        );
+    }
+                
+    @if (!isGridAreasBlock && !sameAsPrevious)
+    { 
+        @:<div class="@rowClass"> 
+        @:<div class="@columnClass"> 
+    }
+    @if (!string.IsNullOrEmpty(fieldsetErrorClasses))
+    {
+        @:<div class="@fieldsetErrorClasses"> 
+    }
+    @await Html.PartialAsync(pathToView, blocks[i])
+    @if (!string.IsNullOrEmpty(fieldsetErrorClasses))
+    {
+        @:</div> 
+    }
+    @if (!isGridAreasBlock && !sameAsNext)
+    {
+        @:</div> 
+        @:</div> 
+    }
+
+    previousIsGridAreasBlock = isGridAreasBlock;
+    previousRowClass = rowClass;
+    previousColumnClass = columnClass;
+}
+

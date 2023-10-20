@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Details</summary>
-    [PublishedModel("details")]
+	/// <summary>Details</summary>
+	[PublishedModel("details")]
 	public partial class Details : PublishedContentModel
 	{
 		// helpers

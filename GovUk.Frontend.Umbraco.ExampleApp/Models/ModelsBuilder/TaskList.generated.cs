@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Task list</summary>
-    [PublishedModel("taskList")]
+	/// <summary>Task list</summary>
+	[PublishedModel("taskList")]
 	public partial class TaskList : PublishedContentModel
 	{
 		// helpers

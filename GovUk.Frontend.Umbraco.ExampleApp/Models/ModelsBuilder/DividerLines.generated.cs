@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Divider lines</summary>
-    [PublishedModel("dividerLines")]
+	/// <summary>Divider lines</summary>
+	[PublishedModel("dividerLines")]
 	public partial class DividerLines : PublishedContentModel
 	{
 		// helpers

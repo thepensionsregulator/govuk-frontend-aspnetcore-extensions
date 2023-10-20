@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Textarea</summary>
-    [PublishedModel("textarea")]
+	/// <summary>Textarea</summary>
+	[PublishedModel("textarea")]
 	public partial class Textarea : PublishedContentModel
 	{
 		// helpers

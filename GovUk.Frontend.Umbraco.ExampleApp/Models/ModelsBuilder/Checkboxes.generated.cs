@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Checkboxes</summary>
-    [PublishedModel("checkboxes")]
+	/// <summary>Checkboxes</summary>
+	[PublishedModel("checkboxes")]
 	public partial class Checkboxes : PublishedContentModel
 	{
 		// helpers

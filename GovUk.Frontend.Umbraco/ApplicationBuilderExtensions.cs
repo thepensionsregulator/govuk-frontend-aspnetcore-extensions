@@ -21,7 +21,7 @@ namespace GovUk.Frontend.Umbraco
                 throw new ArgumentNullException(nameof(app));
             }
 
-            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockListValidationMetadataProvider(umbracoContextAccessor,
+            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockValidationMetadataProvider(umbracoContextAccessor,
                 publishedValueFallback,
                 new Dictionary<Type, string>
             {

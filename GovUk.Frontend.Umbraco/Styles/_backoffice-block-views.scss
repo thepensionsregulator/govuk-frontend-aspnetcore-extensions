@@ -1,6 +1,8 @@
 ﻿/* Add spacing around custom backoffice views of block content. */
 .backoffice-block-view {
     margin: 20px 20px 0;
+    border-bottom: 1px dashed #bbbabf;
+    padding-top: .1px;
 }
 .backoffice-block-view p,
 .backoffice-block-view.govuk-heading-l {

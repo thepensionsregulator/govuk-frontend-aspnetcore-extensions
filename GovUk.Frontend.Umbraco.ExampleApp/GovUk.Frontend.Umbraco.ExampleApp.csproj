@@ -6,6 +6,39 @@
 	</PropertyGroup>
 
     <ItemGroup>
+      <Content Remove="wwwroot\_content\.gitignore" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkCaption.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxes.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkDateInput.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkDetails.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkErrorMessage.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkInsetText.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBanner.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkPageHeading.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkPanel.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkRadios.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkSelect.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryCard.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryList.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkTaskList.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkTextArea.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkTextInput.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkTypography.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkWarningText.html" />
+      <None Include="wwwroot\_content\.gitignore" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
         <PackageReference Include="Umbraco.Cms" Version="10.6.1" />
     </ItemGroup>
@@ -18,6 +51,9 @@
       <ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
       <ProjectReference Include="..\ThePensionsRegulator.Frontend.Umbraco\ThePensionsRegulator.Frontend.Umbraco.csproj" />
       <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) Or $(RuntimeIdentifier.StartsWith('win')) Or ('$(RuntimeIdentifier)' == '' And !$([MSBuild]::IsOSPlatform('osx')))" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="App_Plugins\GOVUK\blocks\controllers\" />
     </ItemGroup>
 
 

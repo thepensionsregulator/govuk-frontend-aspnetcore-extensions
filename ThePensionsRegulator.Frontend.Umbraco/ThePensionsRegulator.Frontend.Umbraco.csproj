@@ -43,6 +43,10 @@
 			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
 			<Pack>true</Pack>
 		</Content>
+		<Content Include="Styles\_tpr-image.scss">
+			<PackagePath>contentFiles\any\net6.0\Content\tpr</PackagePath>
+			<Pack>true</Pack>
+		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -137,5 +141,9 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-image.scss" />
 	</ItemGroup>
 </Project>

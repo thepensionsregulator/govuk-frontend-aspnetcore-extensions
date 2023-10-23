@@ -8,10 +8,16 @@
 .backoffice-block-view.govuk-heading-l {
     margin-top: 0;
 }
+
+.backoffice-block-view.govuk-caption-l {
+    padding-bottom: 20px;
+}
+
 .backoffice-block-view .govuk-button,
 .backoffice-block-view.govuk-caption-l,
 .backoffice-block-view.govuk-details,
 .backoffice-block-view.govuk-error-message,
+.backoffice-block-view > .govuk-error-summary,
 .backoffice-block-view.govuk-fieldset,
 .backoffice-block-view.govuk-form-group:not(.backoffice-block-view-textarea),
 .backoffice-block-view.govuk-inset-text,

@@ -53,10 +53,14 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         {
             await base.ProcessAsync(context, output);
 
-            if (_options.PrependErrorToTitle && !string.IsNullOrEmpty(ErrorPrefix) && !ViewContext!.ModelState.IsValid)
+            if (_options.PrependErrorToTitle && !string.IsNullOrEmpty(ErrorPrefix))
             {
-                output.PreContent.Clear();
-                output.PreContent.Append(ErrorPrefix + " ");
+                if (!ViewContext!.ModelState.IsValid)
+                {
+                    output.PreContent.Clear();
+                    output.PreContent.Append(ErrorPrefix + " ");
+                }
+                output.Attributes.Add("data-govuk-error-prefix", ErrorPrefix);
             }
         }
     }

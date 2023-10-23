@@ -8,9 +8,11 @@ const _mockValidator = {
 
 describe("govuk-validation with only jQuery Validator mocked", () => {
   it("should add an error to both the error message and summary", () => {
-    document.body.innerHTML = `
+      document.body.innerHTML = `
+        <head>
+            <title>@ViewData["Title"]</title>
+        </head>
         <main>
-    <title gfa-error-prefix="Error: " data-govuk-error-prefix="Error: ">@ViewData["Title"]</title>
             <div class="govuk-error-summary">
                 <ul class="govuk-list govuk-error-summary__list"></ul>
             </div>

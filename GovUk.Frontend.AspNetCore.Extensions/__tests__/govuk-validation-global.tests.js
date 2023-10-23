@@ -36,7 +36,7 @@ describe("govuk-validation with only jQuery Validator mocked", () => {
   it("should remove both error message and summary when everything is valid", () => {
     document.body.innerHTML = `
         <main>
-    <title gfa-error-prefix="Error: " data-govuk-error-prefix="Error: ">@ViewData["Title"]</title>
+    <title>@ViewData["Title"]</title>
             <div class="govuk-error-summary">
                 <ul class="govuk-list govuk-error-summary__list">
                     <li><a href="#field">Error message</a></li>

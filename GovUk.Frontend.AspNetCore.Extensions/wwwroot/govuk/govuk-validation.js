@@ -34,9 +34,8 @@ function createGovUkValidator() {
      */
       updateTitle: function () {
           const titleTag = document.getElementsByTagName("title")[0];
-          const getPrefix = titleTag.getAttribute("gfa-error-prefix");
           let prefix = "";
-          if (getPrefix == null && titleTag.getAttribute("data-govuk-error-prefix") == null) {
+          if (titleTag.getAttribute("data-govuk-error-prefix") == null) {
               prefix = "Error: "
           }
           else {

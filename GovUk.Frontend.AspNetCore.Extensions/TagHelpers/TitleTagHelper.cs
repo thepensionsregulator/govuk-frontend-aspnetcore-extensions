@@ -13,7 +13,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     [HtmlTargetElement("title")]
     public class TitleTagHelper : TagHelper
     {
-        private const string DefaultErrorPrefix = "Error:";
+        private const string DefaultErrorPrefix = "Error: ";
         private const string ErrorPrefixAttributeName = "gfa-error-prefix";
 
         private readonly GovUkFrontendAspNetCoreOptions _options;

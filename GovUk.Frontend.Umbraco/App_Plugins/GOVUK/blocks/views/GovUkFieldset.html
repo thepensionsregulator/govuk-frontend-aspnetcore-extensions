@@ -1,0 +1,6 @@
+﻿<fieldset class="govuk-fieldset backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit fieldset component">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--for-fieldset" aria-hidden="true" ng-bind-html="block.data.legend"></legend>
+    <p class="backoffice-additional-blocks" aria-hidden="true" ng-if="!block.data.blocks.contentData">No blocks.</p>
+    <p class="backoffice-additional-blocks" aria-hidden="true" ng-if="block.data.blocks.contentData.length===1">1 block.</p>
+    <p class="backoffice-additional-blocks" aria-hidden="true" ng-if="block.data.blocks.contentData.length>1">{{block.data.blocks.contentData.length}} blocks.</p>
+</fieldset>

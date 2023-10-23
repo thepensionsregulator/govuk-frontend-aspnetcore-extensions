@@ -5,6 +5,6 @@
     var typedMediaPickerSingle = Model.Content.Value<Umbraco.Cms.Core.Models.MediaWithCrops>("image");
     if (typedMediaPickerSingle != null)
     {
-        <img src="@typedMediaPickerSingle.MediaUrl()" alt="@typedMediaPickerSingle.Name" />
+        <img src="@typedMediaPickerSingle.MediaUrl()" alt="@typedMediaPickerSingle.Name" class="tpr-image" />
     }
 }

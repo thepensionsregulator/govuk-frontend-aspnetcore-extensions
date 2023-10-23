@@ -1,0 +1,12 @@
+﻿<ul class="govuk-task-list backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit task list component">
+    <li class="backoffice-additional-blocks" ng-if="!block.data.tasks.contentData" aria-hidden="true">Task list with no tasks.</li>
+    <li class="govuk-task-list__item--with-link govuk-task-list__item" ng-repeat="task in block.data.tasks.contentData" aria-hidden="true">
+        <span class="govuk-task-list__task-name-and-hint">
+            <a class="govuk-task-list__link govuk-link" href="#" ng-bind-html="task.taskName"></a>
+            <span class="govuk-task-list__task_hint" ng-bind-html="task.hint" ng-if="task.hint"></span>
+        </span>
+        <span class="govuk-task-list__status-container">
+            <span class="govuk-task-list__status--not-started govuk-task-list__status">Status</span>
+        </span>
+    </li>
+</ul>

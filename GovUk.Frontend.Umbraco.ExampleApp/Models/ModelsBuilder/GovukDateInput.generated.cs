@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Date input</summary>
-    [PublishedModel("govukDateInput")]
+	/// <summary>Date input</summary>
+	[PublishedModel("govukDateInput")]
 	public partial class GovukDateInput : PublishedElementModel, IGovukHint, IGovukLegend
 	{
 		// helpers

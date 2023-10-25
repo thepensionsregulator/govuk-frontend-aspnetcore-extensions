@@ -19,7 +19,8 @@ namespace ThePensionsRegulator.Umbraco
         /// Property value formatters which may be applied when a property is overridden with a new value.
         /// </summary>
         /// <remarks>
-        /// This should remain internal and is intended to be set by <see cref="OverridableBlockListPropertyValueConverter"/> to pass down via <see cref="OverridableBlockListModel"/>,
+        /// This should remain internal and is intended to be set by <see cref="OverridableBlockListPropertyValueConverter"/> or <see cref="OverridableBlockGridPropertyValueConverter"/> 
+        /// to pass down via <see cref="OverridableBlockListModel"/> or <see cref="OverridableBlockGridModel"/>,
         /// because the property value converter is the nearest place that can inject the property value formatters registered with the dependency injection container.
         /// </remarks>
         internal IEnumerable<IPropertyValueFormatter>? PropertyValueFormatters { get; set; }

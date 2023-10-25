@@ -39,7 +39,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public static void OverrideCheckboxes(this IOverridablePublishedElement blockContent,
             IEnumerable<CheckboxItemBase> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
-            Func<OverridableBlockListItem, bool>? filter)
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
         {
             GuardOverrideChildBlocks(nameof(OverrideCheckboxes), new List<string> { ElementTypeAliases.Checkboxes }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
 
@@ -100,7 +100,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public static void OverrideRadioButtons(this IOverridablePublishedElement blockContent,
             IEnumerable<RadioItemBase> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
-            Func<OverridableBlockListItem, bool>? filter)
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
         {
             GuardOverrideChildBlocks(nameof(OverrideRadioButtons), new List<string> { ElementTypeAliases.Radios }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
 
@@ -161,7 +161,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public static void OverrideSelectOptions(this IOverridablePublishedElement blockContent,
             IEnumerable<SelectOption> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
-            Func<OverridableBlockListItem, bool>? filter)
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
         {
             GuardOverrideChildBlocks(nameof(OverrideSelectOptions), new List<string> { ElementTypeAliases.Select }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
 
@@ -203,7 +203,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public static void OverrideSummaryCardActions(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListAction> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
-            Func<OverridableBlockListItem, bool>? filter)
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
         {
             GuardOverrideChildBlocks(nameof(OverrideSummaryListItems), new List<string> { ElementTypeAliases.SummaryCard }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
 
@@ -233,7 +233,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public static void OverrideSummaryListItems(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListItem> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
-            Func<OverridableBlockListItem, bool>? filter)
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
         {
             GuardOverrideChildBlocks(nameof(OverrideSummaryListItems), new List<string> { ElementTypeAliases.SummaryList, ElementTypeAliases.SummaryCard }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
 
@@ -261,7 +261,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
 
         private static OverridableBlockListModel CreateSummaryListActionBlocks(IEnumerable<SummaryListAction> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
-            Func<OverridableBlockListItem, bool>? filter)
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
         {
             var blockListItems = new List<OverridableBlockListItem>();
             foreach (var item in items)

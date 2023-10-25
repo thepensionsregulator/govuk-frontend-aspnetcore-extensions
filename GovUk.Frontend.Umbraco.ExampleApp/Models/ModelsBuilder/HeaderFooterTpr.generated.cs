@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>TPR Header and Footer</summary>
-    [PublishedModel("headerFooterTPR")]
+	/// <summary>TPR Header and Footer</summary>
+	[PublishedModel("headerFooterTPR")]
 	public partial class HeaderFooterTpr : PublishedContentModel
 	{
 		// helpers

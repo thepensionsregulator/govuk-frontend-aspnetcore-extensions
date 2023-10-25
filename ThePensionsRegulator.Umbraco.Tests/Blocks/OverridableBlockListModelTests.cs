@@ -1,6 +1,7 @@
 ﻿using Moq;
 using System.ComponentModel;
 using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.PropertyEditors;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -102,7 +103,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             // Arrange
             var blockLists = CreateThreeNestedOverridableBlockLists();
 
-            var filter = new Func<OverridableBlockListItem, bool>(block => true);
+            var filter = new Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>(block => true);
 
             // Act
             var model = new OverridableBlockListModel(blockLists.ParentBlockList, filter);
@@ -123,7 +124,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             // Arrange
             var blockLists = CreateThreeNestedOverridableBlockLists();
 
-            var filter = new Func<OverridableBlockListItem, bool>(block => true);
+            var filter = new Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>(block => true);
 
             // Act
             var model = new OverridableBlockListModel(blockLists.ParentBlockList, null);
@@ -153,6 +154,25 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Act + Assert
             Assert.That(() => blockList[0], Throws.Nothing);
+        }
+
+        [Test]
+        public void PropertyValueFormatters_are_passed_down_to_items()
+        {
+            // Arrange
+            var formatter = Mock.Of<IPropertyValueFormatter>();
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateOverridableBlock(
+                    new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings().Object),
+                    new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings().Object)
+                ));
+
+            // Act
+            blockList.PropertyValueFormatters = new List<IPropertyValueFormatter> { formatter };
+
+            // Assert
+            Assert.That(((OverridablePublishedElement)blockList[0].Content).PropertyValueFormatters?.Count(), Is.EqualTo(1));
+            Assert.That(((OverridablePublishedElement)blockList[0].Settings).PropertyValueFormatters?.Count(), Is.EqualTo(1));
         }
 
         [Test]

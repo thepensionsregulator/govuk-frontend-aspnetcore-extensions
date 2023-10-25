@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Date input</summary>
-    [PublishedModel("dateInput")]
+	/// <summary>Date input</summary>
+	[PublishedModel("dateInput")]
 	public partial class DateInput : PublishedContentModel
 	{
 		// helpers

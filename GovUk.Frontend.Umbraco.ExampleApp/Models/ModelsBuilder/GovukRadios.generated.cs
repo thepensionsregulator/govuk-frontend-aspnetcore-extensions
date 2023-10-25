@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Radios</summary>
-    [PublishedModel("govukRadios")]
+	/// <summary>Radios</summary>
+	[PublishedModel("govukRadios")]
 	public partial class GovukRadios : PublishedElementModel, IGovukHint, IGovukLegend
 	{
 		// helpers

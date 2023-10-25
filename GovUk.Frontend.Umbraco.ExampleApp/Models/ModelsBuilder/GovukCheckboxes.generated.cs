@@ -18,8 +18,8 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>Checkboxes</summary>
-    [PublishedModel("govukCheckboxes")]
+	/// <summary>Checkboxes</summary>
+	[PublishedModel("govukCheckboxes")]
 	public partial class GovukCheckboxes : PublishedElementModel, IGovukHint, IGovukLegend
 	{
 		// helpers

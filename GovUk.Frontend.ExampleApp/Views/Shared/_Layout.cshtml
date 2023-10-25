@@ -1,4 +1,7 @@
 ﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer localizer;
 @inject IConfiguration Configuration
 @{
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
@@ -8,9 +11,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
+    <title gfa-error-prefix=@localizer["Error: "].Value>@ViewData["Title"]</title>
     @if (useTPRstyles)
-    {
+    {   
         <partial name="TPR/Head" />
     }
     else

@@ -3,13 +3,23 @@
 	<Target Name="ThePensionsRegulatorFrontendUmbraco" AfterTargets="ThePensionsRegulatorFrontend;ThePensionsRegulatorGovUkFrontendUmbraco">
 		<!-- Look for the PackageReference to this package to get the current version.
 			 Use that version to find the NuGet package folder, and copy files to the consuming project.
+			 There will be no PackageReference in the project if it has a project reference to another project that has the PackageReference. 
+			 This would be typical for a unit test project. Detect that and no nothing.
 		-->
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend.Umbraco']/@Version">
+			<Output TaskParameter="Result" ItemName="TprFrontendUmbracoVersion" />
+		</XmlPeek>
+		<Message Text="No PackageReference to ThePensionsRegulator.Frontend.Umbraco found. Nothing to do." Condition="@(TprFrontendUmbracoVersion->Count() )==0" />
+		<CallTarget Targets="ThePensionsRegulatorFrontendUmbraco_PackageFound" Condition="@(TprFrontendUmbracoVersion->Count() )>0" />
+	</Target>
+	
+	<Target Name="ThePensionsRegulatorFrontendUmbraco_PackageFound">
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend.Umbraco']/@Version">
 			<Output TaskParameter="Result" ItemName="TprFrontendUmbracoVersion" />
 		</XmlPeek>
 		<PropertyGroup>
 			<TprFrontendUmbracoVersion>@(TprFrontendUmbracoVersion)</TprFrontendUmbracoVersion>
-			<ContentFilesPath>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\contentFiles\any\net6.0\</ContentFilesPath>		
+			<ContentFilesPath>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\contentFiles\any\net6.0\</ContentFilesPath>
 		</PropertyGroup>
 		<ItemGroup>
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
@@ -144,7 +154,7 @@
 		</ItemGroup>
 		<Message Text="Generating $(ProjectDir)App_Plugins\ThePensionsRegulator.Frontend.Umbraco\.gitignore" Importance="high" />
 		<WriteLinesToFile File="$(ProjectDir)App_Plugins\ThePensionsRegulator.Frontend.Umbraco\.gitignore" Lines="@(TprFrontendUmbracoGitIgnore)" Overwrite="True"/>
-		
+
 		<ItemGroup>
 			<TprFrontendUmbracoUSyncGitIgnoreText Include="TprFrontendUmbracoUSyncGitIgnoreText">
 				<Text>

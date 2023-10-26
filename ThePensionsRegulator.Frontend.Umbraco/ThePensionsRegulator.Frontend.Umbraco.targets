@@ -44,27 +44,27 @@
 			 Styles folder in the consuming project.
 		-->
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend']/@Version">
-			<Output TaskParameter="Result" ItemName="TprGovUkFrontendVersion" />
+			<Output TaskParameter="Result" ItemName="BaseTprGovUkFrontendVersion" />
 		</XmlPeek>
 		<PropertyGroup>
-			<HasPackageReferenceForTprGovUkFrontend Condition="@(TprGovUkFrontendVersion->Count() )==0">false</HasPackageReferenceForTprGovUkFrontend>
+			<HasPackageReferenceForTprGovUkFrontend Condition="@(BaseTprGovUkFrontendVersion->Count() )==0">false</HasPackageReferenceForTprGovUkFrontend>
 		</PropertyGroup>
 		<XmlPeek XmlInputPath="$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\thepensionsregulator.frontend.umbraco.nuspec"
 			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = 'net6.0']/nu:dependency[@id = 'ThePensionsRegulator.GovUk.Frontend']/@version"
 			 Namespaces="&lt;Namespace Prefix='nu' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd' /&gt;"
 			 Condition="$(HasPackageReferenceForTprGovUkFrontend) == false">
-			<Output TaskParameter="Result" ItemName="TprGovUkFrontendVersion" />
+			<Output TaskParameter="Result" ItemName="BaseTprGovUkFrontendVersion" />
 		</XmlPeek>
 		<PropertyGroup>
-			<TprGovUkFrontendVersion>@(TprGovUkFrontendVersion)</TprGovUkFrontendVersion>
-			<TprGovUkFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(TprGovUkFrontendVersion)\contentFiles\any\net6.0\Styles\</TprGovUkFrontendSassFolder>
+			<BaseTprGovUkFrontendVersion>@(BaseTprGovUkFrontendVersion)</BaseTprGovUkFrontendVersion>
+			<BaseTprGovUkFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(BaseTprGovUkFrontendVersion)\contentFiles\any\net6.0\Styles\</BaseTprGovUkFrontendSassFolder>
 		</PropertyGroup>
 		<ItemGroup>
-			<TprGovUkFrontendSassFiles Include="$(TprGovUkFrontendSassFolder)**\*.scss" />
+			<BaseTprGovUkFrontendSassFiles Include="$(BaseTprGovUkFrontendSassFolder)**\*.scss" />
 		</ItemGroup>
-		<Message Text="Detected ThePensionsRegulator.GovUk.Frontend as a transitive dependency. Copying govuk-frontend SASS files from $(TprGovUkFrontendSassFolder) to $(ProjectDir)." Importance="high"
+		<Message Text="Detected ThePensionsRegulator.GovUk.Frontend as a transitive dependency. Copying govuk-frontend SASS files from $(BaseTprGovUkFrontendSassFolder) to $(ProjectDir)." Importance="high"
 			     Condition="$(HasPackageReferenceForTprGovUkFrontend) == false" />
-		<Copy SourceFiles="@(TprGovUkFrontendSassFiles)"
+		<Copy SourceFiles="@(BaseTprGovUkFrontendSassFiles)"
 		      DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
 			  Condition="$(HasPackageReferenceForTprGovUkFrontend) == false" />
 
@@ -76,27 +76,28 @@
 			 Use the version of ThePensionsRegulator.Frontend to find its NuGet package folder, and copy its files to the consuming project.
 		-->
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend']/@Version">
-			<Output TaskParameter="Result" ItemName="TprFrontendVersion" />
+			<Output TaskParameter="Result" ItemName="BaseTprFrontendVersion" />
 		</XmlPeek>
 		<PropertyGroup>
-			<HasPackageReferenceForTprFrontend Condition="@(TprFrontendVersion->Count() )==0">false</HasPackageReferenceForTprFrontend>
+			<HasPackageReferenceForTprFrontend Condition="@(BaseTprFrontendVersion->Count() )==0">false</HasPackageReferenceForTprFrontend>
 		</PropertyGroup>
 		<XmlPeek XmlInputPath="$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\thepensionsregulator.frontend.umbraco.nuspec"
 			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = 'net6.0']/nu:dependency[@id = 'ThePensionsRegulator.Frontend']/@version"
 			 Namespaces="&lt;Namespace Prefix='nu' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd' /&gt;"
 			 Condition="$(HasPackageReferenceForTprFrontend) == false">
-			<Output TaskParameter="Result" ItemName="TprFrontendVersion" />
+			<Output TaskParameter="Result" ItemName="BaseTprFrontendVersion" />
 		</XmlPeek>
 		<PropertyGroup>
-			<TprFrontendVersion>@(TprFrontendVersion)</TprFrontendVersion>
-			<TprFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendVersion)\contentFiles\any\net6.0\Styles\</TprFrontendSassFolder>
-		</PropertyGroup>
+			<BaseTprFrontendVersion>@(BaseTprFrontendVersion)</BaseTprFrontendVersion>
+			<BaseTprFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(BaseTprFrontendVersion)\contentFiles\any\net6.0\Styles\</BaseTprFrontendSassFolder>
+		
+	</PropertyGroup>
 		<ItemGroup>
-			<TprFrontendSassFiles Include="$(TprFrontendSassFolder)**\*.scss" />
+			<BaseTprFrontendSassFiles Include="$(BaseTprFrontendSassFolder)**\*.scss" />
 		</ItemGroup>
-		<Message Text="Detected ThePensionsRegulator.Frontend as a transitive dependency. Copying files from $(TprFrontendSassFolder) to $(ProjectDir)." Importance="high"
+		<Message Text="Detected ThePensionsRegulator.Frontend as a transitive dependency. Copying files from $(BaseTprFrontendSassFolder) to $(ProjectDir)." Importance="high"
 			     Condition="$(HasPackageReferenceForTprFrontend) == false" />
-		<Copy SourceFiles="@(TprFrontendSassFiles)"
+		<Copy SourceFiles="@(BaseTprFrontendSassFiles)"
 		      DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
 			  Condition="$(HasPackageReferenceForTprFrontend) == false" />
 

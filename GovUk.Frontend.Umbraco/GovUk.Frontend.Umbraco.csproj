@@ -31,6 +31,34 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Include="App_Plugins\GOVUK\blocks\controllers\govukPageHeading.controller.js" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCaption.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxes.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInput.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDetails.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorMessage.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorSummary.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkInsetText.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBanner.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPageHeading.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPanel.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadios.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelect.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryCard.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryList.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskList.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextArea.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextInput.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypography.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkWarningText.html" />
 		<Content Include="App_Plugins\GOVUK\govuk.controller.js" />
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />

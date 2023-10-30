@@ -49,8 +49,15 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
 				{
 					if (prop.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList)
 					{
-						var overriddenNestedBlockList = overridableItem.Content.Value<OverridableBlockListModel>(prop.Alias);
-						if (overriddenNestedBlockList == null)
+                        var overridenNestedBlockModelProperty = overridableItem.Content.GetProperty(prop.Alias);
+
+                        OverridableBlockListModel? overriddenNestedBlockList = default;
+
+                        if (overridenNestedBlockModelProperty is not null)
+                        {
+                            overriddenNestedBlockList = (OverridableBlockListModel?)overridenNestedBlockModelProperty.GetValue();
+                        }
+                        if (overriddenNestedBlockList == null)
 						{
 							var nestedBlockList = overridableItem.Content.Value<BlockListModel>(prop.Alias);
 							if (nestedBlockList != null)

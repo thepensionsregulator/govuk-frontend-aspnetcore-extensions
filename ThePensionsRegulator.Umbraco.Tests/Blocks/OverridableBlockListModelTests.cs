@@ -93,11 +93,9 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             _ = new OverridableBlockListModel(parentBlockList, null, factory);
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(convertedChildBlockList, Is.Not.Null);
-                Assert.That(convertedGrandChildBlockList, Is.Not.Null);
-            });
+            Assert.IsNotNull(convertedChildBlockList);
+            Assert.IsNotNull(convertedGrandChildBlockList);
+           
         }
 
         [Test]

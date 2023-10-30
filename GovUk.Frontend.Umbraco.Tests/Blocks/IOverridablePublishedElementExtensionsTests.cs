@@ -342,6 +342,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                     .SetupUmbracoBlockListPropertyValue(listItemsPropertyAlias, originalItems)
                     .Object);
 
+            var blocks = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateOverridableBlock(content));
+
+
             var replacement = new[]
             {
                 new SummaryListItem("3", new HtmlEncodedString("Item 3")),

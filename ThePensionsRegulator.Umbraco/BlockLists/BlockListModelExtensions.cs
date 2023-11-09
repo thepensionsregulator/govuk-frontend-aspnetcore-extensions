@@ -276,7 +276,7 @@ namespace ThePensionsRegulator.Umbraco.BlockLists
                 {
                     if (blockProperty.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && blockProperty.HasValue())
                     {
-                        IEnumerable<T>? childBlocks = (IEnumerable<T>?)((block as OverridableBlockListItem)?.Content.Value<OverridableBlockListModel>(blockProperty.Alias));
+                        IEnumerable<T>? childBlocks = (IEnumerable<T>?)((block as OverridableBlockListItem)?.Content.GetProperty(blockProperty.Alias)?.GetValue());
                         if (childBlocks == null) { childBlocks = (IEnumerable<T>?)blockProperty.Value<BlockListModel>(publishedValueFallback ?? new NoopPublishedValueFallback()); }
                         var result = childBlocks!.RecursivelyFindBlocks<T>(matcher, returnFirstMatchOnly, publishedValueFallback);
                         if (result.Any())

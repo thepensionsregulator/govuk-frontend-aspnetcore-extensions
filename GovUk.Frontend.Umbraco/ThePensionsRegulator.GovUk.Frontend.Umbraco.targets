@@ -5,6 +5,10 @@
 			 Use that version to find the NuGet package folder, and copy files to the consuming project.
 			 If this package is a transitive dependency the PackageReference will not be found, so show a message.
 		-->
+		<PropertyGroup>
+			<UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>
+			<UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
+		</PropertyGroup>
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend.Umbraco']/@Version">
 			<Output TaskParameter="Result" ItemName="GovUkFrontendUmbracoVersion" />
 		</XmlPeek>

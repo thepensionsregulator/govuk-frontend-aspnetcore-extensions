@@ -5,6 +5,10 @@
 		 because in Release configuration it removes the comments that are needed to configure the Umbraco rich text editor.
 		 -->
 	<Target Name="TprFrontendUmbraco_BuildSass" BeforeTargets="BeforeBuild">
+		<PropertyGroup>
+			<UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>
+			<UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
+		</PropertyGroup>
 		<Message Text="Run SassCompiler $(MSBuildProjectFullPath)" Importance="high"/>
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
 			<Output TaskParameter="Result" ItemName="SassCompilerVersion" />

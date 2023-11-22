@@ -6,6 +6,10 @@
 			 There will be no PackageReference in the project if it has a project reference to another project that has the PackageReference. 
 			 This would be typical for a unit test project. Detect that and no nothing.
 		-->
+		<PropertyGroup>
+			<UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>
+			<UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
+		</PropertyGroup>
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend.Umbraco']/@Version">
 			<Output TaskParameter="Result" ItemName="TprFrontendUmbracoVersion" />
 		</XmlPeek>

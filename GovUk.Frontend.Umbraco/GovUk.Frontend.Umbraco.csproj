@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.$(AssemblyName)</Title>
-		<Version>5.0.0</Version>
+		<Version>5.1.0</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>
@@ -31,6 +31,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkFileUpload.html" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Content Include="App_Plugins\GOVUK\blocks\controllers\govukPageHeading.controller.js" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
@@ -50,6 +54,7 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPanel.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadios.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUpload.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelect.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryCard.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryList.html" />
@@ -108,6 +113,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Update="uSync\v9\ContentTypes\govukerrormessageprefix.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukfileupload.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukfileuploadsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukgridonequarterthreequarters.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

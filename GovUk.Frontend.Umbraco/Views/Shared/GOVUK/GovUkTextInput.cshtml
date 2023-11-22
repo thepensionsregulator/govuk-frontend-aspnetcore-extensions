@@ -20,7 +20,7 @@
     var prefix = Model.Settings.Value<string>("prefix");
     var suffix = Model.Settings.Value<string>("suffix");
     var label = Model.Content.Value<string>("label")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
+    var labelIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.LabelIsPageHeading);
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     string? inputClass = null;
     var inputWidth = Model.Settings.Value<string>("textInputWidth");

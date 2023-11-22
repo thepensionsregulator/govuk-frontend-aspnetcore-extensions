@@ -10,7 +10,7 @@ For an example of this in use, see the 'Date input' page in either the ASP.NET a
 
 ## Umbraco
 
-You can add a date input component to a block list in Umbraco. For an example of this component in use, see the 'Date input' page in the Umbraco example app.
+You can add a date input component to a block grid or block list in Umbraco. For an example of this component in use, see the 'Date input' page in the Umbraco example app.
 
 Error messages for date input components using `[Required]` or `[DateRange]` are configurable in Umbraco on the settings for the date input component.
 

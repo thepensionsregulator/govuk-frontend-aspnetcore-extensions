@@ -23,7 +23,7 @@
     Int32.TryParse(Model.Settings.Value<string>("rows"), out var rows);
     if (rows < 2) { rows = 5; }
     var label = Model.Content.Value<string>("label")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var labelIsPageHeading = Model.Settings.Value<bool>("labelIsPageHeading");
+    var labelIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.LabelIsPageHeading);
     var hint = Model.Content.Value<IHtmlEncodedString>("hint");
     var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
 }

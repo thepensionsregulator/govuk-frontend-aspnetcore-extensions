@@ -1,0 +1,21 @@
+﻿<div class="govuk-summary-card backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit summary card component">
+    <div class="govuk-summary-card__title-wrapper"><h2 class="govuk-summary-card__title" ng-bind-html="block.data.cardTitle" aria-hidden="true"></h2>
+        <div class="govuk-summary-card__actions" ng-if="block.data.cardActions.contentData.length > 0">
+            <div class="govuk-summary-card__action" ng-repeat="action in block.data.cardActions.contentData">
+                <a class="govuk-link" href="#" ng-bind-html="action.text" ng-click="$event.preventDefault()"></a>
+            </div>
+        </div>
+    </div>
+    <div class="govuk-summary-card__content" aria-hidden="true">
+        <dl class="govuk-summary-list">
+            <div class="backoffice-additional-blocks" ng-if="!block.data.summaryListItems.contentData">Summary list with no list items.</div>
+            <div class="govuk-summary-list__row" ng-repeat="item in block.data.summaryListItems.contentData">
+                <dt class="govuk-summary-list__key" ng-bind-html="item.itemKey"></dt>
+                <dd class="govuk-summary-list__value" ng-bind-html="item.itemValue"></dd>
+                <dd class="govuk-summary-list__actions" ng-if="item.actions.contentData.length > 0">
+                    <a class="govuk-link" href="#" ng-repeat="action in item.actions.contentData" ng-bind-html="action.text" ng-click="$event.preventDefault()"></a>
+                </dd>
+            </div>
+        </dl> 
+    </div>
+</div>

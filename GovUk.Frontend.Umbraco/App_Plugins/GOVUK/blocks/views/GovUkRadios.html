@@ -1,0 +1,21 @@
+﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit radios component">
+    <fieldset class="govuk-fieldset govuk-radios__fieldset" aria-hidden="true">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--for-field" ng-bind-html="block.data.legend"></legend>
+        <div class="govuk-form-group">
+            <p class="backoffice-additional-blocks" ng-if="!block.data.fieldsetBlocks.contentData">No blocks.</p>
+            <p class="backoffice-additional-blocks" ng-if="block.data.fieldsetBlocks.contentData.length===1">1 block.</p>
+            <p class="backoffice-additional-blocks" ng-if="block.data.fieldsetBlocks.contentData.length>1">{{block.data.fieldsetBlocks.contentData.length}} blocks.</p>
+            <div class="govuk-hint" ng-bind-html="block.data.hint" ng-if="block.data.hint"></div>
+            <div class="govuk-radios">
+                <div class="govuk-radios__item" ng-repeat="radio in block.data.radioButtons.contentData">
+                    <input class="govuk-radios__input" type="radio" value="{{radio.value}}">
+                    <label class="govuk-radios__label govuk-label">{{radio.label}}</label>
+                    <div class="govuk-radios__hint govuk-hint" ng-bind-html="radio.hint" ng-if="radio.hint"></div>
+                    <p class="backoffice-additional-blocks" ng-if="!radio.conditionalBlocks.contentData">No conditional blocks.</p>
+                    <p class="backoffice-additional-blocks" ng-if="radio.conditionalBlocks.contentData.length===1">1 conditional block.</p>
+                    <p class="backoffice-additional-blocks" ng-if="radio.conditionalBlocks.contentData.length>1">{{radio.conditionalBlocks.contentData.length}} conditional blocks.</p>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

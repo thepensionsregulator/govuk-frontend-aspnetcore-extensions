@@ -5,3 +5,16 @@
 .govuk-panel--confirmation {
     background-color: $tpr-colour-camarone;
 }
+
+.govuk-panel .govuk-panel__title:not(:last-child) {
+    font-size: govuk-px-to-rem(45);
+    font-weight: $tpr-font-weight-bold;
+    margin-bottom: govuk-px-to-rem(32);
+}
+
+.govuk-panel .govuk-panel__body,
+.govuk-panel .govuk-panel__body p.govuk-body {
+    color: $tpr-colour-white;
+    font-size: govuk-px-to-rem(23);
+    font-weight: $tpr-font-weight-regular;
+}

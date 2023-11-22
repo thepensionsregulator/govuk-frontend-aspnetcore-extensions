@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>$(AssemblyName)</Title>
-		<Version>5.0.0-beta001</Version>
+		<Version>5.0.1</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>
@@ -19,7 +19,7 @@
 		<PackageReadmeFile>NuGetReadme.md</PackageReadmeFile>
 		<PackageIcon>tpr-nuget.png</PackageIcon>
 		<RepositoryType>git</RepositoryType>
-		<PackageTags>gds govuk gov.uk umbraco blocklist</PackageTags>
+		<PackageTags>gds govuk gov.uk umbraco blocklist blockgrid</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<IncludeSymbols>True</IncludeSymbols>
 		<PackageId>$(AssemblyName)</PackageId>
@@ -31,6 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRImage.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
@@ -129,6 +130,9 @@
 	  <None Update="Styles\govuk-umbraco-backoffice.scss">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </None>
+	  <None Update="Styles\_tpr-image.scss">
+		<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -137,5 +141,9 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-image.scss" />
 	</ItemGroup>
 </Project>

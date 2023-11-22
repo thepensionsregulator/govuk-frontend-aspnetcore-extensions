@@ -1,0 +1,7 @@
+﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit select component">
+    <label class="govuk-label" ng-bind-html="block.data.label" aria-hidden="true"></label>
+    <div class="govuk-hint" ng-bind-html="block.data.hint" ng-if="block.data.hint" aria-hidden="true"></div>
+    <select class="govuk-select" aria-hidden="true" ng-click="$event.preventDefault()">
+        <option ng-repeat="option in block.data.options.contentData" value="{{option.value}}">{{option.label}}</option>
+    </select>
+</div>

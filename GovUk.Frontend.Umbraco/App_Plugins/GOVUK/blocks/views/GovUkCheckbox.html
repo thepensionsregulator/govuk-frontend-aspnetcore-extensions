@@ -1,0 +1,12 @@
+﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit checkbox component">
+    <div class="govuk-checkboxes" aria-hidden="true">
+        <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" type="checkbox" value="{{block.data.value}}" />
+            <label class="govuk-checkboxes__label govuk-label" ng-bind-html="block.data.label"></label>
+            <div class="govuk-checkboxes__hint govuk-hint" ng-bind-html="checkbox.hint" ng-if="checkbox.hint"></div>
+            <p class="backoffice-additional-blocks" ng-if="block.data.conditionalBlocks.contentData.length===0">No conditional blocks.</p>
+            <p class="backoffice-additional-blocks" ng-if="block.data.conditionalBlocks.contentData.length===1">1 conditional block.</p>
+            <p class="backoffice-additional-blocks" ng-if="block.data.conditionalBlocks.contentData.length>1">{{block.data.conditionalBlocks.contentData.length}} conditional blocks.</p>
+        </div>
+    </div>
+</div>

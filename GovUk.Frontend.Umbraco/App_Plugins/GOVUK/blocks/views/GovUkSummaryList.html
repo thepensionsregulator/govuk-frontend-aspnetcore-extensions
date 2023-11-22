@@ -1,0 +1,10 @@
+﻿<dl class="govuk-summary-list backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit summary list component">
+    <div class="backoffice-additional-blocks" ng-if="!block.data.items.contentData" aria-hidden="true">Summary list with no list items.</div>
+    <div class="govuk-summary-list__row" ng-repeat="item in block.data.items.contentData" aria-hidden="true">
+        <dt class="govuk-summary-list__key" ng-bind-html="item.itemKey"></dt>
+        <dd class="govuk-summary-list__value" ng-bind-html="item.itemValue"></dd>
+        <dd class="govuk-summary-list__actions" ng-if="item.actions.contentData.length > 0">
+            <a class="govuk-link" href="#" ng-repeat="action in item.actions.contentData" ng-bind-html="action.text" ng-click="$event.preventDefault()"></a>
+        </dd>
+    </div>
+</dl>

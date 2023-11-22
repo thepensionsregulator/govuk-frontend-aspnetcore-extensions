@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -520,10 +520,6 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\govuk-frontend.scss" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-list.scss" />
 	</ItemGroup>
 
 	<ItemGroup>

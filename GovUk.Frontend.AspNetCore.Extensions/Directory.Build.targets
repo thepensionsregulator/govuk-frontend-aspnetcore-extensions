@@ -6,6 +6,10 @@
 		 -->
 	<Target Name="GovUkFrontend_BuildSass" BeforeTargets="BeforeBuild">
 		<PropertyGroup>
+			<UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>
+			<UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
+		</PropertyGroup>
+		<PropertyGroup>
 			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src</GovUkFrontEndFolder>
 		</PropertyGroup>
 		<Message Text="You are using the following version of GOV.UK Frontend. You can run 'git submodule update' to check for updates." Condition="Exists('$(GovUkFrontEndFolder)')" />

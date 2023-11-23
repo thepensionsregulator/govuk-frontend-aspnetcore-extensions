@@ -44,10 +44,6 @@
 			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
 			<Pack>true</Pack>
 		</Content>
-		<Content Include="Styles\_tpr-image.scss">
-			<PackagePath>contentFiles\any\net6.0\Content\tpr</PackagePath>
-			<Pack>true</Pack>
-		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -133,6 +129,9 @@
 	  </None>
 	  <None Update="Styles\govuk-umbraco-backoffice.scss">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	  </None>
+	  <None Update="Styles\_tpr-image.scss">
+		<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </None>
 	</ItemGroup>
 

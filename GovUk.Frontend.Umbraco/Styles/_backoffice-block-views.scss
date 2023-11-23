@@ -22,6 +22,9 @@
 .backoffice-block-view.govuk-form-group:not(.backoffice-block-view-textarea),
 .backoffice-block-view.govuk-inset-text,
 .backoffice-block-view.govuk-notification-banner,
+.backoffice-block-view.govuk-panel {
+    padding-top: 20px;
+}
 .backoffice-block-view.govuk-panel,
 .backoffice-block-view.govuk-summary-list {
     margin-bottom: 20px;
@@ -29,6 +32,10 @@
 .backoffice-block-view.govuk-panel,
 .backoffice-block-view > .govuk-notification-banner__content {
     padding-bottom: 0;
+}
+.backoffice-block-view.govuk-panel a:link,
+.backoffice-block-view.govuk-panel a:visited {
+    color: #fff;
 }
 .backoffice-block-view.govuk-fieldset {
     border: 2px dashed #ccc;

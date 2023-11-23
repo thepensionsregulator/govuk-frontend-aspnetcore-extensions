@@ -14,6 +14,7 @@
         public const string ColumnSize = "columnSize";
         public const string ColumnSizeFromDesktop = "columnSizeFromDesktop";
         public const string DisplayName = "displayName";
+        public const string ErrorMessagePrefix = "errorMessagePrefix";
         public const string ErrorMessageRequired = "errorMessageRequired";
         public const string ErrorMessageRegex = "errorMessageRegex";
         public const string ErrorMessageEmail = "errorMessageEmail";
@@ -27,7 +28,10 @@
         public const string FieldsetBlocks = "blocks";
         public const string FieldsetLegendIsPageHeading = "legendIsPageHeading";
         public const string FieldsetErrorsEnabled = "fieldsetErrors";
+        public const string FileUploadFileTypes = "fileTypes";
+        public const string FileUploadLabel = "label";
         public const string Hint = "hint";
+        public const string LabelIsPageHeading = "labelIsPageHeading";
         public const string NotificationBannerBlocks = "blocks";
         public const string PageHeading = "text";
         public const string RadioButtons = "radioButtons";

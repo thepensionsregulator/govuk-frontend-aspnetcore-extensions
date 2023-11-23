@@ -1,0 +1,13 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FileUploadViewModel>
+@using GovUk.Frontend.Umbraco.ExampleApp.Controllers
+@using GovUk.Frontend.Umbraco.ExampleApp.Models
+@section head{
+    <title>@Model.Page!.PageHeadingOrName()</title>
+}
+@using (Html.BeginUmbracoForm<FileUploadSurfaceController>(nameof(FileUploadSurfaceController.Index), new { }, new { novalidate = "novalidate" }))
+{
+    <partial name="GOVUK/BlockList" model="Model.Page!.Blocks" />
+}
+@section scripts {
+    <partial name="GOVUK/UmbracoValidation" />
+}

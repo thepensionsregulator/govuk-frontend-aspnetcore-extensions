@@ -24,6 +24,7 @@ We add support for:
   - [Character count](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/character-count.md)
   - [Date input](/docs/components/date-input.md)
   - [Error message](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/error-message.md)
+  - [File upload](/docs/components/file-upload.md)
   - [Pagination](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/pagination.md)
   - [Phase banner](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/phase-banner.md)
   - [Radios](/docs/components/radios.md)
@@ -45,7 +46,6 @@ We add support for:
 
 - The Pensions Regulator (TPR) styling for all of the above components, and:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
-  - [File upload](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/file-upload.md)
 
 We target [GDS Frontend v4.4.1](https://github.com/alphagov/govuk-frontend/releases/tag/v4.4.1) in line with James Gunn's base project. We also include 'Summary card' from [GDS Frontend v4.5.0](https://github.com/alphagov/govuk-frontend/releases/tag/v4.5.0) and 'Task list' based on [govuk-frontend pre-release code](https://github.com/alphagov/govuk-design-system/pull/1994).
 

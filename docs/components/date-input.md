@@ -27,3 +27,11 @@ Error messages for parsing dates are configurable by creating Umbraco dictionary
 In each case you should include `{0}` in the error message, which is replaced with the name of the field on the view model.
 
 To use a display name instead of the name of the field on the view model, configure the display name in the settings of the date input component. You do not need a `[DisplayName]` attribute.
+
+### Month and year only
+
+You can choose to not show the day field on the settings for the date input component. Only the month and year fields will show, and the submitted date will be the 1st of the submitted month.
+
+![Month and year only](/docs/images/date-input-month-year.png)
+
+This is not available outside Umbraco because the default `DateInputModelBinder` expects the day to be present. Umbraco is using a custom `UmbracoDateInputModelBinder`.

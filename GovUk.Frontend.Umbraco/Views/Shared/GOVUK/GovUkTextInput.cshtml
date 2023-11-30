@@ -17,13 +17,14 @@
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
-    var prefix = Model.Settings.Value<string>("prefix");
-    var suffix = Model.Settings.Value<string>("suffix");
-    var label = Model.Content.Value<string>("label")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var prefix = Model.Settings.Value<string>(PropertyAliases.TextInputPrefix);
+    var suffix = Model.Settings.Value<string>(PropertyAliases.TextInputSuffix);
+    var label = Model.Content.Value<string>(PropertyAliases.TextInputLabel)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var labelIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.LabelIsPageHeading);
+    var labelClass = labelIsPageHeading ? "govuk-label--l" : null;
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     string? inputClass = null;
-    var inputWidth = Model.Settings.Value<string>("textInputWidth");
+    var inputWidth = Model.Settings.Value<string>(PropertyAliases.TextInputWidth);
     if (!string.IsNullOrEmpty(inputWidth))
     {
         switch (inputWidth)
@@ -51,9 +52,15 @@
                 break;
         }
     }
-    
-    var hint = Model.Content.Value<IHtmlEncodedString>("hint");
+
+    var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
+    var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
     var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
+    var hasErrorMessage = modelStateEntry?.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR) ?? false;
+    var errorMessage = hasErrorMessage ? string.Join(". ", modelStateEntry!.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null;
+    var readOnly = Model.Settings.Value<bool>(PropertyAliases.ReadOnly);
+    var hasPrefix = !string.IsNullOrEmpty(prefix);
+    var hasSuffix = !string.IsNullOrEmpty(suffix);
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
@@ -66,23 +73,49 @@
     error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))"
     error-message-compare="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageCompare))"
 >
-    <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" class="@cssClasses" input-class="@inputClass" input-aria-invalid="@invalid">
-        <govuk-input-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@label</govuk-input-label>
-        @if (!string.IsNullOrWhiteSpace(hint?.ToHtmlString()))
-        {
-            <govuk-input-hint>@hint</govuk-input-hint>
-        }
-        @if (modelStateEntry != null && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))
-        {
-            <govuk-input-error-message>@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-input-error-message>
-        }
-        @if (!string.IsNullOrEmpty(prefix))
-        {
-            <govuk-input-prefix>@prefix</govuk-input-prefix>
-        }
-        @if (!string.IsNullOrEmpty(suffix))
-        {
-            <govuk-input-suffix>@suffix</govuk-input-suffix>
-        }
-    </govuk-input>
+    @if (readOnly)
+    {
+        <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" class="@cssClasses" input-class="@inputClass" input-aria-invalid="@invalid" input-readonly="readonly">
+            <govuk-input-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-input-label>
+            @if (hasHint)
+            {
+                <govuk-input-hint>@hint</govuk-input-hint>
+            }
+            @if (hasErrorMessage)
+            {
+                <govuk-input-error-message>@errorMessage</govuk-input-error-message>
+            }
+            @if (hasPrefix)
+            {
+                <govuk-input-prefix class="govuk-input__prefix--readonly">@prefix</govuk-input-prefix>
+            }
+            @if (hasSuffix)
+            {
+                <govuk-input-suffix class="govuk-input__suffix--readonly">@suffix</govuk-input-suffix>
+            }
+        </govuk-input>
+    }
+    else
+    {       
+        <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" class="@cssClasses" input-class="@inputClass" input-aria-invalid="@invalid">
+            <govuk-input-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-input-label>
+            @if (hasHint)
+            {
+                <govuk-input-hint>@hint</govuk-input-hint>
+            }
+            @if (hasErrorMessage)
+            {
+                <govuk-input-error-message>@errorMessage</govuk-input-error-message>
+            }
+            @if (hasPrefix)
+            {
+                <govuk-input-prefix>@prefix</govuk-input-prefix>
+            }
+            @if (hasSuffix)
+            {
+                <govuk-input-suffix>@suffix</govuk-input-suffix>
+            }
+        </govuk-input>
+    }
+
 </govuk-client-side-validation>

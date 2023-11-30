@@ -36,19 +36,22 @@
             }
         }
     }
+    var hasErrorMessage = !string.IsNullOrEmpty(errorMessage);
     var cssClass = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
-    var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var hint = Model.Content.Value<IHtmlEncodedString>("hint");
+    var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
+    var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hint?.ToHtmlString()) ? null : modelPropertyName + "-hint";
     var isInvalid = modelStateEntry?.Errors.Any() ?? false;
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
     var invalidClass = isInvalid ? " govuk-form-group--error" : null;
-    var blocks = Model.Content.Value<OverridableBlockListModel>("fieldsetBlocks");
+    var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.DateInputFieldsetBlocks);
     if (blocks != null && blocks.Any())
     {
         fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
+    var readOnly = Model.Settings.Value<bool>(PropertyAliases.ReadOnly);
 }
 <div class="govuk-form-group@(invalidClass)@(cssClass)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
@@ -64,35 +67,73 @@
             }
             @if (dateValue.HasValue)
             {
-                <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
-                    @if (!string.IsNullOrWhiteSpace(hint?.ToHtmlString()))
-                    {
-                        <govuk-date-input-hint>@hint</govuk-date-input-hint>
-                    }
-                    @if (!string.IsNullOrEmpty(errorMessage))
-                    {
-                        <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
-                    }
-                    <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" />
-                    <govuk-date-input-month maxlength="2" aria-invalid="@ariaInvalid" />
-                    <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" />
-                </govuk-date-input>
+                if (readOnly)
+                {
+                    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
+                        @if (hasHint)
+                        {
+                            <govuk-date-input-hint>@hint</govuk-date-input-hint>
+                        }
+                        @if (hasErrorMessage)
+                        {
+                            <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
+                        }
+                        <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" readonly="readonly" />
+                        <govuk-date-input-month maxlength="2" aria-invalid="@ariaInvalid" readonly="readonly" />
+                        <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" readonly="readonly" />
+                    </govuk-date-input>
+                }
+                else
+                {
+                    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
+                        @if (hasHint)
+                        {
+                            <govuk-date-input-hint>@hint</govuk-date-input-hint>
+                        }
+                        @if (hasErrorMessage)
+                        {
+                            <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
+                        }
+                        <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" />
+                        <govuk-date-input-month maxlength="2" aria-invalid="@ariaInvalid" />
+                        <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" />
+                    </govuk-date-input>
+                }
             }
             else
             {
-                <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName">
-                    @if (!string.IsNullOrWhiteSpace(hint?.ToHtmlString()))
-                    {
-                        <govuk-date-input-hint>@hint</govuk-date-input-hint>
-                    }
-                    @if (!string.IsNullOrEmpty(errorMessage))
-                    {
-                        <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
-                    }
-                    <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedDay" />
-                    <govuk-date-input-month maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedMonth" />
-                    <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" value="@attemptedYear" />
-                </govuk-date-input>
+                if (readOnly)
+                {
+                    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName">
+                        @if (hasHint)
+                        {
+                            <govuk-date-input-hint>@hint</govuk-date-input-hint>
+                        }
+                        @if (hasErrorMessage)
+                        {
+                            <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
+                        }
+                        <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedDay" readonly="readonly" />
+                        <govuk-date-input-month maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedMonth" readonly="readonly" />
+                        <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" value="@attemptedYear" readonly="readonly" />
+                    </govuk-date-input>
+                }
+                else
+                {
+                    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName">
+                        @if (hasHint)
+                        {
+                            <govuk-date-input-hint>@hint</govuk-date-input-hint>
+                        }
+                        @if (hasErrorMessage)
+                        {
+                            <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
+                        }
+                        <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedDay" />
+                        <govuk-date-input-month maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedMonth" />
+                        <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" value="@attemptedYear" />
+                    </govuk-date-input>
+                }
             }
         </govuk-fieldset>
     </govuk-client-side-validation>

@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Text input settings</summary>
 	[PublishedModel("govukTextInputSettings")]
-	public partial class GovukTextInputSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLabelIsPageHeading, IGovukModelProperty, IGovukValidationCustom, IGovukValidationRange, IGovukValidationRequired, IGovukValidationText
+	public partial class GovukTextInputSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLabelIsPageHeading, IGovukModelProperty, IGovukReadOnly, IGovukValidationCustom, IGovukValidationRange, IGovukValidationRequired, IGovukValidationText
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -127,6 +127,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("modelProperty")]
 		public virtual object ModelProperty => global::Umbraco.Cms.Web.Common.PublishedModels.GovukModelProperty.GetModelProperty(this, _publishedValueFallback);
+
+		///<summary>
+		/// Read-only
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[ImplementPropertyType("readOnly")]
+		public virtual bool ReadOnly => global::Umbraco.Cms.Web.Common.PublishedModels.GovukReadOnly.GetReadOnly(this, _publishedValueFallback);
 
 		///<summary>
 		/// Custom error 1: Sets the message displayed by a custom validator.

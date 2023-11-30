@@ -9,7 +9,7 @@
 		<Version>5.1.0</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
-		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>
+		<PackageValidationBaselineVersion>5.1.0</PackageValidationBaselineVersion>
 		<Authors>rickmason-tpr</Authors>
 		<Company>The Pensions Regulator</Company>
 		<Description>GOV.UK Design System components implemented using the block list editor in Umbraco, and classes used to build applications based on these components.</Description>

@@ -66,8 +66,9 @@
 		      DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
 			  Condition="$(HasPackageReferenceForTprFrontend) != false and $(HasPackageReferenceForTprGovUkFrontend) == false" />
 
-		<!-- Generate a .gitignore so that SASS files from the ThePensionsRegulator.Frontend package are not committed to the consuming project's source control. -->
-		<Message Text="Generating $(ProjectDir)Styles\tpr\.gitignore" Importance="high" />
+		<!-- Generate a .gitignore so that SASS files from the ThePensionsRegulator.Frontend package are not committed to the consuming project's source control.	 
+			 Only do that if the folder exists, otherwise they'll also get created in a test project with a project reference to the target project.  -->
+		<Message Text="Generating $(ProjectDir)Styles\tpr\.gitignore" Importance="high" Condition="Exists('$(ProjectDir)Styles')" />
 		<ItemGroup>
 			<ThePensionsRegulatorFrontendGitIgnoreText Include="ThePensionsRegulatorFrontendGitIgnoreText">
 				<Text>
@@ -77,6 +78,6 @@
 			</ThePensionsRegulatorFrontendGitIgnoreText>
 			<ThePensionsRegulatorFrontendGitIgnore Include="%(ThePensionsRegulatorFrontendGitIgnoreText.Text)" />
 		</ItemGroup>
-		<WriteLinesToFile File="$(ProjectDir)Styles\tpr\.gitignore" Lines="@(ThePensionsRegulatorFrontendGitIgnore)" Overwrite="True"/>
+		<WriteLinesToFile File="$(ProjectDir)Styles\tpr\.gitignore" Lines="@(ThePensionsRegulatorFrontendGitIgnore)" Overwrite="True" Condition="Exists('$(ProjectDir)Styles')" />
 	</Target>
 </Project>

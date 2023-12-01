@@ -74,7 +74,8 @@
 		      DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
 			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and $(HasPackageReferenceForThePensionsRegulatorGovUkFrontend) == false" />
 
-		<!-- Generate .gitignore files so that files copied from this package are not committed to the consuming project's source control. -->
+		<!-- Generate .gitignore files so that files copied from this package are not committed to the consuming project's source control.	 
+			 Only do that if the folder exists, otherwise they'll also get created in a test project with a project reference to the target project. -->
 		<ItemGroup>
 			<GovUkFrontendUmbracoGitIgnoreText Include="GovUkFrontendUmbracoGitIgnoreText">
 				<Text>
@@ -84,8 +85,8 @@
 			</GovUkFrontendUmbracoGitIgnoreText>
 			<GovUkFrontendUmbracoGitIgnore Include="%(GovUkFrontendUmbracoGitIgnoreText.Text)" />
 		</ItemGroup>
-		<Message Text="Generating $(ProjectDir)App_Plugins\GOVUK\.gitignore" Importance="high" />
-		<WriteLinesToFile File="$(ProjectDir)App_Plugins\GOVUK\.gitignore" Lines="@(GovUkFrontendUmbracoGitIgnore)" Overwrite="True"/>
+		<Message Text="Generating $(ProjectDir)App_Plugins\GOVUK\.gitignore" Importance="high" Condition="Exists('$(ProjectDir)App_Plugins')" />
+		<WriteLinesToFile File="$(ProjectDir)App_Plugins\GOVUK\.gitignore" Lines="@(GovUkFrontendUmbracoGitIgnore)" Overwrite="True" Condition="Exists('$(ProjectDir)App_Plugins')"/>
 
 		<ItemGroup>
 			<GovUkFrontendUmbracoCssGitIgnoreText Include="GovUkFrontendUmbracoCssGitIgnoreText">
@@ -96,8 +97,8 @@ govuk-umbraco-backoffice.css.map
 			</GovUkFrontendUmbracoCssGitIgnoreText>
 			<GovUkFrontendUmbracoCssGitIgnore Include="%(GovUkFrontendUmbracoCssGitIgnoreText.Text)" />
 		</ItemGroup>
-		<Message Text="Generating $(ProjectDir)wwwroot\css\.gitignore" Importance="high" />
-		<WriteLinesToFile File="$(ProjectDir)wwwroot\css\.gitignore" Lines="@(GovUkFrontendUmbracoCssGitIgnore)" Overwrite="True"/>
+		<Message Text="Generating $(ProjectDir)wwwroot\css\.gitignore" Importance="high" Condition="Exists('$(ProjectDir)wwwroot')" />
+		<WriteLinesToFile File="$(ProjectDir)wwwroot\css\.gitignore" Lines="@(GovUkFrontendUmbracoCssGitIgnore)" Overwrite="True" Condition="Exists('$(ProjectDir)wwwroot')"/>
 
 		<ItemGroup>
 			<GovUkFrontendUmbracoUSyncGitIgnoreText Include="GovUkFrontendUmbracoUSyncGitIgnoreText">
@@ -108,15 +109,15 @@ govuk-umbraco-backoffice.css.map
 			</GovUkFrontendUmbracoUSyncGitIgnoreText>
 			<GovUkFrontendUmbracoUSyncGitIgnore Include="%(GovUkFrontendUmbracoUSyncGitIgnoreText.Text)" />
 		</ItemGroup>
-		<Message Text="Generating $(ProjectDir)uSync\.gitignore" Importance="high" />
-		<WriteLinesToFile File="$(ProjectDir)uSync\.gitignore" Lines="@(GovUkFrontendUmbracoUSyncGitIgnore)" Overwrite="True"/>
+		<Message Text="Generating $(ProjectDir)uSync\.gitignore" Importance="high" Condition="Exists('$(ProjectDir)uSync')" />
+		<WriteLinesToFile File="$(ProjectDir)uSync\.gitignore" Lines="@(GovUkFrontendUmbracoUSyncGitIgnore)" Overwrite="True" Condition="Exists('$(ProjectDir)uSync')"/>
 
 		<!-- If the ModelsBuilder out-of-date flag is present, show a helpful warning. -->
 		<Warning Text="Umbraco Models Builder models are out-of-date. Go to Settings &gt; Models Builder &gt; Generate models in the Umbraco backoffice to update them." Condition="Exists('$(ProjectDir)Models\ModelsBuilder\ood.flag')" />
 
 		<!-- Rich text editor data types import wwwroot\css\site.css so that consuming projects can add their own styles, including styles for the 'Formats' dropdown.
 		     However if there is no site.css the backoffice generates a request with a 404 response, so create a placeholder file to respond to that request. -->
-		<Message Text="Generating $(ProjectDir)wwwroot\css\site.css" Importance="high" Condition="!Exists('$(ProjectDir)wwwroot\css\site.css')" />
+		<Message Text="Generating $(ProjectDir)wwwroot\css\site.css" Importance="high" Condition="Exists('$(ProjectDir)wwwroot') and !Exists('$(ProjectDir)wwwroot\css\site.css')" />
 		<ItemGroup>
 			<GovUkFrontendUmbracoSiteCssText Include="GovUkFrontendUmbracoSiteCssText">
 				<Text>
@@ -126,7 +127,7 @@ govuk-umbraco-backoffice.css.map
 			</GovUkFrontendUmbracoSiteCssText>
 			<GovUkFrontendUmbracoSiteCss Include="%(GovUkFrontendUmbracoSiteCssText.Text)" />
 		</ItemGroup>
-		<WriteLinesToFile File="$(ProjectDir)wwwroot\css\site.css" Lines="@(GovUkFrontendUmbracoSiteCss)" Overwrite="False" Condition="!Exists('$(ProjectDir)wwwroot\css\site.css')"/>
+		<WriteLinesToFile File="$(ProjectDir)wwwroot\css\site.css" Lines="@(GovUkFrontendUmbracoSiteCss)" Overwrite="False" Condition="Exists('$(ProjectDir)wwwroot') and !Exists('$(ProjectDir)wwwroot\css\site.css')"/>
 	</Target>
 
 </Project>

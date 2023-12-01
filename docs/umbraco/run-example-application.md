@@ -9,6 +9,8 @@ This repository includes an example application which demonstrates the validatio
 5. When you are taken to the Umbraco backoffice go to Settings > uSync > Everything > Import all
 6. View the example application at https://localhost:44350. If you want to see GOV.UK default styling, on the 'Settings' page in the 'Content' section of the Umbraco backoffice you can switch off The Pensions Regulator styles.
 
+By default the example application uses The Pensions Regulator (TPR) branding. To see the GOV.UK branded version set `TPRStyles: false` in `appsettings.json` and re-run the application.
+
 ## Troubleshooting
 
 ### Error during installation: Already initialized

@@ -4,7 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
-		<Version>5.0.1</Version>
+		<Version>5.1.0</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>5.0.1</PackageValidationBaselineVersion>
@@ -206,5 +206,13 @@
 	
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Views\Partials\**" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-textarea.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-select.scss" />
 	</ItemGroup>
 </Project>

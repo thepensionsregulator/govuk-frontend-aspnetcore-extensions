@@ -181,3 +181,9 @@ $govuk-typography-scale: (
     )
   )
 ) !default;
+
+@mixin tpr-read-only {
+    background-color: $tpr-colour-white-smoke;
+    border-color: govuk-tint(black, 66);
+    color: govuk-tint(black, 66);
+}

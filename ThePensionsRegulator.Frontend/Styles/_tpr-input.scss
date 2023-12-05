@@ -19,3 +19,12 @@
     border-left: none;
     padding-right: govuk-spacing(2);
 }
+
+.govuk-input:read-only {
+    @include tpr-read-only;
+}
+
+.govuk-input__prefix--readonly,
+.govuk-input__suffix--readonly {
+    color: govuk-tint(black, 66);
+}

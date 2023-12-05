@@ -12,5 +12,6 @@ namespace GovUk.Frontend.ExampleApp.Models
 
         [Required(ErrorMessage = "Field 2 is required")]
         public DateOnly? Field2 { get; set; }
+        public DateOnly? Field3 { get; set; }
     }
 }

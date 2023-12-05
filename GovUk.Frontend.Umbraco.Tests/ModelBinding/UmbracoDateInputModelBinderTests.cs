@@ -1,4 +1,3 @@
-using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ModelBinding;
 using GovUk.Frontend.Umbraco.ModelBinding;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +15,7 @@ using ThePensionsRegulator.Umbraco;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Tests
+namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 {
     public class UmbracoDateInputModelBinderTests
     {
@@ -230,10 +229,26 @@ namespace GovUk.Frontend.Umbraco.Tests
             var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
 
             // Act
-            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IPublishedContent>(), Mock.Of<IPublishedValueFallback>(), Mock.Of<ICultureDictionary>(), parseErrors, modelMetadata);
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), Mock.Of<ICultureDictionary>(), parseErrors, modelMetadata);
 
             // Assert
             Assert.AreEqual(expectedMessage, result);
+        }
+
+        [TestCase(false, null, "3", "2020")]
+        [TestCase(true, "1", "1", "2020")]
+        [TestCase(true, "29", "2", "2020")]
+        [TestCase(true, "31", "12", "2020")]
+        public void Parse_ValidDate_Returns_Date(bool dayEnabled, string? day, string month, string year)
+        {
+            // Arrange
+
+            // Act
+            var result = UmbracoDateInputModelBinder.Parse(dayEnabled, day, month, year, out var parsed);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(DateInputParseErrors.None));
+            Assert.That(new DateOnly(int.Parse(year), int.Parse(month), dayEnabled ? int.Parse(day!) : 1), Is.EqualTo(parsed));
         }
 
         [TestCase("", "4", "2020", DateInputParseErrors.MissingDay)]
@@ -260,7 +275,7 @@ namespace GovUk.Frontend.Umbraco.Tests
             // Arrange
 
             // Act
-            var result = UmbracoDateInputModelBinder.Parse(day, month, year, out var dateComponents);
+            var result = UmbracoDateInputModelBinder.Parse(true, day, month, year, out var dateComponents);
 
             // Assert
             Assert.AreEqual(default, dateComponents);

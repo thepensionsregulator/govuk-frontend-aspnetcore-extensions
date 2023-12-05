@@ -7,7 +7,7 @@
         <div class="govuk-form-group">
             <div class="govuk-hint" ng-bind-html="block.data.hint" ng-if="block.data.hint"></div>
             <div class="govuk-date-input">
-                <div class="govuk-date-input__item">
+                <div class="govuk-date-input__item" ng-if="block.settingsData.showDay==='1'">
                     <div class="govuk-form-group">
                         <label class="govuk-label govuk-date-input__label">Day</label>
                         <input class="govuk-date-input__input govuk-input govuk-input--width-2" inputmode="numeric" type="text" />

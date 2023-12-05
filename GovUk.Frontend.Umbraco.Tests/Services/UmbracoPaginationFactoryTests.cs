@@ -7,7 +7,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using ThePensionsRegulator.Umbraco.Testing;
 
-namespace GovUk.Frontend.Umbraco.Tests
+namespace GovUk.Frontend.Umbraco.Tests.Services
 {
     public class UmbracoPaginationFactoryTests
     {

@@ -18,14 +18,24 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>File upload</summary>
-	[PublishedModel("govukFileUpload")]
-	public partial class GovukFileUpload : PublishedElementModel, IGovukHint
+	// Mixin Content Type with alias "govukErrorMessagePrefix"
+	/// <summary>Error message prefix</summary>
+	public partial interface IGovukErrorMessagePrefix : IPublishedElement
+	{
+		/// <summary>Error message prefix</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string ErrorMessagePrefix { get; }
+	}
+
+	/// <summary>Error message prefix</summary>
+	[PublishedModel("govukErrorMessagePrefix")]
+	public partial class GovukErrorMessagePrefix : PublishedElementModel, IGovukErrorMessagePrefix
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
-		public new const string ModelTypeAlias = "govukFileUpload";
+		public new const string ModelTypeAlias = "govukErrorMessagePrefix";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
@@ -34,14 +44,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<GovukFileUpload, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<GovukErrorMessagePrefix, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public GovukFileUpload(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public GovukErrorMessagePrefix(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,19 +60,16 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Label: Use {{name}} to include the page name.
+		/// Error message prefix: Visually hidden text. Defaults to 'Error' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("label")]
-		public virtual string Label => this.Value<string>(_publishedValueFallback, "label");
+		[ImplementPropertyType("errorMessagePrefix")]
+		public virtual string ErrorMessagePrefix => GetErrorMessagePrefix(this, _publishedValueFallback);
 
-		///<summary>
-		/// Hint
-		///</summary>
+		/// <summary>Static getter for Error message prefix</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("hint")]
-		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Hint => global::Umbraco.Cms.Web.Common.PublishedModels.GovukHint.GetHint(this, _publishedValueFallback);
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetErrorMessagePrefix(IGovukErrorMessagePrefix that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "errorMessagePrefix");
 	}
 }

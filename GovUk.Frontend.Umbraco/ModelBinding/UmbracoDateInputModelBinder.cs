@@ -42,11 +42,15 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 throw new InvalidOperationException($"Cannot bind {modelType.Name}.");
             }
 
+            var contentAccessor = bindingContext.HttpContext.RequestServices.GetRequiredService<IUmbracoPublishedContentAccessor>()!;
+            var blockSettings = !string.IsNullOrEmpty(bindingContext.ModelMetadata.PropertyName) ? contentAccessor.PublishedContent.FindOverridableBlockModels(_publishedValueFallback).FindBlockByBoundProperty(bindingContext.ModelMetadata.PropertyName)?.Settings : null;
+            var dayEnabled = blockSettings is not null ? blockSettings.Value<bool>(PropertyAliases.DateInputShowDay) : true;
+
             var dayModelName = $"{bindingContext.ModelName}.{DayComponentName}";
             var monthModelName = $"{bindingContext.ModelName}.{MonthComponentName}";
             var yearModelName = $"{bindingContext.ModelName}.{YearComponentName}";
 
-            var dayValueProviderResult = bindingContext.ValueProvider.GetValue(dayModelName);
+            var dayValueProviderResult = dayEnabled ? bindingContext.ValueProvider.GetValue(dayModelName) : ValueProviderResult.None;
             var monthValueProviderResult = bindingContext.ValueProvider.GetValue(monthModelName);
             var yearValueProviderResult = bindingContext.ValueProvider.GetValue(yearModelName);
 
@@ -64,6 +68,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             bindingContext.ModelState.SetInitialValue(yearModelName, yearValueProviderResult.FirstValue!);
 
             var parseErrors = Parse(
+                dayEnabled,
                 dayValueProviderResult.FirstValue,
                 monthValueProviderResult.FirstValue,
                 yearValueProviderResult.FirstValue,
@@ -87,10 +92,9 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 }
                 else
                 {
-                    var contentAccessor = bindingContext.HttpContext.RequestServices.GetRequiredService<IUmbracoPublishedContentAccessor>()!;
                     var cultureDictionary = bindingContext.HttpContext.RequestServices.GetRequiredService<ICultureDictionary>()!;
 
-                    var errorMessage = GetModelStateErrorMessage(contentAccessor.PublishedContent, _publishedValueFallback, cultureDictionary, parseErrors, bindingContext.ModelMetadata);
+                    var errorMessage = GetModelStateErrorMessage(blockSettings, cultureDictionary, parseErrors, bindingContext.ModelMetadata);
                     bindingContext.ModelState.AddModelError(bindingContext.ModelName, errorMessage);
 
                     bindingContext.Result = ModelBindingResult.Failed();
@@ -101,7 +105,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         }
 
         // internal for testing
-        internal static string GetModelStateErrorMessage(IPublishedContent umbracoContent, IPublishedValueFallback? publishedValueFallback, ICultureDictionary umbracoDictionary, DateInputParseErrors parseErrors, ModelMetadata modelMetadata)
+        internal static string GetModelStateErrorMessage(IOverridablePublishedElement? blockSettings, ICultureDictionary umbracoDictionary, DateInputParseErrors parseErrors, ModelMetadata modelMetadata)
         {
             Debug.Assert(parseErrors != DateInputParseErrors.None);
             Debug.Assert(parseErrors != (DateInputParseErrors.MissingDay | DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingYear));
@@ -109,7 +113,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             string? displayName = null;
             if (!string.IsNullOrEmpty(modelMetadata.PropertyName))
             {
-                displayName = umbracoContent.FindOverridableBlockModels(publishedValueFallback).FindBlockByBoundProperty(modelMetadata.PropertyName)?.Settings?.Value<string>(PropertyAliases.DisplayName)?.Trim();
+                displayName = blockSettings?.Value<string>(PropertyAliases.DisplayName)?.Trim();
             }
             if (string.IsNullOrEmpty(displayName)) { displayName = modelMetadata.PropertyName; }
 
@@ -146,7 +150,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         }
 
         // internal for testing
-        internal static DateInputParseErrors Parse(string? day, string? month, string? year, out DateOnly? date)
+        internal static DateInputParseErrors Parse(bool dayEnabled, string? day, string? month, string? year, out DateOnly? date)
         {
             day ??= string.Empty;
             month ??= string.Empty;
@@ -173,14 +177,21 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 errors |= DateInputParseErrors.InvalidMonth;
             }
 
-            if (string.IsNullOrEmpty(day))
+            if (dayEnabled)
             {
-                errors |= DateInputParseErrors.MissingDay;
+                if (string.IsNullOrEmpty(day))
+                {
+                    errors |= DateInputParseErrors.MissingDay;
+                }
+                else if (!int.TryParse(day, out parsedDay) || parsedDay < 1 || parsedDay > 31 ||
+                    errors == DateInputParseErrors.None && parsedDay > DateTime.DaysInMonth(parsedYear, parsedMonth))
+                {
+                    errors |= DateInputParseErrors.InvalidDay;
+                }
             }
-            else if (!int.TryParse(day, out parsedDay) || parsedDay < 1 || parsedDay > 31 ||
-                errors == DateInputParseErrors.None && parsedDay > DateTime.DaysInMonth(parsedYear, parsedMonth))
+            else
             {
-                errors |= DateInputParseErrors.InvalidDay;
+                parsedDay = 1;
             }
 
             date = errors == DateInputParseErrors.None ? new(parsedYear, parsedMonth, parsedDay) : default;

@@ -53,7 +53,7 @@
         fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
     var readOnly = Model.Settings.Value<bool>(PropertyAliases.ReadOnly);
-    var showDay = Model.Settings.Value<bool>(PropertyAliases.DateInputShowDay);
+    var showDay = Model.Settings.Value<bool?>(PropertyAliases.DateInputShowDay) ?? true;
 }
 <div class="govuk-form-group@(invalidClass)@(cssClass)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"

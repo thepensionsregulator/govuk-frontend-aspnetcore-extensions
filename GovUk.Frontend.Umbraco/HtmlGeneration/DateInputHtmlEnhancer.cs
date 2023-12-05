@@ -14,7 +14,7 @@ namespace GovUk.Frontend.Umbraco.HtmlGeneration
 
             var wrapperForDayInput = document.DocumentNode.SelectSingleNode($"//div[{WithClass("govuk-date-input__item")} and div[{WithClass("govuk-form-group")} and input[{EndsWith("@id", ".Day")}]]]");
 
-            if (wrapperForDayInput != null)
+            if (wrapperForDayInput is not null)
             {
                 wrapperForDayInput.ParentNode.RemoveChild(wrapperForDayInput);
             }

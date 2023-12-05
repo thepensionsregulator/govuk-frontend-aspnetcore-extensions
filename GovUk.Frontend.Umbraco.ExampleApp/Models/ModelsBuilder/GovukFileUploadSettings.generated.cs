@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>File upload settings</summary>
 	[PublishedModel("govukFileUploadSettings")]
-	public partial class GovukFileUploadSettings : PublishedElementModel
+	public partial class GovukFileUploadSettings : PublishedElementModel, IGovukCssClasses, IGovukErrorMessagePrefix, IGovukGrid, IGovukGridColumnClasses, IGovukLabelIsPageHeading, IGovukModelProperty, IGovukValidationRequired
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -48,5 +48,84 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
+
+		///<summary>
+		/// File types: A comma-separated list of accepted file extensions or media types. See [the accept attribute on MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/accept).
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("fileTypes")]
+		public virtual string FileTypes => this.Value<string>(_publishedValueFallback, "fileTypes");
+
+		///<summary>
+		/// CSS classes: Applied to the outermost HTML element of the component.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClasses")]
+		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
+
+		///<summary>
+		/// Error message prefix: Visually hidden text. Defaults to 'Error' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessagePrefix")]
+		public virtual string ErrorMessagePrefix => global::Umbraco.Cms.Web.Common.PublishedModels.GovukErrorMessagePrefix.GetErrorMessagePrefix(this, _publishedValueFallback);
+
+		///<summary>
+		/// CSS classes for row: Applied to the grid row which contains this component and other adjacent components that have the same setting.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClassesForRow")]
+		public virtual string CssClassesForRow => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGrid.GetCssClassesForRow(this, _publishedValueFallback);
+
+		///<summary>
+		/// Column size
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("columnSize")]
+		public virtual string ColumnSize => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetColumnSize(this, _publishedValueFallback);
+
+		///<summary>
+		/// Column size (from desktop): Defaults to 'two-thirds' if both column size properties are left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("columnSizeFromDesktop")]
+		public virtual string ColumnSizeFromDesktop => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetColumnSizeFromDesktop(this, _publishedValueFallback);
+
+		///<summary>
+		/// CSS classes for column: Applied to the grid column which contains this component and other adjacent components that have the same setting.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClassesForColumn")]
+		public virtual string CssClassesForColumn => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetCssClassesForColumn(this, _publishedValueFallback);
+
+		///<summary>
+		/// The label is the page heading
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[ImplementPropertyType("labelIsPageHeading")]
+		public virtual bool LabelIsPageHeading => global::Umbraco.Cms.Web.Common.PublishedModels.GovukLabelIsPageHeading.GetLabelIsPageHeading(this, _publishedValueFallback);
+
+		///<summary>
+		/// Model property: The name of the property on the view model being bound to in the code.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("modelProperty")]
+		public virtual object ModelProperty => global::Umbraco.Cms.Web.Common.PublishedModels.GovukModelProperty.GetModelProperty(this, _publishedValueFallback);
+
+		///<summary>
+		/// Required: Sets the message displayed if the field is set by the code to be required.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("errorMessageRequired")]
+		public virtual string ErrorMessageRequired => global::Umbraco.Cms.Web.Common.PublishedModels.GovukValidationRequired.GetErrorMessageRequired(this, _publishedValueFallback);
 	}
 }

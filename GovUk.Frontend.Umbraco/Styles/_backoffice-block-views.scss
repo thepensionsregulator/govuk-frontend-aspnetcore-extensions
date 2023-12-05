@@ -13,7 +13,6 @@
     padding-bottom: 20px;
 }
 
-.backoffice-block-view .govuk-button,
 .backoffice-block-view.govuk-caption-l,
 .backoffice-block-view.govuk-details,
 .backoffice-block-view.govuk-error-message,
@@ -26,7 +25,8 @@
     padding-top: 20px;
 }
 .backoffice-block-view.govuk-panel,
-.backoffice-block-view.govuk-summary-list {
+.backoffice-block-view.govuk-summary-list,
+.backoffice-block-view > .govuk-date-input__fieldset {
     margin-bottom: 20px;
 }
 .backoffice-block-view.govuk-panel,

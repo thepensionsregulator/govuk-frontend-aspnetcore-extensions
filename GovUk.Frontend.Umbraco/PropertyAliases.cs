@@ -13,6 +13,7 @@
         public const string CssClassesForColumn = "cssClassesForColumn";
         public const string ColumnSize = "columnSize";
         public const string ColumnSizeFromDesktop = "columnSizeFromDesktop";
+        public const string DateInputShowDay = "showDay";
         public const string DateInputFieldsetBlocks = "fieldsetBlocks";
         public const string DisplayName = "displayName";
         public const string ErrorMessagePrefix = "errorMessagePrefix";

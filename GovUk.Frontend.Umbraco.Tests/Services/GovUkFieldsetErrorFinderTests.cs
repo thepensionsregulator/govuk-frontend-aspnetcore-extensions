@@ -11,7 +11,7 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace GovUk.Frontend.Umbraco.Tests
+namespace GovUk.Frontend.Umbraco.Tests.Services
 {
     public class GovUkFieldsetErrorFinderTests
     {

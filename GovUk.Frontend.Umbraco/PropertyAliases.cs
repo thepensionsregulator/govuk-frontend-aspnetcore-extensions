@@ -13,6 +13,7 @@
         public const string CssClassesForColumn = "cssClassesForColumn";
         public const string ColumnSize = "columnSize";
         public const string ColumnSizeFromDesktop = "columnSizeFromDesktop";
+        public const string DateInputFieldsetBlocks = "fieldsetBlocks";
         public const string DisplayName = "displayName";
         public const string ErrorMessagePrefix = "errorMessagePrefix";
         public const string ErrorMessageRequired = "errorMessageRequired";
@@ -32,6 +33,7 @@
         public const string FileUploadLabel = "label";
         public const string Hint = "hint";
         public const string LabelIsPageHeading = "labelIsPageHeading";
+        public const string Legend = "legend";
         public const string NotificationBannerBlocks = "blocks";
         public const string PageHeading = "text";
         public const string RadioButtons = "radioButtons";
@@ -39,6 +41,8 @@
         public const string RadioButtonLabel = "label";
         public const string RadioConditionalBlocks = "conditionalBlocks";
         public const string RadiosDividerText = "text";
+        public const string ReadOnly = "readOnly";
+        public const string SelectLabel = "label";
         public const string SelectOptions = "options";
         public const string SelectOptionValue = "value";
         public const string SelectOptionLabel = "label";
@@ -53,5 +57,13 @@
         public const string SummaryListActionLinkText = "text";
         public const string TaskListTasks = "tasks";
         public const string TaskListTaskStatus = "status";
+        public const string TextareaLabel = "label";
+        public const string TextareaRows = "rows";
+        public const string TextareaShowCharacterCount = "showCharacterCount";
+        public const string TextareaCharacterCountThreshold = "characterCountThreshold";
+        public const string TextInputLabel = "label";
+        public const string TextInputPrefix = "prefix";
+        public const string TextInputSuffix = "suffix";
+        public const string TextInputWidth = "textInputWidth";
     }
 }

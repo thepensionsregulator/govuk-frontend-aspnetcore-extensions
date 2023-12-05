@@ -24,6 +24,12 @@
                     <govuk-character-count-hint>This has a 100 character limit</govuk-character-count-hint>
                     <govuk-character-count-error-message />
                 </govuk-character-count>
+
+                <govuk-textarea asp-for="Field3" textarea-readonly="readonly">
+                    <govuk-textarea-label>This textarea is read-only</govuk-textarea-label>
+                    <govuk-textarea-hint>No validation is applied to this example.</govuk-textarea-hint>
+                    <govuk-textarea-error-message />
+                </govuk-textarea>
             </govuk-client-side-validation>
         </div>
     </div>

@@ -39,5 +39,6 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 
         [RegisteredCharityNumber(ErrorMessage = nameof(Field10))]
         public string? Field10 { get; set; }
+        public string? Field11 { get; set; }
     }
 }

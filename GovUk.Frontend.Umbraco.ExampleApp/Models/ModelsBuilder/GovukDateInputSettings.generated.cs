@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Date input settings</summary>
 	[PublishedModel("govukDateInputSettings")]
-	public partial class GovukDateInputSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLegendIsPageHeading, IGovukModelProperty, IGovukValidationCustom, IGovukValidationDisplayName, IGovukValidationRange, IGovukValidationRequired
+	public partial class GovukDateInputSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLegendIsPageHeading, IGovukModelProperty, IGovukReadOnly, IGovukValidationCustom, IGovukValidationDisplayName, IGovukValidationRange, IGovukValidationRequired
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -103,6 +103,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("modelProperty")]
 		public virtual object ModelProperty => global::Umbraco.Cms.Web.Common.PublishedModels.GovukModelProperty.GetModelProperty(this, _publishedValueFallback);
+
+		///<summary>
+		/// Read-only
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
+		[ImplementPropertyType("readOnly")]
+		public virtual bool ReadOnly => global::Umbraco.Cms.Web.Common.PublishedModels.GovukReadOnly.GetReadOnly(this, _publishedValueFallback);
 
 		///<summary>
 		/// Custom error 1: Sets the message displayed by a custom validator.

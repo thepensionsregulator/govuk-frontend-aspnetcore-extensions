@@ -32,5 +32,6 @@ namespace GovUk.Frontend.ExampleApp.Models
 
         [RegisteredCharityNumber(ErrorMessage = "Enter a valid registered charity number")]
         public string? Field8 { get; set; }
+        public string? Field9 { get; set; }
     }
 }

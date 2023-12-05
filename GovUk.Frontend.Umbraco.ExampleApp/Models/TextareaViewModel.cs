@@ -15,5 +15,6 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 
         [MaxLength(100, ErrorMessage = nameof(Field3))]
         public string? Field3 { get; set; }
+        public string? Field4 { get; set; }
     }
 }

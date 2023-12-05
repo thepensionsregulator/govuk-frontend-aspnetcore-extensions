@@ -11,5 +11,6 @@ namespace GovUk.Frontend.ExampleApp.Models
 
         [MaxLength(100, ErrorMessage = "Must be 100 characters maximum")]
         public string? Field2 { get; set; }
+        public string? Field3 { get; set; }
     }
 }

@@ -51,6 +51,7 @@ We target [GDS Frontend v4.4.1](https://github.com/alphagov/govuk-frontend/relea
 
 ## ASP.NET projects without Umbraco
 
+- [Run the ASP.NET example application](docs/aspnet/run-example-application.md)
 - [Configure a new ASP.NET project](docs/aspnet/new-aspnet-project.md)
 - [Localisation and validation in ASP.NET projects](docs/aspnet/localisation-and-validation.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)

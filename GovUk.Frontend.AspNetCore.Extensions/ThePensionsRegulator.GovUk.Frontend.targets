@@ -31,8 +31,9 @@
 			  DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
 			  Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==1"/>
 
-		<!-- Generate a .gitignore so that govuk-frontend SASS files copied from this package are not committed to the consuming project's source control. -->
-		<Message Text="Generating $(ProjectDir)Styles\govuk\.gitignore" Importance="high" />
+		<!-- Generate a .gitignore so that govuk-frontend SASS files copied from this package are not committed to the consuming project's source control.
+			 Only do that if the folder exists, otherwise they'll also get created in a test project with a project reference to the target project. -->
+		<Message Text="Generating $(ProjectDir)Styles\govuk\.gitignore" Importance="high" Condition="Exists('$(ProjectDir)Styles')" />
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendGitIgnoreText Include="ThePensionsRegulatorGovUkFrontendGitIgnoreText">
 				<Text>
@@ -42,7 +43,7 @@
 			</ThePensionsRegulatorGovUkFrontendGitIgnoreText>
 			<ThePensionsRegulatorGovUkFrontendGitIgnore Include="%(ThePensionsRegulatorGovUkFrontendGitIgnoreText.Text)" />
 		</ItemGroup>
-		<WriteLinesToFile File="$(ProjectDir)Styles\govuk\.gitignore" Lines="@(ThePensionsRegulatorGovUkFrontendGitIgnore)" Overwrite="True"/>
+		<WriteLinesToFile File="$(ProjectDir)Styles\govuk\.gitignore" Lines="@(ThePensionsRegulatorGovUkFrontendGitIgnore)" Overwrite="True" Condition="Exists('$(ProjectDir)Styles')" />
 	</Target>
 
 	<!-- In pipeline builds if a CSS file exists AspNetCore.SassCompiler won't overwrite it with the generated version, 

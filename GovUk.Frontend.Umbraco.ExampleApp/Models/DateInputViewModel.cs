@@ -17,5 +17,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         public DateTime? Field2 { get; set; }
 
         public DateOnly? Field3 { get; set; }
+
+        public DateTime? Field4 { get; set; }
     }
 }

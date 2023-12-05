@@ -27,6 +27,16 @@
                         <govuk-date-input-hint>You must apply <code>.govuk-fieldset__legend--for-field</code> if you want TPR styling.</govuk-date-input-hint>
                     </govuk-date-input-fieldset>
                 </govuk-date-input>
+
+                <govuk-date-input asp-for="Field3">
+                    <govuk-date-input-fieldset>
+                        <govuk-date-input-fieldset-legend class="govuk-fieldset__legend--for-field">This date-input is read-only</govuk-date-input-fieldset-legend>
+                        <govuk-date-input-hint>No validation is applied to this example.</govuk-date-input-hint>
+                        <govuk-date-input-day maxlength="2" readonly="readonly" />
+                        <govuk-date-input-month maxlength="2" readonly="readonly" />
+                        <govuk-date-input-year maxlength="4" readonly="readonly" />
+                    </govuk-date-input-fieldset>
+                </govuk-date-input>
             </govuk-client-side-validation>
         </div>
     </div>

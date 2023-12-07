@@ -25,7 +25,7 @@
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(fieldsetHint?.ToHtmlString()) ? null : modelPropertyName + "-hint";
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var isInvalid = modelStateEntry?.Errors.Any() ?? false;
+    var isInvalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any());
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
     var invalidClass = isInvalid ? " govuk-form-group--error" : null;
     var blocks = Model.Content.Value<OverridableBlockListModel>("fieldsetBlocks");

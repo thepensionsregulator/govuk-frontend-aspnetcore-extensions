@@ -21,7 +21,7 @@
     var value = Model.Content.Value<string>("value");
     var checkboxHint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var conditional = Model.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
-    var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
+    var invalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any()).ToString().ToLowerInvariant();
 }
 
 <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">

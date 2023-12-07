@@ -26,8 +26,8 @@
     var labelClass = labelIsPageHeading ? "govuk-label--l" : null;
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
-    var invalid = modelStateEntry?.Errors.Any().ToString().ToLowerInvariant() ?? "false";
-    var hasErrorMessage = modelStateEntry?.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR) ?? false;
+    var invalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any()).ToString().ToLowerInvariant();
+    var hasErrorMessage = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR));
     var errorMessage = hasErrorMessage ? string.Join(". ", modelStateEntry!.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null;
 }
 <govuk-client-side-validation

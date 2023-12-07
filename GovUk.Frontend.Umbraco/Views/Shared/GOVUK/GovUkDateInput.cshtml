@@ -44,7 +44,7 @@
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hint?.ToHtmlString()) ? null : modelPropertyName + "-hint";
-    var isInvalid = modelStateEntry?.Errors.Any() ?? false;
+    var isInvalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any());
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
     var invalidClass = isInvalid ? " govuk-form-group--error" : null;
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.DateInputFieldsetBlocks);

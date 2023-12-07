@@ -29,7 +29,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
 
             var attribute = new RequiredAttribute { ErrorMessage = "Field1" };
             UmbracoBlockValidationMetadataProvider.UpdateValidationAttributeErrorMessages(new[] { errorBlock },
-                new List<object> { attribute },
+                new List<ValidationAttribute> { attribute },
                 new Dictionary<Type, string> { { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired } });
 
             Assert.AreEqual("Custom required error", attribute.ErrorMessage);
@@ -52,7 +52,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
 
             var attribute = new RequiredAttribute { ErrorMessage = "Field1" };
             UmbracoBlockValidationMetadataProvider.UpdateValidationAttributeErrorMessages(new[] { textInputBlock },
-                new List<object> { attribute },
+                new List<ValidationAttribute> { attribute },
                 new Dictionary<Type, string> { { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired } });
 
             Assert.AreEqual("Custom required error", attribute.ErrorMessage);
@@ -71,12 +71,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
 
             var attribute = new RequiredAttribute { ErrorMessage = "Original error" };
             UmbracoBlockValidationMetadataProvider.UpdateValidationAttributeErrorMessages(new[] { block },
-                new List<object> { attribute },
+                new List<ValidationAttribute> { attribute },
                 new Dictionary<Type, string> { { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired } });
 
             Assert.AreEqual("Original error", attribute.ErrorMessage);
         }
-
-
     }
 }

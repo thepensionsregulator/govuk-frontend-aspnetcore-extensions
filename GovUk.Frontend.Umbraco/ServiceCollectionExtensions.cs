@@ -1,7 +1,6 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.Umbraco.Blocks;
-using GovUk.Frontend.Umbraco.HtmlGeneration;
 using GovUk.Frontend.Umbraco.ModelBinding;
 using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.Services;
@@ -37,13 +36,12 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IUmbracoPublishedContentAccessor, UmbracoPublishedContentAccessor>();
             services.AddTransient<IUmbracoPaginationFactory, UmbracoPaginationFactory>();
             services.AddSingleton<IConfigureOptions<MvcOptions>, ModelBindingMvcConfiguration>();
-            services.AddSingleton<IConfigureOptions<MvcOptions>, RemoveSettingsErrorsMvcConfiguration>();
+            services.AddSingleton<IConfigureOptions<MvcOptions>, ValidationMvcConfiguration>();
             services.AddTransient<ITaskListTaskStatusProvider, TaskListTaskStatusProvider>();
             services.AddTransient<IPropertyValueFormatter, GovUkTypographyPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphInversePropertyValueFormatter>();
             services.AddTransient<IPartialViewPathProvider, GovUkPartialViewPathProvider>();
-            services.AddTransient<IDateInputHtmlEnhancer, DateInputHtmlEnhancer>();
 
             return services;
         }

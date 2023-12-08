@@ -66,7 +66,7 @@ ASP.NET support for The Pensions Regulator components, and The Pensions Regulato
 
 ## Building applications with Umbraco
 
-We provide features for building applications with Umbraco, particularly for working with block lists. These are not dependent on the GOV.UK Design System (but some examples do refer to GOV.UK Design System components).
+We provide features for building applications with Umbraco, particularly for working with block grids and block lists. These are not dependent on the GOV.UK Design System (but some examples do refer to GOV.UK Design System components).
 
 - [Run the Umbraco example application](docs/umbraco/run-example-application.md)
 - [Filter the block list](docs/umbraco/filter-blocks.md)

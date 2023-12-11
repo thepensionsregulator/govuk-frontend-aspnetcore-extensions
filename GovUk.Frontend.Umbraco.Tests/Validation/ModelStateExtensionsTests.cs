@@ -49,5 +49,27 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
                 Assert.That(modelState[key]!.AttemptedValue, Is.Null);
             });
         }
+
+        [Test]
+        public void Initial_state_is_set_when_it_was_previously_invalid()
+        {
+            // Arrange
+            var modelState = new ModelStateDictionary();
+            var key = "myKey";
+            var value = "value";
+
+            // Act
+            modelState.AddModelError(key, "Any error");
+            modelState.SetInitialValue(key, value);
+
+            // Assert
+            Assert.Multiple(() =>
+            {
+                Assert.True(modelState.ContainsKey(key));
+                Assert.True(modelState.IsValid);
+                Assert.That(modelState[key]!.ValidationState, Is.EqualTo(ModelValidationState.Skipped));
+                Assert.That(modelState[key]!.AttemptedValue, Is.EqualTo(value));
+            });
+        }
     }
 }

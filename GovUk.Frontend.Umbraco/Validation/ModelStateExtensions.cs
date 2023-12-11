@@ -39,7 +39,9 @@ namespace GovUk.Frontend.Umbraco.Validation
             }
 
             modelState.SetModelValue(key, null, initialValue);
-            modelState.MarkFieldSkipped(key);
+
+            // Avoid using MarkFieldSkipped because it prevents this method being used in a SurfaceController where the field was previously invalid.
+            modelState[key]!.ValidationState = ModelValidationState.Skipped;
         }
     }
 }

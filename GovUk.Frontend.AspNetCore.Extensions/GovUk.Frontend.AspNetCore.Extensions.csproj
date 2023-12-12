@@ -171,4 +171,16 @@
 	  <UpToDateCheckInput Remove="Styles\_govuk-checkboxes.scss" />
 	</ItemGroup>
 	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-input.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-textarea.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-select.scss" />
+	</ItemGroup>
+	
 </Project>

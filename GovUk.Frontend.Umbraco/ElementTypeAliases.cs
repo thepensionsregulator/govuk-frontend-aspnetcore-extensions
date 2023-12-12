@@ -14,6 +14,7 @@
         public const string ErrorMessageSettings = "govukErrorMessageSettings";
         public const string Fieldset = "govukFieldset";
         public const string FieldsetSettings = "govukFieldsetSettings";
+        public const string FileUpload = "govukFileUpload";
         public const string GridRow = "govukGridRow";
         public const string GridRowSettings = "govukGridRowSettings";
         public const string GridColumn = "govukGridColumn";

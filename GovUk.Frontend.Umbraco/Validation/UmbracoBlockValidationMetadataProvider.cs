@@ -40,7 +40,6 @@ namespace GovUk.Frontend.Umbraco.Validation
             _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
             _attributeTypes = attributeTypes ?? throw new ArgumentNullException(nameof(attributeTypes));
         }
-
         public void CreateValidationMetadata(ValidationMetadataProviderContext context)
         {
             if (context.ValidationMetadata == null || context.ValidationMetadata.ValidatorMetadata == null || context.ValidationMetadata.ValidatorMetadata.Count == 0) { return; }
@@ -48,13 +47,16 @@ namespace GovUk.Frontend.Umbraco.Validation
             if (umbracoContext == null) { return; }
             if (umbracoContext.PublishedRequest?.PublishedContent == null) { return; }
 
+            var validationAttributes = context.ValidationMetadata.ValidatorMetadata.OfType<ValidationAttribute>().Where(x => !string.IsNullOrEmpty(x.ErrorMessage)).ToList();
+            if (!validationAttributes.Any()) { return; }
+
             var blocks = umbracoContext.PublishedRequest.PublishedContent.FindOverridableBlockModels(_publishedValueFallback).FindBlocks(x => true, _publishedValueFallback);
             if (!blocks.Any()) { return; }
 
-            UpdateValidationAttributeErrorMessages(blocks, context.ValidationMetadata.ValidatorMetadata, _attributeTypes);
+            UpdateValidationAttributeErrorMessages(blocks, validationAttributes, _attributeTypes);
         }
 
-        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> blocks, IList<object> validationAttributes, Dictionary<Type, string> attributeTypes)
+        internal static void UpdateValidationAttributeErrorMessages(IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> blocks, IList<ValidationAttribute> validationAttributes, Dictionary<Type, string> attributeTypes)
         {
             foreach (var attribute in validationAttributes)
             {
@@ -68,14 +70,11 @@ namespace GovUk.Frontend.Umbraco.Validation
             }
         }
 
-        private static void UpdateValidationAttributeErrorMessage(IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> blocks, object attribute, string errorMessagePropertyAlias)
+        private static void UpdateValidationAttributeErrorMessage(IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> blocks, ValidationAttribute attribute, string errorMessagePropertyAlias)
         {
-            var validationAttribute = attribute as ValidationAttribute;
-            if (validationAttribute == null) { return; }
-
             var boundBlocks = blocks.Where(x => x.Settings != null &&
                                               x.Settings.GetProperty(PropertyAliases.ModelProperty) != null &&
-                                              x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == validationAttribute.ErrorMessage);
+                                              x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == attribute.ErrorMessage);
             if (boundBlocks == null) { return; }
 
             foreach (var block in boundBlocks)
@@ -91,7 +90,7 @@ namespace GovUk.Frontend.Umbraco.Validation
                 }
                 if (!string.IsNullOrEmpty(customError))
                 {
-                    validationAttribute.ErrorMessage = customError;
+                    attribute.ErrorMessage = customError;
                 }
             }
         }

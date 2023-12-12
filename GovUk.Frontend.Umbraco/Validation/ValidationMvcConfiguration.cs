@@ -3,11 +3,12 @@ using Microsoft.Extensions.Options;
 
 namespace GovUk.Frontend.Umbraco.Validation
 {
-    internal class RemoveSettingsErrorsMvcConfiguration : IConfigureOptions<MvcOptions>
+    internal class ValidationMvcConfiguration : IConfigureOptions<MvcOptions>
     {
         public void Configure(MvcOptions options)
         {
             options.Filters.Add<RemoveSettingsErrorsActionFilter>();
+            options.Filters.Add<DependentFieldsActionFilter>();
         }
     }
 }

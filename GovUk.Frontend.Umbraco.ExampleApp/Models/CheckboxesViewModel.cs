@@ -11,6 +11,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         [Required(ErrorMessage = nameof(Field1))]
         public List<string>? Field1 { get; set; }
 
+        [Required(ErrorMessage = nameof(Field2))]
         [RegularExpression("[0-9]+", ErrorMessage = nameof(Field2))]
         public string? Field2 { get; set; }
 

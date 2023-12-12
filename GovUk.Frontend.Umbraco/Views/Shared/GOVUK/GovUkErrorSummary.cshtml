@@ -2,6 +2,7 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
 @using ThePensionsRegulator.Umbraco.Blocks;
 @using ThePensionsRegulator.Umbraco;
 @using Umbraco.Extensions
@@ -17,13 +18,16 @@
     {
         foreach (var error in ViewContext.ModelState[key]!.Errors)
         {
-            @if (!string.IsNullOrEmpty(key))
+            if (ViewContext.ModelState[key]!.ValidationState == ModelValidationState.Invalid)
             {
-                <govuk-error-summary-item href="#@key">@error.ErrorMessage</govuk-error-summary-item>
-            }
-            else 
-            {
-                <govuk-error-summary-item>@error.ErrorMessage</govuk-error-summary-item>
+                if (!string.IsNullOrEmpty(key))
+                {
+                    <govuk-error-summary-item href="#@key">@error.ErrorMessage</govuk-error-summary-item>
+                }
+                else 
+                {
+                    <govuk-error-summary-item>@error.ErrorMessage</govuk-error-summary-item>
+                }
             }
         }
     }

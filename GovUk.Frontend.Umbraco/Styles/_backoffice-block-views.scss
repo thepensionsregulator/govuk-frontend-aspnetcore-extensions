@@ -1,4 +1,6 @@
-﻿/* Add spacing around custom backoffice views of block content. */
+﻿@import 'govuk/base';
+
+/* Add spacing around custom backoffice views of block content. */
 .backoffice-block-view {
     margin: 20px 20px 0;
     border-bottom: 1px dashed #bbbabf;
@@ -67,6 +69,9 @@
 .backoffice-block-view .govuk-summary-card__content {
     padding-bottom: 0;
     margin-bottom: 20px;
+}
+.backoffice-block-view .govuk-task-list__link {
+    color: $govuk-link-colour;
 }
 
 .backoffice-block-view .govuk-textarea {

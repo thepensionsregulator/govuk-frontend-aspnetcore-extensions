@@ -1,5 +1,5 @@
 ﻿<dl class="govuk-summary-list backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit summary list component">
-    <div class="backoffice-additional-blocks" ng-if="!block.data.items.contentData" aria-hidden="true">Summary list with no list items.</div>
+    <div class="backoffice-additional-blocks" ng-if="!block.data.items.contentData.length" aria-hidden="true">Summary list with no list items.</div>
     <div class="govuk-summary-list__row" ng-repeat="item in block.data.items.contentData" aria-hidden="true">
         <dt class="govuk-summary-list__key" ng-bind-html="item.itemKey"></dt>
         <dd class="govuk-summary-list__value" ng-bind-html="item.itemValue"></dd>

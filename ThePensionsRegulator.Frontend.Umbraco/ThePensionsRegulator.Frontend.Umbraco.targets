@@ -18,26 +18,14 @@
 	</Target>
 	
 	<Target Name="ThePensionsRegulatorFrontendUmbraco_PackageFound">
+		<!-- Look for the PackageReference to ThePensionsRegulator.Frontend.Umbraco, which we know exists because the current target only runs if it does. 
+		     Get the version, which we can use to find the paths to transitive packages. -->
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend.Umbraco']/@Version">
 			<Output TaskParameter="Result" ItemName="TprFrontendUmbracoVersion" />
 		</XmlPeek>
 		<PropertyGroup>
 			<TprFrontendUmbracoVersion>@(TprFrontendUmbracoVersion)</TprFrontendUmbracoVersion>
-			<ContentFilesPath>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\contentFiles\any\net6.0\</ContentFilesPath>
 		</PropertyGroup>
-		<ItemGroup>
-			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
-			<WwwrootFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
-			<PluginFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
-		</ItemGroup>
-
-		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high" />
-		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
-		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
-		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 
 		<!-- Look for the PackageReference to ThePensionsRegulator.GovUk.Frontend to get the current version. If it's missing then 
 		     ThePensionsRegulator.GovUk.Frontend is a transitive dependency of this package, and will have been unable to copy 
@@ -144,6 +132,26 @@
 		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
 		      DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)"
 			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false" />
+
+		<!-- Copy files from this project to the consuming project. It's important to do this AFTER copying files for 
+		     ThePensionsRegulator.GovUk.Frontend.Umbraco so that we can overwrite them with TPR customisations.
+		-->
+		<PropertyGroup>
+			<ContentFilesPath>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoVersion)\contentFiles\any\net6.0\</ContentFilesPath>
+		</PropertyGroup>
+		<ItemGroup>
+			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
+			<WwwrootFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
+			<PluginFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
+		</ItemGroup>
+		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high" />
+		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
+
 
 		<!-- Generate .gitignore files so that files from the ThePensionsRegulator.Frontend.Umbraco package are not committed to the consuming project's source control. 
 			 There's no need to generate one for wwwroot\css because this package depends on ThePensionsRegulator.GovUk.Frontend.Umbraco, which already did that.

@@ -8,7 +8,7 @@
     </div>
     <div class="govuk-summary-card__content" aria-hidden="true">
         <dl class="govuk-summary-list">
-            <div class="backoffice-additional-blocks" ng-if="!block.data.summaryListItems.contentData">Summary list with no list items.</div>
+            <div class="backoffice-additional-blocks" ng-if="!block.data.summaryListItems.contentData.length">Summary list with no list items.</div>
             <div class="govuk-summary-list__row" ng-repeat="item in block.data.summaryListItems.contentData">
                 <dt class="govuk-summary-list__key" ng-bind-html="item.itemKey"></dt>
                 <dd class="govuk-summary-list__value" ng-bind-html="item.itemValue"></dd>

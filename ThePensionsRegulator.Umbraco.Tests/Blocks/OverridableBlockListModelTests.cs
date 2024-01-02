@@ -95,7 +95,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             // Assert
             Assert.IsNotNull(convertedChildBlockList);
             Assert.IsNotNull(convertedGrandChildBlockList);
-           
+
         }
 
         [Test]
@@ -175,6 +175,48 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             Assert.That(((OverridablePublishedElement)blockList[0].Content).PropertyValueFormatters?.Count(), Is.EqualTo(1));
             Assert.That(((OverridablePublishedElement)blockList[0].Settings).PropertyValueFormatters?.Count(), Is.EqualTo(1));
         }
+
+        [Test]
+        public void PropertyValueFormatters_are_applied_when_an_OverridableBlockListModel_property_is_overridden()
+        {
+            // Arrange - original block list with PropertyValueFormatters, has a block with a child block list
+            var formatter = new Mock<IPropertyValueFormatter>();
+            formatter.Setup(x => x.IsFormatter(It.IsAny<IPublishedPropertyType>())).Returns(true);
+
+            var parentBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateOverridableBlock(
+                    new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings()
+                        .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, new OverridableBlockListModel(Array.Empty<OverridableBlockListItem>()))
+                    .Object),
+                    new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings().Object)
+                ));
+            parentBlockList.PropertyValueFormatters = new List<IPropertyValueFormatter> { formatter.Object };
+
+            // Act - a property within the child block list is overridden
+            const string CONTENT_PROPERTY_ALIAS_TO_OVERRIDE = "contentProperty";
+            const string SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE = "settingsProperty";
+            const string CONTENT_PROPERTY_VALUE = "new content";
+            const string SETTINGS_PROPERTY_VALUE = "new setting";
+
+            var replacementChildBlock = UmbracoBlockListFactory.CreateOverridableBlock(
+                    new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings()
+                        .SetupUmbracoTextboxPropertyValue(CONTENT_PROPERTY_ALIAS_TO_OVERRIDE, string.Empty)
+                    .Object),
+                    new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings()
+                        .SetupUmbracoTextboxPropertyValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, string.Empty)
+                    .Object)
+                );
+            replacementChildBlock.Content.OverrideValue(CONTENT_PROPERTY_ALIAS_TO_OVERRIDE, CONTENT_PROPERTY_VALUE);
+            replacementChildBlock.Settings.OverrideValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, SETTINGS_PROPERTY_VALUE);
+
+            var replacementChildBlockList = new OverridableBlockListModel(new[] { replacementChildBlock });
+            parentBlockList[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, replacementChildBlockList);
+
+            // Assert
+            formatter.Verify(x => x.FormatValue(CONTENT_PROPERTY_VALUE), Times.Once);
+            formatter.Verify(x => x.FormatValue(SETTINGS_PROPERTY_VALUE), Times.Once);
+        }
+
 
         [Test]
         public void Can_cast_to_BlockListModel()

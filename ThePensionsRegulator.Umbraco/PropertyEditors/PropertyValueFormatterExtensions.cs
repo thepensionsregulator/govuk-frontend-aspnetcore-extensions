@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core.Models.PublishedContent;
+﻿using ThePensionsRegulator.Umbraco.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.PropertyEditors
 {
@@ -27,6 +28,16 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors
             if (value is null)
             {
                 throw new ArgumentNullException(nameof(value));
+            }
+
+            if (value is OverridableBlockListModel blockList && blockList.PropertyValueFormatters is null)
+            {
+                blockList.PropertyValueFormatters = formatters;
+            }
+
+            if (value is OverridableBlockGridModel blockGrid && blockGrid.PropertyValueFormatters is null)
+            {
+                blockGrid.PropertyValueFormatters = formatters;
             }
 
             foreach (var formatter in formatters)

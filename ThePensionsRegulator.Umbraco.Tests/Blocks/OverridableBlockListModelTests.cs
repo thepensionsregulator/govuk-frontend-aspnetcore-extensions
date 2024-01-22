@@ -12,6 +12,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
     {
         private const string PROPERTY_ALIAS_CHILD_BLOCKS = "childBlocks";
 
+        [SetUp]
+        public void Setup()
+        {
+            _ = new UmbracoTestContext(); // Sets up Umbraco dependency injection
+        }
+
         private static (OverridableBlockListModel ParentBlockList, OverridableBlockListModel ChildBlockList, OverridableBlockListModel GrandChildBlockList) CreateThreeNestedOverridableBlockLists()
         {
             var grandChildBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(Array.Empty<BlockListItem>());

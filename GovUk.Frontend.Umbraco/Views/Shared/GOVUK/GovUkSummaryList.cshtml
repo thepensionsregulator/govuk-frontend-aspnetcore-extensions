@@ -10,9 +10,12 @@
 @{
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
     var listItems = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItems)!;
+    var actions1 = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryCardActions);
+    var otherActions = listItems[0].Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions);
+    var anotherValue = 1;
 }
 <govuk-summary-list id="@Model.Content.Key" class="@cssClasses">
-    @foreach (var listItem in listItems.FilteredBlocks())
+    @foreach (var listItem in listItems)//.FilteredBlocks())
     {
         <govuk-summary-list-row class="@(listItem.Settings.Value<string>(PropertyAliases.CssClasses))">
             <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</govuk-summary-list-row-key>

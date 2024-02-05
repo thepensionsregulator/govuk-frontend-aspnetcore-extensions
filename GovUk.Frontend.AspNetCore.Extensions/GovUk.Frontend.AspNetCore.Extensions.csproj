@@ -41,7 +41,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.58.1" />
-		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.1.0" />
+		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.2.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
 	</ItemGroup>
@@ -153,10 +153,6 @@
 	  <Content Update="sasscompiler.json" Pack="false">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </Content>
-	</ItemGroup>
-	
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-summary-card.scss" />
 	</ItemGroup>
 	
 	<ItemGroup>

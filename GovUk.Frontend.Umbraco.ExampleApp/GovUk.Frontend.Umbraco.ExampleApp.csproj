@@ -35,6 +35,7 @@
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkTextInput.html" />
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkTypography.html" />
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkWarningText.html" />
+      <None Include="wwwroot\media\.gitignore" />
       <None Include="wwwroot\_content\.gitignore" />
     </ItemGroup>
 

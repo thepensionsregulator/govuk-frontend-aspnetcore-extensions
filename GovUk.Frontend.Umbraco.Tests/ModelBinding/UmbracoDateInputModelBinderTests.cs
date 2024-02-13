@@ -1,10 +1,10 @@
 using GovUk.Frontend.AspNetCore.ModelBinding;
 using GovUk.Frontend.Umbraco.ModelBinding;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Routing;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -12,13 +12,67 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Dictionary;
-using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Routing;
 
 namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 {
     public class UmbracoDateInputModelBinderTests
     {
+#nullable disable
+        private UmbracoTestContext _testContext;
+#nullable enable
+
+        [SetUp]
+        public void SetUp()
+        {
+            _testContext = new();
+            _testContext.ServiceProvider.Setup(mock => mock.GetService(typeof(DateInputParseErrorsProvider))).Returns(new DateInputParseErrorsProvider());
+        }
+
+        private UmbracoDateInputModelBinder CreateModelBinder(Mock<DateInputModelConverter> converterMock)
+            => new UmbracoDateInputModelBinder(
+                    converterMock.Object,
+                    _testContext.UmbracoContextAccessor.Object,
+                    Mock.Of<ICultureDictionary>(),
+                    _testContext.PublishedValueFallback.Object
+                );
+
+        [Test]
+        public async Task BindModelAsync_BackOfficeRequest_DoesNotBind()
+        {
+            // Arrange
+            var modelType = typeof(DateOnly);
+
+            ModelBindingContext bindingContext = new DefaultModelBindingContext()
+            {
+                ActionContext = CreateActionContext(),
+                ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForType(modelType),
+                ModelName = "TheModelName",
+                ModelState = new ModelStateDictionary(),
+                ValueProvider = new SimpleValueProvider()
+                {
+                    { "TheModelName.Day", "1" },
+                    { "TheModelName.Month", "4" },
+                    { "TheModelName.Year", "2020" }
+                }
+            };
+
+            var converterMock = new Mock<DateInputModelConverter>();
+            converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
+
+            var modelBinder = CreateModelBinder(converterMock);
+
+            _testContext.UmbracoContext.Setup(x => x.PublishedRequest).Returns<IPublishedRequest?>(null);
+
+            // Act
+            await modelBinder.BindModelAsync(bindingContext);
+
+            // Assert
+            Assert.False(bindingContext.Result.IsModelSet);
+        }
+
         [Test]
         public async Task BindModelAsync_AllComponentsEmpty_DoesNotBind()
         {
@@ -27,7 +81,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 
             ModelBindingContext bindingContext = new DefaultModelBindingContext()
             {
-                ActionContext = CreateActionContextWithServices(),
+                ActionContext = CreateActionContext(),
                 ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForType(modelType),
                 ModelName = "TheModelName",
                 ModelState = new ModelStateDictionary(),
@@ -37,7 +91,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             var converterMock = new Mock<DateInputModelConverter>();
             converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
 
-            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object, Mock.Of<IPublishedValueFallback>());
+            var modelBinder = CreateModelBinder(converterMock);
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -54,7 +108,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 
             ModelBindingContext bindingContext = new DefaultModelBindingContext()
             {
-                ActionContext = CreateActionContextWithServices(),
+                ActionContext = CreateActionContext(),
                 ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForType(modelType),
                 ModelName = "TheModelName",
                 ModelState = new ModelStateDictionary(),
@@ -74,7 +128,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
                 .Returns(new DateOnly(2020, 4, 1))
                 .Verifiable();
 
-            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object, Mock.Of<IPublishedValueFallback>());
+            var modelBinder = CreateModelBinder(converterMock);
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -134,7 +188,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 
             ModelBindingContext bindingContext = new DefaultModelBindingContext()
             {
-                ActionContext = CreateActionContextWithServices(),
+                ActionContext = CreateActionContext(),
                 ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForType(modelType),
                 ModelName = "TheModelName",
                 ModelState = new ModelStateDictionary(),
@@ -144,7 +198,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             var converterMock = new Mock<DateInputModelConverter>();
             converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
 
-            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object, Mock.Of<IPublishedValueFallback>());
+            var modelBinder = CreateModelBinder(converterMock);
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -169,7 +223,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 
             ModelBindingContext bindingContext = new DefaultModelBindingContext()
             {
-                ActionContext = CreateActionContextWithServices(),
+                ActionContext = CreateActionContext(),
                 ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForType(modelType),
                 ModelName = "TheModelName",
                 ModelState = new ModelStateDictionary(),
@@ -192,7 +246,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
                 .Returns(true)
                 .Verifiable();
 
-            var modelBinder = new UmbracoDateInputModelBinder(converterMock.Object, Mock.Of<IPublishedValueFallback>());
+            var modelBinder = CreateModelBinder(converterMock);
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -282,19 +336,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             Assert.AreEqual(expectedParseErrors, result);
         }
 
-        private static ActionContext CreateActionContextWithServices()
-        {
-            var services = new ServiceCollection();
-            services.AddScoped<DateInputParseErrorsProvider>();
-            services.AddTransient(x => Mock.Of<IUmbracoPublishedContentAccessor>());
-            services.AddTransient(x => Mock.Of<ICultureDictionary>());
-            var serviceProvider = services.BuildServiceProvider();
-
-            var httpContext = new DefaultHttpContext();
-            httpContext.RequestServices = serviceProvider;
-
-            return new ActionContext(httpContext, new Microsoft.AspNetCore.Routing.RouteData(), new Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor());
-        }
+        private ActionContext CreateActionContext() => new ActionContext(_testContext.HttpContext.Object, new RouteData(), new ActionDescriptor());
 
         private class ExampleModel
         {

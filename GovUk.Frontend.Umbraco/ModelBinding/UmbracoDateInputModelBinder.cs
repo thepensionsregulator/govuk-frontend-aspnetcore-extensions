@@ -11,6 +11,8 @@ using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Web;
+using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ModelBinding
 {
@@ -24,11 +26,15 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private const string YearComponentName = "Year";
 
         private readonly DateInputModelConverter _dateInputModelConverter;
+        private readonly IUmbracoContextAccessor _umbracoContextAccessor;
+        private readonly ICultureDictionary _cultureDictionary;
         private readonly IPublishedValueFallback? _publishedValueFallback;
 
-        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter, IPublishedValueFallback? publishedValueFallback)
+        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter, IUmbracoContextAccessor umbracoContextAccessor, ICultureDictionary cultureDictionary, IPublishedValueFallback? publishedValueFallback)
         {
             _dateInputModelConverter = Guard.ArgumentNotNull(nameof(dateInputModelConverter), dateInputModelConverter);
+            _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
+            _cultureDictionary = cultureDictionary ?? throw new ArgumentNullException(nameof(cultureDictionary));
             _publishedValueFallback = publishedValueFallback;
         }
 
@@ -42,8 +48,17 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 throw new InvalidOperationException($"Cannot bind {modelType.Name}.");
             }
 
-            var contentAccessor = bindingContext.HttpContext.RequestServices.GetRequiredService<IUmbracoPublishedContentAccessor>()!;
-            var blockSettings = !string.IsNullOrEmpty(bindingContext.ModelMetadata.PropertyName) ? contentAccessor.PublishedContent.FindOverridableBlockModels(_publishedValueFallback).FindBlockByBoundProperty(bindingContext.ModelMetadata.PropertyName)?.Settings : null;
+            if (_umbracoContextAccessor.TryGetUmbracoContext(out var umbracoContext))
+            {
+                if (!umbracoContext.IsFrontEndUmbracoRequest()) { return Task.CompletedTask; }
+            }
+
+            if (umbracoContext!.PublishedRequest?.PublishedContent is null)
+            {
+                throw new InvalidOperationException("Unable to get Umbraco published content");
+            }
+
+            var blockSettings = !string.IsNullOrEmpty(bindingContext.ModelMetadata.PropertyName) ? umbracoContext.PublishedRequest.PublishedContent.FindOverridableBlockModels(_publishedValueFallback).FindBlockByBoundProperty(bindingContext.ModelMetadata.PropertyName)?.Settings : null;
             var dayEnabled = blockSettings is not null ? blockSettings.Value<bool>(PropertyAliases.DateInputShowDay) : true;
 
             var dayModelName = $"{bindingContext.ModelName}.{DayComponentName}";
@@ -92,9 +107,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 }
                 else
                 {
-                    var cultureDictionary = bindingContext.HttpContext.RequestServices.GetRequiredService<ICultureDictionary>()!;
-
-                    var errorMessage = GetModelStateErrorMessage(blockSettings, cultureDictionary, parseErrors, bindingContext.ModelMetadata);
+                    var errorMessage = GetModelStateErrorMessage(blockSettings, _cultureDictionary, parseErrors, bindingContext.ModelMetadata);
                     bindingContext.ModelState.AddModelError(bindingContext.ModelName, errorMessage);
 
                     bindingContext.Result = ModelBindingResult.Failed();

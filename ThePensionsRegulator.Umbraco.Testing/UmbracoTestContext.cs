@@ -203,6 +203,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         private void SetupServices()
         {
             di.StaticServiceProvider.Instance = ServiceProvider.Object;
+            HttpContext.Setup(x => x.RequestServices).Returns(ServiceProvider.Object);
             SetupService(CompositeViewEngine.Object);
             SetupService(UmbracoContextAccessor.Object);
             SetupService(PublishedSnapshotAccessor.Object);

@@ -10,13 +10,20 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 {
     public class OverridableBlockGridModelTests
     {
+        private const string DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS = "docTypeChildBlocks";
         private const string PROPERTY_ALIAS_CHILD_BLOCKS = "childBlocks";
+
+        [SetUp]
+        public void Setup()
+        {
+            _ = new UmbracoTestContext(); // Sets up Umbraco dependency injection
+        }
 
         private static (OverridableBlockGridModel ParentBlockGrid, OverridableBlockGridModel ChildBlockGrid, OverridableBlockGridModel GrandChildBlockGrid) CreateThreeNestedOverridableBlockGrids()
         {
             var grandChildBlockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(Array.Empty<BlockGridItem>());
 
-            var childContent = UmbracoBlockGridFactory.CreateContentOrSettings()
+            var childContent = UmbracoBlockGridFactory.CreateContentOrSettings(DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS)
                     .SetupUmbracoBlockGridPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, grandChildBlockGrid)
                     .Object;
 
@@ -24,7 +31,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
                 UmbracoBlockGridFactory.CreateOverridableBlock(childContent)
                 );
 
-            var parentContent = UmbracoBlockGridFactory.CreateContentOrSettings()
+            var parentContent = UmbracoBlockGridFactory.CreateContentOrSettings(DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS)
                     .SetupUmbracoBlockGridPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, childBlockGrid)
                     .Object;
 
@@ -48,7 +55,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         {
             var grandChildBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(Array.Empty<BlockListItem>());
 
-            var childContent = UmbracoBlockListFactory.CreateContentOrSettings()
+            var childContent = UmbracoBlockListFactory.CreateContentOrSettings(DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS)
                     .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, grandChildBlockList)
                     .Object;
 
@@ -56,7 +63,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
                 UmbracoBlockListFactory.CreateOverridableBlock(childContent)
                 );
 
-            var parentContent = UmbracoBlockGridFactory.CreateContentOrSettings()
+            var parentContent = UmbracoBlockGridFactory.CreateContentOrSettings(DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS)
                     .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, childBlockList)
                     .Object;
 
@@ -187,6 +194,45 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             // Assert
             Assert.NotNull(convertedChildBlockList);
             Assert.NotNull(convertedGrandChildBlockList);
+        }
+
+        [Test]
+
+        public void BlockListModels_are_converted_to_OverridableBlockListModels_including_overridden_nested_block_lists()
+        {
+            // Arrange
+            const string OVERRIDDEN_BLOCK_TYPE_ALIAS = "overriddenBlock";
+            const string OVERRIDDEN_TEXT_PROPERTY = "text";
+            const string OVERRIDDEN_TEXT_VALUE = "this is a non-overridden property in an overridden block list";
+
+            var parentBlockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
+                UmbracoBlockGridFactory.CreateOverridableBlock(
+                    new OverridablePublishedElement(
+                        UmbracoBlockGridFactory.CreateContentOrSettings(DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS)
+                            .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, UmbracoBlockListFactory.CreateOverridableBlockListModel(Array.Empty<OverridableBlockListItem>()))
+                            .Object
+                        )
+                    )
+                );
+
+            var overriddenChildBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateOverridableBlock(
+                    new OverridablePublishedElement(
+                        UmbracoBlockListFactory.CreateContentOrSettings(OVERRIDDEN_BLOCK_TYPE_ALIAS)
+                            .SetupUmbracoTextboxPropertyValue(OVERRIDDEN_TEXT_PROPERTY, OVERRIDDEN_TEXT_VALUE)
+                            .Object
+                        )
+                    )
+                );
+            parentBlockGrid[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, overriddenChildBlockList);
+
+            // Act
+            var model = new OverridableBlockGridModel(parentBlockGrid);
+
+            // Assert
+            var overriddenBlock = model.FindBlockByContentTypeAlias(OVERRIDDEN_BLOCK_TYPE_ALIAS);
+            Assert.That(overriddenBlock, Is.Not.Null);
+            Assert.That(overriddenBlock.Content.Value<string>(OVERRIDDEN_TEXT_PROPERTY), Is.EqualTo(OVERRIDDEN_TEXT_VALUE));
         }
 
         [Test]
@@ -359,6 +405,49 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var blockWithinArea = blockGrid[0].Areas.First()[0];
             Assert.That(((OverridablePublishedElement)blockWithinArea.Content).PropertyValueFormatters?.Count(), Is.EqualTo(1));
             Assert.That(((OverridablePublishedElement)blockWithinArea.Settings).PropertyValueFormatters?.Count(), Is.EqualTo(1));
+        }
+
+
+
+        [Test]
+        public void PropertyValueFormatters_are_applied_when_an_OverridableBlockListModel_property_is_overridden()
+        {
+            // Arrange - original block grid with PropertyValueFormatters, has a block with a child block list
+            var formatter = new Mock<IPropertyValueFormatter>();
+            formatter.Setup(x => x.IsFormatter(It.IsAny<IPublishedPropertyType>())).Returns(true);
+
+            var parentBlockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
+                UmbracoBlockGridFactory.CreateOverridableBlock(
+                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings()
+                    .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, new OverridableBlockListModel(Array.Empty<OverridableBlockListItem>()))
+                    .Object),
+                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object)
+                ));
+            parentBlockGrid.PropertyValueFormatters = new List<IPropertyValueFormatter> { formatter.Object };
+
+            // Act - a property within the child block list is overridden
+            const string CONTENT_PROPERTY_ALIAS_TO_OVERRIDE = "contentProperty";
+            const string SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE = "settingsProperty";
+            const string CONTENT_PROPERTY_VALUE = "new content";
+            const string SETTINGS_PROPERTY_VALUE = "new setting";
+
+            var replacementChildBlock = UmbracoBlockListFactory.CreateOverridableBlock(
+                    new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings()
+                        .SetupUmbracoTextboxPropertyValue(CONTENT_PROPERTY_ALIAS_TO_OVERRIDE, string.Empty)
+                    .Object),
+                    new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings()
+                        .SetupUmbracoTextboxPropertyValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, string.Empty)
+                    .Object)
+                );
+            replacementChildBlock.Content.OverrideValue(CONTENT_PROPERTY_ALIAS_TO_OVERRIDE, CONTENT_PROPERTY_VALUE);
+            replacementChildBlock.Settings.OverrideValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, SETTINGS_PROPERTY_VALUE);
+
+            var replacementChildBlockList = new OverridableBlockListModel(new[] { replacementChildBlock });
+            parentBlockGrid[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, replacementChildBlockList);
+
+            // Assert
+            formatter.Verify(x => x.FormatValue(CONTENT_PROPERTY_VALUE), Times.Once);
+            formatter.Verify(x => x.FormatValue(SETTINGS_PROPERTY_VALUE), Times.Once);
         }
 
         [Test]

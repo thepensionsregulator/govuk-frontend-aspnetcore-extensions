@@ -12,6 +12,7 @@ namespace ThePensionsRegulator.Umbraco
     {
         private readonly IPublishedElement _publishedElement;
         private readonly Dictionary<string, object> _propertyValues = new();
+        private IEnumerable<IPropertyValueFormatter>? _propertyValueFormatters;
 
         public OverridablePublishedElement(IPublishedElement publishedElement) => _publishedElement = publishedElement;
 
@@ -23,7 +24,26 @@ namespace ThePensionsRegulator.Umbraco
         /// to pass down via <see cref="OverridableBlockListModel"/> or <see cref="OverridableBlockGridModel"/>,
         /// because the property value converter is the nearest place that can inject the property value formatters registered with the dependency injection container.
         /// </remarks>
-        internal IEnumerable<IPropertyValueFormatter>? PropertyValueFormatters { get; set; }
+        internal IEnumerable<IPropertyValueFormatter>? PropertyValueFormatters
+        {
+            get => _propertyValueFormatters;
+            set
+            {
+                _propertyValueFormatters = value;
+
+                if (_propertyValueFormatters is not null)
+                {
+                    foreach (var alias in _propertyValues.Keys)
+                    {
+                        var propertyType = GetProperty(alias)?.PropertyType;
+                        if (propertyType is not null)
+                        {
+                            _propertyValues[alias] = _propertyValueFormatters.ApplyFormatters(propertyType, _propertyValues[alias]);
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the content type.

@@ -19,6 +19,7 @@ using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Routing;
+using di = Umbraco.Cms.Web.Common.DependencyInjection;
 
 namespace ThePensionsRegulator.Umbraco.Testing
 {
@@ -77,9 +78,19 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IVariationContextAccessor> VariationContextAccessor { get; private init; } = new();
 
         /// <summary>
+        /// Provides a fallback strategy for getting <see cref="IPublishedElement"/> values.
+        /// </summary>
+        public Mock<IPublishedValueFallback> PublishedValueFallback { get; private init; } = new();
+
+        /// <summary>
         /// Represents the Umbraco service context, which provides access to all services.
         /// </summary>
         public ServiceContext ServiceContext { get; private init; }
+
+        /// <summary>
+        /// The service provider used by Umbraco to look up internal services using dependency injection.
+        /// </summary>
+        public Mock<IServiceProvider> ServiceProvider { get; private init; } = new();
 
         /// <summary>
         /// Gets the current content item.
@@ -185,6 +196,26 @@ namespace ThePensionsRegulator.Umbraco.Testing
 
             CurrentIdentity.SetupGet(x => x.IsAuthenticated).Returns(false);
             CurrentPrincipal = new GenericPrincipal(CurrentIdentity.Object, Array.Empty<string>());
+
+            SetupServices();
+        }
+
+        private void SetupServices()
+        {
+            di.StaticServiceProvider.Instance = ServiceProvider.Object;
+            HttpContext.Setup(x => x.RequestServices).Returns(ServiceProvider.Object);
+            SetupService(CompositeViewEngine.Object);
+            SetupService(UmbracoContextAccessor.Object);
+            SetupService(PublishedSnapshotAccessor.Object);
+            SetupService(VariationContextAccessor.Object);
+            SetupService(PublishedValueFallback.Object);
+            SetupService(PublishedContentCache);
+            SetupService(LocalizationService);
+        }
+
+        private void SetupService<T>(T implementation)
+        {
+            ServiceProvider.Setup(x => x.GetService(typeof(T))).Returns(implementation);
         }
 
         delegate void TryGetPublishedSnapshotCallback(out IPublishedSnapshot snapshot);

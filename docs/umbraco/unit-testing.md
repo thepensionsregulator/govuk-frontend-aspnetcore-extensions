@@ -138,23 +138,6 @@ var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
 _testContext.CurrentPage.SetupUmbracoBlockListPropertyValue("myBlockListPropertyAlias", blockList);
 ```
 
-When writing unit tests with blocks you may see the following error:
-
-> System.TypeInitializationException : The type initializer for 'Umbraco.Extensions.FriendlyPublishedElementExtensions' threw an exception.
-> ----> System.ArgumentNullException : Value cannot be null. (Parameter 'provider')
-
-This is thrown by the built-in `.Value<T>` extension method. To resolve this your code may need to cast a block to `OverridableBlockListItem`, which overrides this extension method with one that works during testing.
-
-```csharp
-// Throws an error
-var fieldset1 = blockList.FindBlockByContentTypeAlias(GovukFieldset.ModelTypeAlias);
-var fieldsetBlocks1 = fieldset1.Content.Value<OverridableBlockListModel>(nameof(GovukFieldset.Blocks));
-
-// Works, because the block is cast to OverridableBlockListItem
-var fieldset2 = ((OverridableBlockListItem)blockList.FindBlockByContentTypeAlias(GovukFieldset.ModelTypeAlias));
-var fieldsetBlocks2 = fieldset2.Content.Value<OverridableBlockListModel>(nameof(GovukFieldset.Blocks));
-```
-
 ## Mock Umbraco Dictionary items
 
 `LocalizationServiceExtensions` provides an easy way to mock an Umbraco dictionary. You can add as many dictionary values as needed using a fluent syntax. You can also provide different translations.
@@ -165,4 +148,37 @@ var dictionary = new Mock<ILocalizationService>();
 dictionary
     .AddDictionaryValue("myKey", "myValue") // languageId defaults to 2 - English GB
     .AddDictionaryValue("myKey", "myValue", 1); // Setting languageId to 1 - English US
+```
+
+## Troubleshooting tests
+
+### Value cannot be null. (Parameter 'contentType')
+
+You may see the following error:
+
+```csharp
+System.ArgumentNullException : Value cannot be null. (Parameter 'contentType')
+```
+
+The solution is to set up the relevant content type on the `UmbracoTestContext` - see [Mock Umbraco content types](#mock-umbraco-content-types).
+
+### TypeInitializationException
+
+When writing unit tests with blocks you may see the following error:
+
+```csharp
+System.TypeInitializationException : The type initializer for 'Umbraco.Extensions.FriendlyPublishedElementExtensions' threw an exception.
+----> System.ArgumentNullException : Value cannot be null. (Parameter 'provider')
+```
+
+This is thrown by the built-in `.Value<T>` extension method. To resolve this make sure you are creating an instance of `UmbracoTestContext`, which sets up the dependency injection to make this work. Alternatively, your code may need to cast a block to `OverridableBlockListItem`, which overrides this extension method with one that works during testing.
+
+```csharp
+// Throws an error
+var fieldset1 = blockList.FindBlockByContentTypeAlias(GovukFieldset.ModelTypeAlias);
+var fieldsetBlocks1 = fieldset1.Content.Value<OverridableBlockListModel>(nameof(GovukFieldset.Blocks));
+
+// Works, because the block is cast to OverridableBlockListItem
+var fieldset2 = ((OverridableBlockListItem)blockList.FindBlockByContentTypeAlias(GovukFieldset.ModelTypeAlias));
+var fieldsetBlocks2 = fieldset2.Content.Value<OverridableBlockListModel>(nameof(GovukFieldset.Blocks));
 ```

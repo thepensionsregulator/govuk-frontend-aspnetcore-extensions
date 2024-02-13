@@ -20,28 +20,21 @@ namespace GovUk.Frontend.Umbraco.Blocks
             }
 
             var blocks = new List<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
-            Func<OverridableBlockListItem, bool> blockListFilter = x => true;
-            Func<OverridableBlockGridItem, bool> blockGridFilter = x => true;
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> blockFilter = x => true;
             foreach (var blockModel in content.FindOverridableBlockModels())
             {
                 if (blockModel is OverridableBlockListModel blockList)
                 {
-                    blockListFilter = blockList.Filter;
+                    blockFilter = blockList.Filter;
                     blocks.AddRange(blockList);
                 }
                 else if (blockModel is OverridableBlockGridModel blockGrid)
                 {
-                    blockGridFilter = blockGrid.Filter;
+                    blockFilter = blockGrid.Filter;
                     blocks.AddRange(blockGrid);
                 }
             }
 
-            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> combinedFilter = block =>
-            {
-                if (block is OverridableBlockListItem listItem) { return blockListFilter(listItem); }
-                if (block is OverridableBlockGridItem gridItem) { return blockGridFilter(gridItem); }
-                return true;
-            };
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>?> blockSelector = block =>
             {
                 if (block is OverridableBlockListItem listItem) { return listItem; }
@@ -49,7 +42,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                 return null;
             };
             var tasks = blocks.FindBlocksByContentTypeAlias(ElementTypeAliases.Task)
-                .Where(combinedFilter).Select(blockSelector).OfType<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
+                .Where(blockFilter).Select(blockSelector).OfType<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
             var taskStatuses = tasks
                 .Select(x => x.Settings.Value<string>(PropertyAliases.TaskListTaskStatus))
                 .Where(x => !string.IsNullOrEmpty(x))

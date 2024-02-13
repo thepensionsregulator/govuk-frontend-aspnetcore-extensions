@@ -9,6 +9,26 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
     public class UmbracoTestContextTests
     {
         [Test]
+        public void Can_add_content_type()
+        {
+            // Arrange
+            var testContext = new UmbracoTestContext();
+            const string contentTypeAlias = "MyContentType2";
+
+            // Act
+            testContext.SetupContentType(contentTypeAlias);
+
+            // Assert
+            var contentType = testContext.ContentTypes[contentTypeAlias]?.Object;
+            Assert.That(contentType, Is.Not.Null);
+            Assert.That(contentType.Id, Is.EqualTo(1));
+            Assert.That(contentType.Key.ToString(), Is.Not.EqualTo(default(Guid).ToString()));
+            Assert.That(contentType.Alias, Is.EqualTo(contentTypeAlias));
+
+            Assert.That(testContext.PublishedContentCache.Object.GetContentType(contentTypeAlias), Is.EqualTo(contentType));
+        }
+
+        [Test]
         public void Can_mock_authenticated_HttpContext_User()
         {
             var testContext = new UmbracoTestContext();

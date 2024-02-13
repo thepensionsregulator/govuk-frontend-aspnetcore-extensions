@@ -41,7 +41,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-        <PackageReference Include="Umbraco.Cms" Version="10.6.1" />
+        <PackageReference Include="Umbraco.Cms" Version="10.8.3" />
     </ItemGroup>
 
     <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->

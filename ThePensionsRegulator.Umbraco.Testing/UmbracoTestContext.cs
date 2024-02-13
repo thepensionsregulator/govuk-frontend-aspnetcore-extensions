@@ -260,10 +260,14 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public UmbracoTestContext SetupContentType(string contentTypeAlias)
         {
             var contentType = new Mock<IPublishedContentType>();
+            contentType.Setup(x => x.Id).Returns(_contentTypes.Count + 1);
+            contentType.Setup(x => x.Key).Returns(Guid.NewGuid());
             contentType.Setup(x => x.Alias).Returns(contentTypeAlias);
-            PublishedContentCache.Setup(x => x.GetContentType(contentTypeAlias)).Returns(contentType.Object);
 
+            _contentTypes.Add(contentTypeAlias, contentType);
             ContentTypes = new ReadOnlyDictionary<string, Mock<IPublishedContentType>>(_contentTypes);
+
+            PublishedContentCache.Setup(x => x.GetContentType(contentTypeAlias)).Returns<string>(alias => ContentTypes[alias].Object);
 
             return this;
         }

@@ -107,7 +107,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IExamineManager> ExamineManager { get; private init; } = new();
 
         /// <summary>
-        /// Provides access to the Examine search engine.
+        /// Settings for routing Umbraco web requests.
         /// </summary>
         public WebRoutingSettings WebRoutingSettings { get; private init; } = new();
 

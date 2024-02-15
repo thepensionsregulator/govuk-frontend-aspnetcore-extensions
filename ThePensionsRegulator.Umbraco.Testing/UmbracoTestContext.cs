@@ -175,9 +175,49 @@ namespace ThePensionsRegulator.Umbraco.Testing
         }
 
         /// <summary>
+        /// Represents a service for handling audit.
+        /// </summary>
+        public Mock<IAuditService> AuditService { get; private init; } = new();
+
+        /// <summary>
+        /// A service for handling lawful data processing requirements.
+        /// </summary>
+        public Mock<IConsentService> ConsentService { get; private init; } = new();
+
+        /// <summary>
+        /// Provides easy access to operations involving <see cref="IContent" />.
+        /// </summary>
+        public Mock<IContentService> ContentService { get; private init; } = new();
+
+        /// <summary>
+        /// Provides the <see cref="IContentTypeBaseService" /> corresponding to an <see cref="IContentBase" /> object.
+        /// </summary>
+        public Mock<IContentTypeBaseServiceProvider> ContentTypeBaseServiceProvider { get; private init; } = new();
+
+        /// <summary>
         /// Manages <see cref="IContentType" /> objects.
         /// </summary>
         public Mock<IContentTypeService> ContentTypeService { get; private init; } = new();
+
+        /// <summary>
+        /// Provides easy access to operations involving <see cref="IDataType" />.
+        /// </summary>
+        public Mock<IDataTypeService> DataTypeService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages domains assigned to content nodes in a multi-site instance.
+        /// </summary>
+        public Mock<IDomainService> DomainService { get; private init; } = new();
+
+        /// <summary>
+        /// Manage entities.
+        /// </summary>
+        public Mock<IEntityService> EntityService { get; private init; } = new();
+
+        /// <summary>
+        /// Used to store the external login info.
+        /// </summary>
+        public Mock<IExternalLoginService> ExternalLoginService { get; private init; } = new();
 
         /// <summary>
         /// Provides easy access to operations involving <see cref="IFile" /> objects like Scripts, Stylesheets and Templates.
@@ -185,9 +225,29 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IFileService> FileService { get; private init; } = new();
 
         /// <summary>
+        /// Manages the simplified key/value store.
+        /// </summary>
+        public Mock<IKeyValueService> KeyValueService { get; private init; } = new();
+
+        /// <summary>
         /// Provides easy access to operations involving Languages and Dictionary.
         /// </summary>
         public Mock<ILocalizationService> LocalizationService { get; private init; } = new();
+
+        /// <summary>
+        /// The entry point to localize any key in the text storage source for a given culture.
+        /// </summary>
+        public Mock<ILocalizedTextService> LocalizedTextService { get; private init; } = new();
+
+        /// <summary>
+        /// Provides easy access to operations involving <see cref="IMacro" />.
+        /// </summary>
+        public Mock<IMacroService> MacroService { get; private init; } = new();
+
+        /// <summary>
+        /// Provides easy access to operations involving <see cref="IMedia" />.
+        /// </summary>
+        public Mock<IMediaService> MediaService { get; private init; } = new();
 
         /// <summary>
         /// Manages <see cref="IMediaType" /> objects.
@@ -195,9 +255,54 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IMediaTypeService> MediaTypeService { get; private init; } = new();
 
         /// <summary>
+        /// Provides easy access to operations involving Umbraco members.
+        /// </summary>
+        public Mock<IMemberService> MemberService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages member groups.
+        /// </summary>
+        public Mock<IMemberGroupService> MemberGroupService { get; private init; } = new();
+
+        /// <summary>
         /// Manages <see cref="IMemberType" /> objects.
         /// </summary>
         public Mock<IMemberTypeService> MemberTypeService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages Umbraco notifications.
+        /// </summary>
+        public Mock<INotificationService> NotificationService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages Umbraco packages.
+        /// </summary>
+        public Mock<IPackagingService> PackagingService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages the rules for controlling public access to Umbraco content.
+        /// </summary>
+        public Mock<IPublicAccessService> PublicAccessService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages redirects for Umbraco content nodes.
+        /// </summary>
+        public Mock<IRedirectUrlService> RedirectUrlService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages relations between Umbraco entities.
+        /// </summary>
+        public Mock<IRelationService> RelationService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages the roles served by Umbraco instances in a distributed deployment.
+        /// </summary>
+        public Mock<IServerRegistrationService> ServerRegistrationService { get; private init; } = new();
+
+        /// <summary>
+        /// Tag service to query for tags in the tags db table. The tags returned are only relevant for published content & saved media or members.
+        /// </summary>
+        public Mock<ITagService> TagService { get; private init; } = new();
 
         /// <summary>
         /// Provides easy access to operations involving <see cref="IProfile" /> and eventually Users.
@@ -237,12 +342,33 @@ namespace ThePensionsRegulator.Umbraco.Testing
             UmbracoContextAccessor.Setup(x => x.TryGetUmbracoContext(out umbracoContextAccessorResult)).Returns(true);
 
             ServiceContext = ServiceContext.CreatePartial(
-                contentTypeService: ContentTypeService.Object,
-                fileService: FileService.Object,
-                localizationService: LocalizationService.Object,
-                mediaTypeService: MediaTypeService.Object,
-                memberTypeService: MemberTypeService.Object,
-                userService: UserService.Object
+                ContentService.Object,
+                MediaService.Object,
+                ContentTypeService.Object,
+                MediaTypeService.Object,
+                DataTypeService.Object,
+                FileService.Object,
+                LocalizationService.Object,
+                PackagingService.Object,
+                EntityService.Object,
+                RelationService.Object,
+                MemberGroupService.Object,
+                MemberTypeService.Object,
+                MemberService.Object,
+                UserService.Object,
+                TagService.Object,
+                NotificationService.Object,
+                LocalizedTextService.Object,
+                AuditService.Object,
+                DomainService.Object,
+                MacroService.Object,
+                PublicAccessService.Object,
+                ExternalLoginService.Object,
+                ServerRegistrationService.Object,
+                RedirectUrlService.Object,
+                ConsentService.Object,
+                KeyValueService.Object,
+                ContentTypeBaseServiceProvider.Object
             );
 
             PublishedSnapshot.Setup(x => x.Content).Returns(PublishedContentCache.Object);
@@ -266,19 +392,40 @@ namespace ThePensionsRegulator.Umbraco.Testing
         {
             di.StaticServiceProvider.Instance = ServiceProvider.Object;
             HttpContext.Setup(x => x.RequestServices).Returns(ServiceProvider.Object);
+            SetupService(AuditService.Object);
             SetupService(CompositeViewEngine.Object);
+            SetupService(ConsentService.Object);
+            SetupService(ContentService.Object);
+            SetupService(ContentTypeBaseServiceProvider.Object);
             SetupService(ContentTypeService.Object);
+            SetupService(DataTypeService.Object);
+            SetupService(DomainService.Object);
+            SetupService(EntityService.Object);
+            SetupService(ExternalLoginService.Object);
             SetupService(ExamineManager.Object);
             SetupService(FileService.Object);
+            SetupService(KeyValueService.Object);
             SetupService(LocalizationService.Object);
+            SetupService(LocalizedTextService.Object);
+            SetupService(MacroService.Object);
+            SetupService(MediaService.Object);
             SetupService(MediaTypeService.Object);
+            SetupService(MemberService.Object);
+            SetupService(MemberGroupService.Object);
             SetupService(MemberTypeService.Object);
+            SetupService(NotificationService.Object);
+            SetupService(PackagingService.Object);
+            SetupService(PublicAccessService.Object);
             SetupService(PublishedContentCache.Object);
             SetupService(PublishedModelFactory.Object);
             SetupService(PublishedSnapshotAccessor.Object);
             SetupService(PublishedUrlProvider.Object);
             SetupService(PublishedValueFallback.Object);
+            SetupService(RedirectUrlService.Object);
+            SetupService(RelationService.Object);
+            SetupService(ServerRegistrationService.Object);
             SetupService(SiteDomainMapper.Object);
+            SetupService(TagService.Object);
             SetupService(UmbracoContextAccessor.Object);
             SetupService(UserService.Object);
             SetupService(VariationContextAccessor.Object);

@@ -9,6 +9,5 @@ namespace GovUk.Frontend.AspNetCore.Extensions
     {
         TagBuilder GenerateTaskList(AttributeDictionary? attributes, IEnumerable<TaskListTask> tasks);
         TagBuilder GenerateTaskListSummary(TaskListSummary taskListSummary);
-        TagBuilder GenerateSummaryCard(SummaryCard summaryCard);
     }
 }

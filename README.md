@@ -14,6 +14,7 @@ We add support for:
   - [Inset text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/inset-text.md)
   - [Notification banner](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/notification-banner.md)
   - [Panel](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/panel.md)
+  - [Summary card](/docs/components/summary-card.md)
   - [Summary list](/docs/components/summary-list.md)
   - [Warning text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/warning-text.md)
 
@@ -35,7 +36,6 @@ We add support for:
 
 - Additional components:
 
-  - [Summary card](/docs/components/summary-card.md)
   - [Task list summary](/docs/components/task-list-summary.md)
   - [Task list](/docs/components/task-list.md)
   - [TPR back to top](/docs/components/tpr-back-to-top.md)
@@ -47,7 +47,7 @@ We add support for:
 - The Pensions Regulator (TPR) styling for all of the above components, and:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
 
-We target [GDS Frontend v4.4.1](https://github.com/alphagov/govuk-frontend/releases/tag/v4.4.1) in line with James Gunn's base project. We also include 'Summary card' from [GDS Frontend v4.5.0](https://github.com/alphagov/govuk-frontend/releases/tag/v4.5.0) and 'Task list' based on [govuk-frontend pre-release code](https://github.com/alphagov/govuk-design-system/pull/1994).
+We target [GDS Frontend v4.5.0](https://github.com/alphagov/govuk-frontend/releases/tag/v4.5.0) in line with James Gunn's base project. We also include 'Task list' based on [govuk-frontend pre-release code](https://github.com/alphagov/govuk-design-system/pull/1994).
 
 ## ASP.NET projects without Umbraco
 

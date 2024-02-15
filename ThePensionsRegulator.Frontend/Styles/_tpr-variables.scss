@@ -183,7 +183,8 @@ $govuk-typography-scale: (
 ) !default;
 
 @mixin tpr-read-only {
+    opacity: 1;
     background-color: $tpr-colour-white-smoke;
-    border-color: govuk-tint(black, 66);
-    color: govuk-tint(black, 66);
+    border-color: govuk-tint(black, 44);
+    color: govuk-tint(black, 44);
 }

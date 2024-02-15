@@ -215,4 +215,8 @@
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_tpr-select.scss" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-select.scss" />
+	</ItemGroup>
 </Project>

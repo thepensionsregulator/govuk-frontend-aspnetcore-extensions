@@ -35,12 +35,13 @@
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkTextInput.html" />
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkTypography.html" />
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkWarningText.html" />
+      <None Include="wwwroot\media\.gitignore" />
       <None Include="wwwroot\_content\.gitignore" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-        <PackageReference Include="Umbraco.Cms" Version="10.6.1" />
+        <PackageReference Include="Umbraco.Cms" Version="10.8.3" />
     </ItemGroup>
 
     <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->

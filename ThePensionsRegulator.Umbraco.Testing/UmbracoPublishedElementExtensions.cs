@@ -162,6 +162,29 @@ namespace ThePensionsRegulator.Umbraco.Testing
         }
 
         /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a content picker data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+
+        public static Mock<T> SetupUmbracoContentPickerPropertyValue<T>(this T publishedElement, string alias, IPublishedContent? value) where T : class, IPublishedElement
+        {
+            return Mock.Get(publishedElement).SetupUmbracoContentPickerPropertyValue(alias, value);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a content picker data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+        public static Mock<T> SetupUmbracoContentPickerPropertyValue<T>(this Mock<T> publishedElement, string alias, IPublishedContent? value) where T : class, IPublishedElement
+        {
+            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateContentPickerProperty);
+        }
+
+        /// <summary>
         /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a block list data type, and set its value.
         /// </summary>
         /// <param name="alias">The alias of the Umbraco property to mock.</param>

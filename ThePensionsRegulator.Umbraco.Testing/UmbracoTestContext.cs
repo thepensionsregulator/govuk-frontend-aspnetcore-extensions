@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Examine;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -13,6 +14,9 @@ using Moq;
 using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Security.Principal;
+using Umbraco.Cms.Core.Configuration.Models;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.Membership;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Routing;
@@ -83,6 +87,31 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IPublishedValueFallback> PublishedValueFallback { get; private init; } = new();
 
         /// <summary>
+        /// Provides the published model creation service.
+        /// </summary>
+        public Mock<IPublishedModelFactory> PublishedModelFactory { get; private init; } = new();
+
+        /// <summary>
+        /// Gets the url of published content.
+        /// </summary>
+        public Mock<IPublishedUrlProvider> PublishedUrlProvider { get; private init; } = new();
+
+        /// <summary>
+        /// Provides utilities to handle site domains.
+        /// </summary>
+        public Mock<ISiteDomainMapper> SiteDomainMapper { get; private init; } = new();
+
+        /// <summary>
+        /// Provides access to the Examine search engine.
+        /// </summary>
+        public Mock<IExamineManager> ExamineManager { get; private init; } = new();
+
+        /// <summary>
+        /// Settings for routing Umbraco web requests.
+        /// </summary>
+        public WebRoutingSettings WebRoutingSettings { get; private init; } = new();
+
+        /// <summary>
         /// Represents the Umbraco service context, which provides access to all services.
         /// </summary>
         public ServiceContext ServiceContext { get; private init; }
@@ -146,9 +175,34 @@ namespace ThePensionsRegulator.Umbraco.Testing
         }
 
         /// <summary>
+        /// Manages <see cref="IContentType" /> objects.
+        /// </summary>
+        public Mock<IContentTypeService> ContentTypeService { get; private init; } = new();
+
+        /// <summary>
+        /// Provides easy access to operations involving <see cref="IFile" /> objects like Scripts, Stylesheets and Templates.
+        /// </summary>
+        public Mock<IFileService> FileService { get; private init; } = new();
+
+        /// <summary>
         /// Provides easy access to operations involving Languages and Dictionary.
         /// </summary>
         public Mock<ILocalizationService> LocalizationService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages <see cref="IMediaType" /> objects.
+        /// </summary>
+        public Mock<IMediaTypeService> MediaTypeService { get; private init; } = new();
+
+        /// <summary>
+        /// Manages <see cref="IMemberType" /> objects.
+        /// </summary>
+        public Mock<IMemberTypeService> MemberTypeService { get; private init; } = new();
+
+        /// <summary>
+        /// Provides easy access to operations involving <see cref="IProfile" /> and eventually Users.
+        /// </summary>
+        public Mock<IUserService> UserService { get; private init; } = new();
 
         /// <summary>
         /// The view returned by the <see cref="CompositeViewEngine"/>.
@@ -183,7 +237,12 @@ namespace ThePensionsRegulator.Umbraco.Testing
             UmbracoContextAccessor.Setup(x => x.TryGetUmbracoContext(out umbracoContextAccessorResult)).Returns(true);
 
             ServiceContext = ServiceContext.CreatePartial(
-                localizationService: LocalizationService.Object
+                contentTypeService: ContentTypeService.Object,
+                fileService: FileService.Object,
+                localizationService: LocalizationService.Object,
+                mediaTypeService: MediaTypeService.Object,
+                memberTypeService: MemberTypeService.Object,
+                userService: UserService.Object
             );
 
             PublishedSnapshot.Setup(x => x.Content).Returns(PublishedContentCache.Object);
@@ -197,6 +256,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
             CurrentIdentity.SetupGet(x => x.IsAuthenticated).Returns(false);
             CurrentPrincipal = new GenericPrincipal(CurrentIdentity.Object, Array.Empty<string>());
 
+            ContentTypeService.Setup(x => x.GetAllContentTypeAliases()).Returns(_contentTypes.Keys.ToArray());
+            ContentTypeService.Setup(x => x.GetAllContentTypeIds(It.IsAny<string[]>())).Returns<string[]>(aliases => _contentTypes.Where(x => aliases.Contains(x.Value.Object.Alias)).Select(x => x.Value.Object.Id));
+
             SetupServices();
         }
 
@@ -205,12 +267,22 @@ namespace ThePensionsRegulator.Umbraco.Testing
             di.StaticServiceProvider.Instance = ServiceProvider.Object;
             HttpContext.Setup(x => x.RequestServices).Returns(ServiceProvider.Object);
             SetupService(CompositeViewEngine.Object);
-            SetupService(UmbracoContextAccessor.Object);
+            SetupService(ContentTypeService.Object);
+            SetupService(ExamineManager.Object);
+            SetupService(FileService.Object);
+            SetupService(LocalizationService.Object);
+            SetupService(MediaTypeService.Object);
+            SetupService(MemberTypeService.Object);
+            SetupService(PublishedContentCache.Object);
+            SetupService(PublishedModelFactory.Object);
             SetupService(PublishedSnapshotAccessor.Object);
-            SetupService(VariationContextAccessor.Object);
+            SetupService(PublishedUrlProvider.Object);
             SetupService(PublishedValueFallback.Object);
-            SetupService(PublishedContentCache);
-            SetupService(LocalizationService);
+            SetupService(SiteDomainMapper.Object);
+            SetupService(UmbracoContextAccessor.Object);
+            SetupService(UserService.Object);
+            SetupService(VariationContextAccessor.Object);
+            SetupService(Options.Create(WebRoutingSettings));
         }
 
         private void SetupService<T>(T implementation)

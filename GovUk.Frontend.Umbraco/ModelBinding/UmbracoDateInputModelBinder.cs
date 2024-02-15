@@ -29,13 +29,15 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
         private readonly ICultureDictionary _cultureDictionary;
         private readonly IPublishedValueFallback? _publishedValueFallback;
+        private readonly bool _acceptMonthNamesInDateInputs;
 
-        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter, IUmbracoContextAccessor umbracoContextAccessor, ICultureDictionary cultureDictionary, IPublishedValueFallback? publishedValueFallback)
+        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter, IUmbracoContextAccessor umbracoContextAccessor, ICultureDictionary cultureDictionary, IPublishedValueFallback? publishedValueFallback, bool acceptMonthNamesInDateInputs)
         {
             _dateInputModelConverter = Guard.ArgumentNotNull(nameof(dateInputModelConverter), dateInputModelConverter);
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
             _cultureDictionary = cultureDictionary ?? throw new ArgumentNullException(nameof(cultureDictionary));
             _publishedValueFallback = publishedValueFallback;
+            _acceptMonthNamesInDateInputs = acceptMonthNamesInDateInputs;
         }
 
         public Task BindModelAsync(ModelBindingContext bindingContext)
@@ -87,6 +89,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 dayValueProviderResult.FirstValue,
                 monthValueProviderResult.FirstValue,
                 yearValueProviderResult.FirstValue,
+                _acceptMonthNamesInDateInputs,
                 out var date);
 
             if (parseErrors == DateInputParseErrors.None)
@@ -163,7 +166,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         }
 
         // internal for testing
-        internal static DateInputParseErrors Parse(bool dayEnabled, string? day, string? month, string? year, out DateOnly? date)
+        internal static DateInputParseErrors Parse(bool dayEnabled, string? day, string? month, string? year, bool acceptMonthNames, out DateOnly? date)
         {
             day ??= string.Empty;
             month ??= string.Empty;
@@ -176,7 +179,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             {
                 errors |= DateInputParseErrors.MissingYear;
             }
-            else if (!int.TryParse(year, out parsedYear) || parsedYear < 1 || parsedYear > 9999)
+            else if (!TryParseYear(year, out parsedYear) || parsedYear < 1 || parsedYear > 9999)
             {
                 errors |= DateInputParseErrors.InvalidYear;
             }
@@ -185,7 +188,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             {
                 errors |= DateInputParseErrors.MissingMonth;
             }
-            else if (!int.TryParse(month, out parsedMonth) || parsedMonth < 1 || parsedMonth > 12)
+            else if (!TryParseMonth(month, out parsedMonth) || parsedMonth < 1 || parsedMonth > 12)
             {
                 errors |= DateInputParseErrors.InvalidMonth;
             }
@@ -196,7 +199,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 {
                     errors |= DateInputParseErrors.MissingDay;
                 }
-                else if (!int.TryParse(day, out parsedDay) || parsedDay < 1 || parsedDay > 31 ||
+                else if (!TryParseDay(day, out parsedDay) || parsedDay < 1 || parsedDay > 31 ||
                     errors == DateInputParseErrors.None && parsedDay > DateTime.DaysInMonth(parsedYear, parsedMonth))
                 {
                     errors |= DateInputParseErrors.InvalidDay;
@@ -209,6 +212,52 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
 
             date = errors == DateInputParseErrors.None ? new(parsedYear, parsedMonth, parsedDay) : default;
             return errors;
+
+            bool TryParseDay(string value, out int result) => int.TryParse(value, out result);
+
+            bool TryParseMonth(string value, out int result)
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    result = 0;
+                    return false;
+                }
+
+                if (!int.TryParse(value, out result) && acceptMonthNames)
+                {
+                    result = value.ToLower() switch
+                    {
+                        "jan" => 1,
+                        "january" => 1,
+                        "feb" => 2,
+                        "february" => 2,
+                        "mar" => 3,
+                        "march" => 3,
+                        "apr" => 4,
+                        "april" => 4,
+                        "may" => 5,
+                        "jun" => 6,
+                        "june" => 6,
+                        "jul" => 7,
+                        "july" => 7,
+                        "aug" => 8,
+                        "august" => 8,
+                        "sep" => 9,
+                        "september" => 9,
+                        "oct" => 10,
+                        "october" => 10,
+                        "nov" => 11,
+                        "november" => 11,
+                        "dec" => 12,
+                        "december" => 12,
+                        _ => 0
+                    };
+                }
+
+                return result != 0;
+            }
+
+            bool TryParseYear(string value, out int result) => int.TryParse(value, out result);
         }
     }
 }

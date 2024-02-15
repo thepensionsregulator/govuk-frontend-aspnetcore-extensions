@@ -15,6 +15,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
     public class UmbracoDateInputModelBinderProvider : IModelBinderProvider
     {
         private readonly DateInputModelConverter[] _dateInputModelConverters;
+        private readonly bool _acceptMonthNamesInDateInputs;
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
         private readonly ICultureDictionary _cultureDictionary;
         private readonly IPublishedValueFallback? _publishedValueFallback;
@@ -28,6 +29,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             Guard.ArgumentNotNull(nameof(options), options);
 
             _dateInputModelConverters = options.DateInputModelConverters.ToArray();
+            _acceptMonthNamesInDateInputs = options.AcceptMonthNamesInDateInputs;
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
             _cultureDictionary = cultureDictionary ?? throw new ArgumentNullException(nameof(cultureDictionary));
             _publishedValueFallback = publishedValueFallback;
@@ -43,7 +45,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             {
                 if (converter.CanConvertModelType(modelType))
                 {
-                    return new UmbracoDateInputModelBinder(converter, _umbracoContextAccessor, _cultureDictionary, _publishedValueFallback);
+                    return new UmbracoDateInputModelBinder(converter, _umbracoContextAccessor, _cultureDictionary, _publishedValueFallback, _acceptMonthNamesInDateInputs);
                 }
             }
 

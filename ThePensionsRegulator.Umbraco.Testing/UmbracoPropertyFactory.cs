@@ -19,6 +19,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         private const int INTEGER_DATA_TYPE_ID = 5;
         private const int RICH_TEXT_DATA_TYPE_ID = 6;
         private const int BLOCKGRID_DATA_TYPE_ID = 7;
+        private const int CONTENT_PICKER_DATA_TYPE_ID = 8;
 
         /// <summary>
         /// Mock an Umbraco property and set its value.
@@ -141,6 +142,17 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public static IPublishedProperty CreateMultiUrlPickerProperty(string propertyAlias, Link? value)
         {
             return CreateProperty(propertyAlias, CreatePropertyType(MULTI_URL_PICKER_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.MultiUrlPicker, new MultiUrlPickerConfiguration()), value);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property using a content picker data type, and set its value.
+        /// </summary>
+        /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The mocked Umbraco property.</returns>
+        public static IPublishedProperty CreateContentPickerProperty(string propertyAlias, IPublishedElement? value)
+        {
+            return CreateProperty(propertyAlias, CreatePropertyType(CONTENT_PICKER_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.ContentPicker, new ContentPickerConfiguration()), value);
         }
     }
 }

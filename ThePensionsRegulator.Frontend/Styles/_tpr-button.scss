@@ -67,7 +67,7 @@ input[type="file"]::file-selector-button {
 }
 .govuk-button--start:focus:not(:active):not(:hover),
 .govuk-button--secondary:focus:not(:active):not(:hover),
-.govuk-button--reversed:focus:not(:active):not(:hover) {
+.govuk-button--inverse:focus:not(:active):not(:hover) {
     background-image: none;
 }
 
@@ -103,7 +103,7 @@ a.govuk-button--warning.govuk-button--secondary:active {
     border-color: $tpr-colour-petite-orchid;
 }
 
-.govuk-button--reversed {
+.govuk-button--inverse {
     background-color: transparent;
     background-image: none;
     padding-right: govuk-spacing(4);

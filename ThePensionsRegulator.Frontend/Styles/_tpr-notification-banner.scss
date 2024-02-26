@@ -18,7 +18,7 @@
         .govuk-notification-banner__content {
             background-color: $tpr-colour-camarone;
 
-            .govuk-button--reversed:not(:active):not(:focus):not(:hover) {
+            .govuk-button--inverse:not(:active):not(:focus):not(:hover) {
                 color: $tpr-colour-camarone;
             }
         }
@@ -37,13 +37,13 @@
             max-width: none;
         }
 
-        .govuk-button--reversed {
+        .govuk-button--inverse {
             background-color: $tpr-colour-white;
             color: $tpr-colour-eastern-blue;
 
-            &:hover, 
-            &:active, 
-            &:hover:focus, 
+            &:hover,
+            &:active,
+            &:hover:focus,
             &:active:focus {
                 background-color: transparent;
                 color: $tpr-colour-white;

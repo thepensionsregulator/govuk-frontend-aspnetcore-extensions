@@ -296,6 +296,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         [TestCase(true, "31", "12", 12, "2020")]
         [TestCase(true, "31", "dec", 12, "2020")]
         [TestCase(true, "31", "January", 1, "2020")]
+        [TestCase(true, "29", "February", 2, "2024")]
         public void Parse_ValidDate_Returns_Date(bool dayEnabled, string? day, string month, int expectedMonth, string year)
         {
             // Arrange
@@ -331,6 +332,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         [TestCase("1", "x", "2020", true, DateInputParseErrors.InvalidMonth)]
         [TestCase("1", "dec", "2020", false, DateInputParseErrors.InvalidMonth)]
         [TestCase("31", "January", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [TestCase("29", "February", "2023", true, DateInputParseErrors.InvalidDay)]
         public void Parse_InvalidDate_ComputesExpectedParseErrors(
             string day, string month, string year, bool acceptMonthNames, DateInputParseErrors expectedParseErrors)
         {

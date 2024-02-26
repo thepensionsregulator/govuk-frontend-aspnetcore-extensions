@@ -290,47 +290,54 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             Assert.AreEqual(expectedMessage, result);
         }
 
-        [TestCase(false, null, "3", "2020")]
-        [TestCase(true, "1", "1", "2020")]
-        [TestCase(true, "29", "2", "2020")]
-        [TestCase(true, "31", "12", "2020")]
-        public void Parse_ValidDate_Returns_Date(bool dayEnabled, string? day, string month, string year)
+        [TestCase(false, null, "3", 3, "2020")]
+        [TestCase(true, "1", "1", 1, "2020")]
+        [TestCase(true, "29", "2", 2, "2020")]
+        [TestCase(true, "31", "12", 12, "2020")]
+        [TestCase(true, "31", "dec", 12, "2020")]
+        [TestCase(true, "31", "January", 1, "2020")]
+        public void Parse_ValidDate_Returns_Date(bool dayEnabled, string? day, string month, int expectedMonth, string year)
         {
             // Arrange
 
             // Act
-            var result = UmbracoDateInputModelBinder.Parse(dayEnabled, day, month, year, false ,out var parsed);
+            var result = UmbracoDateInputModelBinder.Parse(dayEnabled, day, month, year, true, out var parsed);
 
             // Assert
             Assert.That(result, Is.EqualTo(DateInputParseErrors.None));
-            Assert.That(new DateOnly(int.Parse(year), int.Parse(month), dayEnabled ? int.Parse(day!) : 1), Is.EqualTo(parsed));
+
+            var expectedDay = dayEnabled ? int.Parse(day!) : 1;
+            Assert.That(new DateOnly(int.Parse(year), expectedMonth, expectedDay), Is.EqualTo(parsed));
         }
 
-        [TestCase("", "4", "2020", DateInputParseErrors.MissingDay)]
-        [TestCase(null, "4", "2020", DateInputParseErrors.MissingDay)]
-        [TestCase("1", "", "2020", DateInputParseErrors.MissingMonth)]
-        [TestCase("1", null, "2020", DateInputParseErrors.MissingMonth)]
-        [TestCase("1", "4", null, DateInputParseErrors.MissingYear)]
-        [TestCase("1", "4", "", DateInputParseErrors.MissingYear)]
-        [TestCase("0", "4", "2020", DateInputParseErrors.InvalidDay)]
-        [TestCase("-1", "4", "2020", DateInputParseErrors.InvalidDay)]
-        [TestCase("32", "4", "2020", DateInputParseErrors.InvalidDay)]
-        [TestCase("x", "4", "2020", DateInputParseErrors.InvalidDay)]
-        [TestCase("1", "0", "2020", DateInputParseErrors.InvalidMonth)]
-        [TestCase("1", "-1", "2020", DateInputParseErrors.InvalidMonth)]
-        [TestCase("1", "13", "2020", DateInputParseErrors.InvalidMonth)]
-        [TestCase("1", "x", "2020", DateInputParseErrors.InvalidMonth)]
-        [TestCase("1", "4", "0", DateInputParseErrors.InvalidYear)]
-        [TestCase("1", "4", "-1", DateInputParseErrors.InvalidYear)]
-        [TestCase("1", "4", "10000", DateInputParseErrors.InvalidYear)]
-        [TestCase("1", "4", "x", DateInputParseErrors.InvalidYear)]
+        [TestCase("", "4", "2020", false, DateInputParseErrors.MissingDay)]
+        [TestCase(null, "4", "2020", false, DateInputParseErrors.MissingDay)]
+        [TestCase("1", "", "2020", false, DateInputParseErrors.MissingMonth)]
+        [TestCase("1", null, "2020", false, DateInputParseErrors.MissingMonth)]
+        [TestCase("1", "4", null, false, DateInputParseErrors.MissingYear)]
+        [TestCase("1", "4", "", false, DateInputParseErrors.MissingYear)]
+        [TestCase("0", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [TestCase("-1", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [TestCase("32", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [TestCase("x", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [TestCase("1", "0", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [TestCase("1", "-1", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [TestCase("1", "13", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [TestCase("1", "x", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [TestCase("1", "4", "0", false, DateInputParseErrors.InvalidYear)]
+        [TestCase("1", "4", "-1", false, DateInputParseErrors.InvalidYear)]
+        [TestCase("1", "4", "10000", false, DateInputParseErrors.InvalidYear)]
+        [TestCase("1", "4", "x", false, DateInputParseErrors.InvalidYear)]
+        [TestCase("1", "x", "2020", true, DateInputParseErrors.InvalidMonth)]
+        [TestCase("1", "dec", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [TestCase("31", "January", "2020", false, DateInputParseErrors.InvalidMonth)]
         public void Parse_InvalidDate_ComputesExpectedParseErrors(
-            string day, string month, string year, DateInputParseErrors expectedParseErrors)
+            string day, string month, string year, bool acceptMonthNames, DateInputParseErrors expectedParseErrors)
         {
             // Arrange
 
             // Act
-            var result = UmbracoDateInputModelBinder.Parse(true, day, month, year, false, out var dateComponents);
+            var result = UmbracoDateInputModelBinder.Parse(true, day, month, year, acceptMonthNames, out var dateComponents);
 
             // Assert
             Assert.AreEqual(default, dateComponents);

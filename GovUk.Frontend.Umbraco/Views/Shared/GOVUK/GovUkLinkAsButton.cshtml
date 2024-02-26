@@ -14,7 +14,7 @@
     var buttonStyle = Model.Settings.Value<string[]>("styleOfButton") ?? Array.Empty<string>();
     if (buttonStyle.Contains("Secondary")) { buttonStyle[buttonStyle.IndexOf("Secondary")] = "govuk-button--secondary"; }
     if (buttonStyle.Contains("Warning")) { buttonStyle[buttonStyle.IndexOf("Warning")] = "govuk-button--warning"; }
-    if (buttonStyle.Contains("Reversed")) { buttonStyle[buttonStyle.IndexOf("Reversed")] = "govuk-button--reversed"; }
+    if (buttonStyle.Contains("Reversed")) { buttonStyle[buttonStyle.IndexOf("Reversed")] = "govuk-button--inverse"; }
     if (buttonStyle.Length > 0 && !string.IsNullOrEmpty(cssClasses)) { cssClasses = " " + cssClasses; }
 }
 <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses">@text</govuk-button-link>

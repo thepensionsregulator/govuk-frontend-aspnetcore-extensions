@@ -53,6 +53,11 @@
         }
     }
 
+    var extraLetterSpacing = Model.Settings.Value<bool>(PropertyAliases.ExtraLetterSpacing);
+    if (extraLetterSpacing)
+    {
+        inputClass = (inputClass + " govuk-input--extra-letter-spacing").TrimStart();
+    }
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
     var invalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any()).ToString().ToLowerInvariant();

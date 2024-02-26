@@ -42,7 +42,7 @@ namespace GovUk.Frontend.Umbraco
                 bundles.CreateCss("govuk-frontend-css",
                     "/_content/ThePensionsRegulator.GovUk.Frontend.Umbraco/govuk/govuk-frontend.css");
 
-                bundles.CreateJs("govuk-frontend-js", "~/govuk-frontend-4.5.0.min.js",
+                bundles.CreateJs("govuk-frontend-js", "~/govuk-frontend-4.6.0.min.js",
                   "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-js-init.js");
 
                 bundles.CreateJs("govuk-frontend-validation", "/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery/dist/jquery.min.js",

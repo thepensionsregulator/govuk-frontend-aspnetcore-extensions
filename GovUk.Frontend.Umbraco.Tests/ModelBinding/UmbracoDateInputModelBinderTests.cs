@@ -36,7 +36,8 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
                     converterMock.Object,
                     _testContext.UmbracoContextAccessor.Object,
                     Mock.Of<ICultureDictionary>(),
-                    _testContext.PublishedValueFallback.Object
+                    _testContext.PublishedValueFallback.Object,
+                    false
                 );
 
         [Test]
@@ -298,7 +299,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             // Arrange
 
             // Act
-            var result = UmbracoDateInputModelBinder.Parse(dayEnabled, day, month, year, out var parsed);
+            var result = UmbracoDateInputModelBinder.Parse(dayEnabled, day, month, year, false ,out var parsed);
 
             // Assert
             Assert.That(result, Is.EqualTo(DateInputParseErrors.None));
@@ -329,7 +330,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             // Arrange
 
             // Act
-            var result = UmbracoDateInputModelBinder.Parse(true, day, month, year, out var dateComponents);
+            var result = UmbracoDateInputModelBinder.Parse(true, day, month, year, false, out var dateComponents);
 
             // Assert
             Assert.AreEqual(default, dateComponents);

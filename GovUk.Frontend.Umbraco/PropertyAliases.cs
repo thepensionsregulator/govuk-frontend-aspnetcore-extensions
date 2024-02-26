@@ -27,6 +27,7 @@
         public const string ErrorMessageRange = "errorMessageRange";
         public const string ErrorMessageCompare = "errorMessageCompare";
         public const string ErrorMessage = "error";
+        public const string ExtraLetterSpacing = "extraLetterSpacing";
         public const string FieldsetBlocks = "blocks";
         public const string FieldsetLegendIsPageHeading = "legendIsPageHeading";
         public const string FieldsetErrorsEnabled = "fieldsetErrors";

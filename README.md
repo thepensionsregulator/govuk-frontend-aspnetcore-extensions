@@ -47,7 +47,7 @@ We add support for:
 - The Pensions Regulator (TPR) styling for all of the above components, and:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
 
-We target [GDS Frontend v4.7.0](https://github.com/alphagov/govuk-frontend/releases/tag/v4.7.0) in line with James Gunn's base project. We also include 'Task list' based on [govuk-frontend pre-release code](https://github.com/alphagov/govuk-design-system/pull/1994).
+We target [GDS Frontend v4.8.0](https://github.com/alphagov/govuk-frontend/releases/tag/v4.8.0) in line with James Gunn's base project. We also include 'Task list' based on [govuk-frontend pre-release code](https://github.com/alphagov/govuk-design-system/pull/1994).
 
 ## ASP.NET projects without Umbraco
 

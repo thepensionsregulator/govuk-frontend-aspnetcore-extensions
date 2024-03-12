@@ -5,7 +5,7 @@
         <p class="backoffice-additional-blocks" ng-if="block.data.fieldsetBlocks.contentData.length===1">1 block.</p>
         <p class="backoffice-additional-blocks" ng-if="block.data.fieldsetBlocks.contentData.length>1">{{checkbox.fieldsetBlocks.contentData.length}} blocks.</p>
         <div class="govuk-form-group">
-            <div class="govuk-hint" ng-bind-html="block.data.hint" ng-if="block.data.hint"></div>
+            <div class="govuk-hint" ng-bind-html="block.data.hint.markup" ng-if="block.data.hint.markup"></div>
             <div class="govuk-date-input">
                 <div class="govuk-date-input__item" ng-if="block.settingsData.showDay==='1'">
                     <div class="govuk-form-group">

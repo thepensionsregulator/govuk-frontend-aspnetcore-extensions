@@ -23,7 +23,7 @@ using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Routing;
-using di = Umbraco.Cms.Web.Common.DependencyInjection;
+using DI = Umbraco.Cms.Web.Common.DependencyInjection;
 
 namespace ThePensionsRegulator.Umbraco.Testing
 {
@@ -217,7 +217,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <summary>
         /// Used to store the external login info.
         /// </summary>
-        public Mock<IExternalLoginService> ExternalLoginService { get; private init; } = new();
+        public Mock<IExternalLoginWithKeyService> ExternalLoginWithKeyService { get; private init; } = new();
 
         /// <summary>
         /// Provides easy access to operations involving <see cref="IFile" /> objects like Scripts, Stylesheets and Templates.
@@ -305,6 +305,11 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<ITagService> TagService { get; private init; } = new();
 
         /// <summary>
+        /// Manages web hooks.
+        /// </summary>
+        public Mock<IWebhookService> WebhookService { get; private init; } = new();
+
+        /// <summary>
         /// Provides easy access to operations involving <see cref="IProfile" /> and eventually Users.
         /// </summary>
         public Mock<IUserService> UserService { get; private init; } = new();
@@ -363,12 +368,13 @@ namespace ThePensionsRegulator.Umbraco.Testing
                 DomainService.Object,
                 MacroService.Object,
                 PublicAccessService.Object,
-                ExternalLoginService.Object,
+                ExternalLoginWithKeyService.Object,
                 ServerRegistrationService.Object,
                 RedirectUrlService.Object,
                 ConsentService.Object,
                 KeyValueService.Object,
-                ContentTypeBaseServiceProvider.Object
+                ContentTypeBaseServiceProvider.Object,
+                WebhookService.Object
             );
 
             PublishedSnapshot.Setup(x => x.Content).Returns(PublishedContentCache.Object);
@@ -390,7 +396,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
 
         private void SetupServices()
         {
-            di.StaticServiceProvider.Instance = ServiceProvider.Object;
+            DI.StaticServiceProvider.Instance = ServiceProvider.Object;
             HttpContext.Setup(x => x.RequestServices).Returns(ServiceProvider.Object);
             SetupService(AuditService.Object);
             SetupService(CompositeViewEngine.Object);
@@ -401,7 +407,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(DataTypeService.Object);
             SetupService(DomainService.Object);
             SetupService(EntityService.Object);
-            SetupService(ExternalLoginService.Object);
+            SetupService(ExternalLoginWithKeyService.Object);
             SetupService(ExamineManager.Object);
             SetupService(FileService.Object);
             SetupService(KeyValueService.Object);

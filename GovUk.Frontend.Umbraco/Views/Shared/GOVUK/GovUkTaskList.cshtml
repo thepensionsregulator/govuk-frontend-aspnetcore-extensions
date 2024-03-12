@@ -40,7 +40,7 @@
                     else
                     {
                         var defaultTextForStatus = ComponentGenerator.TaskListTaskStatusText(parsedStatus) ?? string.Empty;
-                        textForStatus = @Umbraco.GetDictionaryValue($"Task list - {defaultTextForStatus}", defaultTextForStatus);
+                        textForStatus = @Umbraco.GetDictionaryValueOrDefault($"Task list - {defaultTextForStatus}", defaultTextForStatus);
                     }
                     <govuk-task-list-task-status status="@parsedStatus">@textForStatus</govuk-task-list-task-status>
                 }

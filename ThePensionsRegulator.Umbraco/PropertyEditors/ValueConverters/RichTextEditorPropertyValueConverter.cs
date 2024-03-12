@@ -1,7 +1,13 @@
-﻿using Umbraco.Cms.Core.Macros;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Umbraco.Cms.Core.Blocks;
+using Umbraco.Cms.Core.Configuration.Models;
+using Umbraco.Cms.Core.DeliveryApi;
+using Umbraco.Cms.Core.Macros;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
+using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Core.Templates;
 using Umbraco.Cms.Core.Web;
@@ -21,8 +27,30 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
             HtmlLocalLinkParser linkParser,
             HtmlUrlParser urlParser,
             HtmlImageSourceParser imageSourceParser,
-            IEnumerable<IPropertyValueFormatter> propertyValueFormatters) :
-            base(umbracoContextAccessor, macroRenderer, linkParser, urlParser, imageSourceParser)
+            IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
+            IApiRichTextElementParser apiRichTextElementParser,
+            IApiRichTextMarkupParser apiRichTextMarkupParser,
+            IPartialViewBlockEngine partialViewBlockEngine,
+            BlockEditorConverter blockEditorConverter,
+            IJsonSerializer jsonSerializer,
+            IApiElementBuilder apiElementBuilder,
+            RichTextBlockPropertyValueConstructorCache richTextBlockConstructorCache,
+            ILogger<RteMacroRenderingValueConverter> macroLogger,
+            IOptionsMonitor<DeliveryApiSettings> deliveryApiSettings) :
+            base(umbracoContextAccessor,
+                macroRenderer,
+                linkParser,
+                urlParser,
+                imageSourceParser,
+                apiRichTextElementParser,
+                apiRichTextMarkupParser,
+                partialViewBlockEngine,
+                blockEditorConverter,
+                jsonSerializer,
+                apiElementBuilder,
+                richTextBlockConstructorCache,
+                macroLogger,
+                deliveryApiSettings)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
         }
@@ -36,7 +64,9 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
             return _propertyValueFormatters.ApplyFormatters(propertyType, value);
         }
 
-		/// <inheritdoc />
-		public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Snapshot;
-	}
+        /// <inheritdoc />
+        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Snapshot;
+    }
+
+
 }

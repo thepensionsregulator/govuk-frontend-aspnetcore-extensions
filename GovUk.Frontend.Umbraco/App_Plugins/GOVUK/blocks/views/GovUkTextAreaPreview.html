@@ -1,5 +1,5 @@
 ﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit textarea component">
     <label class="govuk-label" ng-bind-html="block.data.label" aria-hidden="true"></label>
-    <div class="govuk-hint" ng-bind-html="block.data.hint" ng-if="block.data.hint" aria-hidden="true"></div>
+    <div class="govuk-hint" ng-bind-html="block.data.hint.markup" ng-if="block.data.hint.markup" aria-hidden="true"></div>
     <textarea class="govuk-textarea" rows="5" aria-hidden="true"></textarea>
 </div>

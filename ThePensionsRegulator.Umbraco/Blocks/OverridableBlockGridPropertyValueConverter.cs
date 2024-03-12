@@ -1,4 +1,5 @@
 ﻿using ThePensionsRegulator.Umbraco.PropertyEditors;
+using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -15,8 +16,13 @@ namespace ThePensionsRegulator.Umbraco.Blocks
     {
         private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
 
-        public OverridableBlockGridPropertyValueConverter(IProfilingLogger proflog, BlockEditorConverter blockConverter, IJsonSerializer jsonSerializer, IEnumerable<IPropertyValueFormatter> propertyValueFormatters)
-            : base(proflog, blockConverter, jsonSerializer)
+        public OverridableBlockGridPropertyValueConverter(IProfilingLogger proflog,
+            BlockEditorConverter blockConverter,
+            IJsonSerializer jsonSerializer,
+            IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
+            IApiElementBuilder apiElementBuilder,
+            BlockGridPropertyValueConstructorCache constructorCache)
+            : base(proflog, blockConverter, jsonSerializer, apiElementBuilder, constructorCache)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
         }

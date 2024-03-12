@@ -1,8 +1,15 @@
 ﻿using GovUk.Frontend.Umbraco.PropertyEditors.ValueConverters;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
+using Umbraco.Cms.Core.Blocks;
+using Umbraco.Cms.Core.Configuration.Models;
+using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.Macros;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
+using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Templates;
 using Umbraco.Cms.Core.Web;
 
@@ -18,13 +25,37 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueConverters
     {
         private readonly List<string> _propertyEditorAliases = new();
 
-        public TprRichTextEditorPropertyValueConverter(IUmbracoContextAccessor umbracoContextAccessor,
+        public TprRichTextEditorPropertyValueConverter(
+            IUmbracoContextAccessor umbracoContextAccessor,
             IMacroRenderer macroRenderer,
             HtmlLocalLinkParser linkParser,
             HtmlUrlParser urlParser,
             HtmlImageSourceParser imageSourceParser,
-            IEnumerable<IPropertyValueFormatter> propertyValueFormatters) :
-            base(umbracoContextAccessor, macroRenderer, linkParser, urlParser, imageSourceParser, propertyValueFormatters)
+            IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
+            IApiRichTextElementParser apiRichTextElementParser,
+            IApiRichTextMarkupParser apiRichTextMarkupParser,
+            IPartialViewBlockEngine partialViewBlockEngine,
+            BlockEditorConverter blockEditorConverter,
+            IJsonSerializer jsonSerializer,
+            IApiElementBuilder apiElementBuilder,
+            RichTextBlockPropertyValueConstructorCache richTextBlockConstructorCache,
+            ILogger<RteMacroRenderingValueConverter> macroLogger,
+            IOptionsMonitor<DeliveryApiSettings> deliveryApiSettings) :
+            base(umbracoContextAccessor,
+                macroRenderer,
+                linkParser,
+                urlParser,
+                imageSourceParser,
+                propertyValueFormatters,
+                apiRichTextElementParser,
+                apiRichTextMarkupParser,
+                partialViewBlockEngine,
+                blockEditorConverter,
+                jsonSerializer,
+                apiElementBuilder,
+                richTextBlockConstructorCache,
+                macroLogger,
+                deliveryApiSettings)
         {
             _propertyEditorAliases.AddRange(GovUkPropertyEditorAliases());
             _propertyEditorAliases.Add(PropertyEditorAliases.TprHeaderFooterRichText);

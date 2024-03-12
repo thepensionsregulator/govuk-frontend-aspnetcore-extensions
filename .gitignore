@@ -405,6 +405,7 @@ FodyWeavers.xsd
 !docs/umbraco
 **/Smidge/
 appsettings-schema.json
+appsettings-schema.*.json
 ood.flag
 
 # Development environment

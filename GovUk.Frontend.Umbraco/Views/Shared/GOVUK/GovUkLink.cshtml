@@ -10,4 +10,7 @@
     var link = Model.Content.Value<Link>("link");
     var cssClasses = (" " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
 }
-<a href="@link.Url" class="govuk-link@(cssClasses)" id="@Model.Content.Key">@text</a>
+@if (link is not null)
+{
+    <a href="@link.Url" class="govuk-link@(cssClasses)" id="@Model.Content.Key">@text</a>
+}

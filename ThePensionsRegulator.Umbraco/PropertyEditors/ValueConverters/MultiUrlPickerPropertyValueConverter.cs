@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core.Logging;
+﻿using Umbraco.Cms.Core.DeliveryApi;
+using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
@@ -23,8 +24,19 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
             IJsonSerializer jsonSerializer,
             IUmbracoContextAccessor umbracoContextAccessor,
             IPublishedUrlProvider publishedUrlProvider,
-            IEnumerable<IPropertyValueFormatter> propertyValueFormatters)
-            : base(publishedSnapshotAccessor, proflog, jsonSerializer, umbracoContextAccessor, publishedUrlProvider)
+            IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
+            IApiContentNameProvider apiContentNameProvider,
+            IApiMediaUrlProvider apiMediaUrlProvider,
+            IApiContentRouteBuilder apiRouteBuilder
+            )
+            : base(publishedSnapshotAccessor,
+                  proflog,
+                  jsonSerializer,
+                  umbracoContextAccessor,
+                  publishedUrlProvider,
+                  apiContentNameProvider,
+                  apiMediaUrlProvider,
+                  apiRouteBuilder)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
         }

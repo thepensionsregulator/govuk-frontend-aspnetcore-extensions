@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -31,7 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkFileUpload.html" />
+	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -40,30 +40,30 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCaption.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxes.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInput.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDetails.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorMessage.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorSummary.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkInsetText.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkInsetTextPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBanner.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBannerPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPageHeading.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPanel.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadios.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUpload.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelect.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryCard.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryList.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskList.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelectPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryCardPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryListPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextArea.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextInput.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypography.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkWarningText.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextAreaPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextInputPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypographyPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkWarningTextPreview.html" />
 		<Content Include="App_Plugins\GOVUK\govuk.controller.js" />
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />
@@ -88,15 +88,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.SassCompiler" Version="1.58.1" />
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.71.1.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="6.0.3" />
-		<PackageReference Include="System.Security.Cryptography.Xml" Version="6.0.1" />
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-		<PackageReference Include="Umbraco.Cms.Core" Version="10.6.1" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.6.1" />
-		<PackageReference Include="Umbraco.Cms.Web.Common" Version="10.6.1" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -3,8 +3,8 @@
         <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title" ng-bind-html="block.settingsData.title || 'Important'"></h2>
     </div>
     <div class="govuk-notification-banner__content" aria-hidden="true">
-        <h3 class="govuk-notification-banner__heading" ng-bind-html="block.data.heading"></h3>
-        <p class="govuk-body" ng-bind-html="block.data.text" ng-if="block.data.text != ''"></p>
+        <h3 class="govuk-notification-banner__heading" ng-bind-html="block.data.heading.markup"></h3>
+        <p class="govuk-body" ng-bind-html="block.data.text.markup" ng-if="block.data.text.markup != ''"></p>
         <p class="backoffice-additional-blocks" ng-if="!block.data.blocks.contentData">No blocks.</p>
         <p class="backoffice-additional-blocks" ng-if="block.data.blocks.contentData.length===1">1 block.</p>
         <p class="backoffice-additional-blocks" ng-if="block.data.blocks.contentData.length>1">{{checkbox.blocks.contentData.length}} blocks.</p>

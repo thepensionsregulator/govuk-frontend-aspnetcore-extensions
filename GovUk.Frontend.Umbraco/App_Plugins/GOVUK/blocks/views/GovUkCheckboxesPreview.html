@@ -6,12 +6,12 @@
             <p class="backoffice-additional-blocks" ng-if="!block.data.fieldsetBlocks.contentData">No blocks.</p>
             <p class="backoffice-additional-blocks" ng-if="block.data.fieldsetBlocks.contentData.length===1">1 block.</p>
             <p class="backoffice-additional-blocks" ng-if="block.data.fieldsetBlocks.contentData.length>1">{{checkbox.fieldsetBlocks.contentData.length}} blocks.</p>
-            <div class="govuk-hint" ng-bind-html="block.data.hint" ng-if="block.data.hint"></div>
+            <div class="govuk-hint" ng-bind-html="block.data.hint.markup" ng-if="block.data.hint.markup"></div>
             <div class="govuk-checkboxes">
                 <div class="govuk-checkboxes__item" ng-repeat="checkbox in block.data.checkboxes.contentData">
                     <input class="govuk-checkboxes__input" type="checkbox" value="{{checkbox.value}}">
                     <label class="govuk-checkboxes__label govuk-label">{{checkbox.label}}</label>
-                    <div class="govuk-checkboxes__hint govuk-hint" ng-bind-html="checkbox.hint" ng-if="checkbox.hint"></div>
+                    <div class="govuk-checkboxes__hint govuk-hint" ng-bind-html="checkbox.hint.markup" ng-if="checkbox.hint.markup"></div>
                     <p class="backoffice-additional-blocks" ng-if="!checkbox.conditionalBlocks.contentData">No conditional blocks.</p>
                     <p class="backoffice-additional-blocks" ng-if="checkbox.conditionalBlocks.contentData.length===1">1 conditional block.</p>
                     <p class="backoffice-additional-blocks" ng-if="checkbox.conditionalBlocks.contentData.length>1">{{checkbox.conditionalBlocks.contentData.length}} conditional blocks.</p>

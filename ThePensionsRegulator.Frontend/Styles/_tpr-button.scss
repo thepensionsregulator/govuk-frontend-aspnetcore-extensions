@@ -104,10 +104,10 @@ a.govuk-button--warning.govuk-button--secondary:active {
 }
 
 .govuk-button--inverse {
-    background-color: transparent;
+    background-color: $govuk-inverse-button-background-colour;
     background-image: none;
     padding-right: govuk-spacing(4);
-    color: $govuk-button-text-colour;
+    color: $govuk-inverse-button-text-colour;
     border-color: $tpr-colour-white;
 
     &:hover,

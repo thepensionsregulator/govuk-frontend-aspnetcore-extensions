@@ -17,7 +17,7 @@
 			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
 			<SassCompilerPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassCompilerPath>
 			<SassPath>$(MsBuildThisFileDirectory)Styles\</SassPath>
-			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src</GovUkFrontEndFolder>
+			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
 			<GovUkFrontEndExtensionsFolder>$(MsBuildThisFileDirectory)..\GovUk.Frontend.AspNetCore.Extensions\Styles\</GovUkFrontEndExtensionsFolder>
 			<WwwrootPath>$(MsBuildThisFileDirectory)wwwroot\tpr\</WwwrootPath>
 		</PropertyGroup>

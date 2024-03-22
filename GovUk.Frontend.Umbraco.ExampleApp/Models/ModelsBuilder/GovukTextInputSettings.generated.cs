@@ -50,6 +50,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Extra letter spacing: For things like security codes, reference or phone numbers, where users check one character at a time.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.8.3+e04a41b")]
+		[ImplementPropertyType("extraLetterSpacing")]
+		public virtual bool ExtraLetterSpacing => this.Value<bool>(_publishedValueFallback, "extraLetterSpacing");
+
+		///<summary>
 		/// Prefix: For example, a £ sign before a currency field.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.8.3+e04a41b")]

@@ -57,6 +57,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool Disabled => this.Value<bool>(_publishedValueFallback, "disabled");
 
 		///<summary>
+		/// Prevent double click: Optionally adds data-prevent-double-click="true" attribute to a button.  If a user double clicks a button, this will make the button ignore the second click.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.8.3+e04a41b")]
+		[ImplementPropertyType("preventDoubleClick")]
+		public virtual bool PreventDoubleClick => this.Value<bool>(_publishedValueFallback, "preventDoubleClick");
+
+		///<summary>
 		/// Style of button
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.8.3+e04a41b")]

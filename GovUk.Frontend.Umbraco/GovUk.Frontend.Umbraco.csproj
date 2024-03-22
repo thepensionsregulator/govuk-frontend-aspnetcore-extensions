@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.$(AssemblyName)</Title>
-		<Version>5.3.0</Version>
+		<Version>5.3.1</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>

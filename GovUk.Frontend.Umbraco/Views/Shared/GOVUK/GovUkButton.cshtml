@@ -22,6 +22,7 @@
     if (buttonStyle.Contains("Reversed")) { buttonStyle[buttonStyle.IndexOf("Reversed")] = "govuk-button--inverse"; }
     if (buttonStyle.Length > 0 && !string.IsNullOrEmpty(cssClasses)) { cssClasses = " " + cssClasses; }
     var disabled = Model.Settings.Value<bool>("disabled").ToString().ToLower();
+    var preventDoubleClick = Model.Settings.Value<bool>("preventDoubleClick").ToString().ToLower();
 
-    <govuk-button class="@string.Join(' ', buttonStyle)@cssClasses" type="@buttonType" name="@modelPropertyName" id="@Model.Content.Key" value="@text" aria-disabled="@disabled">@text</govuk-button>
+    <govuk-button class="@string.Join(' ', buttonStyle)@cssClasses" type="@buttonType" name="@modelPropertyName" id="@Model.Content.Key" value="@text" aria-disabled="@disabled" data-prevent-double-click="@preventDoubleClick">@text</govuk-button>
 }

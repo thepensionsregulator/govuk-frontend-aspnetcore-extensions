@@ -52,17 +52,16 @@ $govuk-focus-colour: $tpr-colour-tangerine-yellow;
 $govuk-error-colour: $tpr-colour-fire-brick;
 $govuk-button-text-colour: $tpr-colour-white;
 $govuk-button-background-colour: $tpr-colour-eastern-blue;
+$govuk-inverse-button-text-colour: $govuk-button-text-colour;
+$govuk-inverse-button-background-colour: transparent;
 
 // Change the default typography sizing where the TPR brand diverges from the
-// GOV.UK Design System. GOV.UK code uses the govuk-font() mixin. It passes in the 
+// GOV.UK Design System. GOV.UK code uses the govuk-font() mixin. It passes in the
 // index and device (eg 80 and 'tablet') and gets back a font-size and line-height.
 // Some GOV.UK classes like .govuk-body-s are not going to work, but that is the TPR brand.
-
 // Original settings are at https://github.com/alphagov/govuk-frontend/blob/4b5ed0ada3b64722ae2074dfa0db5d4d3a45cb79/package/govuk/settings/_typography-responsive.scss#L70
-
-// Further typography changes are made in _tpr-*.scss for individual components, 
+// Further typography changes are made in _tpr-*.scss for individual components,
 // after GOV.UK classes are compiled.
-
 // .govuk-heading-xl uses 48
 // .govuk-heading-l uses 36                  --> h1
 // .govuk-heading-m and .govuk-body-l use 24 --> h2 or large body text

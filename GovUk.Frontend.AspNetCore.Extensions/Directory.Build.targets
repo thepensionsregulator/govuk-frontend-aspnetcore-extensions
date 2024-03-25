@@ -10,7 +10,7 @@
 			<UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
 		</PropertyGroup>
 		<PropertyGroup>
-			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\src</GovUkFrontEndFolder>
+			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
 		</PropertyGroup>
 		<Message Text="You are using the following version of GOV.UK Frontend. You can run 'git submodule update' to check for updates." Condition="Exists('$(GovUkFrontEndFolder)')" />
 		<Exec Command="git describe --tags" Condition="Exists('$(GovUkFrontEndFolder)')" WorkingDirectory="$(GovUkFrontEndFolder)" />

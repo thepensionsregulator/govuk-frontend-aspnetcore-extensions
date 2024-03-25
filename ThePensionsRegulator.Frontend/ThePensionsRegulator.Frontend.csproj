@@ -4,7 +4,7 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
-		<Version>5.2.0</Version>
+		<Version>6.0.0-alpha1</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>
@@ -34,7 +34,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.71.1.1" />
-		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="1.5.0" />
+		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="2.0.0-alpha1" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
 	</ItemGroup>
@@ -218,5 +218,9 @@
 	
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_tpr-select.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_tpr-tag.scss" />
 	</ItemGroup>
 </Project>

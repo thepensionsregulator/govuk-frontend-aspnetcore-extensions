@@ -22,7 +22,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var logoIsLinked = !string.IsNullOrEmpty(tprHeaderBar.LogoHref);
             var logoElement = new TagBuilder(logoIsLinked ? "a" : "span");
-            if (logoIsLinked) { logoElement.Attributes.Add("href", tprHeaderBar.LogoHref); }
+            if (logoIsLinked)
+            {
+                logoElement.MergeCssClass("govuk-link-image");
+                logoElement.Attributes.Add("href", tprHeaderBar.LogoHref);
+            }
             logoElement.MergeCssClass("tpr-header__logo");
 
             var screenLogo = new TagBuilder("img");

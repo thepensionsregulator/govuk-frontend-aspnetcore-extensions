@@ -15,7 +15,7 @@
 		<PropertyGroup>
 			<TprFrontendVersion>@(TprFrontendVersion)</TprFrontendVersion>
 			<HasPackageReferenceForTprFrontend Condition="@(TprFrontendVersion->Count() )==0">false</HasPackageReferenceForTprFrontend>
-			<TprFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendVersion)\contentFiles\any\net6.0\Styles\</TprFrontendSassFolder>
+			<TprFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendVersion)\contentFiles\any\$(TargetFramework)\Styles\</TprFrontendSassFolder>
 		</PropertyGroup>
 		<ItemGroup>
 			<TprFrontendSassFiles Include="$(TprFrontendSassFolder)**\*.scss" />
@@ -48,14 +48,14 @@
 			<HasPackageReferenceForTprGovUkFrontend Condition="$(HasPackageReferenceForTprFrontend) != false and @(TprGovUkFrontendVersion->Count() )==0">false</HasPackageReferenceForTprGovUkFrontend>
 		</PropertyGroup>
 		<XmlPeek XmlInputPath="$(UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendVersion)\thepensionsregulator.frontend.nuspec"
-			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = 'net6.0']/nu:dependency[@id = 'ThePensionsRegulator.GovUk.Frontend']/@version"
+			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = '$(TargetFramework)']/nu:dependency[@id = 'ThePensionsRegulator.GovUk.Frontend']/@version"
 			 Namespaces="&lt;Namespace Prefix='nu' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd' /&gt;"
 			 Condition="$(HasPackageReferenceForTprFrontend) != false and $(HasPackageReferenceForTprGovUkFrontend) == false">
 			<Output TaskParameter="Result" ItemName="TprGovUkFrontendVersion" />
 		</XmlPeek>
 		<PropertyGroup>
 			<TprGovUkFrontendVersion Condition="$(HasPackageReferenceForTprFrontend) != false">@(TprGovUkFrontendVersion)</TprGovUkFrontendVersion>
-			<TprGovUkFrontendSassFolder Condition="$(HasPackageReferenceForTprFrontend) != false">$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(TprGovUkFrontendVersion)\contentFiles\any\net6.0\Styles\</TprGovUkFrontendSassFolder>
+			<TprGovUkFrontendSassFolder Condition="$(HasPackageReferenceForTprFrontend) != false">$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(TprGovUkFrontendVersion)\contentFiles\any\$(TargetFramework)\Styles\</TprGovUkFrontendSassFolder>
 		</PropertyGroup>
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(TprGovUkFrontendSassFolder)**\*.scss" Condition="$(HasPackageReferenceForTprFrontend) != false" />

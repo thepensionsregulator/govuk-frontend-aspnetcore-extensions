@@ -1,10 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
-		<Version>6.0.0-alpha1</Version>
+		<Version>6.0.0-alpha2</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>
@@ -106,23 +106,23 @@
 	<ItemGroup>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\_base.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk</PackagePath>
+			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk</PackagePath>
 		</Content>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\helpers\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk\helpers</PackagePath>
+			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\helpers</PackagePath>
 		</Content>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\tools\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk\tools</PackagePath>
+			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\tools</PackagePath>
 		</Content>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\settings\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk\settings</PackagePath>
+			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\settings</PackagePath>
 		</Content>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\vendor\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\net6.0\Styles\govuk\vendor</PackagePath>
+			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\vendor</PackagePath>
 		</Content>
 
 		<None Include="..\tpr-nuget.png">

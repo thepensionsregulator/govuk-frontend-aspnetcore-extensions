@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.$(AssemblyName)</Title>
-		<Version>6.0.0-alpha1</Version>
+		<Version>6.0.0-alpha2</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>
@@ -74,11 +74,11 @@
 		  <Pack>true</Pack>
 		</Content>
 		<Content Include="Styles\govuk-umbraco-backoffice.css">
-			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
+			<PackagePath>contentFiles\any\$(TargetFramework)\Content\css</PackagePath>
 			<Pack>true</Pack>
 		</Content>
 		<Content Include="Styles\govuk-umbraco-backoffice.css.map">
-			<PackagePath>contentFiles\any\net6.0\Content\css</PackagePath>
+			<PackagePath>contentFiles\any\$(TargetFramework)\Content\css</PackagePath>
 			<Pack>true</Pack>
 		</Content>
 	</ItemGroup>

@@ -15,7 +15,7 @@
 		<PropertyGroup>
 			<GovUkFrontendUmbracoVersion>@(GovUkFrontendUmbracoVersion)</GovUkFrontendUmbracoVersion>
 			<HasPackageReferenceForGovUkFrontendUmbraco Condition="@(GovUkFrontendUmbracoVersion->Count() )==0">false</HasPackageReferenceForGovUkFrontendUmbraco>
-			<ContentFilesPath>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend.umbraco\$(GovUkFrontendUmbracoVersion)\contentFiles\any\net6.0\</ContentFilesPath>
+			<ContentFilesPath>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend.umbraco\$(GovUkFrontendUmbracoVersion)\contentFiles\any\$(TargetFramework)\</ContentFilesPath>
 		</PropertyGroup>
 		<ItemGroup>
 			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
@@ -56,14 +56,14 @@
 			<HasPackageReferenceForThePensionsRegulatorGovUkFrontend Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and @(ThePensionsRegulatorGovUkFrontendVersion->Count() )==0">false</HasPackageReferenceForThePensionsRegulatorGovUkFrontend>
 		</PropertyGroup>
 		<XmlPeek XmlInputPath="$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend.umbraco\$(GovUkFrontendUmbracoVersion)\thepensionsregulator.govuk.frontend.umbraco.nuspec"
-			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = 'net6.0']/nu:dependency[@id = 'ThePensionsRegulator.GovUk.Frontend']/@version"
+			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = '$(TargetFramework)']/nu:dependency[@id = 'ThePensionsRegulator.GovUk.Frontend']/@version"
 			 Namespaces="&lt;Namespace Prefix='nu' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd' /&gt;"
 			 Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and $(HasPackageReferenceForThePensionsRegulatorGovUkFrontend) == false">
 			<Output TaskParameter="Result" ItemName="ThePensionsRegulatorGovUkFrontendVersion" />
 		</XmlPeek>
 		<PropertyGroup>
 			<ThePensionsRegulatorGovUkFrontendVersion Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false">@(ThePensionsRegulatorGovUkFrontendVersion)</ThePensionsRegulatorGovUkFrontendVersion>
-			<ThePensionsRegulatorGovUkFrontendSassFolder Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false">$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(ThePensionsRegulatorGovUkFrontendVersion)\contentFiles\any\net6.0\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
+			<ThePensionsRegulatorGovUkFrontendSassFolder Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false">$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(ThePensionsRegulatorGovUkFrontendVersion)\contentFiles\any\$(TargetFramework)\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
 		</PropertyGroup>
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(ThePensionsRegulatorGovUkFrontendSassFolder)**\*.scss" Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false" />

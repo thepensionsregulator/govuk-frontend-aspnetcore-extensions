@@ -22,8 +22,7 @@ parameters:
     type: boolean
     default: false
 
-trigger:
-  - develop
+trigger: none
 
 pool:
   vmImage: "windows-2022"

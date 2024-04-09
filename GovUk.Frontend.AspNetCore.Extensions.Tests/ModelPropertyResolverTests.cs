@@ -53,6 +53,33 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             public string[] Array { get; set; } = System.Array.Empty<string>();
         }
 
+        private class NestedModelLevel1
+        {
+            public string? Field { get; set; }
+            public Level2? Child { get; set; }
+
+        }
+     
+        private class Level2
+        {
+            public string? Level2Field { get; set; }
+            public Level3? Child { get; set; }
+        }
+
+        private class Level3
+        {
+            public Level4? Child { get; set; }
+            public string? Level3Field { get; set; }
+        }
+        private class Level4
+        {
+            public Level5? Child { get; set; }
+            public string? Level4Field { get; set; }
+        }
+        private class Level5
+        {
+            public string? Level5Field { get; set; }
+        }
 
         [Test]
         public void No_model_type_throws_InvalidOperationException()
@@ -194,5 +221,25 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             Assert.AreEqual(childProperty.Name, nameof(IterativeModel.Array));
         }
 
+        [Test]
+        public void Nested_property_throws_InvalidOperationException_when_nested_5_levels()
+        {
+            var modelPropertyResolver = new ModelPropertyResolver();
+            Assert.Throws<InvalidOperationException>(() => modelPropertyResolver.ResolveModelProperty(typeof(NestedModelLevel1), nameof(Level5.Level5Field)));
+        }
+
+        [TestCase(typeof(NestedModelLevel1), nameof(NestedModelLevel1.Field))]
+        [TestCase(typeof(Level2), nameof(Level2.Level2Field))]
+        [TestCase(typeof(Level3), nameof(Level3.Level3Field))]
+        [TestCase(typeof(Level4), nameof(Level4.Level4Field))]
+        public void Nested_property_is_resolved_when_nested_less_than_5_levels(Type t, string field)
+        {
+            var modelPropertyResolver = new ModelPropertyResolver();
+
+            var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(NestedModelLevel1), field);
+            Assert.AreEqual(childProperty.DeclaringType, t);
+            Assert.AreEqual(childProperty.Name, field);
+
+        }
     }
 }

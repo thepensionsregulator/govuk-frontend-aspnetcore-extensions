@@ -9,6 +9,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 {
     public class ModelPropertyResolver : IModelPropertyResolver
     {
+        private const int maxDepth = 5;
+
         /// <inheritdoc/>
         public Type ResolveModelType(ViewContext viewContext)
         {
@@ -28,9 +30,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             return modelProperty;
         }
 
-        private PropertyInfo? IterateOverProperties(Type modelType, string modelPropertyName, string parentPropertyName = "")
+        private PropertyInfo? IterateOverProperties(Type modelType, string modelPropertyName, string parentPropertyName = "", int depth = 0)
         {
             PropertyInfo? modelProperty = null;
+            depth++;
+     
+            if (depth >= maxDepth) return null; //don't go any further
 
             if (!string.IsNullOrWhiteSpace(modelPropertyName))
             {
@@ -56,7 +61,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                                         var splitBack = modelPropertyName.Split("].", 2)[1]; // Grab the second half
 
                                         // The 'T' in IList<T> comes from GenericTypeArguments[]. Only dealing with one for now.
-                                        var resList = IterateOverProperties(property.PropertyType.GenericTypeArguments[0], splitBack);
+                                        var resList = IterateOverProperties(property.PropertyType.GenericTypeArguments[0], splitBack, string.Empty, depth);
                                         if (resList != null)
                                         {
                                             modelProperty = resList;
@@ -77,7 +82,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                         if (pp == modelPropertyName) return property;
 
                         // If no, iterate down.
-                        var res = IterateOverProperties(property.PropertyType, modelPropertyName, pp);
+                        var res = IterateOverProperties(property.PropertyType, modelPropertyName, pp, depth);
                         if (res != null)
                         {
                             modelProperty = res;

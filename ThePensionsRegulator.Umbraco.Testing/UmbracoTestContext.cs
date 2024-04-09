@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Session;
 using Microsoft.Extensions.Caching.Distributed;
@@ -23,7 +24,7 @@ using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Routing;
-using DI = Umbraco.Cms.Web.Common.DependencyInjection;
+using DI = Umbraco.Cms.Core.DependencyInjection;
 
 namespace ThePensionsRegulator.Umbraco.Testing
 {
@@ -319,6 +320,11 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public Mock<IView> View { get; private init; } = new();
 
+        /// <summary>
+        /// The service used to create the repository for ASP.NET TempData.
+        /// </summary>
+        public Mock<ITempDataDictionaryFactory> TempDataDictionaryFactory { get; private init; } = new();
+
 
         // Disable 'Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.'
         // so that we can use the CurrentPrincipal setter to assign _currentPrincipal.
@@ -432,6 +438,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(ServerRegistrationService.Object);
             SetupService(SiteDomainMapper.Object);
             SetupService(TagService.Object);
+            SetupService(TempDataDictionaryFactory.Object);
             SetupService(UmbracoContextAccessor.Object);
             SetupService(UserService.Object);
             SetupService(VariationContextAccessor.Object);

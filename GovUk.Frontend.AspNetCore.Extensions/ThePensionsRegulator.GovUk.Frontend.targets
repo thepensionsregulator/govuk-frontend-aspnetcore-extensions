@@ -14,7 +14,7 @@
 		</XmlPeek>
 		<PropertyGroup>
 			<ThePensionsRegulatorGovUkFrontendVersion>@(ThePensionsRegulatorGovUkFrontendVersion)</ThePensionsRegulatorGovUkFrontendVersion>
-			<ThePensionsRegulatorGovUkFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(ThePensionsRegulatorGovUkFrontendVersion)\contentFiles\any\net6.0\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
+			<ThePensionsRegulatorGovUkFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(ThePensionsRegulatorGovUkFrontendVersion)\contentFiles\any\$(TargetFramework)\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
 		</PropertyGroup>
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(ThePensionsRegulatorGovUkFrontendSassFolder)**\*.scss" />

@@ -57,7 +57,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         {
             public string? Field { get; set; }
             public Level2? Child { get; set; }
-
         }
      
         private class Level2

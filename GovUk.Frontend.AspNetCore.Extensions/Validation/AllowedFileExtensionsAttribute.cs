@@ -13,8 +13,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             _extensions = extensions;
         }
 
-        protected override ValidationResult IsValid(
-        object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             var file = value as IFormFile;
             if (file is not null)
@@ -26,7 +25,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 }
             }
 
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
 
         public string GetErrorMessage() => $"Please upload one of the following file types: {string.Join(',', _extensions)}";  

@@ -12,8 +12,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             _maxFileSize = maxFileSize;
         }
 
-        protected override ValidationResult IsValid(
-        object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             var file = value as IFormFile;
             if (file is not null)
@@ -24,7 +23,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 }
             }
 
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
 
         public string GetErrorMessage() => $"Maximum allowed file size is {_maxFileSize} bytes.";

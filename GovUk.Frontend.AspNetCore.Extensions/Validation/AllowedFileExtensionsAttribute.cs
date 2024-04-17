@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 {
-    public class AllowedExtensionsAttribute : ValidationAttribute
+    public class AllowedFileExtensionsAttribute : ValidationAttribute
     {
         private readonly string[] _extensions;
-        public AllowedExtensionsAttribute(string[] extensions)
+        public AllowedFileExtensionsAttribute(string[] extensions)
         {
             _extensions = extensions;
         }

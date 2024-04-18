@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -14,7 +15,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
-            var file = value as IFormFile;
+            if (value is not IFormFile file)
+            {
+                throw new InvalidOperationException($"Target property for {nameof(AllowedFileExtensionsAttribute)} must be {nameof(IFormFile)}");
+            }
+
             if (file is not null)
             {
                 if (file.Length > _maxFileSize)

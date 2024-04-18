@@ -17,11 +17,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         public void Should_ReturnValidResult_WhenFilesMatchFileTypesSpecified(IFormFile file)
         {
             var sut = new AllowedFileExtensionsAttribute([".xls", ".xlsx", ".xlsm"]);
-
-            // Act
             var result = sut.IsValid(file);
-
-            // Assert
             Assert.AreEqual(result, true);
         }
 

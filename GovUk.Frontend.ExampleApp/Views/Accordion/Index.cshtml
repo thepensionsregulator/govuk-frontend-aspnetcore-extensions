@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Accordion";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<p class="govuk-body">
+    The <a href="https://design-system.service.gov.uk/components/accordion/" class="govuk-link">accordion component</a> 
+    lets users show and hide sections of related content on a page.
+</p>
+
+<govuk-accordion id="accordion1" heading-level="2">
+    <govuk-accordion-item expanded="true">
+        <govuk-accordion-item-heading>Section 1</govuk-accordion-item-heading>
+        <govuk-accordion-item-summary>Optional summary</govuk-accordion-item-summary>
+        <govuk-accordion-item-content>
+            <p class="govuk-body">Each section supports <strong>rich text content.</strong> This section is expanded by default.</p>
+        </govuk-accordion-item-content>
+    </govuk-accordion-item>
+    <govuk-accordion-item>
+        <govuk-accordion-item-heading>Section 1</govuk-accordion-item-heading>
+        <govuk-accordion-item-content>
+            <p class="govuk-body">This section has no summary and is collapsed when the page loads.</p>
+        </govuk-accordion-item-content>
+    </govuk-accordion-item>
+</govuk-accordion>

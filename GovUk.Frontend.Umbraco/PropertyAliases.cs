@@ -3,6 +3,11 @@
     public static class PropertyAliases
     {
         public const string ModelProperty = "modelProperty";
+        public const string AccordionSections = "sections";
+        public const string AccordionSectionHeading = "heading";
+        public const string AccordionSectionSummary = "summary";
+        public const string AccordionSectionContent = "content";
+        public const string AccordionSectionExpanded = "expandSection";
         public const string Checkboxes = "checkboxes";
         public const string CheckboxValue = "value";
         public const string CheckboxLabel = "label";
@@ -33,6 +38,7 @@
         public const string FieldsetErrorsEnabled = "fieldsetErrors";
         public const string FileUploadFileTypes = "fileTypes";
         public const string FileUploadLabel = "label";
+        public const string HeadingLevel = "headingLevel";
         public const string Hint = "hint";
         public const string LabelIsPageHeading = "labelIsPageHeading";
         public const string Legend = "legend";

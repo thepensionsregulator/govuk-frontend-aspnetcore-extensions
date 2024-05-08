@@ -31,6 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
 	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 	</ItemGroup>
 
@@ -57,6 +58,7 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelectPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryCardPreview.html" />
+		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryListPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
@@ -503,6 +505,10 @@
 		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKTrueOrFalseDefaultsToTrue.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="Views\Shared\GOVUK\GovUkAccordion.cshtml">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
 	</ItemGroup>
 

@@ -18,9 +18,19 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
+	// Mixin Content Type with alias "govukHeadingLevel"
+	/// <summary>Heading level</summary>
+	public partial interface IGovukHeadingLevel : IPublishedElement
+	{
+		/// <summary>Heading level</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string HeadingLevel { get; }
+	}
+
 	/// <summary>Heading level</summary>
 	[PublishedModel("govukHeadingLevel")]
-	public partial class GovukHeadingLevel : PublishedElementModel
+	public partial class GovukHeadingLevel : PublishedElementModel, IGovukHeadingLevel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -48,5 +58,18 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
+
+		///<summary>
+		/// Heading level: Defaults to 2 if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingLevel")]
+		public virtual string HeadingLevel => GetHeadingLevel(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Heading level</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetHeadingLevel(IGovukHeadingLevel that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "headingLevel");
 	}
 }

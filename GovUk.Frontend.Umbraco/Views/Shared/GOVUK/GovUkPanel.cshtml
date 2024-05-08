@@ -7,7 +7,7 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    if (!Int32.TryParse(Model.Settings.Value<string>("headingLevel")?.Replace("Heading ", string.Empty), out var headingLevel))
+    if (!Int32.TryParse(Model.Settings.Value<string>(PropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out var headingLevel))
     {
         headingLevel = 1;
     }

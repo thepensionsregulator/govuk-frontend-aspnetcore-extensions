@@ -8,6 +8,7 @@ We add support for:
 
 - Adding the following non-interactive components entirely in Umbraco:
 
+  - [Accordion](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/accordion.md)
   - [Details](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/details.md)
   - [Error summary](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/error-summary.md)
   - [Fieldset](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/fieldset.md)

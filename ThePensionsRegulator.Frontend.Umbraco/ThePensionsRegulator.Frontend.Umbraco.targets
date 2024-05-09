@@ -141,13 +141,32 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
+      <uSyncGuidFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)GUIDuSync\**"/>
 			<WwwrootFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
 			<PluginFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
 		</ItemGroup>
 		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high" />
-		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
-		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
+
+
+    <!-- NOTE I am trying to copy over guid and non guid values based on GUIDuSyncFileNames property -->
+    
+    <Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
+          Condition="$(GUIDuSyncFileNames) != 'true'"/>
+
+
+    <Message Text="Copying GUID files as GUIDuSyncFileNames is true. Files are being copied from $(uSyncGuidFilesFromGovUkFrontendUmbraco) @(uSyncGuidFilesFromGovUkFrontendUmbraco)" Importance="high" Condition="$(GUIDuSyncFileNames) == 'true'"/>
+    
+    <Message Text="Not copying GUID files as GUIDuSyncFileNames is false or doesn't exist" Importance="high" Condition="$(GUIDuSyncFileNames) != 'true'"/>
+
+
+    <Message Text="ThePensionsRegulator.Frontend.Umbraco.targets is running" Importance="high" />
+    <Copy SourceFiles="@(uSyncGuidFilesFromGovukFrontendUmbraco)"
+          DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
+          Condition ="$(GUIDuSyncFileNames) == 'true'"/>
+
+
+    <Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />

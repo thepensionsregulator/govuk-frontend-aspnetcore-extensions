@@ -19,6 +19,7 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
+      <uSyncGuidFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)GUIDuSync\**" />
 			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
 			<PluginFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
 		</ItemGroup>
@@ -33,6 +34,12 @@
 		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
 			  DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" 
 			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
+
+    <!--<Message Text="Copying GUID files from @(uSyncGuidFilesFromGovukFrontendUmbraco)" Importance="high"/>
+    
+    <Copy SourceFiles="@(uSyncGuidFilesFromGovukFrontendUmbraco)"
+          DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />-->
+    
 		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
 			  DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" 
 			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>

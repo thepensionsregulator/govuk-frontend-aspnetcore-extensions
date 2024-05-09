@@ -26,4 +26,8 @@
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 
+  <Target Name="CustomAfterBuildTarget" AfterTargets="Build">
+    <MyCustomTask uSyncFilesPath="$(ProjectDir)uSync\v9\" uSyncTypes="ContentTypes;DataTypes" outputFilePath="$(ProjectDir)GUIDuSync\v9\"/>
+  </Target>
+
 </Project>

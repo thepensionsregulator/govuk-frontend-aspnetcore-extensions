@@ -35,10 +35,10 @@
 			  DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" 
 			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
 
-    <!--<Message Text="Copying GUID files from @(uSyncGuidFilesFromGovukFrontendUmbraco)" Importance="high"/>
+    <Message Text="Copying GUID files from @(uSyncGuidFilesFromGovukFrontendUmbraco) I HAVE CHANGED THIS" Importance="high"/>
     
     <Copy SourceFiles="@(uSyncGuidFilesFromGovukFrontendUmbraco)"
-          DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />-->
+          DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
     
 		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
 			  DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" 

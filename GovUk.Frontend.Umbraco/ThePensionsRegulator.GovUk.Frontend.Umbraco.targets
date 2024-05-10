@@ -47,7 +47,7 @@
     
     <Copy SourceFiles="@(uSyncGuidFilesFromGovukFrontendUmbraco)"
           DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
-					Condition ="@(GuidNames) == 'true' and $(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
+					Condition ="@(GuidNames) == true and $(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
     
 		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
 			  DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" 

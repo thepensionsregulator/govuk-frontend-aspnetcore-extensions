@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>$(AssemblyName)</Title>
-		<Version>6.0.0-alpha2-test-18</Version>
+		<Version>6.0.0-alpha2-test-33</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>
@@ -55,6 +55,7 @@
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
 		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.2.0" />
+    <PackageReference Include="JsonPeek" Version="1.2.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -143,4 +144,5 @@
 	</ItemGroup>
 
   <UsingTask TaskName="MyCustomTask" AssemblyFile="C:\dev\govuk-frontend-aspnetcore-extensions\CustomBuildTasks\bin\Debug\netstandard2.0\CustomBuildTasks.dll" />
+  <UsingTask TaskName="JsonPeek" AssemblyFile="$(UserProfile)\.nuget\packages\jsonpeek\1.2.0\build\JsonPeek.dll" />
 </Project>

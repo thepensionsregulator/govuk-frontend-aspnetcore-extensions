@@ -23,6 +23,12 @@
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.Frontend.Umbraco']/@Version">
 			<Output TaskParameter="Result" ItemName="TprFrontendUmbracoVersion" />
 		</XmlPeek>
+    
+    <!-- Look for the value of GuidNames in appsettings.json to determine if the project has been configured to use Guid usync file names -->
+    <JsonPeek ContentPath="$(ProjectDir)\appsettings.json" Query="$.uSync.Sets.Default.HandlerDefaults.GuidNames">
+      <Output TaskParameter="Result" ItemName="TPRGuidNames"/>
+    </JsonPeek>  
+
 		<PropertyGroup>
 			<TprFrontendUmbracoVersion>@(TprFrontendUmbracoVersion)</TprFrontendUmbracoVersion>
 		</PropertyGroup>
@@ -141,33 +147,36 @@
 		</PropertyGroup>
 		<ItemGroup>
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
-      <uSyncGuidFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)GUIDuSync\**"/>
+      <uSyncGuidFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)GUIDuSync\**"/>
 			<WwwrootFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
 			<PluginFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
 		</ItemGroup>
 		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high" />
 
 
-    <!-- NOTE I am trying to copy over guid and non guid values based on GUIDuSyncFileNames property -->
+    <Message Text="Copying uSync files" Importance="high" Condition="@(TPRGuidNames) != 'true'"/>
     
     <Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
-          Condition="$(GUIDuSyncFileNames) != 'true'"/>
+          Condition="@(TPRGuidNames) != 'true'"/>
 
+    <Message Text="Copying TPR uSync GUID files. These files are @(uSyncGuidFilesFromTprFrontendUmbraco)" Importance="high" Condition="@(TPRGuidNames) == 'true'"/>
 
-    <Message Text="Copying GUID files as GUIDuSyncFileNames is true. Files are being copied from $(uSyncGuidFilesFromGovUkFrontendUmbraco) @(uSyncGuidFilesFromGovUkFrontendUmbraco)" Importance="high" Condition="$(GUIDuSyncFileNames) == 'true'"/>
-    
-    <Message Text="Not copying GUID files as GUIDuSyncFileNames is false or doesn't exist" Importance="high" Condition="$(GUIDuSyncFileNames) != 'true'"/>
-
-
-    <Message Text="ThePensionsRegulator.Frontend.Umbraco.targets is running" Importance="high" />
-    <Copy SourceFiles="@(uSyncGuidFilesFromGovukFrontendUmbraco)"
+    <Copy SourceFiles="@(uSyncGuidFilesFromTprFrontendUmbraco)"
           DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
-          Condition ="$(GUIDuSyncFileNames) == 'true'"/>
+          Condition ="@(TPRGuidNames) == 'true'"
+          OverwriteReadOnlyFiles="true">
+					<Output TaskParameter="CopiedFiles" ItemName="TprGuidCopiedFiles" />
+          <!--DestinationFolder="$(ProjectDir)\copyDestination"-->
+    </Copy>
 
+    <Message Text="Copy retries count $(CopyRetryCount)" Importance="high" />
+    
+		<Message Text="Copied TPR uSync GUID files are @(TprGuidCopiedFiles) OR $(TprGuidCopiedFiles)" Importance="high" />     
 
     <Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
+
 		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 

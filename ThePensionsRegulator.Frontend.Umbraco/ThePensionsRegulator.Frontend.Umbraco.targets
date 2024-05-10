@@ -26,9 +26,11 @@
     
     <!-- Look for the value of GuidNames in appsettings.json to determine if the project has been configured to use Guid usync file names -->
     <JsonPeek ContentPath="$(ProjectDir)\appsettings.json" Query="$.uSync.Sets.Default.HandlerDefaults.GuidNames">
-      <Output TaskParameter="Result" ItemName="TPRGuidNames"/>
-    </JsonPeek>  
+      <Output TaskParameter="Result" PropertyName="TPRGuidNames"/>
+    </JsonPeek>
 
+    <Message Text="The value of TPRGuidNames is $(TPRGuidNames) OR @(TPRGuidNames)" Importance="high"/>
+    
 		<PropertyGroup>
 			<TprFrontendUmbracoVersion>@(TprFrontendUmbracoVersion)</TprFrontendUmbracoVersion>
 		</PropertyGroup>
@@ -158,14 +160,13 @@
     
     <Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
-          Condition="@(TPRGuidNames) != 'true'"/>
+          Condition="$(TPRGuidNames) != true"/>
 
     <Message Text="Copying TPR uSync GUID files. These files are @(uSyncGuidFilesFromTprFrontendUmbraco)" Importance="high" Condition="@(TPRGuidNames) == 'true'"/>
 
     <Copy SourceFiles="@(uSyncGuidFilesFromTprFrontendUmbraco)"
           DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
-          Condition ="@(TPRGuidNames) == 'true'"
-          OverwriteReadOnlyFiles="true">
+          Condition ="$(TPRGuidNames) == true">
 					<Output TaskParameter="CopiedFiles" ItemName="TprGuidCopiedFiles" />
           <!--DestinationFolder="$(ProjectDir)\copyDestination"-->
     </Copy>

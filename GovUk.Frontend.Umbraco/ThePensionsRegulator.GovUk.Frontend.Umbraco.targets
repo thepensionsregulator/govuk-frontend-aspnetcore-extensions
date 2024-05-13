@@ -37,17 +37,13 @@
 		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high"
 				 Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
 
-    <Message Text="MY MESSAGE IS HERE" Importance="high" />
-    
-    <Message Text="The value of GuidNames is $(GuidNames) or @(GuidNames)" Importance="high" />
-    
-    <Message Text="Copying GOV.UK uSync files" Importance="high" Condition ="@(GuidNames) != 'true' "/>    
+    <Message Text="Copying GOV.UK uSync files" Importance="high" Condition ="$(GuidNames) != true "/>    
 
 		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
 			  DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" 
 			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and $(GuidNames) != true"/>
 
-    <Message Text="Copying GOV.UK uSync GUID files" Importance="high" Condition ="@(GuidNames) == 'true' "/>
+    <Message Text="Copying GOV.UK uSync GUID files" Importance="high" Condition ="$(GuidNames) == true "/>
     
     <Copy SourceFiles="@(uSyncGuidFilesFromGovukFrontendUmbraco)"
           DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"

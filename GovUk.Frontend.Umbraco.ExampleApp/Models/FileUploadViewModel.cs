@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using Umbraco.Cms.Web.Common.PublishedModels;
 
@@ -9,6 +10,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         public FileUpload? Page { get; set; }
 
         [Required(ErrorMessage = nameof(File1))]
+        [MaxFileSize(400, ErrorMessage = nameof(File1))]
         public IFormFile? File1 { get; set; }
 
         [Required(ErrorMessage = nameof(File2))]

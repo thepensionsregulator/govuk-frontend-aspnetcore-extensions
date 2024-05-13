@@ -37,19 +37,27 @@
 		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high"
 				 Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
 
-    <Message Text="Copying GOV.UK uSync files" Importance="high" Condition ="$(GuidNames) != true "/>    
+    <Message Text="Copying GOV.UK uSync files" Importance="high" Condition ="$(GuidNames) != true "/>
 
-		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
-			  DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" 
-			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and $(GuidNames) != true"/>
+    <Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
+			  DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and $(GuidNames) != true">
+      <Output TaskParameter="CopiedFiles" ItemName="GovUkCopiedFiles" />
+    </Copy>
+
+    <Message Text="Copied Gov.Uk uSync GUID files are: @(GovUkCopiedFiles)" Importance="high" Condition="$(GuidNames) != true"/>
 
     <Message Text="Copying GOV.UK uSync GUID files" Importance="high" Condition ="$(GuidNames) == true "/>
-    
+
     <Copy SourceFiles="@(uSyncGuidFilesFromGovukFrontendUmbraco)"
           DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)"
-					Condition ="$(GuidNames) == true and $(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
-    
-		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
+					Condition ="$(GuidNames) == true and $(HasPackageReferenceForGovUkFrontendUmbraco) != false">
+					<Output TaskParameter="CopiedFiles" ItemName="GovUkGuidCopiedFiles" />
+    </Copy>
+
+    <Message Text="Copied Gov.Uk uSync GUID files are: @(GovUkGuidCopiedFiles)" Importance="high" Condition="$(GuidNames) == true"/>
+
+    <Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
 			  DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" 
 			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
 		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"

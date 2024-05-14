@@ -16,18 +16,20 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
+            if (value is null)
+            {
+                return ValidationResult.Success!;
+            }
+
             if (value is not IFormFile file)
             {
                 throw new InvalidOperationException($"Target property for {nameof(AllowedFileExtensionsAttribute)} must be {nameof(IFormFile)}");
             }
 
-            if (file is not null)
+            var extension = Path.GetExtension(file.FileName);
+            if (!_extensions.Contains(extension, StringComparer.OrdinalIgnoreCase))
             {
-                var extension = Path.GetExtension(file.FileName);
-                if (!_extensions.Contains(extension.ToLower()))
-                {
-                    return new ValidationResult(ErrorMessage);
-                }
+                return new ValidationResult(ErrorMessage);
             }
 
             return ValidationResult.Success!;

@@ -24,14 +24,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             {
                 if (file.Length > _maxFileSize)
                 {
-                    return new ValidationResult(GetErrorMessage());
+                    return new ValidationResult(ErrorMessage);
                 }
             }
 
             return ValidationResult.Success!;
-        }
-
-        public string GetErrorMessage() => $"Maximum allowed file size is {_maxFileSize} bytes.";
-        
+        }        
     }
 }

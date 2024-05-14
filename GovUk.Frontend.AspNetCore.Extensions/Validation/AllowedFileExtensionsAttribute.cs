@@ -26,13 +26,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 var extension = Path.GetExtension(file.FileName);
                 if (!_extensions.Contains(extension.ToLower()))
                 {
-                    return new ValidationResult(GetErrorMessage());
+                    return new ValidationResult(ErrorMessage);
                 }
             }
 
             return ValidationResult.Success!;
         }
-
-        public string GetErrorMessage() => $"Please upload one of the following file types: {string.Join(',', _extensions)}";  
     }
 }

@@ -9,8 +9,6 @@ namespace CustomBuildTasks.MSBuildTasks
     {
         public override bool Execute()
         {
-            //System.Diagnostics.Debugger.Launch();
-
             foreach (var type in uSyncTypes)
             {
                 var files = Directory.GetFiles($"{uSyncFilesPath}\\{type}");

@@ -18,7 +18,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         [MaxFileSize(5_000_000, ErrorMessage = nameof(FileWithMaximumSize))]
         public IFormFile? FileWithMaximumSize { get; set; }
 
-        [AllowedFileExtensions(["xls, xlsx"], ErrorMessage = nameof(FileWithSpecificExtensions))]
+        [AllowedFileExtensions([".xls, .xlsx"], ErrorMessage = nameof(FileWithSpecificExtensions))]
         public IFormFile? FileWithSpecificExtensions { get; set; }
     }
 }

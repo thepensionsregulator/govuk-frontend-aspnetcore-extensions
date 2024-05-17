@@ -26,6 +26,8 @@
         public const string ErrorMessageMaxLength = "errorMessageMaxLength";
         public const string ErrorMessageRange = "errorMessageRange";
         public const string ErrorMessageCompare = "errorMessageCompare";
+        public const string ErrorMessageMaxFileSize = "errorMessageMaxFileSize";
+        public const string ErrorMessageAllowedFileExtensions = "errorMessageAllowedFileExtensions";
         public const string ErrorMessage = "error";
         public const string ExtraLetterSpacing = "extraLetterSpacing";
         public const string FieldsetBlocks = "blocks";

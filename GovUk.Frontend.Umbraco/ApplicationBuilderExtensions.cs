@@ -16,7 +16,7 @@ namespace GovUk.Frontend.Umbraco
     {
         public static IApplicationBuilder UseGovUkFrontendUmbraco(this IApplicationBuilder app, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback)
         {
-            if (app == null)
+            if (app is null)
             {
                 throw new ArgumentNullException(nameof(app));
             }
@@ -34,7 +34,9 @@ namespace GovUk.Frontend.Umbraco
                 { typeof(MaxLengthAttribute), PropertyAliases.ErrorMessageMaxLength },
                 { typeof(RangeAttribute), PropertyAliases.ErrorMessageRange },
                 { typeof(DateRangeAttribute), PropertyAliases.ErrorMessageRange },
-                { typeof(CompareAttribute), PropertyAliases.ErrorMessageCompare }
+                { typeof(CompareAttribute), PropertyAliases.ErrorMessageCompare },
+                { typeof(AllowedFileExtensionsAttribute), PropertyAliases.ErrorMessageAllowedFileExtensions },
+                { typeof(MaxFileSizeAttribute), PropertyAliases.ErrorMessageMaxFileSize }
             }));
 
             app.UseSmidge(bundles =>

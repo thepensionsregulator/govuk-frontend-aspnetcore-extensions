@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using ThePensionsRegulator.Umbraco.Blocks;
@@ -18,7 +19,14 @@ namespace GovUk.Frontend.Umbraco.Validation
         [HttpGet]
         public IEnumerable<string> ForDocumentType(string alias)
         {
-            var controllers = Assembly.GetEntryAssembly()?.GetTypes().Where(x => x.IsSubclassOf(typeof(RenderController)));
+            var filepath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            List<Type> controllers = new List<Type>();
+            foreach (string assemblyFile in Directory.GetFiles(filepath, "*.dll"))
+            {
+                Assembly assembly = Assembly.LoadFrom(assemblyFile);
+                List<Type> controller = assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(RenderController))).ToList();
+                controllers.AddRange(controller);
+            }
             var controllerType = controllers?.FirstOrDefault(x => x.Name.ToUpperInvariant() == $"{alias.ToUpperInvariant()}CONTROLLER");
             if (controllerType != null)
             {

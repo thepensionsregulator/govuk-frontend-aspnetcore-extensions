@@ -19,13 +19,13 @@ namespace GovUk.Frontend.Umbraco.Validation
         [HttpGet]
         public IEnumerable<string> ForDocumentType(string alias)
         {
-            var filepath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            List<Type> controllers = new List<Type>();
+            var filepath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+            List<Type> controllers = new();
             foreach (string assemblyFile in Directory.GetFiles(filepath, "*.dll"))
             {
                 Assembly assembly = Assembly.LoadFrom(assemblyFile);
-                List<Type> controller = assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(RenderController))).ToList();
-                controllers.AddRange(controller);
+                List<Type> controllersToAdd = assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(RenderController))).ToList();
+                controllers.AddRange(controllersToAdd);
             }
             var controllerType = controllers?.FirstOrDefault(x => x.Name.ToUpperInvariant() == $"{alias.ToUpperInvariant()}CONTROLLER");
             if (controllerType != null)

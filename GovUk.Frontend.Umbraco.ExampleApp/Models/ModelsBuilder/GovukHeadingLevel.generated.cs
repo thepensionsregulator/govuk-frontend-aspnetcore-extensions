@@ -18,15 +18,9 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	// Mixin Content Type with alias "govukHeadingLevel"
-	/// <summary>Heading level</summary>
-	public partial interface IGovukHeadingLevel : IPublishedElement
-	{
-	}
-
 	/// <summary>Heading level</summary>
 	[PublishedModel("govukHeadingLevel")]
-	public partial class GovukHeadingLevel : PublishedElementModel, IGovukHeadingLevel
+	public partial class GovukHeadingLevel : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant

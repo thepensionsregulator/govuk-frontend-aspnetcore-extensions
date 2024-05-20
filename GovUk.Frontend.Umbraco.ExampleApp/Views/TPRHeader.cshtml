@@ -80,6 +80,17 @@
             </tpr-header-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithListOfLinks" />
+            </div>
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+                <tpr-header-bar-content allow-html="true">
+                    @Model.ListOfLinksForHeader
+                </tpr-header-bar-content>
+            </tpr-header-bar>
+
+            <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithNoLabelOrLinks" />
             </div>
             <tpr-header-bar>

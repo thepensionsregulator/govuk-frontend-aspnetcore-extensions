@@ -106,6 +106,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveContextBarWithoutContext3 => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveContextBarWithoutContext3");
 
 		///<summary>
+		/// Above header with list of links
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("aboveHeaderWithListOfLinks")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel AboveHeaderWithListOfLinks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "aboveHeaderWithListOfLinks");
+
+		///<summary>
 		/// Above header with many links
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
@@ -160,6 +168,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("govukBlocks")]
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel GovukBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "govukBlocks");
+
+		///<summary>
+		/// List of links for header
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("listOfLinksForHeader")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString ListOfLinksForHeader => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "listOfLinksForHeader");
 
 		///<summary>
 		/// Many links for header

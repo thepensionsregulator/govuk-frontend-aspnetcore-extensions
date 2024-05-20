@@ -7,8 +7,8 @@
 @inject UmbracoHelper Umbraco
 @inject IConfiguration Configuration 
 @{
-    var home = Umbraco.ContentSingleAtXPath("//home");
-    var settings = Umbraco.ContentSingleAtXPath("//settings");
+    var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
+    var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var headerLockup = new UmbracoTprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
     var footerLockup = new UmbracoTprFooterLockupModel(settings!);

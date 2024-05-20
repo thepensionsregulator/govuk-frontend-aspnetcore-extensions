@@ -103,8 +103,20 @@ $tpr-header-left-width-xl: 200px;
     margin: 0;
 }
 
+.tpr-header__content > .govuk-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tpr-header__content > .govuk-list > li {
+    display: inline-block;
+}
+
 @include tpr-header-media-query-m {
-    .tpr-header__content {
+    .tpr-header__content, 
+    .tpr-header__content > .govuk-list {
+        display: flex;
         flex-direction: column;
         text-align: center;
     }
@@ -116,42 +128,46 @@ $tpr-header-left-width-xl: 200px;
     }
 }
 
-.tpr-header__content > a {
+.tpr-header__content a {
     font-weight: $tpr-font-weight-regular;
     line-height: $tpr-header-line-height;
     white-space: nowrap;
 }
 
-.tpr-header__content > a:link,
-.tpr-header__content > a:visited {
+.tpr-header__content a:link,
+.tpr-header__content a:visited {
     color: $tpr-colour-white;
 }
 
-.tpr-header__content > a:focus {
+.tpr-header__content a:focus {
     color: $govuk-focus-text-colour;
 }
 
-.tpr-header__content > a:active {
+.tpr-header__content a:active {
     @include govuk-focused-text;
 }
 
-.tpr-header__content > a {
+.tpr-header__content a {
     margin-right: $govuk-gutter;
 }
-.tpr-header__content > a:last-child {
+.tpr-header__content > a:last-child,
+.tpr-header__content > .govuk-list > li:last-child > a {
     margin-right: 0;
 }
 
 // Links are now stacked to save space, so remove the margin that would knock them off-centre.
 @include tpr-header-media-query-m {
-    .tpr-header__content > a {
+    .tpr-header__content a {
         margin-right: 0;
     }
 }
 
 // Now the links have room to spread out.
 @include tpr-header-media-query-l {
-    .tpr-header__content > a {
+    .tpr-header__content > .govuk-list {
+        display: block;
+    }
+    .tpr-header__content a {
         margin-right: $govuk-gutter;
     }
 }

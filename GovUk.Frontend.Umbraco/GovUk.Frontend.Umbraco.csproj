@@ -126,6 +126,9 @@
 		<Content Update="uSync\v9\ContentTypes\govukgridthreequartersonequarter.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridtwocolumnlayoutsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukgridtwoequalcolumns.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

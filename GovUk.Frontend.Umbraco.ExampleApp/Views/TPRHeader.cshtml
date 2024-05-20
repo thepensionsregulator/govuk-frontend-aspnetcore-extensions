@@ -9,8 +9,8 @@
 @inject IConfiguration Configuration
 @{
 	Layout = null;
-    var home = Umbraco.ContentSingleAtXPath("//home");
-    var settings = Umbraco.ContentSingleAtXPath("//settings");
+    var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
+    var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var skipLink = string.IsNullOrEmpty(settings?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : settings?.Value<string>("govukSkipLinkText");
     var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprHeaderLogoAlt");
@@ -66,6 +66,17 @@
             </div>
             <tpr-header-bar>
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+            </tpr-header-bar>
+
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithManyLinks" />
+            </div>
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label></tpr-header-bar-label>
+                <tpr-header-bar-content allow-html="true">
+                    @Model.ManyLinksForHeader
+                </tpr-header-bar-content>
             </tpr-header-bar>
 
             <div class="govuk-width-container govuk-!-margin-top-5">

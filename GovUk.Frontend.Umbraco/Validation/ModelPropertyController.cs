@@ -54,12 +54,5 @@ namespace GovUk.Frontend.Umbraco.Validation
 
             return Array.Empty<string>();
         }
-
-
-        private bool FileNameStartWith(string filePath, string startsWith)
-        {
-            var parts = filePath.Split("/");
-            return parts.Last().StartsWith(startsWith);
-        }
     }
 }

@@ -26,8 +26,9 @@ namespace GovUk.Frontend.Umbraco.Validation
             List<Type> controllers = new();
 
             var files = Directory.GetFiles(filepath, "*.dll").ToList();
-            files.RemoveAll(x => x.StartsWith("System") || x.StartsWith("Microsoft")); // Don't load dlls where there won't be any custom code. This list is not exhaustive
 
+            files.RemoveAll(x => x.Contains(@"\System.") || x.Contains(@"\Microsoft.")); // Don't load dlls where there won't be any custom code. This list is not exhaustive
+            
             foreach(var file in files) 
             { 
                 Assembly assembly = Assembly.LoadFrom(file);

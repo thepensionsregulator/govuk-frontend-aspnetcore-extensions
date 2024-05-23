@@ -18,13 +18,6 @@ namespace GovUk.Frontend.Umbraco.Validation
     [PluginController("GOVUK")]
     public class ModelPropertyController : UmbracoAuthorizedApiController
     {
-        private readonly ILogger<ModelPropertyController> _logger;
-
-        public ModelPropertyController(ILogger<ModelPropertyController> logger)
-        {
-            _logger = logger;
-        }
-
         [HttpGet]
         public IEnumerable<string> ForDocumentType(string alias)
         {

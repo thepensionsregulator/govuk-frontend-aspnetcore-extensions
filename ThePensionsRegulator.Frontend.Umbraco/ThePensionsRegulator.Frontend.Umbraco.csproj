@@ -22,6 +22,7 @@
 		<PackageTags>gds govuk gov.uk umbraco blocklist blockgrid</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageId>$(AssemblyName)</PackageId>
 		<Product>$(AssemblyName)</Product>
 	</PropertyGroup>

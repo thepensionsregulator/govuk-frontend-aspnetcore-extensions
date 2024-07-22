@@ -22,7 +22,13 @@ $tpr-button-padding: 20px;
     padding-left: $tpr-button-padding;
     padding-right: $tpr-button-padding *2;
 }
-.govuk-button:hover, .govuk-button:active, .govuk-file-upload::file-selector-button:hover {
+input[type="file"]:focus-within::file-selector-button,
+input[type="file"]:focus::file-selector-button {
+    background-color: $tpr-colour-tangerine-yellow;
+    border-width: 1px;
+    border-color: transparent;
+}
+.govuk-button:hover, .govuk-button:active {
     background-color: $tpr-colour-violet;
 }
 .govuk-button:focus:not(:active):not(:hover) {
@@ -33,7 +39,7 @@ $tpr-button-padding: 20px;
     background-color: $tpr-colour-regent-st-blue;
 }
 
-.govuk-button--secondary {
+.govuk-button--secondary, .govuk-file-upload::file-selector-button {
     color: $tpr-colour-royal-blue;
     background: $tpr-colour-white;
     border-color: $tpr-colour-royal-blue;
@@ -46,6 +52,7 @@ a.govuk-button--secondary:link, a.govuk-button--secondary:visited {
 }
 
 .govuk-button--secondary:hover,
+.govuk-file-upload::file-selector-button:hover,
 .govuk-button--secondary:link:active,
 .govuk-button--secondary:visited:active,
 a.govuk-button--secondary:hover {
@@ -67,6 +74,7 @@ input[type="file"]::file-selector-button {
 }
 .govuk-button--start:focus:not(:active):not(:hover),
 .govuk-button--secondary:focus:not(:active):not(:hover),
+.govuk-file-upload::file-selector-button:focus:not(:active):not(:hover),
 .govuk-button--inverse:focus:not(:active):not(:hover) {
     background-image: none;
 }

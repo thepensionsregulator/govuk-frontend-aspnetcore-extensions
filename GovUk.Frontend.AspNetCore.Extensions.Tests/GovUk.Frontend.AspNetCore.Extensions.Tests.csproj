@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,6 +7,15 @@
 
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+
+  <ItemGroup>
+    <Content Include="BinaryFileValidators\TestFiles\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+
 
   <ItemGroup>
     <PackageReference Include="FakeLocalTimeZone" Version="0.0.3" />
@@ -21,5 +30,24 @@
   <ItemGroup>
     <ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
   </ItemGroup>
+
+
+
+	<!--<Target Name="CopyYourFolderAfterPublish" AfterTargets="Publish">
+		<Exec Command="XCOPY $(ProjectDir)BinaryFileValidators\TestFiles\*.* $(PublishDir)\BinaryFileValidators\TestFiles\ /S /Y" />
+	</Target>-->
+
+
+	<!--<ItemGroup>
+		<Content Include="BinaryFileValidators\TestFiles\EmptyPowerPoint.pptx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Update="BinaryFileValidators\TestFiles\EmptyExcelFile.xlsx">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>-->
+
 
 </Project>

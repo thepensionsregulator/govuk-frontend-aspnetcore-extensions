@@ -2,6 +2,7 @@ using GovUk.Frontend.AspNetCore.Extensions.Configuration;
 using GovUk.Frontend.AspNetCore.Extensions.ModelBinding;
 using GovUk.Frontend.AspNetCore.Extensions.Security;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -34,6 +35,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
                 options.ModelBinderProviders.Insert(0, new UkPostcodeModelBinderProvider());
             });
             services.AddSingleton(new GovUkFrontendAspNetCoreOptionsProvider(configureOptions));
+            services.AddFileTypeValidators();
 
             return services;
         }

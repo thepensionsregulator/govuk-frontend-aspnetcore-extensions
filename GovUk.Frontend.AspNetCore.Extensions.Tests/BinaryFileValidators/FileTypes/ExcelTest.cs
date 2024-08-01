@@ -15,19 +15,19 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests.BinaryFileValidators.FileTy
 
             public IEnumerator GetEnumerator()
             {
-                yield return new object[] { _emptyExcelFile, true };
-                yield return new object[] { _emptyPowerPoint, false };
+                yield return new object[] { _emptyExcelFile, "myExcelFile.xlsx", true };
+                yield return new object[] { _emptyPowerPoint, "myPowerPointFile.ppt", false };
             }
         }
 
         [TestCaseSource(typeof(ExcelDataProvider))]
-        public void Can_identify_valid_excel_file(string data, bool expected)
+        public void Can_identify_valid_excel_file(string data, string filename, bool expected)
         {
             var bytes = Convert.FromBase64String(data);
             var excelValidator = new Excel();
             var memoryStream = new MemoryStream(bytes);
 
-            var isValid = excelValidator.IsMatch(memoryStream);
+            var isValid = excelValidator.IsMatch(memoryStream, filename);
             memoryStream.Dispose();
 
             Assert.That(isValid, Is.EqualTo(expected));

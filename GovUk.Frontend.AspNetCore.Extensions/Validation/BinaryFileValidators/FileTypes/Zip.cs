@@ -5,7 +5,7 @@
     /// </summary>
     public class Zip : FileType
     {
-        public Zip() : this(4, "application/zip", "zip")
+        public Zip() : this(4, "application/zip", ".zip")
         {
         }
 

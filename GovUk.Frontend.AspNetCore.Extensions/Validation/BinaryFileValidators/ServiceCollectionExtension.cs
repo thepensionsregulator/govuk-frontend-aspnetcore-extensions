@@ -7,8 +7,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
     {
         public static IServiceCollection AddFileTypeValidators(this IServiceCollection services)
         {
-            services.AddScoped<IFileTypeValidator, Excel>();
-            services.AddScoped<IFileTypeValidator, Pdf>();
+            var validators = new FileValidatorCollection().GetValidators();
+            foreach (var v in validators)
+            {
+                services.AddScoped(typeof(IFileTypeValidator), v.GetType());
+            }
+
             return services;
         }
     }

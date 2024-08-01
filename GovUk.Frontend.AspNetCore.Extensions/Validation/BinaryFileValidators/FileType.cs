@@ -22,9 +22,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
         public readonly int HeaderLength;
 
         /// <summary>
-        /// Gets the appropriate file extension for the format.
+        /// Gets the appropriate file extensions for the format.
         /// </summary>
-        public readonly string Extension;
+        public readonly string[] Extension;
 
         /// <summary>
         /// Gets the media type identifier for the format.
@@ -41,8 +41,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
         /// </summary>
         /// <param name="signature">The header signature of the format.</param>
         /// <param name="mediaType">The media type of the format.</param>
-        /// <param name="extension">The appropriate file extension for the format.</param>
-        protected FileType(byte[] signature, string mediaType, string extension)
+        /// <param name="extension">The appropriate file extensions for the format.</param>
+        protected FileType(byte[] signature, string mediaType, string[] extension)
             : this(signature, headerLength: signature == null ? 0 : signature.Length, mediaType, extension, 0)
         {
         }
@@ -52,9 +52,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
         /// </summary>
         /// <param name="signature">The header signature of the format.</param>
         /// <param name="mediaType">The media type of the format.</param>
-        /// <param name="extension">The appropriate file extension for the format.</param>
+        /// <param name="extension">The appropriate file extensions for the format.</param>
         /// <param name="offset">The offset at which the signature is located.</param>
-        protected FileType(byte[] signature, string mediaType, string extension, int offset)
+        protected FileType(byte[] signature, string mediaType, string[] extension, int offset)
             : this(signature, headerLength: signature == null ? offset : signature.Length + offset, mediaType, extension, offset)
         {
         }
@@ -65,8 +65,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
         /// <param name="signature">The header signature of the format.</param>
         /// <param name="headerLength">The number of bytes required to determine the format.</param>
         /// <param name="mediaType">The media type of the format.</param>
-        /// <param name="extension">The appropriate file extension for the format.</param>
-        protected FileType(byte[] signature, int headerLength, string mediaType, string extension)
+        /// <param name="extension">The appropriate file extensions for the format.</param>
+        protected FileType(byte[] signature, int headerLength, string mediaType, string[] extension)
             : this(signature, headerLength, mediaType, extension, 0)
         {
         }
@@ -77,9 +77,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
         /// <param name="signature">The header signature of the format.</param>
         /// <param name="headerLength">The number of bytes required to determine the format.</param>
         /// <param name="mediaType">The media type of the format.</param>
-        /// <param name="extension">The appropriate file extension for the format.</param>
+        /// <param name="extension">The appropriate file extensions for the format.</param>
         /// <param name="offset">The offset at which the signature is located.</param>
-        protected FileType(byte[] signature, int headerLength, string mediaType, string extension, int offset)
+        protected FileType(byte[] signature, int headerLength, string mediaType, string[] extension, int offset)
         {
             if (signature == null)
             {
@@ -107,7 +107,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
         public virtual bool IsMatch(Stream stream, string filename)
         {
             var ext = Path.GetExtension(filename);
-            var extensionsMatch = Extension.Equals(ext, StringComparison.InvariantCultureIgnoreCase);
+            var extensionsMatch = Extension.Any(x => x.Equals(ext, StringComparison.InvariantCultureIgnoreCase));
+
             var fileHeaderMatch = IsMatch(stream);
 
             var isMatch = extensionsMatch && fileHeaderMatch;

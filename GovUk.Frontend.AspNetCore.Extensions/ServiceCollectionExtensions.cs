@@ -35,7 +35,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions
                 options.ModelBinderProviders.Insert(0, new UkPostcodeModelBinderProvider());
             });
             services.AddSingleton(new GovUkFrontendAspNetCoreOptionsProvider(configureOptions));
-            services.AddFileTypeValidators();
 
             return services;
         }

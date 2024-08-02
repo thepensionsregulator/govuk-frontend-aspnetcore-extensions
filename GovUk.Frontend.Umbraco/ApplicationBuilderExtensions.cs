@@ -35,7 +35,7 @@ namespace GovUk.Frontend.Umbraco
                 { typeof(RangeAttribute), PropertyAliases.ErrorMessageRange },
                 { typeof(DateRangeAttribute), PropertyAliases.ErrorMessageRange },
                 { typeof(CompareAttribute), PropertyAliases.ErrorMessageCompare },
-                { typeof(AllowedFileTypesAttribute), PropertyAliases.ErrorMessageAllowedFileExtensions },
+                { typeof(AllowedFileTypesAttribute), PropertyAliases.ErrorMessageAllowedFileTypes },
                 { typeof(MaxFileSizeAttribute), PropertyAliases.ErrorMessageMaxFileSize }
             }));
 
@@ -51,7 +51,6 @@ namespace GovUk.Frontend.Umbraco
                   "/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery-validation/dist/jquery.validate.min.js",
                   "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-validation.js",
                   "/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js");
-
             });
 
             return app;

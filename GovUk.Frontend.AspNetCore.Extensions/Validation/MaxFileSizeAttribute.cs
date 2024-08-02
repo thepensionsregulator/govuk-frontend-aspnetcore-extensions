@@ -2,12 +2,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 {
     public class MaxFileSizeAttribute : ValidationAttribute
     {
         private readonly int _maxFileSize;
+
         public MaxFileSizeAttribute(int maxFileSize)
         {
             _maxFileSize = maxFileSize;
@@ -22,7 +22,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
             if (value is not IFormFile file)
             {
-                throw new InvalidOperationException($"Target property for {nameof(AllowedFileExtensionsAttribute)} must be {nameof(IFormFile)}");
+                throw new InvalidOperationException($"Target property for {nameof(MaxFileSizeAttribute)} must be {nameof(IFormFile)}");
             }
 
             if (file.Length > _maxFileSize)

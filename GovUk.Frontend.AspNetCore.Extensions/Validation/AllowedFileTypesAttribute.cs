@@ -12,6 +12,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
     {
         private readonly IEnumerable<IFileTypeValidator> _fileTypeValidators;
 
+        public AllowedFileTypesAttribute(Type[] validTypes)
+        {
+            var collection = FileValidatorCollection.GetValidators();
+            _fileTypeValidators = collection.Where(x => validTypes.Any(y => y == x.GetType()));
+        }
+
         public AllowedFileTypesAttribute(IEnumerable<IFileTypeValidator> fileTypeValidators, Type[] validTypes)
         {
             _fileTypeValidators = fileTypeValidators.Where(x => validTypes.Any(y => y == x.GetType()));
@@ -26,7 +32,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 
             if (value is not IFormFile file)
             {
-                throw new InvalidOperationException($"Target property for {nameof(AllowedFileExtensionsAttribute)} must be {nameof(IFormFile)}");
+                throw new InvalidOperationException($"Target property for {nameof(AllowedFileTypesAttribute)} must be {nameof(IFormFile)}");
             }
 
             foreach (var v in _fileTypeValidators)

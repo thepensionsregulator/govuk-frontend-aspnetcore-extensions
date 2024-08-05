@@ -45,8 +45,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         [TestCaseSource(typeof(ExcelDataProvider))]
         public void Should_ReturnValidResult_WhenFileMatchesFileTypesSpecified(IFormFile file, bool expected)
         {
-            var validators = GetValidators();
-            var sut = new AllowedFileTypesAttribute(validators, [typeof(Excel)]);
+            var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
             var result = sut.IsValid(file);
             Assert.That(result, Is.EqualTo(expected));
         }
@@ -54,8 +53,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         [Test]
         public void Should_return_true_if_value_is_null()
         {
-            var validators = GetValidators();
-            var sut = new AllowedFileTypesAttribute(validators, [typeof(Excel)]);
+            var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
             var result = sut.IsValid(null!);
 
             Assert.That(result, Is.EqualTo(true));
@@ -64,19 +62,13 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         [Test]
         public void Should_ThrowException_IfTargetPropertyNotIFormFile()
         {
-            var validators = GetValidators();
             var testValue = "Some test string property value";
-            var sut = new AllowedFileTypesAttribute(validators, [typeof(Excel)]);
+            var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
             var fn = () =>
             {
                 sut.IsValid(testValue);
             };
             Assert.That(fn, Throws.InstanceOf<InvalidOperationException>());
-        }
-
-        private IEnumerable<IFileTypeValidator> GetValidators()
-        {
-            return new FileValidatorCollection().GetValidators();
         }
     }
 }

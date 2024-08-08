@@ -12,11 +12,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
     {
         private readonly IList<IFileTypeValidator> _fileTypeValidators;
 
-        public AllowedFileTypesAttribute(Type[] validTypes)
+        public AllowedFileTypesAttribute(IEnumerable<Type> validTypes)
             : this(FileValidatorCollection.GetValidators(), validTypes)
         { }
 
-        public AllowedFileTypesAttribute(IEnumerable<IFileTypeValidator> validators, Type[] validTypes)
+        public AllowedFileTypesAttribute(IEnumerable<IFileTypeValidator> validators, IEnumerable<Type> validTypes)
         {
             _fileTypeValidators = new List<IFileTypeValidator>();
 

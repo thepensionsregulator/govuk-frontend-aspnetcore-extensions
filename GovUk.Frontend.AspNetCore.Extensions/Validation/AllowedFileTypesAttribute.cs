@@ -10,17 +10,25 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 {
     public class AllowedFileTypesAttribute : ValidationAttribute
     {
-        private readonly IEnumerable<IFileTypeValidator> _fileTypeValidators;
+        private readonly IList<IFileTypeValidator> _fileTypeValidators;
 
         public AllowedFileTypesAttribute(Type[] validTypes)
-        {
-            var collection = FileValidatorCollection.GetValidators();
-            _fileTypeValidators = collection.Where(x => validTypes.Any(y => y == x.GetType()));
-        }
+            : this(FileValidatorCollection.GetValidators(), validTypes)
+        { }
 
-        public AllowedFileTypesAttribute(IEnumerable<IFileTypeValidator> fileTypeValidators, Type[] validTypes)
+        public AllowedFileTypesAttribute(IEnumerable<IFileTypeValidator> validators, Type[] validTypes)
         {
-            _fileTypeValidators = fileTypeValidators.Where(x => validTypes.Any(y => y == x.GetType()));
+            _fileTypeValidators = new List<IFileTypeValidator>();
+
+            foreach (var t in validTypes)
+            {
+                var validator = validators.Where(x => x.GetType() == t).SingleOrDefault();
+                if (validator is null)
+                {
+                    throw new ArgumentException($"{t} is not defined");
+                }
+                _fileTypeValidators.Add(validator);
+            }
         }
 
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
@@ -34,21 +42,41 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             {
                 throw new InvalidOperationException($"Target property for {nameof(AllowedFileTypesAttribute)} must be {nameof(IFormFile)}");
             }
+            var ext = Path.GetExtension(file.FileName);
 
+            var extensionsMatch = true;
+            foreach (var v in _fileTypeValidators)
+            {
+                extensionsMatch = v.Extensions.Any(x => x.Equals(ext, StringComparison.InvariantCultureIgnoreCase));
+            }
+
+            if (!extensionsMatch)
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+
+            var fileValidationResult = ValidateFileSignature(file);
+            if (fileValidationResult.Count > 0 && fileValidationResult.All(x => x.Value == false))
+            {
+                return new ValidationResult(ErrorMessage);
+            }
+
+            return ValidationResult.Success!;
+        }
+
+        private Dictionary<Type, bool> ValidateFileSignature(IFormFile file)
+        {
+            var result = new Dictionary<Type, bool>();
             foreach (var v in _fileTypeValidators)
             {
                 using (var memoryStream = new MemoryStream())
                 {
                     file.CopyTo(memoryStream);
-                    var isMatch = v.IsMatch(memoryStream, file.FileName);
-                    if (isMatch)
-                    {
-                        return ValidationResult.Success!;
-                    }
+                    var isMatch = v.IsMatch(memoryStream);
+                    result.Add(v.GetType(), isMatch);
                 }
             }
-
-            return new ValidationResult(ErrorMessage);
+            return result;
         }
     }
 }

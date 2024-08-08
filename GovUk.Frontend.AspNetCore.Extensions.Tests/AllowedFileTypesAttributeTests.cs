@@ -13,11 +13,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 {
     public class AllowedFileTypesAttributeTests
     {
-        private class ExcelDataProvider : IEnumerable
+        private class ValidFileFormatDataProvider : IEnumerable
         {
             private string _testFilesPath = @"BinaryFileValidators\TestFiles";
             private string _emptyExcelFile => Path.Combine(new[] { _testFilesPath, "EmptyExcelFile.xlsx" });
-            private string _emptyPowerPoint => Path.Combine(new[] { _testFilesPath, "EmptyPowerPoint.pptx" });
+            private string _emptyPdf => Path.Combine(new[] { _testFilesPath, "WordSavedAsPdf.pdf" });
 
             public IFormFile CreateFormFile(byte[] bytes, string filename)
             {
@@ -32,26 +32,51 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
                 return CreateFormFile(bytes, filename);
             }
 
-            private IFormFile GetPowerPoint(string filename)
+            private IFormFile GetPdf(string filename)
             {
-                var bytes = File.ReadAllBytes(_emptyPowerPoint);
+                var bytes = File.ReadAllBytes(_emptyPdf);
                 return CreateFormFile(bytes, filename);
             }
 
             public IEnumerator GetEnumerator()
             {
-                yield return new object[] { GetExcelFile("myExcel.xlsx"), true };
-                yield return new object[] { GetPowerPoint("myPowerpoint.pptx"), false };
+                yield return new object[] { GetExcelFile("myExcel.xlsx"), new Type[1] { typeof(Excel) }, true };
+                yield return new object[] { GetPdf("myPdf.pdf"), new Type[1] { typeof(Pdf) }, true };
             }
         }
 
-        [TestCaseSource(typeof(ExcelDataProvider))]
-        public void Return_true_when_file_matches_file_types_specified(IFormFile file, bool expected)
+        #region returnstrue
+
+        [TestCaseSource(typeof(ValidFileFormatDataProvider))]
+        public void Return_true_when_file_matches_file_types_specified(IFormFile file, IEnumerable<Type> allowedFileTypes, bool expected)
         {
-            var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
+            var sut = new AllowedFileTypesAttribute(allowedFileTypes);
             var result = sut.IsValid(file);
             Assert.That(result, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void Return_true_if_value_is_null()
+        {
+            var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
+            var result = sut.IsValid(null!);
+
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void Return_true_if_no_file_validation_types_have_been_supplied()
+        {
+            var sut = new AllowedFileTypesAttribute([]);
+            var testValue = new ValidFileFormatDataProvider().GetExcelFile("abc.xlsx");
+            var result = sut.IsValid(testValue);
+
+            Assert.That(result, Is.True);
+        }
+
+        #endregion returnstrue
+
+        #region returnsfalse
 
         [Test]
         public void Return_false_if_file_signature_does_not_match()
@@ -70,15 +95,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         }
 
         [Test]
-        public void Return_true_if_value_is_null()
-        {
-            var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
-            var result = sut.IsValid(null!);
-
-            Assert.That(result, Is.EqualTo(true));
-        }
-
-        [Test]
         public void Return_false_if_file_extension_is_wrong()
         {
             var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
@@ -87,6 +103,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             Assert.That(result, Is.EqualTo(false));
         }
+
+        #endregion returnsfalse
+
+        #region exceptions
 
         [Test]
         public void Throw_Exception_if_value_is_not_IFormFile()
@@ -101,16 +121,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         }
 
         [Test]
-        public void Return_true_if_no_file_validation_types_have_been_supplied()
-        {
-            var sut = new AllowedFileTypesAttribute([]);
-            var testValue = new ExcelDataProvider().GetExcelFile("abc.xlsx");
-            var result = sut.IsValid(testValue);
-
-            Assert.That(result, Is.EqualTo(true));
-        }
-
-        [Test]
         public void Throw_exception_if_supplied_validation_type_has_not_been_implemented()
         {
             var typeWeWillNeverImplementAFileValidatorFor = typeof(Exception);
@@ -118,5 +128,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 
             Assert.That(fn, Throws.InstanceOf<ArgumentException>());
         }
+
+        #endregion exceptions
     }
 }

@@ -1,13 +1,11 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators;
+﻿using GovUk.Frontend.AspNetCore.Extensions.Tests.BinaryFileValidators;
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators.FileTypes;
 using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.Tests
 {
@@ -15,9 +13,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
     {
         private class ValidFileFormatDataProvider : IEnumerable
         {
-            private string _testFilesPath = @"BinaryFileValidators\TestFiles";
-            private string _emptyExcelFile => Path.Combine(new[] { _testFilesPath, "EmptyExcelFile.xlsx" });
-            private string _emptyPdf => Path.Combine(new[] { _testFilesPath, "WordSavedAsPdf.pdf" });
+            private string _emptyExcelFile => TestFileLocator.EmptyExcelFile;
+            private string _emptyPdf => TestFileLocator.WordSavedAsPdf;
 
             public IFormFile CreateFormFile(byte[] bytes, string filename)
             {

@@ -32,22 +32,4 @@
   </ItemGroup>
 
 
-
-	<!--<Target Name="CopyYourFolderAfterPublish" AfterTargets="Publish">
-		<Exec Command="XCOPY $(ProjectDir)BinaryFileValidators\TestFiles\*.* $(PublishDir)\BinaryFileValidators\TestFiles\ /S /Y" />
-	</Target>-->
-
-
-	<!--<ItemGroup>
-		<Content Include="BinaryFileValidators\TestFiles\EmptyPowerPoint.pptx">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-	  <Content Update="BinaryFileValidators\TestFiles\EmptyExcelFile.xlsx">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>-->
-
-
 </Project>

@@ -1,6 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators.FileTypes;
 using NUnit.Framework;
-using System;
 using System.Collections;
 using System.IO;
 
@@ -8,26 +7,33 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests.BinaryFileValidators.FileTy
 {
     internal class ExcelTest
     {
-        private class ExcelDataProvider : IEnumerable
-        {
-            public IEnumerator GetEnumerator()
-            {
-                yield return new object[] { TestFileLocator.EmptyExcelFile, true };
-                yield return new object[] { TestFileLocator.EmptyPowerPoint, false };
-            }
-        }
+        private string _emptyExcelFileName = TestFileLocator.EmptyExcelFile;
+        private string _emptyPowerPointFileName = TestFileLocator.EmptyPowerPoint;
 
-        [TestCaseSource(typeof(ExcelDataProvider))]
-        public void Can_identify_valid_excel_file(string filename, bool expected)
+        [Test]
+        public void Can_identify_valid_Excel_file()
         {
-            var bytes = File.ReadAllBytes(filename);
+            var bytes = File.ReadAllBytes(_emptyExcelFileName);
             var excelValidator = new Excel();
             var memoryStream = new MemoryStream(bytes);
 
-            var isValid = excelValidator.IsMatch(memoryStream, filename);
+            var isValid = excelValidator.IsMatch(memoryStream);
             memoryStream.Dispose();
 
-            Assert.That(isValid, Is.EqualTo(expected));
+            Assert.That(isValid, Is.True);
+        }
+
+        [Test]
+        public void An_OfficeOpenXml_file_that_is_not_Excel_returns_false()
+        {
+            var bytes = File.ReadAllBytes(_emptyPowerPointFileName);
+            var excelValidator = new Excel();
+            var memoryStream = new MemoryStream(bytes);
+
+            var isValid = excelValidator.IsMatch(memoryStream);
+            memoryStream.Dispose();
+
+            Assert.That(isValid, Is.False);
         }
     }
 }

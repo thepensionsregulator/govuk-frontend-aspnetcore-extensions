@@ -48,7 +48,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         #region returnstrue
 
         [TestCaseSource(typeof(ValidFileFormatDataProvider))]
-        public void Return_true_when_file_matches_file_types_specified(IFormFile file, IEnumerable<Type> allowedFileTypes, bool expected)
+        public void Return_true_when_file_matches_file_types_specified(IFormFile file, Type[] allowedFileTypes, bool expected)
         {
             var sut = new AllowedFileTypesAttribute(allowedFileTypes);
             var result = sut.IsValid(file);
@@ -98,7 +98,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         public void Return_false_if_file_extension_is_wrong()
         {
             var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
-            var testValue = new ExcelDataProvider().GetExcelFile("abc.txt");
+            var testValue = new ValidFileFormatDataProvider().GetExcelFile("abc.txt");
             var result = sut.IsValid(testValue);
 
             Assert.That(result, Is.EqualTo(false));

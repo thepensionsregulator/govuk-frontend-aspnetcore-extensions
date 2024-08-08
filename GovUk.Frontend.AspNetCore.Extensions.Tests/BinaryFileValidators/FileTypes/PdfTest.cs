@@ -22,7 +22,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests.BinaryFileValidators.FileTy
 
             var memoryStream = new MemoryStream(bytes);
             var pdf = new Pdf();
-            var valid = pdf.IsMatch(memoryStream, filename);
+            var valid = pdf.IsMatch(memoryStream);
 
             memoryStream.Dispose();
 

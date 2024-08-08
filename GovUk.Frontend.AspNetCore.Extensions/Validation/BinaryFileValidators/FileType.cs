@@ -99,23 +99,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
         }
 
         /// <summary>
-        /// Returns a value indicating whether the format matches the file extension and the file header
-        /// </summary>
-        /// <param name="stream"></param>
-        /// <param name="filename"></param>
-        /// <returns></returns>
-        public virtual bool IsMatch(Stream stream, string filename)
-        {
-            var ext = Path.GetExtension(filename);
-            var extensionsMatch = Extensions.Any(x => x.Equals(ext, StringComparison.InvariantCultureIgnoreCase));
-
-            var fileHeaderMatch = IsMatch(stream);
-
-            var isMatch = extensionsMatch && fileHeaderMatch;
-            return isMatch;
-        }
-
-        /// <summary>
         /// Returns a value indicating whether the format matches a file header.
         /// </summary>
         /// <param name="stream">The stream to check.</param>

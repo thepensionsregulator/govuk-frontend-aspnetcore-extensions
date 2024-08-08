@@ -2,7 +2,6 @@ using GovUk.Frontend.AspNetCore.Extensions.Configuration;
 using GovUk.Frontend.AspNetCore.Extensions.ModelBinding;
 using GovUk.Frontend.AspNetCore.Extensions.Security;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 

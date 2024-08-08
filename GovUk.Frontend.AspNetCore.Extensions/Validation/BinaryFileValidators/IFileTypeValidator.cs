@@ -4,8 +4,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
 {
     public interface IFileTypeValidator
     {
-        bool IsMatch(Stream stream);
+        string[] Extensions { get; }
 
-        bool IsMatch(Stream stream, string filename);
+        bool IsMatch(Stream stream);
     }
 }

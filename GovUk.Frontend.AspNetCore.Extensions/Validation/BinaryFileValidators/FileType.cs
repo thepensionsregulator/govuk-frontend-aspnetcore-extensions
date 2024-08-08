@@ -24,7 +24,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators
         /// <summary>
         /// Gets the appropriate file extensions for the format.
         /// </summary>
-        public readonly string[] Extensions;
+        public string[] Extensions { get; private set; }
 
         /// <summary>
         /// Gets the media type identifier for the format.

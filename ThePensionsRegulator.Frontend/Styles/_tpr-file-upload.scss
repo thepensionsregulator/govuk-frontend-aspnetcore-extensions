@@ -1,6 +1,6 @@
 ﻿
 .govuk-file-upload {
-    font-size: 1rem;
+    @include govuk-font-size($size: 19, $line-height: 1);
     outline: govuk-px-to-rem(3) solid transparent;
     border-color: transparent;
     box-shadow: inset 0 0 0 govuk-px-to-rem(2) transparent;
@@ -16,7 +16,6 @@
     padding-right: $tpr-button-padding *2;
     font-family: $govuk-font-family;
     border-color :$tpr-colour-royal-blue;
-    margin-right: 1rem;
 }
 
 .govuk-file-upload:focus-within::file-selector-button,
@@ -30,7 +29,7 @@
 
 .govuk-file-upload:focus-within,
 .govuk-file-upload:focus {
-    outline: $govuk-focus-width solid $govuk-focus-colour;
+    outline: govuk-px-to-rem(3) solid $govuk-focus-colour;
     padding: govuk-px-to-rem(3) govuk-px-to-rem(3) govuk-px-to-rem(1) govuk-px-to-rem(3);
     box-shadow: inset 0 0 0 govuk-px-to-rem(2) $govuk-focus-text-colour;
 }

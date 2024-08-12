@@ -30,7 +30,6 @@
 .govuk-file-upload:focus-within,
 .govuk-file-upload:focus {
     outline: govuk-px-to-rem(3) solid $govuk-focus-colour;
-    
     box-shadow: inset 0 0 0 govuk-px-to-rem(2) $govuk-focus-text-colour;
 }
 

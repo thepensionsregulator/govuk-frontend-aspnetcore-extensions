@@ -16,7 +16,7 @@ $button-shadow-size: $govuk-border-width-form-element;
     padding-top: (govuk-spacing(2) - $govuk-border-width-form-element);
     padding-bottom: (govuk-spacing(2) - $govuk-border-width-form-element - ($button-shadow-size / 2));
     padding-left: $tpr-button-padding;
-    padding-right: $tpr-button-padding *2;
+    padding-right: $tpr-button-padding;
     font-family: $govuk-font-family;
     border-color: $tpr-colour-royal-blue;
     margin-right: govuk-px-to-rem(16);

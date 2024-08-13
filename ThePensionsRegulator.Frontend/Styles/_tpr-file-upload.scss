@@ -4,7 +4,7 @@ $button-shadow-size: $govuk-border-width-form-element;
 
 .govuk-file-upload {
     @include govuk-font-size($size: 19, $line-height: 1);
-    outline: govuk-px-to-rem(3) solid transparent;
+    outline: $govuk-focus-width solid transparent;
     border-color: transparent;
     box-shadow: inset 0 0 0 govuk-px-to-rem(2) transparent;
     padding: govuk-px-to-rem(3) govuk-px-to-rem(3) govuk-px-to-rem(1) govuk-px-to-rem(3);
@@ -33,7 +33,7 @@ $button-shadow-size: $govuk-border-width-form-element;
 
 .govuk-file-upload:focus-within,
 .govuk-file-upload:focus {
-    outline: govuk-px-to-rem(3) solid $govuk-focus-colour;
+    outline: $govuk-focus-width solid $govuk-focus-colour;
     box-shadow: inset 0 0 0 govuk-px-to-rem(2) $govuk-focus-text-colour;
 }
 

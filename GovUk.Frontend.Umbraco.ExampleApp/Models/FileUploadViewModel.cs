@@ -1,5 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators.FileTypes;
+﻿using FileSignatures.Formats;
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using Umbraco.Cms.Web.Common.PublishedModels;

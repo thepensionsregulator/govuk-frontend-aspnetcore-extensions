@@ -9,13 +9,6 @@
   </PropertyGroup>
 
 
-  <ItemGroup>
-    <Content Include="BinaryFileValidators\TestFiles\*.*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-
 
   <ItemGroup>
     <PackageReference Include="FakeLocalTimeZone" Version="0.0.3" />
@@ -29,6 +22,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="BinaryFileValidators\TestFiles\EmptyExcelFile.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="BinaryFileValidators\TestFiles\WordSavedAsPdf.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

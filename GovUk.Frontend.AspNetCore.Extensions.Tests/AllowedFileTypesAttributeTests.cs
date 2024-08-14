@@ -1,6 +1,6 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Tests.BinaryFileValidators;
+﻿using FileSignatures.Formats;
+using GovUk.Frontend.AspNetCore.Extensions.Tests.BinaryFileValidators;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators.FileTypes;
 using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
 using System;
@@ -39,6 +39,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             {
                 yield return new object[] { GetExcelFile("myExcel.xlsx"), new Type[1] { typeof(Excel) }, true };
                 yield return new object[] { GetPdf("myPdf.pdf"), new Type[1] { typeof(Pdf) }, true };
+                // It is important that typeof(pdf) is before typeof(Excel) for the below test. We are testing that it breaks as soon as it finds a matching extension
+                yield return new object[] { GetPdf("myPdf.pdf"), new Type[2] { typeof(Pdf), typeof(Excel) }, true };
             }
         }
 

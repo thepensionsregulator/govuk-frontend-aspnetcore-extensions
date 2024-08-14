@@ -1,4 +1,4 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Validation.BinaryFileValidators;
+﻿using FileSignatures;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -10,25 +10,37 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
 {
     public class AllowedFileTypesAttribute : ValidationAttribute
     {
-        private readonly IList<IFileTypeValidator> _fileTypeValidators;
+        private readonly IFileFormatInspector _fileInspector;
+        private readonly IEnumerable<FileFormat> _expectedFormats;
 
         public AllowedFileTypesAttribute(Type[] validTypes)
-            : this(FileValidatorCollection.GetValidators(), validTypes)
-        { }
-
-        public AllowedFileTypesAttribute(IEnumerable<IFileTypeValidator> validators, IEnumerable<Type> validTypes)
         {
-            _fileTypeValidators = new List<IFileTypeValidator>();
-
+            _expectedFormats = new List<FileFormat>();
+            var availableFormats = FileFormatLocator.GetFormats();
+            var expectedFormats = new List<FileFormat>();
             foreach (var t in validTypes)
             {
-                var validator = validators.Where(x => x.GetType() == t).SingleOrDefault();
-                if (validator is null)
+                var formatFound = false;
+                foreach (var f in availableFormats)
+                {
+                    if (t == f.GetType())
+                    {
+                        expectedFormats.Add(f);
+                        formatFound = true;
+                        break;
+                    }
+                }
+                if (!formatFound)
                 {
                     throw new ArgumentException($"{t} is not defined");
                 }
-                _fileTypeValidators.Add(validator);
             }
+
+            if (expectedFormats.Any())
+            {
+                _expectedFormats = expectedFormats.Distinct();
+            }
+            _fileInspector = new FileFormatInspector(_expectedFormats);
         }
 
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
@@ -45,9 +57,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             var ext = Path.GetExtension(file.FileName);
 
             var extensionsMatch = true;
-            foreach (var v in _fileTypeValidators)
+            foreach (var e in _expectedFormats)
             {
-                extensionsMatch = v.Extensions.Any(x => x.Equals(ext, StringComparison.InvariantCultureIgnoreCase));
+                var extension = e.Extension.StartsWith(".") ? e.Extension : "." + e.Extension;
+                extensionsMatch = extension.Equals(ext, StringComparison.InvariantCultureIgnoreCase);
+                if (extensionsMatch)
+                { break; }
             }
 
             if (!extensionsMatch)
@@ -56,7 +71,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             }
 
             var fileValidationResult = ValidateFileSignature(file);
-            if (fileValidationResult.Count > 0 && fileValidationResult.All(x => x.Value == false))
+            if (_expectedFormats.Any() && fileValidationResult is null)
             {
                 return new ValidationResult(ErrorMessage);
             }
@@ -64,19 +79,17 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
             return ValidationResult.Success!;
         }
 
-        private Dictionary<Type, bool> ValidateFileSignature(IFormFile file)
+        private FileFormat? ValidateFileSignature(IFormFile file)
         {
-            var result = new Dictionary<Type, bool>();
-            foreach (var v in _fileTypeValidators)
+            FileFormat? fileFormatMatch = null;
+
+            using (var memoryStream = new MemoryStream())
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    file.CopyTo(memoryStream);
-                    var isMatch = v.IsMatch(memoryStream);
-                    result.Add(v.GetType(), isMatch);
-                }
+                file.CopyTo(memoryStream);
+                fileFormatMatch = _fileInspector.DetermineFileFormat(memoryStream);
             }
-            return result;
+
+            return fileFormatMatch;
         }
     }
 }

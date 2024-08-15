@@ -35,7 +35,6 @@ namespace GovUk.Frontend.Umbraco
                 { typeof(RangeAttribute), PropertyAliases.ErrorMessageRange },
                 { typeof(DateRangeAttribute), PropertyAliases.ErrorMessageRange },
                 { typeof(CompareAttribute), PropertyAliases.ErrorMessageCompare },
-                { typeof(AllowedFileExtensionsAttribute), PropertyAliases.ErrorMessageAllowedFileExtensions },
                 { typeof(MaxFileSizeAttribute), PropertyAliases.ErrorMessageMaxFileSize },
                 { typeof(AllowedFileTypesAttribute), PropertyAliases.ErrorMessageAllowedFileTypes },
             }));

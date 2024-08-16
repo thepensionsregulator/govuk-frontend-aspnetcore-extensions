@@ -22,12 +22,7 @@ $tpr-button-padding: 20px;
     padding-left: $tpr-button-padding;
     padding-right: $tpr-button-padding *2;
 }
-input[type="file"]:focus-within::file-selector-button,
-input[type="file"]:focus::file-selector-button {
-    background-color: $tpr-colour-tangerine-yellow;
-    border-width: 1px;
-    border-color: transparent;
-}
+
 govuk-button:focus:not(:active):not(:hover) {
     background-image: url(/_content/ThePensionsRegulator.Frontend/tpr/chevron_right_eclipse_24dp.svg);
     color: $tpr-colour-eclipse;
@@ -43,12 +38,6 @@ govuk-button:focus:not(:active):not(:hover) {
     background: $govuk-button-background-colour right center no-repeat;
     padding-left: $tpr-button-padding;
     padding-right: $tpr-button-padding;
-}
-input[type="file"]:focus-within::file-selector-button,
-input[type="file"]:focus::file-selector-button {
-    background-color: $tpr-colour-tangerine-yellow;
-    border-width: 1px;
-    border-color: transparent;
 }
 govuk-button:focus:not(:active):not(:hover) {
     color: $tpr-colour-eclipse;
@@ -74,7 +63,6 @@ govuk-button:focus:not(:active):not(:hover) {
     }
 
     .govuk-button--secondary:hover,
-    .govuk-file-upload::file-selector-button:hover,
     .govuk-button--secondary:link:active,
     .govuk-button--secondary:visited:active,
     a.govuk-button--secondary:hover {
@@ -89,8 +77,7 @@ govuk-button:focus:not(:active):not(:hover) {
     }
     // Remove chevron where it's not wanted
     .govuk-button--start,
-    .govuk-button--secondary,
-    input[type="file"]::file-selector-button {
+    .govuk-button--secondary {
         background-image: none;
         padding-right: $tpr-button-padding;
     }

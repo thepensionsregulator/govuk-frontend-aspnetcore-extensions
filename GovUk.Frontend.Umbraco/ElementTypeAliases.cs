@@ -2,6 +2,8 @@
 {
     public static class ElementTypeAliases
     {
+        public const string Accordion = "govukAccordion";
+        public const string AccordionSettings = "govukAccordionSettings";
         public const string Caption = "govukCaption";
         public const string CaptionSettings = "govukCaptionSettings";
         public const string Checkboxes = "govukCheckboxes";

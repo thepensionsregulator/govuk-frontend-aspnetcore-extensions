@@ -53,23 +53,3 @@ Error messages for text input components are configurable in Umbraco on the sett
 For a `[RegisteredCharityNumber]` attribute set the 'Text input width' setting to 'small' and use the 'Pattern' error message.
 
 ![Settings for a postcode using a text input component](/docs/images/registered-charity-number-settings.png)
-
-
-## Allowed file fypes
-
-### Validating allowed file types
-
-Use the `[AllowedFileTypes]` attribute to validate allowed file types using the Text input component. This uses a comparison of the binary file header against a set of known binary sequences that represents the respective file type.
-
-For an example of this in use, see the 'Text input' page in either the ASP.NET and Umbraco example apps.
-# Check that the asp.net app without umbraco has examples 123456789
-
-## Umbraco
-
-You can add a text input component to a block grid or block list in Umbraco. For examples of this component in use, see the 'Text input' page in the Umbraco example app.
-
-Error messages for text input components are configurable in Umbraco on the settings for the text input component.
-
-# Add an image of the 123456789
-
-![Settings for a postcode using a text input component](/docs/images/registered-charity-number-settings.png)

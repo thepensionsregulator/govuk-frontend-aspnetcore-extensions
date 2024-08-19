@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Title>ThePensionsRegulator.$(AssemblyName)</Title>
-		<Version>6.0.0-alpha2</Version>
+		<Version>6.0.0-alpha8.1</Version>
 		<!-- Set PackageValidationBaselineVersion to the current major version, eg if you're publishing 1.1.1 set it to 1.0.0. 
 		     This will help identify breaking changes where the major version should change. -->
 		<PackageValidationBaselineVersion>5.0.0</PackageValidationBaselineVersion>
@@ -22,6 +22,7 @@
 		<PackageTags>gds govuk gov.uk umbraco blocklist blockgrid umbraco-marketplace</PackageTags>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageId>ThePensionsRegulator.$(AssemblyName)</PackageId>
 		<Product>ThePensionsRegulator.$(AssemblyName)</Product>
 	</PropertyGroup>
@@ -126,6 +127,9 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukgridthreequartersonequarter.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridtwocolumnlayoutsettings.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukgridtwoequalcolumns.config">

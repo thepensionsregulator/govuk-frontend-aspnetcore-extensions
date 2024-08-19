@@ -96,15 +96,32 @@ $tpr-header-left-width-xl: 200px;
         line-height: $tpr-header-line-height;
     }
 }
+@include tpr-header-media-query-l {
+    .tpr-header__label {
+        min-width: 10em
+    }
+}
 
 .tpr-header__content {
     color: $tpr-colour-white;
-    display: flex;
     margin: 0;
 }
 
+.tpr-header__content > .govuk-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tpr-header__content > .govuk-list > li {
+    display: inline-block;
+    margin-bottom: 0;
+}
+
 @include tpr-header-media-query-m {
-    .tpr-header__content {
+    .tpr-header__content,
+    .tpr-header__content > .govuk-list {
+        display: flex;
         flex-direction: column;
         text-align: center;
     }
@@ -116,46 +133,50 @@ $tpr-header-left-width-xl: 200px;
     }
 }
 
-.tpr-header__content > a {
+.tpr-header__content a {
     font-weight: $tpr-font-weight-regular;
     line-height: $tpr-header-line-height;
     white-space: nowrap;
 }
 
-.tpr-header__content > a:link,
-.tpr-header__content > a:visited {
+.tpr-header__content a:link,
+.tpr-header__content a:visited {
     color: $tpr-colour-white;
 }
 
-.tpr-header__content > a:focus {
+.tpr-header__content a:focus {
     color: $govuk-focus-text-colour;
 }
 
-.tpr-header__content > a:active {
+.tpr-header__content a:active {
     @include govuk-focused-text;
 }
 
-.tpr-header__content > a {
+.tpr-header__content a {
     margin-right: $govuk-gutter;
 }
-.tpr-header__content > a:last-child {
+
+.tpr-header__content > a:last-child,
+.tpr-header__content > .govuk-list > li:last-child > a {
     margin-right: 0;
 }
-
 // Links are now stacked to save space, so remove the margin that would knock them off-centre.
 @include tpr-header-media-query-m {
-    .tpr-header__content > a {
+    .tpr-header__content a {
         margin-right: 0;
     }
 }
-
 // Now the links have room to spread out.
 @include tpr-header-media-query-l {
-    .tpr-header__content > a {
+    .tpr-header__content,
+    .tpr-header__content > .govuk-list {
+        display: block;
+    }
+
+    .tpr-header__content a {
         margin-right: $govuk-gutter;
     }
 }
-
 // For .tpr-context stack everything by default.
 .tpr-context .govuk-body {
     font-weight: $tpr-font-weight-regular;
@@ -166,14 +187,14 @@ $tpr-header-left-width-xl: 200px;
 .tpr-context .govuk-link:link, .tpr-context .govuk-link:visited {
     color: $tpr-colour-white;
 }
+
 .tpr-context .govuk-link:focus {
     color: $govuk-focus-text-colour;
     box-shadow: 0 -2px $govuk-focus-colour, 0 4px $tpr-colour-blue-marguerite;
 }
-
 // Required when the text inside .tpr-context__context-2 is short.
 .tpr-context__container {
-    width: 100%; 
+    width: 100%;
 }
 
 .tpr-context__context-1 {
@@ -185,7 +206,6 @@ $tpr-header-left-width-xl: 200px;
     background: $tpr-colour-violet;
     white-space: nowrap;
 }
-
 // Allow more space for .tpr-context__context-2 as the viewport width grows.
 .tpr-context__context-2 {
     color: $tpr-colour-white;
@@ -194,15 +214,14 @@ $tpr-header-left-width-xl: 200px;
     align-items: center;
     padding: $tpr-header-vertical-space $govuk-gutter-half;
 }
-
 // Hide context 2 on small viewports if empty
 .tpr-context__container--context-2-empty .tpr-context__context-2 {
     padding: 0;
 }
+
 .tpr-context__container--context-2-empty .tpr-context__context-3-inner {
     border-top: none;
 }
-
 // Use another div inside .tpr-context__context-3 so that at larger sizes a left border can come in on the inner element,
 // but not extend to the top and bottom of the outer element.
 // overflow: hidden prevents the border of .tpr-context__context-3-inner extending too far.
@@ -226,15 +245,13 @@ $tpr-header-left-width-xl: 200px;
         margin-right: 0;
     }
 }
-
-// Align spacing changes with those in .tpr-header inherited from .govuk-width-container. 
+// Align spacing changes with those in .tpr-header inherited from .govuk-width-container.
 // Calculations copied from the govuk-width-container mixin: https://github.com/alphagov/govuk-frontend/blob/137b806d7c308f98f75f8c78ecfdb7f760b27d39/package/govuk/objects/_width-container.scss
 @include govuk-media-query($from: tablet) {
     @supports (margin: unquote("max(calc(0px))")) {
         .tpr-context__context-1,
         .tpr-context__context-2,
         .tpr-context__context-3-inner {
-
             // Respect 'display cutout' safe area (avoids notches and rounded corners)
             $gutter-safe-area-right: calc(#{$govuk-gutter-half} + env(safe-area-inset-right));
             $gutter-safe-area-left: calc(#{$govuk-gutter-half} + env(safe-area-inset-left));
@@ -278,7 +295,6 @@ $tpr-header-left-width-xl: 200px;
         z-index: 1;
         align-items: center;
     }
-
     // Ensures the black background of .tpr-context__context-2 expands to cover the violet when .tpr-context__context-2 is empty and .tpr-context__context-3 is not rendered
     .tpr-context__container--context-2-empty.tpr-context__container--context-3-empty {
         display: flex;
@@ -324,7 +340,6 @@ $tpr-header-left-width-xl: 200px;
         align-items: center;
         background: $tpr-colour-black; // Ensures the black background covers the violet when the content of .tpr-context__context-2 is short or empty
     }
-
     // Ensures the height of .tpr-context__context-2 is consistent whether or not .tpr-context__context-3 is rendered
     // Vertical space should be equal to the sum of padding & margin on .tpr-context__context-3-inner
     .tpr-context__context-2::after {
@@ -347,35 +362,44 @@ $tpr-header-left-width-xl: 200px;
 .tpr-header__logo-img--print {
     display: none;
 }
+
 @media print {
     .tpr-header__inner {
         display: block;
     }
+
     .tpr-header__logo {
         float: left;
         margin-top: govuk-px-to-rem(5) * -1;
         margin-right: $govuk-gutter;
         padding-bottom: govuk-px-to-rem(10);
     }
+
     .tpr-header__logo-img--screen {
         display: none;
     }
+
     .tpr-header__logo-img--print {
         display: block;
     }
+
     .tpr-header__label {
         display: block;
     }
+
     .tpr-header__content > a:link,
     .tpr-header__content > a:visited {
         color: $govuk-link-colour;
     }
+
     .tpr-context {
         clear: both;
     }
+
     .tpr-context .govuk-body {
         color: $govuk-text-colour;
     }
+
     .tpr-context__context-1 {
         border-bottom: govuk-px-to-rem(1) solid $tpr-colour-blue-marguerite;
     }

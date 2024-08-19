@@ -151,7 +151,7 @@ steps:
           SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\bin\$(buildConfiguration)
           Contents: |
             ThePensionsRegulator.GovUk.Frontend*.nupkg
-            !ThePensionsRegulator.GovUk.Frontend*.symbols.nupkg
+            ThePensionsRegulator.GovUk.Frontend*.snupkg
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
@@ -162,7 +162,7 @@ steps:
           SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco\bin\$(buildConfiguration)
           Contents: |
             ThePensionsRegulator.Umbraco*.nupkg
-            !ThePensionsRegulator.Umbraco*.symbols.nupkg
+            ThePensionsRegulator.Umbraco*.snupkg
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
@@ -173,7 +173,7 @@ steps:
           SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend\bin\$(buildConfiguration)
           Contents: |
             ThePensionsRegulator.Frontend*.nupkg
-            !ThePensionsRegulator.Frontend*.symbols.nupkg
+            ThePensionsRegulator.Frontend*.snupkg
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
@@ -184,7 +184,7 @@ steps:
           SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\bin\$(buildConfiguration)
           Contents: |
             ThePensionsRegulator.GovUk.Frontend*.nupkg
-            !ThePensionsRegulator.GovUk.Frontend*.symbols.nupkg
+            ThePensionsRegulator.GovUk.Frontend*.snupkg
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
@@ -195,7 +195,7 @@ steps:
           SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\bin\$(buildConfiguration)
           Contents: |
             ThePensionsRegulator.Frontend*.nupkg
-            !ThePensionsRegulator.Frontend*.symbols.nupkg
+            ThePensionsRegulator.Frontend*.snupkg
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
@@ -206,7 +206,7 @@ steps:
           SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco.Testing\bin\$(buildConfiguration)
           Contents: |
             ThePensionsRegulator.Umbraco.Testing*.nupkg
-            !ThePensionsRegulator.Umbraco.Testing*.symbols.nupkg
+            ThePensionsRegulator.Umbraco.Testing*.snupkg
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 

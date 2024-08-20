@@ -117,7 +117,10 @@ govuk-umbraco-backoffice.css.map
 
 		<!-- Rich text editor data types import wwwroot\css\site.css so that consuming projects can add their own styles, including styles for the 'Formats' dropdown.
 		     However if there is no site.css the backoffice generates a request with a 404 response, so create a placeholder file to respond to that request. -->
-		<Message Text="Generating $(ProjectDir)wwwroot\css\site.css" Importance="high" Condition="Exists('$(ProjectDir)wwwroot') and !Exists('$(ProjectDir)wwwroot\css\site.css')" />
+		<PropertyGroup>
+			<GenerateUmbracoSiteCss Condition="Exists('$(ProjectDir)wwwroot') and !Exists('$(ProjectDir)wwwroot\css\site.css') and !Exists('$(ProjectDir)Styles\site.scss')">true</GenerateUmbracoSiteCss>
+		</PropertyGroup>
+		<Message Text="Generating $(ProjectDir)wwwroot\css\site.css" Importance="high" Condition="$(GenerateUmbracoSiteCss) == true" />
 		<ItemGroup>
 			<GovUkFrontendUmbracoSiteCssText Include="GovUkFrontendUmbracoSiteCssText">
 				<Text>
@@ -127,7 +130,7 @@ govuk-umbraco-backoffice.css.map
 			</GovUkFrontendUmbracoSiteCssText>
 			<GovUkFrontendUmbracoSiteCss Include="%(GovUkFrontendUmbracoSiteCssText.Text)" />
 		</ItemGroup>
-		<WriteLinesToFile File="$(ProjectDir)wwwroot\css\site.css" Lines="@(GovUkFrontendUmbracoSiteCss)" Overwrite="False" Condition="Exists('$(ProjectDir)wwwroot') and !Exists('$(ProjectDir)wwwroot\css\site.css')"/>
+		<WriteLinesToFile File="$(ProjectDir)wwwroot\css\site.css" Lines="@(GovUkFrontendUmbracoSiteCss)" Overwrite="False" Condition="$(GenerateUmbracoSiteCss) == true" />
 	</Target>
 
 </Project>

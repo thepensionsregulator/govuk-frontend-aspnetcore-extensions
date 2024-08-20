@@ -16,7 +16,7 @@
     var totalActionableTasks = taskStatuses.Count(x => x != TaskListTaskStatus.NotApplicable);
     var completedTasks = taskStatuses.Count(x => x == TaskListTaskStatus.Completed);
 
-    if (!Int32.TryParse(Model.Settings.Value<string>("headingLevel")?.Replace("Heading ", string.Empty), out var headingLevel))
+    if (!Int32.TryParse(Model.Settings.Value<string>(PropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out var headingLevel))
     {
         headingLevel = 2;
     }

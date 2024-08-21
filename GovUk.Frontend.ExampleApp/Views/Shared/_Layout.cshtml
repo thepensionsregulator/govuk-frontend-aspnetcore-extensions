@@ -48,6 +48,14 @@
     </header>
     <div class="tpr-main-wrapper">
         <div class="govuk-width-container">
+            @if (IsSectionDefined("back"))
+            {
+                @RenderSection("back")
+            }
+            else
+            {
+                <govuk-back-link href="/">Back</govuk-back-link>
+            }
             <main id="main" class="govuk-main-wrapper">
                 @RenderBody()
             </main>

@@ -5,6 +5,7 @@
 @import 'govuk/base';
 @import 'govuk/core/all';
 @import "govuk/objects/all";
+@import "govuk/components/accordion";
 @import "govuk/components/back-link";
 @import "govuk/components/button";
 @import "govuk/components/character-count";
@@ -64,6 +65,7 @@
 @import '_tpr-tag.scss';
 @import '_tpr-textarea.scss';
 @import '_tpr-notification-banner.scss';
+@import '_tpr-file-upload.scss';
 
 // Add different components and customisations that are not part of the GOV.UK Design System (or are in a later version than the one we're targeting)
 @import "_tpr-summary-card.scss";

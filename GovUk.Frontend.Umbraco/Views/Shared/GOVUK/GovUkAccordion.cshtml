@@ -1,0 +1,30 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Models
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Strings;
+@using Umbraco.Extensions
+@{
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+    var sections = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.AccordionSections)!;
+    if (!Int32.TryParse(Model.Settings?.Value<string>(PropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out var headingLevel))
+    {
+        headingLevel = 2;
+    }
+}
+<govuk-accordion id="@Model.Content.Key" class="@cssClasses" heading-level="@headingLevel">
+    @foreach (var section in sections.FilteredBlocks())
+    {
+        <govuk-accordion-item class="@(section.Settings.Value<string>(PropertyAliases.CssClasses))" expanded="@(section.Settings.Value<bool>(PropertyAliases.AccordionSectionExpanded))">
+            <govuk-accordion-item-heading>@(section.Content.Value<string>(PropertyAliases.AccordionSectionHeading))</govuk-accordion-item-heading>
+            @if (!string.IsNullOrWhiteSpace(section.Content.Value<string>(PropertyAliases.AccordionSectionSummary)))
+            {
+                <govuk-accordion-item-summary>@(section.Content.Value<string>(PropertyAliases.AccordionSectionSummary))</govuk-accordion-item-summary>
+            }
+            <govuk-accordion-item-content>@(section.Content.Value<IHtmlEncodedString>(PropertyAliases.AccordionSectionContent))</govuk-accordion-item-content>
+        </govuk-accordion-item>
+    }
+</govuk-accordion>

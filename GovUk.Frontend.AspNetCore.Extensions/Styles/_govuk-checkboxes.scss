@@ -6,11 +6,3 @@
     text-align: left;
     padding-left: 12px;
 }
-
-/* Before upgrading to govuk-frontend-aspnetcore v2.0.0-alpha1 and GOV.UK Frontend v5.1.0 checkbox inputs
-   had a z-index of one, placing them infront of their sibling <input/> tag. This broke automated tests
-   as they could not click on checkbox anymore. Adding this attribute back resolves this.
-*/
-.govuk-checkboxes__input {
-    z-index: 1;
-}

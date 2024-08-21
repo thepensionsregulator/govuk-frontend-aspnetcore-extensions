@@ -19,8 +19,7 @@ namespace GovUk.Frontend.Umbraco
     {
         public static IServiceCollection AddGovUkFrontendUmbraco(this IServiceCollection services)
         {
-            // Avoid adding scripts which require 'unsafe-inline' in the content security policy
-            return services.AddGovUkFrontendUmbraco(options => { options.AddImportsToHtml = false; });
+            return services.AddGovUkFrontendUmbraco(options => { });
         }
 
         public static IServiceCollection AddGovUkFrontendUmbraco(

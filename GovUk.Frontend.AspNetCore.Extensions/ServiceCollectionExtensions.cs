@@ -11,8 +11,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
     {
         public static IServiceCollection AddGovUkFrontendExtensions(this IServiceCollection services)
         {
-            // Avoid adding scripts which require 'unsafe-inline' in the content security policy
-            return services.AddGovUkFrontendExtensions(options => { options.AddImportsToHtml = false; });
+            return services.AddGovUkFrontendExtensions(options => { });
         }
 
         public static IServiceCollection AddGovUkFrontendExtensions(

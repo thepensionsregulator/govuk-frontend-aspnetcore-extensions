@@ -50,12 +50,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Allowed file types: Sets the message displayed if the file uploaded is not one of the supported types/extensions
+		/// File types: Sets the message displayed if an uploaded file is not an allowed file type.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("errorMessageAllowedFileExtensions")]
-		public virtual string ErrorMessageAllowedFileExtensions => this.Value<string>(_publishedValueFallback, "errorMessageAllowedFileExtensions");
+		[ImplementPropertyType("ErrorMessageAllowedFileTypes")]
+		public virtual string ErrorMessageAllowedFileTypes => this.Value<string>(_publishedValueFallback, "ErrorMessageAllowedFileTypes");
 
 		///<summary>
 		/// Maximum file size: Sets the message displayed if the file uploaded exceeds the maximum size

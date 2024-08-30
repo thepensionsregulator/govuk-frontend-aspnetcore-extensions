@@ -9,7 +9,7 @@ namespace ThePensionsRegulator.Frontend
     {
         public static IServiceCollection AddTprFrontend(this IServiceCollection services)
         {
-            return services.AddTprFrontend(options => { options.AddImportsToHtml = false; });
+            return services.AddTprFrontend(options => { });
         }
 
         public static IServiceCollection AddTprFrontend(

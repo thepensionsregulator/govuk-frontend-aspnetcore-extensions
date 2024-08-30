@@ -14,8 +14,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
     {
         public static IServiceCollection AddTprFrontendUmbraco(this IServiceCollection services)
         {
-            // Avoid adding scripts which require 'unsafe-inline' in the content security policy
-            return services.AddTprFrontendUmbraco(options => { options.AddImportsToHtml = false; });
+            return services.AddTprFrontendUmbraco(options => { });
         }
 
         public static IServiceCollection AddTprFrontendUmbraco(

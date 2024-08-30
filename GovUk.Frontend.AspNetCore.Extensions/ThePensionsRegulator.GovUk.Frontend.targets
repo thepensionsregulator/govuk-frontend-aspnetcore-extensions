@@ -48,7 +48,7 @@
 
 	<!-- In pipeline builds if a CSS file exists AspNetCore.SassCompiler won't overwrite it with the generated version, 
 	     so look for SCSS files which will generate CSS files, and delete the equivalent CSS file first -->
-	<Target Name="ThePensionsRegulatorGovUkFrontend_CleanGeneratedCss" BeforeTargets="Compile Sass">
+	<Target Name="ThePensionsRegulatorGovUkFrontend_CleanGeneratedCss" BeforeTargets="CoreClean">
 		<ItemGroup>
 			<ScssSourceFiles Include="$(MSBuildProjectDirectory)\Styles\*.scss" Exclude="$(MSBuildProjectDirectory)\Styles\_*.scss" />
 		</ItemGroup>

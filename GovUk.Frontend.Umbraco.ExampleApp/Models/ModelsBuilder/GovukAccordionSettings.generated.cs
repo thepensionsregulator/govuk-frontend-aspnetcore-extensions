@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Accordion settings</summary>
 	[PublishedModel("govukAccordionSettings")]
-	public partial class GovukAccordionSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukHeadingLevel
+	public partial class GovukAccordionSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -88,13 +88,5 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClassesForColumn")]
 		public virtual string CssClassesForColumn => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetCssClassesForColumn(this, _publishedValueFallback);
-
-		///<summary>
-		/// Heading level: Defaults to 2 if left blank.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("headingLevel")]
-		public virtual string HeadingLevel => global::Umbraco.Cms.Web.Common.PublishedModels.GovukHeadingLevel.GetHeadingLevel(this, _publishedValueFallback);
 	}
 }

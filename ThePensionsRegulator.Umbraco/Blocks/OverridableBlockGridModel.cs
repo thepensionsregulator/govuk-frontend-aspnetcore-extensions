@@ -146,6 +146,11 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         public int? GridColumns { get; set; }
 
         /// <summary>
+        /// Child columns default to 2/3 width as standard. Set this to <c>true</c> for sub-grids within parent grids.
+        /// </summary>
+        public bool ChildColumnsDefaultToFullWidth { get; set; }
+
+        /// <summary>
         /// Convert to a <see cref="BlockGridModel" />
         /// </summary>
         /// <param name="model"></param>

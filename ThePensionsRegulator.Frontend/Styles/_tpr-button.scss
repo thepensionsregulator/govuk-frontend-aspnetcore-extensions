@@ -15,12 +15,13 @@ $tpr-button-padding: 20px;
     color: $govuk-button-text-colour;
     border-width: 1px;
     border-color: transparent;
-    line-height: govuk-px-to-rem(24);
+    line-height: govuk-px-to-rem(30);
     border-radius: 8px;
     box-shadow: none;
     background: $govuk-button-background-colour url(/_content/ThePensionsRegulator.Frontend/tpr/chevron_right_white_24dp.svg) right center no-repeat;
     padding-left: $tpr-button-padding;
     padding-right: $tpr-button-padding *2;
+    height: $tpr-button-height;
 }
 
 govuk-button:focus:not(:active):not(:hover) {
@@ -51,12 +52,13 @@ govuk-button:focus:not(:active):not(:hover) {
         background-color: $tpr-colour-regent-st-blue;
     }
 
-    .govuk-button--secondary, .govuk-file-upload::file-selector-button {
-        color: $tpr-colour-royal-blue;
-        background: $tpr-colour-white;
-        border-color: $tpr-colour-royal-blue;
-        box-shadow: none;
-    }
+.govuk-button--secondary, .govuk-file-upload::file-selector-button {
+    color: $tpr-colour-royal-blue;
+    background: $tpr-colour-white;
+    border-color: $tpr-colour-royal-blue;
+    box-shadow: none;
+    height: $tpr-button-height;
+}
     // Only for links styled as secondary buttons, we need the extra weight of the a. selector to override GOV.UK color
     a.govuk-button--secondary:link, a.govuk-button--secondary:visited {
         color: $tpr-colour-royal-blue;

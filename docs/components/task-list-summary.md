@@ -37,4 +37,4 @@ This example has TPR styling:
 
 ## Umbraco
 
-When you add a 'Task list summary' component to a block list in Umbraco, it will automatically display the count of tasks for all 'Task list' components in the same block list or its descendants.
+When you add a 'Task list summary' component to a block grid or block list in Umbraco, it will automatically display the count of tasks for all 'Task list' components in the same block grid or block list or its descendants.

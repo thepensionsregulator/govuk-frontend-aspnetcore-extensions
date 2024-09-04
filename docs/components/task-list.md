@@ -68,7 +68,7 @@ Must be inside a `<govuk-task-list-task>` element.
 
 ## Umbraco
 
-Add the 'Task list' component to a block list, and add 'Task' components to the 'Task list'.
+Add the 'Task list' component to a block grid or block list, and add 'Task' components to the 'Task list'.
 
 ![Task list in Umbraco](/docs/images/task-list-umbraco.png)
 

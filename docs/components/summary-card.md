@@ -145,7 +145,7 @@ See [Summary list](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/m
 
 ## Umbraco
 
-Add the 'Summary card' component to a block list, and add 'Summary card action' and 'Summary list item' components to the 'Summary card'.
+Add the 'Summary card' component to a block grid or block list, and add 'Summary card action' and 'Summary list item' components to the 'Summary card'.
 
 ![Summary card in Umbraco](/docs/images/summary-card-umbraco.png)
 

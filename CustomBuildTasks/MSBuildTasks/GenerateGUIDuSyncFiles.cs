@@ -5,22 +5,32 @@ using System.Xml;
 
 namespace CustomBuildTasks.MSBuildTasks
 {
-    public class MyCustomTask : Task
+    public class GenerateGUIDuSyncFiles : Task
     {
+        [Required]
+        public string uSyncFilesPath { get; set; }
+
+        private string defaultOutputPath = "GUIDFileNames\\";
+
+        public string outputFilePath { get; set; }
+
+        [Required]
+        public string[] uSyncTypes { get; set; }
+
         public override bool Execute()
         {
             foreach (var type in uSyncTypes)
             {
                 var files = Directory.GetFiles($"{uSyncFilesPath}\\{type}");
 
-                var outputDirectiory = BuildOutputDirectory(type);
-                Directory.CreateDirectory(outputDirectiory);
+                var outputDirectory = BuildOutputDirectory(type);
+                Directory.CreateDirectory(outputDirectory);
                 foreach (var file in files)
                 {
                     var fileContent = File.ReadAllText(file);
                     var hash = fileContent.GetHashCode();
 
-                    var outputFilePath = BuildOutputFileName(file, outputDirectiory, type);
+                    var outputFilePath = BuildOutputFileName(file, outputDirectory, type);
 
                     if (!FileExistsAndIdentical(hash, outputFilePath))
                     {
@@ -32,20 +42,9 @@ namespace CustomBuildTasks.MSBuildTasks
             return true;
         }
 
-        [Required]
-        public string uSyncFilesPath { get; set; }
-
-        private string defaultOutputPath = "GUIDFileNames\\";
-
-        public string outputFilePath { get; set; }
-
-        [Required]
-        public string[] uSyncTypes { get; set; }
-
         private string BuildOutputFileName(string originalFileName, string outputPath, string uSyncType)
         {
             var guid = GetGuid(originalFileName, uSyncType);
-
             return $"{outputPath}\\{guid}.config";
         }
 

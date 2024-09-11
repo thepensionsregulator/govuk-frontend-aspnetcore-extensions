@@ -15,12 +15,13 @@ $tpr-button-padding: 20px;
     color: $govuk-button-text-colour;
     border-width: 1px;
     border-color: transparent;
-    line-height: govuk-px-to-rem(24);
+    line-height: govuk-px-to-rem(31);
     border-radius: 8px;
     box-shadow: none;
     background: $govuk-button-background-colour url(/_content/ThePensionsRegulator.Frontend/tpr/chevron_right_white_24dp.svg) right center no-repeat;
     padding-left: $tpr-button-padding;
     padding-right: $tpr-button-padding *2;
+    height: $tpr-button-height;
 }
 
 govuk-button:focus:not(:active):not(:hover) {

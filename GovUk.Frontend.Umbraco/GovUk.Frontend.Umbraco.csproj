@@ -126,6 +126,9 @@
 		<Content Update="uSync\v9\ContentTypes\govukaccordionsettingsnogrid.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukaccordionsettingsshared.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukdetailssettingsnogrid.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

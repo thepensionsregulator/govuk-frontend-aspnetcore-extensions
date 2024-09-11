@@ -18,14 +18,24 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Accordion settings (no grid)</summary>
-	[PublishedModel("govukAccordionSettingsNoGrid")]
-	public partial class GovukAccordionSettingsNoGrid : PublishedElementModel, IGovukAccordionSettingsShared, IGovukCssClasses
+	// Mixin Content Type with alias "govukAccordionSettingsShared"
+	/// <summary>Accordion settings (shared)</summary>
+	public partial interface IGovukAccordionSettingsShared : IPublishedElement
+	{
+		/// <summary>Heading level</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string HeadingLevel { get; }
+	}
+
+	/// <summary>Accordion settings (shared)</summary>
+	[PublishedModel("govukAccordionSettingsShared")]
+	public partial class GovukAccordionSettingsShared : PublishedElementModel, IGovukAccordionSettingsShared
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
-		public new const string ModelTypeAlias = "govukAccordionSettingsNoGrid";
+		public new const string ModelTypeAlias = "govukAccordionSettingsShared";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
@@ -34,14 +44,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<GovukAccordionSettingsNoGrid, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<GovukAccordionSettingsShared, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public GovukAccordionSettingsNoGrid(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public GovukAccordionSettingsShared(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -55,14 +65,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("headingLevel")]
-		public virtual string HeadingLevel => global::Umbraco.Cms.Web.Common.PublishedModels.GovukAccordionSettingsShared.GetHeadingLevel(this, _publishedValueFallback);
+		public virtual string HeadingLevel => GetHeadingLevel(this, _publishedValueFallback);
 
-		///<summary>
-		/// CSS classes: Applied to the outermost HTML element of the component.
-		///</summary>
+		/// <summary>Static getter for Heading level</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("cssClasses")]
-		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetHeadingLevel(IGovukAccordionSettingsShared that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "headingLevel");
 	}
 }

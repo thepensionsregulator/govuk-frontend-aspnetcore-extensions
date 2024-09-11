@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Accordion settings</summary>
 	[PublishedModel("tprAccordionSettings")]
-	public partial class TprAccordionSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
+	public partial class TprAccordionSettings : PublishedElementModel, IGovukAccordionSettingsShared, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -48,6 +48,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
+
+		///<summary>
+		/// Heading level: Defaults to 2 if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.2.0+7dff3a3")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingLevel")]
+		public virtual string HeadingLevel => global::Umbraco.Cms.Web.Common.PublishedModels.GovukAccordionSettingsShared.GetHeadingLevel(this, _publishedValueFallback);
 
 		///<summary>
 		/// CSS classes: Applied to the outermost HTML element of the component.

@@ -5,6 +5,10 @@
             <h2 class="govuk-accordion__section-heading" ng-bind-html="section.heading"></h2>
             <div class="govuk-accordion__section-summary govuk-body" ng-bind-html="section.summary" ng-if="section.summary"></div>
         </div>
-        <div class="govuk-accordion__section-content" ng-bind-html="section.content.markup"></div>
+        <div class="govuk-accordion__section-content">
+            <p class="backoffice-additional-blocks" ng-if="!section.blocks.contentData">No blocks.</p>
+            <p class="backoffice-additional-blocks" ng-if="section.blocks.contentData.length===1">1 block.</p>
+            <p class="backoffice-additional-blocks" ng-if="section.blocks.contentData.length>1">{{section.blocks.contentData.length}} blocks.</p>
+        </div>
     </div>
 </div>

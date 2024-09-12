@@ -8,7 +8,7 @@ We add support for:
 
 - Adding the following non-interactive components entirely in Umbraco:
 
-  - [Accordion](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/accordion.md)
+  - [Accordion](/docs/components/accordion.md)
   - [Details](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/details.md)
   - [Error summary](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/error-summary.md)
   - [Fieldset](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/fieldset.md)
@@ -94,6 +94,14 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 Umbraco GOV.UK Design System support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 
 ![ThePensionsRegulator.GovUk.Frontend.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend.Umbraco)
+
+## Contributing to this project
+
+This project prioritises the components required by The Pensions Regulator (TPR). Please open an issue if you find a bug, want to request improvements to a component we already support, or wish to implement a component we do not yet support. Pull requests are welcome.
+
+We also encourage contributions to the base project we're building upon, [govuk-frontend-aspnetcore](https://github.com/gunndabad/govuk-frontend-aspnetcore).
+
+See [Contributing to govuk-frontend-aspnetcore-extensions](CONTRIBUTING.md) for how to implement and test features.
 
 ## Disclaimer
 

@@ -4,7 +4,7 @@ For examples see [ASP.NET syntax for the Select component](https://github.com/gu
 
 ## Umbraco
 
-You can add a select component to a block list in Umbraco. For examples of this component in use, see the 'Select' page in the Umbraco example app.
+You can add a select component to a block grid or block list in Umbraco. For examples of this component in use, see the 'Select' page in the Umbraco example app.
 
 See [Validation](/docs/umbraco/validation.md) for how to validate a select component.
 

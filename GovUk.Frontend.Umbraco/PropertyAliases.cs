@@ -6,7 +6,7 @@
         public const string AccordionSections = "sections";
         public const string AccordionSectionHeading = "heading";
         public const string AccordionSectionSummary = "summary";
-        public const string AccordionSectionContent = "content";
+        public const string AccordionSectionBlocks = "blocks";
         public const string AccordionSectionExpanded = "expandSection";
         public const string Checkboxes = "checkboxes";
         public const string CheckboxValue = "value";

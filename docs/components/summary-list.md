@@ -4,7 +4,7 @@ For examples see [ASP.NET syntax for the Summary list component](https://github.
 
 ## Umbraco
 
-You can add a summary list component to a block list in Umbraco. For examples of this component in use, see the 'Summary list' page in the Umbraco example app.
+You can add a summary list component to a block grid or block list in Umbraco. For examples of this component in use, see the 'Summary list' page in the Umbraco example app.
 
 You can configure a fixed set of summary list items in the Umbraco backoffice, or you can supply summary list items at runtime from a database or other data source.
 

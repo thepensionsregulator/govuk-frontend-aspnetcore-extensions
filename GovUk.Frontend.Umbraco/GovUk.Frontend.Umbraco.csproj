@@ -141,10 +141,22 @@
 		<Content Update="uSync\v9\ContentTypes\govukfileuploadsettings.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridfourcolumnlayoutsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridfourequalcolumns.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukgridonequarterthreequarters.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukgridonethirdtwothirds.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridthreecolumnlayoutsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govukgridthreeequalcolumns.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govukgridthreequartersonequarter.config">

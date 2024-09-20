@@ -1,4 +1,4 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Tests.CustomValidation;
+﻿using GovUk.Frontend.AspNetCore.Extensions.UnitTests.CustomValidation;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     public class ClientSideValidationHtmlEnhancerTests
     {

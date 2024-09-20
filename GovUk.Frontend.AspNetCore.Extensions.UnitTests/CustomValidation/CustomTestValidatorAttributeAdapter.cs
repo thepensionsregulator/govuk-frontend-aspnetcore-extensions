@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Localization;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests.CustomValidation
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests.CustomValidation
 {
     public class CustomTestValidatorAttributeAdapter : AttributeAdapterBase<CustomTestValidatorAttribute>
     {

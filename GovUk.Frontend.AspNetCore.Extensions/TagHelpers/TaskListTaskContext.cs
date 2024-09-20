@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
+﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
     internal class TaskListTaskContext
     {
-        public (AttributeDictionary Attributes, HtmlString? Content) Name { get; internal set; }
-        public (AttributeDictionary Attributes, HtmlString? Content) Hint { get; internal set; }
-        public (AttributeDictionary Attributes, TaskListTaskStatus? Status, string? Content) Status { get; internal set; }
+        public TaskName Name { get; set; } = new();
+        public Hint? Hint { get; set; }
+        public TaskStatus Status { get; set; } = new();
 
         public void ThrowIfIncomplete()
         {

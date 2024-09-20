@@ -146,10 +146,6 @@
 			<PackagePath>build;buildTransitive</PackagePath>
 		</Content>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_govuk-task-list.scss" />
-	</ItemGroup>
 	
 	<ItemGroup>
 	  <Content Update="sasscompiler.json" Pack="false">

@@ -1,7 +1,7 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using NUnit.Framework;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     public class CompaniesHouseCompanyNumberAttributeTest
     {

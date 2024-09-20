@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests.CustomValidation
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests.CustomValidation
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class CustomTestValidatorAttribute : ValidationAttribute

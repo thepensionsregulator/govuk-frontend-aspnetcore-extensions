@@ -24,39 +24,39 @@
     color: $govuk-link-colour;
 }
 
-.govuk-task-list__status {
+.govuk-task-list__status > .govuk-tag {
     font-weight: bold;
     padding: govuk-spacing(1) govuk-spacing(4);
     min-width: 8.25rem;
     text-align: center;
 }
 
-.govuk-task-list__status--not-applicable {
+.govuk-task-list__status--not-applicable > .govuk-tag {
     color: $tpr-colour-zambezi;
     background: transparent;
 }
 
-.govuk-task-list__status--cannot-start-yet {
+.govuk-task-list__status--cannot-start-yet > .govuk-tag {
     color: $tpr-colour-eclipse;
     background-color: $tpr-colour-whisper;
 }
 
-.govuk-task-list__status--not-started {
+.govuk-task-list__status--not-started > .govuk-tag {
     color: $tpr-colour-white;
     background-color: govuk-tint($tpr-colour-violet,20);
 }
 
-.govuk-task-list__status--incomplete {
+.govuk-task-list__status--incomplete > .govuk-tag {
     color: govuk-shade($tpr-colour-violet, 16);
     background-color: govuk-tint($tpr-colour-violet, 75);
 }
 
-.govuk-task-list__status--completed {
+.govuk-task-list__status--completed > .govuk-tag {
     color: $tpr-colour-eclipse;
     background-color: transparent;
 }
 
-.govuk-task-list__status--error {
+.govuk-task-list__status--error > .govuk-tag {
     color: govuk-shade($tpr-colour-fire-brick, 30);
     background-color: govuk-tint($tpr-colour-fire-brick, 75);
 }

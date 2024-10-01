@@ -20,7 +20,7 @@
         @foreach (var task in tasks)
         {
             var hint = task.Content.Value<IHtmlEncodedString>("hint");
-            var link = task.Content.Value<Umbraco.Cms.Core.Models.Link>("link")?.Url;
+            var link = task.Content.Value<Link>("link")?.Url;
             var statusText = task.Settings.Value<string>("statusText");
             var status = task.Settings.Value<string>("status")?.Replace(" ", string.Empty);
             <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>(PropertyAliases.CssClasses))">
@@ -41,7 +41,7 @@
                         var defaultTextForStatus = parsedStatus.AsText() ?? string.Empty;
                         textForStatus = @Umbraco.GetDictionaryValueOrDefault($"Task list - {defaultTextForStatus}", defaultTextForStatus);
                     }
-                    <govuk-task-list-task-status status="@parsedStatus" tag="@(parsedStatus != TaskListTaskStatus.Completed && parsedStatus != TaskListTaskStatus.NotApplicable)">@textForStatus</govuk-task-list-task-status>
+                    <govuk-task-list-task-status status="@parsedStatus">@textForStatus</govuk-task-list-task-status>
                 }
             </govuk-task-list-task>
         }

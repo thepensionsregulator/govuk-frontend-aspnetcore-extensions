@@ -21,6 +21,7 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
     public class RichTextEditorPropertyValueConverter : RteMacroRenderingValueConverter
     {
         private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
+        private readonly List<string> _propertyEditorAliases = new();
 
         public RichTextEditorPropertyValueConverter(IUmbracoContextAccessor umbracoContextAccessor,
             IMacroRenderer macroRenderer,
@@ -28,6 +29,7 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
             HtmlUrlParser urlParser,
             HtmlImageSourceParser imageSourceParser,
             IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
+            IEnumerable<IRichTextPropertyEditorAliasProvider> propertyEditorAliasProviders,
             IApiRichTextElementParser apiRichTextElementParser,
             IApiRichTextMarkupParser apiRichTextMarkupParser,
             IPartialViewBlockEngine partialViewBlockEngine,
@@ -53,6 +55,13 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
                 deliveryApiSettings)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
+            if (propertyEditorAliasProviders is not null)
+            {
+                foreach (var aliasProvider in propertyEditorAliasProviders)
+                {
+                    _propertyEditorAliases.AddRange(aliasProvider.PropertyEditorAliases());
+                }
+            }
         }
 
         /// <inheritdoc />
@@ -66,6 +75,12 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
 
         /// <inheritdoc />
         public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Snapshot;
+
+        /// <inheritdoc />
+        public override bool IsConverter(IPublishedPropertyType propertyType)
+        {
+            return _propertyEditorAliases.Contains(propertyType.EditorAlias);
+        }
     }
 
 

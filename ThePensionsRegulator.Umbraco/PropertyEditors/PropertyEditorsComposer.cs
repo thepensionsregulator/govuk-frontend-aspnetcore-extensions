@@ -1,4 +1,6 @@
-﻿using Umbraco.Cms.Core.Composing;
+﻿using GovUk.Frontend.Umbraco.PropertyEditors;
+using Microsoft.Extensions.DependencyInjection;
+using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
 
@@ -13,6 +15,7 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors
         {
             builder.PropertyValueConverters().Remove<RteMacroRenderingValueConverter>();
             builder.PropertyValueConverters().Remove<MultiUrlPickerValueConverter>();
+            builder.Services.AddTransient<IRichTextPropertyEditorAliasProvider, DefaultRichTextPropertyEditorAliasProvider>();
         }
     }
 }

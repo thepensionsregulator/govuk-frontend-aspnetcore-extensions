@@ -1,6 +1,6 @@
 # Task list
 
-[Task list component (pre-release)](https://deploy-preview-1994--govuk-design-system-preview.netlify.app/components/task-list/)
+[Task list component](https://design-system.service.gov.uk/components/task-list/)
 
 ## Example
 
@@ -12,12 +12,12 @@
     </govuk-task-list-task>
     <govuk-task-list-task href="https://example.org/task-2">
         <govuk-task-list-task-name>Another thing to do</govuk-task-list-task-name>
-        <govuk-task-list-task-status status="Incomplete" />
+        <govuk-task-list-task-status status="Incomplete" tag-class="custom-class" />
     </govuk-task-list-task>
     <govuk-task-list-task href="https://example.org/task-3">
         <govuk-task-list-task-name>Yet <i>another</i> thing to do</govuk-task-list-task-name>
         <govuk-task-list-task-hint>This thing has an <strong>important deadline</strong> you need to know about.</govuk-task-list-task-hint>
-        <govuk-task-list-task-status status="Completed" />
+        <govuk-task-list-task-status status="Completed" tag="false" />
     </govuk-task-list-task>
 </govuk-task-list>
 ```
@@ -59,9 +59,11 @@ Must be inside a `<govuk-task-list-task>` element.
 
 ### `<govuk-task-list-task-status>`
 
-| Attribute | Type                 | Description                       |
-| --------- | -------------------- | --------------------------------- |
-| `status`  | `TaskListTaskStatus` | The status of the task. Optional. |
+| Attribute | Type                 | Description                                                                                                                    |
+| --------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `status`  | `TaskListTaskStatus` | The status of the task. Optional.                                                                                              |
+| `tag`     | `bool`               | Sets whether to wrap the status in a [tag component](https://design-system.service.gov.uk/components/tag/). Default is `true`. |
+| `tag-*`   |                      | Additional attributes to add to the generated tag component.                                                                   |
 
 The content is the status tag, if it needs to be different from the value of the `status` attribute.\
 Must be inside a `<govuk-task-list-task>` element.

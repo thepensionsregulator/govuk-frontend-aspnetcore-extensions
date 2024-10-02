@@ -1,6 +1,6 @@
 # Task list summary
 
-This is part of the [Task list pages](https://design-system.service.gov.uk/patterns/task-list-pages/) pattern.
+This component used to be part of the [Complete multiple tasks](https://design-system.service.gov.uk/patterns/complete-multiple-tasks/) pattern. It was removed from the GOV.UK Design System when task list was added as a component, but it can still be used.
 
 ## Example
 

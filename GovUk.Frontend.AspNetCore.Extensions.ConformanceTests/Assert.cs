@@ -26,7 +26,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
                     DiffConverter.Append(diff, sb);
                 }
 
-                throw new InvalidOperationException(sb.ToString());
+                NUnit.Framework.Assert.Fail(sb.ToString());
+                //throw new InvalidOperationException(sb.ToString());
             }
         }
 

@@ -27,7 +27,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
                 }
 
                 NUnit.Framework.Assert.Fail(sb.ToString());
-                //throw new InvalidOperationException(sb.ToString());
             }
         }
 

@@ -6,9 +6,10 @@
 @using ThePensionsRegulator.Umbraco.Blocks;
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Extensions
+@using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases;
 @{
-    var text = Model.Content.Value<string>("text");
-    var link = Model.Content.Value<Link>("link");
+    var text = Model.Content.Value<string>(TprPropertyAliases.TprBackToMenuText);
+    var link = Model.Content.Value<Link>(TprPropertyAliases.TprBackToMenuLink);
     if (link is null) { return; }
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }

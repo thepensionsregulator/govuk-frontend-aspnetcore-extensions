@@ -3,6 +3,7 @@ using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
+using Umbraco.Cms.Core.Strings;
 using Core = Umbraco.Cms.Core;
 
 namespace ThePensionsRegulator.Umbraco.Testing
@@ -72,7 +73,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateRichTextProperty(string propertyAlias, string? value)
+        public static IPublishedProperty CreateRichTextProperty(string propertyAlias, IHtmlEncodedString? value)
         {
             return CreateProperty(propertyAlias, CreatePropertyType(RICH_TEXT_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.TinyMce, new RichTextConfiguration()), value);
         }

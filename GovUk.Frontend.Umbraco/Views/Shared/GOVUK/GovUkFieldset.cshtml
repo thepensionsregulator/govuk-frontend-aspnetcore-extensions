@@ -43,8 +43,8 @@
 <govuk-fieldset class="@cssClass" described-by="@describedBy">
     <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-fieldset")">@legend</govuk-fieldset-legend>
     @if (hasFieldsetError){
-        @:<div class="govuk-grid-row @fieldsetErrorClasses">
-        @:<div class="govuk-grid-column govuk-grid-column-full">
+        @:<div class="@HtmlClassNames.Row @fieldsetErrorClasses">
+        @:<div class="@HtmlClassNames.Column @HtmlClassNames.ColumnFullWidth">
     }
     @await Html.PartialAsync("GOVUK/BlockList", blocks)
     @if (hasFieldsetError){

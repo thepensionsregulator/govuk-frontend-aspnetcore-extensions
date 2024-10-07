@@ -1,5 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
@@ -14,6 +15,14 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
     {
         internal const string TagName = "govuk-task-list-task";
         private const string TaskHrefAttributeName = "href";
+        internal const string LinkAttributesPrefix = "link-";
+
+        /// <summary>
+        /// Additional attributes to add to the generated <c>a</c> element where <c>.govuk-link</c> is applied.
+        /// </summary>
+        [HtmlAttributeName(DictionaryAttributePrefix = LinkAttributesPrefix)]
+
+        public IDictionary<string, string?>? LinkAttributes { get; set; } = new Dictionary<string, string?>();
 
         /// <summary>
         /// A link to the task.
@@ -39,7 +48,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
             {
                 Attributes = output.Attributes.ToAttributeDictionary(),
                 Name = taskContext.Name,
-                Href = Href,
+                Link = Href is not null ? new Link { Attributes = LinkAttributes.ToAttributeDictionary(), Href = Href } : null,
                 Status = taskContext.Status,
                 Hint = taskContext.Hint
             });

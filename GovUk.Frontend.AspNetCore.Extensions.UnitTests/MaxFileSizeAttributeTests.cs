@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     [TestFixture]
     public class MaxFileSizeAttributeAttributeTests

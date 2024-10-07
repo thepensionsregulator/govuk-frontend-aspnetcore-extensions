@@ -29,7 +29,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
                 }
             }
 
-            taskContext.Hint = (output.Attributes.ToAttributeDictionary(), htmlContent);
+            taskContext.Hint = new Hint { Attributes = output.Attributes.ToAttributeDictionary(), Content = htmlContent };
 
             output.SuppressOutput();
         }

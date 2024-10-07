@@ -12,8 +12,10 @@
 		<PropertyGroup>
 			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
 		</PropertyGroup>
-		<Message Text="You are using the following version of GOV.UK Frontend. You can run 'git submodule update' to check for updates." Condition="Exists('$(GovUkFrontEndFolder)')" />
-		<Exec Command="git describe --tags" Condition="Exists('$(GovUkFrontEndFolder)')" WorkingDirectory="$(GovUkFrontEndFolder)" />
+		<Exec Command="git describe --tags" Condition="Exists('$(GovUkFrontEndFolder)')" WorkingDirectory="$(GovUkFrontEndFolder)" ConsoleToMsBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="GovUkFrontEndVersion" />
+		</Exec>
+		<Message Text="You are using GOV.UK Frontend $(GovUkFrontEndVersion). You can run 'git submodule update' to check for updates." Condition="Exists('$(GovUkFrontEndFolder)')" />
 		<Message Text="Installing GOV.UK Frontend submodule" Condition="!Exists('$(GovUkFrontEndFolder)')" />
 		<Exec Command="git submodule update --init" Condition="!Exists('$(GovUkFrontEndFolder)')" />
 

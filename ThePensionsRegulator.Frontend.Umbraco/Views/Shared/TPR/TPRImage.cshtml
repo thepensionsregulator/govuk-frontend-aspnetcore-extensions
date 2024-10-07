@@ -1,8 +1,9 @@
-﻿@using Umbraco.Extensions
+﻿@using ThePensionsRegulator.Frontend.Umbraco
+@using Umbraco.Extensions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
 
 @{
-    var typedMediaPickerSingle = Model.Content.Value<Umbraco.Cms.Core.Models.MediaWithCrops>("image");
+    var typedMediaPickerSingle = Model.Content.Value<Umbraco.Cms.Core.Models.MediaWithCrops>(PropertyAliases.TprImage);
     if (typedMediaPickerSingle != null)
     {
         <img src="@typedMediaPickerSingle.MediaUrl()" alt="@typedMediaPickerSingle.Name" class="tpr-image" />

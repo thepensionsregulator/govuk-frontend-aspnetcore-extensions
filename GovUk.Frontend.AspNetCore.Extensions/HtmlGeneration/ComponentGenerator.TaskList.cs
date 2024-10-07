@@ -1,5 +1,7 @@
+using GovUk.Frontend.AspNetCore.Extensions.TagHelpers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -10,9 +12,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
     {
         internal const string TaskListElement = "ul";
         internal const string TaskListTaskElement = "li";
-        internal const string TaskListTaskNameElement = "span";
-        internal const string TaskListHintElement = "span";
-        internal const string TaskListStatusElement = "span";
+        internal const string TaskListTaskNameElement = "div";
+        internal const string TaskListHintElement = "div";
+        internal const string TaskListStatusElement = "div";
 
         public TagBuilder GenerateTaskList(
             AttributeDictionary? attributes,
@@ -21,86 +23,170 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             Guard.ArgumentNotNull(nameof(tasks), tasks);
             Guard.ArgumentValid(nameof(tasks), "A task list must contain at least one task", tasks.Any());
 
-            var tagBuilder = new TagBuilder(TaskListElement);
-            if (attributes != null) { tagBuilder.MergeAttributes(attributes); }
-            tagBuilder.MergeCssClass("govuk-task-list");
+            var taskListTagBuilder = new TagBuilder(TaskListElement);
+            if (attributes is not null) { taskListTagBuilder.MergeAttributes(attributes); }
+            taskListTagBuilder.MergeCssClass("govuk-task-list");
 
             var taskNumber = 1;
             foreach (var task in tasks)
             {
                 Guard.ArgumentValid(nameof(tasks), "Task name cannot be null or empty", task.Name.Content != null);
 
-                string taskId = GenerateTaskId(attributes, taskNumber, task);
-                var itemTagBuilder = new TagBuilder(TaskListTaskElement);
-                if (task.Attributes != null) { itemTagBuilder.MergeAttributes(task.Attributes); }
-                if (!itemTagBuilder.Attributes.ContainsKey("id")) { itemTagBuilder.MergeAttribute("id", taskId); }
-                itemTagBuilder.MergeCssClass("govuk-task-list__item");
-                tagBuilder.InnerHtml.AppendHtml(itemTagBuilder);
+                var taskId = BuildTaskId(attributes, taskNumber, task);
+                var hintId = BuildHintId(task, taskId);
+                var statusId = BuildStatusId(task, taskId);
 
-                var taskNameTagBuilder = new TagBuilder(TaskListTaskNameElement);
-                taskNameTagBuilder.MergeAttributes(task.Name.Attributes);
-                taskNameTagBuilder.MergeCssClass("govuk-task-list__task-name-and-hint");
+                var taskTagBuilder = new TagBuilder(TaskListTaskElement);
+                if (task.Attributes is not null) { taskTagBuilder.MergeAttributes(task.Attributes); }
+                if (!taskTagBuilder.Attributes.ContainsKey("id")) { taskTagBuilder.MergeAttribute("id", taskId); }
+                taskListTagBuilder.InnerHtml.AppendHtml(taskTagBuilder);
 
-                var statusText = TaskListTaskStatusText(task.Status.Status, task.Status.Content);
-
-                if (!string.IsNullOrEmpty(task.Href) && task.Status.Status != TaskListTaskStatus.NotApplicable && task.Status.Status != TaskListTaskStatus.CannotStartYet)
+                if (ShouldLinkToTask(task))
                 {
-                    var taskLinkTagBuilder = new TagBuilder("a");
-                    taskLinkTagBuilder.MergeAttribute("href", task.Href);
-                    taskLinkTagBuilder.MergeCssClass("govuk-link");
-                    taskLinkTagBuilder.MergeCssClass("govuk-task-list__link");
-                    taskLinkTagBuilder.InnerHtml.AppendHtml(task.Name.Content!);
-                    taskNameTagBuilder.InnerHtml.AppendHtml(taskLinkTagBuilder);
-                    itemTagBuilder.MergeCssClass("govuk-task-list__item--with-link");
-
-                    if (!string.IsNullOrEmpty(statusText))
-                    {
-                        var statusId = task.Status.Attributes.ContainsKey("id") ? task.Status.Attributes["id"] : taskId + "-status";
-                        taskLinkTagBuilder.MergeAttribute("aria-describedby", statusId);
-                    }
+                    taskTagBuilder.MergeCssClass("govuk-task-list__item--with-link");
                 }
-                else
+                taskTagBuilder.MergeCssClass("govuk-task-list__item");
+
+                taskTagBuilder.InnerHtml.AppendHtml(BuildNameAndHint(task, hintId, statusId));
+
+                if (!string.IsNullOrEmpty(statusId))
                 {
-                    var unlinkedTaskTagBuilder = new TagBuilder("span");
-                    unlinkedTaskTagBuilder.MergeCssClass("govuk-task-list__task-no-link");
-                    unlinkedTaskTagBuilder.InnerHtml.AppendHtml(task.Name.Content!);
-                    taskNameTagBuilder.InnerHtml.AppendHtml(unlinkedTaskTagBuilder);
-                }
-
-                if (task.Hint.Content != null)
-                {
-                    var hintTagBuilder = new TagBuilder(TaskListHintElement);
-                    hintTagBuilder.MergeAttributes(task.Hint.Attributes);
-                    hintTagBuilder.MergeCssClass("govuk-task-list__task_hint");
-                    hintTagBuilder.InnerHtml.AppendHtml(task.Hint.Content);
-                    taskNameTagBuilder.InnerHtml.AppendHtml(hintTagBuilder);
-                }
-
-                itemTagBuilder.InnerHtml.AppendHtml(taskNameTagBuilder);
-
-                if (!string.IsNullOrEmpty(statusText))
-                {
-                    var statusOuterTagBuilder = new TagBuilder(TaskListStatusElement);
-                    statusOuterTagBuilder.MergeCssClass("govuk-task-list__status-container");
-
-                    var statusInnerTagBuilder = new TagBuilder("span");
-                    statusInnerTagBuilder.MergeAttributes(task.Status.Attributes);
-                    statusInnerTagBuilder.MergeCssClass("govuk-task-list__status");
-                    if (task.Status.Status.HasValue)
-                    {
-                        statusInnerTagBuilder.MergeCssClass(TaskStatusCssClass(task.Status.Status.Value));
-                    }
-                    if (!statusInnerTagBuilder.Attributes.ContainsKey("id")) { statusInnerTagBuilder.MergeAttribute("id", taskId + "-status"); }
-
-                    statusInnerTagBuilder.InnerHtml.AppendHtml(statusText);
-                    statusOuterTagBuilder.InnerHtml.AppendHtml(statusInnerTagBuilder);
-                    itemTagBuilder.InnerHtml.AppendHtml(statusOuterTagBuilder);
+                    taskTagBuilder.InnerHtml.AppendHtml(BuildStatus(task, statusId));
                 }
 
                 taskNumber++;
             }
 
-            return tagBuilder;
+            return taskListTagBuilder;
+        }
+
+        private static TagBuilder BuildNameAndHint(TaskListTask task, string? hintId, string? statusId)
+        {
+            var taskNameAndHintTagBuilder = new TagBuilder(TaskListTaskNameElement);
+            taskNameAndHintTagBuilder.MergeCssClass("govuk-task-list__name-and-hint");
+
+            if (ShouldLinkToTask(task))
+            {
+                taskNameAndHintTagBuilder.InnerHtml.AppendHtml(BuildLinkToTask(task, statusId, hintId));
+            }
+            else
+            {
+                taskNameAndHintTagBuilder.InnerHtml.AppendHtml(BuildUnlinkedTaskName(task));
+            }
+
+            if (!string.IsNullOrEmpty(hintId))
+            {
+                taskNameAndHintTagBuilder.InnerHtml.AppendHtml(BuildHint(task, hintId));
+            }
+
+            return taskNameAndHintTagBuilder;
+        }
+
+        private static bool ShouldLinkToTask(TaskListTask task)
+        {
+            return !string.IsNullOrEmpty(task.Link?.Href) && task.Status.Status != TaskListTaskStatus.NotApplicable && task.Status.Status != TaskListTaskStatus.CannotStartYet;
+        }
+
+        private TagBuilder BuildStatus(TaskListTask task, string? statusId)
+        {
+            var statusOuterTagBuilder = new TagBuilder(TaskListStatusElement);
+
+            if (task.Status.Status.HasValue)
+            {
+                statusOuterTagBuilder.MergeCssClass(TaskStatusCssClass(task.Status.Status.Value));
+            }
+            if (task.Status.Attributes is not null)
+            {
+                statusOuterTagBuilder.MergeAttributes(task.Status.Attributes);
+            }
+            statusOuterTagBuilder.MergeCssClass("govuk-task-list__status");
+            if (!statusOuterTagBuilder.Attributes.ContainsKey("id")) { statusOuterTagBuilder.MergeAttribute("id", statusId); }
+
+            var statusText = task.Status.Status.AsText(task.Status.Content);
+            if (task.Status.Tag is not null)
+            {
+                var statusInnerTagBuilder = new TagBuilder(TaskListTaskStatusTagHelper.StatusTagElement);
+                statusInnerTagBuilder.MergeAttributes(task.Status.Tag.Attributes);
+                statusInnerTagBuilder.MergeCssClass("govuk-tag");
+
+                statusInnerTagBuilder.InnerHtml.AppendHtml(statusText);
+                statusOuterTagBuilder.InnerHtml.AppendHtml(statusInnerTagBuilder);
+            }
+            else
+            {
+                statusOuterTagBuilder.InnerHtml.AppendHtml(statusText);
+            }
+
+            return statusOuterTagBuilder;
+        }
+
+        private static TagBuilder BuildHint(TaskListTask task, string? hintId)
+        {
+            var hintTagBuilder = new TagBuilder(TaskListHintElement);
+            hintTagBuilder.Attributes.Add("id", hintId);
+            hintTagBuilder.MergeAttributes(task.Hint!.Attributes);
+            hintTagBuilder.MergeCssClass("govuk-task-list__hint");
+            hintTagBuilder.InnerHtml.AppendHtml(task.Hint.Content!);
+            return hintTagBuilder;
+        }
+
+        private static string? BuildStatusId(TaskListTask task, string taskId)
+        {
+            if (!task.Status.Status.HasValue && string.IsNullOrEmpty(task.Status.Content?.ToHtmlString())) { return null; }
+
+            string statusId = string.Empty;
+            if (task.Status.Attributes.ContainsKey("id"))
+            {
+                statusId = task.Status.Attributes["id"]!;
+            }
+            if (string.IsNullOrEmpty(statusId))
+            {
+                statusId = $"{taskId}-status";
+            }
+            return statusId;
+        }
+
+        private static string? BuildHintId(TaskListTask task, string taskId)
+        {
+            if (task.Hint?.Content is null) { return null; }
+
+            string hintId = string.Empty;
+            if (task.Hint.Attributes.ContainsKey("id"))
+            {
+                hintId = task.Hint.Attributes["id"]!;
+            }
+            if (string.IsNullOrEmpty(hintId))
+            {
+                hintId = $"{taskId}-hint";
+            }
+            return hintId;
+        }
+
+        private static TagBuilder BuildUnlinkedTaskName(TaskListTask task)
+        {
+            var unlinkedTaskTagBuilder = new TagBuilder("div");
+            unlinkedTaskTagBuilder.MergeAttributes(task.Name.Attributes);
+            unlinkedTaskTagBuilder.InnerHtml.AppendHtml(task.Name.Content!);
+            return unlinkedTaskTagBuilder;
+        }
+
+        private static TagBuilder BuildLinkToTask(TaskListTask task, string? statusId, string? hintId)
+        {
+            if (task?.Link is null) { throw new ArgumentException($"{nameof(task)} cannot be null and must have a {nameof(task.Link)}.", nameof(task)); }
+
+            var taskLinkTagBuilder = new TagBuilder("a");
+            taskLinkTagBuilder.MergeAttribute("href", task.Link.Href);
+            taskLinkTagBuilder.MergeAttributes(task.Link.Attributes);
+            taskLinkTagBuilder.MergeCssClass("govuk-task-list__link");
+            taskLinkTagBuilder.MergeCssClass("govuk-link");
+            taskLinkTagBuilder.InnerHtml.AppendHtml(task.Name.Content!);
+
+            var linkDescribedBy = new List<string>();
+            if (!string.IsNullOrEmpty(hintId)) { linkDescribedBy.Add(hintId); }
+            if (!string.IsNullOrEmpty(statusId)) { linkDescribedBy.Add(statusId); }
+            if (linkDescribedBy.Any()) { taskLinkTagBuilder.MergeAttribute("aria-describedby", string.Join(' ', linkDescribedBy)); }
+
+            return taskLinkTagBuilder;
         }
 
         private string TaskStatusCssClass(TaskListTaskStatus status)
@@ -108,33 +194,19 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             return "govuk-task-list__status-" + Regex.Replace(status.ToString(), "([A-Z])", "-$1").ToLowerInvariant();
         }
 
-        public static string? TaskListTaskStatusText(TaskListTaskStatus? status, string? customStatus = null)
-        {
-            if (!string.IsNullOrEmpty(customStatus))
-            {
-                return customStatus;
-            }
-            else if (status.HasValue)
-            {
-                var statusText = Regex.Replace(status.ToString()!, "([A-Z])", " $1").ToLowerInvariant().Trim();
-                return statusText.Substring(0, 1).ToUpperInvariant() + statusText.Substring(1);
-            }
-            else return null;
-        }
 
-        private static string GenerateTaskId(AttributeDictionary? attributes, int taskNumber, TaskListTask task)
+        private static string BuildTaskId(AttributeDictionary? taskListAttributes, int taskNumber, TaskListTask task)
         {
             string taskId = string.Empty;
-            if (task.Attributes != null && task.Attributes.ContainsKey("id"))
+            if (task.Attributes is not null && task.Attributes.ContainsKey("id"))
             {
                 taskId = task.Attributes["id"]!;
             }
-            else
+            if (string.IsNullOrEmpty(taskId) && taskListAttributes is not null && taskListAttributes.ContainsKey("id"))
             {
-                taskId = Regex.Replace(Regex.Replace(task.Name.Content!.Value!, "<.*?>", string.Empty, RegexOptions.IgnoreCase), "[^A-Z0-9- ]", string.Empty, RegexOptions.IgnoreCase).Replace(" ", "-").ToLowerInvariant();
+                taskId = taskListAttributes["id"] + "-" + taskNumber;
             }
-            if (string.IsNullOrEmpty(taskId)) { taskId = "task-" + taskNumber; }
-            if (attributes != null && attributes.ContainsKey("id")) { taskId = attributes["id"] + "-" + taskId; }
+            if (string.IsNullOrEmpty(taskId)) { taskId = "task-list-" + taskNumber; }
 
             return taskId;
         }

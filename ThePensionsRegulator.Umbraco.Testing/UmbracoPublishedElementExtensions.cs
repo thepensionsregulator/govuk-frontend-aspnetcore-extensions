@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Strings;
 
 namespace ThePensionsRegulator.Umbraco.Testing
 {
@@ -52,6 +53,36 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <param name="alias">The alias of the Umbraco property to mock.</param>
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+        public static Mock<T> SetupUmbracoRichTextPropertyValue<T>(this T publishedElement, string alias, IHtmlEncodedString? value) where T : class, IPublishedElement
+        {
+            return Mock.Get(publishedElement).SetupUmbracoRichTextPropertyValue(alias, value);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a rich text data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+        public static Mock<T> SetupUmbracoRichTextPropertyValue<T>(this Mock<T> publishedElement, string alias, IHtmlEncodedString? value) where T : class, IPublishedElement
+        {
+            // The property value converter for rich text properties in Umbraco returns them as HtmlEncodedString, which SetupUmbracoPropertyValue will set up,
+            // but Umbraco also supports using Content.Value<string>("alias") so we should too.
+            var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
+            if (overridablePublishedElement != null)
+            {
+                overridablePublishedElement.Setup(x => x.Value<string?>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value.ToString());
+            }
+
+            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateRichTextProperty);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a rich text data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
         public static Mock<T> SetupUmbracoRichTextPropertyValue<T>(this T publishedElement, string alias, string? value) where T : class, IPublishedElement
         {
             return Mock.Get(publishedElement).SetupUmbracoRichTextPropertyValue(alias, value);
@@ -65,7 +96,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
         public static Mock<T> SetupUmbracoRichTextPropertyValue<T>(this Mock<T> publishedElement, string alias, string? value) where T : class, IPublishedElement
         {
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateRichTextProperty);
+            return SetupUmbracoRichTextPropertyValue(publishedElement, alias, value is not null ? new HtmlEncodedString(value) : null);
         }
 
         /// <summary>

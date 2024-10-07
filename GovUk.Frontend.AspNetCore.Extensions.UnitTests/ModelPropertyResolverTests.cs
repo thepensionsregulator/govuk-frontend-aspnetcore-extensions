@@ -8,7 +8,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     public partial class ModelPropertyResolverTests
     {
@@ -58,7 +58,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
             public string? Field { get; set; }
             public Level2? Child { get; set; }
         }
-     
+
         private class Level2
         {
             public string? Level2Field { get; set; }

@@ -6,7 +6,7 @@
 @using ThePensionsRegulator.Umbraco;
 @using Umbraco.Extensions
 @{
-    var caption = Model.Content.Value<string>("caption");
+    var caption = Model.Content.Value<string>(PropertyAliases.Caption);
     var cssClasses = ("govuk-caption-l " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
 }
 @if (!string.IsNullOrWhiteSpace(caption)) 

@@ -1,5 +1,5 @@
 ﻿using FileSignatures.Formats;
-using GovUk.Frontend.AspNetCore.Extensions.Tests.BinaryFileValidators;
+using GovUk.Frontend.AspNetCore.Extensions.UnitTests.BinaryFileValidators;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Http;
 using NUnit.Framework;
@@ -7,7 +7,7 @@ using System;
 using System.Collections;
 using System.IO;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     public class AllowedFileTypesAttributeTests
     {
@@ -81,7 +81,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Tests
         public void Return_false_if_file_signature_does_not_match()
         {
             Random rnd = new Random();
-            var randomFileSignature = new Byte[10];
+            var randomFileSignature = new byte[10];
             rnd.NextBytes(randomFileSignature);
 
             var memoryStream = new MemoryStream(randomFileSignature);

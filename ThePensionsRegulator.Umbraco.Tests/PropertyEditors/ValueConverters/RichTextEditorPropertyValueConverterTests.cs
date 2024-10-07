@@ -29,7 +29,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.PropertyEditors.ValueConverters
         {
             // Arrange
             var testContext = new UmbracoTestContext();
-            var propertyType = UmbracoPropertyFactory.CreateRichTextProperty("myAlias", string.Empty).PropertyType;
+            var propertyType = UmbracoPropertyFactory.CreateRichTextProperty("myAlias", new HtmlEncodedString(string.Empty)).PropertyType;
             var urlProvider = Mock.Of<IPublishedUrlProvider>();
 
             const string INITIAL_VALUE = "<p>Some html</p>";

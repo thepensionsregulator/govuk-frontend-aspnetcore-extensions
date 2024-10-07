@@ -2,6 +2,7 @@
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Strings;
 using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Umbraco.Testing.Tests
@@ -27,7 +28,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
 
             // Assert
             Assert.That(targetElement.Object.Value<T>(PROPERTY_ALIAS), Is.EqualTo(propertyValue));
-            Assert.That(targetElement.Object.Properties.SingleOrDefault(x => x.Alias == PROPERTY_ALIAS), Is.Not.Null);
+            Assert.That(targetElement.Object.Properties.SingleOrDefault(x => x.Alias == PROPERTY_ALIAS), Is.Not.Null); // returns PublishedElementPropertyBase
             Assert.That(targetElement.Object.GetProperty(PROPERTY_ALIAS)?.GetValue(), Is.EqualTo(propertyValue));
             Assert.That(targetElement.Object.GetProperty(PROPERTY_ALIAS)?.PropertyType?.EditorAlias, Is.EqualTo(expectedPropertyEditorAlias));
         }
@@ -93,13 +94,30 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
         }
 
         [Test]
-        public void SetupUmbracoRichTextPropertyValue_works()
+        public void SetupUmbracoRichTextPropertyValue_works_with_HtmlEncodedString()
         {
             TestSetupUmbracoTypedPropertyValue(
-                () => "Some value",
+                () => new HtmlEncodedString("<p>Some value</p>"),
                 (target, alias, value) => target.SetupUmbracoRichTextPropertyValue(alias, value),
                 Constants.PropertyEditors.Aliases.TinyMce
             );
+        }
+
+        /// <summary>
+        /// Native format of rich text values is HtmlEncodedString which is covered by another test, but you can also use .Value<string>().
+        /// </summary>
+        [Test]
+        public void SetupUmbracoRichTextPropertyValue_works_with_string()
+        {
+            // Arrange
+            var targetElement = UmbracoContentFactory.CreateContent<IPublishedContent>(PAGE_ALIAS);
+            var propertyValue = "Some value";
+
+            // Act
+            targetElement.Object.SetupUmbracoRichTextPropertyValue(PROPERTY_ALIAS, propertyValue);
+
+            // Assert
+            Assert.That(targetElement.Object.Value<string>(PROPERTY_ALIAS), Is.EqualTo(propertyValue));
         }
 
         [Test]

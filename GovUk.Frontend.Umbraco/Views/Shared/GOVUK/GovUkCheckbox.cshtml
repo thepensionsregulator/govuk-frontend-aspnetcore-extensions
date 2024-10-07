@@ -18,9 +18,9 @@
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
-    var value = Model.Content.Value<string>("value");
+    var value = Model.Content.Value<string>(PropertyAliases.CheckboxValue);
     var checkboxHint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
-    var conditional = Model.Content.Value<OverridableBlockListModel>("conditionalBlocks")!;
+    var conditional = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxConditionalBlocks)!;
     var invalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any()).ToString().ToLowerInvariant();
 }
 
@@ -31,7 +31,7 @@
             <govuk-checkboxes-error-message>@(string.Join(". ", modelStateEntry.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)))</govuk-checkboxes-error-message>
         }
         <govuk-checkboxes-item value="@value" checked="@(modelStateEntry?.AttemptedValue?.ToUpperInvariant() == value?.ToUpperInvariant())" input-aria-invalid="@invalid">
-            @(Model.Content.Value<string>("label"))
+            @(Model.Content.Value<string>(PropertyAliases.CheckboxLabel))
             @if (!string.IsNullOrWhiteSpace(checkboxHint?.ToHtmlString())) 
             {
                 <govuk-checkboxes-item-hint>@checkboxHint</govuk-checkboxes-item-hint>

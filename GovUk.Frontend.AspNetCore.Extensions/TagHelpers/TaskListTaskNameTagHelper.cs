@@ -19,17 +19,16 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         {
             var taskContext = context.GetContextItem<TaskListTaskContext>();
 
-            HtmlString? htmlContent = null;
+            taskContext.Name.Attributes = output.Attributes.ToAttributeDictionary();
+
             using (context.SetScopedContextItem(taskContext))
             {
                 var content = (await output.GetChildContentAsync()).GetContent();
                 if (!string.IsNullOrEmpty(content))
                 {
-                    htmlContent = new HtmlString(content);
+                    taskContext.Name.Content = new HtmlString(content);
                 }
             }
-
-            taskContext.Name = (output.Attributes.ToAttributeDictionary(), htmlContent);
 
             output.SuppressOutput();
         }

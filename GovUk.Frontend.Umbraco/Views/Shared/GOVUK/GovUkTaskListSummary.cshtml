@@ -20,11 +20,11 @@
     {
         headingLevel = 2;
     }
-    var incompleteStatus = Model.Content.Value<string>("incompleteStatus");
+    var incompleteStatus = Model.Content.Value<string>(PropertyAliases.TaskListSummaryIncomplete);
     if (string.IsNullOrEmpty(incompleteStatus)) { incompleteStatus = ComponentGenerator.TaskListSummaryDefaultIncompleteStatus; }
-    var completedStatus = Model.Content.Value<string>("completedStatus");
+    var completedStatus = Model.Content.Value<string>(PropertyAliases.TaskListSummaryComplete);
     if (string.IsNullOrEmpty(completedStatus)) { completedStatus = ComponentGenerator.TaskListSummaryDefaultCompletedStatus; }
-    var tracker = Model.Content.Value<string>("tracker");
+    var tracker = Model.Content.Value<string>(PropertyAliases.TaskListSummaryTracker);
     if (string.IsNullOrEmpty(tracker)) { tracker = ComponentGenerator.TaskListSummaryDefaultTracker; }
 }
 

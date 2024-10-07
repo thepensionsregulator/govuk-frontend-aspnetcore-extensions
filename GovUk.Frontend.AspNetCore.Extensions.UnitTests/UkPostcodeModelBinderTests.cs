@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using NUnit.Framework;
 using System.Threading.Tasks;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     [TestFixture]
     public class UkPostcodeModelBinderTests

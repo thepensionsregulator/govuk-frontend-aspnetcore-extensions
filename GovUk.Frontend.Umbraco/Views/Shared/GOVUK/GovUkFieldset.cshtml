@@ -13,7 +13,7 @@
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks);
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
-    var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
 
     // If there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
     // If legendIsPageHeading is false, the classes are assigned in BlockList.cshtml, but describedBy must always be set here.
@@ -43,8 +43,8 @@
 <govuk-fieldset class="@cssClass" described-by="@describedBy">
     <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-fieldset")">@legend</govuk-fieldset-legend>
     @if (hasFieldsetError){
-        @:<div class="govuk-grid-row @fieldsetErrorClasses">
-        @:<div class="govuk-grid-column govuk-grid-column-full">
+        @:<div class="@HtmlClassNames.Row @fieldsetErrorClasses">
+        @:<div class="@HtmlClassNames.Column @HtmlClassNames.ColumnFullWidth">
     }
     @await Html.PartialAsync("GOVUK/BlockList", blocks)
     @if (hasFieldsetError){

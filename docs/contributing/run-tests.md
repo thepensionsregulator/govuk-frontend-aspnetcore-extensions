@@ -1,5 +1,7 @@
 # Run tests
 
+Install [Yarn Classic](https://classic.yarnpkg.com/lang/en/) before running the following commands.
+
 To run unit tests on the client-side validation JavaScript:
 
 ```cmd

@@ -1,6 +1,5 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
-@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 @using GovUk.Frontend.AspNetCore.Extensions;
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
@@ -10,7 +9,7 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    var tasks = Model.Content.Value<OverridableBlockListModel>("tasks")!.FilteredBlocks();
+    var tasks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.TaskListTasks)!.FilteredBlocks();
 }
 @if (tasks.Any())
 {
@@ -20,12 +19,12 @@
     >
         @foreach (var task in tasks)
         {
-            var hint = task.Content.Value<IHtmlEncodedString>("hint");
-            var link = task.Content.Value<Link>("link")?.Url;
-            var statusText = task.Settings.Value<string>("statusText");
-            var status = task.Settings.Value<string>("status")?.Replace(" ", string.Empty);
+            var hint = task.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
+            var link = task.Content.Value<Link>(PropertyAliases.TaskListTaskLink)?.Url;
+            var statusText = task.Settings.Value<string>(PropertyAliases.TaskListTaskStatusText);
+            var status = task.Settings.Value<string>(PropertyAliases.TaskListTaskStatus)?.Replace(" ", string.Empty);
             <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>(PropertyAliases.CssClasses))">
-                <govuk-task-list-task-name>@(task.Content.Value<string>("taskName"))</govuk-task-list-task-name>
+                <govuk-task-list-task-name>@(task.Content.Value<string>(PropertyAliases.TaskListTaskName))</govuk-task-list-task-name>
                 @if (!string.IsNullOrEmpty(hint?.ToHtmlString()))
                 {
                     <govuk-task-list-task-hint>@hint</govuk-task-list-task-hint>
@@ -39,7 +38,7 @@
                     }
                     else
                     {
-                        var defaultTextForStatus = ComponentGenerator.TaskListTaskStatusText(parsedStatus) ?? string.Empty;
+                        var defaultTextForStatus = parsedStatus.AsText() ?? string.Empty;
                         textForStatus = @Umbraco.GetDictionaryValueOrDefault($"Task list - {defaultTextForStatus}", defaultTextForStatus);
                     }
                     <govuk-task-list-task-status status="@parsedStatus">@textForStatus</govuk-task-list-task-status>

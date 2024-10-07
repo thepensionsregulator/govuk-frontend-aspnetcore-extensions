@@ -21,14 +21,14 @@
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     var fieldsetHint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(fieldsetHint?.ToHtmlString()) ? null : modelPropertyName + "-hint";
-    var legendIsPageHeading = Model.Settings.Value<bool>("legendIsPageHeading");
-    var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
+    var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var selectedValues = new List<string>();
     if (!string.IsNullOrEmpty(modelStateEntry?.AttemptedValue)) { selectedValues.AddRange(modelStateEntry.AttemptedValue.ToUpperInvariant().Split(",")); }
     var isInvalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any());
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
     var invalidClass = isInvalid ? " govuk-form-group--error" : null;
-    var blocks = Model.Content.Value<OverridableBlockListModel>("fieldsetBlocks");
+    var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxesFieldsetBlocks);
     if (blocks != null && blocks.Any())
     {
         fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
@@ -63,7 +63,7 @@
                         }
                         else
                         {
-                            if (block.Settings.Value<bool>("exclusive"))
+                            if (block.Settings.Value<bool>(PropertyAliases.CheckboxesUncheckOthers))
                             {
                                 var value = block.Content.Value<string>(PropertyAliases.CheckboxValue) ?? string.Empty;
                                 var checkboxHint = block.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);

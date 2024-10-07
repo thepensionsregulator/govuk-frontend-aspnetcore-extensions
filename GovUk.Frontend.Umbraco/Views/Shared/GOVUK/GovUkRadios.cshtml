@@ -20,11 +20,11 @@
     }
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
-    var cssClassesForRadios = (Model.Settings.Value<string>("layout") == "Horizontal") ? "govuk-radios--inline" : null;
+    var cssClassesForRadios = (Model.Settings.Value<string>(PropertyAliases.RadiosLayout) == "Horizontal") ? "govuk-radios--inline" : null;
     var fieldsetHint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(fieldsetHint?.ToHtmlString()) ? null : modelPropertyName + "-hint";
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
-    var legend = Model.Content.Value<string>("legend")?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var isInvalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any());
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
     var invalidClass = isInvalid ? " govuk-form-group--error" : null;

@@ -20,3 +20,13 @@ p.custom-format {
   position: static;
 }
 ```
+
+## Create a new rich text editor data type
+
+It is often useful to create a new rich text editor data type, so that only the formatting options relevant to the specific context can be offered. For example, you might want to offer only bold text and bulleted lists rather than all of the possible formatting options.
+
+This project adds the ability to [format Umbraco property values](./format-property-values.md) including rich text editor values. This changes the process to add a new rich text editor data type from the Umbraco default.
+
+1. Create a new class which inherits from `Umbraco.Cms.Core.PropertyEditors.RichTextPropertyEditor`. This should not change anything from the base class, except the `alias` and `name` in the `[DataEditor]` attribute. See `GovUkInlineRichTextPropertyEditor` for an example. This class will be discovered automatically by Umbraco.
+2. Create a new class which implements `ThePensionsRegulator.Umbraco.PropertyEditors.IRichTextPropertyEditorAliasProvider` and returns the alias of your new property editor. Register your implementation with dependency injection. See `GovUkRichTextPropertyEditorAliasProvider` for an example.
+3. Create a new data type in the Umbraco backoffice which uses your new property editor.

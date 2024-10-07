@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests.BinaryFileValidators
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests.BinaryFileValidators
 {
     internal static class TestFileLocator
     {

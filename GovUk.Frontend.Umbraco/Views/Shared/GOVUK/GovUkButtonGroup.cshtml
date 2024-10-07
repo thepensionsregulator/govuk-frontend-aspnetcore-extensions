@@ -8,7 +8,7 @@
 @using Umbraco.Extensions
 @using System.Linq
 @{
-    var buttons = Model.Content.Value<OverridableBlockListModel>("buttons")!;
+    var buttons = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.ButtonGroupButtons)!;
     var cssClasses = ("govuk-button-group " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     buttons.RenderGrid = false;
 }

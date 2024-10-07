@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 
+		 -->
+	<Target Name="GovUkFrontend_CheckGovUkFrontendPackage" BeforeTargets="BeforeBuild">
+		<PropertyGroup>
+			<GovUkPackageFolder>$(MsBuildThisFileDirectory)..\node_modules\govuk-frontend</GovUkPackageFolder>
+		</PropertyGroup>
+		<Message Text="GOV.UK Frontend NPM package not found. Running 'yarn install'." Condition="!Exists('$(GovUkPackageFolder)')" />
+		<Exec Command="yarn install" WorkingDirectory="$(MsBuildThisFileDirectory).." Condition="!Exists('$(GovUkPackageFolder)')" />
+	</Target>
+</Project>

@@ -2,7 +2,7 @@ using GovUk.Frontend.AspNetCore.Extensions.Typography;
 using HtmlAgilityPack;
 using NUnit.Framework;
 
-namespace GovUk.Frontend.AspNetCore.Extensions.Tests
+namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     public class GovUkTypographyTests
     {

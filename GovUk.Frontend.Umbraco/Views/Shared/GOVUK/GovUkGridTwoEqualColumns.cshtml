@@ -8,10 +8,10 @@
 @if (Model.Areas is not null && Model.Areas.Any())
 {
     var breakpointClass = Model.Settings.Value<string>(PropertyAliases.StackColumns) == "Mobile and tablet" ? "-from-desktop" : string.Empty;
-    <div class="govuk-grid-row">
+    <div class="@HtmlClassNames.Row">
         @foreach (var area in Model.Areas)
         {
-            <div class="govuk-grid-column govuk-grid-column-one-half@(breakpointClass)">
+            <div class="@HtmlClassNames.Column @HtmlClassNames.ColumnHalf@(breakpointClass)">
                 <partial name="GOVUK/BlockGrid" model="area" />
             </div>
         }

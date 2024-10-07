@@ -3,6 +3,7 @@ using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.HtmlGeneration;
 using GovUk.Frontend.Umbraco.ModelBinding;
+using GovUk.Frontend.Umbraco.PropertyEditors;
 using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.Services;
 using GovUk.Frontend.Umbraco.Validation;
@@ -43,6 +44,7 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IPropertyValueFormatter, NoParagraphInversePropertyValueFormatter>();
             services.AddTransient<IPartialViewPathProvider, GovUkPartialViewPathProvider>();
             services.AddTransient<IDateInputHtmlEnhancer, DateInputHtmlEnhancer>();
+            services.AddTransient<IRichTextPropertyEditorAliasProvider, GovUkRichTextPropertyEditorAliasProvider>();
 
             return services;
         }

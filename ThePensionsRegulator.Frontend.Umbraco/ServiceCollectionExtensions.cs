@@ -4,6 +4,7 @@ using GovUk.Frontend.Umbraco.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using ThePensionsRegulator.Frontend.Services;
+using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
@@ -33,6 +34,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
             services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
+            services.AddTransient<IRichTextPropertyEditorAliasProvider, TprRichTextPropertyEditorAliasProvider>();
 
             return services;
         }

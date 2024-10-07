@@ -1,27 +1,3 @@
-parameters:
-  - name: pushGovUkToNuGet
-    displayName: Push ThePensionsRegulator.GovUk.Frontend to nuget.org
-    type: boolean
-    default: false
-  - name: pushUmbracoToNuGet
-    displayName: Push ThePensionsRegulator.Umbraco to nuget.org
-    type: boolean
-    default: false
-  - name: pushTprToNuGet
-    displayName: Push ThePensionsRegulator.Frontend to nuget.org
-    default: false
-  - name: pushGovUkUmbracoToNuGet
-    displayName: Push ThePensionsRegulator.GovUk.Frontend.Umbraco to nuget.org
-    type: boolean
-    default: false
-  - name: pushTprUmbracoToNuGet
-    displayName: Push ThePensionsRegulator.Frontend.Umbraco to nuget.org
-    default: false
-  - name: pushTestingToNuGet
-    displayName: Push ThePensionsRegulator.Umbraco.Testing to nuget.org
-    type: boolean
-    default: false
-
 trigger: none
 
 pool:
@@ -36,7 +12,7 @@ variables:
     value: "Release"
   - name: YARN_CACHE_FOLDER
     value: $(Pipeline.Workspace)/.yarn
-  - name: allowPush
+  - name: pushPackages
     value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/v')]
 
 resources:
@@ -96,9 +72,9 @@ steps:
   # Do not publish JS test results to the pipeline as Azure DevOps cannot publish both C# and JS results so we have to choose
 
   - task: UseDotNet@2
-    displayName: Install .NET 6.0.6
+    displayName: Install .NET 8.0.4
     inputs:
-      version: 6.0.301 # SDK version for 6.0.6
+      version: 8.0.204 # SDK version for 8.0.4
       performMultiLevelLookup: true
       includePreviewVersions: false
 
@@ -144,7 +120,7 @@ steps:
       summaryFileLocation: $(Agent.TempDirectory)\**\coverage.cobertura.xml
       failIfCoverageEmpty: true
 
-  - ${{ if eq(parameters.pushGovUkToNuGet, true) }}:
+  - ${{ if eq(variables.pushPackages, true) }}:
       - task: CopyFiles@2
         displayName: Copy GovUk.Frontend package to staging folder
         inputs:
@@ -155,7 +131,6 @@ steps:
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
-  - ${{ if eq(parameters.pushUmbracoToNuGet, true) }}:
       - task: CopyFiles@2
         displayName: Copy ThePensionsRegulator.Umbraco package to staging folder
         inputs:
@@ -166,7 +141,6 @@ steps:
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
-  - ${{ if eq(parameters.pushTprToNuGet, true) }}:
       - task: CopyFiles@2
         displayName: Copy ThePensionsRegulator.Frontend package to staging folder
         inputs:
@@ -177,7 +151,6 @@ steps:
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
-  - ${{ if eq(parameters.pushGovUkUmbracoToNuGet, true) }}:
       - task: CopyFiles@2
         displayName: Copy GovUk.Frontend.Umbraco package to staging folder
         inputs:
@@ -188,7 +161,6 @@ steps:
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
-  - ${{ if eq(parameters.pushTprUmbracoToNuGet, true) }}:
       - task: CopyFiles@2
         displayName: Copy ThePensionsRegulator.Frontend.Umbraco package to staging folder
         inputs:
@@ -199,7 +171,6 @@ steps:
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
-  - ${{ if eq(parameters.pushTestingToNuGet, true) }}:
       - task: CopyFiles@2
         displayName: Copy ThePensionsRegulator.Umbraco.Testing package to staging folder
         inputs:
@@ -210,10 +181,8 @@ steps:
           TargetFolder: $(Build.ArtifactStagingDirectory)
           flattenFolders: true
 
-  - ${{ if or(eq(parameters.pushGovUkToNuGet, true), eq(parameters.pushUmbracoToNuGet, true), eq(parameters.pushTprToNuGet, true), eq(parameters.pushGovUkUmbracoToNuGet, true), eq(parameters.pushTprUmbracoToNuGet, true), eq(parameters.pushTestingToNuGet, true)) }}:
       - task: NuGetCommand@2
         displayName: "Push to nuget.org"
-        condition: and(succeeded(), eq(variables.allowPush, true))
         inputs:
           command: push
           packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg"

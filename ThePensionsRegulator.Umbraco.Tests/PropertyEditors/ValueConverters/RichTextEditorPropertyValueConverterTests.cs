@@ -49,6 +49,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.PropertyEditors.ValueConverters
                 new HtmlUrlParser(contentSettings.Object, Mock.Of<ILogger<HtmlUrlParser>>(), Mock.Of<IProfilingLogger>(), Mock.Of<IIOHelper>()),
                 new HtmlImageSourceParser(urlProvider),
                 new List<IPropertyValueFormatter> { formatter.Object },
+                new List<IRichTextPropertyEditorAliasProvider>(),
                 Mock.Of<IApiRichTextElementParser>(),
                 Mock.Of<IApiRichTextMarkupParser>(),
                 Mock.Of<IPartialViewBlockEngine>(),

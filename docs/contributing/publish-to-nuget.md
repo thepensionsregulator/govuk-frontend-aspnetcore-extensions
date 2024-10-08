@@ -1,6 +1,10 @@
 # Publish a new version to nuget.org
 
-Tag the commit you want to publish from. Name your tag using semantic versioning. For example, if you are upgrading all packages from v1.0.0 to v2.0.0, your tag should be `v2.0.0`. If you are upgrading only one package then append the package name - for example `v2.0.0-ThePensionsRegulator.GovUk.Frontend`.
+Update the version of our packages in `Directory.Build.props` at the root of this repo. Name the version using [semantic versioning](https://semver.org/). For example, if you are making a breaking change to `v1.0.0`, your version should be `v2.0.0`. A non-breaking change introducing a new feature should be `v1.1.0`, and a non-breaking bug fix should be `v1.0.1`.
+
+All of our packages are versioned together even when not all of them change, so that installing or upgrading `ThePensionsRegulator.GovUk.Frontend.Umbraco` or `ThePensionsRegulator.Frontend.Umbraco` will always bring in the latest packages as transitive dependencies.
+
+Tag the commit you want to publish from. The tag must be the same as your version number, including the letter `v`.
 
 ```cmd
 git tag v2.0.0
@@ -9,6 +13,6 @@ git push origin develop --tags
 
 For anything other than an alpha release, add details of the release to the [Releases](https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions/releases) section on Github.
 
-To publish to nuget.org, run `azure-pipelines.yml` in Azure DevOps. In the 'Run pipeline' dialog for the pipeline specify your tag in the format `refs/tags/<tag-name>`. Tick the boxes for the packages you want to publish.
+To publish to nuget.org, run the `govuk-frontend-aspnetcore-extensions` pipeline in Azure DevOps. In the 'Run pipeline' dialog for the pipeline specify your tag in the format `refs/tags/<tag-name>`.
 
 ![Specify a tag in the run pipeline dialog](/docs/images/run-pipeline-from-tag.png)

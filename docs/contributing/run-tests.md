@@ -1,6 +1,6 @@
 # Run tests
 
-Install [Yarn Classic](https://classic.yarnpkg.com/lang/en/) before running the following commands.
+Install [Node.js](https://nodejs.org/en) and [Yarn Classic](https://classic.yarnpkg.com/lang/en/) before running the following commands.
 
 To run unit tests on the client-side validation JavaScript:
 

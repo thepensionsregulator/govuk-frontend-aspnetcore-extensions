@@ -33,26 +33,26 @@
 }
 
 // Add a background box to highlight a section of content.
-.govuk-grid-row--tpr-box {
+.tpr-box {
     padding-left: $govuk-gutter-half;
     padding-right: $govuk-gutter-half;
 }
 
-.govuk-grid-row--tpr-box > .govuk-grid-column {
+.tpr-box > .govuk-grid-column {
     padding: $govuk-gutter;
     background: $tpr-colour-whisper;
     @include govuk-responsive-margin(6, "bottom");
 }
 
-// .govuk-grid-row--tpr-box can be combined with .govuk-grid-row--tpr-divider. 
-//  In that case the padding applied for .govuk-grid-row--tpr-box creates space equivalent to the margins 
+// .tpr-box can be combined with .govuk-grid-row--tpr-divider. 
+//  In that case the padding applied for .tpr-box creates space equivalent to the margins 
 //  applied for .govuk-grid-row--tpr-divider, so remove the margins.
-.govuk-grid-row--tpr-divider.govuk-grid-row--tpr-box::after {
+.govuk-grid-row--tpr-divider.tpr-box::after {
     margin-left: 0;
     margin-right: 0;
 }
 
-.govuk-grid-row--tpr-divider.govuk-grid-row--tpr-box > .govuk-grid-column {
+.govuk-grid-row--tpr-divider.tpr-box > .govuk-grid-column {
     margin-bottom: 0;
 }
 
@@ -61,8 +61,8 @@
 //  margin from the last element inside either one so that we get one spacer, not the combination of both.
 .govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child,
 .govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child,
-.govuk-grid-row--tpr-box > .govuk-grid-column > :last-child,
-.govuk-grid-row--tpr-box > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child {
+.tpr-box > .govuk-grid-column > :last-child,
+.tpr-box > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child {
     padding-bottom: 0;
     margin-bottom: 0;
 }

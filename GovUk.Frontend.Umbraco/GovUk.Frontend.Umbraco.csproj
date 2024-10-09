@@ -503,9 +503,6 @@
 		<Content Update="uSync\v9\DataTypes\GOVUKModelProperty.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
-		<Content Update="uSync\v9\DataTypes\GOVUKNoFormsBlockList.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKNotificationBannerBlockList.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

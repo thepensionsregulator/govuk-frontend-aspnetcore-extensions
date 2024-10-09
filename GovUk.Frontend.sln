@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Fronte
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Frontend.Umbraco.Tests", "ThePensionsRegulator.Frontend.Umbraco.Tests\ThePensionsRegulator.Frontend.Umbraco.Tests.csproj", "{73D7EA69-E838-46AF-AC3F-A1897EE63F68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GovUk.Frontend.AspNetCore.Extensions.ConformanceTests", "GovUk.Frontend.AspNetCore.Extensions.ConformanceTests\GovUk.Frontend.AspNetCore.Extensions.ConformanceTests.csproj", "{E3E3F660-9477-4218-85B0-EB5DE03EC77C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.AspNetCore.Extensions.ConformanceTests", "GovUk.Frontend.AspNetCore.Extensions.ConformanceTests\GovUk.Frontend.AspNetCore.Extensions.ConformanceTests.csproj", "{E3E3F660-9477-4218-85B0-EB5DE03EC77C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

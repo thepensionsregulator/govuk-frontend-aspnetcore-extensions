@@ -1,20 +1,28 @@
 ﻿@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
+@using Microsoft.AspNetCore.Builder
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.Umbraco.Models;
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Localization
+
 @inject UmbracoHelper Umbraco
 @inject IConfiguration Configuration 
+@inject IOptions<RequestLocalizationOptions> LocOptions
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var headerLockup = new UmbracoTprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
     var footerLockup = new UmbracoTprFooterLockupModel(settings!);
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
+    var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@twoLetterCode">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

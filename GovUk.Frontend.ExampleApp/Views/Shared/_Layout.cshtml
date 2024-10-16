@@ -1,13 +1,23 @@
-﻿@using Microsoft.Extensions.Configuration;
+﻿@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Configuration;
 @using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.Extensions.Options
 
 @inject IViewLocalizer localizer;
 @inject IConfiguration Configuration
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+
 @{
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
+    var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@twoLetterCode">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -1,8 +1,14 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<TextareaViewModel>
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
-@section head{
+@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@using System.Threading
+@section head {
     <title>@Model.Page!.PageHeadingOrName()</title>
+}
+@section language {
+    <partial name="_LanguageSwitcher" model="Model.Page" />
 }
 @using (Html.BeginUmbracoForm<TextareaSurfaceController>(nameof(TextareaSurfaceController.Index), new {}, new { novalidate="novalidate" }))
 {

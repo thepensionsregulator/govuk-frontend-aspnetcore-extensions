@@ -1,25 +1,27 @@
 ﻿import { initAll } from '/govuk/all.min.js';
-const isWelsh = true;
-const config = isWelsh ? {
+
+const [html] = document.getElementsByTagName("html");
+const lang = html.getAttribute("lang");
+const config = lang === 'cy' ? {
     characterCount: {
         i18n: {
-            charactersAtLimit: 'No characters left (W)',
+            charactersAtLimit: 'Mae gennych chi 0 nod ar ô',
             charactersUnderLimit: {
-                other: '%{count} characters to go (W)',
-                one: 'One character to go (W)'
+                one: 'Mae gennych chi %{count} nod ar ôl',
+                other: 'Mae gennych chi %{count} nod ar ô'
             },
             charactersOverLimit: {
-                one: 'One character too many (W)',
-                other: 'You have %{count} characters too many (W)'
+                one: 'Mae gennych chi %{count} nod yn ormod',
+                other: 'Mae gennych chi %{count} o nodau’n ormod'
             },
             wordsUnderLimit: {
-                one: 'You have %{count} word remaining (W)',
-                other: 'You have %{count} words remaining (W)'
+                one: 'Mae gennych chi %{count} gair ar ôl',
+                other: 'Mae gennych chi %{count} o eiriau ar ôl'
             },
-            wordsAtLimit: 'You have 0 words remaining (W)',
+            wordsAtLimit: 'Mae gennych chi 0 o eiriau ar ôl',
             wordsOverLimit: {
-                one: 'You have %{count} word too many (W)',
-                other: 'You have %{count} words too many (W)'
+                one: 'Mae gennych chi %{count} gair yn ormod',
+                other: 'Mae gennych chi %{count} o eiriau’n ormod'
             }
         }
     }

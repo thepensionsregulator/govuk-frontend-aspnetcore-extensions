@@ -7,3 +7,7 @@
 .govuk-caption-xl {
     color: $tpr-colour-grey;
 }
+
+.govuk-caption-xl {
+    @include govuk-responsive-margin(3, "bottom");
+}

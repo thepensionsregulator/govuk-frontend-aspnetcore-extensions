@@ -1,0 +1,6 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Typography>
+@section head{
+	<title>@Model.PageHeadingOrName()</title>
+}
+
+<partial name="GOVUK/BlockGrid" model="Model.Blocks" />

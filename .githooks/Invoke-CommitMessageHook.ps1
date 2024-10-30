@@ -4,5 +4,5 @@ param(
 )
 
 # Add custom commands for this repo here
-Invoke-Expression -Command "./.githooks/Confirm-AzureDevOpsWorkItem.ps1 $CommitMessageFile"
+Invoke-Expression -Command "./.githooks/Confirm-WorkItemReference.ps1 $CommitMessageFile"
 If ($LASTEXITCODE -gt 0) { Exit $LASTEXITCODE }

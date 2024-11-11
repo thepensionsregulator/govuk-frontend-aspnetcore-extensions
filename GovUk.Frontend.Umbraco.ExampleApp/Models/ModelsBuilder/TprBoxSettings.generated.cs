@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>TPR box settings</summary>
+	/// <summary>Box settings</summary>
 	[PublishedModel("tprBoxSettings")]
 	public partial class TprBoxSettings : PublishedElementModel, IGovukCssClasses
 	{
@@ -50,7 +50,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Style of box: Defaults to 'Solid box' if left blank.
+		/// Style of box
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

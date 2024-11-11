@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>TPR box</summary>
+	/// <summary>Box</summary>
 	[PublishedModel("tprBox")]
 	public partial class TprBox : PublishedElementModel
 	{

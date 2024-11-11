@@ -23,7 +23,7 @@
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var label = Model.Content.Value<string>(PropertyAliases.SelectLabel)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var labelIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.LabelIsPageHeading);
-    var labelClass = labelIsPageHeading ? "govuk-label--l" : null;
+    var labelClass = labelIsPageHeading ? GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem).LabelAsHeading1 : null;
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
     var invalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any()).ToString().ToLowerInvariant();

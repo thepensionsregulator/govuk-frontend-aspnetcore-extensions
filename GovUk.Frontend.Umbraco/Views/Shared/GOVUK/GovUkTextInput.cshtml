@@ -21,7 +21,7 @@
     var suffix = Model.Settings.Value<string>(PropertyAliases.TextInputSuffix);
     var label = Model.Content.Value<string>(PropertyAliases.TextInputLabel)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var labelIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.LabelIsPageHeading);
-    var labelClass = labelIsPageHeading ? "govuk-label--l" : null;
+    var labelClass = labelIsPageHeading ? GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem).LabelAsHeading1 : null;
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     string? inputClass = null;
     var inputWidth = Model.Settings.Value<string>(PropertyAliases.TextInputWidth);

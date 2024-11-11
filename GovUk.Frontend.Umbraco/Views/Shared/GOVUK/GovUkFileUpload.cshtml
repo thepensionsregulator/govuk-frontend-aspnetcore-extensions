@@ -19,6 +19,7 @@
     }
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var labelIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.LabelIsPageHeading);
+    var labelClass = labelIsPageHeading ? GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem).LabelAsHeading1 : null;
     var label = Model.Content.Value<string>(PropertyAliases.FileUploadLabel)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var fileTypes = Model.Settings.Value<string>(PropertyAliases.FileUploadFileTypes);
@@ -29,7 +30,7 @@
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
 
     <govuk-file-upload name="@modelPropertyName" class="@cssClass" input-accept="@fileTypes">
-        <govuk-file-upload-label is-page-heading="@labelIsPageHeading" class="@(labelIsPageHeading ? "govuk-label--l" : null)">@label</govuk-file-upload-label>
+        <govuk-file-upload-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-file-upload-label>
         @if (!string.IsNullOrWhiteSpace(hint?.ToHtmlString()))
         {
             <govuk-file-upload-hint>@hint</govuk-file-upload-hint>

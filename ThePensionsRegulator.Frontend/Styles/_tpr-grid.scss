@@ -42,7 +42,7 @@
 
 .tpr-box--bordered,
 .tpr-box--bordered.govuk-grid-row > .govuk-grid-column {
-    background: none;
+    background: $tpr-colour-white;
     border: govuk-px-to-rem($govuk-border-width) solid $tpr-colour-whisper;
     padding: govuk-px-to-rem($govuk-gutter - $govuk-border-width)
 }
@@ -70,20 +70,68 @@
 
 // .govuk-grid-row--tpr-divider and .tpr-box both apply padding-bottom, so remove any bottom padding or 
 //  margin from the last element inside either one so that we get one spacer, not the combination of both.
-.govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child,
-.govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child,
-.tpr-box > :last-child,
-.tpr-box > .govuk-grid-row > .govuk-grid-column > :last-child,
-.tpr-box.govuk-grid-row > .govuk-grid-column > :last-child,
-.tpr-box.govuk-grid-row > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child 
-{
-     padding-bottom: 0;
-     margin-bottom: 0;
+.govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.tpr-box > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.tpr-box > .govuk-grid-row > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.tpr-box.govuk-grid-row > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.tpr-box.govuk-grid-row > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.tpr-box > .govuk-grid-row > .govuk-grid-column:last-child > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column) {
+    padding-bottom: 0;
+    margin-bottom: 0;
 }
 
-// ...unless the :last-child is a .tpr-box, then keep the padding only.
-.govuk-grid-row--tpr-divider > .govuk-grid-column > .tpr-box:last-child {
-    padding-bottom: $govuk-gutter;
+// ...unless the :last-child is a .tpr-box, then remove the margin only.
+.govuk-grid-row--tpr-divider > .govuk-grid-column:last-child > .tpr-box:last-child {
+    margin-bottom: 0;
+}
+
+@include govuk-media-query($from: tablet) {
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-quarter > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-third > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-half > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-two-thirds > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-three-quarters > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-full > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column) {
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-one-quarter > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-one-third > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-one-half > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-two-thirds > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-three-quarters > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-full > .tpr-box:last-child {
+        margin-bottom: 0;
+    }
+}
+
+@include govuk-media-query($from: desktop) {
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-quarter-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-third-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-half-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-two-thirds-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-three-quarters-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-full-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column) {
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-one-quarter-from-desktop > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-one-third-from-desktop > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-one-half-from-desktop > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-two-thirds-from-desktop > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-three-quarters-from-desktop > .tpr-box:last-child,
+    .govuk-grid-row--tpr-divider > .govuk-grid-column-full-from-desktop > .tpr-box:last-child {
+        margin-bottom: 0;
+    }
+}
+
+// A .tpr-box within another .tpr-box will have margin-bottom that duplicates the padding of the outer box, so remove it.
+.tpr-box > .tpr-box:last-child,
+.tpr-box > .govuk-grid-row:last-child > .govuk-grid-column > .tpr-box {
+    margin-bottom: 0;
 }
 
 // There is a special case where the label or legend is the page heading (see https://design-system.service.gov.uk/components/fieldset/).

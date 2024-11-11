@@ -8,7 +8,7 @@
 @if (Model.Areas is not null && Model.Areas.Any())
 {
     var styleOfBox = Model.Settings.Value<string>(TprPropertyAliases.TprBoxStyle);
-    var boxClass = (string.IsNullOrEmpty(styleOfBox) || styleOfBox == "Solid box") ? null : " tpr-box--" + styleOfBox.ToLowerInvariant().Replace(" box", string.Empty);
+    var boxClass = (string.IsNullOrEmpty(styleOfBox) || styleOfBox == "Solid") ? null : " tpr-box--" + styleOfBox.ToLowerInvariant();
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     <div class="tpr-box@(boxClass)@(cssClasses)">
         <partial name="GOVUK/BlockGrid" model="Model.Areas[0]" />

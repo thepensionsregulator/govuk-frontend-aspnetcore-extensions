@@ -68,7 +68,7 @@
 }
 
 
-// .govuk-grid-row--tpr-divider and .govuk-grid-column--tpr-box both apply padding-bottom, so remove any bottom padding or 
+// .govuk-grid-row--tpr-divider and .tpr-box both apply padding-bottom, so remove any bottom padding or 
 //  margin from the last element inside either one so that we get one spacer, not the combination of both.
 .govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child,
 .govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child,
@@ -81,14 +81,18 @@
      margin-bottom: 0;
 }
 
+// ...unless the :last-child is a .tpr-box, then keep the padding only.
+.govuk-grid-row--tpr-divider > .govuk-grid-column > .tpr-box:last-child {
+    padding-bottom: $govuk-gutter;
+}
 
 // There is a special case where the label or legend is the page heading (see https://design-system.service.gov.uk/components/fieldset/).
-// In this case .govuk-grid-row--tpr-divider will not work because the HTML structure is different. 
+// In this case .govuk-grid-row--tpr-divider will not work because the HTML structure is different.
 // .govuk-grid-row--tpr-divider-for-label-as-heading or .govuk-grid-row--tpr-divider-for-fieldset must be applied to the .govuk-grid-row instead.
 //
 // 1. First this overrides the column width chosen for the .govuk-grid-row. It must be 100% for the divider to span the page.
 //
-// 2. The column width is applied instead to elements that make up the field, or within the fieldset. 
+// 2. The column width is applied instead to elements that make up the field, or within the fieldset.
 //
 //    Very specific selectors are used so that nested fieldsets are not matched. Selectors target text input, textarea, date input, fieldset,
 //    and radio and checkbox group components of the GOV.UK Design System. All are repeated in *-from-desktop versions.

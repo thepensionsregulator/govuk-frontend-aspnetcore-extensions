@@ -41,6 +41,7 @@ We add support for:
   - [Task list](/docs/components/task-list.md)
   - [TPR back to top](/docs/components/tpr-back-to-top.md)
   - [TPR back to menu](/docs/components/tpr-back-to-menu.md)
+  - [TPR box](/docs/components/tpr-box.md)
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR context bar](/docs/components/tpr-context-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)

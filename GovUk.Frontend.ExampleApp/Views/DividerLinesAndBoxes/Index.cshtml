@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Divider lines and boxes";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">The Pensions Regulator (TPR) pages include dividing lines which can be applied to a <em>.govuk-grid-row</em> at any level by applying the <em>.govuk-grid-row--tpr-divider</em>.</p>
+        <p class="govuk-body">They typically appear after the main heading and before the submit button of a form. Wherever possible we only applying spacing using padding and margin on the bottom, not the top of elements, therefore the <em>.govuk-grid-row--tpr-divider</em> class should be applied to the row <strong>before</strong> the point where the divider should appear.</p>
+    </div>
+</div>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">Dividers should always span the full width, even when the content they follow does not.</p>
+        <p class="govuk-body">This is a divider with default spacing when it appears after text.</p>
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+
+        <div class="govuk-form-group "><label class="govuk-label" for="">Text input without a divider</label><input aria-invalid="false" class="govuk-input " name="" type="text" value=""></div>
+
+    </div>
+</div>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+
+        <div class="govuk-form-group "><label class="govuk-label" for="">Text input with a divider</label><input aria-invalid="false" class="govuk-input " name="" type="text" value=""></div>
+
+    </div>
+</div>
+<div class="tpr-box">
+    <p class="govuk-body">You can highlight content in a box by applying <em>.tpr-box</em>.</p>
+</div>
+
+<div class="tpr-box tpr-box--bordered">
+    <p class="govuk-body">You can highlight content in a bordered box by applying <em>.tpr-box</em> and <em>.tpr-box--bordered</em>.</p>
+</div>
+
+<div class="govuk-grid-row tpr-box">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <p class="govuk-body">If you apply  <em>.tpr-box</em> to a <em>.govuk-grid-row</em> the style is applied to the column within it, but the result is the same.</p>
+    </div>
+</div>
+
+<div class="govuk-grid-row tpr-box tpr-box--bordered">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <p class="govuk-body">Applying <em>.tpr-box--bordered</em> to a <em>.govuk-grid-row</em> works in the same way.</p>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-one-half">
+        <div class="tpr-box">
+            <p class="govuk-body">Boxes can be added within columns.</p>
+        </div>
+    </div>
+    <div class="govuk-grid-column govuk-grid-column-one-half">
+        <div class="tpr-box tpr-box--bordered">
+            <p class="govuk-body">Bordered boxes can be added within columns too.</p>
+        </div>
+    </div>
+</div>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider tpr-box">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <p class="govuk-body">This box has a divider applied and the column is set to full width to show the two styles working together.</p>
+    </div>
+</div>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider-for-fieldset govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <div class="govuk-form-group">
+
+            <fieldset aria-describedby="-hint" class="govuk-fieldset govuk-radios__fieldset">
+                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h1 class="govuk-fieldset__heading">Radios where the legend is the heading</h1></legend>
+
+                <div class="govuk-form-group">
+                    <div class="govuk-hint" id="-hint">
+                        <p class="govuk-body">There is a special case where radio buttons or checkboxes have the legend set as the main page heading.</p>
+                        <p class="govuk-body">Typically two dividers should appear:</p>
+                        <ul class="govuk-list govuk-list--bullet">
+                            <li>one below the heading, applied using <em>.govuk-grid-row--tpr-divider-for-fieldset</em></li>
+                            <li>one below the radio buttons, applied using <em>.govuk-grid-row--tpr-divider</em> as normal</li>
+                        </ul>
+                    </div><div class="govuk-radios " data-module="govuk-radios">
+                        <div class="govuk-radios__item ">
+                            <input aria-invalid="false" class="govuk-radios__input" name="" type="radio" value="1"><label class="govuk-radios__label govuk-label" for="">
+                                Option 1
+                            </label>
+                        </div><div class="govuk-radios__item ">
+                            <input aria-invalid="false" class="govuk-radios__input" id="-2" name="" type="radio" value="2"><label class="govuk-radios__label govuk-label" for="-2">
+                                Option 2
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+        </div>
+    </div>
+</div> 

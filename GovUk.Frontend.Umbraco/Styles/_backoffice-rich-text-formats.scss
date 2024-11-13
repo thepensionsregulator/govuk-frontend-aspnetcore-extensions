@@ -1,10 +1,16 @@
 ﻿/* The following styles appear in the style select dropdown when enabled, using the names defined in the `umb_name` comments.
    position: static is specified only so that the selector is included in the compiled stylesheet along with the comment.
+   Heading sizes are adjusted for the backoffice view as the real sizes are too large when shown in the styles dropdown.
 */
+
+/**umb_name:Heading 2 (large)*/
+h2.govuk-heading-l {
+    font-size: 1.8rem;
+}
 
 /**umb_name:Heading 2 (medium)*/
 h2.govuk-heading-m {
-    position: static;
+    font-size: 1.3rem;
 }
 
 /**umb_name:Heading 2 (small)*/
@@ -14,11 +20,26 @@ h2.govuk-heading-s {
 
 /**umb_name:Heading 3 (medium)*/
 h3.govuk-heading-m {
-    position: static;
+    font-size: 1.3rem;
 }
 
 /**umb_name:Heading 3 (small)*/
 h3.govuk-heading-s {
+    position: static;
+}
+
+/**umb_name:Heading 4 (small)*/
+h4.govuk-heading-s {
+    position: static;
+}
+
+/**umb_name:Heading 5 (small)*/
+h5.govuk-heading-s {
+    position: static;
+}
+
+/**umb_name:Heading 6 (small)*/
+h6.govuk-heading-s {
     position: static;
 }
 

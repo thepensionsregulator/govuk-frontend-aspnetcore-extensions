@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>TPR Header and Footer</summary>
 	[PublishedModel("headerFooterTPR")]
-	public partial class HeaderFooterTpr : PublishedContentModel
+	public partial class HeaderFooterTpr : PublishedContentModel, IGovukPageSettingHeadingSize
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -184,5 +184,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("manyLinksForHeader")]
 		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString ManyLinksForHeader => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "manyLinksForHeader");
+
+		///<summary>
+		/// Page heading size: Sets the h1 size. Defaults to govuk-heading-l if not set.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingScaleStart")]
+		public virtual string HeadingScaleStart => global::Umbraco.Cms.Web.Common.PublishedModels.GovukPageSettingHeadingSize.GetHeadingScaleStart(this, _publishedValueFallback);
 	}
 }

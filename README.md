@@ -41,6 +41,7 @@ We add support for:
   - [Task list](/docs/components/task-list.md)
   - [TPR back to top](/docs/components/tpr-back-to-top.md)
   - [TPR back to menu](/docs/components/tpr-back-to-menu.md)
+  - [TPR box](/docs/components/tpr-box.md)
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR context bar](/docs/components/tpr-context-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
@@ -90,6 +91,7 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 - [Validation](docs/umbraco/validation.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
 - [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)
+- [Configure heading levels](/docs/umbraco/configure-heading-levels.md)
 
 Umbraco GOV.UK Design System support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 

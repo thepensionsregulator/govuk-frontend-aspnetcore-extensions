@@ -41,6 +41,7 @@
     var cssClass = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var legendClass = legendIsPageHeading ? GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hint?.ToHtmlString()) ? null : modelPropertyName + "-hint";
@@ -59,7 +60,7 @@
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
                                   error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-date-input__fieldset" role="group">
-            <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@(legendIsPageHeading ? "govuk-fieldset__legend--l" : "govuk-fieldset__legend--for-field")">@legend</govuk-fieldset-legend>
+            <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</govuk-fieldset-legend>
             @if (blocks != null && blocks.Any())
             {
                 blocks.RenderGrid = false;

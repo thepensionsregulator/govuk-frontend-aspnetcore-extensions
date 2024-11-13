@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Fieldset</summary>
 	[PublishedModel("fieldset")]
-	public partial class Fieldset : PublishedContentModel
+	public partial class Fieldset : PublishedContentModel, IGovukPageSettingHeadingSize
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -56,5 +56,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("blocks")]
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel Blocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "blocks");
+
+		///<summary>
+		/// Page heading size: Sets the h1 size. Defaults to govuk-heading-l if not set.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingScaleStart")]
+		public virtual string HeadingScaleStart => global::Umbraco.Cms.Web.Common.PublishedModels.GovukPageSettingHeadingSize.GetHeadingScaleStart(this, _publishedValueFallback);
 	}
 }

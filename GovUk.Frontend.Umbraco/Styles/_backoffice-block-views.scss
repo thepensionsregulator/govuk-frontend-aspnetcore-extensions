@@ -79,3 +79,8 @@
 .backoffice-block-view .govuk-textarea {
     margin-bottom: 0;
 }
+
+/* Add padding to columns so that it's possible to get to the settings in the backoffice UI */
+.backoffice-columns {
+    padding: 10px;
+}

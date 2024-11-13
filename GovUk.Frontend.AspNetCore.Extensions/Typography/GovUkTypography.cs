@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.Typography
@@ -21,8 +22,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Typography
                 }
 
                 var allHeadingClasses = new[] { "govuk-heading-xl", "govuk-heading-l", "govuk-heading-m", "govuk-heading-s" };
-                ApplyClass(document, "//h2", "govuk-heading-m", allHeadingClasses);
-                ApplyClass(document, "//h3", "govuk-heading-s", allHeadingClasses);
+                ApplyClass(document, "//h2", options.HeadingClasses.Heading2, allHeadingClasses);
+                ApplyClass(document, "//h3", options.HeadingClasses.Heading3, allHeadingClasses);
+                ApplyClass(document, "//h4", options.HeadingClasses.Heading4, allHeadingClasses);
+                ApplyClass(document, "//h5", options.HeadingClasses.Heading5, allHeadingClasses);
+                ApplyClass(document, "//h6", options.HeadingClasses.Heading6, allHeadingClasses);
                 ApplyClass(document, "//p", "govuk-body");
                 ApplyClass(document, "//ul", "govuk-list");
                 ApplyClass(document, "//ul", "govuk-list--bullet");
@@ -71,6 +75,32 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Typography
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the default classes to apply to HTML heading levels.
+        /// </summary>
+        /// <param name="scaleStartsWith">A GOV.UK Frontend class name starting with <c>govuk-heading-</c></param>
+        /// <returns>Default classes to apply to each HTML heading level.</returns>
+        public static HeadingClasses HeadingClasses(string? scaleStartsWith = null)
+        {
+            if ("govuk-heading-xl".Equals(scaleStartsWith, StringComparison.OrdinalIgnoreCase))
+            {
+                return new HeadingClasses
+                {
+                    Caption = "govuk-caption-xl",
+                    Heading1 = "govuk-heading-xl",
+                    LabelAsHeading1 = "govuk-label--xl",
+                    LegendAsHeading1 = "govuk-fieldset__legend--xl",
+                    Heading2 = "govuk-heading-l",
+                    Heading3 = "govuk-heading-m",
+                    Heading4 = "govuk-heading-s",
+                    Heading5 = "govuk-heading-s",
+                    Heading6 = "govuk-heading-s"
+                };
+            }
+
+            return new HeadingClasses();
         }
     }
 }

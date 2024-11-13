@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Three column layout settings</summary>
 	[PublishedModel("govukGridThreeColumnLayoutSettings")]
-	public partial class GovukGridThreeColumnLayoutSettings : PublishedElementModel
+	public partial class GovukGridThreeColumnLayoutSettings : PublishedElementModel, IGovukGrid
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -56,5 +56,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("stackColumns")]
 		public virtual string StackColumns => this.Value<string>(_publishedValueFallback, "stackColumns");
+
+		///<summary>
+		/// CSS classes for row: Applied to the grid row which contains this component and other adjacent components that have the same setting.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClassesForRow")]
+		public virtual string CssClassesForRow => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGrid.GetCssClassesForRow(this, _publishedValueFallback);
 	}
 }

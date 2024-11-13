@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Grid</summary>
 	[PublishedModel("grid")]
-	public partial class Grid : PublishedContentModel
+	public partial class Grid : PublishedContentModel, IGovukPageSettingHeadingSize
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -64,5 +64,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("gridBlocks")]
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel GridBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel>(_publishedValueFallback, "gridBlocks");
+
+		///<summary>
+		/// Page heading size: Sets the h1 size. Defaults to govuk-heading-l if not set.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingScaleStart")]
+		public virtual string HeadingScaleStart => global::Umbraco.Cms.Web.Common.PublishedModels.GovukPageSettingHeadingSize.GetHeadingScaleStart(this, _publishedValueFallback);
 	}
 }

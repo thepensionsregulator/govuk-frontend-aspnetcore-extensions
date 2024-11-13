@@ -69,6 +69,7 @@
         public const string NotificationBannerType = "type";
         public const string NotificationBannerBlocks = "blocks";
         public const string PageHeading = "text";
+        public const string PageSettingHeadingScaleStart = "headingScaleStart";
         public const string PanelHeading = "panelHeading";
         public const string PanelText = "panelText";
         public const string RadioButtons = "radioButtons";

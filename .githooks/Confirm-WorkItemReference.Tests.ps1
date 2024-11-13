@@ -17,6 +17,12 @@ Describe 'Confirm-WorkItemReference' {
         $LASTEXITCODE | Should -Be 0
     }
 
+    It 'Should block a commit with a Azure DevOps work item reference without AB' {
+        Set-Content -Path $file -Value "Test commit #123456"
+        ./Confirm-WorkItemReference $file 
+        $LASTEXITCODE | Should -Be 1
+    }
+
     It 'Should allow a merge commit without a work item reference' {
         Set-Content -Path $file -Value "Merge branch 'example' into 'develop'"
         ./Confirm-WorkItemReference $file 

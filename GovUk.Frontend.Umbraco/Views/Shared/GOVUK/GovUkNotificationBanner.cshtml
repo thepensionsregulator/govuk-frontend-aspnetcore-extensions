@@ -8,19 +8,19 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    if (!Enum.TryParse(typeof(NotificationBannerType), Model.Settings.Value<string>("type"), out var bannerType))
+    if (!Enum.TryParse(typeof(NotificationBannerType), Model.Settings.Value<string>(PropertyAliases.NotificationBannerType), out var bannerType))
     {
         bannerType = NotificationBannerType.Default;
     }
-    var heading = Model.Content.Value<IHtmlEncodedString>("heading");
-    var text = Model.Content.Value<IHtmlEncodedString>("text");
+    var heading = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.NotificationBannerHeading);
+    var text = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.NotificationBannerText);
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.NotificationBannerBlocks);
-    var classNames = Model.Settings.Value<string>("cssClasses");
+    var classNames = Model.Settings.Value<string>(PropertyAliases.CssClasses);
 }
 <govuk-notification-banner type="@((NotificationBannerType)bannerType!)" class="@classNames">
-    @if (!string.IsNullOrEmpty(Model.Settings.Value<string>("title")))
+    @if (!string.IsNullOrEmpty(Model.Settings.Value<string>(PropertyAliases.NotificationBannerTitle)))
     {
-        <govuk-notification-banner-title>@(Model.Settings.Value<string>("title"))</govuk-notification-banner-title>
+        <govuk-notification-banner-title>@(Model.Settings.Value<string>(PropertyAliases.NotificationBannerTitle))</govuk-notification-banner-title>
     }
     @if (string.IsNullOrWhiteSpace(text?.ToHtmlString()) && !string.IsNullOrWhiteSpace(heading?.ToHtmlString()))
     {

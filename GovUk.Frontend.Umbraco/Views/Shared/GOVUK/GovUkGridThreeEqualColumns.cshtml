@@ -8,7 +8,8 @@
 @if (Model.Areas is not null && Model.Areas.Any())
 {
     var breakpointClass = Model.Settings.Value<string>(PropertyAliases.StackColumns) == "Mobile and tablet" ? "-from-desktop" : string.Empty;
-    <div class="@HtmlClassNames.Row">
+    var rowClasses = $"{HtmlClassNames.Row} {Model.Settings.Value<string>(PropertyAliases.CssClassesForRow)}".TrimEnd();
+    <div class="@rowClasses">
         @foreach (var area in Model.Areas)
         {
             <div class="@HtmlClassNames.Column @HtmlClassNames.ColumnOneThird@(breakpointClass)">

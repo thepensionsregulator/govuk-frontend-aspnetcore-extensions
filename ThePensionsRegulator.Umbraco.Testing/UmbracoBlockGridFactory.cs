@@ -16,7 +16,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static BlockGridModel CreateBlockGridModel(BlockGridItem blockGridItem)
         {
-            return CreateBlockGridModel(new[] { blockGridItem });
+            return CreateBlockGridModel([blockGridItem]);
         }
 
         /// <summary>
@@ -28,11 +28,27 @@ namespace ThePensionsRegulator.Umbraco.Testing
         }
 
         /// <summary>
+        /// Create a read-only Umbraco <see cref="BlockGridArea"/> containing a single <see cref="BlockGridItem"/>.
+        /// </summary>
+        public static BlockGridArea CreateBlockGridArea(BlockGridItem blockGridItem, string alias, int rowSpan = 1, int columnSpan = 1)
+        {
+            return CreateBlockGridArea([blockGridItem], alias, rowSpan, columnSpan);
+        }
+
+        /// <summary>
+        /// Create a read-only Umbraco <see cref="BlockGridArea"/> containing multiple instances of <see cref="BlockGridItem"/>.
+        /// </summary>
+        public static BlockGridArea CreateBlockGridArea(IEnumerable<BlockGridItem> blockGridItems, string alias, int rowSpan = 1, int columnSpan = 1)
+        {
+            return new BlockGridArea(blockGridItems.ToList(), alias, rowSpan, columnSpan);
+        }
+
+        /// <summary>
         /// Create an <see cref="OverridableBlockGridModel"/> containing a single <see cref="BlockGridItem"/> which can have its property values overridden at runtime.
         /// </summary>
         public static OverridableBlockGridModel CreateOverridableBlockGridModel(BlockGridItem blockGridItem)
         {
-            return CreateOverridableBlockGridModel(new[] { blockGridItem });
+            return CreateOverridableBlockGridModel([blockGridItem]);
         }
 
         /// <summary>
@@ -41,6 +57,22 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public static OverridableBlockGridModel CreateOverridableBlockGridModel(IEnumerable<BlockGridItem> blockGridItems)
         {
             return new OverridableBlockGridModel(blockGridItems, null, OverridableBlockGridItem.NoopPublishedElementFactory);
+        }
+
+        /// <summary>
+        /// Create an <see cref="OverridableBlockGridArea"/> containing a single <see cref="BlockGridItem"/> which can have its property values overridden at runtime.
+        /// </summary>
+        public static OverridableBlockGridArea CreateOverridableBlockGridArea(BlockGridItem blockGridItem, string alias, int rowSpan = 1, int columnSpan = 1)
+        {
+            return CreateOverridableBlockGridArea([blockGridItem], alias, rowSpan, columnSpan);
+        }
+
+        /// <summary>
+        /// Create an <see cref="OverridableBlockGridArea"/> containing multiple instances of <see cref="BlockGridItem"/> which can have their property values overridden at runtime.
+        /// </summary>
+        public static OverridableBlockGridArea CreateOverridableBlockGridArea(IEnumerable<BlockGridItem> blockGridItems, string alias, int rowSpan = 1, int columnSpan = 1)
+        {
+            return new OverridableBlockGridArea(blockGridItems, alias, rowSpan, columnSpan, OverridableBlockGridItem.NoopPublishedElementFactory);
         }
 
         /// <summary>

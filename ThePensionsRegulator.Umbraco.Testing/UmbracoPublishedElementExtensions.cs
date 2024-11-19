@@ -164,7 +164,31 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
 
+        public static Mock<T> SetupUmbracoBooleanPropertyValue<T>(this T publishedElement, string alias, bool value) where T : class, IPublishedElement
+        {
+            return Mock.Get(publishedElement).SetupUmbracoBooleanPropertyValue(alias, value);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a boolean data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+
         public static Mock<T> SetupUmbracoBooleanPropertyValue<T>(this Mock<T> publishedElement, string alias, bool? value) where T : class, IPublishedElement
+        {
+            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateBooleanProperty);
+        }
+
+        /// <summary>
+        /// Mock an Umbraco property on an <see cref="IPublishedElement"/> using a boolean data type, and set its value.
+        /// </summary>
+        /// <param name="alias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
+
+        public static Mock<T> SetupUmbracoBooleanPropertyValue<T>(this Mock<T> publishedElement, string alias, bool value) where T : class, IPublishedElement
         {
             return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateBooleanProperty);
         }

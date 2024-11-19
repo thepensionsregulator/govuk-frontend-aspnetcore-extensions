@@ -1,5 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IEnumerable<BlockListItem>>
 @inject IEnumerable<IPartialViewPathProvider> pathProviders;
+@inject IGovUkGridClassBuilder gridClassBuilder
+@inject IGovUkFieldsetErrorFinder fieldsetErrorFinder
 @using GovUk.Frontend.AspNetCore.Extensions;
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
@@ -28,8 +30,8 @@
     if (blocks[i]?.ContentUdi == null) { continue; }
 
     var isGridRowBlock = blocks[i].Content.ContentType.Alias == ElementTypeAliases.GridRow;
-    string rowClass = GovUkGridClassBuilder.BuildGridRowClass(blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
-    var columnClass = GovUkGridClassBuilder.BuildGridColumnClass(
+    string rowClass = gridClassBuilder.BuildGridRowClasses(blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
+    var columnClass = gridClassBuilder.BuildGridColumnClasses(
                         blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSize), 
                         blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop), 
                         blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
@@ -37,7 +39,7 @@
 
     // If this block is a fieldset and there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
     // But only if the 'legendIsPageHeading' setting is false, otherwise it's done in GovUkFieldset.cshtml.
-    var fieldsetErrors = GovUkFieldsetErrorFinder.FindFieldsetErrors(blocks[i], ViewContext.ModelState);
+    var fieldsetErrors = fieldsetErrorFinder.FindErrors(blocks[i], ViewContext.ModelState);
     string? fieldsetErrorClasses = null;
     if (fieldsetErrors.Any())
     {
@@ -56,8 +58,8 @@
 
     if (notTheLastBlock)
     {
-        nextRowClass = GovUkGridClassBuilder.BuildGridRowClass(blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
-        nextColumnClass = GovUkGridClassBuilder.BuildGridColumnClass(
+        nextRowClass = gridClassBuilder.BuildGridRowClasses(blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
+        nextColumnClass = gridClassBuilder.BuildGridColumnClasses(
                                                 blocks[i+1].Settings?.Value<string>(PropertyAliases.ColumnSize), 
                                                 blocks[i+1].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop), 
                                                 blocks[i+1].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),

@@ -138,7 +138,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void Grid_applies_fieldset_error_classes_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
         {
             // Arrange
-            const string FIELDSET_ERROR_CLASS = "govuk-form-group govuk-form-group--error";
+            const string FIELDSET_ERROR_CLASS = $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}";
 
             var modelState = new ModelStateDictionary();
             var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
@@ -172,7 +172,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void List_applies_fieldset_error_classes_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
         {
             // Arrange
-            const string FIELDSET_ERROR_CLASS = "govuk-form-group govuk-form-group--error";
+            const string FIELDSET_ERROR_CLASS = $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}";
 
             var modelState = new ModelStateDictionary();
             var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([

@@ -11,5 +11,7 @@
         internal const string ColumnOneQuarter = "govuk-grid-column-one-quarter";
         internal const string ColumnThreeQuarters = "govuk-grid-column-three-quarters";
         internal const string ColumnHalf = "govuk-grid-column-one-half";
+        internal const string FormGroup = "govuk-form-group";
+        internal const string FormGroupError = "govuk-form-group--error";
     }
 }

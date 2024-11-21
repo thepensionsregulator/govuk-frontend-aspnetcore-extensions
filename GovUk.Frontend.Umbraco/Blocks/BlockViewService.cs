@@ -100,7 +100,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                 var legendIsPageHeading = block.Settings?.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading) ?? false;
                 if (!legendIsPageHeading)
                 {
-                    fieldsetErrorClasses = "govuk-form-group govuk-form-group--error";
+                    fieldsetErrorClasses = $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}";
                 }
             }
 

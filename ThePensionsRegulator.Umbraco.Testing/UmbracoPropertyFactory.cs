@@ -135,6 +135,17 @@ namespace ThePensionsRegulator.Umbraco.Testing
         }
 
         /// <summary>
+        /// Mock an Umbraco property using a boolean data type, and set its value.
+        /// </summary>
+        /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
+        /// <param name="value">The value to assign to the mocked Umbraco property.</param>
+        /// <returns>The mocked Umbraco property.</returns>
+        public static IPublishedProperty CreateBooleanProperty(string propertyAlias, bool value)
+        {
+            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.Boolean, new TrueFalseConfiguration()), value);
+        }
+
+        /// <summary>
         /// Mock an Umbraco property using a multi-URL picker data type configured to pick a maximum of one URL, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>

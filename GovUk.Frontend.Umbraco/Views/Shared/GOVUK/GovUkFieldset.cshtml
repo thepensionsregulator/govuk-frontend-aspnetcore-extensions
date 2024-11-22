@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@inject IGovUkFieldsetErrorFinder fieldsetErrorFinder
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Services
@@ -18,9 +19,9 @@
 
     // If there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
     // If legendIsPageHeading is false, the classes are assigned in BlockList.cshtml, but describedBy must always be set here.
-    var fieldsetErrors = GovUkFieldsetErrorFinder.FindFieldsetErrors(Model, ViewContext.ModelState);
+    var fieldsetErrors = fieldsetErrorFinder.FindErrors(Model, ViewContext.ModelState);
     var hasFieldsetError = fieldsetErrors.Any();
-    var fieldsetErrorClasses = hasFieldsetError && legendIsPageHeading ? "govuk-form-group govuk-form-group--error" : null;
+    var fieldsetErrorClasses = hasFieldsetError && legendIsPageHeading ? $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}" : null;
     var describedBy = hasFieldsetError ? string.Join(' ', fieldsetErrors.Select(x => x.Settings.Value<string>(PropertyAliases.ModelProperty)).ToArray()) : null;
 
     // Add an error to ModelState so that we can communicate the presence of a fieldset error to each field within it

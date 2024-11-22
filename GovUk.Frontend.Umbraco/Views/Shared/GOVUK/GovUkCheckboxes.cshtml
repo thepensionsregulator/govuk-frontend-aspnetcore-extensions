@@ -28,14 +28,14 @@
     if (!string.IsNullOrEmpty(modelStateEntry?.AttemptedValue)) { selectedValues.AddRange(modelStateEntry.AttemptedValue.ToUpperInvariant().Split(",")); }
     var isInvalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any());
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
-    var invalidClass = isInvalid ? " govuk-form-group--error" : null;
+    var invalidClass = isInvalid ? $" {HtmlClassNames.FormGroupError}" : null;
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxesFieldsetBlocks);
     if (blocks != null && blocks.Any())
     {
         fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
 }
-<div class="govuk-form-group@(invalidClass)@(cssClasses)">
+<div class="@(HtmlClassNames.FormGroup)@(invalidClass)@(cssClasses)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-checkboxes__fieldset">
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</govuk-fieldset-legend>

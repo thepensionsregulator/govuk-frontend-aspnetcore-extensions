@@ -25,7 +25,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
 
-            var results = GovUkFieldsetErrorFinder.FindFieldsetErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
             Assert.AreEqual(0, results.Count());
         }
@@ -38,7 +38,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
 
-            var results = GovUkFieldsetErrorFinder.FindFieldsetErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
             Assert.AreEqual(0, results.Count());
         }
@@ -50,7 +50,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
 
             var modelState = new ModelStateDictionary();
 
-            var results = GovUkFieldsetErrorFinder.FindFieldsetErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
             Assert.AreEqual(0, results.Count());
         }
@@ -63,7 +63,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
 
-            var results = GovUkFieldsetErrorFinder.FindFieldsetErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
             Assert.AreEqual(0, results.Count());
         }
@@ -76,7 +76,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
 
-            var results = GovUkFieldsetErrorFinder.FindFieldsetErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
             Assert.AreEqual(1, results.Count());
             Assert.AreEqual(ElementTypeAliases.ErrorMessage, results.First().Content.ContentType.Alias);
@@ -90,7 +90,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(string.Empty, "Any error");
 
-            var results = GovUkFieldsetErrorFinder.FindFieldsetErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
             Assert.AreEqual(0, results.Count());
         }

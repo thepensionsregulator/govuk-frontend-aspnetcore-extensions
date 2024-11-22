@@ -1,13 +1,33 @@
-﻿namespace GovUk.Frontend.Umbraco.Services
+﻿using System;
+
+namespace GovUk.Frontend.Umbraco.Services
 {
-    public static class GovUkGridClassBuilder
+    public class GovUkGridClassBuilder : IGovUkGridClassBuilder
     {
-        public static string BuildGridRowClass(string? customClass)
+        [Obsolete("Use the instance method. This static method will be removed in v7.")]
+        public static string BuildGridRowClass(string? customClass) => new GovUkGridClassBuilder().BuildGridRowClasses(customClass);
+
+        [Obsolete("Use the instance method. This static method will be removed in v7.")]
+        public static string BuildGridColumnClass(
+            string? columnSizeClass,
+            string? fromDesktopClass,
+            string? customClass,
+            string? forBlockOfContentTypeAlias = null,
+            bool defaultToFullWidth = false) =>
+                new GovUkGridClassBuilder().BuildGridColumnClasses(columnSizeClass,
+                                                            fromDesktopClass,
+                                                            customClass,
+                                                            forBlockOfContentTypeAlias,
+                                                            defaultToFullWidth);
+
+
+        public string BuildGridRowClasses(string? customClass)
         {
             string rowClass = ($"{HtmlClassNames.Row} {customClass}").TrimEnd();
             return rowClass;
         }
-        public static string BuildGridColumnClass(string? columnSizeClass, string? fromDesktopClass, string? customClass, string? forBlockOfContentTypeAlias = null, bool defaultToFullWidth = false)
+
+        public string BuildGridColumnClasses(string? columnSizeClass, string? fromDesktopClass, string? customClass, string? forBlockOfContentTypeAlias = null, bool defaultToFullWidth = false)
         {
             if (!string.IsNullOrEmpty(columnSizeClass)) { columnSizeClass = $"{HtmlClassNames.Column}-{columnSizeClass}"; }
             if (!string.IsNullOrEmpty(fromDesktopClass)) { fromDesktopClass = $"{HtmlClassNames.Column}-{fromDesktopClass}-from-desktop"; }

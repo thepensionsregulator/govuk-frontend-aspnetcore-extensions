@@ -22,6 +22,10 @@
         ); 
     }
 
+    if (Model.RenderWidthContainer)
+    {
+        @:<div class="@Model.WidthContainerClasses">
+    }
     @if (Model.RenderGrid && !Model.IsGridRow && !Model.IsSameAsPrevious) { 
         @:<div class="@Model.RowClasses"> 
         @:<div class="@Model.ColumnClasses"> 
@@ -37,6 +41,10 @@
     }
     @if (Model.RenderGrid && !Model.IsGridRow  && !Model.IsSameAsNext) {
         @:</div> 
+        @:</div> 
+    }
+    if (Model.RenderWidthContainer)
+    {
         @:</div> 
     }
 }

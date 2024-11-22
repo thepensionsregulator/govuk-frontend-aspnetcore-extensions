@@ -42,6 +42,7 @@
             @if (blocks != null && blocks.Any())
             {
                 blocks.RenderGrid = false;
+                blocks.RenderWidthContainer = false;
                 <div id="@modelPropertyName-blocks">
                     @await Html.PartialAsync("GOVUK/BlockList", blocks)
                 </div>
@@ -78,6 +79,7 @@
                                         var conditional = block.Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxConditionalBlocks)!;
                                         if (conditional.Any())
                                         {
+                                            conditional.RenderWidthContainer = false;
                                             <govuk-checkboxes-item-conditional>
                                                 @await Html.PartialAsync("GOVUK/BlockList", conditional)
                                             </govuk-checkboxes-item-conditional>
@@ -99,6 +101,7 @@
                                         var conditional = block.Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxConditionalBlocks)!;
                                         if (conditional.Any())
                                         {
+                                            conditional.RenderWidthContainer = false;
                                             <govuk-checkboxes-item-conditional>
                                                 @await Html.PartialAsync("GOVUK/BlockList", conditional)
                                             </govuk-checkboxes-item-conditional>

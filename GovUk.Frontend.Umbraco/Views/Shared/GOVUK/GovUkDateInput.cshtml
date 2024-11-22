@@ -64,6 +64,7 @@
             @if (blocks != null && blocks.Any())
             {
                 blocks.RenderGrid = false;
+                blocks.RenderWidthContainer = false;
                 <div id="@modelPropertyName-blocks">
                     @await Html.PartialAsync("GOVUK/BlockList", blocks)
                 </div>

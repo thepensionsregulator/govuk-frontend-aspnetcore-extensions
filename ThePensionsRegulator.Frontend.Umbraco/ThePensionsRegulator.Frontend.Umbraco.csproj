@@ -132,6 +132,9 @@
 		<Content Update="uSync\v9\DataTypes\TPRBlockGrid.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\DataTypes\TPRBoxColour.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRBoxStyle.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

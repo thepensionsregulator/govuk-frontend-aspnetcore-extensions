@@ -12,6 +12,7 @@
 @using Umbraco.Extensions
 @{
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks);
+    if (blocks is not null) { blocks.RenderWidthContainer = false; }
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legendClass = legendIsPageHeading ? GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-fieldset";
@@ -25,7 +26,7 @@
     var describedBy = hasFieldsetError ? string.Join(' ', fieldsetErrors.Select(x => x.Settings.Value<string>(PropertyAliases.ModelProperty)).ToArray()) : null;
 
     // Add an error to ModelState so that we can communicate the presence of a fieldset error to each field within it
-    if (blocks != null && hasFieldsetError) {
+    if (blocks is not null && hasFieldsetError) {
         var allDescendentFields = blocks.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.Checkbox || 
                                                          x.Content.ContentType.Alias == ElementTypeAliases.Checkboxes || 
                                                          x.Content.ContentType.Alias == ElementTypeAliases.DateInput || 

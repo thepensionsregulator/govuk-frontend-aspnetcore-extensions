@@ -47,6 +47,10 @@
     padding: govuk-px-to-rem($govuk-gutter - $govuk-border-width)
 }
 
+.tpr-box--blue {
+    background-color: govuk-tint($tpr-colour-regent-st-blue, 80)
+}
+
 .tpr-box.govuk-grid-row {
     padding: 0 $govuk-gutter-half;
     background: none;
@@ -73,16 +77,18 @@
 .govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
 .govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
 .tpr-box > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
-.tpr-box > .govuk-grid-row > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.tpr-box > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
 .tpr-box.govuk-grid-row > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
 .tpr-box.govuk-grid-row > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
-.tpr-box > .govuk-grid-row > .govuk-grid-column:last-child > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column) {
+.tpr-box > .govuk-grid-row > .govuk-grid-column:last-child > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.tpr-box--full-width > .govuk-width-container > .govuk-grid-row:last-child > .govuk-grid-column > :last-child {
     padding-bottom: 0;
     margin-bottom: 0;
 }
 
 // ...unless the :last-child is a .tpr-box, then remove the margin only.
-.govuk-grid-row--tpr-divider > .govuk-grid-column:last-child > .tpr-box:last-child {
+.govuk-grid-row--tpr-divider > .govuk-grid-column:last-child > .tpr-box:last-child,
+.tpr-box--full-width > .govuk-width-container > .tpr-box:last-child {
     margin-bottom: 0;
 }
 

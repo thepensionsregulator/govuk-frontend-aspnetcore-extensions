@@ -21,7 +21,11 @@
         $"No {nameof(IPartialViewPathProvider)} was found to provide a path for the block with content key {Model.Block.Content.Key}, of content type {Model.Block.Content.ContentType.Alias}"
         );
     }
-                
+
+    if (Model.RenderWidthContainer)
+    {
+        @:<div class="@Model.WidthContainerClasses">
+    }
     if (!Model.HasGridAreas && !Model.IsSameAsPrevious)
     { 
         @:<div class="@Model.RowClasses"> 
@@ -39,6 +43,11 @@
     if (!Model.HasGridAreas && !Model.IsSameAsNext)
     {
         @:</div> 
+        @:</div> 
+
+    }
+    if (Model.RenderWidthContainer)
+    {
         @:</div> 
     }
 }

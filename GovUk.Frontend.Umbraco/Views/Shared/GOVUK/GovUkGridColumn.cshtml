@@ -8,8 +8,9 @@
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
-    var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.GridColumnBlocks);
-    blocks!.RenderGrid = Model.Settings?.Value<bool>(PropertyAliases.GridColumnRenderRowsAndColumns) ?? false;
+    var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.GridColumnBlocks)!;
+    blocks.RenderGrid = Model.Settings?.Value<bool>(PropertyAliases.GridColumnRenderRowsAndColumns) ?? false;
+    blocks.RenderWidthContainer = false;
     var columnClass = gridClassBuilder.BuildGridColumnClasses(
                         Model.Settings?.Value<string>(PropertyAliases.ColumnSize),
                         Model.Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),

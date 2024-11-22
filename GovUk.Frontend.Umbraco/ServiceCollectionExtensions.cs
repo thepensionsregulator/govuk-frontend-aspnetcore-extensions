@@ -20,19 +20,36 @@ namespace GovUk.Frontend.Umbraco
     {
         public static IServiceCollection AddGovUkFrontendUmbraco(this IServiceCollection services)
         {
-            return services.AddGovUkFrontendUmbraco(options => { });
+            return services.AddGovUkFrontendUmbraco(options => { }, options => { });
+        }
+
+        public static IServiceCollection AddGovUkFrontendUmbraco(this IServiceCollection services,
+            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions)
+        {
+            return services.AddGovUkFrontendUmbraco(configureGovUkOptions, options => { });
+        }
+
+        public static IServiceCollection AddGovUkFrontendUmbraco(this IServiceCollection services,
+            Action<GovUkFrontendUmbracoOptions> configureGovUkUmbracoOptions)
+        {
+            return services.AddGovUkFrontendUmbraco(options => { }, configureGovUkUmbracoOptions);
         }
 
         public static IServiceCollection AddGovUkFrontendUmbraco(
             this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureOptions)
+            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions,
+            Action<GovUkFrontendUmbracoOptions> configureGovUkUmbracoOptions)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddGovUkFrontendExtensions(configureOptions);
+            services.AddGovUkFrontendExtensions(configureGovUkOptions);
+
+            var govukUmbracoOptions = new GovUkFrontendUmbracoOptions();
+            if (configureGovUkUmbracoOptions is not null) { configureGovUkUmbracoOptions(govukUmbracoOptions); }
+            services.AddTransient((services) => Options.Create(govukUmbracoOptions));
 
             services.AddTransient<IUmbracoPublishedContentAccessor, UmbracoPublishedContentAccessor>();
             services.AddTransient<IUmbracoPaginationFactory, UmbracoPaginationFactory>();

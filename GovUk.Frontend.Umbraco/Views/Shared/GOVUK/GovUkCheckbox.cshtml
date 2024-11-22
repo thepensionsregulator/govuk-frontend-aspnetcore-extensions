@@ -37,6 +37,7 @@
                 <govuk-checkboxes-item-hint>@checkboxHint</govuk-checkboxes-item-hint>
             }
             @if (conditional.Any()){
+                conditional.RenderWidthContainer = false;
                 <govuk-checkboxes-item-conditional>
                     @await Html.PartialAsync("GOVUK/BlockList", conditional)
                 </govuk-checkboxes-item-conditional>

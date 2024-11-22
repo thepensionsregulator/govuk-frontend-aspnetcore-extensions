@@ -43,6 +43,7 @@
             @if (blocks != null && blocks.Any())
             {
                 blocks.RenderGrid = false;
+                blocks.RenderWidthContainer = false;
                 <div id="@modelPropertyName-blocks">
                     @await Html.PartialAsync("GOVUK/BlockList", blocks)
                 </div>
@@ -76,6 +77,7 @@
                             }
                             @if (conditional.Any())
                             {
+                                conditional.RenderWidthContainer = false;
                                 <govuk-radios-item-conditional>
                                     @await Html.PartialAsync("GOVUK/BlockList", conditional)
                                 </govuk-radios-item-conditional>

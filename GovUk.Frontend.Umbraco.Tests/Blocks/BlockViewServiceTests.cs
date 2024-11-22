@@ -1,6 +1,7 @@
 ﻿using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -17,7 +18,6 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 # nullable disable
         private Mock<IGovUkGridClassBuilder> _gridClassBuilder;
         private Mock<IGovUkFieldsetErrorFinder> _fieldsetErrorFinder;
-        private BlockViewService _blockViewService;
 #nullable enable
 
         [SetUp]
@@ -25,8 +25,6 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         {
             _gridClassBuilder = new();
             _fieldsetErrorFinder = new();
-
-            _blockViewService = new(_gridClassBuilder.Object, _fieldsetErrorFinder.Object);
         }
 
         [Test]
@@ -42,8 +40,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 ]);
             model.Filter = block => block.Content.ContentType.Alias == ALLOWED;
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.Count(), Is.EqualTo(1));
@@ -63,8 +63,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 ], "area");
             model.Filter = block => block.Content.ContentType.Alias == ALLOWED;
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.Count(), Is.EqualTo(1));
@@ -84,8 +86,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 ]);
             model.Filter = block => block.Content.ContentType.Alias == ALLOWED;
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.Count(), Is.EqualTo(1));
@@ -98,8 +102,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             // Arrange
             var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([]);
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result, Is.Empty);
@@ -111,11 +117,65 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             // Arrange
             var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area");
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void Grid_sets_IsInGridArea_false()
+        {
+            // Arrange
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
+                UmbracoBlockGridFactory.CreateOverridableBlock("block")
+                );
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().IsInGridArea, Is.False);
+        }
+
+        [Test]
+        public void Area_sets_IsInGridArea_true()
+        {
+            // Arrange
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea(
+                UmbracoBlockGridFactory.CreateOverridableBlock("block"),
+                "area"
+                );
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().IsInGridArea, Is.True);
+        }
+
+        [Test]
+        public void List_sets_IsInGridArea_false()
+        {
+            // Arrange
+            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateOverridableBlock("block")
+                );
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().IsInGridArea, Is.False);
         }
 
         [Test]
@@ -124,13 +184,78 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             // Arrange
             var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([]);
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result, Is.Empty);
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Grid_sets_RenderWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled(bool renderWidthContainerForBlocksEnabled)
+        {
+            // Arrange
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
+                UmbracoBlockGridFactory.CreateOverridableBlock("block")
+                );
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().RenderWidthContainer, Is.EqualTo(renderWidthContainerForBlocksEnabled));
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Area_sets_RenderWidthContainer_to_false_for_any_RenderWidthContainerForBlocks_setting(bool renderWidthContainerForBlocksEnabled)
+        {
+            // Arrange
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea(
+                UmbracoBlockGridFactory.CreateOverridableBlock("block"),
+                "area"
+                );
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().RenderWidthContainer, Is.False);
+        }
+
+        [TestCase(true, true)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        [TestCase(false, false)]
+        public void Lists_sets_RenderWidthContainer_to_true_if_RenderWidthContainer_enabled_for_both_site_and_block_list(bool renderWidthContainerForSiteEnabled, bool renderWidthContainerForBlockListEnabled)
+        {
+            // Arrange
+            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateOverridableBlock("block")
+                );
+            model.RenderWidthContainer = renderWidthContainerForBlockListEnabled;
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForSiteEnabled });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().RenderWidthContainer, Is.EqualTo(renderWidthContainerForSiteEnabled && renderWidthContainerForBlockListEnabled));
+        }
 
         [TestCase(false, false, false)]
         [TestCase(true, false, true)]
@@ -152,8 +277,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var errors = hasErrors ? [UmbracoBlockGridFactory.CreateOverridableBlock(ElementTypeAliases.ErrorMessage)] : Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
             _ = _fieldsetErrorFinder.Setup(x => x.FindErrors(model.First(), modelState)).Returns(errors);
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, modelState);
+            var result = blockViewService.PrepareBlockViewModels(model, modelState);
 
             // Assert
             if (expectClasses)
@@ -186,8 +313,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var errors = hasErrors ? [UmbracoBlockListFactory.CreateOverridableBlock(ElementTypeAliases.ErrorMessage)] : Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
             _ = _fieldsetErrorFinder.Setup(x => x.FindErrors(model.First(), modelState)).Returns(errors);
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, modelState);
+            var result = blockViewService.PrepareBlockViewModels(model, modelState);
 
             // Assert
             if (expectClasses)
@@ -213,8 +342,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(null)).Returns(ROW_CLASS);
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, null, "alias", false)).Returns(COLUMN_CLASS);
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.First().RowClasses, Is.EqualTo(ROW_CLASS));
@@ -234,8 +365,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(null)).Returns(ROW_CLASS);
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, null, "alias", false)).Returns(COLUMN_CLASS);
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.First().RowClasses, Is.EqualTo(ROW_CLASS));
@@ -252,8 +385,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                  UmbracoBlockGridFactory.CreateOverridableBlock("alias")
                  ]);
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.First().HasGridAreas, Is.True);
@@ -323,8 +458,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, currentBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {currentBlockColumnClass}");
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, nextBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {nextBlockColumnClass}");
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.First().IsSameAsNext, Is.EqualTo(expectSameAsNext));
@@ -394,8 +531,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, previousBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {previousBlockColumnClass}");
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, currentBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {currentBlockColumnClass}");
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.First().IsSameAsPrevious, Is.False); // first one should always be false
@@ -458,8 +597,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, currentBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {currentBlockColumnClass}");
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, nextBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {nextBlockColumnClass}");
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.First().IsSameAsNext, Is.EqualTo(expectSameAsNext));
@@ -520,8 +661,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, previousBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {previousBlockColumnClass}");
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, currentBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {currentBlockColumnClass}");
 
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
             // Act
-            var result = _blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
             Assert.That(result.First().IsSameAsPrevious, Is.False); // first one should always be false

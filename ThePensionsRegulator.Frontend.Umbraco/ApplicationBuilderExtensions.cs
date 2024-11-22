@@ -10,7 +10,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco
 {
     public static class ApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseTprFrontendUmbraco(this IApplicationBuilder app, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback)
+        public static IApplicationBuilder UseTprFrontendUmbraco(
+            this IApplicationBuilder app,
+            IOptions<MvcOptions> mvcOptions,
+            IUmbracoContextAccessor umbracoContextAccessor,
+            IPublishedValueFallback publishedValueFallback)
         {
             app.UseGovUkFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
 

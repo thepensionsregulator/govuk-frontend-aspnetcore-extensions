@@ -6,5 +6,6 @@
         public const string TprBackToMenuLink = "link";
         public const string TprImage = "image";
         public const string TprBoxStyle = "styleOfBox";
+        public const string TprBoxBackgroundColour = "backgroundColour";
     }
 }

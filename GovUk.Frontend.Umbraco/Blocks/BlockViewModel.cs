@@ -20,6 +20,11 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public bool HasGridAreas { get; set; }
 
         /// <summary>
+        /// In a block grid, is this block within an area rather than the top-level grid?
+        /// </summary>
+        public bool IsInGridArea { get; set; }
+
+        /// <summary>
         /// In a block list, should the grid row and column be rendered, or only their children?
         /// </summary>
         public bool RenderGrid { get; set; }
@@ -43,16 +48,26 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <summary>
         /// HTML classes to apply to the grid row.
         /// </summary>
-        public required string RowClasses { get; set; }
+        public string RowClasses { get; set; } = HtmlClassNames.Row;
 
         /// <summary>
         /// HTML classes to apply to the grid column.
         /// </summary>
-        public required string ColumnClasses { get; set; }
+        public string ColumnClasses { get; set; } = HtmlClassNames.Column;
 
         /// <summary>
         /// HTML classes to apply to a fieldset in an error state.
         /// </summary>
         public string? FieldsetErrorClasses { get; set; }
+
+        /// <summary>
+        /// Should a div be rendered around this block to contain its width?
+        /// </summary>
+        public bool RenderWidthContainer { get; set; }
+
+        /// <summary>
+        /// If <see cref="RenderWidthContainer"/> is <c>true</c>, what HTML class(es) should be applied to the width container?
+        /// </summary>
+        public string WidthContainerClasses { get; set; } = HtmlClassNames.WidthContainer;
     }
 }

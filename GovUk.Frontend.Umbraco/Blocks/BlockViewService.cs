@@ -79,7 +79,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     IsInGridArea = isInGridArea,
                     IsGridRow = false,
                     RenderGrid = false,
-                    RenderWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea,
+                    RenderWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true),
                     IsSameAsNext = sameAsNext,
                     IsSameAsPrevious = sameAsPrevious,
                     FieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i])

@@ -21,6 +21,7 @@
     {
         var grid = section.Content.Value<OverridableBlockGridModel>(PropertyAliases.AccordionSectionBlocks)!;
         grid.ChildColumnsDefaultToFullWidth = true;
+        grid.RenderWidthContainer = false;
 
         <govuk-accordion-item class="@(section.Settings.Value<string>(PropertyAliases.CssClasses))" expanded="@(section.Settings.Value<bool>(PropertyAliases.AccordionSectionExpanded))">
             <govuk-accordion-item-heading>@(section.Content.Value<string>(PropertyAliases.AccordionSectionHeading))</govuk-accordion-item-heading>

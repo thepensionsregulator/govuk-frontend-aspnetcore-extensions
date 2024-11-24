@@ -193,14 +193,17 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             Assert.That(result, Is.Empty);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void Grid_sets_RenderWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled(bool renderWidthContainerForBlocksEnabled)
+        [TestCase(true, true)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        [TestCase(false, false)]
+        public void Grid_sets_RenderWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled_and_RenderWidthContainer_true(bool renderWidthContainerForBlocksEnabled, bool renderWidthContainer)
         {
             // Arrange
             var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
                 UmbracoBlockGridFactory.CreateOverridableBlock("block")
                 );
+            model.RenderWidthContainer = renderWidthContainer;
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
 
@@ -210,7 +213,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().RenderWidthContainer, Is.EqualTo(renderWidthContainerForBlocksEnabled));
+            Assert.That(result.First().RenderWidthContainer, Is.EqualTo(renderWidthContainerForBlocksEnabled && renderWidthContainer));
         }
 
         [TestCase(true)]

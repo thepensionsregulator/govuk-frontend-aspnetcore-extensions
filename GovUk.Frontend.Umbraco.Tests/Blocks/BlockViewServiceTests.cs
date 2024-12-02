@@ -47,7 +47,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 
             // Assert
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.First().Block.Content.ContentType.Alias, Is.EqualTo(ALLOWED));
+            Assert.That(result.First().CurrentBlock.Content.ContentType.Alias, Is.EqualTo(ALLOWED));
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 
             // Assert
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.First().Block.Content.ContentType.Alias, Is.EqualTo(ALLOWED));
+            Assert.That(result.First().CurrentBlock.Content.ContentType.Alias, Is.EqualTo(ALLOWED));
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 
             // Assert
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.First().Block.Content.ContentType.Alias, Is.EqualTo(ALLOWED));
+            Assert.That(result.First().CurrentBlock.Content.ContentType.Alias, Is.EqualTo(ALLOWED));
         }
 
         [Test]
@@ -124,6 +124,60 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 
             // Assert
             Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void Grid_sets_previous_current_and_next_block()
+        {
+            // Arrange
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
+                UmbracoBlockGridFactory.CreateOverridableBlock("one"),
+                UmbracoBlockGridFactory.CreateOverridableBlock("two"),
+                UmbracoBlockGridFactory.CreateOverridableBlock("three")
+                ]);
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary()).ToList();
+
+            // Assert
+            Assert.That(result[0].PreviousBlock, Is.Null);
+            Assert.That(result[0].CurrentBlock, Is.EqualTo(model[0]));
+            Assert.That(result[0].NextBlock, Is.EqualTo(model[1]));
+            Assert.That(result[1].PreviousBlock, Is.EqualTo(model[0]));
+            Assert.That(result[1].CurrentBlock, Is.EqualTo(model[1]));
+            Assert.That(result[1].NextBlock, Is.EqualTo(model[2]));
+            Assert.That(result[2].PreviousBlock, Is.EqualTo(model[1]));
+            Assert.That(result[2].CurrentBlock, Is.EqualTo(model[2]));
+            Assert.That(result[2].NextBlock, Is.Null);
+        }
+
+        [Test]
+        public void Area_sets_previous_current_and_next_block()
+        {
+            // Arrange
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea([
+                UmbracoBlockGridFactory.CreateOverridableBlock("one"),
+                UmbracoBlockGridFactory.CreateOverridableBlock("two"),
+                UmbracoBlockGridFactory.CreateOverridableBlock("three")
+                ], "area");
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary()).ToList();
+
+            // Assert
+            Assert.That(result[0].PreviousBlock, Is.Null);
+            Assert.That(result[0].CurrentBlock, Is.EqualTo(model[0]));
+            Assert.That(result[0].NextBlock, Is.EqualTo(model[1]));
+            Assert.That(result[1].PreviousBlock, Is.EqualTo(model[0]));
+            Assert.That(result[1].CurrentBlock, Is.EqualTo(model[1]));
+            Assert.That(result[1].NextBlock, Is.EqualTo(model[2]));
+            Assert.That(result[2].PreviousBlock, Is.EqualTo(model[1]));
+            Assert.That(result[2].CurrentBlock, Is.EqualTo(model[2]));
+            Assert.That(result[2].NextBlock, Is.Null);
         }
 
         [Test]
@@ -191,6 +245,33 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 
             // Assert
             Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void List_sets_previous_current_and_next_block()
+        {
+            // Arrange
+            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
+                UmbracoBlockListFactory.CreateOverridableBlock("one"),
+                UmbracoBlockListFactory.CreateOverridableBlock("two"),
+                UmbracoBlockListFactory.CreateOverridableBlock("three")
+                ]);
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary()).ToList();
+
+            // Assert
+            Assert.That(result[0].PreviousBlock, Is.Null);
+            Assert.That(result[0].CurrentBlock, Is.EqualTo(model[0]));
+            Assert.That(result[0].NextBlock, Is.EqualTo(model[1]));
+            Assert.That(result[1].PreviousBlock, Is.EqualTo(model[0]));
+            Assert.That(result[1].CurrentBlock, Is.EqualTo(model[1]));
+            Assert.That(result[1].NextBlock, Is.EqualTo(model[2]));
+            Assert.That(result[2].PreviousBlock, Is.EqualTo(model[1]));
+            Assert.That(result[2].CurrentBlock, Is.EqualTo(model[2]));
+            Assert.That(result[2].NextBlock, Is.Null);
         }
 
         [TestCase(true, true)]

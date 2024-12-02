@@ -72,7 +72,9 @@ namespace GovUk.Frontend.Umbraco.Blocks
 
                 var model = new BlockViewModel
                 {
-                    Block = blocks[i],
+                    PreviousBlock = i > 0 ? blocks[i - 1] : null,
+                    CurrentBlock = blocks[i],
+                    NextBlock = notTheLastBlock ? blocks[i + 1] : null,
                     ColumnClasses = columnClass,
                     RowClasses = rowClass,
                     HasGridAreas = hasGridAreas,
@@ -169,7 +171,9 @@ namespace GovUk.Frontend.Umbraco.Blocks
 
                 var model = new BlockViewModel
                 {
-                    Block = blocks[i],
+                    PreviousBlock = i > 0 ? blocks[i - 1] : null,
+                    CurrentBlock = blocks[i],
+                    NextBlock = notTheLastBlock ? blocks[i + 1] : null,
                     ColumnClasses = columnClass,
                     RowClasses = rowClass,
                     HasGridAreas = false,

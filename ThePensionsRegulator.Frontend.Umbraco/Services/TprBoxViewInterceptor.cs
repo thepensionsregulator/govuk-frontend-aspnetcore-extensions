@@ -1,6 +1,8 @@
 ﻿using GovUk.Frontend.Umbraco;
 using GovUk.Frontend.Umbraco.Blocks;
 using Microsoft.Extensions.Options;
+using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.Blocks;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {
@@ -17,13 +19,24 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
         {
             if (!_options.RenderWidthContainerForBlocks) { return; }
 
-            var isFullWidthBox = blockViewModel.Block.Content.ContentType.Alias == ElementTypeAliases.TprBox &&
-                blockViewModel.Block.Settings.Value<string>(PropertyAliases.TprBoxStyle) == TprBoxStyles.FullWidth;
+            bool currentBlockIsFullWidthBox = BlockIsFullWidthBox(blockViewModel.CurrentBlock);
 
-            if (isFullWidthBox)
+            if (currentBlockIsFullWidthBox)
             {
                 blockViewModel.RenderWidthContainer = false;
             }
+
+            bool? previousBlockIsFullWidthBox = blockViewModel.PreviousBlock is not null ? BlockIsFullWidthBox(blockViewModel.PreviousBlock) : null;
+            blockViewModel.IsSameAsPrevious = blockViewModel.IsSameAsPrevious && (currentBlockIsFullWidthBox == previousBlockIsFullWidthBox);
+
+            bool? nextBlockIsFullWidthBox = blockViewModel.NextBlock is not null ? BlockIsFullWidthBox(blockViewModel.NextBlock) : null;
+            blockViewModel.IsSameAsNext = blockViewModel.IsSameAsNext && (currentBlockIsFullWidthBox == nextBlockIsFullWidthBox);
+        }
+
+        private static bool BlockIsFullWidthBox(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block)
+        {
+            return block.Content.ContentType.Alias == ElementTypeAliases.TprBox &&
+                   block.Settings.Value<string>(PropertyAliases.TprBoxStyle) == TprBoxStyles.FullWidth;
         }
     }
 }

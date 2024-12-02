@@ -10,9 +10,19 @@ namespace GovUk.Frontend.Umbraco.Blocks
     public class BlockViewModel
     {
         /// <summary>
+        /// The block before the one to render.
+        /// </summary>
+        public IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>? PreviousBlock { get; set; }
+
+        /// <summary>
         /// The block to render.
         /// </summary>
-        public required IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> Block { get; set; }
+        public required IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> CurrentBlock { get; set; }
+
+        /// <summary>
+        /// The block after the one to render.
+        /// </summary>
+        public IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>? NextBlock { get; set; }
 
         /// <summary>
         /// In a block grid, this block contains at least one block area.

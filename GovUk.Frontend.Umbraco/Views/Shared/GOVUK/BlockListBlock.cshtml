@@ -8,7 +8,7 @@
     var pathToView = string.Empty;
     foreach (var pathProvider in pathProviders)
     {
-        var basicBlock = (IBlockReference<IPublishedElement, IPublishedElement>)Model.Block;
+        var basicBlock = (IBlockReference<IPublishedElement, IPublishedElement>)Model.CurrentBlock;
         if (pathProvider.IsProvider(basicBlock))
         {
             pathToView = pathProvider.BuildPartialViewPath(basicBlock);
@@ -18,15 +18,17 @@
     if (string.IsNullOrEmpty(pathToView)) 
     { 
         throw new InvalidOperationException(
-            $"No {nameof(IPartialViewPathProvider)} was found to provide a path for the block with content key {Model.Block.Content.Key}, of content type {Model.Block.Content.ContentType.Alias}"
+            $"No {nameof(IPartialViewPathProvider)} was found to provide a path for the block with content key {Model.CurrentBlock.Content.Key}, of content type {Model.CurrentBlock.Content.ContentType.Alias}"
         ); 
     }
 
+    @if (Model.RenderGrid && !Model.IsGridRow && !Model.IsSameAsPrevious) 
+    { 
     if (Model.RenderWidthContainer)
     {
         @:<div class="@Model.WidthContainerClasses">
     }
-    @if (Model.RenderGrid && !Model.IsGridRow && !Model.IsSameAsPrevious) { 
+
         @:<div class="@Model.RowClasses"> 
         @:<div class="@Model.ColumnClasses"> 
     }
@@ -34,17 +36,19 @@
     {
         @:<div class="@Model.FieldsetErrorClasses"> 
     }
-    @await Html.PartialAsync(pathToView, Model.Block)
+    @await Html.PartialAsync(pathToView, Model.CurrentBlock)
     @if (!string.IsNullOrEmpty(Model.FieldsetErrorClasses))
     {
         @:</div> 
     }
-    @if (Model.RenderGrid && !Model.IsGridRow  && !Model.IsSameAsNext) {
+    @if (Model.RenderGrid && !Model.IsGridRow  && !Model.IsSameAsNext) 
+    {
         @:</div> 
         @:</div> 
-    }
+
     if (Model.RenderWidthContainer)
     {
         @:</div> 
     }
+}
 }

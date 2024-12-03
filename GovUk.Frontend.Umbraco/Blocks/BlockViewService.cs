@@ -77,11 +77,10 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     NextBlock = notTheLastBlock ? blocks[i + 1] : null,
                     ColumnClasses = columnClass,
                     RowClasses = rowClass,
-                    HasGridAreas = hasGridAreas,
                     IsInGridArea = isInGridArea,
-                    IsGridRow = false,
-                    RenderGrid = false,
-                    RenderWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true),
+                    RenderGridRowAndColumn = !hasGridAreas,
+                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true),
+                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true),
                     IsSameAsNext = sameAsNext,
                     IsSameAsPrevious = sameAsPrevious,
                     FieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i])
@@ -169,6 +168,8 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                   columnClass == nextColumnClass);
                 }
 
+                var renderGridRowAndColumn = filteredModel.RenderGrid && !isGridRowBlock;
+
                 var model = new BlockViewModel
                 {
                     PreviousBlock = i > 0 ? blocks[i - 1] : null,
@@ -176,10 +177,9 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     NextBlock = notTheLastBlock ? blocks[i + 1] : null,
                     ColumnClasses = columnClass,
                     RowClasses = rowClass,
-                    HasGridAreas = false,
-                    IsGridRow = isGridRowBlock,
-                    RenderGrid = filteredModel.RenderGrid,
-                    RenderWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer,
+                    RenderGridRowAndColumn = renderGridRowAndColumn,
+                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && renderGridRowAndColumn,
+                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && renderGridRowAndColumn,
                     IsSameAsNext = sameAsNext,
                     IsSameAsPrevious = sameAsPrevious,
                     FieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i])

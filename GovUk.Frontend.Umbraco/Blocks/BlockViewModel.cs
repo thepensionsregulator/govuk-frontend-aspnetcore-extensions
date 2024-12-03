@@ -1,5 +1,4 @@
-﻿using System;
-using ThePensionsRegulator.Umbraco;
+﻿using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 
 namespace GovUk.Frontend.Umbraco.Blocks
@@ -25,25 +24,14 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>? NextBlock { get; set; }
 
         /// <summary>
-        /// In a block grid, this block contains at least one block area.
-        /// </summary>
-        public bool HasGridAreas { get; set; }
-
-        /// <summary>
         /// In a block grid, is this block within an area rather than the top-level grid?
         /// </summary>
         public bool IsInGridArea { get; set; }
 
         /// <summary>
-        /// In a block list, should the grid row and column be rendered, or only their children?
+        /// Should the grid row and column be rendered?
         /// </summary>
-        public bool RenderGrid { get; set; }
-
-        /// <summary>
-        /// In a block list, does this block represent a grid row.
-        /// </summary>
-        [Obsolete("Multi-column layouts in block list are deprecated. Use block grid for multi-column layouts.")]
-        public bool IsGridRow { get; set; }
+        public bool RenderGridRowAndColumn { get; set; }
 
         /// <summary>
         /// Should this grid row be merged into the previous grid row?
@@ -71,12 +59,17 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public string? FieldsetErrorClasses { get; set; }
 
         /// <summary>
-        /// Should a div be rendered around this block to contain its width?
+        /// Should an opening &lt;div&gt; be rendered before this block to contain its width?
         /// </summary>
-        public bool RenderWidthContainer { get; set; }
+        public bool OpenWidthContainer { get; set; }
 
         /// <summary>
-        /// If <see cref="RenderWidthContainer"/> is <c>true</c>, what HTML class(es) should be applied to the width container?
+        /// Should a closing &lt;/div&gt; be rendered after this block to contain its width?
+        /// </summary>
+        public bool CloseWidthContainer { get; set; }
+
+        /// <summary>
+        /// If <see cref="OpenWidthContainer"/> is <c>true</c>, what HTML class(es) should be applied to the width container?
         /// </summary>
         public string WidthContainerClasses { get; set; } = HtmlClassNames.WidthContainer;
     }

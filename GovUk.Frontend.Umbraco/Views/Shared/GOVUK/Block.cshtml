@@ -22,11 +22,11 @@
         );
     }
 
-    if (Model.RenderWidthContainer && !Model.IsSameAsPrevious)
+    if (Model.OpenWidthContainer && !Model.IsSameAsPrevious)
     {
         @:<div class="@Model.WidthContainerClasses">
     }
-    if (!Model.HasGridAreas && !Model.IsSameAsPrevious)
+    if (Model.RenderGridRowAndColumn && !Model.IsSameAsPrevious)
     { 
         @:<div class="@Model.RowClasses"> 
         @:<div class="@Model.ColumnClasses"> 
@@ -40,13 +40,12 @@
     {
         @:</div> 
     }
-    if (!Model.HasGridAreas && !Model.IsSameAsNext)
+    if (Model.RenderGridRowAndColumn && !Model.IsSameAsNext)
     {
         @:</div> 
         @:</div> 
-
     }
-    if (Model.RenderWidthContainer && !Model.IsSameAsNext)
+    if (Model.CloseWidthContainer && !Model.IsSameAsNext)
     {
         @:</div> 
     }

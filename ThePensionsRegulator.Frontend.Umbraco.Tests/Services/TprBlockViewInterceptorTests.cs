@@ -11,7 +11,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
     {
         [TestCase(true)]
         [TestCase(false)]
-        public void Full_width_box_should_set_RenderWidthContainer_to_false_if_RenderWidthContainerForBlocks_enabled(bool renderWidthContainerInitialValue)
+        public void Full_width_box_should_not_render_width_container_if_RenderWidthContainerForBlocks_enabled(bool renderWidthContainerInitialValue)
         {
             // Arrange
             var blockView = CreateTprBoxBlockView(TprBoxStyles.FullWidth, renderWidthContainerInitialValue);
@@ -22,12 +22,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             interceptor.InterceptBlockView(blockView);
 
             // Assert
-            Assert.That(blockView.RenderWidthContainer, Is.False);
+            Assert.That(blockView.OpenWidthContainer, Is.False);
+            Assert.That(blockView.CloseWidthContainer, Is.False);
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void Full_width_box_should_not_change_RenderWidthContainer_RenderWidthContainerForBlocks_disabled(bool renderWidthContainerInitialValue)
+        public void Full_width_box_should_not_change_whether_to_render_width_container_if_RenderWidthContainerForBlocks_disabled(bool renderWidthContainerInitialValue)
         {
             // Arrange
             var blockView = CreateTprBoxBlockView(TprBoxStyles.FullWidth, renderWidthContainerInitialValue);
@@ -38,12 +39,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             interceptor.InterceptBlockView(blockView);
 
             // Assert
-            Assert.That(blockView.RenderWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
+            Assert.That(blockView.OpenWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
+            Assert.That(blockView.CloseWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void Other_box_should_not_change_RenderWidthContainer(bool renderWidthContainerInitialValue)
+        public void Other_box_should_not_change_whether_to_render_width_container(bool renderWidthContainerInitialValue)
         {
             // Arrange
             var blockView = CreateTprBoxBlockView(TprBoxStyles.Solid, renderWidthContainerInitialValue);
@@ -54,18 +56,20 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             interceptor.InterceptBlockView(blockView);
 
             // Assert
-            Assert.That(blockView.RenderWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
+            Assert.That(blockView.OpenWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
+            Assert.That(blockView.CloseWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void Other_block_should_not_change_RenderWidthContainer(bool renderWidthContainerInitialValue)
+        public void Other_block_should_not_change_whether_to_render_width_container(bool renderWidthContainerInitialValue)
         {
             // Arrange
             var blockView = new BlockViewModel
             {
                 CurrentBlock = UmbracoBlockGridFactory.CreateOverridableBlock("other"),
-                RenderWidthContainer = renderWidthContainerInitialValue
+                OpenWidthContainer = renderWidthContainerInitialValue,
+                CloseWidthContainer = renderWidthContainerInitialValue
             };
 
             var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }));
@@ -74,7 +78,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             interceptor.InterceptBlockView(blockView);
 
             // Assert
-            Assert.That(blockView.RenderWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
+            Assert.That(blockView.OpenWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
+            Assert.That(blockView.CloseWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
         }
 
         [TestCase(false, false, false, true)]
@@ -147,7 +152,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             var blockView = new BlockViewModel
             {
                 CurrentBlock = block,
-                RenderWidthContainer = renderWidthContainerInitialValue
+                OpenWidthContainer = renderWidthContainerInitialValue,
+                CloseWidthContainer = renderWidthContainerInitialValue
             };
             return blockView;
         }

@@ -23,7 +23,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
             if (currentBlockIsFullWidthBox)
             {
-                blockViewModel.RenderWidthContainer = false;
+                blockViewModel.OpenWidthContainer = false;
+                blockViewModel.CloseWidthContainer = false;
             }
 
             bool? previousBlockIsFullWidthBox = blockViewModel.PreviousBlock is not null ? BlockIsFullWidthBox(blockViewModel.PreviousBlock) : null;

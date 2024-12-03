@@ -26,7 +26,7 @@
     {
         @:<div class="@Model.WidthContainerClasses">
     }
-    if (Model.RenderGridRowAndColumn && !Model.IsSameAsPrevious)
+    if (Model.OpenGridRowAndColumn && !Model.IsSameAsPrevious)
     { 
         @:<div class="@Model.RowClasses"> 
         @:<div class="@Model.ColumnClasses"> 
@@ -40,7 +40,7 @@
     {
         @:</div> 
     }
-    if (Model.RenderGridRowAndColumn && !Model.IsSameAsNext)
+    if (Model.CloseGridRowAndColumn && !Model.IsSameAsNext)
     {
         @:</div> 
         @:</div> 

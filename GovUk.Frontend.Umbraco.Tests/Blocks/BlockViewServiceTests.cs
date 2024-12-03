@@ -444,7 +444,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 
         [TestCase(true)]
         [TestCase(false)]
-        public void Grid_sets_RenderGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
+        public void Grid_sets_OpenGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
         {
             // Arrange
             var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
@@ -461,13 +461,36 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().RenderGridRowAndColumn, Is.False);
-            Assert.That(result.Last().RenderGridRowAndColumn, Is.True);
+            Assert.That(result.First().OpenGridRowAndColumn, Is.False);
+            Assert.That(result.Last().OpenGridRowAndColumn, Is.True);
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void Area_sets_RenderGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
+        public void Grid_sets_CloseGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
+        {
+            // Arrange
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
+                 UmbracoBlockGridFactory.CreateOverridableBlock("alias")
+                    .AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area")),
+                 UmbracoBlockGridFactory.CreateOverridableBlock("alias")
+                 ]);
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().CloseGridRowAndColumn, Is.False);
+            Assert.That(result.Last().CloseGridRowAndColumn, Is.True);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Area_sets_OpenGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
         {
             // Arrange
             var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea([
@@ -484,15 +507,38 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().RenderGridRowAndColumn, Is.False);
-            Assert.That(result.Last().RenderGridRowAndColumn, Is.True);
+            Assert.That(result.First().OpenGridRowAndColumn, Is.False);
+            Assert.That(result.Last().OpenGridRowAndColumn, Is.True);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Area_sets_CloseGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
+        {
+            // Arrange
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea([
+                 UmbracoBlockGridFactory.CreateOverridableBlock("alias")
+                    .AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area")),
+                 UmbracoBlockGridFactory.CreateOverridableBlock("alias"),
+                 ], "area");
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().CloseGridRowAndColumn, Is.False);
+            Assert.That(result.Last().CloseGridRowAndColumn, Is.True);
         }
 
         [TestCase(true, true)]
         [TestCase(true, false)]
         [TestCase(false, true)]
         [TestCase(false, false)]
-        public void List_sets_RenderGridRowAndColumn_based_on_RenderGrid_if_current_block_is_not_grid_row(bool renderGrid, bool currentBlockIsGridRow)
+        public void List_sets_OpenGridRowAndColumn_based_on_RenderGrid_if_current_block_is_not_grid_row(bool renderGrid, bool currentBlockIsGridRow)
         {
             // Arrange
             var model = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -508,7 +554,30 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().RenderGridRowAndColumn, Is.EqualTo(renderGrid && !currentBlockIsGridRow));
+            Assert.That(result.First().OpenGridRowAndColumn, Is.EqualTo(renderGrid && !currentBlockIsGridRow));
+        }
+
+        [TestCase(true, true)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        [TestCase(false, false)]
+        public void List_sets_CloseGridRowAndColumn_based_on_RenderGrid_if_current_block_is_not_grid_row(bool renderGrid, bool currentBlockIsGridRow)
+        {
+            // Arrange
+            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                UmbracoBlockListFactory.CreateOverridableBlock(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "block")
+                );
+            model.RenderGrid = renderGrid;
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().CloseGridRowAndColumn, Is.EqualTo(renderGrid && !currentBlockIsGridRow));
         }
 
         [TestCase(false, false, false)]

@@ -29,9 +29,14 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public bool IsInGridArea { get; set; }
 
         /// <summary>
-        /// Should the grid row and column be rendered?
+        /// Should two opening &lt;div&gt; tags be rendered before this block to start a new grid row and column?
         /// </summary>
-        public bool RenderGridRowAndColumn { get; set; }
+        public bool OpenGridRowAndColumn { get; set; }
+
+        /// <summary>
+        /// Should two closing &lt;/div&gt; tags be rendered after this block to close a grid row and column?
+        /// </summary>
+        public bool CloseGridRowAndColumn { get; set; }
 
         /// <summary>
         /// Should this grid row be merged into the previous grid row?

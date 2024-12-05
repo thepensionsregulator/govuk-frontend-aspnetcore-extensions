@@ -22,30 +22,30 @@
         );
     }
 
-    if (Model.OpenWidthContainer && !Model.IsSameAsPrevious)
+    if (Model.OpenWidthContainer)
     {
         @:<div class="@Model.WidthContainerClasses">
     }
-    if (Model.OpenGridRowAndColumn && !Model.IsSameAsPrevious)
+    if (Model.OpenGridRowAndColumn)
     { 
         @:<div class="@Model.RowClasses"> 
         @:<div class="@Model.ColumnClasses"> 
     }
-    if (!string.IsNullOrEmpty(Model.FieldsetErrorClasses))
+    if (Model.OpenFieldsetErrorContainer)
     {
         @:<div class="@Model.FieldsetErrorClasses"> 
     }
     @await Html.PartialAsync(pathToView, Model.CurrentBlock)
-    if (!string.IsNullOrEmpty(Model.FieldsetErrorClasses))
+    if (Model.CloseFieldsetErrorContainer)
     {
         @:</div> 
     }
-    if (Model.CloseGridRowAndColumn && !Model.IsSameAsNext)
+    if (Model.CloseGridRowAndColumn)
     {
         @:</div> 
         @:</div> 
     }
-    if (Model.CloseWidthContainer && !Model.IsSameAsNext)
+    if (Model.CloseWidthContainer)
     {
         @:</div> 
     }

@@ -274,17 +274,36 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             Assert.That(result[2].NextBlock, Is.Null);
         }
 
-        [TestCase(true, true)]
-        [TestCase(true, false)]
-        [TestCase(false, true)]
-        [TestCase(false, false)]
-        public void Grid_sets_OpenWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled_and_RenderWidthContainer_true(bool renderWidthContainerForBlocksEnabled, bool renderWidthContainer)
+        [TestCase(true, true, true)]
+        [TestCase(true, true, false)]
+        [TestCase(true, false, true)]
+        [TestCase(true, false, false)]
+        [TestCase(false, true, true)]
+        [TestCase(false, true, false)]
+        [TestCase(false, false, true)]
+        [TestCase(false, false, false)]
+        public void Grid_sets_OpenWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled_and_RenderWidthContainer_true_and_block_is_not_the_same_as_the_previous_block(bool renderWidthContainerForBlocksEnabled, bool renderWidthContainer, bool sameAsPrevious)
         {
             // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
-                UmbracoBlockGridFactory.CreateOverridableBlock("block")
-                );
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
+                UmbracoBlockGridFactory.CreateOverridableBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "previous")
+                        .Object
+                    ),
+                    UmbracoBlockGridFactory.CreateOverridableBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                        .Object
+                    )
+                ]);
             model.RenderWidthContainer = renderWidthContainer;
+
+            var previousBlockRowClass = sameAsPrevious ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
 
@@ -294,20 +313,39 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().OpenWidthContainer, Is.EqualTo(renderWidthContainerForBlocksEnabled && renderWidthContainer));
+            Assert.That(result.Last().OpenWidthContainer, Is.EqualTo(renderWidthContainerForBlocksEnabled && renderWidthContainer && !sameAsPrevious));
         }
 
-        [TestCase(true, true)]
-        [TestCase(true, false)]
-        [TestCase(false, true)]
-        [TestCase(false, false)]
-        public void Grid_sets_CloseWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled_and_RenderWidthContainer_true(bool renderWidthContainerForBlocksEnabled, bool renderWidthContainer)
+        [TestCase(true, true, true)]
+        [TestCase(true, true, false)]
+        [TestCase(true, false, true)]
+        [TestCase(true, false, false)]
+        [TestCase(false, true, true)]
+        [TestCase(false, true, false)]
+        [TestCase(false, false, true)]
+        [TestCase(false, false, false)]
+        public void Grid_sets_CloseWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled_and_RenderWidthContainer_true_and_block_is_not_the_same_as_the_next_block(bool renderWidthContainerForBlocksEnabled, bool renderWidthContainer, bool sameAsNext)
         {
             // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
-                UmbracoBlockGridFactory.CreateOverridableBlock("block")
-                );
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
+                 UmbracoBlockGridFactory.CreateOverridableBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                        .Object
+                    ),
+                    UmbracoBlockGridFactory.CreateOverridableBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "next")
+                        .Object
+                    )
+                 ]);
             model.RenderWidthContainer = renderWidthContainer;
+
+            var nextBlockRowClass = sameAsNext ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
 
@@ -317,7 +355,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().CloseWidthContainer, Is.EqualTo(renderWidthContainerForBlocksEnabled && renderWidthContainer));
+            Assert.That(result.First().CloseWidthContainer, Is.EqualTo(renderWidthContainerForBlocksEnabled && renderWidthContainer && !sameAsNext));
         }
 
         [TestCase(true)]
@@ -367,29 +405,44 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         [TestCase(true, true, false, true)]
         [TestCase(true, false, true, true)]
         [TestCase(false, true, true, true)]
+        [TestCase(false, true, true, false)]
         [TestCase(false, false, true, true)]
         [TestCase(true, false, false, true)]
         [TestCase(true, true, false, false)]
         [TestCase(false, true, false, true)]
-        [TestCase(false, true, true, false)]
         [TestCase(true, false, true, false)]
         [TestCase(false, false, false, true)]
         [TestCase(false, false, true, false)]
         [TestCase(false, true, false, false)]
         [TestCase(true, false, false, false)]
         [TestCase(false, false, false, false)]
-        public void Lists_sets_OpenWidthContainer_to_true_if_RenderWidthContainer_enabled_for_both_site_and_block_list_and_RenderGrid_is_true_and_current_block_is_not_grid_row(
+        public void Lists_sets_OpenWidthContainer_to_true_if_RenderWidthContainer_enabled_for_both_site_and_block_list_and_RenderGrid_is_true_and_current_block_is_not_the_same_as_the_previous_block(
                 bool renderWidthContainerForSiteEnabled,
                 bool renderWidthContainerForBlockListEnabled,
                 bool renderGrid,
-                bool currentBlockIsGridRow)
+                bool sameAsPrevious)
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel(
-                UmbracoBlockListFactory.CreateOverridableBlock(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "block")
-                );
+            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
+                UmbracoBlockListFactory.CreateOverridableBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "previous")
+                        .Object
+                    ),
+                    UmbracoBlockListFactory.CreateOverridableBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                        .Object
+                    )
+                ]);
             model.RenderWidthContainer = renderWidthContainerForBlockListEnabled;
             model.RenderGrid = renderGrid;
+
+            var previousBlockRowClass = sameAsPrevious ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForSiteEnabled });
 
@@ -399,7 +452,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().OpenWidthContainer, Is.EqualTo(renderWidthContainerForSiteEnabled && renderWidthContainerForBlockListEnabled && renderGrid && !currentBlockIsGridRow));
+            Assert.That(result.Last().OpenWidthContainer, Is.EqualTo(renderWidthContainerForSiteEnabled && renderWidthContainerForBlockListEnabled && renderGrid && !sameAsPrevious));
         }
 
         [TestCase(true, true, true, true)]
@@ -407,29 +460,45 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         [TestCase(true, true, false, true)]
         [TestCase(true, false, true, true)]
         [TestCase(false, true, true, true)]
+        [TestCase(false, true, true, false)]
         [TestCase(false, false, true, true)]
         [TestCase(true, false, false, true)]
         [TestCase(true, true, false, false)]
         [TestCase(false, true, false, true)]
-        [TestCase(false, true, true, false)]
         [TestCase(true, false, true, false)]
         [TestCase(false, false, false, true)]
         [TestCase(false, false, true, false)]
         [TestCase(false, true, false, false)]
         [TestCase(true, false, false, false)]
         [TestCase(false, false, false, false)]
-        public void Lists_sets_CloseWidthContainer_to_true_if_RenderWidthContainer_enabled_for_both_site_and_block_list_and_RenderGrid_is_true_and_current_block_is_not_grid_row(
+        public void Lists_sets_CloseWidthContainer_to_true_if_RenderWidthContainer_enabled_for_both_site_and_block_list_and_RenderGrid_is_true_and_current_block_not_the_same_as_the_next_block(
                 bool renderWidthContainerForSiteEnabled,
                 bool renderWidthContainerForBlockListEnabled,
                 bool renderGrid,
-                bool currentBlockIsGridRow)
+                bool sameAsNext)
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel(
-                UmbracoBlockListFactory.CreateOverridableBlock(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "block")
-                );
+            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
+                UmbracoBlockListFactory.CreateOverridableBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                        .Object
+                    ),
+                UmbracoBlockListFactory.CreateOverridableBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "next")
+                        .Object
+                    )
+               ]);
+
             model.RenderWidthContainer = renderWidthContainerForBlockListEnabled;
             model.RenderGrid = renderGrid;
+
+            var nextBlockRowClass = sameAsNext ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForSiteEnabled });
 
@@ -439,112 +508,41 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().CloseWidthContainer, Is.EqualTo(renderWidthContainerForSiteEnabled && renderWidthContainerForBlockListEnabled && renderGrid && !currentBlockIsGridRow));
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void Grid_sets_OpenGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
-        {
-            // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
-                 UmbracoBlockGridFactory.CreateOverridableBlock("alias")
-                    .AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area")),
-                 UmbracoBlockGridFactory.CreateOverridableBlock("alias")
-                 ]);
-
-            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
-
-            // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
-
-            // Assert
-            Assert.That(result.First().OpenGridRowAndColumn, Is.False);
-            Assert.That(result.Last().OpenGridRowAndColumn, Is.True);
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void Grid_sets_CloseGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
-        {
-            // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
-                 UmbracoBlockGridFactory.CreateOverridableBlock("alias")
-                    .AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area")),
-                 UmbracoBlockGridFactory.CreateOverridableBlock("alias")
-                 ]);
-
-            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
-
-            // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
-
-            // Assert
-            Assert.That(result.First().CloseGridRowAndColumn, Is.False);
-            Assert.That(result.Last().CloseGridRowAndColumn, Is.True);
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void Area_sets_OpenGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
-        {
-            // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea([
-                 UmbracoBlockGridFactory.CreateOverridableBlock("alias")
-                    .AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area")),
-                 UmbracoBlockGridFactory.CreateOverridableBlock("alias"),
-                 ], "area");
-
-            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
-
-            // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
-
-            // Assert
-            Assert.That(result.First().OpenGridRowAndColumn, Is.False);
-            Assert.That(result.Last().OpenGridRowAndColumn, Is.True);
-        }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void Area_sets_CloseGridRowAndColumn_to_true_for_blocks_with_no_areas(bool hasGridAreas)
-        {
-            // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea([
-                 UmbracoBlockGridFactory.CreateOverridableBlock("alias")
-                    .AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area")),
-                 UmbracoBlockGridFactory.CreateOverridableBlock("alias"),
-                 ], "area");
-
-            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
-
-            // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
-
-            // Assert
-            Assert.That(result.First().CloseGridRowAndColumn, Is.False);
-            Assert.That(result.Last().CloseGridRowAndColumn, Is.True);
+            Assert.That(result.First().CloseWidthContainer, Is.EqualTo(renderWidthContainerForSiteEnabled && renderWidthContainerForBlockListEnabled && renderGrid && !sameAsNext));
         }
 
         [TestCase(true, true)]
         [TestCase(true, false)]
         [TestCase(false, true)]
         [TestCase(false, false)]
-        public void List_sets_OpenGridRowAndColumn_based_on_RenderGrid_if_current_block_is_not_grid_row(bool renderGrid, bool currentBlockIsGridRow)
+        public void Grid_sets_OpenGridRowAndColumn_to_true_for_blocks_with_no_areas_and_block_is_not_the_same_as_the_previous_block(bool hasGridAreas, bool sameAsPrevious)
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel(
-                UmbracoBlockListFactory.CreateOverridableBlock(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "block")
-                );
-            model.RenderGrid = renderGrid;
+            var currentBlock = UmbracoBlockGridFactory.CreateOverridableBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                        .Object
+                    );
+
+            if (hasGridAreas)
+            {
+                currentBlock.AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
+            }
+
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
+                UmbracoBlockGridFactory.CreateOverridableBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "previous")
+                        .Object
+                    ),
+                currentBlock
+                ]);
+
+            var previousBlockRowClass = sameAsPrevious ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
@@ -554,20 +552,41 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().OpenGridRowAndColumn, Is.EqualTo(renderGrid && !currentBlockIsGridRow));
+            Assert.That(result.Last().OpenGridRowAndColumn, Is.EqualTo(!hasGridAreas && !sameAsPrevious));
         }
 
         [TestCase(true, true)]
         [TestCase(true, false)]
         [TestCase(false, true)]
         [TestCase(false, false)]
-        public void List_sets_CloseGridRowAndColumn_based_on_RenderGrid_if_current_block_is_not_grid_row(bool renderGrid, bool currentBlockIsGridRow)
+        public void Grid_sets_CloseGridRowAndColumn_to_true_for_blocks_with_no_areas_and_block_is_not_the_same_as_the_next_block(bool hasGridAreas, bool sameAsNext)
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel(
-                UmbracoBlockListFactory.CreateOverridableBlock(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "block")
-                );
-            model.RenderGrid = renderGrid;
+            var currentBlock = UmbracoBlockGridFactory.CreateOverridableBlock(
+                   UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                   UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                       .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                       .Object
+                   );
+
+            if (hasGridAreas)
+            {
+                currentBlock.AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
+            }
+
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
+                    currentBlock,
+                    UmbracoBlockGridFactory.CreateOverridableBlock(
+                        UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                        UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                            .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "next")
+                            .Object
+                    )
+                  ]);
+
+            var nextBlockRowClass = sameAsNext ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
@@ -577,13 +596,191 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().CloseGridRowAndColumn, Is.EqualTo(renderGrid && !currentBlockIsGridRow));
+            Assert.That(result.First().CloseGridRowAndColumn, Is.EqualTo(!hasGridAreas && !sameAsNext));
+        }
+
+        [TestCase(true, true)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        [TestCase(false, false)]
+        public void Area_sets_OpenGridRowAndColumn_to_true_for_blocks_with_no_areas_and_block_is_not_the_same_as_the_previous_block(bool hasGridAreas, bool sameAsPrevious)
+        {
+            // Arrange
+            var currentBlock = UmbracoBlockGridFactory.CreateOverridableBlock(
+                   UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                   UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                       .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                       .Object
+                   );
+
+            if (hasGridAreas)
+            {
+                currentBlock.AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
+            }
+
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea([
+                UmbracoBlockGridFactory.CreateOverridableBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "previous")
+                        .Object
+                    ),
+                currentBlock
+                ], "area");
+
+            var previousBlockRowClass = sameAsPrevious ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.Last().OpenGridRowAndColumn, Is.EqualTo(!hasGridAreas && !sameAsPrevious));
+        }
+
+        [TestCase(true, true)]
+        [TestCase(true, false)]
+        [TestCase(false, true)]
+        [TestCase(false, false)]
+        public void Area_sets_CloseGridRowAndColumn_to_true_for_blocks_with_no_areas_and_block_is_not_the_same_as_the_next_block(bool hasGridAreas, bool sameAsNext)
+        {
+            // Arrange
+            var currentBlock = UmbracoBlockGridFactory.CreateOverridableBlock(
+                   UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                   UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                       .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                       .Object
+                   );
+
+            if (hasGridAreas)
+            {
+                currentBlock.AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
+            }
+
+            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea([
+                    currentBlock,
+                    UmbracoBlockGridFactory.CreateOverridableBlock(
+                        UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                        UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                            .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "next")
+                            .Object
+                    )
+                  ], "area");
+
+            var nextBlockRowClass = sameAsNext ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().CloseGridRowAndColumn, Is.EqualTo(!hasGridAreas && !sameAsNext));
+        }
+
+        [TestCase(true, true, true)]
+        [TestCase(true, true, false)]
+        [TestCase(true, false, true)]
+        [TestCase(true, false, false)]
+        [TestCase(false, true, true)]
+        [TestCase(false, true, false)]
+        [TestCase(false, false, true)]
+        [TestCase(false, false, false)]
+        public void List_sets_OpenGridRowAndColumn_based_on_RenderGrid_if_current_block_is_not_grid_row_and_block_is_not_the_same_as_the_previous_block(
+            bool renderGrid,
+            bool currentBlockIsGridRow,
+            bool sameAsPrevious)
+        {
+            // Arrange
+            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
+                UmbracoBlockListFactory.CreateOverridableBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "previous")
+                        .Object
+                    ),
+                    UmbracoBlockListFactory.CreateOverridableBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "content").Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                        .Object
+                    )
+                ]);
+            model.RenderGrid = renderGrid;
+
+            var previousBlockRowClass = sameAsPrevious ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.Last().OpenGridRowAndColumn, Is.EqualTo(renderGrid && !currentBlockIsGridRow && !sameAsPrevious));
+        }
+
+        [TestCase(true, true, true)]
+        [TestCase(true, true, false)]
+        [TestCase(true, false, true)]
+        [TestCase(true, false, false)]
+        [TestCase(false, true, true)]
+        [TestCase(false, true, false)]
+        [TestCase(false, false, true)]
+        [TestCase(false, false, false)]
+        public void List_sets_CloseGridRowAndColumn_based_on_RenderGrid_if_current_block_is_not_grid_row_and_block_is_not_the_same_as_the_next_block(
+            bool renderGrid,
+            bool currentBlockIsGridRow,
+            bool sameAsNext)
+        {
+            // Arrange
+            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
+               UmbracoBlockListFactory.CreateOverridableBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "content").Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
+                        .Object
+                    ),
+                UmbracoBlockListFactory.CreateOverridableBlock(
+                    UmbracoBlockListFactory.CreateContentOrSettings("content").Object,
+                    UmbracoBlockListFactory.CreateContentOrSettings("settings")
+                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "next")
+                        .Object
+                    )
+              ]);
+            model.RenderGrid = renderGrid;
+
+            var nextBlockRowClass = sameAsNext ? "" : " different";
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
+
+            var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
+
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, []);
+
+            // Act
+            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+
+            // Assert
+            Assert.That(result.First().CloseGridRowAndColumn, Is.EqualTo(renderGrid && !currentBlockIsGridRow && !sameAsNext));
         }
 
         [TestCase(false, false, false)]
         [TestCase(true, false, true)]
         [TestCase(true, true, false)]
-        public void Grid_applies_fieldset_error_classes_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
+        public void Grid_applies_fieldset_error_classes_and_container_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
         {
             // Arrange
             const string FIELDSET_ERROR_CLASS = $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}";
@@ -608,10 +805,14 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             if (expectClasses)
             {
+                Assert.That(result.First().OpenFieldsetErrorContainer, Is.True);
+                Assert.That(result.First().CloseFieldsetErrorContainer, Is.True);
                 Assert.That(result.First().FieldsetErrorClasses, Is.EqualTo(FIELDSET_ERROR_CLASS));
             }
             else
             {
+                Assert.That(result.First().OpenFieldsetErrorContainer, Is.False);
+                Assert.That(result.First().CloseFieldsetErrorContainer, Is.False);
                 Assert.That(result.First().FieldsetErrorClasses, Is.Null);
             }
         }
@@ -619,7 +820,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         [TestCase(false, false, false)]
         [TestCase(true, false, true)]
         [TestCase(true, true, false)]
-        public void List_applies_fieldset_error_classes_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
+        public void List_applies_fieldset_error_classes_and_container_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
         {
             // Arrange
             const string FIELDSET_ERROR_CLASS = $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}";
@@ -644,10 +845,14 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             if (expectClasses)
             {
+                Assert.That(result.First().OpenFieldsetErrorContainer, Is.True);
+                Assert.That(result.First().CloseFieldsetErrorContainer, Is.True);
                 Assert.That(result.First().FieldsetErrorClasses, Is.EqualTo(FIELDSET_ERROR_CLASS));
             }
             else
             {
+                Assert.That(result.First().OpenFieldsetErrorContainer, Is.False);
+                Assert.That(result.First().CloseFieldsetErrorContainer, Is.False);
                 Assert.That(result.First().FieldsetErrorClasses, Is.Null);
             }
         }

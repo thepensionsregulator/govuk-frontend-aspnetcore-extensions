@@ -28,10 +28,16 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             }
 
             bool? previousBlockIsFullWidthBox = blockViewModel.PreviousBlock is not null ? BlockIsFullWidthBox(blockViewModel.PreviousBlock) : null;
-            blockViewModel.IsSameAsPrevious = blockViewModel.IsSameAsPrevious && (currentBlockIsFullWidthBox == previousBlockIsFullWidthBox);
+            if ((previousBlockIsFullWidthBox ?? false) && !currentBlockIsFullWidthBox)
+            {
+                blockViewModel.OpenWidthContainer = true;
+            }
 
             bool? nextBlockIsFullWidthBox = blockViewModel.NextBlock is not null ? BlockIsFullWidthBox(blockViewModel.NextBlock) : null;
-            blockViewModel.IsSameAsNext = blockViewModel.IsSameAsNext && (currentBlockIsFullWidthBox == nextBlockIsFullWidthBox);
+            if ((nextBlockIsFullWidthBox ?? false) && !currentBlockIsFullWidthBox)
+            {
+                blockViewModel.CloseWidthContainer = true;
+            }
         }
 
         private static bool BlockIsFullWidthBox(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block)

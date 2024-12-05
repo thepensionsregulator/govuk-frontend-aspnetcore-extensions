@@ -70,6 +70,9 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                   columnClass == nextColumnClass);
                 }
 
+                var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i]);
+                var renderFieldsetErrorContainer = !string.IsNullOrEmpty(fieldsetErrorClasses);
+
                 var model = new BlockViewModel
                 {
                     PreviousBlock = i > 0 ? blocks[i - 1] : null,
@@ -78,13 +81,15 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     ColumnClasses = columnClass,
                     RowClasses = rowClass,
                     IsInGridArea = isInGridArea,
-                    OpenGridRowAndColumn = !hasGridAreas,
-                    CloseGridRowAndColumn = !hasGridAreas,
-                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true),
-                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true),
+                    OpenGridRowAndColumn = !hasGridAreas && !sameAsPrevious,
+                    CloseGridRowAndColumn = !hasGridAreas && !sameAsNext,
+                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true) && !sameAsPrevious,
+                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true) && !sameAsNext,
                     IsSameAsNext = sameAsNext,
                     IsSameAsPrevious = sameAsPrevious,
-                    FieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i])
+                    OpenFieldsetErrorContainer = renderFieldsetErrorContainer,
+                    CloseFieldsetErrorContainer = renderFieldsetErrorContainer,
+                    FieldsetErrorClasses = fieldsetErrorClasses
                 };
 
                 foreach (var interceptor in _interceptors) { interceptor.InterceptBlockView(model); }
@@ -133,7 +138,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
             var blocks = filteredModel.FilteredBlocks().ToList();
             if (!blocks.Any()) { return blocksToReturn; }
             string? previousRowClass = null, previousColumnClass = null;
-            bool? previousIsGridRowBlock = null;
+            bool? previousIsGridRowBlock = null, nextIsGridRowBlock = null;
 
             for (var i = 0; i < blocks.Count; i++)
             {
@@ -163,13 +168,16 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                                             blocks[i + 1].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),
                                                             blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
                                                             blocks[i + 1].Content.ContentType.Alias);
+                    nextIsGridRowBlock = (blocks[i + 1].Content.ContentType.Alias == ElementTypeAliases.GridRow);
 
-                    sameAsNext = (isGridRowBlock == (blocks[i + 1].Content.ContentType.Alias == ElementTypeAliases.GridRow) &&
+                    sameAsNext = (isGridRowBlock == nextIsGridRowBlock &&
                                   rowClass == HtmlClassNames.Row && nextRowClass == HtmlClassNames.Row &&
                                   columnClass == nextColumnClass);
                 }
 
                 var renderGridRowAndColumn = filteredModel.RenderGrid && !isGridRowBlock;
+                var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i]);
+                var renderFieldsetErrorContainer = !string.IsNullOrEmpty(fieldsetErrorClasses);
 
                 var model = new BlockViewModel
                 {
@@ -178,13 +186,15 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     NextBlock = notTheLastBlock ? blocks[i + 1] : null,
                     ColumnClasses = columnClass,
                     RowClasses = rowClass,
-                    OpenGridRowAndColumn = renderGridRowAndColumn,
-                    CloseGridRowAndColumn = renderGridRowAndColumn,
-                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && renderGridRowAndColumn,
-                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && renderGridRowAndColumn,
+                    OpenGridRowAndColumn = renderGridRowAndColumn && !sameAsPrevious,
+                    CloseGridRowAndColumn = renderGridRowAndColumn && !sameAsNext,
+                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && filteredModel.RenderGrid && !sameAsPrevious,
+                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && filteredModel.RenderGrid && !sameAsNext,
                     IsSameAsNext = sameAsNext,
                     IsSameAsPrevious = sameAsPrevious,
-                    FieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i])
+                    OpenFieldsetErrorContainer = renderFieldsetErrorContainer,
+                    CloseFieldsetErrorContainer = renderFieldsetErrorContainer,
+                    FieldsetErrorClasses = fieldsetErrorClasses
                 };
 
                 foreach (var interceptor in _interceptors) { interceptor.InterceptBlockView(model); }

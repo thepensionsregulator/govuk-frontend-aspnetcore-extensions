@@ -97,54 +97,56 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [TestCase(true, true, false, false)]
         [TestCase(true, false, true, false)]
         [TestCase(false, true, true, false)]
-        public void IsSameAsPrevious_and_IsSameAsNext_are_updated_to_reflect_whether_blocks_are_full_width_boxes(bool previousIsBox, bool currentIsBox, bool nextIsBox, bool boxesAreFullWidth)
+        public void WidthContainer_is_updated_to_reflect_whether_blocks_are_full_width_boxes(bool previousIsBox, bool currentIsBox, bool nextIsBox, bool boxesAreFullWidth)
         {
             // Arrange
             var previousBlock = previousIsBox ? CreateTprBoxBlock(boxesAreFullWidth ? TprBoxStyles.FullWidth : TprBoxStyles.Solid) : UmbracoBlockGridFactory.CreateOverridableBlock("other");
             var currentBlock = currentIsBox ? CreateTprBoxBlock(boxesAreFullWidth ? TprBoxStyles.FullWidth : TprBoxStyles.Solid) : UmbracoBlockGridFactory.CreateOverridableBlock("other");
             var nextBlock = nextIsBox ? CreateTprBoxBlock(boxesAreFullWidth ? TprBoxStyles.FullWidth : TprBoxStyles.Solid) : UmbracoBlockGridFactory.CreateOverridableBlock("other");
 
-            var blockViewSame = new BlockViewModel
+            var blockViewWidthContainer = new BlockViewModel
             {
                 PreviousBlock = previousBlock,
                 CurrentBlock = currentBlock,
                 NextBlock = nextBlock,
-                IsSameAsPrevious = true,
-                IsSameAsNext = true
+                OpenWidthContainer = true,
+                CloseWidthContainer = true,
             };
 
-            var blockViewDifferent = new BlockViewModel
+            var blockViewNoWidthContainer = new BlockViewModel
             {
                 PreviousBlock = previousBlock,
                 CurrentBlock = currentBlock,
                 NextBlock = nextBlock,
-                IsSameAsPrevious = false,
-                IsSameAsNext = false
+                OpenWidthContainer = false,
+                CloseWidthContainer = false
             };
 
             var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }));
 
             // Act
-            interceptor.InterceptBlockView(blockViewSame);
-            interceptor.InterceptBlockView(blockViewDifferent);
+            interceptor.InterceptBlockView(blockViewWidthContainer);
+            interceptor.InterceptBlockView(blockViewNoWidthContainer);
 
-            // Assert - should be updated
+            // Assert
             if (boxesAreFullWidth)
             {
-                Assert.That(blockViewSame.IsSameAsPrevious, Is.EqualTo(previousIsBox == currentIsBox));
-                Assert.That(blockViewSame.IsSameAsNext, Is.EqualTo(currentIsBox == nextIsBox));
+                Assert.That(blockViewWidthContainer.OpenWidthContainer, Is.EqualTo(!currentIsBox));
+                Assert.That(blockViewNoWidthContainer.OpenWidthContainer, Is.EqualTo(previousIsBox && !currentIsBox));
+                Assert.That(blockViewWidthContainer.CloseWidthContainer, Is.EqualTo(!currentIsBox));
+                Assert.That(blockViewNoWidthContainer.CloseWidthContainer, Is.EqualTo(!currentIsBox && nextIsBox));
             }
 
             // Assert - should not be updated
             if (!boxesAreFullWidth)
             {
-                Assert.That(blockViewSame.IsSameAsPrevious, Is.True);
-                Assert.That(blockViewSame.IsSameAsNext, Is.True);
+                Assert.That(blockViewWidthContainer.OpenWidthContainer, Is.True);
+                Assert.That(blockViewWidthContainer.CloseWidthContainer, Is.True);
+                Assert.That(blockViewNoWidthContainer.OpenWidthContainer, Is.False);
+                Assert.That(blockViewNoWidthContainer.CloseWidthContainer, Is.False);
             }
-            Assert.That(blockViewDifferent.IsSameAsPrevious, Is.False);
-            Assert.That(blockViewDifferent.IsSameAsNext, Is.False);
-        }
 
+        }
 
         private static BlockViewModel CreateTprBoxBlockView(string boxStyle, bool renderWidthContainerInitialValue)
         {

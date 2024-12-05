@@ -39,14 +39,26 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public bool CloseGridRowAndColumn { get; set; }
 
         /// <summary>
+        /// Should an opening &lt;div&gt; be rendered before this block to highlight fieldset errors?
+        /// </summary>
+        public bool OpenFieldsetErrorContainer { get; set; }
+
+        /// <summary>
+        /// Should a closing &lt;/div&gt; tag be rendered after this block to highlight fieldset errors?
+        /// </summary>
+        public bool CloseFieldsetErrorContainer { get; set; }
+
+        /// <summary>
         /// Should this grid row be merged into the previous grid row?
         /// </summary>
-        public bool IsSameAsPrevious { get; set; }
+        /// <remarks>Exposed for unit testing only.</remarks>
+        internal bool IsSameAsPrevious { get; init; }
 
         /// <summary>
         /// Should this grid row be merged into the next grid row?
         /// </summary>
-        public bool IsSameAsNext { get; set; }
+        /// <remarks>Exposed for unit testing only.</remarks>
+        internal bool IsSameAsNext { get; init; }
 
         /// <summary>
         /// HTML classes to apply to the grid row.

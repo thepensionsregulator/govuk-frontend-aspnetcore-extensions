@@ -37,7 +37,11 @@
             @RenderSection("language", required: false)
             @if (Context.Request.Path != home?.Url())
             {
+                @RenderSection("secondary_navigation", required: false)
+                @if (!IsSectionDefined("secondary_navigation"))
+                {
                 <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
+                }
             }
             <main id="main" class="govuk-main-wrapper">
                 @RenderBody()

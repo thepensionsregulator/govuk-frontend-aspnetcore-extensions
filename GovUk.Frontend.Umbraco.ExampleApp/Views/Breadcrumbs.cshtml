@@ -3,6 +3,6 @@
 	<title>@Model.PageHeadingOrName()</title>
 }
 @section secondary_navigation{
-	@await Html.PartialAsync("_breadcrumbs")
+	@await Html.PartialAsync("GOVUK/Breadcrumbs")
 }
 <partial name="GOVUK/BlockList" model="Model.Blocks" />

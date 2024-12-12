@@ -904,175 +904,33 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         }
 
         // true if everything the same with default row classes
-        [TestCase(true, true, "", "", "", "", true)]
-        [TestCase(false, false, "", "", "", "", true)]
+        [TestCase(true, true, true, true, "", "", "", "", true)]
+        [TestCase(false, false, false, false, "", "", "", "", true)]
 
         // false if grid areas different
-        [TestCase(true, false, "", "", "", "", false)]
-        [TestCase(false, true, "", "", "", "", false)]
-
-        // any custom row class should return false
-        [TestCase(false, false, "custom", "", "", "", false)]
-        [TestCase(false, false, "", "custom", "", "", false)]
-        [TestCase(false, false, "custom", "custom", "", "", false)]
-        [TestCase(false, false, "custom1", "custom2", "", "", false)]
-
-        // true if column classes match
-        [TestCase(false, false, "", "", "custom", "custom", true)]
-
-        // false if column class different
-        [TestCase(false, false, "", "", "custom", "", false)]
-        [TestCase(false, false, "", "", "", "custom", false)]
-        [TestCase(false, false, "", "", "custom1", "custom2", false)]
-        public void Grid_matches_SameAsNext_on_grid_areas_and_row_class_and_column_class(
-            bool currentBlockHasAreas,
-            bool nextBlockHasAreas,
-            string currentBlockRowClass,
-            string nextBlockRowClass,
-            string currentBlockColumnClass,
-            string nextBlockColumnClass,
-            bool expectSameAsNext
-            )
-        {
-            // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
-                 UmbracoBlockGridFactory.CreateOverridableBlock(
-                     UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
-                     UmbracoBlockGridFactory.CreateContentOrSettings("settings")
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, currentBlockRowClass)
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForColumn, currentBlockColumnClass)
-                        .Object
-                     ),
-                 UmbracoBlockGridFactory.CreateOverridableBlock(
-                     UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
-                     UmbracoBlockGridFactory.CreateContentOrSettings("settings")
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, nextBlockRowClass)
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForColumn, nextBlockColumnClass)
-                        .Object
-                    )
-                 ]);
-
-            if (currentBlockHasAreas)
-            {
-                model[0].AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
-            }
-            if (nextBlockHasAreas)
-            {
-                model[1].AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
-            }
-
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(currentBlockRowClass)).Returns($"{HtmlClassNames.Row} {currentBlockRowClass}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(nextBlockRowClass)).Returns($"{HtmlClassNames.Row} {nextBlockRowClass}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, currentBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {currentBlockColumnClass}");
-            _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, nextBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {nextBlockColumnClass}");
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
-
-            // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
-
-            // Assert
-            Assert.That(result.First().IsSameAsNext, Is.EqualTo(expectSameAsNext));
-            Assert.That(result.Last().IsSameAsNext, Is.False); // last one should always be false
-        }
-
-        // true if everything the same with default row classes
-        [TestCase(true, true, "", "", "", "", true)]
-        [TestCase(false, false, "", "", "", "", true)]
-
-        // false if grid areas different
-        [TestCase(true, false, "", "", "", "", false)]
-        [TestCase(false, true, "", "", "", "", false)]
-
-        // any custom row class should return false
-        [TestCase(false, false, "custom", "", "", "", false)]
-        [TestCase(false, false, "", "custom", "", "", false)]
-        [TestCase(false, false, "custom", "custom", "", "", false)]
-        [TestCase(false, false, "custom1", "custom2", "", "", false)]
-
-        // true if column classes match
-        [TestCase(false, false, "", "", "custom", "custom", true)]
-
-        // false if column class different
-        [TestCase(false, false, "", "", "custom", "", false)]
-        [TestCase(false, false, "", "", "", "custom", false)]
-        [TestCase(false, false, "", "", "custom1", "custom2", false)]
-        public void Grid_matches_SameAsPrevious_on_grid_areas_and_row_class_and_column_class(
-            bool previousBlockHasAreas,
-            bool currentBlockHasAreas,
-            string previousBlockRowClass,
-            string currentBlockRowClass,
-            string previousBlockColumnClass,
-            string currentBlockColumnClass,
-            bool expectSameAsPrevious
-            )
-        {
-            // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
-                 UmbracoBlockGridFactory.CreateOverridableBlock(
-                     UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
-                     UmbracoBlockGridFactory.CreateContentOrSettings("settings")
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, previousBlockRowClass)
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForColumn, previousBlockColumnClass)
-                        .Object
-                     ),
-                 UmbracoBlockGridFactory.CreateOverridableBlock(
-                     UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
-                     UmbracoBlockGridFactory.CreateContentOrSettings("settings")
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, currentBlockRowClass)
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForColumn, currentBlockColumnClass)
-                        .Object
-                    )
-                 ]);
-
-            if (previousBlockHasAreas)
-            {
-                model[0].AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
-            }
-            if (currentBlockHasAreas)
-            {
-                model[1].AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
-            }
-
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(previousBlockRowClass)).Returns($"{HtmlClassNames.Row} {previousBlockRowClass}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(currentBlockRowClass)).Returns($"{HtmlClassNames.Row} {currentBlockRowClass}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, previousBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {previousBlockColumnClass}");
-            _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, currentBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {currentBlockColumnClass}");
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
-
-            // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
-
-            // Assert
-            Assert.That(result.First().IsSameAsPrevious, Is.False); // first one should always be false
-            Assert.That(result.Last().IsSameAsPrevious, Is.EqualTo(expectSameAsPrevious));
-        }
-
-
-
-        // true if everything the same with default row classes
-        [TestCase(true, true, "", "", "", "", true)]
-        [TestCase(false, false, "", "", "", "", true)]
+        [TestCase(true, false, false, false, "", "", "", "", false)]
+        [TestCase(false, true, false, false, "", "", "", "", false)]
 
         // false if one is a grid row block and the other isn't
-        [TestCase(true, false, "", "", "", "", false)]
-        [TestCase(false, true, "", "", "", "", false)]
+        [TestCase(false, false, true, false, "", "", "", "", false)]
+        [TestCase(false, false, false, true, "", "", "", "", false)]
 
         // any custom row class should return false
-        [TestCase(false, false, "custom", "", "", "", false)]
-        [TestCase(false, false, "", "custom", "", "", false)]
-        [TestCase(false, false, "custom", "custom", "", "", false)]
-        [TestCase(false, false, "custom1", "custom2", "", "", false)]
+        [TestCase(false, false, false, false, "custom", "", "", "", false)]
+        [TestCase(false, false, false, false, "", "custom", "", "", false)]
+        [TestCase(false, false, false, false, "custom", "custom", "", "", false)]
+        [TestCase(false, false, false, false, "custom1", "custom2", "", "", false)]
 
         // true if column classes match
-        [TestCase(false, false, "", "", "custom", "custom", true)]
+        [TestCase(false, false, false, false, "", "", "custom", "custom", true)]
 
         // false if column class different
-        [TestCase(false, false, "", "", "custom", "", false)]
-        [TestCase(false, false, "", "", "", "custom", false)]
-        [TestCase(false, false, "", "", "custom1", "custom2", false)]
-        public void List_matches_SameAsNext_on_grid_row_block_and_row_class_and_column_class(
+        [TestCase(false, false, false, false, "", "", "custom", "", false)]
+        [TestCase(false, false, false, false, "", "", "", "custom", false)]
+        [TestCase(false, false, false, false, "", "", "custom1", "custom2", false)]
+        public void SameAsNext_matches_on_row_class_and_column_class_and_grid_areas_and_grid_row_block(
+            bool currentBlockHasAreas,
+            bool nextBlockHasAreas,
             bool currentBlockIsGridRow,
             bool nextBlockIsGridRow,
             string currentBlockRowClass,
@@ -1083,60 +941,46 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             )
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
-                 UmbracoBlockListFactory.CreateOverridableBlock(
-                     UmbracoBlockListFactory.CreateContentOrSettings(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "content").Object,
-                     UmbracoBlockListFactory.CreateContentOrSettings(currentBlockIsGridRow ? ElementTypeAliases.GridRowSettings : "settings")
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, currentBlockRowClass)
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForColumn, currentBlockColumnClass)
-                        .Object
-                     ),
-                 UmbracoBlockListFactory.CreateOverridableBlock(
-                     UmbracoBlockListFactory.CreateContentOrSettings(nextBlockIsGridRow ? ElementTypeAliases.GridRow : "content").Object,
-                     UmbracoBlockListFactory.CreateContentOrSettings(nextBlockIsGridRow ? ElementTypeAliases.GridRowSettings : "settings")
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, nextBlockRowClass)
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForColumn, nextBlockColumnClass)
-                        .Object
-                    )
-                 ]);
-
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(currentBlockRowClass)).Returns($"{HtmlClassNames.Row} {currentBlockRowClass}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(nextBlockRowClass)).Returns($"{HtmlClassNames.Row} {nextBlockRowClass}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, currentBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {currentBlockColumnClass}");
-            _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, nextBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {nextBlockColumnClass}");
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
 
             // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = BlockViewService.IsSameAsNext(
+                                $"{HtmlClassNames.Row} {currentBlockRowClass}".TrimEnd(), $"{HtmlClassNames.Row} {nextBlockRowClass}".TrimEnd(),
+                                currentBlockColumnClass, nextBlockColumnClass,
+                                currentBlockHasAreas, nextBlockHasAreas,
+                                currentBlockIsGridRow, nextBlockIsGridRow);
 
             // Assert
-            Assert.That(result.First().IsSameAsNext, Is.EqualTo(expectSameAsNext));
-            Assert.That(result.Last().IsSameAsNext, Is.False); // last one should always be false
+            Assert.That(result, Is.EqualTo(expectSameAsNext));
         }
 
         // true if everything the same with default row classes
-        [TestCase(true, true, "", "", "", "", true)]
-        [TestCase(false, false, "", "", "", "", true)]
+        [TestCase(true, true, true, true, "", "", "", "", true)]
+        [TestCase(false, false, false, false, "", "", "", "", true)]
+
+        // false if grid areas different
+        [TestCase(true, false, false, false, "", "", "", "", false)]
+        [TestCase(false, true, false, false, "", "", "", "", false)]
 
         // false if one is a grid row block and the other isn't
-        [TestCase(true, false, "", "", "", "", false)]
-        [TestCase(false, true, "", "", "", "", false)]
+        [TestCase(false, false, true, false, "", "", "", "", false)]
+        [TestCase(false, false, false, true, "", "", "", "", false)]
 
         // any custom row class should return false
-        [TestCase(false, false, "custom", "", "", "", false)]
-        [TestCase(false, false, "", "custom", "", "", false)]
-        [TestCase(false, false, "custom", "custom", "", "", false)]
-        [TestCase(false, false, "custom1", "custom2", "", "", false)]
+        [TestCase(false, false, false, false, "custom", "", "", "", false)]
+        [TestCase(false, false, false, false, "", "custom", "", "", false)]
+        [TestCase(false, false, false, false, "custom", "custom", "", "", false)]
+        [TestCase(false, false, false, false, "custom1", "custom2", "", "", false)]
 
         // true if column classes match
-        [TestCase(false, false, "", "", "custom", "custom", true)]
+        [TestCase(false, false, false, false, "", "", "custom", "custom", true)]
 
         // false if column class different
-        [TestCase(false, false, "", "", "custom", "", false)]
-        [TestCase(false, false, "", "", "", "custom", false)]
-        [TestCase(false, false, "", "", "custom1", "custom2", false)]
-        public void List_matches_SameAsPrevious_on_grid_row_block_and_row_class_and_column_class(
+        [TestCase(false, false, false, false, "", "", "custom", "", false)]
+        [TestCase(false, false, false, false, "", "", "", "custom", false)]
+        [TestCase(false, false, false, false, "", "", "custom1", "custom2", false)]
+        public void SameAsPrevious_matches_on_row_class_and_column_class_and_grid_areas_and_grid_row_block(
+            bool previousBlockHasAreas,
+            bool currentBlockHasAreas,
             bool previousBlockIsGridRow,
             bool currentBlockIsGridRow,
             string previousBlockRowClass,
@@ -1147,36 +991,16 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             )
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
-                 UmbracoBlockListFactory.CreateOverridableBlock(
-                     UmbracoBlockListFactory.CreateContentOrSettings(previousBlockIsGridRow ? ElementTypeAliases.GridRow : "content").Object,
-                     UmbracoBlockListFactory.CreateContentOrSettings(previousBlockIsGridRow ? ElementTypeAliases.GridColumnSettings : "settings")
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, previousBlockRowClass)
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForColumn, previousBlockColumnClass)
-                        .Object
-                     ),
-                 UmbracoBlockListFactory.CreateOverridableBlock(
-                     UmbracoBlockListFactory.CreateContentOrSettings(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "content").Object,
-                     UmbracoBlockListFactory.CreateContentOrSettings(currentBlockIsGridRow ? ElementTypeAliases.GridRowSettings : "settings")
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, currentBlockRowClass)
-                        .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForColumn, currentBlockColumnClass)
-                        .Object
-                    )
-                 ]);
-
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(previousBlockRowClass)).Returns($"{HtmlClassNames.Row} {previousBlockRowClass}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(currentBlockRowClass)).Returns($"{HtmlClassNames.Row} {currentBlockRowClass}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, previousBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {previousBlockColumnClass}");
-            _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, currentBlockColumnClass, "content", false)).Returns($"{HtmlClassNames.Column} {currentBlockColumnClass}");
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
 
             // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
+            var result = BlockViewService.IsSameAsPrevious(
+                $"{HtmlClassNames.Row} {previousBlockRowClass}".TrimEnd(), $"{HtmlClassNames.Row} {currentBlockRowClass}".TrimEnd(),
+                previousBlockColumnClass, currentBlockColumnClass,
+                previousBlockHasAreas, currentBlockHasAreas,
+                previousBlockIsGridRow, currentBlockIsGridRow);
 
             // Assert
-            Assert.That(result.First().IsSameAsPrevious, Is.False); // first one should always be false
-            Assert.That(result.Last().IsSameAsPrevious, Is.EqualTo(expectSameAsPrevious));
+            Assert.That(result, Is.EqualTo(expectSameAsPrevious));
         }
     }
 }

@@ -29,7 +29,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
             if (!blocks.Any()) { return blocksToReturn; }
 
             string? previousRowClass = null, previousColumnClass = null;
-            bool? previousIsGridAreasBlock = null;
+            bool? previousHasGridAreas = null;
             var isInGridArea = areaModel is not null;
             var childColumnsDefaultToFullWidth = isInGridArea || (gridModel?.ChildColumnsDefaultToFullWidth ?? false);
 
@@ -46,9 +46,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                     blocks[i].Content.ContentType.Alias,
                                     childColumnsDefaultToFullWidth);
 
-                var sameAsPrevious = (hasGridAreas == previousIsGridAreasBlock &&
-                                      rowClass == HtmlClassNames.Row && previousRowClass == HtmlClassNames.Row &&
-                                      columnClass == previousColumnClass);
+                bool sameAsPrevious = IsSameAsPrevious(previousRowClass, rowClass, previousColumnClass, columnClass, previousHasGridAreas, hasGridAreas, false, false);
 
                 string nextRowClass, nextColumnClass = string.Empty;
                 var notTheLastBlock = i < blocks.Count - 1;
@@ -64,10 +62,8 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                                             blocks[i + 1].Content.ContentType.Alias,
                                                             childColumnsDefaultToFullWidth);
 
-                    var nextIsGridAreasBlock = (blocks[i + 1].Areas.Any());
-                    sameAsNext = (hasGridAreas == nextIsGridAreasBlock &&
-                                  rowClass == HtmlClassNames.Row && nextRowClass == HtmlClassNames.Row &&
-                                  columnClass == nextColumnClass);
+                    var nextHasGridAreas = (blocks[i + 1].Areas.Any());
+                    sameAsNext = IsSameAsNext(rowClass, nextRowClass, columnClass, nextColumnClass, hasGridAreas, nextHasGridAreas, false, false);
                 }
 
                 var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i]);
@@ -85,8 +81,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     CloseGridRowAndColumn = !hasGridAreas && !sameAsNext,
                     OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true) && !sameAsPrevious,
                     CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true) && !sameAsNext,
-                    IsSameAsNext = sameAsNext,
-                    IsSameAsPrevious = sameAsPrevious,
                     OpenFieldsetErrorContainer = renderFieldsetErrorContainer,
                     CloseFieldsetErrorContainer = renderFieldsetErrorContainer,
                     FieldsetErrorClasses = fieldsetErrorClasses
@@ -96,12 +90,36 @@ namespace GovUk.Frontend.Umbraco.Blocks
 
                 blocksToReturn.Add(model);
 
-                previousIsGridAreasBlock = hasGridAreas;
+                previousHasGridAreas = hasGridAreas;
                 previousRowClass = rowClass;
                 previousColumnClass = columnClass;
             }
 
             return blocksToReturn;
+        }
+
+        internal static bool IsSameAsPrevious(
+            string? previousRowClass, string currentRowClass,
+            string? previousColumnClass, string currentColumnClass,
+            bool? previousHasGridAreas, bool currentHasGridAreas,
+            bool? previousIsGridRowBlock, bool currentIsGridRowBlock)
+        {
+            return (currentIsGridRowBlock == previousIsGridRowBlock &&
+                    currentHasGridAreas == previousHasGridAreas &&
+                    currentRowClass == HtmlClassNames.Row && previousRowClass == HtmlClassNames.Row &&
+                    currentColumnClass == previousColumnClass);
+        }
+
+        internal static bool IsSameAsNext(
+            string currentRowClass, string nextRowClass,
+            string currentColumnClass, string nextColumnClass,
+            bool currentHasGridAreas, bool? nextHasGridAreas,
+            bool currentIsGridRowBlock, bool? nextIsGridRowBlock)
+        {
+            return (currentIsGridRowBlock == nextIsGridRowBlock &&
+                    currentHasGridAreas == nextHasGridAreas &&
+                    currentRowClass == HtmlClassNames.Row && nextRowClass == HtmlClassNames.Row &&
+                    currentColumnClass == nextColumnClass);
         }
 
         private static string? FieldsetErrorClassesForBlock(IGovUkFieldsetErrorFinder _fieldsetErrorFinder, ModelStateDictionary modelState, IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block)
@@ -152,9 +170,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                     blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
                                     blocks[i].Content.ContentType.Alias);
 
-                var sameAsPrevious = (isGridRowBlock == previousIsGridRowBlock &&
-                                      rowClass == HtmlClassNames.Row && previousRowClass == HtmlClassNames.Row &&
-                                      columnClass == previousColumnClass);
+                var sameAsPrevious = IsSameAsPrevious(previousRowClass, rowClass, previousColumnClass, columnClass, false, false, previousIsGridRowBlock, isGridRowBlock);
 
                 string nextRowClass, nextColumnClass = string.Empty;
                 var notTheLastBlock = i < blocks.Count - 1;
@@ -170,9 +186,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                                             blocks[i + 1].Content.ContentType.Alias);
                     nextIsGridRowBlock = (blocks[i + 1].Content.ContentType.Alias == ElementTypeAliases.GridRow);
 
-                    sameAsNext = (isGridRowBlock == nextIsGridRowBlock &&
-                                  rowClass == HtmlClassNames.Row && nextRowClass == HtmlClassNames.Row &&
-                                  columnClass == nextColumnClass);
+                    sameAsNext = IsSameAsNext(rowClass, nextRowClass, columnClass, nextColumnClass, false, false, isGridRowBlock, nextIsGridRowBlock);
                 }
 
                 var renderGridRowAndColumn = filteredModel.RenderGrid && !isGridRowBlock;
@@ -190,8 +204,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     CloseGridRowAndColumn = renderGridRowAndColumn && !sameAsNext,
                     OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && filteredModel.RenderGrid && !sameAsPrevious,
                     CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && filteredModel.RenderGrid && !sameAsNext,
-                    IsSameAsNext = sameAsNext,
-                    IsSameAsPrevious = sameAsPrevious,
                     OpenFieldsetErrorContainer = renderFieldsetErrorContainer,
                     CloseFieldsetErrorContainer = renderFieldsetErrorContainer,
                     FieldsetErrorClasses = fieldsetErrorClasses

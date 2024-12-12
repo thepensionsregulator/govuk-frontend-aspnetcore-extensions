@@ -49,18 +49,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public bool CloseFieldsetErrorContainer { get; set; }
 
         /// <summary>
-        /// Should this grid row be merged into the previous grid row?
-        /// </summary>
-        /// <remarks>Exposed for unit testing only.</remarks>
-        internal bool IsSameAsPrevious { get; init; }
-
-        /// <summary>
-        /// Should this grid row be merged into the next grid row?
-        /// </summary>
-        /// <remarks>Exposed for unit testing only.</remarks>
-        internal bool IsSameAsNext { get; init; }
-
-        /// <summary>
         /// HTML classes to apply to the grid row.
         /// </summary>
         public string RowClasses { get; set; } = HtmlClassNames.Row;

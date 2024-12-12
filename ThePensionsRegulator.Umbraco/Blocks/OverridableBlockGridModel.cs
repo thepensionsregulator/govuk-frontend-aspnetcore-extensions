@@ -151,11 +151,6 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         public bool ChildColumnsDefaultToFullWidth { get; set; }
 
         /// <summary>
-        /// Gets or sets whether a width container should be rendered for this block grid, if rendering width containers is enabled.
-        /// </summary>
-        public bool RenderWidthContainer { get; set; } = true;
-
-        /// <summary>
         /// Convert to a <see cref="BlockGridModel" />
         /// </summary>
         /// <param name="model"></param>

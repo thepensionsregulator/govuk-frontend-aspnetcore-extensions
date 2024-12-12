@@ -2,6 +2,7 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @inject IGovUkGridClassBuilder gridClassBuilder
 @using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco.Blocks;
@@ -10,12 +11,15 @@
 @{
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.GridColumnBlocks)!;
     blocks.RenderGrid = Model.Settings?.Value<bool>(PropertyAliases.GridColumnRenderRowsAndColumns) ?? false;
-    blocks.RenderWidthContainer = false;
+    var childBlocks = new BlockListViewModel(blocks)
+    {
+        RenderWidthContainer = false
+    };
     var columnClass = gridClassBuilder.BuildGridColumnClasses(
                         Model.Settings?.Value<string>(PropertyAliases.ColumnSize),
                         Model.Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),
                         Model.Settings?.Value<string>(PropertyAliases.CssClassesForColumn)).TrimEnd();
 }
     <div class="@columnClass">
-        @await Html.PartialAsync("GOVUK/BlockList", blocks)
+        @await Html.PartialAsync("GOVUK/BlockList", childBlocks)
     </div>

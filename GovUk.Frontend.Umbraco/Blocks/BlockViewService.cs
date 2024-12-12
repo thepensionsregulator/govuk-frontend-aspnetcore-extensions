@@ -23,7 +23,8 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public IEnumerable<BlockViewModel> PrepareBlockViewModels(IEnumerable<BlockGridItem> blockGridItems, ModelStateDictionary modelState)
         {
             var blocksToReturn = new List<BlockViewModel>();
-            var gridModel = blockGridItems as OverridableBlockGridModel;
+            var wrappedModel = blockGridItems as BlockGridViewModel;
+            var gridModel = blockGridItems as OverridableBlockGridModel ?? wrappedModel?.BlockGrid;
             var areaModel = blockGridItems as OverridableBlockGridArea;
             var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(blockGridItems, null)).ToList();
             if (!blocks.Any()) { return blocksToReturn; }
@@ -79,8 +80,8 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     IsInGridArea = isInGridArea,
                     OpenGridRowAndColumn = !hasGridAreas && !sameAsPrevious,
                     CloseGridRowAndColumn = !hasGridAreas && !sameAsNext,
-                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true) && !sameAsPrevious,
-                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (gridModel?.RenderWidthContainer ?? true) && !sameAsNext,
+                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (wrappedModel?.RenderWidthContainer ?? true) && !sameAsPrevious,
+                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (wrappedModel?.RenderWidthContainer ?? true) && !sameAsNext,
                     OpenFieldsetErrorContainer = renderFieldsetErrorContainer,
                     CloseFieldsetErrorContainer = renderFieldsetErrorContainer,
                     FieldsetErrorClasses = fieldsetErrorClasses
@@ -152,7 +153,8 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public IEnumerable<BlockViewModel> PrepareBlockViewModels(IEnumerable<BlockListItem> blockListItems, ModelStateDictionary modelState)
         {
             var blocksToReturn = new List<BlockViewModel>();
-            var filteredModel = blockListItems as OverridableBlockListModel ?? new OverridableBlockListModel(blockListItems, null);
+            var wrappedModel = blockListItems as BlockListViewModel;
+            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(blockListItems, null);
             var blocks = filteredModel.FilteredBlocks().ToList();
             if (!blocks.Any()) { return blocksToReturn; }
             string? previousRowClass = null, previousColumnClass = null;
@@ -202,8 +204,8 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     RowClasses = rowClass,
                     OpenGridRowAndColumn = renderGridRowAndColumn && !sameAsPrevious,
                     CloseGridRowAndColumn = renderGridRowAndColumn && !sameAsNext,
-                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && filteredModel.RenderGrid && !sameAsPrevious,
-                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && filteredModel.RenderWidthContainer && filteredModel.RenderGrid && !sameAsNext,
+                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && (wrappedModel?.RenderWidthContainer ?? true) && filteredModel.RenderGrid && !sameAsPrevious,
+                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && (wrappedModel?.RenderWidthContainer ?? true) && filteredModel.RenderGrid && !sameAsNext,
                     OpenFieldsetErrorContainer = renderFieldsetErrorContainer,
                     CloseFieldsetErrorContainer = renderFieldsetErrorContainer,
                     FieldsetErrorClasses = fieldsetErrorClasses

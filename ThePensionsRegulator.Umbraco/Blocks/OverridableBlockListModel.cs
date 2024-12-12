@@ -111,11 +111,6 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         public bool RenderGrid { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets whether a width container should be rendered for this block list, if rendering width containers is enabled.
-        /// </summary>
-        public bool RenderWidthContainer { get; set; } = true;
-
-        /// <summary>
         /// Convert to a <see cref="BlockListModel" />
         /// </summary>
         /// <param name="model"></param>

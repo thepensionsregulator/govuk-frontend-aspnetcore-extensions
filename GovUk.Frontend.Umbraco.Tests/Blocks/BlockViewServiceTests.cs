@@ -285,7 +285,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void Grid_sets_OpenWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled_and_RenderWidthContainer_true_and_block_is_not_the_same_as_the_previous_block(bool renderWidthContainerForBlocksEnabled, bool renderWidthContainer, bool sameAsPrevious)
         {
             // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
+            var model = new BlockGridViewModel(
+                UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
                 UmbracoBlockGridFactory.CreateOverridableBlock(
                     UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
                     UmbracoBlockGridFactory.CreateContentOrSettings("settings")
@@ -298,8 +299,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                         .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
                         .Object
                     )
-                ]);
-            model.RenderWidthContainer = renderWidthContainer;
+                ]))
+            {
+                RenderWidthContainer = renderWidthContainer
+            };
 
             var previousBlockRowClass = sameAsPrevious ? "" : " different";
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
@@ -327,7 +330,9 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void Grid_sets_CloseWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled_and_RenderWidthContainer_true_and_block_is_not_the_same_as_the_next_block(bool renderWidthContainerForBlocksEnabled, bool renderWidthContainer, bool sameAsNext)
         {
             // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
+            var model =
+                new BlockGridViewModel(
+                UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
                  UmbracoBlockGridFactory.CreateOverridableBlock(
                     UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
                     UmbracoBlockGridFactory.CreateContentOrSettings("settings")
@@ -340,8 +345,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                         .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "next")
                         .Object
                     )
-                 ]);
-            model.RenderWidthContainer = renderWidthContainer;
+                 ]))
+                {
+                    RenderWidthContainer = renderWidthContainer
+                };
 
             var nextBlockRowClass = sameAsNext ? "" : " different";
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
@@ -423,7 +430,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 bool sameAsPrevious)
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
+            var model = new BlockListViewModel(
+                UmbracoBlockListFactory.CreateOverridableBlockListModel([
                 UmbracoBlockListFactory.CreateOverridableBlock(
                     UmbracoBlockListFactory.CreateContentOrSettings("content").Object,
                     UmbracoBlockListFactory.CreateContentOrSettings("settings")
@@ -436,9 +444,11 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                         .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
                         .Object
                     )
-                ]);
-            model.RenderWidthContainer = renderWidthContainerForBlockListEnabled;
-            model.RenderGrid = renderGrid;
+                ]))
+            {
+                RenderWidthContainer = renderWidthContainerForBlockListEnabled
+            };
+            model.BlockList!.RenderGrid = renderGrid;
 
             var previousBlockRowClass = sameAsPrevious ? "" : " different";
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
@@ -478,7 +488,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 bool sameAsNext)
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
+            var model = new BlockListViewModel(
+                UmbracoBlockListFactory.CreateOverridableBlockListModel([
                 UmbracoBlockListFactory.CreateOverridableBlock(
                     UmbracoBlockListFactory.CreateContentOrSettings("content").Object,
                     UmbracoBlockListFactory.CreateContentOrSettings("settings")
@@ -491,10 +502,11 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                         .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "next")
                         .Object
                     )
-               ]);
-
-            model.RenderWidthContainer = renderWidthContainerForBlockListEnabled;
-            model.RenderGrid = renderGrid;
+               ]))
+            {
+                RenderWidthContainer = renderWidthContainerForBlockListEnabled
+            };
+            model.BlockList!.RenderGrid = renderGrid;
 
             var nextBlockRowClass = sameAsNext ? "" : " different";
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());

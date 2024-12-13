@@ -54,7 +54,8 @@ We target [GOV.UK Frontend v5.2.0](https://github.com/alphagov/govuk-frontend/re
 ## ASP.NET projects without Umbraco
 
 - [Run the ASP.NET example application](docs/aspnet/run-example-application.md)
-- [Configure a new ASP.NET project](docs/aspnet/new-aspnet-project.md)
+- [Configure a new ASP.NET project (GOV.UK)](docs/aspnet/new-aspnet-project-govuk.md)
+- [Configure a new ASP.NET project (TPR)](docs/aspnet/new-aspnet-project-tpr.md)
 - [Localisation and validation in ASP.NET projects](docs/aspnet/localisation-and-validation.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
 
@@ -86,7 +87,8 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 
 ## Using the GOV.UK Design System in Umbraco
 
-- [Configure a new Umbraco project](docs/umbraco/new-umbraco-project.md)
+- [Configure a new Umbraco project (GOV.UK)](docs/umbraco/new-umbraco-project-govuk.md)
+- [Configure a new Umbraco project (TPR)](docs/umbraco/new-umbraco-project-tpr.md)
 - [Populate initial values](docs/umbraco/populate-initial-values.md)
 - [Validation](docs/umbraco/validation.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)

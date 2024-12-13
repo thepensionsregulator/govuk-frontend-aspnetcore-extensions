@@ -181,58 +181,6 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         }
 
         [Test]
-        public void Grid_sets_IsInGridArea_false()
-        {
-            // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
-                UmbracoBlockGridFactory.CreateOverridableBlock("block")
-                );
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
-
-            // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
-
-            // Assert
-            Assert.That(result.First().IsInGridArea, Is.False);
-        }
-
-        [Test]
-        public void Area_sets_IsInGridArea_true()
-        {
-            // Arrange
-            var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea(
-                UmbracoBlockGridFactory.CreateOverridableBlock("block"),
-                "area"
-                );
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
-
-            // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
-
-            // Assert
-            Assert.That(result.First().IsInGridArea, Is.True);
-        }
-
-        [Test]
-        public void List_sets_IsInGridArea_false()
-        {
-            // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel(
-                UmbracoBlockListFactory.CreateOverridableBlock("block")
-                );
-
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), []);
-
-            // Act
-            var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
-
-            // Assert
-            Assert.That(result.First().IsInGridArea, Is.False);
-        }
-
-        [Test]
         public void List_with_no_blocks_returns_empty_list()
         {
             // Arrange

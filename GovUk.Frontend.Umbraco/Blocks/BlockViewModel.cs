@@ -24,11 +24,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
         public IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>? NextBlock { get; set; }
 
         /// <summary>
-        /// In a block grid, is this block within an area rather than the top-level grid?
-        /// </summary>
-        public bool IsInGridArea { get; set; }
-
-        /// <summary>
         /// Should two opening &lt;div&gt; tags be rendered before this block to start a new grid row and column?
         /// </summary>
         public bool OpenGridRowAndColumn { get; set; }

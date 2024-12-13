@@ -77,7 +77,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     NextBlock = notTheLastBlock ? blocks[i + 1] : null,
                     ColumnClasses = columnClass,
                     RowClasses = rowClass,
-                    IsInGridArea = isInGridArea,
                     OpenGridRowAndColumn = !hasGridAreas && !sameAsPrevious,
                     CloseGridRowAndColumn = !hasGridAreas && !sameAsNext,
                     OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (wrappedModel?.RenderWidthContainer ?? true) && !sameAsPrevious,

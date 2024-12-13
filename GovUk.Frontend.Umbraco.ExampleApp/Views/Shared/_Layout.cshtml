@@ -5,7 +5,7 @@
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
-@inject IConfiguration Configuration 
+@inject IConfiguration Configuration
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
@@ -15,6 +15,7 @@
 }
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,6 +30,7 @@
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("head", required: false)
 </head>
+
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
     <partial name="TPR/TPRHeaderLockup" model="headerLockup" />
@@ -36,9 +38,13 @@
         @RenderSection("language", required: false)
         @if (Context.Request.Path != home?.Url())
         {
-            <div class="govuk-width-container">
-                <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
-            </div>
+            @RenderSection("secondary_navigation", required: false)
+            @if (!IsSectionDefined("secondary_navigation"))
+            {
+                <div class="govuk-width-container">
+                    <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
+                </div>
+            }
         }
         <main id="main" class="govuk-main-wrapper">
             @RenderBody()
@@ -52,4 +58,5 @@
     @RenderSection("scripts", required: false)
 </body>
 @await SmidgeHelper.JsHereAsync(debug: true)
+
 </html>

@@ -11,11 +11,11 @@
 @{
     var buttons = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.ButtonGroupButtons)!;
     var cssClasses = ("govuk-button-group " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
-    buttons.RenderGrid = false;
 }
 @if (buttons.FilteredBlocks().Any()) {
 var childBlocks = new BlockListViewModel(buttons)
 {
+    RenderGrid = false,
     RenderWidthContainer = false
 };
 <div class="@cssClasses">

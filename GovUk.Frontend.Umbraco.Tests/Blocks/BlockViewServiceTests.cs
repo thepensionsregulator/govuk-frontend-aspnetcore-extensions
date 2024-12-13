@@ -446,9 +446,9 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                     )
                 ]))
             {
+                RenderGrid = renderGrid,
                 RenderWidthContainer = renderWidthContainerForBlockListEnabled
             };
-            model.BlockList!.RenderGrid = renderGrid;
 
             var previousBlockRowClass = sameAsPrevious ? "" : " different";
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
@@ -504,9 +504,9 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                     )
                ]))
             {
+                RenderGrid = renderGrid,
                 RenderWidthContainer = renderWidthContainerForBlockListEnabled
             };
-            model.BlockList!.RenderGrid = renderGrid;
 
             var nextBlockRowClass = sameAsNext ? "" : " different";
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
@@ -713,7 +713,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             bool sameAsPrevious)
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
+            var model = new BlockListViewModel(
+                UmbracoBlockListFactory.CreateOverridableBlockListModel([
                 UmbracoBlockListFactory.CreateOverridableBlock(
                     UmbracoBlockListFactory.CreateContentOrSettings("content").Object,
                     UmbracoBlockListFactory.CreateContentOrSettings("settings")
@@ -726,8 +727,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                         .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "current")
                         .Object
                     )
-                ]);
-            model.RenderGrid = renderGrid;
+                ]))
+            {
+                RenderGrid = renderGrid
+            };
 
             var previousBlockRowClass = sameAsPrevious ? "" : " different";
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
@@ -758,7 +761,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             bool sameAsNext)
         {
             // Arrange
-            var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
+            var model = new BlockListViewModel(
+               UmbracoBlockListFactory.CreateOverridableBlockListModel([
                UmbracoBlockListFactory.CreateOverridableBlock(
                     UmbracoBlockListFactory.CreateContentOrSettings(currentBlockIsGridRow ? ElementTypeAliases.GridRow : "content").Object,
                     UmbracoBlockListFactory.CreateContentOrSettings("settings")
@@ -771,8 +775,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                         .SetupUmbracoTextboxPropertyValue(PropertyAliases.CssClassesForRow, "next")
                         .Object
                     )
-              ]);
-            model.RenderGrid = renderGrid;
+              ]))
+            {
+                RenderGrid = renderGrid
+            };
 
             var nextBlockRowClass = sameAsNext ? "" : " different";
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());

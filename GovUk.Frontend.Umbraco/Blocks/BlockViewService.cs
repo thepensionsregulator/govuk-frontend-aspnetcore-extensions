@@ -32,7 +32,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
             string? previousRowClass = null, previousColumnClass = null;
             bool? previousHasGridAreas = null;
             var isInGridArea = areaModel is not null;
-            var childColumnsDefaultToFullWidth = isInGridArea || (gridModel?.ChildColumnsDefaultToFullWidth ?? false);
+            var childColumnsDefaultToFullWidth = isInGridArea || (wrappedModel?.ChildColumnsDefaultToFullWidth ?? false);
 
             for (var i = 0; i < blocks.Count; i++)
             {
@@ -155,6 +155,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
             var blocksToReturn = new List<BlockViewModel>();
             var wrappedModel = blockListItems as BlockListViewModel;
             var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(blockListItems, null);
+            var renderGrid = (wrappedModel?.RenderGrid ?? true);
             var blocks = filteredModel.FilteredBlocks().ToList();
             if (!blocks.Any()) { return blocksToReturn; }
             string? previousRowClass = null, previousColumnClass = null;
@@ -191,7 +192,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     sameAsNext = IsSameAsNext(rowClass, nextRowClass, columnClass, nextColumnClass, false, false, isGridRowBlock, nextIsGridRowBlock);
                 }
 
-                var renderGridRowAndColumn = filteredModel.RenderGrid && !isGridRowBlock;
+                var renderGridRowAndColumn = renderGrid && !isGridRowBlock;
                 var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i]);
                 var renderFieldsetErrorContainer = !string.IsNullOrEmpty(fieldsetErrorClasses);
 
@@ -204,8 +205,8 @@ namespace GovUk.Frontend.Umbraco.Blocks
                     RowClasses = rowClass,
                     OpenGridRowAndColumn = renderGridRowAndColumn && !sameAsPrevious,
                     CloseGridRowAndColumn = renderGridRowAndColumn && !sameAsNext,
-                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && (wrappedModel?.RenderWidthContainer ?? true) && filteredModel.RenderGrid && !sameAsPrevious,
-                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && (wrappedModel?.RenderWidthContainer ?? true) && filteredModel.RenderGrid && !sameAsNext,
+                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && (wrappedModel?.RenderWidthContainer ?? true) && renderGrid && !sameAsPrevious,
+                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && (wrappedModel?.RenderWidthContainer ?? true) && renderGrid && !sameAsNext,
                     OpenFieldsetErrorContainer = renderFieldsetErrorContainer,
                     CloseFieldsetErrorContainer = renderFieldsetErrorContainer,
                     FieldsetErrorClasses = fieldsetErrorClasses

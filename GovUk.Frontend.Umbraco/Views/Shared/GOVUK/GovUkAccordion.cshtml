@@ -21,9 +21,9 @@
     @foreach (var section in sections.FilteredBlocks())
     {
         var grid = section.Content.Value<OverridableBlockGridModel>(PropertyAliases.AccordionSectionBlocks)!;
-        grid.ChildColumnsDefaultToFullWidth = true;
         var childBlocks = new BlockGridViewModel(grid)
         {
+            ChildColumnsDefaultToFullWidth = true,
             RenderWidthContainer = false        
         };
 

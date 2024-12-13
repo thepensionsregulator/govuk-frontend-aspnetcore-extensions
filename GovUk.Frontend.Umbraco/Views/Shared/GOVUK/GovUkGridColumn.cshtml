@@ -10,9 +10,9 @@
 @using Umbraco.Extensions
 @{
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.GridColumnBlocks)!;
-    blocks.RenderGrid = Model.Settings?.Value<bool>(PropertyAliases.GridColumnRenderRowsAndColumns) ?? false;
     var childBlocks = new BlockListViewModel(blocks)
     {
+        RenderGrid = Model.Settings?.Value<bool>(PropertyAliases.GridColumnRenderRowsAndColumns) ?? false,
         RenderWidthContainer = false
     };
     var columnClass = gridClassBuilder.BuildGridColumnClasses(

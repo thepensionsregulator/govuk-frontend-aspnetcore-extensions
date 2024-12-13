@@ -42,9 +42,9 @@
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</govuk-fieldset-legend>
             @if (blocks != null && blocks.Any())
             {
-                blocks.RenderGrid = false;
                 var childBlocks = new BlockListViewModel(blocks)
                 {
+                    RenderGrid = false,
                     RenderWidthContainer = false
                 };
                 <div id="@modelPropertyName-blocks">

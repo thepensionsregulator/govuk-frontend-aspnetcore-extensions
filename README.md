@@ -85,12 +85,14 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 
 ![ThePensionsRegulator.Umbraco.Testing on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco.Testing)
 
-## Using the GOV.UK Design System in Umbraco
+## Using the GOV.UK Design System and TPR components in Umbraco
 
 - [Configure a new Umbraco project (GOV.UK)](docs/umbraco/new-umbraco-project-govuk.md)
 - [Configure a new Umbraco project (TPR)](docs/umbraco/new-umbraco-project-tpr.md)
 - [Populate initial values](docs/umbraco/populate-initial-values.md)
 - [Validation](docs/umbraco/validation.md)
+- [Change how blocks are rendered](docs/umbraco/block-view-interceptor.md)
+- [Support full-width content](docs/umbraco/full-width-content.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
 - [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)
 - [Configure heading levels](/docs/umbraco/configure-heading-levels.md)

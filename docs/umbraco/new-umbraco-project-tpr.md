@@ -4,13 +4,15 @@
 
 2. Create a new project using the 'Umbraco project (Umbraco HQ)' template in Visual Studio, or by running `dotnet new umbraco --name MyProject`.
 
-3. Download the `Tools-TPRGitHooks` repository to a sibling folder of your new solution. Copy `Install-TPRGitHooks.ps1` to your repository and run it. This requires [PowerShell Core](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows).
+3. Use `git init` to convert your project folder to a git repository.
 
-4. Add `ThePensionsRegulator.Frontend.Umbraco` NuGet package to your project.
+4. Download the `Tools-TPRGitHooks` repository to a sibling folder of your new solution. Copy `Install-TPRGitHooks.ps1` to your repository and run it. This requires [PowerShell Core](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows).
 
-5. In your Umbraco project install the `uSync.Complete` package using NuGet, making sure that the version aligns with the version of Umbraco you installed. See [uSync.Complete for Umbraco](https://jumoo.co.uk/usync/complete/).
+5. Add `ThePensionsRegulator.Frontend.Umbraco` NuGet package to your project.
 
-6. In `appsettings.json` add the following configuration. The settings shown for `Umbraco:CMS` are in addition to those present by default, not a replacement.
+6. In your Umbraco project install the `uSync.Complete` package using NuGet, making sure that the version aligns with the version of Umbraco you installed. See [uSync.Complete for Umbraco](https://jumoo.co.uk/usync/complete/).
+
+7. In `appsettings.json` add the following configuration. The settings shown for `Umbraco:CMS` are in addition to those present by default, not a replacement.
 
    ```json
    {
@@ -45,24 +47,24 @@
    }
    ```
 
-7. Create `wwwroot/media/.gitignore` with the following content:
+8. Create `wwwroot/media/.gitignore` with the following content:
 
    ```text
    *
    !.gitignore
    ```
 
-8. Delete `wwwroot/favicon.ico`.
+9. Delete `wwwroot/favicon.ico`.
 
-9. Create `Views/_ViewStart.cshtml` with the following content:
+10. Create `Views/_ViewStart.cshtml` with the following content:
 
-   ```razor
-   @{
-       Layout = "_Layout";
-   }
-   ```
+    ```razor
+    @{
+        Layout = "_Layout";
+    }
+    ```
 
-10. Add the following to your `Views/_ViewImports.cshtml` file:
+11. Add the following to your `Views/_ViewImports.cshtml` file:
 
     ```razor
     @addTagHelper *, GovUk.Frontend.AspNetCore
@@ -70,7 +72,7 @@
     @addTagHelper *, ThePensionsRegulator.Frontend
     ```
 
-11. Create `Views/Shared/_Layout.cshtml` and include the GOV.UK Design System and TPR partial views and the `govuk-template__body` class. A minimal layout file looks like this:
+12. Create `Views/Shared/_Layout.cshtml` and include the GOV.UK Design System and TPR partial views and the `govuk-template__body` class. A minimal layout file looks like this:
 
     ```razor
     @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<object>
@@ -95,19 +97,23 @@
     </html>
     ```
 
-12. Rebuild and run your project. On the first run you will see the 'Install Umbraco' screen. Enter your name, email and create a password when prompted.
+13. Rebuild and run your project. On the first run you will see the 'Install Umbraco' screen. Enter your name, email and create a password when prompted.
 
     > If you get `BootFailedException: Boot failed: Umbraco cannot run.` the real error can be found in the `umbraco\Logs` folder. The most common error is `SQLite Error 14: 'unable to open database file'`. The most common fix for this is to delete the `ConnectionStrings:umbracoDbDSN` and `ConnectionStrings:umbracoDbDSN_ProviderName` settings from `appsettings.Development.json`. These will be re-instated on startup.
 
-13. Go to the Umbraco back office at `/umbraco`. Navigate to Settings > uSync. In the 'Everything' box, click 'Import'.
+14. Go to the Umbraco back office at `/umbraco`. Navigate to Settings > uSync. In the 'Everything' box, click 'Import'.
 
-14. In Settings > Document types select Create > Document Type with Template. In the Permissions settings for the document type, enable 'Allow as root'.
+15. In Settings > Document types select Create > Document Type with Template. In the Permissions settings for the document type, enable 'Allow as root'.
 
-15. On the new document type, add a group and then add a property that uses the 'TPR Block grid' or 'TPR Block list' data type.
+16. On the new document type, add a group and then add a property that uses the 'TPR Block grid' or 'TPR Block list' data type.
 
-16. Go to Settings > Settings > Models Builder and click 'Generate Models'.
+17. Go to Settings > Settings > Models Builder and click 'Generate Models'.
 
-17. In Visual Studio you will find a new view for the document type in the `Views` folder. Add the following partial view, where `Model.Blocks` is the block grid or block list property you just created, as represented by the model generated by Umbraco Models Builder for the document type:
+18. In Visual Studio you will find a new view for the document type in the `Views` folder. It will be configured to use a generated model for the document type, which includes a property for the block grid or block list you just added.
+
+    Remove `Layout = null;` from the top of the view.
+
+    Add the following partial view, where `Model.Blocks` is the block grid or block list property you just added:
 
     ```razor
     <partial name="GOVUK/BlockGrid" model="Model.Blocks" />
@@ -119,8 +125,6 @@
     <partial name="GOVUK/BlockList" model="Model.Blocks" />
     ```
 
-    Remove `Layout = null;` from the top of the default template/view.
-
     Later, when you add form components to your page, you will need to create a `<alias>SurfaceController` class (where `<alias>` is the alias of your document type) and update your view to look more like this:
 
     ```razor
@@ -130,7 +134,7 @@
     }
     ```
 
-18. In `Program.cs` add the following to the `ConfigureServices` method:
+19. In `Program.cs` add the following:
 
     ```csharp
     using Microsoft.AspNetCore.Mvc;

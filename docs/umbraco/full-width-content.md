@@ -12,6 +12,8 @@ To enable this support you need to make two changes to the consuming application
 2. Enable `RenderWidthContainerForBlocks` in `Program.cs`:
 
    ```csharp
+   // for GOV.UK applications...
+
    builder.Services.AddGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
 
    // or, for TPR applications...
@@ -25,6 +27,6 @@ When using TPR styles you can now add a 'TPR box' component to the root of a blo
 
 ![The full-width setting for a TPR box](/docs/images/tpr-box-full-width-setting.png)
 
-Support for full-width boxes is implemented internally using an `IBlockViewInterceptor` - see [change how blocks are rendered](/docs/umbraco/block-view-interceptor.md).
+Support for full-width boxes is implemented internally using an `IBlockViewInterceptor`, which can be used as a reference implementation for how to update the view. See [change how blocks are rendered](/docs/umbraco/block-view-interceptor.md).
 
 When using GOV.UK styles it is up to the developer to take advantage of this support as there are no components using it by default to break out of the limited width container.

@@ -4,9 +4,11 @@
 
 2. Add the `ThePensionsRegulator.Frontend` NuGet package to your project.
 
-3. Download the `Tools-TPRGitHooks` repository to a sibling folder of your new solution. Copy `Install-TPRGitHooks.ps1` to your repository and run it. This requires [PowerShell Core](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows).
+3. Use `git init` to convert your project folder to a git repository.
 
-4. In `Startup.cs` add the following to the `ConfigureServices` method:
+4. Download the `Tools-TPRGitHooks` repository to a sibling folder of your new solution. Copy `Install-TPRGitHooks.ps1` to your repository and run it. This requires [PowerShell Core](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows).
+
+5. In `Startup.cs` add the following to the `ConfigureServices` method:
 
    ```csharp
    using GovUk.Frontend.AspNetCore.Extensions;
@@ -19,7 +21,7 @@
    }
    ```
 
-5. Add partial views and the `govuk-template__body` class to `Views/Shared/_Layout.cshtml` as shown below. You should also make sure you have a `<main>` element in your markup.
+6. Add partial views and the `govuk-template__body` class to `Views/Shared/_Layout.cshtml` as shown below. You should also make sure you have a `<main>` element in your markup.
 
    ```html
    <!DOCTYPE html>
@@ -43,7 +45,7 @@
    </html>
    ```
 
-6. Add the following to your `Views/_ViewImports.cshtml` file:
+7. Add the following to your `Views/_ViewImports.cshtml` file:
 
    ```csharp
    @addTagHelper *, GovUk.Frontend.AspNetCore
@@ -51,11 +53,11 @@
    @addTagHelper *, ThePensionsRegulator.Frontend
    ```
 
-7. [Add validation rules to your model](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0) as you normally would for ASP.NET, using attributes from the [System.ComponentModel.DataAnnotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) namespace.
+8. [Add validation rules to your model](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0) as you normally would for ASP.NET, using attributes from the [System.ComponentModel.DataAnnotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) namespace.
 
    > JQuery is included to support the standard ASP.NET validation. We recommend using vanilla JavaScript for everything else.
 
-8. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `GovUk.Frontend.AspNetCore.Extensions`.
+9. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `GovUk.Frontend.AspNetCore.Extensions`.
 
    ```csharp
    <form asp-controller="Home" asp-action="Post" method="post" novalidate>

@@ -51,11 +51,11 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
 
             if (_config.GetValue<bool>("TPRStyles"))
             {
-                services.AddTprFrontendUmbraco();
+                services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
             }
             else
             {
-                services.AddGovUkFrontendUmbraco();
+                services.AddGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
             }
         }
 

@@ -1,26 +1,7 @@
-﻿using System;
-
-namespace GovUk.Frontend.Umbraco.Services
+﻿namespace GovUk.Frontend.Umbraco.Services
 {
     public class GovUkGridClassBuilder : IGovUkGridClassBuilder
     {
-        [Obsolete("Use the instance method. This static method will be removed in v7.")]
-        public static string BuildGridRowClass(string? customClass) => new GovUkGridClassBuilder().BuildGridRowClasses(customClass);
-
-        [Obsolete("Use the instance method. This static method will be removed in v7.")]
-        public static string BuildGridColumnClass(
-            string? columnSizeClass,
-            string? fromDesktopClass,
-            string? customClass,
-            string? forBlockOfContentTypeAlias = null,
-            bool defaultToFullWidth = false) =>
-                new GovUkGridClassBuilder().BuildGridColumnClasses(columnSizeClass,
-                                                            fromDesktopClass,
-                                                            customClass,
-                                                            forBlockOfContentTypeAlias,
-                                                            defaultToFullWidth);
-
-
         public string BuildGridRowClasses(string? customClass)
         {
             string rowClass = ($"{HtmlClassNames.Row} {customClass}").TrimEnd();

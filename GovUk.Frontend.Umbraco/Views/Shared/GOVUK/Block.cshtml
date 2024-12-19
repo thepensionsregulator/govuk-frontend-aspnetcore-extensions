@@ -8,35 +8,45 @@
     var pathToView = string.Empty;
     foreach (var pathProvider in pathProviders)
     {
-        var basicBlock = (IBlockReference<IPublishedElement, IPublishedElement>)Model.Block;
+        var basicBlock = (IBlockReference<IPublishedElement, IPublishedElement>)Model.CurrentBlock;
         if (pathProvider.IsProvider(basicBlock))
         {
             pathToView = pathProvider.BuildPartialViewPath(basicBlock);
             break;
         }
     }
-    if (string.IsNullOrEmpty(pathToView)) 
-    { 
+    if (string.IsNullOrEmpty(pathToView))
+    {
         throw new InvalidOperationException(
-            $"No {nameof(IPartialViewPathProvider)} was found to provide a path for the block with content key {Model.Block.Content.Key}, of content type {Model.Block.Content.ContentType.Alias}"
-        ); 
+        $"No {nameof(IPartialViewPathProvider)} was found to provide a path for the block with content key {Model.CurrentBlock.Content.Key}, of content type {Model.CurrentBlock.Content.ContentType.Alias}"
+        );
     }
 
-    @if (Model.RenderGrid && !Model.IsGridRow && !Model.IsSameAsPrevious) { 
+    if (Model.OpenWidthContainer)
+    {
+        @:<div class="@Model.WidthContainerClasses">
+    }
+    if (Model.OpenGridRowAndColumn)
+    { 
         @:<div class="@Model.RowClasses"> 
         @:<div class="@Model.ColumnClasses"> 
     }
-    @if (!string.IsNullOrEmpty(Model.FieldsetErrorClasses))
+    if (Model.OpenFieldsetErrorContainer)
     {
         @:<div class="@Model.FieldsetErrorClasses"> 
     }
-    @await Html.PartialAsync(pathToView, Model.Block)
-    @if (!string.IsNullOrEmpty(Model.FieldsetErrorClasses))
+    @await Html.PartialAsync(pathToView, Model.CurrentBlock)
+    if (Model.CloseFieldsetErrorContainer)
     {
         @:</div> 
     }
-    @if (Model.RenderGrid && !Model.IsGridRow  && !Model.IsSameAsNext) {
+    if (Model.CloseGridRowAndColumn)
+    {
         @:</div> 
+        @:</div> 
+    }
+    if (Model.CloseWidthContainer)
+    {
         @:</div> 
     }
 }

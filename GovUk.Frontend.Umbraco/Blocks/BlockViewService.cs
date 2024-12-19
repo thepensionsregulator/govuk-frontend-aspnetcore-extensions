@@ -1,5 +1,6 @@
 ﻿using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 using ThePensionsRegulator.Umbraco;
@@ -8,7 +9,7 @@ using Umbraco.Cms.Core.Models.Blocks;
 
 namespace GovUk.Frontend.Umbraco.Blocks
 {
-    public class BlockViewService(IGovUkGridClassBuilder _gridClassBuilder, IGovUkFieldsetErrorFinder _fieldsetErrorFinder)
+    public class BlockViewService(IGovUkGridClassBuilder _gridClassBuilder, IGovUkFieldsetErrorFinder _fieldsetErrorFinder, IOptions<GovUkFrontendUmbracoOptions> _options, IEnumerable<IBlockViewInterceptor> _interceptors)
     {
         /// <summary>
         /// Builds details of the HTML required to render each block in a block grid.
@@ -19,17 +20,19 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// interfere with the spacing between components. Spacing (particularly for inset text) can rely on margin collapsing and
         /// wrapping every component in a grid row prevents that from working because the components no longer directly follow each other.
         /// </remarks>
-        public IEnumerable<BlockViewModel> PrepareBlockViewModels(IEnumerable<BlockGridItem> model, ModelStateDictionary modelState)
+        public IEnumerable<BlockViewModel> PrepareBlockViewModels(IEnumerable<BlockGridItem> blockGridItems, ModelStateDictionary modelState)
         {
             var blocksToReturn = new List<BlockViewModel>();
-            var gridModel = model as OverridableBlockGridModel;
-            var areaModel = model as OverridableBlockGridArea;
-            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(model, null)).ToList();
+            var wrappedModel = blockGridItems as BlockGridViewModel;
+            var gridModel = blockGridItems as OverridableBlockGridModel ?? wrappedModel?.BlockGrid;
+            var areaModel = blockGridItems as OverridableBlockGridArea;
+            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(blockGridItems, null)).ToList();
             if (!blocks.Any()) { return blocksToReturn; }
 
             string? previousRowClass = null, previousColumnClass = null;
-            bool? previousIsGridAreasBlock = null;
-            var childColumnsDefaultToFullWidth = areaModel != null || (gridModel?.ChildColumnsDefaultToFullWidth ?? false);
+            bool? previousHasGridAreas = null;
+            var isInGridArea = areaModel is not null;
+            var childColumnsDefaultToFullWidth = isInGridArea || (wrappedModel?.ChildColumnsDefaultToFullWidth ?? false);
 
             for (var i = 0; i < blocks.Count; i++)
             {
@@ -44,9 +47,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                     blocks[i].Content.ContentType.Alias,
                                     childColumnsDefaultToFullWidth);
 
-                var sameAsPrevious = (hasGridAreas == previousIsGridAreasBlock &&
-                                      rowClass == HtmlClassNames.Row && previousRowClass == HtmlClassNames.Row &&
-                                      columnClass == previousColumnClass);
+                bool sameAsPrevious = IsSameAsPrevious(previousRowClass, rowClass, previousColumnClass, columnClass, previousHasGridAreas, hasGridAreas, false, false);
 
                 string nextRowClass, nextColumnClass = string.Empty;
                 var notTheLastBlock = i < blocks.Count - 1;
@@ -62,31 +63,63 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                                             blocks[i + 1].Content.ContentType.Alias,
                                                             childColumnsDefaultToFullWidth);
 
-                    var nextIsGridAreasBlock = (blocks[i + 1].Areas.Any());
-                    sameAsNext = (hasGridAreas == nextIsGridAreasBlock &&
-                                  rowClass == HtmlClassNames.Row && nextRowClass == HtmlClassNames.Row &&
-                                  columnClass == nextColumnClass);
+                    var nextHasGridAreas = (blocks[i + 1].Areas.Any());
+                    sameAsNext = IsSameAsNext(rowClass, nextRowClass, columnClass, nextColumnClass, hasGridAreas, nextHasGridAreas, false, false);
                 }
 
-                blocksToReturn.Add(new BlockViewModel
+                var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i]);
+                var renderFieldsetErrorContainer = !string.IsNullOrEmpty(fieldsetErrorClasses);
+
+                var model = new BlockViewModel
                 {
-                    Block = blocks[i],
+                    PreviousBlock = i > 0 ? blocks[i - 1] : null,
+                    CurrentBlock = blocks[i],
+                    NextBlock = notTheLastBlock ? blocks[i + 1] : null,
                     ColumnClasses = columnClass,
                     RowClasses = rowClass,
-                    HasGridAreas = hasGridAreas,
-                    IsGridRow = false,
-                    RenderGrid = false,
-                    IsSameAsNext = sameAsNext,
-                    IsSameAsPrevious = sameAsPrevious,
-                    FieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i])
-                });
+                    OpenGridRowAndColumn = !hasGridAreas && !sameAsPrevious,
+                    CloseGridRowAndColumn = !hasGridAreas && !sameAsNext,
+                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (wrappedModel?.RenderWidthContainer ?? true) && !sameAsPrevious,
+                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && !isInGridArea && (wrappedModel?.RenderWidthContainer ?? true) && !sameAsNext,
+                    OpenFieldsetErrorContainer = renderFieldsetErrorContainer,
+                    CloseFieldsetErrorContainer = renderFieldsetErrorContainer,
+                    FieldsetErrorClasses = fieldsetErrorClasses
+                };
 
-                previousIsGridAreasBlock = hasGridAreas;
+                foreach (var interceptor in _interceptors) { interceptor.InterceptBlockView(model); }
+
+                blocksToReturn.Add(model);
+
+                previousHasGridAreas = hasGridAreas;
                 previousRowClass = rowClass;
                 previousColumnClass = columnClass;
             }
 
             return blocksToReturn;
+        }
+
+        internal static bool IsSameAsPrevious(
+            string? previousRowClass, string currentRowClass,
+            string? previousColumnClass, string currentColumnClass,
+            bool? previousHasGridAreas, bool currentHasGridAreas,
+            bool? previousIsGridRowBlock, bool currentIsGridRowBlock)
+        {
+            return (currentIsGridRowBlock == previousIsGridRowBlock &&
+                    currentHasGridAreas == previousHasGridAreas &&
+                    currentRowClass == HtmlClassNames.Row && previousRowClass == HtmlClassNames.Row &&
+                    currentColumnClass == previousColumnClass);
+        }
+
+        internal static bool IsSameAsNext(
+            string currentRowClass, string nextRowClass,
+            string currentColumnClass, string nextColumnClass,
+            bool currentHasGridAreas, bool? nextHasGridAreas,
+            bool currentIsGridRowBlock, bool? nextIsGridRowBlock)
+        {
+            return (currentIsGridRowBlock == nextIsGridRowBlock &&
+                    currentHasGridAreas == nextHasGridAreas &&
+                    currentRowClass == HtmlClassNames.Row && nextRowClass == HtmlClassNames.Row &&
+                    currentColumnClass == nextColumnClass);
         }
 
         private static string? FieldsetErrorClassesForBlock(IGovUkFieldsetErrorFinder _fieldsetErrorFinder, ModelStateDictionary modelState, IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block)
@@ -116,14 +149,16 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// interfere with the spacing between components. Spacing (particularly for inset text) can rely on margin collapsing and
         /// wrapping every component in a grid row prevents that from working because the components no longer directly follow each other.
         /// </remarks>
-        public IEnumerable<BlockViewModel> PrepareBlockViewModels(IEnumerable<BlockListItem> model, ModelStateDictionary modelState)
+        public IEnumerable<BlockViewModel> PrepareBlockViewModels(IEnumerable<BlockListItem> blockListItems, ModelStateDictionary modelState)
         {
             var blocksToReturn = new List<BlockViewModel>();
-            var filteredModel = model as OverridableBlockListModel ?? new OverridableBlockListModel(model, null);
+            var wrappedModel = blockListItems as BlockListViewModel;
+            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(blockListItems, null);
+            var renderGrid = (wrappedModel?.RenderGrid ?? true);
             var blocks = filteredModel.FilteredBlocks().ToList();
             if (!blocks.Any()) { return blocksToReturn; }
             string? previousRowClass = null, previousColumnClass = null;
-            bool? previousIsGridRowBlock = null;
+            bool? previousIsGridRowBlock = null, nextIsGridRowBlock = null;
 
             for (var i = 0; i < blocks.Count; i++)
             {
@@ -137,9 +172,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                     blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
                                     blocks[i].Content.ContentType.Alias);
 
-                var sameAsPrevious = (isGridRowBlock == previousIsGridRowBlock &&
-                                      rowClass == HtmlClassNames.Row && previousRowClass == HtmlClassNames.Row &&
-                                      columnClass == previousColumnClass);
+                var sameAsPrevious = IsSameAsPrevious(previousRowClass, rowClass, previousColumnClass, columnClass, false, false, previousIsGridRowBlock, isGridRowBlock);
 
                 string nextRowClass, nextColumnClass = string.Empty;
                 var notTheLastBlock = i < blocks.Count - 1;
@@ -153,24 +186,34 @@ namespace GovUk.Frontend.Umbraco.Blocks
                                                             blocks[i + 1].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),
                                                             blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
                                                             blocks[i + 1].Content.ContentType.Alias);
+                    nextIsGridRowBlock = (blocks[i + 1].Content.ContentType.Alias == ElementTypeAliases.GridRow);
 
-                    sameAsNext = (isGridRowBlock == (blocks[i + 1].Content.ContentType.Alias == ElementTypeAliases.GridRow) &&
-                                  rowClass == HtmlClassNames.Row && nextRowClass == HtmlClassNames.Row &&
-                                  columnClass == nextColumnClass);
+                    sameAsNext = IsSameAsNext(rowClass, nextRowClass, columnClass, nextColumnClass, false, false, isGridRowBlock, nextIsGridRowBlock);
                 }
 
-                blocksToReturn.Add(new BlockViewModel
+                var renderGridRowAndColumn = renderGrid && !isGridRowBlock;
+                var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i]);
+                var renderFieldsetErrorContainer = !string.IsNullOrEmpty(fieldsetErrorClasses);
+
+                var model = new BlockViewModel
                 {
-                    Block = blocks[i],
+                    PreviousBlock = i > 0 ? blocks[i - 1] : null,
+                    CurrentBlock = blocks[i],
+                    NextBlock = notTheLastBlock ? blocks[i + 1] : null,
                     ColumnClasses = columnClass,
                     RowClasses = rowClass,
-                    HasGridAreas = false,
-                    IsGridRow = isGridRowBlock,
-                    RenderGrid = filteredModel.RenderGrid,
-                    IsSameAsNext = sameAsNext,
-                    IsSameAsPrevious = sameAsPrevious,
-                    FieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i])
-                });
+                    OpenGridRowAndColumn = renderGridRowAndColumn && !sameAsPrevious,
+                    CloseGridRowAndColumn = renderGridRowAndColumn && !sameAsNext,
+                    OpenWidthContainer = _options.Value.RenderWidthContainerForBlocks && (wrappedModel?.RenderWidthContainer ?? true) && renderGrid && !sameAsPrevious,
+                    CloseWidthContainer = _options.Value.RenderWidthContainerForBlocks && (wrappedModel?.RenderWidthContainer ?? true) && renderGrid && !sameAsNext,
+                    OpenFieldsetErrorContainer = renderFieldsetErrorContainer,
+                    CloseFieldsetErrorContainer = renderFieldsetErrorContainer,
+                    FieldsetErrorClasses = fieldsetErrorClasses
+                };
+
+                foreach (var interceptor in _interceptors) { interceptor.InterceptBlockView(model); }
+
+                blocksToReturn.Add(model);
 
                 previousIsGridRowBlock = isGridRowBlock;
                 previousRowClass = rowClass;

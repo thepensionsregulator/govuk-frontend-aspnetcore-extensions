@@ -2,6 +2,7 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @inject IGovUkFieldsetErrorFinder fieldsetErrorFinder
 @using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Validation
@@ -12,6 +13,14 @@
 @using Umbraco.Extensions
 @{
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks);
+    BlockListViewModel? childBlocks = null;
+    if (blocks is not null) 
+    {
+        childBlocks = new(blocks)
+        {
+            RenderWidthContainer = false
+        };
+    }
     var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legendClass = legendIsPageHeading ? GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-fieldset";
@@ -25,7 +34,7 @@
     var describedBy = hasFieldsetError ? string.Join(' ', fieldsetErrors.Select(x => x.Settings.Value<string>(PropertyAliases.ModelProperty)).ToArray()) : null;
 
     // Add an error to ModelState so that we can communicate the presence of a fieldset error to each field within it
-    if (blocks != null && hasFieldsetError) {
+    if (blocks is not null && hasFieldsetError) {
         var allDescendentFields = blocks.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.Checkbox || 
                                                          x.Content.ContentType.Alias == ElementTypeAliases.Checkboxes || 
                                                          x.Content.ContentType.Alias == ElementTypeAliases.DateInput || 
@@ -48,7 +57,7 @@
         @:<div class="@HtmlClassNames.Row @fieldsetErrorClasses">
         @:<div class="@HtmlClassNames.Column @HtmlClassNames.ColumnFullWidth">
     }
-    @await Html.PartialAsync("GOVUK/BlockList", blocks)
+    @if (childBlocks is not null) { @await Html.PartialAsync("GOVUK/BlockList", childBlocks) }
     @if (hasFieldsetError){
         @:</div>
         @:</div>

@@ -1,0 +1,28 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using ThePensionsRegulator.Umbraco;
+@using Umbraco.Extensions
+@{
+    var hidden = Model.Settings.Value("hidden");
+    var size = Model.Settings.Value("size");
+}
+
+@if (hidden is false)
+{
+    switch(size)
+    {
+        case "Extra large":
+            <div class="govuk-section-break--visible govuk-section-break--xl"></div>
+            break;
+        case "Large":
+            <div class="govuk-section-break--visible govuk-section-break--l"></div>
+            break;
+        default:
+            <div class="govuk-section-break--visible govuk-section-break--m"></div>
+            break;
+    }
+}

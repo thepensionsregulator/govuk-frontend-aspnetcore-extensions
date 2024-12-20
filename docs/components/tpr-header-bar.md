@@ -68,6 +68,8 @@ Create or edit a content node based on your document type, and you will be able 
 
 ![Editing TPR header bar content](/docs/images/tpr-header-bar-umbraco-content.png)
 
+This component has culture variants enabled for localisation purposes.
+
 Finally, pass that content node to the `TPRHeaderLockup` partial view on your layout to add the typical combination of [Skip link](https://design-system.service.gov.uk/components/skip-link/), [Phase banner](https://design-system.service.gov.uk/components/phase-banner/), TPR header bar and [TPR context bar](tpr-context-bar.md) to your application.
 
 ```razor

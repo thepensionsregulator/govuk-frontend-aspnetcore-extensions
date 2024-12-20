@@ -38,9 +38,11 @@ Add the 'TPR back to top' composition to one of your document types, typically a
 
 ![TPR back to top composition added to a document type](/docs/images/tpr-back-to-top-umbraco-document-type.png)
 
-Create or edit a content node based on your document type, and you will be able to specify text for the TPR back to top component.
+Create or edit a content node based on your document type, and you will be able to specify text for the TPR back to top component. 
 
 ![Editing TPR back to top content](/docs/images/tpr-back-to-top-umbraco-content.png)
+
+This component has culture variants enabled for localisation purposes.
 
 Finally, pass that content node to the `TPRFooterLockup` partial view on your layout to add the typical combination of TPR back to top and [TPR footer bar](tpr-footer-bar.md) to your application.
 

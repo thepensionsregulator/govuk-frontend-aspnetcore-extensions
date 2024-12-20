@@ -1,6 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
 @using ThePensionsRegulator.Umbraco.Blocks;
@@ -15,6 +16,14 @@
     var heading = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.NotificationBannerHeading);
     var text = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.NotificationBannerText);
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.NotificationBannerBlocks);
+    BlockListViewModel? childBlocks = null;
+    if (blocks is not null) 
+    {
+        childBlocks = new(blocks)
+        {
+            RenderWidthContainer = false
+        };
+    }
     var classNames = Model.Settings.Value<string>(PropertyAliases.CssClasses);
 }
 <govuk-notification-banner type="@((NotificationBannerType)bannerType!)" class="@classNames">
@@ -35,5 +44,5 @@
         @text
     }
     
-    @await Html.PartialAsync("GOVUK/BlockList", blocks)
+    @if (childBlocks is not null) { @await Html.PartialAsync("GOVUK/BlockList", blocks) }
 </govuk-notification-banner>

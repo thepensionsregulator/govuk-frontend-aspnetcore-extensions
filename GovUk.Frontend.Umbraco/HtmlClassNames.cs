@@ -13,5 +13,6 @@
         internal const string ColumnHalf = "govuk-grid-column-one-half";
         internal const string FormGroup = "govuk-form-group";
         internal const string FormGroupError = "govuk-form-group--error";
+        internal const string WidthContainer = "govuk-width-container";
     }
 }

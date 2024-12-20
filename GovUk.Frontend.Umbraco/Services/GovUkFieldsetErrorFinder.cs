@@ -16,18 +16,6 @@ namespace GovUk.Frontend.Umbraco.Services
         /// <param name="fieldsetBlock">A block that potentially represents a fieldset</param>
         /// <param name="modelState">ModelState containing errors for the current request</param>
         /// <returns></returns>
-        [Obsolete("Use the instance method. This static method will be removed in v7.")]
-        public static IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> FindFieldsetErrors(
-            IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> fieldsetBlock,
-            ModelStateDictionary modelState) => new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
-
-
-        /// <summary>
-        /// Return fieldset-level errors that match a ModelState error, if the 'fieldsetErrors' setting is enabled for a fieldset block
-        /// </summary>
-        /// <param name="fieldsetBlock">A block that potentially represents a fieldset</param>
-        /// <param name="modelState">ModelState containing errors for the current request</param>
-        /// <returns></returns>
         public IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>> FindErrors(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> fieldsetBlock, ModelStateDictionary modelState)
         {
             if (fieldsetBlock?.Content?.ContentType?.Alias != ElementTypeAliases.Fieldset) { return Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>(); }

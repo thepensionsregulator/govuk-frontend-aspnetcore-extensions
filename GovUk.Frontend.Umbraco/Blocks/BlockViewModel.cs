@@ -1,5 +1,4 @@
-﻿using System;
-using ThePensionsRegulator.Umbraco;
+﻿using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 
 namespace GovUk.Frontend.Umbraco.Blocks
@@ -10,49 +9,68 @@ namespace GovUk.Frontend.Umbraco.Blocks
     public class BlockViewModel
     {
         /// <summary>
+        /// The block before the one to render.
+        /// </summary>
+        public IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>? PreviousBlock { get; set; }
+
+        /// <summary>
         /// The block to render.
         /// </summary>
-        public required IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> Block { get; set; }
+        public required IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> CurrentBlock { get; set; }
 
         /// <summary>
-        /// In a block grid, this block contains at least one block area.
+        /// The block after the one to render.
         /// </summary>
-        public bool HasGridAreas { get; set; }
+        public IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>? NextBlock { get; set; }
 
         /// <summary>
-        /// In a block list, should the grid row and column be rendered, or only their children?
+        /// Should two opening &lt;div&gt; tags be rendered before this block to start a new grid row and column?
         /// </summary>
-        public bool RenderGrid { get; set; }
+        public bool OpenGridRowAndColumn { get; set; }
 
         /// <summary>
-        /// In a block list, does this block represent a grid row.
+        /// Should two closing &lt;/div&gt; tags be rendered after this block to close a grid row and column?
         /// </summary>
-        [Obsolete("Multi-column layouts in block list are deprecated. Use block grid for multi-column layouts.")]
-        public bool IsGridRow { get; set; }
+        public bool CloseGridRowAndColumn { get; set; }
 
         /// <summary>
-        /// Should this grid row be merged into the previous grid row?
+        /// Should an opening &lt;div&gt; be rendered before this block to highlight fieldset errors?
         /// </summary>
-        public bool IsSameAsPrevious { get; set; }
+        public bool OpenFieldsetErrorContainer { get; set; }
 
         /// <summary>
-        /// Should this grid row be merged into the next grid row?
+        /// Should a closing &lt;/div&gt; tag be rendered after this block to highlight fieldset errors?
         /// </summary>
-        public bool IsSameAsNext { get; set; }
+        public bool CloseFieldsetErrorContainer { get; set; }
 
         /// <summary>
         /// HTML classes to apply to the grid row.
         /// </summary>
-        public required string RowClasses { get; set; }
+        public string RowClasses { get; set; } = HtmlClassNames.Row;
 
         /// <summary>
         /// HTML classes to apply to the grid column.
         /// </summary>
-        public required string ColumnClasses { get; set; }
+        public string ColumnClasses { get; set; } = HtmlClassNames.Column;
 
         /// <summary>
         /// HTML classes to apply to a fieldset in an error state.
         /// </summary>
         public string? FieldsetErrorClasses { get; set; }
+
+        /// <summary>
+        /// Should an opening &lt;div&gt; be rendered before this block to contain its width?
+        /// </summary>
+        public bool OpenWidthContainer { get; set; }
+
+        /// <summary>
+        /// Should a closing &lt;/div&gt; be rendered after this block to contain its width?
+        /// </summary>
+        public bool CloseWidthContainer { get; set; }
+
+        /// <summary>
+        /// If <see cref="OpenWidthContainer"/> is <c>true</c>, what HTML class(es) should be applied to the width container?
+        /// </summary>
+        public string WidthContainerClasses { get; set; } = HtmlClassNames.WidthContainer;
     }
 }

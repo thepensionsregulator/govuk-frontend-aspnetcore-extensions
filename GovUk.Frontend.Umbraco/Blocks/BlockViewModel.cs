@@ -46,12 +46,12 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <summary>
         /// HTML classes to apply to the grid row.
         /// </summary>
-        public string RowClasses { get; set; } = HtmlClassNames.Row;
+        public string RowClasses { get; set; } = GovUkClassNames.Row;
 
         /// <summary>
         /// HTML classes to apply to the grid column.
         /// </summary>
-        public string ColumnClasses { get; set; } = HtmlClassNames.Column;
+        public string ColumnClasses { get; set; } = GovUkClassNames.Column;
 
         /// <summary>
         /// HTML classes to apply to a fieldset in an error state.
@@ -71,6 +71,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <summary>
         /// If <see cref="OpenWidthContainer"/> is <c>true</c>, what HTML class(es) should be applied to the width container?
         /// </summary>
-        public string WidthContainerClasses { get; set; } = HtmlClassNames.WidthContainer;
+        public string WidthContainerClasses { get; set; } = GovUkClassNames.WidthContainer;
     }
 }

@@ -8,12 +8,12 @@
 @if (Model.Areas is not null && Model.Areas.Count() == 2)
 {
     var breakpointClass = Model.Settings.Value<string>(PropertyAliases.StackColumns) == "Mobile and tablet" ? "-from-desktop" : string.Empty;
-    var rowClasses = $"{HtmlClassNames.Row} {Model.Settings.Value<string>(PropertyAliases.CssClassesForRow)}".TrimEnd();
+    var rowClasses = $"{GovUkClassNames.Row} {Model.Settings.Value<string>(PropertyAliases.CssClassesForRow)}".TrimEnd();
     <div class="@rowClasses">
-        <div class="@HtmlClassNames.Column @HtmlClassNames.ColumnThreeQuarters@(breakpointClass)">
+        <div class="@GovUkClassNames.Column @GovUkClassNames.ColumnThreeQuarters@(breakpointClass)">
             <partial name="GOVUK/BlockGrid" model="@(Model.Areas[0])" />
         </div>
-        <div class="@HtmlClassNames.Column @HtmlClassNames.ColumnOneQuarter@(breakpointClass)">
+        <div class="@GovUkClassNames.Column @GovUkClassNames.ColumnOneQuarter@(breakpointClass)">
             <partial name="GOVUK/BlockGrid" model="@(Model.Areas[1])" />
         </div>
     </div>

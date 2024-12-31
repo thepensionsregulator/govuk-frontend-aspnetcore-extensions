@@ -11,18 +11,25 @@
     var size = Model.Settings.Value("size");
 }
 
-@if (hidden is false)
+@if (hidden is true)
 {
-    switch(size)
+    <hr class="govuk-section-break" />
+}
+else
+{
+    switch (size)
     {
         case "Extra large":
-            <div class="govuk-section-break--visible govuk-section-break--xl"></div>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl" />
             break;
         case "Large":
-            <div class="govuk-section-break--visible govuk-section-break--l"></div>
+            <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l" />
+            break;
+        case "Medium":
+            <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m" />
             break;
         default:
-            <div class="govuk-section-break--visible govuk-section-break--m"></div>
+            <hr class="govuk-section-break govuk-section-break--visible" />
             break;
     }
 }

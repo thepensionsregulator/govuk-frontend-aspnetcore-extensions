@@ -177,9 +177,9 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govuksectionbreak.config">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		  <CopyToPublishDirectory>Never</CopyToPublishDirectory>
 		</Content>
 		<Content Update="uSync\v9\ContentTypes\govuksummarycardsettingsnogrid.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>

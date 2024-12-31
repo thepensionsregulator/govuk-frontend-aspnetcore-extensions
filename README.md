@@ -18,6 +18,7 @@ We add support for:
   - [Summary card](/docs/components/summary-card.md)
   - [Summary list](/docs/components/summary-list.md)
   - [Warning text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/warning-text.md)
+  - [Section break](https://design-system.service.gov.uk/styles/section-break/)
 
 - Configuring the text for the following components in Umbraco:
 

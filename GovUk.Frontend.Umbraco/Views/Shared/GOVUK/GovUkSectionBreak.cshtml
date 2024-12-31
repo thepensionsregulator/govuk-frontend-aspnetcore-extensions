@@ -13,7 +13,21 @@
 
 @if (hidden is true)
 {
-    <hr class="govuk-section-break" />
+    switch (size)
+    {
+        case "Extra large":
+            <hr class="govuk-section-break govuk-section-break--xl" />
+            break;
+        case "Large":
+            <hr class="govuk-section-break govuk-section-break--l" />
+            break;
+        case "Medium":
+            <hr class="govuk-section-break govuk-section-break--m" />
+            break;
+        default:
+            <hr class="govuk-section-break" />
+            break;
+    }
 }
 else
 {

@@ -29,6 +29,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 		{
 			// Arrange
 			var blockViewModel = CreateBlockView(contentAlias, settingsAlias, false);
+			((OverridableBlockGridItem)blockViewModel.CurrentBlock)
+				.AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
 
 			var interceptor = new TprDividerViewInterceptor();
 
@@ -118,24 +120,24 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 			}
 		}
 
-		[TestCase(GovUkElementTypeAliases.PageHeading, GovUkElementTypeAliases.PageHeadingSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Checkboxes, GovUkElementTypeAliases.CheckboxesSettings, true, false)]
-		[TestCase(GovUkElementTypeAliases.Checkboxes, GovUkElementTypeAliases.CheckboxesSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.DateInput, GovUkElementTypeAliases.DateInputSettings, true, false)]
-		[TestCase(GovUkElementTypeAliases.DateInput, GovUkElementTypeAliases.DateInputSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Fieldset, GovUkElementTypeAliases.FieldsetSettings, true, false)]
-		[TestCase(GovUkElementTypeAliases.Fieldset, GovUkElementTypeAliases.FieldsetSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Radios, GovUkElementTypeAliases.RadiosSettings, true, false)]
-		[TestCase(GovUkElementTypeAliases.Radios, GovUkElementTypeAliases.RadiosSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.FileUpload, GovUkElementTypeAliases.FileUploadSettings, false, true)]
-		[TestCase(GovUkElementTypeAliases.FileUpload, GovUkElementTypeAliases.FileUploadSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Select, GovUkElementTypeAliases.SelectSettings, false, true)]
-		[TestCase(GovUkElementTypeAliases.Select, GovUkElementTypeAliases.SelectSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Textarea, GovUkElementTypeAliases.TextareaSettings, false, true)]
-		[TestCase(GovUkElementTypeAliases.Textarea, GovUkElementTypeAliases.TextareaSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.TextInput, GovUkElementTypeAliases.TextInputSettings, false, true)]
-		[TestCase(GovUkElementTypeAliases.TextInput, GovUkElementTypeAliases.TextInputSettings, false, false)]
-		public void Block_following_component_where_class_is_added_sets_OpenGridRowAndColumn_true(string contentAlias, string settingsAlias, bool hasLegendAsHeading, bool hasLabelAsHeading)
+		[TestCase(GovUkElementTypeAliases.PageHeading, GovUkElementTypeAliases.PageHeadingSettings, false, false, true)]
+		[TestCase(GovUkElementTypeAliases.Checkboxes, GovUkElementTypeAliases.CheckboxesSettings, true, false, true)]
+		[TestCase(GovUkElementTypeAliases.Checkboxes, GovUkElementTypeAliases.CheckboxesSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.DateInput, GovUkElementTypeAliases.DateInputSettings, true, false, true)]
+		[TestCase(GovUkElementTypeAliases.DateInput, GovUkElementTypeAliases.DateInputSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.Fieldset, GovUkElementTypeAliases.FieldsetSettings, true, false, true)]
+		[TestCase(GovUkElementTypeAliases.Fieldset, GovUkElementTypeAliases.FieldsetSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.Radios, GovUkElementTypeAliases.RadiosSettings, true, false, true)]
+		[TestCase(GovUkElementTypeAliases.Radios, GovUkElementTypeAliases.RadiosSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.FileUpload, GovUkElementTypeAliases.FileUploadSettings, false, true, true)]
+		[TestCase(GovUkElementTypeAliases.FileUpload, GovUkElementTypeAliases.FileUploadSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.Select, GovUkElementTypeAliases.SelectSettings, false, true, true)]
+		[TestCase(GovUkElementTypeAliases.Select, GovUkElementTypeAliases.SelectSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.Textarea, GovUkElementTypeAliases.TextareaSettings, false, true, true)]
+		[TestCase(GovUkElementTypeAliases.Textarea, GovUkElementTypeAliases.TextareaSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.TextInput, GovUkElementTypeAliases.TextInputSettings, false, true, true)]
+		[TestCase(GovUkElementTypeAliases.TextInput, GovUkElementTypeAliases.TextInputSettings, false, false, false)]
+		public void Block_following_component_where_class_is_added_sets_OpenGridRowAndColumn_true(string contentAlias, string settingsAlias, bool hasLegendAsHeading, bool hasLabelAsHeading, bool expected)
 		{
 			// Arrange
 			var isPageHeadingProperty = hasLegendAsHeading ? GovUkPropertyAliases.FieldsetLegendIsPageHeading : hasLabelAsHeading ? GovUkPropertyAliases.LabelIsPageHeading : null;
@@ -153,27 +155,27 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 			interceptor.InterceptBlockView(blockViewModel);
 
 			// Assert
-			Assert.That(blockViewModel.OpenGridRowAndColumn, Is.EqualTo(contentAlias == GovUkElementTypeAliases.PageHeading || hasLegendAsHeading || hasLabelAsHeading));
+			Assert.That(blockViewModel.OpenGridRowAndColumn, Is.EqualTo(expected));
 		}
 
-		[TestCase(GovUkElementTypeAliases.PageHeading, GovUkElementTypeAliases.PageHeadingSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Checkboxes, GovUkElementTypeAliases.CheckboxesSettings, true, false)]
-		[TestCase(GovUkElementTypeAliases.Checkboxes, GovUkElementTypeAliases.CheckboxesSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.DateInput, GovUkElementTypeAliases.DateInputSettings, true, false)]
-		[TestCase(GovUkElementTypeAliases.DateInput, GovUkElementTypeAliases.DateInputSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Fieldset, GovUkElementTypeAliases.FieldsetSettings, true, false)]
-		[TestCase(GovUkElementTypeAliases.Fieldset, GovUkElementTypeAliases.FieldsetSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Radios, GovUkElementTypeAliases.RadiosSettings, true, false)]
-		[TestCase(GovUkElementTypeAliases.Radios, GovUkElementTypeAliases.RadiosSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.FileUpload, GovUkElementTypeAliases.FileUploadSettings, false, true)]
-		[TestCase(GovUkElementTypeAliases.FileUpload, GovUkElementTypeAliases.FileUploadSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Select, GovUkElementTypeAliases.SelectSettings, false, true)]
-		[TestCase(GovUkElementTypeAliases.Select, GovUkElementTypeAliases.SelectSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.Textarea, GovUkElementTypeAliases.TextareaSettings, false, true)]
-		[TestCase(GovUkElementTypeAliases.Textarea, GovUkElementTypeAliases.TextareaSettings, false, false)]
-		[TestCase(GovUkElementTypeAliases.TextInput, GovUkElementTypeAliases.TextInputSettings, false, true)]
-		[TestCase(GovUkElementTypeAliases.TextInput, GovUkElementTypeAliases.TextInputSettings, false, false)]
-		public void Block_preceding_component_where_class_is_added_sets_CloseGridRowAndColumn_true(string contentAlias, string settingsAlias, bool hasLegendAsHeading, bool hasLabelAsHeading)
+		[TestCase(GovUkElementTypeAliases.PageHeading, GovUkElementTypeAliases.PageHeadingSettings, false, false, true)]
+		[TestCase(GovUkElementTypeAliases.Checkboxes, GovUkElementTypeAliases.CheckboxesSettings, true, false, true)]
+		[TestCase(GovUkElementTypeAliases.Checkboxes, GovUkElementTypeAliases.CheckboxesSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.DateInput, GovUkElementTypeAliases.DateInputSettings, true, false, true)]
+		[TestCase(GovUkElementTypeAliases.DateInput, GovUkElementTypeAliases.DateInputSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.Fieldset, GovUkElementTypeAliases.FieldsetSettings, true, false, true)]
+		[TestCase(GovUkElementTypeAliases.Fieldset, GovUkElementTypeAliases.FieldsetSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.Radios, GovUkElementTypeAliases.RadiosSettings, true, false, true)]
+		[TestCase(GovUkElementTypeAliases.Radios, GovUkElementTypeAliases.RadiosSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.FileUpload, GovUkElementTypeAliases.FileUploadSettings, false, true, true)]
+		[TestCase(GovUkElementTypeAliases.FileUpload, GovUkElementTypeAliases.FileUploadSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.Select, GovUkElementTypeAliases.SelectSettings, false, true, true)]
+		[TestCase(GovUkElementTypeAliases.Select, GovUkElementTypeAliases.SelectSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.Textarea, GovUkElementTypeAliases.TextareaSettings, false, true, true)]
+		[TestCase(GovUkElementTypeAliases.Textarea, GovUkElementTypeAliases.TextareaSettings, false, false, false)]
+		[TestCase(GovUkElementTypeAliases.TextInput, GovUkElementTypeAliases.TextInputSettings, false, true, true)]
+		[TestCase(GovUkElementTypeAliases.TextInput, GovUkElementTypeAliases.TextInputSettings, false, false, false)]
+		public void Block_preceding_component_where_class_is_added_sets_CloseGridRowAndColumn_true(string contentAlias, string settingsAlias, bool hasLegendAsHeading, bool hasLabelAsHeading, bool expected)
 		{
 			// Arrange
 			var isPageHeadingProperty = hasLegendAsHeading ? GovUkPropertyAliases.FieldsetLegendIsPageHeading : hasLabelAsHeading ? GovUkPropertyAliases.LabelIsPageHeading : null;
@@ -191,7 +193,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 			interceptor.InterceptBlockView(blockViewModel);
 
 			// Assert
-			Assert.That(blockViewModel.CloseGridRowAndColumn, Is.EqualTo(contentAlias == GovUkElementTypeAliases.PageHeading || hasLegendAsHeading || hasLabelAsHeading));
+			Assert.That(blockViewModel.CloseGridRowAndColumn, Is.EqualTo(expected));
 		}
 
 		private static BlockViewModel CreateBlockView(string contentAlias, string settingsAlias, bool renderGridRowInitialValue, string? existingRowClasses = null)

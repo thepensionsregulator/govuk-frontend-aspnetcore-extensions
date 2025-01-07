@@ -1,6 +1,6 @@
 ﻿using GovUk.Frontend.Umbraco.Blocks;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 using GovUkElementTypeAliases = GovUk.Frontend.Umbraco.ElementTypeAliases;
@@ -55,7 +55,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 		/// </summary>
 		private static bool IsLayoutBlock(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block)
 		{
-			return block.Content.ContentType.Alias == ElementTypeAliases.TprBox || block.Content.ContentType.Alias.StartsWith("govukGrid", StringComparison.OrdinalIgnoreCase);
+			return (block is OverridableBlockGridItem gridBlock) && gridBlock.Areas.Any();
 		}
 
 		private static void ApplyClassToRowAndForceRowToRender(BlockViewModel blockViewModel, string className)

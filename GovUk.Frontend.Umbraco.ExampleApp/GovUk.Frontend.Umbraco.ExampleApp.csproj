@@ -47,12 +47,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Azure.Identity" Version="1.11.4" />
         <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
-        <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.1.2" />
         <PackageReference Include="MimeKit" Version="4.7.1" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
-        <PackageReference Include="Umbraco.Cms" Version="13.3.2" />
+        <PackageReference Include="Umbraco.Cms" Version="13.5.2" />
     </ItemGroup>
 
     <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->

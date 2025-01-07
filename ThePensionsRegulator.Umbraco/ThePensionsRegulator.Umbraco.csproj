@@ -36,7 +36,7 @@
   <ItemGroup>
     <PackageReference Include="MimeKit" Version="4.7.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
-    <PackageReference Include="Umbraco.Cms.Web.Common" Version="13.3.2" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="13.5.2" />
   </ItemGroup>
 
 </Project>

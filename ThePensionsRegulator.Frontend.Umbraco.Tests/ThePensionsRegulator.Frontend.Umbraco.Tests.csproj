@@ -20,6 +20,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.5.2" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="13.5.2" />
   </ItemGroup>
 
   <ItemGroup>

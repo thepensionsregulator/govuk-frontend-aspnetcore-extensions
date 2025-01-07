@@ -57,7 +57,7 @@
     var readOnly = Model.Settings.Value<bool>(PropertyAliases.ReadOnly);
     var showDay = Model.Settings.Value<bool?>(PropertyAliases.DateInputShowDay) ?? true;
 }
-<div class="@(HtmlClassNames.FormGroup)@(invalidClass)@(cssClass)">
+<div class="@(GovUkClassNames.FormGroup)@(invalidClass)@(cssClass)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
                                   error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-date-input__fieldset" role="group">

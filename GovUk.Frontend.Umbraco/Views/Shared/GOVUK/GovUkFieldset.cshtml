@@ -30,7 +30,7 @@
     // If legendIsPageHeading is false, the classes are assigned in BlockList.cshtml, but describedBy must always be set here.
     var fieldsetErrors = fieldsetErrorFinder.FindErrors(Model, ViewContext.ModelState);
     var hasFieldsetError = fieldsetErrors.Any();
-    var fieldsetErrorClasses = hasFieldsetError && legendIsPageHeading ? $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}" : null;
+    var fieldsetErrorClasses = hasFieldsetError && legendIsPageHeading ? $"{GovUkClassNames.FormGroup} {GovUkClassNames.FormGroupError}" : null;
     var describedBy = hasFieldsetError ? string.Join(' ', fieldsetErrors.Select(x => x.Settings.Value<string>(PropertyAliases.ModelProperty)).ToArray()) : null;
 
     // Add an error to ModelState so that we can communicate the presence of a fieldset error to each field within it
@@ -54,8 +54,8 @@
 <govuk-fieldset class="@cssClass" described-by="@describedBy">
     <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</govuk-fieldset-legend>
     @if (hasFieldsetError){
-        @:<div class="@HtmlClassNames.Row @fieldsetErrorClasses">
-        @:<div class="@HtmlClassNames.Column @HtmlClassNames.ColumnFullWidth">
+        @:<div class="@GovUkClassNames.Row @fieldsetErrorClasses">
+        @:<div class="@GovUkClassNames.Column @GovUkClassNames.ColumnFullWidth">
     }
     @if (childBlocks is not null) { @await Html.PartialAsync("GOVUK/BlockList", childBlocks) }
     @if (hasFieldsetError){

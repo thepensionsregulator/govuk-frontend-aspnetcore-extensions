@@ -12,46 +12,47 @@ using ThePensionsRegulator.Umbraco.PropertyEditors;
 
 namespace ThePensionsRegulator.Frontend.Umbraco
 {
-    public static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddTprFrontendUmbraco(this IServiceCollection services)
-        {
-            return services.AddTprFrontendUmbraco(options => { }, options => { });
-        }
+	public static class ServiceCollectionExtensions
+	{
+		public static IServiceCollection AddTprFrontendUmbraco(this IServiceCollection services)
+		{
+			return services.AddTprFrontendUmbraco(options => { }, options => { });
+		}
 
-        public static IServiceCollection AddTprFrontendUmbraco(this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions)
-        {
-            return services.AddTprFrontendUmbraco(configureGovUkOptions, options => { });
-        }
+		public static IServiceCollection AddTprFrontendUmbraco(this IServiceCollection services,
+			Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions)
+		{
+			return services.AddTprFrontendUmbraco(configureGovUkOptions, options => { });
+		}
 
-        public static IServiceCollection AddTprFrontendUmbraco(this IServiceCollection services,
-            Action<GovUkFrontendUmbracoOptions> configureGovUkUmbracoOptions)
-        {
-            return services.AddTprFrontendUmbraco(options => { }, configureGovUkUmbracoOptions);
-        }
+		public static IServiceCollection AddTprFrontendUmbraco(this IServiceCollection services,
+			Action<GovUkFrontendUmbracoOptions> configureGovUkUmbracoOptions)
+		{
+			return services.AddTprFrontendUmbraco(options => { }, configureGovUkUmbracoOptions);
+		}
 
-        public static IServiceCollection AddTprFrontendUmbraco(
-            this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions,
-            Action<GovUkFrontendUmbracoOptions> configureGovUkUmbracoOptions)
-        {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
+		public static IServiceCollection AddTprFrontendUmbraco(
+			this IServiceCollection services,
+			Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions,
+			Action<GovUkFrontendUmbracoOptions> configureGovUkUmbracoOptions)
+		{
+			if (services == null)
+			{
+				throw new ArgumentNullException(nameof(services));
+			}
 
-            services.AddGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
+			services.AddGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
 
-            services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
-            services.AddTransient<IPropertyValueFormatter, HostNameInRichTextEditorPropertyValueFormatter>();
-            services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();
-            services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
-            services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
-            services.AddTransient<IRichTextPropertyEditorAliasProvider, TprRichTextPropertyEditorAliasProvider>();
-            services.AddTransient<IBlockViewInterceptor, TprBoxViewInterceptor>();
+			services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
+			services.AddTransient<IPropertyValueFormatter, HostNameInRichTextEditorPropertyValueFormatter>();
+			services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();
+			services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
+			services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
+			services.AddTransient<IRichTextPropertyEditorAliasProvider, TprRichTextPropertyEditorAliasProvider>();
+			services.AddTransient<IBlockViewInterceptor, TprBoxViewInterceptor>();
+			services.AddTransient<IBlockViewInterceptor, TprDividerViewInterceptor>();
 
-            return services;
-        }
-    }
+			return services;
+		}
+	}
 }

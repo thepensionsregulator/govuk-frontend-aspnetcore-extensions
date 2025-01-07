@@ -106,7 +106,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             return (currentIsGridRowBlock == previousIsGridRowBlock &&
                     currentHasGridAreas == previousHasGridAreas &&
-                    currentRowClass == HtmlClassNames.Row && previousRowClass == HtmlClassNames.Row &&
+                    currentRowClass == GovUkClassNames.Row && previousRowClass == GovUkClassNames.Row &&
                     currentColumnClass == previousColumnClass);
         }
 
@@ -118,7 +118,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             return (currentIsGridRowBlock == nextIsGridRowBlock &&
                     currentHasGridAreas == nextHasGridAreas &&
-                    currentRowClass == HtmlClassNames.Row && nextRowClass == HtmlClassNames.Row &&
+                    currentRowClass == GovUkClassNames.Row && nextRowClass == GovUkClassNames.Row &&
                     currentColumnClass == nextColumnClass);
         }
 
@@ -133,7 +133,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
                 var legendIsPageHeading = block.Settings?.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading) ?? false;
                 if (!legendIsPageHeading)
                 {
-                    fieldsetErrorClasses = $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}";
+                    fieldsetErrorClasses = $"{GovUkClassNames.FormGroup} {GovUkClassNames.FormGroupError}";
                 }
             }
 

@@ -12,7 +12,7 @@ namespace GovUk.Frontend.Umbraco.HtmlGeneration
             document.LoadHtml(html);
 
 
-            var wrapperForDayInput = document.DocumentNode.SelectSingleNode($"//div[{WithClass("govuk-date-input__item")} and div[{WithClass(HtmlClassNames.FormGroup)} and input[{EndsWith("@id", ".Day")}]]]");
+            var wrapperForDayInput = document.DocumentNode.SelectSingleNode($"//div[{WithClass("govuk-date-input__item")} and div[{WithClass(GovUkClassNames.FormGroup)} and input[{EndsWith("@id", ".Day")}]]]");
 
             if (wrapperForDayInput is not null)
             {

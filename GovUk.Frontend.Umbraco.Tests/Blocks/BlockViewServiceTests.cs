@@ -253,8 +253,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             var previousBlockRowClass = sameAsPrevious ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{GovUkClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
 
@@ -299,8 +299,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 };
 
             var nextBlockRowClass = sameAsNext ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{GovUkClassNames.Row}{nextBlockRowClass}");
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
 
@@ -399,8 +399,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             var previousBlockRowClass = sameAsPrevious ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{GovUkClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForSiteEnabled });
 
@@ -457,8 +457,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             var nextBlockRowClass = sameAsNext ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{GovUkClassNames.Row}{nextBlockRowClass}");
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForSiteEnabled });
 
@@ -501,8 +501,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 ]);
 
             var previousBlockRowClass = sameAsPrevious ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{GovUkClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
@@ -545,8 +545,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                   ]);
 
             var nextBlockRowClass = sameAsNext ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{GovUkClassNames.Row}{nextBlockRowClass}");
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
@@ -589,8 +589,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 ], "area");
 
             var previousBlockRowClass = sameAsPrevious ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{GovUkClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
@@ -633,8 +633,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                   ], "area");
 
             var nextBlockRowClass = sameAsNext ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{GovUkClassNames.Row}{nextBlockRowClass}");
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
@@ -681,8 +681,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             var previousBlockRowClass = sameAsPrevious ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{HtmlClassNames.Row}{previousBlockRowClass}");
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("previous")).Returns($"{GovUkClassNames.Row}{previousBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
@@ -729,8 +729,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             var nextBlockRowClass = sameAsNext ? "" : " different";
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{HtmlClassNames.Row}".TrimEnd());
-            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{HtmlClassNames.Row}{nextBlockRowClass}");
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("current")).Returns($"{GovUkClassNames.Row}".TrimEnd());
+            _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses("next")).Returns($"{GovUkClassNames.Row}{nextBlockRowClass}");
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
@@ -749,7 +749,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void Grid_applies_fieldset_error_classes_and_container_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
         {
             // Arrange
-            const string FIELDSET_ERROR_CLASS = $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}";
+            const string FIELDSET_ERROR_CLASS = $"{GovUkClassNames.FormGroup} {GovUkClassNames.FormGroupError}";
 
             var modelState = new ModelStateDictionary();
             var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([
@@ -789,7 +789,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         public void List_applies_fieldset_error_classes_and_container_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
         {
             // Arrange
-            const string FIELDSET_ERROR_CLASS = $"{HtmlClassNames.FormGroup} {HtmlClassNames.FormGroupError}";
+            const string FIELDSET_ERROR_CLASS = $"{GovUkClassNames.FormGroup} {GovUkClassNames.FormGroupError}";
 
             var modelState = new ModelStateDictionary();
             var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([
@@ -910,7 +910,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 
             // Act
             var result = BlockViewService.IsSameAsNext(
-                                $"{HtmlClassNames.Row} {currentBlockRowClass}".TrimEnd(), $"{HtmlClassNames.Row} {nextBlockRowClass}".TrimEnd(),
+                                $"{GovUkClassNames.Row} {currentBlockRowClass}".TrimEnd(), $"{GovUkClassNames.Row} {nextBlockRowClass}".TrimEnd(),
                                 currentBlockColumnClass, nextBlockColumnClass,
                                 currentBlockHasAreas, nextBlockHasAreas,
                                 currentBlockIsGridRow, nextBlockIsGridRow);
@@ -960,7 +960,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 
             // Act
             var result = BlockViewService.IsSameAsPrevious(
-                $"{HtmlClassNames.Row} {previousBlockRowClass}".TrimEnd(), $"{HtmlClassNames.Row} {currentBlockRowClass}".TrimEnd(),
+                $"{GovUkClassNames.Row} {previousBlockRowClass}".TrimEnd(), $"{GovUkClassNames.Row} {currentBlockRowClass}".TrimEnd(),
                 previousBlockColumnClass, currentBlockColumnClass,
                 previousBlockHasAreas, currentBlockHasAreas,
                 previousBlockIsGridRow, currentBlockIsGridRow);

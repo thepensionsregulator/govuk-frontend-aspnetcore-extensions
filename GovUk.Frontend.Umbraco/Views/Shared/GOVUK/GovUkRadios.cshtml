@@ -37,7 +37,7 @@
     }
 
 }
-<div class="@(HtmlClassNames.FormGroup)@(invalidClass)@(cssClasses)">
+<div class="@(GovUkClassNames.FormGroup)@(invalidClass)@(cssClasses)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-radios__fieldset">
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</govuk-fieldset-legend>

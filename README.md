@@ -15,10 +15,10 @@ We add support for:
   - [Inset text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/inset-text.md)
   - [Notification banner](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/notification-banner.md)
   - [Panel](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/panel.md)
+  - [Section break](https://design-system.service.gov.uk/styles/section-break/)
   - [Summary card](/docs/components/summary-card.md)
   - [Summary list](/docs/components/summary-list.md)
   - [Warning text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/warning-text.md)
-  - [Section break](https://design-system.service.gov.uk/styles/section-break/)
 
 - Configuring the text for the following components in Umbraco:
 

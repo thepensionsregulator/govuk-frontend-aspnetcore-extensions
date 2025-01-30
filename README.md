@@ -93,7 +93,7 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 - [Configure a new Umbraco project (TPR)](docs/umbraco/new-umbraco-project-tpr.md)
 - [Populate initial values](docs/umbraco/populate-initial-values.md)
 - [Validation](docs/umbraco/validation.md)
-- [Change how blocks are rendered](docs/umbraco/block-view-interceptor.md)
+- [Change how blocks are rendered](docs/umbraco/block-rendering.md)
 - [Support full-width content](docs/umbraco/full-width-content.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
 - [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)

@@ -64,6 +64,8 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IRichTextPropertyEditorAliasProvider, GovUkRichTextPropertyEditorAliasProvider>();
             services.AddTransient<IGovUkFieldsetErrorFinder, GovUkFieldsetErrorFinder>();
             services.AddTransient<IGovUkGridClassBuilder, GovUkGridClassBuilder>();
+            services.AddTransient<IDefaultColumnClassProvider, GovUkCaptionColumnClassProvider>();
+            services.AddTransient<IDefaultColumnClassProvider, GovUkPageHeadingColumnClassProvider>();
             services.AddTransient<BlockViewService>();
 
             return services;

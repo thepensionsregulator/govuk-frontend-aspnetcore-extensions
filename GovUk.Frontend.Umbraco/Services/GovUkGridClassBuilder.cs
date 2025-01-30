@@ -1,6 +1,8 @@
-﻿namespace GovUk.Frontend.Umbraco.Services
+﻿using System.Collections.Generic;
+
+namespace GovUk.Frontend.Umbraco.Services
 {
-    public class GovUkGridClassBuilder : IGovUkGridClassBuilder
+    public class GovUkGridClassBuilder(IEnumerable<IDefaultColumnClassProvider> _columnClassProviders) : IGovUkGridClassBuilder
     {
         public string BuildGridRowClasses(string? customClass)
         {
@@ -18,9 +20,22 @@
             return columnClass;
         }
 
-        private static string DefaultColumnClass(string? forBlockOfContentTypeAlias, bool defaultToFullWidth)
+        private string DefaultColumnClass(string? forBlockOfContentTypeAlias, bool defaultToFullWidth)
         {
-            return defaultToFullWidth || forBlockOfContentTypeAlias == ElementTypeAliases.Caption || forBlockOfContentTypeAlias == ElementTypeAliases.PageHeading ? GovUkClassNames.ColumnFullWidth : GovUkClassNames.ColumnTwoThirdsFromDesktop;
+            if (defaultToFullWidth) { return GovUkClassNames.ColumnFullWidth; }
+
+            if (forBlockOfContentTypeAlias is not null && _columnClassProviders is not null)
+            {
+                foreach (var provider in _columnClassProviders)
+                {
+                    if (provider.IsProvider(forBlockOfContentTypeAlias))
+                    {
+                        return provider.ColumnClasses;
+                    }
+                }
+            }
+
+            return GovUkClassNames.ColumnTwoThirdsFromDesktop;
         }
     }
 }

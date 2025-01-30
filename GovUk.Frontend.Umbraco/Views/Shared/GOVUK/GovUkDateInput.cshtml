@@ -3,6 +3,7 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @addTagHelper *, GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
@@ -56,16 +57,20 @@
     var readOnly = Model.Settings.Value<bool>(PropertyAliases.ReadOnly);
     var showDay = Model.Settings.Value<bool?>(PropertyAliases.DateInputShowDay) ?? true;
 }
-<div class="govuk-form-group@(invalidClass)@(cssClass)">
+<div class="@(GovUkClassNames.FormGroup)@(invalidClass)@(cssClass)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
                                   error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-date-input__fieldset" role="group">
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</govuk-fieldset-legend>
             @if (blocks != null && blocks.Any())
             {
-                blocks.RenderGrid = false;
+                var childBlocks = new BlockListViewModel(blocks)
+                {
+                    RenderGrid = false,
+                    RenderWidthContainer = false
+                };
                 <div id="@modelPropertyName-blocks">
-                    @await Html.PartialAsync("GOVUK/BlockList", blocks)
+                    @await Html.PartialAsync("GOVUK/BlockList", childBlocks)
                 </div>
             }
             @if (dateValue.HasValue)

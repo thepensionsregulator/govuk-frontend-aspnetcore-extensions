@@ -106,11 +106,6 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         }
 
         /// <summary>
-        /// Gets or sets whether a default grid row and column should be rendered for this block list.
-        /// </summary>
-        public bool RenderGrid { get; set; } = true;
-
-        /// <summary>
         /// Convert to a <see cref="BlockListModel" />
         /// </summary>
         /// <param name="model"></param>

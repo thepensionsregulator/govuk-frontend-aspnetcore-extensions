@@ -11,14 +11,13 @@
     }
 }
 
-// Modifier for .govuk-grid-row which adds a decorative divider after the row with padding above and margin below. 
-// Use ::after so we can align the divider with content but don't need to mess with the margin & padding of 
+// Modifier for .govuk-grid-row which adds a decorative divider after the row with padding above and margin below.
+// Use ::after so we can align the divider with content but don't need to mess with the margin & padding of
 // .govuk-grid-row, which disrupts GOV.UK grid layout.
 @mixin tpr-divider {
     padding-bottom: govuk-spacing(4);
     border-bottom: 1px solid $tpr-colour-very-light-grey;
     margin-bottom: govuk-spacing(4);
-
     // Adjust spacing similar to using govuk-responsive-margin, but we can't use that because the target value is not in $govuk-spacing-responsive-scale
     @include govuk-media-query($from: tablet) {
         padding-bottom: 36px;
@@ -47,6 +46,10 @@
     padding: govuk-px-to-rem($govuk-gutter - $govuk-border-width)
 }
 
+.tpr-box--blue {
+    background-color: govuk-tint($tpr-colour-regent-st-blue, 75)
+}
+
 .tpr-box.govuk-grid-row {
     padding: 0 $govuk-gutter-half;
     background: none;
@@ -54,9 +57,8 @@
     margin-bottom: 0;
 }
 
-
-// .tpr-box can be combined with .govuk-grid-row--tpr-divider. 
-//  In that case the padding applied for .tpr-box creates space equivalent to the margins 
+// .tpr-box can be combined with .govuk-grid-row--tpr-divider.
+//  In that case the padding applied for .tpr-box creates space equivalent to the margins
 //  applied for .govuk-grid-row--tpr-divider, so remove the margins.
 .govuk-grid-row--tpr-divider.tpr-box::after {
     margin-left: 0;
@@ -67,22 +69,23 @@
     margin-bottom: 0;
 }
 
-
-// .govuk-grid-row--tpr-divider and .tpr-box both apply padding-bottom, so remove any bottom padding or 
+// .govuk-grid-row--tpr-divider and .tpr-box both apply padding-bottom, so remove any bottom padding or
 //  margin from the last element inside either one so that we get one spacer, not the combination of both.
 .govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
 .govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
 .tpr-box > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
-.tpr-box > .govuk-grid-row > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.tpr-box > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
 .tpr-box.govuk-grid-row > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
 .tpr-box.govuk-grid-row > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
-.tpr-box > .govuk-grid-row > .govuk-grid-column:last-child > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column) {
+.tpr-box > .govuk-grid-row > .govuk-grid-column:last-child > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column),
+.tpr-box--full-width > .govuk-width-container > .govuk-grid-row:last-child > .govuk-grid-column > :last-child {
     padding-bottom: 0;
     margin-bottom: 0;
 }
 
 // ...unless the :last-child is a .tpr-box, then remove the margin only.
-.govuk-grid-row--tpr-divider > .govuk-grid-column:last-child > .tpr-box:last-child {
+.govuk-grid-row--tpr-divider > .govuk-grid-column:last-child > .tpr-box:last-child,
+.tpr-box--full-width > .govuk-width-container > .tpr-box:last-child {
     margin-bottom: 0;
 }
 
@@ -167,7 +170,7 @@
     @include govuk-media-query($from: desktop) {
         .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column-#{$width}-from-desktop > .govuk-form-group > *,
         .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column-#{$width}-from-desktop > .govuk-character-count > .govuk-form-group > *,
-        .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column-#{$width}-from-desktop >.govuk-character-count > .govuk-character-count__message,
+        .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column-#{$width}-from-desktop > .govuk-character-count > .govuk-character-count__message,
         .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width}-from-desktop > fieldset > *,
         .govuk-grid-row--tpr-divider-for-fieldset > .govuk-grid-column-#{$width}-from-desktop > .govuk-form-group > fieldset > * {
             width: govuk-grid-width($width);
@@ -192,7 +195,6 @@
 .govuk-grid-row--tpr-divider-for-label-as-heading > .govuk-grid-column > .govuk-form-group > textarea {
     margin-bottom: 0;
 }
-
 
 // Columns with alternating white and grey backgrounds.
 // Columns should have a *-from-desktop grid width applied, eg govuk-grid-column-one-third-from-desktop for a three column layout.
@@ -220,7 +222,7 @@
 
 // Keep the set of columns away from the browser edge - particularly relevant in error state where you want to see the error border.
 .govuk-grid-row--tpr-columns > .govuk-grid-column {
-    margin-left:0;
+    margin-left: 0;
 }
 
 // If a .govuk-grid-row or .govuk-grid-column is put into an error state that means red borders should extend to all its children.
@@ -248,4 +250,9 @@
             border-color: $govuk-input-border-colour;
         }
     }
+}
+
+// Setting the background colour for the .govuk-section-break to match TPR styles.
+.govuk-section-break {
+    border-color: $tpr-colour-very-light-grey;
 }

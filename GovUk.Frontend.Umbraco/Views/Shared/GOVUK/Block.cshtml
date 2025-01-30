@@ -1,0 +1,52 @@
+﻿@using GovUk.Frontend.Umbraco.Blocks
+@using GovUk.Frontend.Umbraco.Services;
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@model BlockViewModel
+@inject IEnumerable<IPartialViewPathProvider> pathProviders;
+@{
+    var pathToView = string.Empty;
+    foreach (var pathProvider in pathProviders)
+    {
+        var basicBlock = (IBlockReference<IPublishedElement, IPublishedElement>)Model.CurrentBlock;
+        if (pathProvider.IsProvider(basicBlock))
+        {
+            pathToView = pathProvider.BuildPartialViewPath(basicBlock);
+            break;
+        }
+    }
+    if (string.IsNullOrEmpty(pathToView))
+    {
+        throw new InvalidOperationException(
+        $"No {nameof(IPartialViewPathProvider)} was found to provide a path for the block with content key {Model.CurrentBlock.Content.Key}, of content type {Model.CurrentBlock.Content.ContentType.Alias}"
+        );
+    }
+
+    if (Model.OpenWidthContainer)
+    {
+        @:<div class="@Model.WidthContainerClasses">
+    }
+    if (Model.OpenGridRowAndColumn)
+    { 
+        @:<div class="@Model.RowClasses"> 
+        @:<div class="@Model.ColumnClasses"> 
+    }
+    if (Model.OpenFieldsetErrorContainer)
+    {
+        @:<div class="@Model.FieldsetErrorClasses"> 
+    }
+    @await Html.PartialAsync(pathToView, Model.CurrentBlock)
+    if (Model.CloseFieldsetErrorContainer)
+    {
+        @:</div> 
+    }
+    if (Model.CloseGridRowAndColumn)
+    {
+        @:</div> 
+        @:</div> 
+    }
+    if (Model.CloseWidthContainer)
+    {
+        @:</div> 
+    }
+}

@@ -176,6 +176,12 @@
 		<Content Update="uSync\v9\ContentTypes\govukreadonly.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\govuksectionbreak.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\govuksectionbreaksettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\govuksummarycardsettingsnogrid.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
@@ -540,6 +546,9 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKRichTextEditorTask.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\DataTypes\GOVUKSectionBreakSize.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\GOVUKSelectOptions.config">

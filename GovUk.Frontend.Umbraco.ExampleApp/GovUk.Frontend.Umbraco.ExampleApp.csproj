@@ -66,6 +66,7 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="App_Plugins\GOVUK\blocks\controllers\" />
+      <Folder Include="uSync\v9\Blueprints\" />
     </ItemGroup>
 
 

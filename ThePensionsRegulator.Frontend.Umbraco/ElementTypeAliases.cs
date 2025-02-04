@@ -9,6 +9,10 @@
         public const string TprBackToMenu = "tprBackToMenu";
         public const string TprBackToMenuSettings = "tprBackToMenuSettings";
         public const string TprBackToTop = "tprBackToTop";
+        public const string TprBoxedSection = "tprBoxedSection";
+        public const string TprBoxedSectionCard = "tprBoxedSectionCard";
+        public const string TprBoxedSectionChildren = "tprBoxedSectionChildren";
+        public const string TprBoxedSectionSettings = "tprBoxedSectionSettings";
         public const string TprContextBarContext1 = "tprContextBar1";
         public const string TprContextBarContext2 = "tprContextBar2";
         public const string TprContextBarContext3 = "tprContextBar3";

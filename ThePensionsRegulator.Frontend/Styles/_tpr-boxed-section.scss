@@ -1,0 +1,61 @@
+@import '_tpr-variables.scss';
+@import 'govuk/base';
+
+.tpr-boxedsection-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    margin-top: 0;
+    margin: 0px -15px;
+    padding: 0px;
+    background: $tpr-colour-whisper;
+
+    .tpr-box--full-width & {
+        background: transparent;
+        margin: 0px -45px;
+    }
+
+    @include govuk-media-query($from:1020px) {
+        margin: 0px -15px;
+
+        .tpr-box--full-width & {
+            margin: 0px -15px;
+        }
+    }
+}
+
+.tpr-boxedsection {
+    flex-grow: 1;
+    max-width: calc(100% / 3);
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+
+    @include govuk-media-query($until:desktop) {
+        max-width: calc(100% / 2);
+    }
+
+    @include govuk-media-query($until:tablet) {
+        /*width: 100%;*/
+        max-width: 100%;
+    }
+
+
+    .tpr-boxedsection-body {
+        background-color: white;
+        margin: 0;
+        padding: 30px;
+        margin: 0.9rem;
+        flex-grow: 1;
+
+        p {
+            margin-bottom: 0;
+        }
+    }
+}
+
+h2.tpr-boxedsection-title {
+    padding: 0 30px 30px;
+    margin: 0 -30px;
+    border-bottom: solid 1px #d6d6d6;
+}

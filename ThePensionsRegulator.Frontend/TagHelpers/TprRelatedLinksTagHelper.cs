@@ -17,7 +17,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            output.PreElement.SetHtmlContent($"<div class='{TagName}'>");
+            output.PreElement.SetHtmlContent($"<div class='{TagName} govuk-body'>");
             output.TagName = "ul";
             output.PostElement.SetHtmlContent("</div>");
         }

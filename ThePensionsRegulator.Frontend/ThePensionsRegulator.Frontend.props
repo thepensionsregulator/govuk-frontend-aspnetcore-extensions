@@ -14,7 +14,7 @@
 			<AssetTraitName></AssetTraitName>
 			<AssetTraitValue></AssetTraitValue>
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+			<CopyToPublishDirectory>Never</CopyToPublishDirectory>
 			<OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico))</OriginalItemSpec>
 		</StaticWebAsset>
 	</ItemGroup>

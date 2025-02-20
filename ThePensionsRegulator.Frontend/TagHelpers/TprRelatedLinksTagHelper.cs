@@ -15,9 +15,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-related-links";
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        [HtmlAttributeName("outer-styles")]
+        public string? OuterStyles { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            output.PreElement.SetHtmlContent($"<div class='{TagName} govuk-body'>");
+            output.PreElement.SetHtmlContent($"<div class='{TagName} govuk-body {OuterStyles}'>");
             output.TagName = "ul";
             output.PostElement.SetHtmlContent("</div>");
         }

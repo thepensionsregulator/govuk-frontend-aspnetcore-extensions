@@ -13,7 +13,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-related-links-heading";
 
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.PreElement.SetHtmlContent("<li>");
             output.TagName = "h2";

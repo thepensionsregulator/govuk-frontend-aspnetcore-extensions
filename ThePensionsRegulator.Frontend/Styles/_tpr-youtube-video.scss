@@ -1,0 +1,14 @@
+.tpr-video-wrapper-no-cookies {
+    position: relative;
+    padding-bottom: 56.25%!important; /* 16:9 , important is required to make it work in TPR Box */
+    height: 0;
+    overflow: hidden;
+}
+
+.tpr-video-wrapper-no-cookies iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}

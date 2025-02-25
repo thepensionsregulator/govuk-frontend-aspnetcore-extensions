@@ -24,16 +24,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Remove="sasscompiler.json" />
+		<!--<Content Remove="sasscompiler.json" />-->
 	</ItemGroup>
 
 	<ItemGroup>
 	  <None Remove="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
+	  <None Remove="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYoutubeVideo.html" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRImage.html" />
+		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYoutubeVideo.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
@@ -71,7 +73,7 @@
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
-		<None Include="sasscompiler.json" />
+		<!--<None Include="sasscompiler.json" />-->
 	</ItemGroup>
 
 	<ItemGroup>

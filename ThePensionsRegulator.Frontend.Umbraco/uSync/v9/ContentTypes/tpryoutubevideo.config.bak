@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentType Key="25702e9e-d0a1-4fbc-acbf-f740fb8bebad" Alias="tprYoutubeVideo" Level="2">
+  <Info>
+    <Name>Youtube Video</Name>
+    <Icon>icon-play color-black</Icon>
+    <Thumbnail>folder.png</Thumbnail>
+    <Description></Description>
+    <AllowAtRoot>False</AllowAtRoot>
+    <IsListView>False</IsListView>
+    <Variations>Nothing</Variations>
+    <IsElement>true</IsElement>
+    <HistoryCleanup>
+      <PreventCleanup>False</PreventCleanup>
+      <KeepAllVersionsNewerThanDays></KeepAllVersionsNewerThanDays>
+      <KeepLatestVersionPerDayForDays></KeepLatestVersionPerDayForDays>
+    </HistoryCleanup>
+    <Folder>TPR</Folder>
+    <Compositions />
+    <DefaultTemplate></DefaultTemplate>
+    <AllowedTemplates />
+  </Info>
+  <Structure />
+  <GenericProperties>
+    <GenericProperty>
+      <Key>f5e6a979-1da6-40a4-8606-54836c689ec2</Key>
+      <Name>Url</Name>
+      <Alias>url</Alias>
+      <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+      <Type>Umbraco.TextBox</Type>
+      <Mandatory>false</Mandatory>
+      <Validation></Validation>
+      <Description><![CDATA[Please enter the URL of the YouTube video]]></Description>
+      <SortOrder>0</SortOrder>
+      <Tab Alias="content">Content</Tab>
+      <Variations>Nothing</Variations>
+      <MandatoryMessage></MandatoryMessage>
+      <ValidationRegExpMessage></ValidationRegExpMessage>
+      <LabelOnTop>false</LabelOnTop>
+    </GenericProperty>
+  </GenericProperties>
+  <Tabs>
+    <Tab>
+      <Key>7d700a58-37e8-4f3c-aa90-4f35d262debc</Key>
+      <Caption>Content</Caption>
+      <Alias>content</Alias>
+      <Type>Tab</Type>
+      <SortOrder>0</SortOrder>
+    </Tab>
+  </Tabs>
+</ContentType>

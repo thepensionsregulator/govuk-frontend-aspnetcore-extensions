@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>;
 @addTagHelper *, ThePensionsRegulator.Frontend
+@using ThePensionsRegulator.Frontend.TagHelpers
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
 @using ThePensionsRegulator.Umbraco.Blocks;
@@ -18,7 +19,7 @@
     var settings = Model.Settings;
     var nameFieldName = string.Empty;
     var descFieldName = string.Empty;
-
+    
     if(settings != null){
         nameFieldName = settings.Value<string>("titleFieldName");
         descFieldName = settings.Value<string>("descriptionFieldName");        
@@ -33,15 +34,15 @@
     {
         descFieldName = "description";
     }
-
+    
     var cssClasses = (" " + Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();
-
-    <ul class="tpr-boxedsection-container govuk-body @cssClasses">
-
+    
+    <tpr-section-cards>
+    
         @foreach (var box in boxes)
         {
 
-
+            
             var type = box.Content.ContentType.Alias;
             switch (type)
             {
@@ -50,17 +51,17 @@
                     var name = link.Name;
                     var url = link.Url;
                     var desc = box.Content.Value<string>(descFieldName);
-                    <li class="tpr-boxedsection">
-                        <div class="tpr-boxedsection-body">
-                            <h2 class="tpr-boxedsection-title">
-                                <a class="govuk-link" href="@url">@name</a>
-                            </h2>
+                    <tpr-section-card>
+                        <tpr-section-card-body>
+                            <tpr-section-card-title href="@url">
+                                 @name 
+                            </tpr-section-card-title>
                             @if (!string.IsNullOrWhiteSpace(desc))
                             {
-                                <p>@desc</p>
+                                <tpr-section-card-content>@desc</tpr-section-card-content>
                             }
-                        </div>
-                    </li>
+                        </tpr-section-card-body>
+                    </tpr-section-card>
                     break;
                 case ElementTypeAliases.TprBoxedSectionChildren:
                     var page = Umbraco.AssignedContentItem;
@@ -77,21 +78,21 @@
                         }
                         var childUrl = child.Url();
                         var childDesc = child.Value<string>(descFieldName);
-                        <li class="tpr-boxedsection">
-                            <div class="tpr-boxedsection-body">
-                                <h2 class="tpr-boxedsection-title">
-                                    <a class="govuk-link" href="@childUrl">@childName</a>
-                                </h2>
+                        <tpr-section-card>
+                            <tpr-section-card-body>
+                                <tpr-section-card-title href="@childUrl">
+                                    @childName
+                                </tpr-section-card-title>
                                 @if (!string.IsNullOrWhiteSpace(childDesc))
                                 {
-                                    <p>@childDesc</p>
+                                    <tpr-section-card-content>@childDesc</tpr-section-card-content>
                                 }
-                            </div>
-                        </li>
+                            </tpr-section-card-body>
+                        </tpr-section-card>
                     }
                     break;
             }
         }
 
-    </ul>
+    </tpr-section-cards>
 }

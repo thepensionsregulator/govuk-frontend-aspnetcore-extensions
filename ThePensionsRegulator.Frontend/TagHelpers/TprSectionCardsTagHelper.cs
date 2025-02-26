@@ -2,10 +2,7 @@
 using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Org.BouncyCastle.Asn1.Cms;
-using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using Umbraco.Extensions;
@@ -22,7 +19,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         internal const string TagName = "tpr-section-cards";
 
-        public TprSectionCardsTagHelper()   
+        public TprSectionCardsTagHelper()
           : this(htmlGenerator: null)
         {
         }
@@ -60,9 +57,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             };
 
             var tagBuilder = _htmlGenerator.GenerateTprSectionCards(sectionCards);
-           
+
             output.TagName = tagBuilder.TagName;
-            output.TagMode = TagMode.StartTagAndEndTag;       
+            output.TagMode = TagMode.StartTagAndEndTag;
             output.Attributes.Clear();
             output.MergeAttributes(tagBuilder);
             output.Content.SetHtmlContent(tagBuilder.InnerHtml);

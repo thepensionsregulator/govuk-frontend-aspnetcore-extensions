@@ -1,7 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System.Diagnostics;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -18,7 +17,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public bool TitleAllowHtml => _title?.AllowHtml ?? false;
         public AttributeDictionary? BodyAttributes => _body?.Attributes;
         public AttributeDictionary? ContentAttributes => _content?.Attributes;
-        public IHtmlContent? Content => _content?.Content ??_body?.Content;
+        public IHtmlContent? Content => _content?.Content ?? _body?.Content;
         public bool ContentAllowHtml => _content != null ? _content.Value.AllowHtml : (_body?.AllowHtml ?? false);
 
         public void SetTitle(AttributeDictionary attributes, IHtmlContent? title, bool allowHtml, string url)

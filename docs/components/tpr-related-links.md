@@ -45,11 +45,11 @@ The 'TPR Related Links' block which is supported on the 'TPR Block Grid' compone
 
 To implement this component you should select the 'TPR related links' block:
 
-![TPR related links umbraco block](../images.tpr-related-links-umbraco-block.png)
+![TPR related links umbraco block](../images/tpr-related-links-umbraco-block.png)
 
 Then you can add a relevant heading as well as whatever related links are needed for the page:
 
-![TPR related links umbraco block content](../images.tpr-related-links-umbraco-block-content.png)
+![TPR related links umbraco block content](../images/tpr-related-links-umbraco-block-content.png)
 
 If the heading is left empty then it will search for a dictionary entry under the 'Translation' tab in Umbraco called 'TPR Related links heading', if there is no dictionary entry under that name then the heading will default to 'Related'.
 

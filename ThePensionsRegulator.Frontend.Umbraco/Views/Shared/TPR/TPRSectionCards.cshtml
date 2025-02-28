@@ -54,7 +54,7 @@
                     var desc = box.Content.Value<string>(descFieldName);
                     <li class="tpr-sectioncards">
                         <div class="tpr-sectioncards__body">
-                            <h2 class="tpr-sectioncards-title">
+                            <h2 class="tpr-sectioncards__title">
                                 <a class="govuk-link" href="@url">@name</a>
                             </h2>
                             @if (!string.IsNullOrWhiteSpace(desc))
@@ -81,7 +81,7 @@
                         var childDesc = child.Value<string>(descFieldName);
                         <li class="tpr-sectioncards">
                             <div class="tpr-sectioncards__body">
-                                <h2 class="tpr-sectioncards-title">
+                                <h2 class="tpr-sectioncards__title">
                                     <a class="govuk-link" href="@childUrl">@childName</a>
                                 </h2>
                                 @if (!string.IsNullOrWhiteSpace(childDesc))

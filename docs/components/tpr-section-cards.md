@@ -8,7 +8,7 @@ In TPR pages you can add cards that can display a linked heading and description
 <ul class="tpr-sectioncards-container govuk-list ">
     <li class="tpr-sectioncards">
         <div class="tpr-sectioncards__body">
-            <h2 class="tpr-sectioncards-title">
+            <h2 class="tpr-sectioncards__title">
                 <a class="govuk-link" href="/accordion/">Title of card</a>
             </h2>
             <p>Description of card</p>

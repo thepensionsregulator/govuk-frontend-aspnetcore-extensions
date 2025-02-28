@@ -225,6 +225,6 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="styles\_tpr-boxed-section.scss" />
+	  <UpToDateCheckInput Remove="styles\_tpr-section-cards.scss" />
 	</ItemGroup>
 </Project>

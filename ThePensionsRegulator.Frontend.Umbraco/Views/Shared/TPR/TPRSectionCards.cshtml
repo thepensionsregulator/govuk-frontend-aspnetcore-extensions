@@ -10,7 +10,7 @@
 @using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases;
 @using ElementTypeAliases = ThePensionsRegulator.Frontend.Umbraco.ElementTypeAliases;
 @{
-    var boxes = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.TprBoxedSectionBoxes);
+    var boxes = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.TprSectionCardsCards);
     if (boxes == null || boxes.Any() == false)
     {
         return;
@@ -36,7 +36,7 @@
 
     var cssClasses = (" " + Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();
 
-    <ul class="tpr-boxedsection-container govuk-body @cssClasses">
+    <ul class="tpr-sectioncards-container govuk-list @cssClasses">
 
         @foreach (var box in boxes)
         {
@@ -45,24 +45,26 @@
             var type = box.Content.ContentType.Alias;
             switch (type)
             {
-                case ElementTypeAliases.TprBoxedSectionCard:
+                case ElementTypeAliases.TprSectionCardsCard:
                     var link = box.Content.Value<Link>("link");
+                    if(link == null)
+                        continue;
                     var name = link.Name;
                     var url = link.Url;
                     var desc = box.Content.Value<string>(descFieldName);
-                    <li class="tpr-boxedsection">
-                        <div class="tpr-boxedsection-body">
-                            <h2 class="tpr-boxedsection-title">
+                    <li class="tpr-sectioncards">
+                        <div class="tpr-sectioncards__body">
+                            <h2 class="tpr-sectioncards-title">
                                 <a class="govuk-link" href="@url">@name</a>
                             </h2>
                             @if (!string.IsNullOrWhiteSpace(desc))
                             {
-                                <p>@desc</p>
+                                <p>@Html.Raw(desc)</p>
                             }
                         </div>
                     </li>
                     break;
-                case ElementTypeAliases.TprBoxedSectionChildren:
+                case ElementTypeAliases.TprSectionCardsChildren:
                     var page = Umbraco.AssignedContentItem;
                     foreach (var child in page.Children)
                     {
@@ -77,14 +79,14 @@
                         }
                         var childUrl = child.Url();
                         var childDesc = child.Value<string>(descFieldName);
-                        <li class="tpr-boxedsection">
-                            <div class="tpr-boxedsection-body">
-                                <h2 class="tpr-boxedsection-title">
+                        <li class="tpr-sectioncards">
+                            <div class="tpr-sectioncards__body">
+                                <h2 class="tpr-sectioncards-title">
                                     <a class="govuk-link" href="@childUrl">@childName</a>
                                 </h2>
                                 @if (!string.IsNullOrWhiteSpace(childDesc))
                                 {
-                                    <p>@childDesc</p>
+                                    <p>@Html.Raw(childDesc)</p>
                                 }
                             </div>
                         </li>

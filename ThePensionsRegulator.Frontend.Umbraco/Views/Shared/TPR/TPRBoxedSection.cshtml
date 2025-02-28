@@ -37,7 +37,7 @@
     
     var cssClasses = (" " + Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();
     
-    <tpr-section-cards>
+    <tpr-section-cards-container>
     
         @foreach (var box in boxes)
         {
@@ -94,5 +94,7 @@
             }
         }
 
-    </tpr-section-cards>
+    </tpr-section-cards-container>
+
+    
 }

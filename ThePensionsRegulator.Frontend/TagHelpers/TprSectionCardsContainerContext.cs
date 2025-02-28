@@ -2,7 +2,7 @@
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    internal class TprSectionCardsContext
+    internal class TprSectionCardsContainerContext
     {
         private readonly List<TprSectionCardContext> _cards = new();
         public IReadOnlyList<TprSectionCardContext> Cards => _cards;

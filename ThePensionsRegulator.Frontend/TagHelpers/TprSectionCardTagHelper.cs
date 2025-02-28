@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    [HtmlTargetElement(TagName, ParentTag = TprSectionCardsTagHelper.TagName)]
+    [HtmlTargetElement(TagName, ParentTag = TprSectionCardsContainerTagHelper.TagName)]
     [RestrictChildren(TprSectionCardBodyTagHelper.TagName, TprSectionCardTitleTagHelper.TagName, TprSectionCardContentTagHelper.TagName)]
 
     public class TprSectionCardTagHelper : TagHelper
@@ -14,7 +14,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var sectionCardsContext = context.GetContextItem<TprSectionCardsContext>();
+            var sectionCardsContext = context.GetContextItem<TprSectionCardsContainerContext>();
             var cardContext = new TprSectionCardContext
             {
                 CardAttributes = output.Attributes.ToAttributeDictionary()

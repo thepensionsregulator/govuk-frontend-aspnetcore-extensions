@@ -8,23 +8,23 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         {
             var ulTag = new TagBuilder("ul");
             if (tprSectionCards.ContainerAttributes != null) { ulTag.MergeAttributes(tprSectionCards.ContainerAttributes); }
-            ulTag.AddCssClass("tpr-boxedsection-container govuk-body ");
+            ulTag.AddCssClass("tpr-sectioncards-container govuk-body ");
 
             foreach (var card in tprSectionCards.Cards)
             {
                 var tprSectionCard = new TagBuilder("li");
                 if (card.CardAttributes != null) { tprSectionCard.MergeAttributes(card.CardAttributes); }
-                tprSectionCard.AddCssClass("tpr-boxedsection");
+                tprSectionCard.AddCssClass("tpr-sectioncards");
 
                 var tprSectionCardBody = new TagBuilder("div");
                 if (card.BodyAttributes != null) { tprSectionCardBody.MergeAttributes(card.BodyAttributes); }
-                tprSectionCardBody.AddCssClass("tpr-boxedsection-body");
+                tprSectionCardBody.AddCssClass("tpr-sectioncards__body");
 
                 if (card.Title != null)
                 {
                     var tprSectionCardTitle = new TagBuilder("h2");
                     if (card.TitleAttributes != null) { tprSectionCardTitle.MergeAttributes(card.TitleAttributes); }
-                    tprSectionCardTitle.AddCssClass("tpr-boxedsection-title govuk-link");
+                    tprSectionCardTitle.AddCssClass("tpr-sectioncards__title govuk-link");
 
                     if (!string.IsNullOrEmpty(card.TitleUrl))
                     {

@@ -13,24 +13,24 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     [RestrictChildren(TprSectionCardTagHelper.TagName)]
     [OutputElementHint("ul")]
 
-    public class TprSectionCardsTagHelper : TagHelper
+    public class TprSectionCardsContainerTagHelper : TagHelper
     {
         private readonly ITprHtmlGenerator _htmlGenerator;
 
-        internal const string TagName = "tpr-section-cards";
+        internal const string TagName = "tpr-section-cards-container";
 
-        public TprSectionCardsTagHelper()
+        public TprSectionCardsContainerTagHelper()
           : this(htmlGenerator: null)
         {
         }
 
-        internal TprSectionCardsTagHelper(ITprHtmlGenerator? htmlGenerator)
+        internal TprSectionCardsContainerTagHelper(ITprHtmlGenerator? htmlGenerator)
         {
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var cardsContext = new TprSectionCardsContext();
+            var cardsContext = new TprSectionCardsContainerContext();
 
             using (context.SetScopedContextItem(cardsContext))
             {

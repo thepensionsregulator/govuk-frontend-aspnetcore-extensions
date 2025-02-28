@@ -101,7 +101,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
 
         /// <inheritdoc/>
-        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             TagBuilder tagBuilder;
             bool useAutoplay = Autoplay.HasValue ? Autoplay.Value : false;

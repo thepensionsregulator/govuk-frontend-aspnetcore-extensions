@@ -33,3 +33,24 @@ p.tpr-add-link {
 .tpr-youtube-video-previewbox-play-button{
     margin:0px 20%;
 }
+
+div.tpr-related-links {
+    border-top: solid 4px $tpr-colour-royal-blue;
+    padding-top: 20px;
+    margin-bottom: 30px;
+}
+
+.tpr-related-links ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.tpr-related-links li h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.tpr-related-links li {
+    padding-bottom: 1rem;
+}

@@ -1,7 +1,9 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<BoxedSection>
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SectionCards>
 @section head {
 	<title>@Model.PageHeadingOrName()</title>
 }
 
 <partial name="GOVUK/BlockList" model="Model.Blocks" />
 <partial name="GOVUK/BlockGrid" model="Model.GridBlocks" />
+
+            

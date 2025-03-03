@@ -150,10 +150,6 @@
 		<Content Update="uSync\v9\DataTypes\TPRRichTextEditorHeaderAndFooter.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
-		<Content Update="Views\Shared\TPR\TPRBoxedSection.cshtml">
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
 	</ItemGroup>
 
 	<ItemGroup>

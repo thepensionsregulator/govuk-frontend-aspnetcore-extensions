@@ -46,6 +46,7 @@ We add support for:
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR context bar](/docs/components/tpr-context-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
+  - [TPR section cards](/docs/components/tpr-section-cards.md)
 
 - The Pensions Regulator (TPR) styling for all of the above components, and:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)

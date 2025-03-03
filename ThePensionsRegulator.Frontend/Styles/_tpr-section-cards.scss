@@ -1,7 +1,7 @@
 @import '_tpr-variables.scss';
 @import 'govuk/base';
 
-.tpr-boxedsection-container {
+.tpr-sectioncards-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
@@ -24,7 +24,7 @@
     }
 }
 
-.tpr-boxedsection {
+.tpr-sectioncards {
     flex-grow: 1;
     max-width: calc(100% / 3);
     padding: 0;
@@ -36,15 +36,14 @@
     }
 
     @include govuk-media-query($until:tablet) {
-        /*width: 100%;*/
         max-width: 100%;
     }
 
 
-    .tpr-boxedsection-body {
+    .tpr-sectioncards__body {
         background-color: white;
         margin: 0;
-        padding: 30px;
+        @include govuk-responsive-padding(6);
         margin: 0.9rem;
         flex-grow: 1;
 
@@ -54,8 +53,15 @@
     }
 }
 
-h2.tpr-boxedsection-title {
-    padding: 0 30px 30px;
-    margin: 0 -30px;
-    border-bottom: solid 1px #d6d6d6;
+h2.tpr-sectioncards__title {
+    @include govuk-responsive-padding(6,"right");
+    @include govuk-responsive-padding(6,"bottom");
+    @include govuk-responsive-padding(6,"left");
+    margin: 0 govuk-spacing(-4);
+    border-bottom: solid 1px $tpr-colour-very-light-grey;
+    
+    @include govuk-media-query($from:tablet) {
+        margin: 0 govuk-spacing(-6);
+    }
+
 }

@@ -11,7 +11,7 @@
 @using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases;
 @using ElementTypeAliases = ThePensionsRegulator.Frontend.Umbraco.ElementTypeAliases;
 @{
-    var boxes = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.TprBoxedSectionBoxes);
+    var boxes = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.TprSectionCardsCards);
     if (boxes == null || boxes.Any() == false)
     {
         return;
@@ -46,7 +46,7 @@
             var type = box.Content.ContentType.Alias;
             switch (type)
             {
-                case ElementTypeAliases.TprBoxedSectionCard:
+                case ElementTypeAliases.TprSectionCardsCard:
                     var link = box.Content.Value<Link>("link");
                     var name = link.Name;
                     var url = link.Url;
@@ -63,7 +63,7 @@
                         </tpr-section-card-body>
                     </tpr-section-card>
                     break;
-                case ElementTypeAliases.TprBoxedSectionChildren:
+                case ElementTypeAliases.TprSectionCardsChildren:
                     var page = Umbraco.AssignedContentItem;
                     foreach (var child in page.Children)
                     {

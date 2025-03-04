@@ -20,6 +20,7 @@
     "json5": "2.2.2"
   },
   "dependencies": {
-    "govuk-frontend": "5.2.0"
+    "govuk-frontend": "5.2.0",
+    "yarn": "^1.22.22"
   }
 }

@@ -17,7 +17,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 tprSectionCard.AddCssClass("tpr-sectioncards");
 
                 var tprSectionCardBody = new TagBuilder("div");
-                if (card.BodyAttributes != null) { tprSectionCardBody.MergeAttributes(card.BodyAttributes); }
                 tprSectionCardBody.AddCssClass("tpr-sectioncards__body");
 
                 if (card.Title != null)

@@ -21,7 +21,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             cardContext.SetTitle(output.Attributes.ToAttributeDictionary(),
                 content,
                 !content.IsEmptyOrWhiteSpace,
-                Url);
+                Url!);
 
             output.SuppressOutput();
         }

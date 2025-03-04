@@ -47,12 +47,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     Title = c.Title,
                     TitleUrl = c.TitleUrl,
                     TitleAllowHtml = c.TitleAllowHtml,
-                    BodyAttributes = c.BodyAttributes,
                     ContentAttributes = c.ContentAttributes,
                     Content = c.Content,
                     ContentAllowHtml = c.ContentAllowHtml,
-
-
                 }).ToList()
             };
 

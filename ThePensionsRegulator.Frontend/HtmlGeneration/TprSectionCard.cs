@@ -6,7 +6,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public class TprSectionCard
     {
         public AttributeDictionary? CardAttributes { get; set; }
-        public AttributeDictionary? BodyAttributes { get; set; }
         public AttributeDictionary? TitleAttributes { get; set; }
         public IHtmlContent? Title { get; set; }
         public string? TitleUrl { get; set; }

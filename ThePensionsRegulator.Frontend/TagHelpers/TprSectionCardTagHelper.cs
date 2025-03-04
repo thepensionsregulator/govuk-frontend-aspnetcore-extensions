@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName, ParentTag = TprSectionCardsContainerTagHelper.TagName)]
-    [RestrictChildren(TprSectionCardBodyTagHelper.TagName, TprSectionCardTitleTagHelper.TagName, TprSectionCardContentTagHelper.TagName)]
+    [RestrictChildren(TprSectionCardTitleTagHelper.TagName, TprSectionCardContentTagHelper.TagName)]
 
     public class TprSectionCardTagHelper : TagHelper
     {

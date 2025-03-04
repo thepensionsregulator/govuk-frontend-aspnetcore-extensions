@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>;
 @addTagHelper *, ThePensionsRegulator.Frontend
+@using Microsoft.AspNetCore.Html
 @using ThePensionsRegulator.Frontend.TagHelpers
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
@@ -37,30 +38,28 @@
     
     var cssClasses = (" " + Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();
     
-    <tpr-section-cards-container>
+    <tpr-section-cards-container class="@cssClasses">
     
         @foreach (var box in boxes)
-        {
-
-            
+        {           
             var type = box.Content.ContentType.Alias;
             switch (type)
             {
                 case ElementTypeAliases.TprSectionCardsCard:
                     var link = box.Content.Value<Link>("link");
+                    if (link == null)
+                        continue;
                     var name = link.Name;
                     var url = link.Url;
                     var desc = box.Content.Value<string>(descFieldName);
-                    <tpr-section-card>
-                        <tpr-section-card-body>
+                    <tpr-section-card>                       
                             <tpr-section-card-title href="@url">
                                  @name 
                             </tpr-section-card-title>
                             @if (!string.IsNullOrWhiteSpace(desc))
                             {
-                                <tpr-section-card-content>@desc</tpr-section-card-content>
-                            }
-                        </tpr-section-card-body>
+                                <tpr-section-card-content>@Html.Raw(@desc)</tpr-section-card-content>
+                            }                    
                     </tpr-section-card>
                     break;
                 case ElementTypeAliases.TprSectionCardsChildren:
@@ -79,15 +78,13 @@
                         var childUrl = child.Url();
                         var childDesc = child.Value<string>(descFieldName);
                         <tpr-section-card>
-                            <tpr-section-card-body>
                                 <tpr-section-card-title href="@childUrl">
                                     @childName
                                 </tpr-section-card-title>
                                 @if (!string.IsNullOrWhiteSpace(childDesc))
                                 {
-                                    <tpr-section-card-content>@childDesc</tpr-section-card-content>
+                                    <tpr-section-card-content>@Html.Raw(childDesc)</tpr-section-card-content>
                                 }
-                            </tpr-section-card-body>
                         </tpr-section-card>
                     }
                     break;

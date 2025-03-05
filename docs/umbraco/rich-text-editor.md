@@ -1,6 +1,6 @@
 # Configure the rich text editor
 
-There are many [settings for the rich text editor](https://docs.umbraco.com/umbraco-cms/reference/configuration/richtexteditorsettings) in Umbraco. See [Configure a new Umbraco project](new-umbraco-project.md) for the recommended settings to apply for all projects using GOV.UK code. These recommended settings can be updated for your project if required.
+There are many [settings for the rich text editor](https://docs.umbraco.com/umbraco-cms/reference/configuration/richtexteditorsettings) in Umbraco. See [Configure a new Umbraco project](new-umbraco-project-govuk.md) for the recommended settings to apply for all projects using GOV.UK code. These recommended settings can be updated for your project if required.
 
 ## Add custom formats to the rich text editor
 

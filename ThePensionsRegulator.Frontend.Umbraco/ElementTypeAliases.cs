@@ -19,6 +19,8 @@
         public const string TprFooter = "tprFooter";
         public const string TprHeader = "tprHeader";
         public const string TprImage = "tprImage";
+        public const string TprRelatedLinks = "tprRelatedLinks";
+        public const string TprRelatedLinksSettings = "tprRelatedLinksSettings";
         public const string TprBox = "tprBox";
         public const string TprBoxSettings = "tprBoxSettings";
     }

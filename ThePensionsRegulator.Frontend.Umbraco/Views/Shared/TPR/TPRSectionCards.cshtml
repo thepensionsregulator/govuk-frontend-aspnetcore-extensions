@@ -47,7 +47,7 @@
             {
                 case ElementTypeAliases.TprSectionCardsCard:
                     var link = box.Content.Value<Link>("link");
-                    if (link == null)
+                    if(link == null)
                         continue;
                     var name = link.Name;
                     var url = link.Url;
@@ -91,7 +91,5 @@
             }
         }
 
-    </tpr-section-cards-container>
-
-    
+    </tpr-section-cards-container>   
 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    internal class TprSectionCardContext
+    internal class TprSectionCardsCardContext
     {
         private (AttributeDictionary Attributes, IHtmlContent? Title, bool AllowHtml, string? Url)? _title;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
@@ -23,8 +23,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             if (_title != null)
             {
                 throw ExceptionHelper.OnlyOneElementIsPermittedIn(
-                    TprSectionCardTitleTagHelper.TagName,
-                    TprSectionCardTagHelper.TagName);
+                    TprSectionCardsCardTitleTagHelper.TagName,
+                    TprSectionCardsCardTagHelper.TagName);
             }
             _title = (attributes, title, allowHtml, url);
         }
@@ -34,8 +34,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             if(_content != null)
             {
                 throw ExceptionHelper.OnlyOneElementIsPermittedIn(
-                    TprSectionCardContentTagHelper.TagName,
-                     TprSectionCardTagHelper.TagName);
+                    TprSectionCardsCardContentTagHelper.TagName,
+                     TprSectionCardsCardTagHelper.TagName);
             }
             _content = (contentAttributes, content, allowHtml);
         }

@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName, ParentTag = TprSectionCardsContainerTagHelper.TagName)]
-    [RestrictChildren(TprSectionCardTitleTagHelper.TagName, TprSectionCardContentTagHelper.TagName)]
+    [RestrictChildren(TprSectionCardsCardTitleTagHelper.TagName, TprSectionCardsCardContentTagHelper.TagName)]
 
-    public class TprSectionCardTagHelper : TagHelper
+    public class TprSectionCardsCardTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-section-card";
+        internal const string TagName = "tpr-section-cards-card";
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var sectionCardsContext = context.GetContextItem<TprSectionCardsContainerContext>();
-            var cardContext = new TprSectionCardContext
+            var cardContext = new TprSectionCardsCardContext
             {
                 CardAttributes = output.Attributes.ToAttributeDictionary()
             };

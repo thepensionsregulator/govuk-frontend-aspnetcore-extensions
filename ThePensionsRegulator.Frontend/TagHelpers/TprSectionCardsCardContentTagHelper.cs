@@ -1,23 +1,22 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions;
-using GovUk.Frontend.AspNetCore;
+﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName)]
-    public class TprSectionCardContentTagHelper : TagHelper
+    public class TprSectionCardsCardContentTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-section-card-content";
-              
+        internal const string TagName = "tpr-section-cards-card-content";
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var cardContext = context.GetContextItem<TprSectionCardContext>();
+            var cardContext = context.GetContextItem<TprSectionCardsCardContext>();
             var content = await output.GetChildContentAsync();
 
-            cardContext.SetContent(              
-                output.Attributes.ToAttributeDictionary(),             
+            cardContext.SetContent(
+                output.Attributes.ToAttributeDictionary(),
                 content,
                 !content.IsEmptyOrWhiteSpace
              );

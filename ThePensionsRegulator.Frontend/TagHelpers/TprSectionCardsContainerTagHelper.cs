@@ -5,12 +5,11 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Linq;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
-using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName)]
-    [RestrictChildren(TprSectionCardTagHelper.TagName)]
+    [RestrictChildren(TprSectionCardsCardTagHelper.TagName)]
     [OutputElementHint("ul")]
 
     public class TprSectionCardsContainerTagHelper : TagHelper
@@ -40,7 +39,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var sectionCards = new TprSectionCards
             {
                 ContainerAttributes = output.Attributes.ToAttributeDictionary(),
-                Cards = cardsContext.Cards.Select(c => new TprSectionCard
+                Cards = cardsContext.Cards.Select(c => new TprSectionCardsCard
                 {
                     CardAttributes = c.CardAttributes,
                     TitleAttributes = c.TitleAttributes,

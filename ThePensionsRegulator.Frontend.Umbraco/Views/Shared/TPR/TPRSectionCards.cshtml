@@ -52,15 +52,15 @@
                     var name = link.Name;
                     var url = link.Url;
                     var desc = box.Content.Value<string>(descFieldName);
-                    <tpr-section-card>                       
-                            <tpr-section-card-title href="@url">
+                    <tpr-section-cards-card>                       
+                            <tpr-section-cards-card-title href="@url">
                                  @name 
-                            </tpr-section-card-title>
+                            </tpr-section-cards-card-title>
                             @if (!string.IsNullOrWhiteSpace(desc))
                             {
-                                <tpr-section-card-content>@Html.Raw(@desc)</tpr-section-card-content>
+                                <tpr-section-cards-card-content>@Html.Raw(@desc)</tpr-section-cards-card-content>
                             }                    
-                    </tpr-section-card>
+                    </tpr-section-cards-card>
                     break;
                 case ElementTypeAliases.TprSectionCardsChildren:
                     var page = Umbraco.AssignedContentItem;
@@ -77,15 +77,15 @@
                         }
                         var childUrl = child.Url();
                         var childDesc = child.Value<string>(descFieldName);
-                        <tpr-section-card>
-                                <tpr-section-card-title href="@childUrl">
+                        <tpr-section-cards-card>
+                                <tpr-section-cards-card-title href="@childUrl">
                                     @childName
-                                </tpr-section-card-title>
+                                </tpr-section-cards-card-title>
                                 @if (!string.IsNullOrWhiteSpace(childDesc))
                                 {
-                                    <tpr-section-card-content>@Html.Raw(childDesc)</tpr-section-card-content>
+                                    <tpr-section-cards-card-content>@Html.Raw(childDesc)</tpr-section-cards-card-content>
                                 }
-                        </tpr-section-card>
+                        </tpr-section-cards-card>
                     }
                     break;
             }

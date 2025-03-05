@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
-    public class TprSectionCard
+    public class TprSectionCardsCard
     {
         public AttributeDictionary? CardAttributes { get; set; }
         public AttributeDictionary? TitleAttributes { get; set; }

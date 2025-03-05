@@ -4,12 +4,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     internal class TprSectionCardsContainerContext
     {
-        private readonly List<TprSectionCardContext> _cards = new();
-        public IReadOnlyList<TprSectionCardContext> Cards => _cards;
+        private readonly List<TprSectionCardsCardContext> _cards = new();
+        public IReadOnlyList<TprSectionCardsCardContext> Cards => _cards;
 
-        public void AddCard(TprSectionCardContext tprSectionCardContext)
+        public void AddCard(TprSectionCardsCardContext tprSectionCardsCardContext)
         {
-            _cards.Add(tprSectionCardContext);
+            _cards.Add(tprSectionCardsCardContext);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         {
             var ulTag = new TagBuilder("ul");
             if (tprSectionCards.ContainerAttributes != null) { ulTag.MergeAttributes(tprSectionCards.ContainerAttributes); }
-            ulTag.AddCssClass("tpr-sectioncards-container govuk-body ");
+            ulTag.AddCssClass("tpr-sectioncards-container govuk-list ");
 
             foreach (var card in tprSectionCards.Cards)
             {

@@ -1,12 +1,12 @@
 ﻿namespace GovUk.Frontend.Umbraco.Services
 {
     /// <inheritdoc />
-    public class TPRBoxedSectionColumnClassProvider : IDefaultColumnClassProvider
+    public class TPRSectionCardsColumnClassProvider : IDefaultColumnClassProvider
     {
         /// <inheritdoc />
         public string ColumnClasses => GovUkClassNames.ColumnFullWidth;
 
         /// <inheritdoc />
-        public bool IsProvider(string contentTypeAlias) => contentTypeAlias == "tprBoxedSection";
+        public bool IsProvider(string contentTypeAlias) => contentTypeAlias == "tprSectionCards";
     }
 }

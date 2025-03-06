@@ -12,6 +12,6 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprHeaderBar(TprHeaderBar tprHeaderBar);
         TagBuilder GenerateTprFooterBar(TprFooterBar tprFooterBar);
         TagBuilder GenerateTprContextBar(TprContextBar tprContextBar);
-        TagBuilder GenerateTprSectionCards(TprSectionCards tprBoxedSection);
+        TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards);
     }
 }

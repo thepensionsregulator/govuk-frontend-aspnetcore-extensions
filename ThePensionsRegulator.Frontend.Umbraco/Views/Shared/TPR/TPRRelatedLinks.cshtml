@@ -1,0 +1,26 @@
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Web.Common
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
+@using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases
+@inject UmbracoHelper Umbraco
+@addTagHelper *, ThePensionsRegulator.Frontend
+
+@{
+    var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+    var heading = Model.Content.Value<string>(TprPropertyAliases.TprRelatedLinksHeading);
+    var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.TprRelatedLinksLinks);
+
+    if (string.IsNullOrEmpty(heading)) {
+        heading = Umbraco.GetDictionaryValueOrDefault("TPR Related links heading", "Related");
+    }
+}
+
+<tpr-related-links outer-styles="@cssClasses">
+
+    <tpr-related-links-heading>@heading</tpr-related-links-heading>
+
+    @foreach (var link in links) {
+        <tpr-related-link href="@link.Url">@link.Name</tpr-related-link>
+    }
+
+</tpr-related-links>

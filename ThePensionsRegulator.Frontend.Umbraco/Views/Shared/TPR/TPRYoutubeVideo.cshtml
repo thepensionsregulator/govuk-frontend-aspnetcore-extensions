@@ -33,6 +33,20 @@
     var title = Model.Content.Value<string>("title");
     var urlToken = "v=";
     var videoId = videoUrl.Substring(videoUrl.IndexOf(urlToken) + urlToken.Length);
+    var transcriptLink = Model.Content.Value<Link>("transcriptUrl");
+    var transcriptUrl = string.Empty;
+    var transcriptTitle = "View the script for this video";
+    var transcriptTarget = string.Empty;
+    if (!string.IsNullOrWhiteSpace(transcriptLink?.Url))
+    {
+        transcriptUrl = transcriptLink.Url;
+        transcriptTarget = transcriptLink.Target;
+    }
+    if (!string.IsNullOrWhiteSpace(transcriptLink?.Name))
+    {
+        transcriptTitle = transcriptLink.Name;
+    }
+
     var autoplay = Model.Settings.Value<bool>("autoplay");
     
     bool playsinline = Model.Settings.Value<bool>("playsInLine")!;
@@ -44,11 +58,18 @@
 <tpr-youtube-video
     id="@id" 
     title="@title"
+    using System.Net.Http.Headers;
     videoId="@videoId"
     useAblePlayer="@useAblePlayer"
     preload="@preload"
     autoplay="@autoplay"
     playsinline="@playsinline"
+    transcriptUrl="@transcriptUrl"
+    transcriptTitle="@transcriptTitle"
+    transcriptTarget="@transcriptTarget"
     >
-</tpr-youtube-video> 
-
+</tpr-youtube-video>
+@* @if(!string.IsNullOrWhiteSpace(transcriptUrl))
+{
+    <div><a href="@transcriptUrl" target="@transcriptTarget">@transcriptTitle</a></div>
+} *@

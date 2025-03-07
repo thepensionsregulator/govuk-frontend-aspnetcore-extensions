@@ -17,7 +17,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             string videoId,
             bool autoplay,
             bool playsinline,
-            string preload)
+            string preload, 
+            string transcriptUrl, 
+            string transcriptTitle,
+            string transcriptTarget)
         {
             Guard.ArgumentNotNullOrEmpty(nameof(id), id);
             Guard.ArgumentNotNullOrEmpty(nameof(videoId), videoId);
@@ -47,13 +50,18 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             string videoId,
             bool autoplay,
             bool playsinline,
-            string preload)
+            string preload, 
+            string transcriptUrl, 
+            string transcriptTitle,
+            string transcriptTarget)
         {
             Guard.ArgumentNotNullOrEmpty(nameof(id), id);
             Guard.ArgumentNotNullOrEmpty(nameof(videoId), videoId);
 
+            var containerTag = new TagBuilder("div");
+            containerTag.MergeCssClass("tpr-video-wrapper-no-cookies");
             var wrapperTag = new TagBuilder("div");
-            wrapperTag.MergeCssClass("tpr-video-wrapper-no-cookies");
+            wrapperTag.MergeCssClass("tpr-video-wrapper-no-cookies__video-container");
 
             var iFrame = new TagBuilder("iframe");
             var src = "https://www.youtube-nocookie.com/embed/" + videoId;
@@ -74,7 +82,22 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             iFrame.Attributes.Add("credentialless",null);
            
             wrapperTag.InnerHtml.AppendHtml(iFrame);
-            return wrapperTag;
+            containerTag.InnerHtml.AppendHtml(wrapperTag);
+            
+            if(!string.IsNullOrWhiteSpace(transcriptUrl))
+            {
+                var transcriptLink = new TagBuilder("a");
+                transcriptLink.MergeCssClass("tpr-video-wrapper-no-cookies__transcript-link");
+                transcriptLink.Attributes.Add("href",transcriptUrl);
+                if(!string.IsNullOrWhiteSpace(transcriptTarget))
+                {
+                    transcriptLink.Attributes.Add("target",transcriptTarget);
+                }
+                transcriptLink.InnerHtml.AppendHtml(transcriptTitle);
+                containerTag.InnerHtml.AppendHtml(transcriptLink);
+            }
+            
+            return containerTag;
        }
 
     }

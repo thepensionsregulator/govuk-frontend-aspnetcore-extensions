@@ -15,6 +15,10 @@ In TPR pages, you can add a YouTube video block. ~~This is rendered using [ablep
     preload="(OPTIONAL:true(default)|false)"
     autoplay="(OPTIONAL:true|false(default))"
     playsinline="metadata(default)|auto|none"
+    transcriptUrl="(URL_TO_TRANSCRIPT)"
+    transcriptTitle="(TRANSCRIPT_TITLE)"
+    transcriptTarget="(OPTIONAL:_blank|_self|_parent|_top)"
+
     >
 </tpr-youtube-video> 
 ```
@@ -36,7 +40,13 @@ AblePlayer is not currently supported.
 
 Add a 'YouTube Video' component anywhere in a block grid using the  'TPR block list', 'TPR no forms block list', 'TPR block grid' or TPR accordion section block grid' data types. 
 
+
 ![Add a box component](/docs/images/youtube-video-block.png)
+
+You have to fill in the following fields:
+- Title - This is used for accessibility purposes. Is not visible to the end user.
+- Url - This is the url of the YouTube video.
+- Transcript url - (Optional) : This adds a link to the video transcript under the video.
 
 In the setings tab, you can adjust the following properties:
 - Autoplay (off by default) - Starts playing the video when the page loads. 

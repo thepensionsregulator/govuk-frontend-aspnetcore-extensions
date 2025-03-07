@@ -25,6 +25,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string PlaysinlineAttributeName = "playsinline";
         private const string PreloadAttributeName = "preload";
         private const string UseAblePlayerAttributeName = "useAblePlayer";
+        private const string TranscriptUrlAttributeName = "transcriptUrl";
+        private const string TranscriptTitleAttributeName = "transcriptTitle";
+        private const string TranscriptTargetAttributeName = "transcriptTarget";
         private readonly string[] MinimisedAttributeList = {"autoplay","playsinline","data-able-player", "data-youtube-nocookie","allowfullscreen","credentialless"};
 
         private string _id = string.Empty;
@@ -34,7 +37,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private bool? _playsinline = true;
         private string _preload = ComponentGenerator.YoutubeVideoDefaultPreload;
         private bool? _useAblePlayer = true;
-
+        private string _transcriptUrl = string.Empty;
+        private string _transcriptTitle = string.Empty;
+        private string _transcriptTarget = string.Empty;
         private readonly ITprHtmlGenerator _htmlGenerator;
 
         /// <summary>
@@ -99,6 +104,27 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             set => _useAblePlayer = value; 
         }
 
+        [HtmlAttributeName(TranscriptUrlAttributeName)]
+        public string TranscriptUrl 
+        {
+            get => _transcriptUrl;
+            set => _transcriptUrl = value; 
+        }
+
+        [HtmlAttributeName(TranscriptTitleAttributeName)]
+        public string TranscriptTitle 
+        {
+            get => _transcriptTitle;
+            set => _transcriptTitle = value; 
+        }
+
+        [HtmlAttributeName(TranscriptTargetAttributeName)]
+        public string TranscriptTarget 
+        {
+            get => _transcriptTarget;
+            set => _transcriptTarget = value; 
+        }
+
 
         /// <inheritdoc/>
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -109,12 +135,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             if(UseAblePlayer.HasValue && UseAblePlayer.Value)
             {
 
-                tagBuilder = _htmlGenerator.GenerateTprAblePlayer(Id,Title,VideoId,useAutoplay, playsInLine, Preload);
+                tagBuilder = _htmlGenerator.GenerateTprAblePlayer(Id,Title,VideoId,useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
             }
             else
             {
                 
-                tagBuilder = _htmlGenerator.GenerateTprYoutubeNoCookiesEmbeddedPlayer(Id,Title,VideoId,useAutoplay, playsInLine, Preload);
+                tagBuilder = _htmlGenerator.GenerateTprYoutubeNoCookiesEmbeddedPlayer(Id,Title,VideoId,useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
             }
 
             output.TagName = tagBuilder.TagName;

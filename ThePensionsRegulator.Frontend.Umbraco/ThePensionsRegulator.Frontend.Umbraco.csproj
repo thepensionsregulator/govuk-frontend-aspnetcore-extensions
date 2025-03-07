@@ -24,7 +24,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<!--<Content Remove="sasscompiler.json" />-->
+		<Content Remove="sasscompiler.json" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -73,7 +73,7 @@
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
-		<!--<None Include="sasscompiler.json" />-->
+		<None Include="sasscompiler.json" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -48,7 +48,7 @@ You have to fill in the following fields:
 - Url - This is the url of the YouTube video.
 - Transcript url - (Optional) : This adds a link to the video transcript under the video.
 
-In the setings tab, you can adjust the following properties:
+In the settings tab, you can adjust the following properties:
 - Autoplay (off by default) - Starts playing the video when the page loads. 
 - Plays in line (on by default) - Instructs supporting browsers to play the video “inline” within the web page. 
 - Preload - Tells the browser how much media to download when the page loads.

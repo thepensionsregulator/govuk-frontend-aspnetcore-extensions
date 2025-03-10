@@ -1,0 +1,100 @@
+$dwp-quick-reference-font-colour: govuk-colour("black") !default;
+
+$dwp-quick-reference-alt-font-colour: govuk-colour("white") !default;
+$dwp-quick-reference-alt-bg-colour: $govuk-brand-colour !default;
+
+$dwp-quick-reference-label-breakpoint: 400px !default;
+
+.dwp-quick-reference {
+  margin: govuk-spacing(3) 0;
+  color: $dwp-quick-reference-font-colour;
+  font-family: $govuk-font-family;
+
+  word-break: break-word; 
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &--alternative {
+    margin-left: -15px;
+    padding: govuk-spacing(3) govuk-spacing(3) govuk-spacing(1);
+    color:  govuk-colour("white");
+    background: $govuk-brand-colour;
+
+    @include govuk-media-query($until: tablet) {
+      margin-right: -15px;
+    }
+  }
+
+  &__block {
+    margin: 0;
+    padding: 0;
+  }
+
+  &__label {
+    @include govuk-font($size: 19, $weight: bold);
+    margin: 0;
+    padding: 0 govuk-spacing(2) 0 0;
+    float: left;
+
+    &:has(+.dwp-quick-reference__status) {
+      padding-top: govuk-spacing(1);
+    }
+
+    @include govuk-media-query($until: $dwp-quick-reference-label-breakpoint) {
+      padding-bottom: 4px;
+      float: none;
+    }
+  }
+
+  &__primary {
+    @include govuk-font($size: 27, $weight: bold);
+    margin: 0;
+    padding-bottom: govuk-spacing(2);
+
+    @include govuk-media-query($until: tablet) {
+      font-size: 20px; // custom font size
+    }
+  }
+
+  &__secondary {
+    @include govuk-font($size: 19);
+    margin: 0;
+    padding-bottom: govuk-spacing(2);
+  }
+
+  &__status {
+    margin: 0;   
+    margin-top: govuk-spacing(1);
+    margin-bottom: govuk-spacing(3);
+
+    .govuk-tag {
+      max-width: 260px;
+    }
+
+    &--white {
+      color: $govuk-brand-colour;
+      background-color: govuk-colour("white");
+    }
+  }
+}
+
+.dwp-quick-reference--reduced {
+  margin-bottom: govuk-spacing(3);
+
+  .dwp-quick-reference {
+    &__label {
+      float: none;
+
+      @include govuk-media-query($until: tablet) {
+        margin-bottom: 3px;
+
+        &:has(+.dwp-quick-reference__status) {
+          margin-bottom: 7px;
+          padding-top: 0;
+        }
+      }
+    }
+  }
+}

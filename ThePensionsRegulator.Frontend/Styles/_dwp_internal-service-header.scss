@@ -1,0 +1,53 @@
+$action-offset: 7px !default;
+$action-offset-mobile: 3px !default;
+
+.dwp-header {
+  @extend .govuk-header;
+  position: relative;
+  border-bottom: 0;
+
+  &__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    padding: govuk-spacing(2) 0;
+
+    &--no-container {
+      margin: 0 govuk-spacing(3);
+    }
+  }
+
+  &__service-name {
+    @include govuk-font($size: 24, $weight: bold);
+    padding: 0;
+
+    &--with-action {
+      flex-basis: 66.666%;
+    }
+  }
+
+  &__service-action {
+    @include govuk-font($size: 16, $weight: bold);
+    flex: auto;
+    margin-top: $action-offset-mobile;
+    padding: 0;
+    text-align: right;
+
+    @include govuk-media-query($from: tablet) {
+      margin-top: $action-offset;
+    }
+    
+    a {
+      padding: $action-offset-mobile 0;
+
+      @include govuk-media-query($from: tablet) {
+        padding: $action-offset 0;
+      }
+    }
+  }
+
+  &__link {
+    @extend .govuk-header__link;
+  }
+}

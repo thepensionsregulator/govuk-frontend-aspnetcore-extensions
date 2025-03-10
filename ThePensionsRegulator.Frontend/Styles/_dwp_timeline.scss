@@ -1,0 +1,64 @@
+.dwp-timeline {
+  font-family: $govuk-font-family;
+
+  &__items {
+    padding: 0;
+    list-style-type: none;
+    border-left: 3px solid $govuk-brand-colour;
+  }
+
+  &__item {
+    position: relative;
+    top: -8px;
+    margin: govuk-spacing(3) 0;
+    padding: 0 0 govuk-spacing(3) 18px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 8px;
+      left: -1px;
+      width: 11px;
+      border-top: 3px solid $govuk-brand-colour;
+    }
+
+    &:last-of-type::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: -7px;
+      width: 11px;
+      border-top: 3px solid $govuk-brand-colour;
+    }
+
+    @include govuk-media-query($until: desktop) {
+      padding-top: 2px;
+    }
+  }
+
+  &__datetime {
+    @include govuk-font($size: 16);
+    margin-bottom: govuk-spacing(1);
+  }
+
+  &__heading {
+    @include govuk-font($size: 19, $weight: bold);
+    margin-block: 0;
+    margin-bottom: govuk-spacing(1);
+  }
+
+  &__by-line {
+    @include govuk-font($size: 16);
+    margin-bottom: govuk-spacing(3);
+  }
+
+  &__content {
+    @include govuk-font($size: 19);
+    margin-bottom: govuk-spacing(2);
+  }
+
+  &__link {
+    @include govuk-font($size: 19);
+    @extend .govuk-link;
+  }
+}

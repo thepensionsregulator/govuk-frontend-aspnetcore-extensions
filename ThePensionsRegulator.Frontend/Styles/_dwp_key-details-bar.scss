@@ -1,0 +1,116 @@
+$dwp-key-details-max-width: 960px !default;
+$dwp-key-details-line: rgba(255, 255, 255, 0.3) !default;
+$dwp-key-details-font-colour: govuk-colour("white") !default;
+$dwp-key-details-bg-colour: $govuk-brand-colour !default;
+
+.dwp-key-details-bar {
+  color: $dwp-key-details-font-colour;
+  background-color: $dwp-key-details-bg-colour;
+  font-family: $govuk-font-family;
+
+  &__key-details {
+    position: relative;
+    max-width: $dwp-key-details-max-width;
+    margin: 0 auto;
+    padding: govuk-spacing(4) govuk-spacing(6);
+    border: 0;
+
+    @include govuk-media-query($until: tablet) {
+      padding: govuk-spacing(4) govuk-spacing(3);
+    }
+
+    dt {
+      margin: 0 govuk-spacing(1) 0 0;
+      padding: 0;
+      float: left;
+    
+      @include govuk-media-query($until: tablet) {
+        margin: 0;
+        float: none;
+      }
+    }
+
+    dd {
+      margin: 0 govuk-spacing(4) 0 0;
+      padding: 0;
+      float: left;
+    
+      @include govuk-media-query($until: tablet) {
+        margin: 0 0 govuk-spacing(4);
+        float: none;
+      }
+
+      &:last-of-type {
+        @include govuk-media-query($until: tablet) {
+          margin-bottom: govuk-spacing(4);
+        }
+      }
+    }
+
+    .dwp-key-details-bar__primary {
+      font-size: 2.25rem;
+      font-weight: 700;
+  
+      @include govuk-media-query($until: tablet) {
+        margin: 0 govuk-spacing(2) 0 0;
+        float: left;
+        font-size: 1.5rem;
+      }
+    }
+
+    .dwp-key-details-bar__secondary {
+      margin-top: 9px;
+      font-size: 1.5rem;
+  
+      @include govuk-media-query($until: tablet) {
+        margin: govuk-spacing(1) 0 0;
+        float: left;
+        font-size: 1.188rem;
+      }
+    }
+
+    .dwp-key-details-bar__status {
+      margin: govuk-spacing(1) 0 0;
+      padding: govuk-spacing(1) 0 0;
+      float: right;
+  
+      &--dwp-default {
+        color: $govuk-brand-colour;
+        background-color: govuk-colour("white");
+      }
+  
+      @include govuk-media-query($until: tablet) {
+        padding: 0;
+        float: left;
+        clear: both;
+      }
+    }
+  }
+
+  &__top-block,
+  &__bottom-block {
+    margin: 0;
+    font-size: 1.188rem;
+
+    @include govuk-media-query($until: tablet) {
+      font-size: 1rem;
+    }
+
+    &::after {
+      content: " ";
+      display: block;
+      clear: both;
+    }
+  }
+
+  &__bottom-block {
+    content: " ";
+    margin-top: 6px;
+    padding-top: govuk-spacing(2);
+    border-top: 1px solid $dwp-key-details-line;
+  
+    @include govuk-media-query($until: tablet) {
+      border: 0;
+    }
+  }
+}

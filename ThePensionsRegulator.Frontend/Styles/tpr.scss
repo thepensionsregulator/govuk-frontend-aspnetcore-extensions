@@ -44,6 +44,8 @@
 // Load our custom font (we are not allowed to use 'GDS Transport' https://design-system.service.gov.uk/styles/typography/)
 @import '_open-sans.scss';
 
+@import '_dwp_timeline.scss';
+
 // Override compiled GOV.UK styles to apply differences from the TPR UI Kit
 @import '_tpr-back.scss';
 @import '_tpr-button.scss';

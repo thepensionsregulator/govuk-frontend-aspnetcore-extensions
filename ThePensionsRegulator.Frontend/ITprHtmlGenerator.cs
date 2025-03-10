@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Collections.Generic;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend
@@ -12,5 +13,6 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprHeaderBar(TprHeaderBar tprHeaderBar);
         TagBuilder GenerateTprFooterBar(TprFooterBar tprFooterBar);
         TagBuilder GenerateTprContextBar(TprContextBar tprContextBar);
+        TagBuilder GenerateTprTimeline(AttributeDictionary? attributes, IEnumerable<TprTimelineItem> items);
     }
 }

@@ -22,6 +22,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageId>ThePensionsRegulator.Frontend</PackageId>
 		<Product>ThePensionsRegulator.Frontend</Product>
+		<DWPPackageFolder>$(MsBuildThisFileDirectory)..\node_modules\@dwp\dwp-frontend</DWPPackageFolder>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -34,6 +35,30 @@
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
 	</ItemGroup>
+
+	<Target Name="CopySassFiles" BeforeTargets="BeforeBuild">
+		<ItemGroup>
+			<SassFiles Include="$(DWPPackageFolder)\components\*\*.scss">
+				<ComponentName>$([MSBuild]::ValueOrDefault('%(RecursiveDir)', '').TrimStart('_').TrimEnd('_/\'))</ComponentName>
+			</SassFiles>
+		</ItemGroup>
+		<Copy
+			SourceFiles="@(SassFiles)"
+			DestinationFiles="@(SassFiles -> '$(MsBuildThisFileDirectory)\Styles\_dwp%(FileName).scss')">
+			<Output TaskParameter="CopiedFiles" ItemName="Changed"/>
+		</Copy>
+		<Message Text="SassFiles: @(SassFiles)" Importance="high"/>
+	</Target>
+	<!--<ItemGroup>
+		<SassFiles Include="$(DWPPackageFolder)\components\*\*.scss">
+			<ComponentName>$([MSBuild]::ValueOrDefault('%(RecursiveDir)', '').TrimStart('_').TrimEnd('_/\'))</ComponentName>
+		</SassFiles>
+		<Resource Include="@(SassFiles)">		
+			<Link>\Styles\%(ComponentName).scss</Link>
+			<Visible>true</Visible>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Resource>
+	</ItemGroup>-->
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
 		<ItemGroup>

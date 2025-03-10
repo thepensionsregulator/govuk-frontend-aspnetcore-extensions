@@ -4,6 +4,23 @@
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
 		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
 		 -->
+	<Target Name="DwpFrontend_CheckDwpFrontendPackage" BeforeTargets="BeforeBuild">
+		<PropertyGroup>
+			<DwpPackageFolder>$(MsBuildThisFileDirectory)..\node_modules\dwp-frontend</DwpPackageFolder>
+		</PropertyGroup>
+
+		<Exec Command="where node" Condition="!Exists('$(DwpPackageFolder)')" ConsoleToMsBuild="true" IgnoreExitCode="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="CheckForNode" />
+		</Exec>
+		<Error Text="Node.js is not installed. Node.js is required to install the govuk-frontend package which contains the conformance tests. See https://nodejs.org" Condition="$(CheckForNode.Contains('Could not find files'))" />
+		<Exec Command="where yarn" Condition="!Exists('$(DwpPackageFolder)')" ConsoleToMsBuild="true" IgnoreExitCode="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="CheckForYarn" />
+		</Exec>
+		<Error Text="Yarn Classic is required to install the govuk-frontend package which contains the conformance tests. Run 'npm install --global yarn'. If you get an error UNABLE_TO_GET_ISSUER_CERT_LOCALLY you need to click the padlock next to any site in the address bar of your browser, and download the CA certificate for your network in .PEM format. Then set the environment variable NODE_EXTRA_CA_CERTS to the path to that certificate, and restart Visual Studio." Condition="$(CheckForYarn.Contains('Could not find files'))" />
+		<Message Text="Dwp Frontend NPM package not found. Running 'yarn install'." Condition="!Exists('$(DwpPackageFolder)')" />
+		<Exec Command="yarn install" WorkingDirectory="$(MsBuildThisFileDirectory).." Condition="!Exists('$(DwpPackageFolder)')" />
+	</Target>
+
 	<Target Name="TprFrontend_BuildSass" BeforeTargets="BeforeBuild">
 		<PropertyGroup>
 			<UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>

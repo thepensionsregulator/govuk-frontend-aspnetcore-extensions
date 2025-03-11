@@ -1,0 +1,29 @@
+﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ThePensionsRegulator.Frontend.TagHelpers
+{
+    [HtmlTargetElement(TagName, ParentTag = TprDocumentsTagHelper.TagName)]
+    class TprDocumentTagHelper : TagHelper
+    {
+        internal const string TagName = "tpr-document";
+
+        [HtmlAttributeName("href")]
+        public string? Href { get; set; }
+
+        [HtmlAttributeName("kbsize")]
+        public string? KbSize { get; set; }
+
+        [HtmlAttributeName("pages")]
+        public string? Pages { get; set; }
+
+        public override void Process(TagHelperContext context, TagHelperOutput output)
+        {
+            output.TagName = "div";
+        }
+    }
+}

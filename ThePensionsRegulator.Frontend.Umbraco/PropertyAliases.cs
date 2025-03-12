@@ -9,5 +9,6 @@
         public const string TprRelatedLinksLinks = "links";
         public const string TprBoxStyle = "styleOfBox";
         public const string TprBoxBackgroundColour = "backgroundColour";
+        public const string TprSectionCardsCards = "cards";
     }
 }

@@ -223,4 +223,8 @@
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_tpr-file-upload.scss" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="styles\_tpr-section-cards.scss" />
+	</ItemGroup>
 </Project>

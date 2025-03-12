@@ -51,8 +51,9 @@ namespace ThePensionsRegulator.Frontend.Umbraco
 			services.AddTransient<IRichTextPropertyEditorAliasProvider, TprRichTextPropertyEditorAliasProvider>();
 			services.AddTransient<IBlockViewInterceptor, TprBoxViewInterceptor>();
 			services.AddTransient<IBlockViewInterceptor, TprDividerViewInterceptor>();
+            services.AddTransient<IDefaultColumnClassProvider, TPRSectionCardsColumnClassProvider>();
 
-			return services;
+            return services;
 		}
 	}
 }

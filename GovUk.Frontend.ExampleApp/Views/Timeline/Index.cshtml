@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "I'm an employer who has to provide a pension";
+}
+
+<span class="govuk-caption-xl">Duties Timeline</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">
+            Based on the information you've provided you are, or will be, an employer with staff who must be put into a pension scheme. Your automatic enrolment duties start when you employ your first member of staff (duties start date).
+        </p>
+        <p class="govuk-body">
+            Remember, automatic enrolment is your legal duty and if you don't act in time you could be fined. Use our new duties timeline to help you work out what you need to do and by when. Just enter your duties start date.
+        </p>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <tpr-timeline>
+            <tpr-timeline-item date="9 Jan 2005" heading="Duties start date">
+            </tpr-timeline-item>
+            <tpr-timeline-item date="31 Jan 2025" heading="Today's date">
+                <tpr-timeline-item-content>
+                    <h3 class="govuk-heading-m">Complete these duties</h3>
+                    <ul>
+                        <li>
+                            <a href="#" class="govuk-link">Choose a pension Scheme</a>
+                            <span class="govuk-body">Do this now</span>
+                        </li>
+                    <li>
+                        <a href="#" class="govuk-link">Work out who needs to be put into a pension scheme</a>
+                        <span class="govuk-body">On your duties start date</span>
+                    </li>
+
+                    <li>
+                        <a href="#" class="govuk-link">Write to your staff</a>
+                        <span class="govuk-body">Within 6 weeks of your duties start date</span>
+                    </li>
+
+                    <li>
+                        <a href="#" class="govuk-link">Declare your compliance</a>
+                        <span class="govuk-body">By your deadline</span>
+                    </li>
+                </ul>                   
+
+                </tpr-timeline-item-content>
+            </tpr-timeline-item>
+            <tpr-timeline-item date="9 Jun 2025" heading="Declaration deadlline">
+                <tpr-timeline-item-content>
+                    <p class="govuk-body">This is the deadline for completing your declaration of compliance</p>
+                </tpr-timeline-item-content>
+            </tpr-timeline-item>
+        </tpr-timeline>
+    </div>
+</div>

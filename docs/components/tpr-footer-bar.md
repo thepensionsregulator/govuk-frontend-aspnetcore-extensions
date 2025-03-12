@@ -66,6 +66,8 @@ Create or edit a content node based on your document type, and you will be able 
 
 ![Editing TPR footer bar content](/docs/images/tpr-footer-bar-umbraco-content.png)
 
+This component has culture variants enabled for localisation purposes.
+
 Finally, pass that content node to the `TPRFooterLockup` partial view on your layout to add the typical combination of [TPR back to top](tpr-back-to-top.md) and TPR footer bar to your application.
 
 ```razor

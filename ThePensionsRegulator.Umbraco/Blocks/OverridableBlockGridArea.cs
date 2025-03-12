@@ -11,7 +11,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         {
         }
 
-        public OverridableBlockGridArea(IList<BlockGridItem> list, string alias, int rowSpan, int columnSpan, Func<IPublishedElement?, IOverridablePublishedElement?> publishedElementFactory)
+        public OverridableBlockGridArea(IEnumerable<BlockGridItem> list, string alias, int rowSpan, int columnSpan, Func<IPublishedElement?, IOverridablePublishedElement?> publishedElementFactory)
         {
             Alias = alias;
             RowSpan = rowSpan;

@@ -1,16 +1,41 @@
 ﻿@using GovUk.Frontend.Umbraco;
+@using Microsoft.Extensions.Options
+@using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Umbraco.Blocks;
 @using Umbraco.Cms.Core.Models.Blocks;
 @using Umbraco.Cms.Core.Models.PublishedContent;
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
 @using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases
+@using Umbraco.Cms.Core.PropertyEditors.ValueConverters
+@inject IOptions<GovUkFrontendUmbracoOptions> govukUmbracoOptions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @if (Model.Areas is not null && Model.Areas.Any())
 {
     var styleOfBox = Model.Settings.Value<string>(TprPropertyAliases.TprBoxStyle);
-    var boxClass = (string.IsNullOrEmpty(styleOfBox) || styleOfBox == "Solid") ? null : " tpr-box--" + styleOfBox.ToLowerInvariant();
-    var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
+    var isSolid = styleOfBox == TprBoxStyles.Solid;
+    var isFullWidth = styleOfBox == TprBoxStyles.FullWidth;
+    var boxClass = (string.IsNullOrEmpty(styleOfBox) || isSolid) ? null : " tpr-box--" + styleOfBox.ToLowerInvariant();
+    var cssClasses = (" " + Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();
+    if (isSolid || isFullWidth)
+    {
+        cssClasses += Model.Settings.Value<ColorPickerValueConverter.PickedColor>(TprPropertyAliases.TprBoxBackgroundColour)?.Label == "Blue" ? " tpr-box--blue" : null;
+    }
     <div class="tpr-box@(boxClass)@(cssClasses)">
-        <partial name="GOVUK/BlockGrid" model="Model.Areas[0]" />
+        @if (isFullWidth)
+        {
+            <div class="govuk-width-container">
+                @if (!govukUmbracoOptions.Value.RenderWidthContainerForBlocks)
+                {
+                    <p class="govuk-error-message">This site does not support full-width boxes. Ask a developer to enable the <code>RenderWidthContainerForBlocks</code> setting.</p>
+                }
+
+                <partial name="GOVUK/BlockGrid" model="Model.Areas[0]" />
+            </div>
+        }
+        else
+        {
+            <partial name="GOVUK/BlockGrid" model="Model.Areas[0]" />
+        }
     </div>
 }

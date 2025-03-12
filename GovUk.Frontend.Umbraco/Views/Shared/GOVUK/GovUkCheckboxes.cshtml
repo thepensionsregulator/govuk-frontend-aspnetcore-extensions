@@ -2,6 +2,7 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
@@ -28,22 +29,26 @@
     if (!string.IsNullOrEmpty(modelStateEntry?.AttemptedValue)) { selectedValues.AddRange(modelStateEntry.AttemptedValue.ToUpperInvariant().Split(",")); }
     var isInvalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any());
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();
-    var invalidClass = isInvalid ? " govuk-form-group--error" : null;
+    var invalidClass = isInvalid ? $" {GovUkClassNames.FormGroupError}" : null;
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxesFieldsetBlocks);
     if (blocks != null && blocks.Any())
     {
         fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
 }
-<div class="govuk-form-group@(invalidClass)@(cssClasses)">
+<div class="@(GovUkClassNames.FormGroup)@(invalidClass)@(cssClasses)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-checkboxes__fieldset">
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</govuk-fieldset-legend>
             @if (blocks != null && blocks.Any())
             {
-                blocks.RenderGrid = false;
+                var childBlocks = new BlockListViewModel(blocks)
+                {
+                    RenderGrid = false,
+                    RenderWidthContainer = false
+                };
                 <div id="@modelPropertyName-blocks">
-                    @await Html.PartialAsync("GOVUK/BlockList", blocks)
+                    @await Html.PartialAsync("GOVUK/BlockList", childBlocks)
                 </div>
             }
             <govuk-checkboxes name="@modelPropertyName">
@@ -78,8 +83,12 @@
                                         var conditional = block.Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxConditionalBlocks)!;
                                         if (conditional.Any())
                                         {
+                                            var conditionalBlocks = new BlockListViewModel(conditional)
+                                            {
+                                                RenderWidthContainer = false
+                                            };
                                             <govuk-checkboxes-item-conditional>
-                                                @await Html.PartialAsync("GOVUK/BlockList", conditional)
+                                                @await Html.PartialAsync("GOVUK/BlockList", conditionalBlocks)
                                             </govuk-checkboxes-item-conditional>
                                         }
                                     }
@@ -99,8 +108,12 @@
                                         var conditional = block.Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxConditionalBlocks)!;
                                         if (conditional.Any())
                                         {
+                                            var conditionalBlocks = new BlockListViewModel(conditional)
+                                            {
+                                                RenderWidthContainer = false
+                                            };
                                             <govuk-checkboxes-item-conditional>
-                                                @await Html.PartialAsync("GOVUK/BlockList", conditional)
+                                                @await Html.PartialAsync("GOVUK/BlockList", conditionalBlocks)
                                             </govuk-checkboxes-item-conditional>
                                         }
                                     }

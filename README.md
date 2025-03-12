@@ -15,6 +15,7 @@ We add support for:
   - [Inset text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/inset-text.md)
   - [Notification banner](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/notification-banner.md)
   - [Panel](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/panel.md)
+  - [Section break](https://design-system.service.gov.uk/styles/section-break/)
   - [Summary card](/docs/components/summary-card.md)
   - [Summary list](/docs/components/summary-list.md)
   - [Warning text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/warning-text.md)
@@ -45,16 +46,22 @@ We add support for:
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR context bar](/docs/components/tpr-context-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
+  - [TPR youtube video](/docs/components/tpr-youtube-video.md)
+  
+  - [TPR related links](/docs/components/tpr-related-links.md)
+  - [TPR section cards](/docs/components/tpr-section-cards.md)
 
 - The Pensions Regulator (TPR) styling for all of the above components, and:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
+  - [Breadcrumbs](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/breadcrumbs.md)
 
 We target [GOV.UK Frontend v5.2.0](https://github.com/alphagov/govuk-frontend/releases/tag/v5.2.0) in line with James Gunn's base project.
 
 ## ASP.NET projects without Umbraco
 
 - [Run the ASP.NET example application](docs/aspnet/run-example-application.md)
-- [Configure a new ASP.NET project](docs/aspnet/new-aspnet-project.md)
+- [Configure a new ASP.NET project (GOV.UK)](docs/aspnet/new-aspnet-project-govuk.md)
+- [Configure a new ASP.NET project (TPR)](docs/aspnet/new-aspnet-project-tpr.md)
 - [Localisation and validation in ASP.NET projects](docs/aspnet/localisation-and-validation.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
 
@@ -84,11 +91,14 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 
 ![ThePensionsRegulator.Umbraco.Testing on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco.Testing)
 
-## Using the GOV.UK Design System in Umbraco
+## Using the GOV.UK Design System and TPR components in Umbraco
 
-- [Configure a new Umbraco project](docs/umbraco/new-umbraco-project.md)
+- [Configure a new Umbraco project (GOV.UK)](docs/umbraco/new-umbraco-project-govuk.md)
+- [Configure a new Umbraco project (TPR)](docs/umbraco/new-umbraco-project-tpr.md)
 - [Populate initial values](docs/umbraco/populate-initial-values.md)
 - [Validation](docs/umbraco/validation.md)
+- [Change how blocks are rendered](docs/umbraco/block-rendering.md)
+- [Support full-width content](docs/umbraco/full-width-content.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
 - [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)
 - [Configure heading levels](/docs/umbraco/configure-heading-levels.md)
@@ -96,6 +106,10 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 Umbraco GOV.UK Design System support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 
 ![ThePensionsRegulator.GovUk.Frontend.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.GovUk.Frontend.Umbraco)
+
+Umbraco GOV.UK Design System support with TPR styling and components is published on NuGet as [ThePensionsRegulator.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.Frontend.Umbraco)
+
+![ThePensionsRegulator.Frontend.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Frontend.Umbraco)
 
 ## Contributing to this project
 

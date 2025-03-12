@@ -1,6 +1,6 @@
 ﻿using ThePensionsRegulator.Frontend.Services;
 
-namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
+namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
     public class TprHostUpdaterTests
     {

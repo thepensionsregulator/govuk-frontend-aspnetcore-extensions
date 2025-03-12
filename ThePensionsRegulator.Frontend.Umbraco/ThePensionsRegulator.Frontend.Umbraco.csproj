@@ -29,11 +29,14 @@
 
 	<ItemGroup>
 	  <None Remove="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
+	  <None Remove="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYoutubeVideo.html" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRImage.html" />
+		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYoutubeVideo.html" />
+		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRRelatedLinks.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
@@ -120,6 +123,18 @@
 		<Content Update="uSync\v9\ContentTypes\tprimage.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprnestedbox.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprnestedboxsettings.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprrelatedlinks.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprrelatedlinkssettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRAccordionBlockList.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
@@ -130,9 +145,15 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRBlockGrid.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\DataTypes\TPRBoxColour.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRBoxStyle.config">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\DataTypes\TPRNestedBoxStyle.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRRichTextEditorHeaderAndFooter.config">

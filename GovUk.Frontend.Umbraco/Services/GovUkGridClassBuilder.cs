@@ -1,25 +1,41 @@
-﻿namespace GovUk.Frontend.Umbraco.Services
+﻿using System.Collections.Generic;
+
+namespace GovUk.Frontend.Umbraco.Services
 {
-    public static class GovUkGridClassBuilder
+    public class GovUkGridClassBuilder(IEnumerable<IDefaultColumnClassProvider> _columnClassProviders) : IGovUkGridClassBuilder
     {
-        public static string BuildGridRowClass(string? customClass)
+        public string BuildGridRowClasses(string? customClass)
         {
-            string rowClass = ($"{HtmlClassNames.Row} {customClass}").TrimEnd();
+            string rowClass = ($"{GovUkClassNames.Row} {customClass}").TrimEnd();
             return rowClass;
         }
-        public static string BuildGridColumnClass(string? columnSizeClass, string? fromDesktopClass, string? customClass, string? forBlockOfContentTypeAlias = null, bool defaultToFullWidth = false)
+
+        public string BuildGridColumnClasses(string? columnSizeClass, string? fromDesktopClass, string? customClass, string? forBlockOfContentTypeAlias = null, bool defaultToFullWidth = false)
         {
-            if (!string.IsNullOrEmpty(columnSizeClass)) { columnSizeClass = $"{HtmlClassNames.Column}-{columnSizeClass}"; }
-            if (!string.IsNullOrEmpty(fromDesktopClass)) { fromDesktopClass = $"{HtmlClassNames.Column}-{fromDesktopClass}-from-desktop"; }
+            if (!string.IsNullOrEmpty(columnSizeClass)) { columnSizeClass = $"{GovUkClassNames.Column}-{columnSizeClass}"; }
+            if (!string.IsNullOrEmpty(fromDesktopClass)) { fromDesktopClass = $"{GovUkClassNames.Column}-{fromDesktopClass}-from-desktop"; }
             var columnClass = (columnSizeClass + " " + fromDesktopClass).Trim();
             if (string.IsNullOrEmpty(columnClass)) { columnClass = DefaultColumnClass(forBlockOfContentTypeAlias, defaultToFullWidth); }
-            columnClass = ($"{HtmlClassNames.Column} {columnClass} {customClass}").TrimEnd(); // .govuk-grid-column is not part of the GOV.UK design system but it's useful to be able to target any column
+            columnClass = ($"{GovUkClassNames.Column} {columnClass} {customClass}").TrimEnd(); // .govuk-grid-column is not part of the GOV.UK design system but it's useful to be able to target any column
             return columnClass;
         }
 
-        private static string DefaultColumnClass(string? forBlockOfContentTypeAlias, bool defaultToFullWidth)
+        private string DefaultColumnClass(string? forBlockOfContentTypeAlias, bool defaultToFullWidth)
         {
-            return defaultToFullWidth || forBlockOfContentTypeAlias == ElementTypeAliases.Caption || forBlockOfContentTypeAlias == ElementTypeAliases.PageHeading ? HtmlClassNames.ColumnFullWidth : HtmlClassNames.ColumnTwoThirdsFromDesktop;
+            if (defaultToFullWidth) { return GovUkClassNames.ColumnFullWidth; }
+
+            if (forBlockOfContentTypeAlias is not null && _columnClassProviders is not null)
+            {
+                foreach (var provider in _columnClassProviders)
+                {
+                    if (provider.IsProvider(forBlockOfContentTypeAlias))
+                    {
+                        return provider.ColumnClasses;
+                    }
+                }
+            }
+
+            return GovUkClassNames.ColumnTwoThirdsFromDesktop;
         }
     }
 }

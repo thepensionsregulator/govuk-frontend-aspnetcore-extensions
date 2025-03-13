@@ -13,5 +13,5 @@ Our tests depend on [Node.js](https://nodejs.org/en) and [Yarn Classic](https://
 - [Include client-side files in packages](/docs/contributing/include-client-side-files-in-packages.md)
 - [Allow a TPR component as a child of a GOV.UK component](/docs/contributing/allow-tpr-component.md)
 - [Run tests](/docs/contributing/run-tests.md)
-- [Test pre-release NuGet packages in a consuming application](/docs/contributing/test-nuget-packages.md)
+- [Test pre-release NuGet packages](/docs/contributing/test-nuget-packages.md)
 - [Publish a new version to nuget.org](/docs/contributing/publish-to-nuget.md)

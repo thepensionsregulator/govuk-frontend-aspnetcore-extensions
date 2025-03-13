@@ -37,7 +37,6 @@
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRImage.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYoutubeVideo.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRRelatedLinks.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRSectionCards.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
@@ -91,6 +90,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+<<<<<<< HEAD
+=======
 		<Content Update="uSync\v9\ContentTypes\tpraccordion.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
@@ -158,7 +159,7 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRBlockGrid.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRBoxColour.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -175,6 +176,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+>>>>>>> 29a6ab70ee672a8aa82783b9817619109a34863d
 	  <None Update="NuGetReadme.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>

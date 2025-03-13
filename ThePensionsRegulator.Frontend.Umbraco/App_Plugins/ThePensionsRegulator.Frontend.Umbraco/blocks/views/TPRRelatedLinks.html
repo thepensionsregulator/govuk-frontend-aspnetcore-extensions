@@ -1,0 +1,11 @@
+﻿
+<div class="tpr-related-links {{block.settingsData.cssClasses}}">
+    <ul>
+        <li>
+            <h2 ng-bind="block.data.heading"></h2>
+        </li>
+        <li ng-repeat="link in block.data.links">
+            <a href="{{link.url}}">{{link.name}}</a>
+        </li>
+    </ul>
+</div>

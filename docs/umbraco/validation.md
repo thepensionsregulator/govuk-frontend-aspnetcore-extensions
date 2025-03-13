@@ -90,6 +90,42 @@ Add an 'Error message' block directly inside the 'Fieldset' block, and on the se
 
 If you need an 'Error message' block inside a 'Fieldset' block without this behaviour, you can disable it on the settings of the 'Fieldset' block.
 
+## Custom validation attributes
+
+You can create new attributes using a standard ASP.NET approach to implement custom validation - see [Localisation and validation in ASP.NET projects](../aspnet/localisation-and-validation.md).
+
+To configure a custom validator to read its error message from an Umbraco property, add the following code in `Startup.cs` or `Program.cs`:
+
+```csharp
+public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback)
+{
+  mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockValidationMetadataProvider(umbracoContextAccessor,
+      publishedValueFallback,
+      new Dictionary<Type, string>
+  {
+      { typeof(MyCustomValidationAttribute), "aliasOfPropertyOnBlockSettings" },
+  }));
+}
+```
+
+`"aliasOfPropertyOnBlockSettings"` can be any text string property on the settings document type of the block for the field you're validating. This can be:
+
+- a property otherwise used by standard validators such as `GovUk.Frontend.Umbraco.PropertyAliases.ErrorMessageRange`, so long as you don't need a different message for the standard validator on the same field
+- a custom property set up by this package for your use such as `GovUk.Frontend.Umbraco.PropertyAliases.ErrorMessageCustom1`
+- any property you have added
+
+On your validator set `ErrorMessage` to the name of the field you're validating, and the name will be replaced by the error message configured on the block settings in Umbraco.
+
+```csharp
+public class MyDocumentTypeViewModel
+{
+    public MyDocumentType? Page { get; set; }
+
+    [MyCustomValidationAttribute(ErrorMessage = nameof(Field1))]
+    public int? Field1 { get; set; }
+}
+```
+
 ## Validating UK postcodes, Companies House company numbers and registered charity numbers
 
 See the [Text input](../components/text-input.md) component for details of validators included with the `ThePensionsRegulator.GovUk.Frontend` package.

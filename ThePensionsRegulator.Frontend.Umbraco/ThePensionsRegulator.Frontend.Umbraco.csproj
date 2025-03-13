@@ -71,18 +71,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<DataTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v9\DataTypes\TPR*.config"></DataTypes>
-		<ContentTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v9\ContentTypes\tpr*.config"></ContentTypes>
-		<None Include="@(DataTypes)">
-			<Link>\uSync\v9\DataTypes\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			<Pack>True</Pack>
-			<PackagePath>\content\uSync\v9\DataTypes;\contentFiles\any\net8.0\uSync\v9\DataTypes</PackagePath>
-		</None>
-		<None Include="@(ContentTypes)">
-			<Link>\uSync\v9\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)</Link>
-			<Pack>True</Pack>
-			<PackagePath>\content\uSync\v9\ContentTypes;\contentFiles\any\net8.0\uSync\v9\ContentTypes</PackagePath>
-		</None>
 		<None Include="..\tpr-nuget.png">
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
@@ -158,7 +146,7 @@
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRBlockGrid.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 		<Content Update="uSync\v9\DataTypes\TPRBoxColour.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>

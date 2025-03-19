@@ -278,13 +278,41 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
         [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
         [TestCase(DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
-        public void GetModelStateErrorMessage(DateInputParseErrors parseErrors, string expectedMessage)
+        public void GetModelStateErrorMessageReturnsDefaultErrorMessage(DateInputParseErrors parseErrors, string expectedMessage)
         {
             // Arrange
             var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
 
             // Act
             var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), Mock.Of<ICultureDictionary>(), parseErrors, modelMetadata);
+
+            // Assert
+            Assert.AreEqual(expectedMessage, result);
+        }
+
+        [TestCase(DateInputParseErrors.MissingYear, DictionaryConstants.DateMustIncludeAYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidYear, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingMonth, DictionaryConstants.DateMustIncludeAMonth, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidMonth, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADay, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingMonth, DictionaryConstants.DateMustIncludeAMonthAndYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADayAndYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADayAndMonth, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        public void GetModelStateErrorMessageReturnsCustomErrorMessage(DateInputParseErrors parseErrors, string dictionaryConstant, string expectedMessage)
+        {
+            // Arrange
+            var cultureDictionary = new Mock<ICultureDictionary>();
+            cultureDictionary
+                .Setup(x => x[dictionaryConstant])
+                .Returns("{0}: custom error message");
+            var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
+
+            // Act
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), cultureDictionary.Object, parseErrors, modelMetadata);
 
             // Assert
             Assert.AreEqual(expectedMessage, result);

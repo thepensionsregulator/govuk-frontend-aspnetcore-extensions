@@ -281,10 +281,12 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         public void GetModelStateErrorMessageReturnsDefaultErrorMessage(DateInputParseErrors parseErrors, string expectedMessage)
         {
             // Arrange
+            var cultureDictionary = new Mock<ICultureDictionary>();
+            cultureDictionary.Setup(x => x[It.IsAny<string>()]).Returns(string.Empty);
             var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
 
             // Act
-            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), Mock.Of<ICultureDictionary>(), parseErrors, modelMetadata);
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), cultureDictionary.Object, parseErrors, modelMetadata);
 
             // Assert
             Assert.AreEqual(expectedMessage, result);

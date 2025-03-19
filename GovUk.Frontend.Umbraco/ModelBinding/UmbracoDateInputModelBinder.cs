@@ -139,30 +139,30 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
 
             if (missingDay && !missingMonth && !missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeADay] ?? "{0} must include a day", displayName).Trim();
+                return string.Format(umbracoDictionary.ReadValue(DictionaryConstants.DateMustIncludeADay) ?? "{0} must include a day", displayName).Trim();
             }
             if (!missingDay && missingMonth && !missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeAMonth] ?? "{0} must include a month", displayName).Trim();
+                return string.Format(umbracoDictionary.ReadValue(DictionaryConstants.DateMustIncludeAMonth) ?? "{0} must include a month", displayName).Trim();
             }
             if (!missingDay && !missingMonth && missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeAYear] ?? "{0} must include a year", displayName).Trim();
+                return string.Format(umbracoDictionary.ReadValue(DictionaryConstants.DateMustIncludeAYear) ?? "{0} must include a year", displayName).Trim();
             }
             if (missingDay && missingMonth && !missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeADayAndMonth] ?? "{0} must include a day and month", displayName).Trim();
+                return string.Format(umbracoDictionary.ReadValue(DictionaryConstants.DateMustIncludeADayAndMonth) ?? "{0} must include a day and month", displayName).Trim();
             }
             if (missingDay && !missingMonth && missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeADayAndYear] ?? "{0} must include a day and year", displayName).Trim();
+                return string.Format(umbracoDictionary.ReadValue(DictionaryConstants.DateMustIncludeADayAndYear) ?? "{0} must include a day and year", displayName).Trim();
             }
             if (!missingDay && missingMonth && missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeAMonthAndYear] ?? "{0} must include a month and year", displayName).Trim();
+                return string.Format(umbracoDictionary.ReadValue(DictionaryConstants.DateMustIncludeAMonthAndYear) ?? "{0} must include a month and year", displayName).Trim();
             }
 
-            return string.Format(umbracoDictionary[DictionaryConstants.DateMustBeARealDate] ?? "{0} must be a real date", displayName).Trim();
+            return string.Format(umbracoDictionary.ReadValue(DictionaryConstants.DateMustBeARealDate) ?? "{0} must be a real date", displayName).Trim();
         }
 
         // internal for testing

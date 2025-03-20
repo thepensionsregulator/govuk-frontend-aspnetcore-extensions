@@ -1,0 +1,8 @@
+﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.TprDocumentsExamplePage>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@section head {
+	<title>@Model.PageHeadingOrName()</title>
+}
+
+<partial name="GOVUK/BlockGrid" model="Model.Grid" />

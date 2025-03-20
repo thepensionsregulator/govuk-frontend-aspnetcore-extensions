@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName, ParentTag = TprDocumentsTagHelper.TagName)]
+    [RestrictChildren(TprDocumentTitleTagHelper.TagName, TprDocumentDescriptionTagHelper.TagName)]
     class TprDocumentTagHelper : TagHelper
     {
         internal const string TagName = "tpr-document";
@@ -23,6 +20,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            var documentContext = new TprDocumentContext();
+            context.Items.Add(typeof(TprDocumentTagHelper), documentContext);
+
             output.TagName = "div";
         }
     }

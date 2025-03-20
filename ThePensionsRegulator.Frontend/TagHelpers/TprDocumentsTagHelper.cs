@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using GovUk.Frontend.AspNetCore.Extensions.TagHelpers;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName)]
-    [RestrictChildren(TprDocumentTagHelper.TagName, TprDocumentTitleTagHelper.TagName, TprDocumentDescriptionTagHelper.TagName)]
+    [RestrictChildren(TprDocumentTagHelper.TagName)]
     class TprDocumentsTagHelper : TagHelper
     {
         internal const string TagName = "tpr-documents";

@@ -12,6 +12,10 @@
         public const string TprContextBarContext1 = "tprContextBar1";
         public const string TprContextBarContext2 = "tprContextBar2";
         public const string TprContextBarContext3 = "tprContextBar3";
+        public const string TprDocument = "tprDocument";
+        public const string TprDocumentSettings = "tprDocumentSettings";
+        public const string TprDocuments = "tprDocuments";
+        public const string TprDocumentsSettings = "tprDocumentsSettings";
         public const string TprFooter = "tprFooter";
         public const string TprHeader = "tprHeader";
         public const string TprImage = "tprImage";

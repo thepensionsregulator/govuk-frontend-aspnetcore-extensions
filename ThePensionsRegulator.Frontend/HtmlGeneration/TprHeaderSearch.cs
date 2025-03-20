@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ThePensionsRegulator.Frontend.TagHelpers
+namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
-    public class TprSearchBarContext
+    public class TprHeaderSearch
     {
         public AttributeDictionary? SearchAttributes { get; set; }
         public IHtmlContent? SearchBoxPrompt { get; set; }
+        public string? LanguagePrefix {  get; set; } //retrive language settings???
         public bool SearchBoxAllowHtml { get; set; }
     }
 }

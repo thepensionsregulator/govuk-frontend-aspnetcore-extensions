@@ -2,7 +2,7 @@
 
 namespace GovUk.Frontend.ExampleApp.Controllers
 {
-    public class SearchBarController : BaseController
+    public class TprHeaderSearchController : BaseController
     {
         public IActionResult Index()
         {

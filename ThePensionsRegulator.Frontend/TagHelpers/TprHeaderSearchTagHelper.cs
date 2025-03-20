@@ -10,39 +10,39 @@ using System.Collections.Generic;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    public class TprSearchBarTagHelper : TagHelper
+    public class TprHeaderSearchTagHelper : TagHelper
     {
         private readonly ITprHtmlGenerator _htmlGenerator;
 
-        internal const string TagName = "tpr-search-bar";
+        internal const string TagName = "tpr-header-search";
 
-        public TprSearchBarTagHelper()
+        public TprHeaderSearchTagHelper()
           : this(htmlGenerator: null)
         {
         }
 
-        internal TprSearchBarTagHelper(ITprHtmlGenerator? htmlGenerator)
+        internal TprHeaderSearchTagHelper(ITprHtmlGenerator? htmlGenerator)
         {
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var cardsContext = new TprSearchBarContext();
+            var headerSearchContext = new TprHeaderSearchContext();
 
-            using (context.SetScopedContextItem(cardsContext))
+            using (context.SetScopedContextItem(headerSearchContext))
             {
                 await output.GetChildContentAsync();
             }
 
-            var searchBar = new TprSearchBar()
+            var headerSearch = new TprHeaderSearch()
             {
-                SearchAttributes = cardsContext.SearchAttributes,
-                SearchBoxPrompt = cardsContext.SearchBoxPrompt,
-                SearchBoxAllowHtml = cardsContext.SearchBoxAllowHtml
+                SearchAttributes = headerSearchContext.SearchAttributes,
+                SearchBoxPrompt = headerSearchContext.SearchBoxPrompt,
+                SearchBoxAllowHtml = headerSearchContext.SearchBoxAllowHtml
             };
 
-            var tagBuilder = _htmlGenerator.GenerateTprSearchBar(searchBar);
+            var tagBuilder = _htmlGenerator.GenerateTprHeaderSearch(headerSearch);
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

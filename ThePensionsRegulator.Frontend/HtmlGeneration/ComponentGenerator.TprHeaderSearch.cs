@@ -10,10 +10,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
     public partial class ComponentGenerator
     {
-        public virtual TagBuilder GenerateTprSearchBar(TprSearchBar tprSearchBar)
+        public virtual TagBuilder GenerateTprHeaderSearch(TprHeaderSearch tprHeaderSearch)
         {
             var  divTag = new TagBuilder("div");
-            if (tprSearchBar.SearchAttributes != null) { divTag.MergeAttributes(tprSearchBar.SearchAttributes); }
+            if (tprHeaderSearch.SearchAttributes != null) { divTag.MergeAttributes(tprHeaderSearch.SearchAttributes); }
             divTag.AddCssClass("search");
 
             var form = new TagBuilder("form");
@@ -23,15 +23,15 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
           
             var formLabel = new TagBuilder("label");
             formLabel.Attributes.Add("for", "GlobalSearchInputBox");
-            if (tprSearchBar.SearchBoxPrompt != null)
+            if (tprHeaderSearch.SearchBoxPrompt != null)
             {
-                if (tprSearchBar.SearchBoxAllowHtml)
+                if (tprHeaderSearch.SearchBoxAllowHtml)
                 {
-                    formLabel.InnerHtml.AppendHtml(tprSearchBar.SearchBoxPrompt);
+                    formLabel.InnerHtml.AppendHtml(tprHeaderSearch.SearchBoxPrompt);
                 }
                 else
                 {
-                    formLabel.InnerHtml.Append(tprSearchBar.SearchBoxPrompt.ToString()!);
+                    formLabel.InnerHtml.Append(tprHeaderSearch.SearchBoxPrompt.ToString()!);
                 }
             }
 

@@ -1,0 +1,51 @@
+@import '_tpr-variables.scss';
+@import 'govuk/base';
+/*
+@media (min-width: 992px) {
+     .search {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 45%;
+        flex: 0 0 45%;
+        max-width: 45%;
+        text-align: right;
+    }
+}
+@media (min-width: 768px) {
+    .search {
+        background-color: transparent;
+        padding: 0;
+        position: relative;
+        width: 100%;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        -webkit-box-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        text-align: center;
+        display: block;
+    }
+}*/
+
+.search {
+    background-color: #ededed;
+    padding: 1.5rem 1.5rem;
+    width: 100%;
+    text-align: center;
+    display: none;
+}
+
+ .searchFieldWithButtons{
+
+ }
+
+ .searchButton {
+    background-color: #fff;
+    color: #fff;
+    border: none;
+    height: 5rem;
+    width: 5rem;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: bottom;
+    }

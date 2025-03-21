@@ -51,9 +51,10 @@
                         continue;
                     var name = link.Name;
                     var url = link.Url;
+                    var target = link.Target;
                     var desc = box.Content.Value<string>(descFieldName);
                     <tpr-section-cards-card>                       
-                            <tpr-section-cards-card-title href="@url">
+                            <tpr-section-cards-card-title href="@url" target="@target">
                                  @name 
                             </tpr-section-cards-card-title>
                             @if (!string.IsNullOrWhiteSpace(desc))

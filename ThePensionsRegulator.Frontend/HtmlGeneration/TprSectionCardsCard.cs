@@ -9,6 +9,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public AttributeDictionary? TitleAttributes { get; set; }
         public IHtmlContent? Title { get; set; }
         public string? TitleUrl { get; set; }
+        public string? TitleTarget { get; set; }
         public bool TitleAllowHtml { get; set; }
         public AttributeDictionary? ContentAttributes { get; set; }
         public IHtmlContent? Content { get; set; }

@@ -6,19 +6,20 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     internal class TprSectionCardsCardContext
     {
-        private (AttributeDictionary Attributes, IHtmlContent? Title, bool AllowHtml, string? Url)? _title;
+        private (AttributeDictionary Attributes, IHtmlContent? Title, bool AllowHtml, string? Url, string? Target)? _title;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
 
         public AttributeDictionary? CardAttributes { get; set; }
         public AttributeDictionary? TitleAttributes => _title?.Attributes;
         public IHtmlContent? Title => _title?.Title;
         public string? TitleUrl => _title?.Url;
+        public string? TitleTarget => _title?.Target;
         public bool TitleAllowHtml => _title?.AllowHtml ?? false;
         public AttributeDictionary? ContentAttributes => _content?.Attributes;
         public IHtmlContent? Content => _content?.Content;
         public bool ContentAllowHtml => _content?.AllowHtml ?? false;
 
-        public void SetTitle(AttributeDictionary attributes, IHtmlContent? title, bool allowHtml, string url)
+        public void SetTitle(AttributeDictionary attributes, IHtmlContent? title, bool allowHtml, string url, string target)
         {
             if (_title != null)
             {
@@ -26,7 +27,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     TprSectionCardsCardTitleTagHelper.TagName,
                     TprSectionCardsCardTagHelper.TagName);
             }
-            _title = (attributes, title, allowHtml, url);
+            _title = (attributes, title, allowHtml, url, target);
         }
 
         public void SetContent(AttributeDictionary contentAttributes, IHtmlContent? content, bool allowHtml)

@@ -1,10 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -12,7 +6,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         public virtual TagBuilder GenerateTprHeaderSearch(TprHeaderSearch tprHeaderSearch)
         {
-            var  divTag = new TagBuilder("div");
+            var divTag = new TagBuilder("div");
             if (tprHeaderSearch.SearchAttributes != null) { divTag.MergeAttributes(tprHeaderSearch.SearchAttributes); }
             divTag.AddCssClass("search");
 
@@ -20,7 +14,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             form.Attributes.Add("action", "/en/search-results");
             form.Attributes.Add("id", "form-globalsearch");
             form.Attributes.Add("method", "get");
-          
+
             var formLabel = new TagBuilder("label");
             formLabel.Attributes.Add("for", "GlobalSearchInputBox");
             if (tprHeaderSearch.SearchBoxPrompt != null)
@@ -66,7 +60,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             button.Attributes.Add("type", "submit");
             button.Attributes.Add("class", "searchButton");
             button.Attributes.Add("aria-label", "Search");
-      
+
             var buttonSvg = new TagBuilder("svg");
             //TODO: inner html for image
             button.InnerHtml.AppendHtml(buttonSvg);

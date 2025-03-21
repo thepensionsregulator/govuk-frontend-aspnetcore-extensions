@@ -11,6 +11,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     public class TprHeaderSearchContext
     {
         public AttributeDictionary? SearchAttributes { get; set; }
+        public string? SearchLabel { get; set; }
         public IHtmlContent? SearchBoxPrompt { get; set; }
         public bool SearchBoxAllowHtml { get; set; }
     }

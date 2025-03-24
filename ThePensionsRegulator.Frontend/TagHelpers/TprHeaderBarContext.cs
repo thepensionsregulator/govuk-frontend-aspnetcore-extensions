@@ -9,6 +9,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private (AttributeDictionary Attributes, string? Href, string? AlternativeText)? _logo;
         private (AttributeDictionary Attributes, IHtmlContent? Label, bool AllowHtml)? _label;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
+        private (AttributeDictionary Attributes, IHtmlContent? Prompt, bool AllowHtml, bool DispaySearchBar)? _search;
 
         public AttributeDictionary? LogoAttributes => _logo?.Attributes;
         public string? LogoHref => _logo?.Href;
@@ -19,6 +20,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public AttributeDictionary? ContentAttributes => _content?.Attributes;
         public IHtmlContent? Content => _content?.Content;
         public bool ContentAllowHtml => _content?.AllowHtml ?? false;
+        public bool DispalySearchBar => _search?.DispaySearchBar ?? false;
+        public AttributeDictionary? SearchAttributes => _search?.Attributes;
+        public IHtmlContent? SearchBoxPrompt => _search?.Prompt;
+        public bool SearchAllowHtml => _search?.AllowHtml ?? false;
 
         public void SetLogo(AttributeDictionary attributes, string? href, string? alternativeText)
         {
@@ -54,6 +59,18 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             }
 
             _content = (attributes, htmlContent, allowHtml);
+        }
+
+        public void SetSearch(AttributeDictionary attributes, IHtmlContent htmlContent, bool allowHtml, bool displaySearchBar)
+        {
+            if (_search != null)
+            {
+                throw ExceptionHelper.OnlyOneElementIsPermittedIn(
+                    TprHeaderSearchTagHelper.TagName,
+                TprHeaderBarTagHelper.TagName);
+            }
+
+            _search = (attributes, htmlContent, allowHtml, displaySearchBar);
         }
     }
 }

@@ -83,7 +83,76 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     contentElement.InnerHtml.Append(tprHeaderBar.Content.ToString()!);
                 }
             }
-            tagBuilder.InnerHtml.AppendHtml(headerContent);
+            else
+            {
+                if (tprHeaderBar.DisplaySearchBar)
+                {
+                    var divTag = new TagBuilder("div");
+                    if (tprHeaderBar.SearchAttributes != null) { divTag.MergeAttributes(tprHeaderBar.SearchAttributes); }
+                    divTag.AddCssClass("search");
+
+                    var form = new TagBuilder("form");
+                    form.Attributes.Add("action", "/en/search-results");
+                    form.Attributes.Add("id", "form-globalsearch");
+                    form.Attributes.Add("method", "get");
+
+                    //var formLabel = new TagBuilder("label");
+                    //formLabel.Attributes.Add("for", "GlobalSearchInputBox");
+                    //if (tprHeaderBar.SearchBoxPrompt != null)
+                    //{
+                    //    if (tprHeaderBar.SearchBoxAllowHtml)
+                    //    {
+                    //        formLabel.InnerHtml.AppendHtml(tprHeaderBar.SearchBoxPrompt);
+                    //    }
+                    //    else
+                    //    {
+                    //        formLabel.InnerHtml.Append(tprHeaderBar.SearchBoxPrompt.ToString()!);
+                    //    }
+                    //}
+
+                    //form.InnerHtml.AppendHtml(formLabel);
+
+                    var searchField = new TagBuilder("div");
+                    searchField.AddCssClass("searchFieldWithButton");
+
+                    var autoComplete = new TagBuilder("div");
+                    autoComplete.AddCssClass("easy-autocomplete");
+                    autoComplete.Attributes.Add("id", "autocomplete-container");
+                    searchField.InnerHtml.AppendHtml(autoComplete);
+                    // autoComplete.Attributes.Add("style", "width: 313.948px;");
+
+                    var input = new TagBuilder("input");
+                    input.Attributes.Add("aria-label", "Search");
+                    input.Attributes.Add("autocomplete", "off");
+                    input.AddCssClass("searchbox");
+                    input.Attributes.Add("id", "GlobalSearchInputBox");
+                    input.Attributes.Add("name", "query");
+                    input.Attributes.Add("placeholder", "Search");
+                    input.Attributes.Add("type", "text");
+                    input.Attributes.Add("value", "");
+
+                    searchField.InnerHtml.AppendHtml(input);
+
+
+                    var button = new TagBuilder("button");
+                    button.Attributes.Add("type", "submit");
+                    button.Attributes.Add("class", "searchButton");
+                    button.Attributes.Add("aria-label", "Search");
+
+                    var buttonSvg = new TagBuilder("svg");
+                    //TODO: inner html for image
+                    button.InnerHtml.AppendHtml(buttonSvg);
+
+                    searchField.InnerHtml.AppendHtml(button);
+
+                    form.InnerHtml.AppendHtml(searchField);
+
+                    divTag.InnerHtml.AppendHtml(form);
+                    headerContent.InnerHtml.AppendHtml(divTag);
+                }
+            }
+
+                tagBuilder.InnerHtml.AppendHtml(headerContent);
 
             return tagBuilder;
         }

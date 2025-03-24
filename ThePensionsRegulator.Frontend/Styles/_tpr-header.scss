@@ -86,6 +86,7 @@ $tpr-header-left-width-xl: 200px;
     display: none;
 }
 
+
 @include tpr-header-media-query-m {
     .tpr-header__label {
         display: flex;

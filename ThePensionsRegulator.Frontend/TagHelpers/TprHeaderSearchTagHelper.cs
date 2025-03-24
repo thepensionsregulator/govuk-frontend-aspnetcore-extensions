@@ -1,5 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
@@ -8,45 +9,21 @@ using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
+    [HtmlTargetElement(TagName, ParentTag = TprHeaderBarTagHelper.TagName)]
     public class TprHeaderSearchTagHelper : TagHelper
     {
-        private readonly ITprHtmlGenerator _htmlGenerator;
 
         internal const string TagName = "tpr-header-search";
-
-        public TprHeaderSearchTagHelper()
-          : this(htmlGenerator: null)
-        {
-        }
-
-        internal TprHeaderSearchTagHelper(ITprHtmlGenerator? htmlGenerator)
-        {
-            _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
-        }
-
+           
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var headerSearchContext = new TprHeaderSearchContext();
+            var headerSearchContext = context.GetContextItem<TprHeaderBarContext>();
 
-            using (context.SetScopedContextItem(headerSearchContext))
-            {
-                await output.GetChildContentAsync();
-            }
+            var content = await output.GetChildContentAsync();
 
-            var headerSearch = new TprHeaderSearch()
-            {
-                SearchAttributes = headerSearchContext.SearchAttributes,
-                SearchBoxPrompt = headerSearchContext.SearchBoxPrompt,
-                SearchBoxAllowHtml = headerSearchContext.SearchBoxAllowHtml
-            };
+            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(),content, !content.IsEmptyOrWhiteSpace, true);
 
-            var tagBuilder = _htmlGenerator.GenerateTprHeaderSearch(headerSearch);
-
-            output.TagName = tagBuilder.TagName;
-            output.TagMode = TagMode.StartTagAndEndTag;
-            output.Attributes.Clear();
-            output.MergeAttributes(tagBuilder);
-            output.Content.SetHtmlContent(tagBuilder.InnerHtml);
+            output.SuppressOutput();
         }
     }
 }

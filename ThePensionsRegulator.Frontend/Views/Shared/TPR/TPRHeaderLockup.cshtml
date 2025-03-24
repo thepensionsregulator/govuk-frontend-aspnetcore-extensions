@@ -12,11 +12,8 @@
     if (string.IsNullOrEmpty(headerLogoAlt) && !string.IsNullOrEmpty(Model.LogoHref)) { headerLogoAlt = ComponentGenerator.HeaderLogoDefaultAlt; }
     var showPhaseBanner = Model.ShowPhaseBanner && !string.IsNullOrEmpty(phase) && phase != "Live";
     var headerContent = Model.HeaderBarContent;
-    if (string.IsNullOrEmpty(headerContent))
-    {
-      //this could be put inside the taghelper
-    }
 }
+
 @if (Model.ShowSkipLink)
 {
     <govuk-skip-link href="@Model.SkipLinkHref" class="@Model.SkipLinkClass">@skipLink</govuk-skip-link>
@@ -36,8 +33,8 @@
             <tpr-header-bar class="@Model.HeaderBarClass">
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@Model.LogoHref" />
                 <tpr-header-bar-label>@Model.HeaderBarLabel</tpr-header-bar-label>
-              @*   <tpr-header-bar-content allow-html="@Model.HeaderBarContentAllowHtml">@Html.Raw(Model.HeaderBarContent)</tpr-header-bar-content> *@
-                <tpr-header-search></tpr-header-search>
+              @*   <tpr-header-bar-content allow-html="@Model.HeaderBarContentAllowHtml">@Html.Raw(Model.HeaderBarContent)</tpr-header-bar-content> *@    
+              <tpr-header-search></tpr-header-search>
             </tpr-header-bar>
             
             <tpr-context-bar class="@Model.ContextBarClass">

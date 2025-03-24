@@ -2,28 +2,28 @@
 @import 'govuk/base';
 
 
- .search {
+.search {
     width: 100%;
     padding: 0.5em 0.5em;
-    position:absolute;
-    top:60px;
-    left:400px;
     text-align: center;
     display: flex;
     flex: 0 0, auto;
     flex-direction: row;
     flex-direction: column;
     text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
- .searchButton {
+.searchButton {
+    background-color: #fff;
+    color: #fff;
     border: none;
-    height: 3.85em;
-    width: 4em;
-    display: inline-block;
+    height: 2.94rem;
+    width: 2.94rem;
+    display: inline;
     cursor: pointer;
-    vertical-align: bottom;
-    padding-left:2em;
+    vertical-align: middle;
 }
 
 .searchbox {
@@ -31,5 +31,31 @@
     padding-right: 2rem;
     height: 3.1em;
     border: none;
-    font-size: 1em;
+    font-size: 0.9em;
+    margin: 0.3em;
+    vertical-align: middle;
 }
+
+.searchbox[type=text]:focus {
+    outline-width: 0.19em;
+    outline-color: orange;
+    outline-style: solid;
+}
+
+svg {
+    border: none;
+    height: 3.87em;
+    width: 2em;
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: bottom;
+}
+
+@media(max-width: 960px){
+    .search{
+        display: none;
+    }
+}
+    
+
+

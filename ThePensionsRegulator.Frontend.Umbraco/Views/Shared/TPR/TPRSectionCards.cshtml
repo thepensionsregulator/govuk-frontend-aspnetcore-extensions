@@ -1,0 +1,95 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>;
+@addTagHelper *, ThePensionsRegulator.Frontend
+@using Microsoft.AspNetCore.Html
+@using ThePensionsRegulator.Frontend.TagHelpers
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
+@using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases;
+@using ElementTypeAliases = ThePensionsRegulator.Frontend.Umbraco.ElementTypeAliases;
+@{
+    var boxes = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.TprSectionCardsCards);
+    if (boxes == null || boxes.Any() == false)
+    {
+        return;
+    }
+    var settings = Model.Settings;
+    var nameFieldName = string.Empty;
+    var descFieldName = string.Empty;
+    
+    if(settings != null){
+        nameFieldName = settings.Value<string>("titleFieldName");
+        descFieldName = settings.Value<string>("descriptionFieldName");        
+    }
+
+    if (string.IsNullOrWhiteSpace(nameFieldName))
+    {
+        nameFieldName = "name";
+    }
+
+    if (string.IsNullOrWhiteSpace(descFieldName))
+    {
+        descFieldName = "description";
+    }
+    
+    var cssClasses = (" " + Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();
+    
+    <tpr-section-cards-container class="@cssClasses">
+    
+        @foreach (var box in boxes)
+        {           
+            var type = box.Content.ContentType.Alias;
+            switch (type)
+            {
+                case ElementTypeAliases.TprSectionCardsCard:
+                    var link = box.Content.Value<Link>("link");
+                    if(link == null)
+                        continue;
+                    var name = link.Name;
+                    var url = link.Url;
+                    var desc = box.Content.Value<string>(descFieldName);
+                    <tpr-section-cards-card>                       
+                            <tpr-section-cards-card-title href="@url">
+                                 @name 
+                            </tpr-section-cards-card-title>
+                            @if (!string.IsNullOrWhiteSpace(desc))
+                            {
+                                <tpr-section-cards-card-content>@Html.Raw(@desc)</tpr-section-cards-card-content>
+                            }                    
+                    </tpr-section-cards-card>
+                    break;
+                case ElementTypeAliases.TprSectionCardsChildren:
+                    var page = Umbraco.AssignedContentItem;
+                    foreach (var child in page.Children)
+                    {
+                        if (!child.IsVisible())
+                        {
+                            continue;
+                        }
+                        var childName = child.Name;
+                        if(nameFieldName != "name")
+                        {
+                            childName = child.Value<string>(nameFieldName);
+                        }
+                        var childUrl = child.Url();
+                        var childDesc = child.Value<string>(descFieldName);
+                        <tpr-section-cards-card>
+                                <tpr-section-cards-card-title href="@childUrl">
+                                    @childName
+                                </tpr-section-cards-card-title>
+                                @if (!string.IsNullOrWhiteSpace(childDesc))
+                                {
+                                    <tpr-section-cards-card-content>@Html.Raw(childDesc)</tpr-section-cards-card-content>
+                                }
+                        </tpr-section-cards-card>
+                    }
+                    break;
+            }
+        }
+
+    </tpr-section-cards-container>   
+}

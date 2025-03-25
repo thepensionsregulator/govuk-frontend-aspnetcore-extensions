@@ -13,6 +13,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("href")]
         public string? Url { get; set; }
 
+        [HtmlAttributeName("target")]
+        public string? Target { get; set; }
+
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var cardContext = context.GetContextItem<TprSectionCardsCardContext>();
@@ -21,7 +25,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             cardContext.SetTitle(output.Attributes.ToAttributeDictionary(),
                 content,
                 !content.IsEmptyOrWhiteSpace,
-                Url!);
+                Url!,
+                Target!);
 
             output.SuppressOutput();
         }

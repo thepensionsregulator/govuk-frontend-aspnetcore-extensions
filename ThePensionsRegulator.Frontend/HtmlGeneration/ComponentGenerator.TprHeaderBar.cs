@@ -140,7 +140,33 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     button.Attributes.Add("aria-label", "Search");
 
                     var buttonSvg = new TagBuilder("svg");
-                    //TODO: inner html for image
+                    buttonSvg.Attributes.Add("viewBox", "0 0 17 16");
+                    buttonSvg.Attributes.Add("xmlns", "http://www.w3.org/2000/svg");
+                    buttonSvg.Attributes.Add("version", "1.1");
+                    buttonSvg.Attributes.Add("focusable", "false");
+
+                    var svgTag1 = new TagBuilder("g");
+                    svgTag1.Attributes.Add("stroke", "none");
+                    svgTag1.Attributes.Add("stroke-width", "1");
+                    svgTag1.Attributes.Add("fill", "none");
+                    svgTag1.Attributes.Add("fill-rule", "evenodd");
+                    buttonSvg.InnerHtml.AppendHtml(svgTag1);
+
+                    var svgTag2 = new TagBuilder("g");
+                    svgTag2.Attributes.Add("transform", "translate(1.000000, -3.000000)");
+                    svgTag2.Attributes.Add("fill", "#434343");
+                    svgTag1.InnerHtml.AppendHtml(svgTag2);
+
+                    var path = new TagBuilder("path");
+                    path.Attributes.Add("d", "m 15.176041,6.8528646 c 0,-3.289 -2.683,-5.95400005 -5.9910002,-5.95400005 -3.311,0 -5.993,2.66500005 -5.993,5.95400005 0,3.2870004 2.683,5.9520004 5.993,5.9520004 3.3080002,0 5.9910002,-2.665 5.9910002,-5.9520004 z m -11.0660002,0.065 c 0,-2.806 2.279,-5.076 5.092,-5.076 2.8110002,0 5.0880002,2.271 5.0880002,5.076 0,2.804 -2.277,5.0750004 -5.0880002,5.0750004 -2.813,0 -5.092,-2.2720004 -5.092,-5.0750004 z");
+                    path.AddCssClass("si-glyph-fill");
+                    svgTag2.InnerHtml.AppendHtml(path);
+
+                    var path2 = new TagBuilder("path");
+                    path2.Attributes.Add("d", "m 2.1965269,15.514568 -1.822,-1.822 4.037,-4.0380003 c 0,0 0.096,0.7650003 0.58,1.2470003 0.482,0.484 1.242,0.576 1.242,0.576 z");
+                    path2.AddCssClass("si-glyph-fill");
+                    svgTag2.InnerHtml.AppendHtml(path2);
+
                     button.InnerHtml.AppendHtml(buttonSvg);
 
                     searchField.InnerHtml.AppendHtml(button);

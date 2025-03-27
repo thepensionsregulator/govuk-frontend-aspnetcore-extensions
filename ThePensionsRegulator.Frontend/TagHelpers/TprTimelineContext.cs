@@ -19,6 +19,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             _items = new List<TprTimelineItem>();
         }
 
+        public string DateSize;
+
         public IReadOnlyList<TprTimelineItem> Tasks => _items;
 
         public void AddItem(TprTimelineItem item)

@@ -16,7 +16,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
         public virtual TagBuilder GenerateTprTimeline(
             AttributeDictionary? attributes,
-            IEnumerable<TprTimelineItem> items)
+            IEnumerable<TprTimelineItem> items,
+            string dateSize)
         {
             Guard.ArgumentNotNull(nameof(items), items);
             Guard.ArgumentValid(nameof(items), "A Timeline must contain at least one item", items.Any());
@@ -24,6 +25,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var timelineTagBuilder = new TagBuilder(TimelineElement);
             if (attributes is not null) { timelineTagBuilder.MergeAttributes(attributes); }
             timelineTagBuilder.MergeCssClass("tpr-timeline");
+
+            
+            if (!string.IsNullOrWhiteSpace(dateSize))
+            {
+                timelineTagBuilder.AddCssClass("tpr-timeline--" + dateSize.ToLower());
+            }
 
             var innerItems = new TagBuilder("ol");
             innerItems.MergeCssClass("tpr-timeline__items");
@@ -35,11 +42,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                 var itemBuilder = new TagBuilder(TimelineItemElement);
                 itemBuilder.MergeCssClass("tpr-timeline__item");
-
+                
                 if (item.Attributes is not null) { itemBuilder.MergeAttributes(item.Attributes); }
                 innerItems.InnerHtml.AppendHtml(itemBuilder);
 
-                itemBuilder.InnerHtml.AppendHtml(BuildDateTime(item));
+                itemBuilder.InnerHtml.AppendHtml(BuildDateTime(item, dateSize));
                 itemBuilder.InnerHtml.AppendHtml(BuildHeading(item));
 
                 if (item.Content != null)
@@ -53,11 +60,15 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             return timelineTagBuilder;
         }
 
-        private static TagBuilder BuildDateTime(TprTimelineItem item)
+        private static TagBuilder BuildDateTime(TprTimelineItem item, string dateSize)
         {
             var timelineItemDateTime = new TagBuilder("p");
             timelineItemDateTime.MergeCssClass("tpr-timeline__datetime");
             timelineItemDateTime.InnerHtml.AppendHtml(item.DateTime!.ToString());
+            if (!string.IsNullOrWhiteSpace(dateSize))
+            {
+                timelineItemDateTime.AddCssClass("tpr-timeline__datetime--" + dateSize.ToLower());
+            }
             return timelineItemDateTime;
         }
 

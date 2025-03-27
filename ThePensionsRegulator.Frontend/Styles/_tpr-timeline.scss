@@ -1,13 +1,15 @@
 .tpr-timeline {
   font-family: $govuk-font-family;
+} 
 
-  &__items {
+
+  .tpr-timeline__items {
     padding: 0;
     list-style-type: none;
     border-left: 3px solid $govuk-brand-colour;
   }
 
-  &__item {
+  .tpr-timeline__item {
     position: relative;
     top: -8px;
     margin: govuk-spacing(3) 0;
@@ -36,29 +38,35 @@
     }
   }
 
-  &__datetime {
-    @include govuk-font($size: 16);
-    margin-bottom: govuk-spacing(1);
-  }
+    .tpr-timeline__datetime {
+      @include govuk-font($size: 16);
+      margin-bottom: govuk-spacing(1);
+    .tpr-timeline--large & {
+          // background:orange;
+          @include govuk-font($size: 24);
+          margin-bottom: govuk-spacing(1);
+        }
+      }
 
-  &__heading {
+  .tpr-timeline__heading {
     @include govuk-font($size: 19, $weight: bold);
     margin-block: 0;
     margin-bottom: govuk-spacing(1);
   }
 
-  &__by-line {
+  .tpr-timeline__by-line {
     @include govuk-font($size: 16);
     margin-bottom: govuk-spacing(3);
   }
 
-  &__content {
+  .tpr-timeline__content {
     @include govuk-font($size: 19);
     margin-bottom: govuk-spacing(2);
   }
 
-  &__link {
+  .tpr-timeline__link {
     @include govuk-font($size: 19);
     @extend .govuk-link;
   }
-}
+  
+  

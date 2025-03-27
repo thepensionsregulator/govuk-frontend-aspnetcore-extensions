@@ -17,6 +17,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         internal const string TagName = "tpr-timeline";
 
         private readonly ITprHtmlGenerator _htmlGenerator;
+        
+        [HtmlAttributeName("datesize")]
+        public string? DateSize { get; set; } = string.Empty; 
+
 
         /// <summary>
         /// Creates a new <see cref="TprFooterBarTagHelper"/>.
@@ -41,11 +45,14 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();
             }
 
+            timelineContext.DateSize = DateSize;
+
             timelineContext.ThrowIfIncomplete();
 
             var tagBuilder = _htmlGenerator.GenerateTprTimeline(
                 output.Attributes.ToAttributeDictionary(),
-                timelineContext.Tasks
+                timelineContext.Tasks,
+                timelineContext.DateSize
             );
 
             output.TagName = tagBuilder.TagName;

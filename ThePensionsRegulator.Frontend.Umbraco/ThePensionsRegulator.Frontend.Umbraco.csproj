@@ -91,39 +91,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Update="uSync\v9\ContentTypes\tprrelatedlinks.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprrelatedlinkssettings.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRAccordionBlockList.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRAccordionSectionBlockGrid.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRBlockList.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRBlockGrid.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRBoxColour.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRBoxStyle.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRNestedBoxStyle.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRRichTextEditorHeaderAndFooter.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Update="NuGetReadme.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>

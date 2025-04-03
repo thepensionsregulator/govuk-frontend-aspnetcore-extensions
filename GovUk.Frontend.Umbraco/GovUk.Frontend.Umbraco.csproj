@@ -119,13 +119,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Update="Views\Shared\GOVUK\GovUkAccordion.cshtml">
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Update="NuGetReadme.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>

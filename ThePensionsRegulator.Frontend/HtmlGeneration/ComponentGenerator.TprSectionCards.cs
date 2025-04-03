@@ -30,6 +30,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         var anchorElement = new TagBuilder("a");
                         anchorElement.Attributes.Add("href", card.TitleUrl);
 
+                        if(!string.IsNullOrWhiteSpace(card.TitleTarget))
+                        {
+                            anchorElement.Attributes.Add("target",card.TitleTarget);
+                        }
+
                         if (card.TitleAllowHtml)
                         {
                             anchorElement.InnerHtml.AppendHtml(card.Title);

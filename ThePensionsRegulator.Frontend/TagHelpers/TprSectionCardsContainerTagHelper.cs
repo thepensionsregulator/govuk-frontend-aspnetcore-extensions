@@ -45,6 +45,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     TitleAttributes = c.TitleAttributes,
                     Title = c.Title,
                     TitleUrl = c.TitleUrl,
+                    TitleTarget = c.TitleTarget,
                     TitleAllowHtml = c.TitleAllowHtml,
                     ContentAttributes = c.ContentAttributes,
                     Content = c.Content,

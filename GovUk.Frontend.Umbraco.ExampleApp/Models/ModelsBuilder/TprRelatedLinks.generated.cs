@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>TPR related links</summary>
+	/// <summary>Related links</summary>
 	[PublishedModel("tprRelatedLinks")]
 	public partial class TprRelatedLinks : PublishedElementModel
 	{

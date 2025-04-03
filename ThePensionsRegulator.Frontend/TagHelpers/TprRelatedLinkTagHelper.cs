@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -12,11 +10,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-related-link";
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            output.PreElement.SetHtmlContent("<li>");
-            output.TagName = "a";
-            output.PostElement.SetHtmlContent("</li>");
+            var relatedLinksContext = context.GetContextItem<TprRelatedLinksContext>();
+
+            var childContent = await output.GetChildContentAsync();
+
+            relatedLinksContext.AddLink(output.Attributes.ToAttributeDictionary(), childContent.Snapshot());
+
+            output.SuppressOutput();
         }
     }
 }

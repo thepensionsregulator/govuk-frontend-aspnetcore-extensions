@@ -1,9 +1,6 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.TagHelpers;
+﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -13,11 +10,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-related-links-heading";
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            output.PreElement.SetHtmlContent("<li>");
-            output.TagName = "h2";
-            output.PostElement.SetHtmlContent("</li>");
+            var relatedLinksContext = context.GetContextItem<TprRelatedLinksContext>();
+
+            var childContent = await output.GetChildContentAsync();
+
+            relatedLinksContext.SetHeading(output.Attributes.ToAttributeDictionary(), childContent.Snapshot());
+
+            output.SuppressOutput();
         }
     }
 }

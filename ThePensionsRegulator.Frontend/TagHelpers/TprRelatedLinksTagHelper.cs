@@ -1,11 +1,9 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
-using GovUk.Frontend.AspNetCore.Extensions.TagHelpers;
+﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -15,14 +13,44 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-related-links";
 
-        [HtmlAttributeName("outer-styles")]
-        public string? OuterStyles { get; set; }
+        private readonly ITprHtmlGenerator _htmlGenerator;
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        /// <summary>
+        /// Creates a new <see cref="TprContextBarTagHelper"/>.
+        /// </summary>
+        public TprRelatedLinksTagHelper()
+            : this(htmlGenerator: null)
         {
-            output.PreElement.SetHtmlContent($"<div class='{TagName} govuk-body {OuterStyles}'>");
-            output.TagName = "ul";
-            output.PostElement.SetHtmlContent("</div>");
+        }
+
+        internal TprRelatedLinksTagHelper(ITprHtmlGenerator? htmlGenerator)
+        {
+            _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
+        }
+
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
+        {
+            var relatedLinksContext = new TprRelatedLinksContext();
+
+            using (context.SetScopedContextItem(relatedLinksContext))
+            {
+                await output.GetChildContentAsync();
+            }
+
+            var tagBuilder = _htmlGenerator.GenerateTprRelatedLinks(new TprRelatedLinks
+            {
+                RelatedLinksAttributes = output.Attributes.ToAttributeDictionary(),
+                HeadingAttributes = relatedLinksContext.HeadingAttributes,
+                HeadingContent = relatedLinksContext.HeadingContent,
+                Links = relatedLinksContext.Links
+            });
+
+            output.TagName = tagBuilder.TagName;
+            output.TagMode = TagMode.StartTagAndEndTag;
+
+            output.Attributes.Clear();
+            output.MergeAttributes(tagBuilder);
+            output.Content.SetHtmlContent(tagBuilder.InnerHtml);
         }
     }
 }

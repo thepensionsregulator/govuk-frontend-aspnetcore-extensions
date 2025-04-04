@@ -24,7 +24,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 var tprSectionCardBody = new TagBuilder("div");
                 tprSectionCardBody.MergeCssClass("tpr-section-card__body");
 
-                if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToString()))
+                if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToHtmlString()))
                 {
                     var tprSectionCardTitle = new TagBuilder("h2");
                     if (card.TitleAttributes != null) { tprSectionCardTitle.MergeAttributes(card.TitleAttributes); }
@@ -47,7 +47,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         }
                         else
                         {
-                            anchorElement.InnerHtml.Append(card.Title.ToString()!);
+                            anchorElement.InnerHtml.Append(card.Title.ToHtmlString());
                         }
 
                         tprSectionCardTitle.InnerHtml.AppendHtml(anchorElement);
@@ -60,14 +60,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         }
                         else
                         {
-                            tprSectionCardTitle.InnerHtml.Append(card.Title.ToString()!);
+                            tprSectionCardTitle.InnerHtml.Append(card.Title.ToHtmlString());
                         }
                     }
 
                     tprSectionCardBody.InnerHtml.AppendHtml(tprSectionCardTitle);
                 }
 
-                if (card.Content is not null && !string.IsNullOrWhiteSpace(card.Content.ToString()))
+                if (card.Content is not null && !string.IsNullOrWhiteSpace(card.Content.ToHtmlString()))
                 {
                     var tprSectionCardContent = new TagBuilder("div");
                     tprSectionCardContent.MergeCssClass("tpr-section-card__content");
@@ -81,7 +81,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     {
                         var tprSectionCardPara = new TagBuilder("p");
                         tprSectionCardPara.MergeCssClass("govuk-body");
-                        tprSectionCardPara.InnerHtml.Append(card.Content.ToString()!);
+                        tprSectionCardPara.InnerHtml.Append(card.Content.ToHtmlString());
                         tprSectionCardContent.InnerHtml.AppendHtml(tprSectionCardPara);
                     }
 

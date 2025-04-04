@@ -16,6 +16,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("target")]
         public string? Target { get; set; }
 
+        /// <summary>
+        /// Gets or sets whether to allow HTML content.
+        /// </summary>
+        [HtmlAttributeName("allow-html")]
+        public bool AllowHtml { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -24,7 +29,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             cardContext.SetTitle(output.Attributes.ToAttributeDictionary(),
                 content,
-                !content.IsEmptyOrWhiteSpace,
+                AllowHtml,
                 Url,
                 Target);
 

@@ -4,6 +4,7 @@
 @using ThePensionsRegulator.Frontend.TagHelpers
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using System.Web;
 @using ThePensionsRegulator.Umbraco.Blocks;
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Extensions
@@ -43,13 +44,13 @@
                     var target = link.Target;
                     var desc = card.Content.Value<string>(descFieldName);
                     <tpr-section-card class="@cardClass">                       
-                            <tpr-section-card-title href="@url" target="@target">
-                                 @name 
-                            </tpr-section-card-title>
-                            @if (!string.IsNullOrWhiteSpace(desc))
-                            {
-                                <tpr-section-card-content>@Html.Raw(@desc)</tpr-section-card-content>
-                            }
+                        <tpr-section-card-title href="@url" target="@target" allow-html="true">
+                                @name 
+                        </tpr-section-card-title>
+                        @if (!string.IsNullOrWhiteSpace(desc))
+                        {
+                            <tpr-section-card-content allow-html="true">@Html.Raw(@desc)</tpr-section-card-content>
+                        }
                     </tpr-section-card>
                     break;
                 case ElementTypeAliases.TprSectionCardsForChildPages:
@@ -66,15 +67,15 @@
                             childName = child.Value<string>(nameFieldName);
                         }
                         var childUrl = child.Url();
-                        var childDesc = child.Value<string>(descFieldName);
+                        var childDesc = HttpUtility.HtmlDecode(child.Value<string>(descFieldName));
                         <tpr-section-card class="@cardClass">
-                                <tpr-section-card-title href="@childUrl">
-                                    @childName
-                                </tpr-section-card-title>
-                                @if (!string.IsNullOrWhiteSpace(childDesc))
-                                {
-                                    <tpr-section-card-content>@Html.Raw(childDesc)</tpr-section-card-content>
-                                }
+                            <tpr-section-card-title href="@childUrl" allow-html="true">
+                                @Html.Raw(childName)
+                            </tpr-section-card-title>
+                            @if (!string.IsNullOrWhiteSpace(childDesc))
+                            {
+                                <tpr-section-card-content allow-html="true">@Html.Raw(childDesc)</tpr-section-card-content>
+                            }
                         </tpr-section-card>
                     }
                     break;

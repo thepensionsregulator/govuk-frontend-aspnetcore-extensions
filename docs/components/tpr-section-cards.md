@@ -27,16 +27,21 @@ Creates a single section card. Must be inside a `<tpr-section-cards>` element.
 
 Configures the title and link for a single section card.
 
-| Attribute | Type     | Description                                                                                                                                                                       |
-| --------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `href`    | `string` | Sets the URL the title links to.                                                                                                                                                  |
-| `target`  | `string` | Sets the target attribute on the link. Rarely needed because [links should not open in a new tab](https://design-system.service.gov.uk/styles/links/#opening-links-in-a-new-tab). |
+| Attribute    | Type     | Description                                                                                                                                                                       |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `href`       | `string` | Sets the URL the title links to.                                                                                                                                                  |
+| `target`     | `string` | Sets the target attribute on the link. Rarely needed because [links should not open in a new tab](https://design-system.service.gov.uk/styles/links/#opening-links-in-a-new-tab). |
+| `allow-html` | `bool`   | Sets whether to render HTML without escaping. Default is `false`.                                                                                                                 |
 
 Must be inside a `<tpr-section-card>` element.
 
 ### `<tpr-section-card-content>`
 
-Configures the content for a single section card. HTML is allowed.
+Configures the content for a single section card.
+
+| Attribute    | Type   | Description                                                       |
+| ------------ | ------ | ----------------------------------------------------------------- |
+| `allow-html` | `bool` | Sets whether to render HTML without escaping. Default is `false`. |
 
 Must be inside a `<tpr-section-card>` element.
 

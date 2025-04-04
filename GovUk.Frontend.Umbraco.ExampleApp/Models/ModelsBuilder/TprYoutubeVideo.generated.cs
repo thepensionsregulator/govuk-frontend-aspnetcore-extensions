@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Youtube Video</summary>
+	/// <summary>YouTube video</summary>
 	[PublishedModel("tprYoutubeVideo")]
 	public partial class TprYoutubeVideo : PublishedElementModel
 	{
@@ -56,6 +56,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("title")]
 		public virtual string Title => this.Value<string>(_publishedValueFallback, "title");
+
+		///<summary>
+		/// Transcript url
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("transcriptUrl")]
+		public virtual global::Umbraco.Cms.Core.Models.Link TranscriptUrl => this.Value<global::Umbraco.Cms.Core.Models.Link>(_publishedValueFallback, "transcriptUrl");
 
 		///<summary>
 		/// Url: Please enter the URL of the YouTube video

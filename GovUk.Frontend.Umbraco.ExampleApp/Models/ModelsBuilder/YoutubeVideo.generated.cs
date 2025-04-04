@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Youtube video</summary>
+	/// <summary>YouTube video</summary>
 	[PublishedModel("youtubeVideo")]
 	public partial class YoutubeVideo : PublishedContentModel, IGovukPageSettingHeadingSize
 	{

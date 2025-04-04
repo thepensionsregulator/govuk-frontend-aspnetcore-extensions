@@ -49,7 +49,7 @@
 
     var autoplay = Model.Settings.Value<bool>("autoplay");
     
-    bool playsinline = Model.Settings.Value<bool>("playsInLine")!;
+    bool playsInline = Model.Settings.Value<bool>("playsInline")!;
     string preload = Model?.Settings?.Value<string>("preload")!;
     if(string.IsNullOrWhiteSpace(preload)){
         preload = "metadata";
@@ -63,13 +63,9 @@
     useAblePlayer="@useAblePlayer"
     preload="@preload"
     autoplay="@autoplay"
-    playsinline="@playsinline"
+    playsinline="@playsInline"
     transcriptUrl="@transcriptUrl"
     transcriptTitle="@transcriptTitle"
     transcriptTarget="@transcriptTarget"
     >
 </tpr-youtube-video>
-@* @if(!string.IsNullOrWhiteSpace(transcriptUrl))
-{
-    <div><a href="@transcriptUrl" target="@transcriptTarget">@transcriptTitle</a></div>
-} *@

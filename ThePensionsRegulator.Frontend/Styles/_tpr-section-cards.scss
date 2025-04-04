@@ -1,7 +1,7 @@
 @import '_tpr-variables.scss';
 @import 'govuk/base';
 
-.tpr-sectioncards-container {
+.tpr-section-cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
@@ -9,6 +9,13 @@
     margin-left: -$govuk-gutter-half;
     margin-right: -$govuk-gutter-half;
     @include govuk-responsive-margin(6, "bottom");
+}
+
+.tpr-section-cards > ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    margin: 0;
     padding: 0;
     background: $tpr-colour-whisper;
 

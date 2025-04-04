@@ -7,9 +7,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         public virtual TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards)
         {
+            var nav = new TagBuilder("nav");
+            if (tprSectionCards.ContainerAttributes != null) { nav.MergeAttributes(tprSectionCards.ContainerAttributes); }
+            nav.MergeCssClass("tpr-sectioncards-container");
+
             var ulTag = new TagBuilder("ul");
-            if (tprSectionCards.ContainerAttributes != null) { ulTag.MergeAttributes(tprSectionCards.ContainerAttributes); }
-            ulTag.MergeCssClass("tpr-sectioncards-container");
+            nav.InnerHtml.AppendHtml(ulTag);
             ulTag.MergeCssClass("govuk-list");
 
             foreach (var card in tprSectionCards.Cards)
@@ -89,7 +92,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 ulTag.InnerHtml.AppendHtml(tprSectionCard);
             }
 
-            return ulTag;
+            return nav;
         }
     }
 }

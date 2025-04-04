@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Section cards children</summary>
+	/// <summary>Section cards for child pages</summary>
 	[PublishedModel("tprSectionCardsChildren")]
 	public partial class TprSectionCardsChildren : PublishedElementModel
 	{

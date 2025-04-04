@@ -18,14 +18,14 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Section cards</summary>
-	[PublishedModel("sectionCards")]
-	public partial class SectionCards : PublishedContentModel, IGovukPageSettingHeadingSize
+	/// <summary>Section card</summary>
+	[PublishedModel("tprSectionCard")]
+	public partial class TprSectionCard : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		public new const string ModelTypeAlias = "sectionCards";
+		public new const string ModelTypeAlias = "tprSectionCard";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
@@ -34,14 +34,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<SectionCards, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<TprSectionCard, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public SectionCards(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public TprSectionCard(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -55,29 +55,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("description")]
-		public virtual string Description => this.Value<string>(_publishedValueFallback, "description");
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Description => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "description");
 
 		///<summary>
-		/// Grid
+		/// Link
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("gridBlocks")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel GridBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel>(_publishedValueFallback, "gridBlocks");
-
-		///<summary>
-		/// Hide this page from the section cards component
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[ImplementPropertyType("umbracoNaviHide")]
-		public virtual bool UmbracoNaviHide => this.Value<bool>(_publishedValueFallback, "umbracoNaviHide");
-
-		///<summary>
-		/// Page heading size: Sets the h1 size. Defaults to govuk-heading-l if not set.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("headingScaleStart")]
-		public virtual string HeadingScaleStart => global::Umbraco.Cms.Web.Common.PublishedModels.GovukPageSettingHeadingSize.GetHeadingScaleStart(this, _publishedValueFallback);
+		[ImplementPropertyType("link")]
+		public virtual global::Umbraco.Cms.Core.Models.Link Link => this.Value<global::Umbraco.Cms.Core.Models.Link>(_publishedValueFallback, "link");
 	}
 }

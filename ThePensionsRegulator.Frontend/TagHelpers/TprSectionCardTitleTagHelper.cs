@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName)]
-    public class TprSectionCardsCardTitleTagHelper : TagHelper
+    public class TprSectionCardTitleTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-section-cards-card-title";
+        internal const string TagName = "tpr-section-card-title";
 
         [HtmlAttributeName("href")]
         public string? Url { get; set; }
@@ -19,14 +19,14 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var cardContext = context.GetContextItem<TprSectionCardsCardContext>();
+            var cardContext = context.GetContextItem<TprSectionCardContext>();
             var content = await output.GetChildContentAsync();
 
             cardContext.SetTitle(output.Attributes.ToAttributeDictionary(),
                 content,
                 !content.IsEmptyOrWhiteSpace,
-                Url!,
-                Target!);
+                Url,
+                Target);
 
             output.SuppressOutput();
         }

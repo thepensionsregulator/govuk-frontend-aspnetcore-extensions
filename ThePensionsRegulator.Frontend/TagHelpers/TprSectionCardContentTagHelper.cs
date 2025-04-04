@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName)]
-    public class TprSectionCardsCardContentTagHelper : TagHelper
+    public class TprSectionCardContentTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-section-cards-card-content";
+        internal const string TagName = "tpr-section-card-content";
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var cardContext = context.GetContextItem<TprSectionCardsCardContext>();
+            var cardContext = context.GetContextItem<TprSectionCardContext>();
             var content = await output.GetChildContentAsync();
 
             cardContext.SetContent(

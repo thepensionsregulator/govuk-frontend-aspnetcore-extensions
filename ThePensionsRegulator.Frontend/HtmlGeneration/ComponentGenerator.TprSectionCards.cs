@@ -9,7 +9,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         {
             var nav = new TagBuilder("nav");
             if (tprSectionCards.ContainerAttributes != null) { nav.MergeAttributes(tprSectionCards.ContainerAttributes); }
-            nav.MergeCssClass("tpr-sectioncards-container");
+            nav.MergeCssClass("tpr-section-cards");
 
             var ulTag = new TagBuilder("ul");
             nav.InnerHtml.AppendHtml(ulTag);
@@ -19,16 +19,16 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             {
                 var tprSectionCard = new TagBuilder("li");
                 if (card.CardAttributes != null) { tprSectionCard.MergeAttributes(card.CardAttributes); }
-                tprSectionCard.MergeCssClass("tpr-sectioncards");
+                tprSectionCard.MergeCssClass("tpr-section-card");
 
                 var tprSectionCardBody = new TagBuilder("div");
-                tprSectionCardBody.MergeCssClass("tpr-sectioncards__body");
+                tprSectionCardBody.MergeCssClass("tpr-section-card__body");
 
                 if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToString()))
                 {
                     var tprSectionCardTitle = new TagBuilder("h2");
                     if (card.TitleAttributes != null) { tprSectionCardTitle.MergeAttributes(card.TitleAttributes); }
-                    tprSectionCardTitle.MergeCssClass("tpr-sectioncards__title");
+                    tprSectionCardTitle.MergeCssClass("tpr-section-card__title");
 
                     if (!string.IsNullOrEmpty(card.TitleUrl))
                     {
@@ -70,7 +70,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 if (card.Content is not null && !string.IsNullOrWhiteSpace(card.Content.ToString()))
                 {
                     var tprSectionCardContent = new TagBuilder("div");
-                    tprSectionCardContent.MergeCssClass("tpr-sectioncards__content");
+                    tprSectionCardContent.MergeCssClass("tpr-section-card__content");
                     if (card.ContentAttributes != null) { tprSectionCardContent.MergeAttributes(card.ContentAttributes); }
 
                     if (card.ContentAllowHtml)

@@ -17,19 +17,8 @@
     {
         return;
     }
-    var settings = Model.Settings;
-    var nameFieldName = string.Empty;
-    var descFieldName = string.Empty;
-    
-    if(settings != null){
-        nameFieldName = settings.Value<string>(TprPropertyAliases.TprSectionCardNameProperty);
-        descFieldName = settings.Value<string>(TprPropertyAliases.TprSectionCardDescriptionProperty);        
-    }
-
-    if (string.IsNullOrWhiteSpace(nameFieldName))
-    {
-        nameFieldName = TprPropertyAliases.TprSectionCardNamePropertyDefault;
-    }
+    var nameFieldName = Model.Settings.Value<string>(TprPropertyAliases.TprSectionCardNameProperty);
+    var descFieldName = Model.Settings.Value<string>(TprPropertyAliases.TprSectionCardDescriptionProperty);
 
     if (string.IsNullOrWhiteSpace(descFieldName))
     {
@@ -72,7 +61,7 @@
                             continue;
                         }
                         var childName = child.Name;
-                        if (nameFieldName != TprPropertyAliases.TprSectionCardNamePropertyDefault)
+                        if (!string.IsNullOrWhiteSpace(nameFieldName))
                         {
                             childName = child.Value<string>(nameFieldName);
                         }

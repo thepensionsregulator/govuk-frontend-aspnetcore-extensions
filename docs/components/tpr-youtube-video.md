@@ -40,9 +40,9 @@ In TPR pages, you can add a YouTube video block. ~~This is rendered using [ablep
 
 ## Umbraco block grid
 
-Add a 'YouTube Video' component anywhere in a block grid using the 'TPR block list', 'TPR no forms block list', 'TPR block grid' or TPR accordion section block grid' data types.
+Add a 'YouTube video' component anywhere in a block grid or block list using the 'TPR block list', 'TPR block grid' or TPR accordion section block grid' data types.
 
-![Add a box component](/docs/images/youtube-video-block.png)
+![Add a YouTube video component](/docs/images/youtube-video-block.png)
 
 You have to fill in the following fields:
 
@@ -56,8 +56,8 @@ In the settings tab, you can adjust the following properties:
 - Plays inline (on by default) - Instructs supporting browsers to play the video “inline” within the web page.
 - Preload - Tells the browser how much media to download when the page loads.
 
-![Box settings](/docs/images/youtube-video-settings.png)
+![YouTube video settings](/docs/images/youtube-video-settings.png)
 
 The video player will fill the width available to it. Please see the examples below of how it looks in different column widths.
 
-![Box examples in column layouts](/docs/images/youtube-video-example2.png)
+![YouTube video examples](/docs/images/youtube-video-example2.png)

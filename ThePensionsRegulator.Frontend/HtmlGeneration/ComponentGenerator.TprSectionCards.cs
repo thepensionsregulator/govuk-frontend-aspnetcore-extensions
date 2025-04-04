@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using GovUk.Frontend.AspNetCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -8,31 +9,33 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         {
             var ulTag = new TagBuilder("ul");
             if (tprSectionCards.ContainerAttributes != null) { ulTag.MergeAttributes(tprSectionCards.ContainerAttributes); }
-            ulTag.AddCssClass("tpr-sectioncards-container govuk-list ");
+            ulTag.MergeCssClass("tpr-sectioncards-container");
+            ulTag.MergeCssClass("govuk-list");
 
             foreach (var card in tprSectionCards.Cards)
             {
                 var tprSectionCard = new TagBuilder("li");
                 if (card.CardAttributes != null) { tprSectionCard.MergeAttributes(card.CardAttributes); }
-                tprSectionCard.AddCssClass("tpr-sectioncards");
+                tprSectionCard.MergeCssClass("tpr-sectioncards");
 
                 var tprSectionCardBody = new TagBuilder("div");
-                tprSectionCardBody.AddCssClass("tpr-sectioncards__body");
+                tprSectionCardBody.MergeCssClass("tpr-sectioncards__body");
 
-                if (card.Title != null)
+                if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToString()))
                 {
                     var tprSectionCardTitle = new TagBuilder("h2");
                     if (card.TitleAttributes != null) { tprSectionCardTitle.MergeAttributes(card.TitleAttributes); }
-                    tprSectionCardTitle.AddCssClass("tpr-sectioncards__title govuk-link");
+                    tprSectionCardTitle.MergeCssClass("tpr-sectioncards__title");
 
                     if (!string.IsNullOrEmpty(card.TitleUrl))
                     {
                         var anchorElement = new TagBuilder("a");
+                        anchorElement.MergeCssClass("govuk-link");
                         anchorElement.Attributes.Add("href", card.TitleUrl);
 
-                        if(!string.IsNullOrWhiteSpace(card.TitleTarget))
+                        if (!string.IsNullOrWhiteSpace(card.TitleTarget))
                         {
-                            anchorElement.Attributes.Add("target",card.TitleTarget);
+                            anchorElement.Attributes.Add("target", card.TitleTarget);
                         }
 
                         if (card.TitleAllowHtml)
@@ -61,9 +64,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     tprSectionCardBody.InnerHtml.AppendHtml(tprSectionCardTitle);
                 }
 
-                if (card.Content != null)
+                if (card.Content is not null && !string.IsNullOrWhiteSpace(card.Content.ToString()))
                 {
-                    var tprSectionCardContent = new TagBuilder("p");
+                    var tprSectionCardContent = new TagBuilder("div");
+                    tprSectionCardContent.MergeCssClass("tpr-sectioncards__content");
                     if (card.ContentAttributes != null) { tprSectionCardContent.MergeAttributes(card.ContentAttributes); }
 
                     if (card.ContentAllowHtml)
@@ -72,7 +76,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     }
                     else
                     {
-                        tprSectionCardContent.InnerHtml.Append(card.Content.ToString()!);
+                        var tprSectionCardPara = new TagBuilder("p");
+                        tprSectionCardPara.MergeCssClass("govuk-body");
+                        tprSectionCardPara.InnerHtml.Append(card.Content.ToString()!);
+                        tprSectionCardContent.InnerHtml.AppendHtml(tprSectionCardPara);
                     }
 
                     tprSectionCardBody.InnerHtml.AppendHtml(tprSectionCardContent);

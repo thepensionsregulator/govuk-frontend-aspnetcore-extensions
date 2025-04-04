@@ -1,6 +1,10 @@
+.tpr-video-wrapper-no-cookies {
+    @include govuk-responsive-margin(6, "bottom");
+}
+
 .tpr-video-wrapper-no-cookies__video-container {
     position: relative;
-    padding-bottom: 56.25%!important; /* 16:9 , important is required to make it work in TPR Box */
+    padding-bottom: 56.25% !important; /* 16:9 , important is required to make it work in TPR Box */
     height: 0;
     overflow: hidden;
 }

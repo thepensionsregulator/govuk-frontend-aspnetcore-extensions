@@ -12,8 +12,8 @@
 @using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases;
 @using ElementTypeAliases = ThePensionsRegulator.Frontend.Umbraco.ElementTypeAliases;
 @{
-    var boxes = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.TprSectionCardsCards);
-    if (boxes == null || boxes.Any() == false)
+    var cards = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.TprSectionCardsCards);
+    if (cards == null || cards.Any() == false)
     {
         return;
     }
@@ -36,24 +36,25 @@
         descFieldName = "description";
     }
     
-    var cssClasses = (" " + Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();
+    var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
     
     <tpr-section-cards-container class="@cssClasses">
     
-        @foreach (var box in boxes)
+        @foreach (var card in cards)
         {           
-            var type = box.Content.ContentType.Alias;
+            var type = card.Content.ContentType.Alias;
+            var cardClass = card.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
             switch (type)
             {
                 case ElementTypeAliases.TprSectionCardsCard:
-                    var link = box.Content.Value<Link>("link");
+                    var link = card.Content.Value<Link>("link");
                     if(link == null)
                         continue;
                     var name = link.Name;
                     var url = link.Url;
                     var target = link.Target;
-                    var desc = box.Content.Value<string>(descFieldName);
-                    <tpr-section-cards-card>                       
+                    var desc = card.Content.Value<string>(descFieldName);
+                    <tpr-section-cards-card class="@cardClass">                       
                             <tpr-section-cards-card-title href="@url" target="@target">
                                  @name 
                             </tpr-section-cards-card-title>
@@ -78,7 +79,7 @@
                         }
                         var childUrl = child.Url();
                         var childDesc = child.Value<string>(descFieldName);
-                        <tpr-section-cards-card>
+                        <tpr-section-cards-card class="@cardClass">
                                 <tpr-section-cards-card-title href="@childUrl">
                                     @childName
                                 </tpr-section-cards-card-title>

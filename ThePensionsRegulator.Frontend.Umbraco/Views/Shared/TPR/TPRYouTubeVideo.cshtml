@@ -2,15 +2,12 @@
 @addTagHelper *, ThePensionsRegulator.Frontend
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Umbraco.Blocks;
 @using ThePensionsRegulator.Umbraco;
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Extensions
 @using Umbraco.Cms.Web.Common.PublishedModels
-@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
-@using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.TprPropertyAliases;
-@using ElementTypeAliases = ThePensionsRegulator.Frontend.Umbraco.TprElementTypeAliases;
-
 
 @{
     @* Since we cannot make AblePlayer work with the existing 
@@ -31,6 +28,7 @@
     }
     string id = Model.Content.Key.ToString();
     var title = Model.Content.Value<string>(TprPropertyAliases.VideoTitle);
+    var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var urlToken = "v=";
     var videoId = videoUrl.Substring(videoUrl.IndexOf(urlToken) + urlToken.Length);
     var transcriptLink = Model.Content.Value<Link>(TprPropertyAliases.VideoTranscriptUrl);
@@ -56,15 +54,16 @@
     }
 }
 <tpr-youtube-video
-    id="@id" 
+    class="@cssClasses"
+    video-id="@id" 
     title="@title"
-    videoId="@videoId"
-    useAblePlayer="@useAblePlayer"
+    youtube-video-id="@videoId"
+    use-able-player="@useAblePlayer"
     preload="@preload"
     autoplay="@autoplay"
-    playsinline="@playsInline"
-    transcriptUrl="@transcriptUrl"
-    transcriptTitle="@transcriptTitle"
-    transcriptTarget="@transcriptTarget"
+    plays-inline="@playsInline"
+    transcript-url="@transcriptUrl"
+    transcript-title="@transcriptTitle"
+    transcript-target="@transcriptTarget"
     >
 </tpr-youtube-video>

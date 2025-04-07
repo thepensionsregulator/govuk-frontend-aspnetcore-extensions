@@ -50,7 +50,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Description field name: Defaults to 'description' if left blank. Is used to determine which field to pull the text for the description of the card from.
+		/// Description property alias: Sets the property to get the card description from. Defaults to 'description' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -58,7 +58,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string DescriptionFieldName => this.Value<string>(_publishedValueFallback, "descriptionFieldName");
 
 		///<summary>
-		/// Title field name: Defaults to 'name' if left blank. Is used to determine which field to pull the text for the title of the card from.
+		/// Title property alias: Sets the property to get the card title from. Defaults to the page name if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

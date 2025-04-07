@@ -9,92 +9,71 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         internal const string YouTubeVideoDefaultPreload = "metadata";
         internal const string YouTubeVideoElement = "video";
 
-        public virtual TagBuilder GenerateTprAblePlayer(
-            string id,
-            string title,
-            string videoId,
-            bool autoplay,
-            bool playsInline,
-            string preload,
-            string transcriptUrl,
-            string transcriptTitle,
-            string transcriptTarget)
+        public virtual TagBuilder GenerateTprAblePlayer(TprYouTubeVideo video)
         {
-            Guard.ArgumentNotNullOrEmpty(nameof(id), id);
-            Guard.ArgumentNotNullOrEmpty(nameof(videoId), videoId);
-            Guard.ArgumentNotNullOrEmpty(nameof(preload), preload);
+            Guard.ArgumentNotNullOrEmpty(nameof(video.YouTubeVideoId), video.YouTubeVideoId);
+            Guard.ArgumentNotNullOrEmpty(nameof(video.Preload), video.Preload);
 
 
             var videoTag = new TagBuilder("video");
-            videoTag.Attributes.Add("id", id);
+            videoTag.MergeAttributes(video.Attributes);
+            if (!string.IsNullOrWhiteSpace(video.VideoId))
+            {
+                if (videoTag.Attributes.ContainsKey("id")) { videoTag.Attributes.Remove("id"); }
+                videoTag.Attributes.Add("id", video.VideoId);
+            }
             videoTag.Attributes.Add("data-able-player", null);
             videoTag.Attributes.Add("data-youtube-nocookie", null);
-            videoTag.Attributes.Add("data-youtube-id", videoId);
+            videoTag.Attributes.Add("data-youtube-id", video.YouTubeVideoId);
             videoTag.Attributes.Add("data-root-path", "/_content/ThePensionsRegulator.Frontend.Umbraco/tpr/lib/ableplayer/");
-            if (autoplay)
-                videoTag.Attributes.Add("autoplay", null);
-
-            if (playsInline)
-            {
-                videoTag.Attributes.Add("playsinline", null);
-            }
-
-            videoTag.Attributes.Add("preload", preload);
+            if (video.Autoplay) { videoTag.Attributes.Add("autoplay", null); }
+            if (video.PlaysInline) { videoTag.Attributes.Add("playsinline", null); }
+            videoTag.Attributes.Add("preload", video.Preload);
 
             return videoTag;
         }
 
-        public virtual TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(
-            string id,
-            string title,
-            string videoId,
-            bool autoplay,
-            bool playsInline,
-            string preload,
-            string transcriptUrl,
-            string transcriptTitle,
-            string transcriptTarget)
+        public virtual TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(TprYouTubeVideo video)
         {
-            Guard.ArgumentNotNullOrEmpty(nameof(id), id);
-            Guard.ArgumentNotNullOrEmpty(nameof(videoId), videoId);
+            Guard.ArgumentNotNullOrEmpty(nameof(video.YouTubeVideoId), video.YouTubeVideoId);
 
             var containerTag = new TagBuilder("div");
+            containerTag.MergeAttributes(video.Attributes);
             containerTag.MergeCssClass("tpr-video-wrapper-no-cookies");
             var wrapperTag = new TagBuilder("div");
             wrapperTag.MergeCssClass("tpr-video-wrapper-no-cookies__video-container");
 
             var iFrame = new TagBuilder("iframe");
-            var src = "https://www.youtube-nocookie.com/embed/" + videoId;
-            if (autoplay)
+            var src = "https://www.youtube-nocookie.com/embed/" + video.YouTubeVideoId;
+            if (video.Autoplay)
             {
-
                 src += "/?autoplay=1&mute=1";
             }
 
             iFrame.Attributes.Add("src", src);
 
-            iFrame.Attributes.Add("id", id);
-            iFrame.Attributes.Add("title", title);
+            if (!string.IsNullOrWhiteSpace(video.VideoId)) { iFrame.Attributes.Add("id", video.VideoId); }
+            iFrame.Attributes.Add("title", video.Title);
             iFrame.Attributes.Add("frameborder", "0");
             iFrame.Attributes.Add("allow", "accelerometer; autoplay;  encrypted-media; gyroscope; picture-in-picture; web-share");
             iFrame.Attributes.Add("referrerpolicy", "strict-origin-when-cross-origin");
             iFrame.Attributes.Add("allowfullscreen", null);
             iFrame.Attributes.Add("credentialless", null);
-            iFrame.Attributes.Add("playsinline", playsInline ? "1" : "0");
+            iFrame.Attributes.Add("playsinline", video.PlaysInline ? "1" : "0");
 
             wrapperTag.InnerHtml.AppendHtml(iFrame);
             containerTag.InnerHtml.AppendHtml(wrapperTag);
 
-            if (!string.IsNullOrWhiteSpace(transcriptUrl))
+            if (!string.IsNullOrWhiteSpace(video.TranscriptUrl))
             {
                 var transcriptLink = new TagBuilder("a");
                 transcriptLink.MergeCssClass("tpr-video-wrapper-no-cookies__transcript-link");
-                transcriptLink.Attributes.Add("href", transcriptUrl);
-                if (!string.IsNullOrWhiteSpace(transcriptTarget))
+                transcriptLink.Attributes.Add("href", video.TranscriptUrl);
+                if (!string.IsNullOrWhiteSpace(video.TranscriptTarget))
                 {
-                    transcriptLink.Attributes.Add("target", transcriptTarget);
+                    transcriptLink.Attributes.Add("target", video.TranscriptTarget);
                 }
-                transcriptLink.InnerHtml.AppendHtml(transcriptTitle);
+                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle);
                 containerTag.InnerHtml.AppendHtml(transcriptLink);
             }
 

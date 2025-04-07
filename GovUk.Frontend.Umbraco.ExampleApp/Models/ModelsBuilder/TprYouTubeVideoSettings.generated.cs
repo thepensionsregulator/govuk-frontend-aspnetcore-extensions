@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Youtube video settings</summary>
+	/// <summary>YouTube video settings</summary>
 	[PublishedModel("tprYouTubeVideoSettings")]
 	public partial class TprYouTubeVideoSettings : PublishedElementModel, IGovukCssClasses
 	{

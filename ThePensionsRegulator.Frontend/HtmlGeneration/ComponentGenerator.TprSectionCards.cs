@@ -8,7 +8,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public virtual TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards)
         {
             var nav = new TagBuilder("nav");
-            if (tprSectionCards.ContainerAttributes != null) { nav.MergeAttributes(tprSectionCards.ContainerAttributes); }
+            if (tprSectionCards.Attributes != null) { nav.MergeAttributes(tprSectionCards.Attributes); }
             nav.MergeCssClass("tpr-section-cards");
 
             var ulTag = new TagBuilder("ul");

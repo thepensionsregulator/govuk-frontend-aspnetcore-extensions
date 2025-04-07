@@ -33,17 +33,18 @@
     var videoId = videoUrl.Substring(videoUrl.IndexOf(urlToken) + urlToken.Length);
     var transcriptLink = Model.Content.Value<Link>(TprPropertyAliases.VideoTranscriptUrl);
     var transcriptUrl = string.Empty;
-    var transcriptTitle = "View the script for this video";
     var transcriptTarget = string.Empty;
     if (!string.IsNullOrWhiteSpace(transcriptLink?.Url))
     {
         transcriptUrl = transcriptLink.Url;
         transcriptTarget = transcriptLink.Target;
     }
+    var transcriptTitle = Umbraco.GetDictionaryValueOrDefault("YouTube video - transcript link text", "View transcript for '{{title}}'");
     if (!string.IsNullOrWhiteSpace(transcriptLink?.Name))
     {
         transcriptTitle = transcriptLink.Name;
     }
+    transcriptTitle = transcriptTitle.Replace("{{title}}", title);
 
     var autoplay = Model.Settings.Value<bool>(TprPropertyAliases.VideoAutoplay);
     

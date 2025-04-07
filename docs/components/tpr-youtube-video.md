@@ -50,6 +50,14 @@ You have to fill in the following fields:
 - Url - This is the url of the YouTube video.
 - Transcript url - (Optional) : This adds a link to the video transcript under the video.
 
+When you provide a transcript URL you can set the link text in three ways:
+
+- provide a title in the URL dialogue
+- add a dictionary entry with the key 'YouTube video - transcript link text'
+- leave both blank to use the default "View transcript for '{{title}}'"
+
+In any of the above locations a `{{title}}` token is replaced with the title of the video.
+
 In the settings tab, you can adjust the following properties:
 
 - Autoplay (off by default) - Starts playing the video when the page loads.

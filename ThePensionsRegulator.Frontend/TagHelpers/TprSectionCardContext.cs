@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    internal class TprSectionCardsCardContext
+    internal class TprSectionCardContext
     {
         private (AttributeDictionary Attributes, IHtmlContent? Title, bool AllowHtml, string? Url, string? Target)? _title;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
@@ -19,24 +19,24 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public IHtmlContent? Content => _content?.Content;
         public bool ContentAllowHtml => _content?.AllowHtml ?? false;
 
-        public void SetTitle(AttributeDictionary attributes, IHtmlContent? title, bool allowHtml, string url, string target)
+        public void SetTitle(AttributeDictionary attributes, IHtmlContent? title, bool allowHtml, string? url, string? target)
         {
             if (_title != null)
             {
                 throw ExceptionHelper.OnlyOneElementIsPermittedIn(
-                    TprSectionCardsCardTitleTagHelper.TagName,
-                    TprSectionCardsCardTagHelper.TagName);
+                    TprSectionCardTitleTagHelper.TagName,
+                    TprSectionCardTagHelper.TagName);
             }
             _title = (attributes, title, allowHtml, url, target);
         }
 
         public void SetContent(AttributeDictionary contentAttributes, IHtmlContent? content, bool allowHtml)
         {
-            if(_content != null)
+            if (_content != null)
             {
                 throw ExceptionHelper.OnlyOneElementIsPermittedIn(
-                    TprSectionCardsCardContentTagHelper.TagName,
-                     TprSectionCardsCardTagHelper.TagName);
+                    TprSectionCardContentTagHelper.TagName,
+                     TprSectionCardTagHelper.TagName);
             }
             _content = (contentAttributes, content, allowHtml);
         }

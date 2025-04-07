@@ -7,25 +7,28 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         public virtual TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards)
         {
+            var nav = new TagBuilder("nav");
+            if (tprSectionCards.ContainerAttributes != null) { nav.MergeAttributes(tprSectionCards.ContainerAttributes); }
+            nav.MergeCssClass("tpr-section-cards");
+
             var ulTag = new TagBuilder("ul");
-            if (tprSectionCards.ContainerAttributes != null) { ulTag.MergeAttributes(tprSectionCards.ContainerAttributes); }
-            ulTag.MergeCssClass("tpr-sectioncards-container");
+            nav.InnerHtml.AppendHtml(ulTag);
             ulTag.MergeCssClass("govuk-list");
 
             foreach (var card in tprSectionCards.Cards)
             {
                 var tprSectionCard = new TagBuilder("li");
                 if (card.CardAttributes != null) { tprSectionCard.MergeAttributes(card.CardAttributes); }
-                tprSectionCard.MergeCssClass("tpr-sectioncards");
+                tprSectionCard.MergeCssClass("tpr-section-card");
 
                 var tprSectionCardBody = new TagBuilder("div");
-                tprSectionCardBody.MergeCssClass("tpr-sectioncards__body");
+                tprSectionCardBody.MergeCssClass("tpr-section-card__body");
 
-                if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToString()))
+                if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToHtmlString()))
                 {
                     var tprSectionCardTitle = new TagBuilder("h2");
                     if (card.TitleAttributes != null) { tprSectionCardTitle.MergeAttributes(card.TitleAttributes); }
-                    tprSectionCardTitle.MergeCssClass("tpr-sectioncards__title");
+                    tprSectionCardTitle.MergeCssClass("tpr-section-card__title");
 
                     if (!string.IsNullOrEmpty(card.TitleUrl))
                     {
@@ -44,7 +47,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         }
                         else
                         {
-                            anchorElement.InnerHtml.Append(card.Title.ToString()!);
+                            anchorElement.InnerHtml.Append(card.Title.ToHtmlString());
                         }
 
                         tprSectionCardTitle.InnerHtml.AppendHtml(anchorElement);
@@ -57,17 +60,17 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         }
                         else
                         {
-                            tprSectionCardTitle.InnerHtml.Append(card.Title.ToString()!);
+                            tprSectionCardTitle.InnerHtml.Append(card.Title.ToHtmlString());
                         }
                     }
 
                     tprSectionCardBody.InnerHtml.AppendHtml(tprSectionCardTitle);
                 }
 
-                if (card.Content is not null && !string.IsNullOrWhiteSpace(card.Content.ToString()))
+                if (card.Content is not null && !string.IsNullOrWhiteSpace(card.Content.ToHtmlString()))
                 {
                     var tprSectionCardContent = new TagBuilder("div");
-                    tprSectionCardContent.MergeCssClass("tpr-sectioncards__content");
+                    tprSectionCardContent.MergeCssClass("tpr-section-card__content");
                     if (card.ContentAttributes != null) { tprSectionCardContent.MergeAttributes(card.ContentAttributes); }
 
                     if (card.ContentAllowHtml)
@@ -78,7 +81,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     {
                         var tprSectionCardPara = new TagBuilder("p");
                         tprSectionCardPara.MergeCssClass("govuk-body");
-                        tprSectionCardPara.InnerHtml.Append(card.Content.ToString()!);
+                        tprSectionCardPara.InnerHtml.Append(card.Content.ToHtmlString());
                         tprSectionCardContent.InnerHtml.AppendHtml(tprSectionCardPara);
                     }
 
@@ -89,7 +92,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 ulTag.InnerHtml.AppendHtml(tprSectionCard);
             }
 
-            return ulTag;
+            return nav;
         }
     }
 }

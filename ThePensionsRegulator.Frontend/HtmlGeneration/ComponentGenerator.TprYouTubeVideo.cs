@@ -47,7 +47,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var src = "https://www.youtube-nocookie.com/embed/" + video.YouTubeVideoId;
             if (video.Autoplay)
             {
-                src += "/?autoplay=1&mute=1";
+                src += "?autoplay=1&mute=1";
             }
 
             iFrame.Attributes.Add("src", src);

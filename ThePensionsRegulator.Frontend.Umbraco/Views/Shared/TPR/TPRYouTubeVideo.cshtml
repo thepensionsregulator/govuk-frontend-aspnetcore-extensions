@@ -1,8 +1,10 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>;
 @addTagHelper *, ThePensionsRegulator.Frontend
+@inject IYouTubeVideoIdParser videoIdParser
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
 @using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco.Blocks;
 @using ThePensionsRegulator.Umbraco;
 @using Umbraco.Cms.Core.Models
@@ -26,11 +28,13 @@
     {
         return;
     }
+    if (!videoIdParser.TryParseUrl(videoUrl, out var videoId))
+    {
+        return;
+    }
     string id = Model.Content.Key.ToString();
     var title = Model.Content.Value<string>(TprPropertyAliases.VideoTitle);
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
-    var urlToken = "v=";
-    var videoId = videoUrl.Substring(videoUrl.IndexOf(urlToken) + urlToken.Length);
     var transcriptLink = Model.Content.Value<Link>(TprPropertyAliases.VideoTranscriptUrl);
     var transcriptUrl = string.Empty;
     var transcriptTarget = string.Empty;
@@ -47,10 +51,10 @@
     transcriptTitle = transcriptTitle.Replace("{{title}}", title);
 
     var autoplay = Model.Settings.Value<bool>(TprPropertyAliases.VideoAutoplay);
-    
     bool playsInline = Model.Settings.Value<bool>(TprPropertyAliases.VideoPlaysInline)!;
     string preload = Model?.Settings?.Value<string>(TprPropertyAliases.VideoPreload)!;
-    if(string.IsNullOrWhiteSpace(preload)){
+    if(string.IsNullOrWhiteSpace(preload))
+    {
         preload = "metadata";
     }
 }

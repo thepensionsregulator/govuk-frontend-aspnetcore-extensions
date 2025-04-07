@@ -10,8 +10,8 @@
         public const string TprBackToMenuSettings = "tprBackToMenuSettings";
         public const string TprBackToTop = "tprBackToTop";
         public const string TprSectionCards = "tprSectionCards";
-        public const string TprSectionCardsCard = "tprSectionCardsCard";
-        public const string TprSectionCardsChildren = "tprSectionCardsChildren";
+        public const string TprSectionCard = "tprSectionCard";
+        public const string TprSectionCardsForChildPages = "tprSectionCardsChildren";
         public const string TprSectionCardsSettings = "tprSectionCardsSettings";
         public const string TprContextBarContext1 = "tprContextBar1";
         public const string TprContextBarContext2 = "tprContextBar2";

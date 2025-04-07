@@ -9,6 +9,10 @@
         public const string TprRelatedLinksLinks = "links";
         public const string TprBoxStyle = "styleOfBox";
         public const string TprBoxBackgroundColour = "backgroundColour";
-        public const string TprSectionCardsCards = "cards";
+        public const string TprSectionCards = "cards";
+        public const string TprSectionCardLink = "link";
+        public const string TprSectionCardNameProperty = "titleFieldName";
+        public const string TprSectionCardDescriptionProperty = "descriptionFieldName";
+        public const string TprSectionCardDescriptionPropertyDefault = "description";
     }
 }

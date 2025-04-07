@@ -9,27 +9,27 @@ using ThePensionsRegulator.Frontend.HtmlGeneration;
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName)]
-    [RestrictChildren(TprSectionCardsCardTagHelper.TagName)]
-    [OutputElementHint("ul")]
+    [RestrictChildren(TprSectionCardTagHelper.TagName)]
+    [OutputElementHint("nav")]
 
-    public class TprSectionCardsContainerTagHelper : TagHelper
+    public class TprSectionCardsTagHelper : TagHelper
     {
         private readonly ITprHtmlGenerator _htmlGenerator;
 
-        internal const string TagName = "tpr-section-cards-container";
+        internal const string TagName = "tpr-section-cards";
 
-        public TprSectionCardsContainerTagHelper()
+        public TprSectionCardsTagHelper()
           : this(htmlGenerator: null)
         {
         }
 
-        internal TprSectionCardsContainerTagHelper(ITprHtmlGenerator? htmlGenerator)
+        internal TprSectionCardsTagHelper(ITprHtmlGenerator? htmlGenerator)
         {
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var cardsContext = new TprSectionCardsContainerContext();
+            var cardsContext = new TprSectionCardsContext();
 
             using (context.SetScopedContextItem(cardsContext))
             {
@@ -39,7 +39,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var sectionCards = new TprSectionCards
             {
                 ContainerAttributes = output.Attributes.ToAttributeDictionary(),
-                Cards = cardsContext.Cards.Select(c => new TprSectionCardsCard
+                Cards = cardsContext.Cards.Select(c => new TprSectionCard
                 {
                     CardAttributes = c.CardAttributes,
                     TitleAttributes = c.TitleAttributes,

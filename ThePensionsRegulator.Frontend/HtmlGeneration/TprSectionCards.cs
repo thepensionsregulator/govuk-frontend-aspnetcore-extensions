@@ -6,6 +6,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public class TprSectionCards
     {
         public AttributeDictionary? ContainerAttributes { get; set; }
-        public List<TprSectionCardsCard> Cards { get; set; } = new();
+        public List<TprSectionCard> Cards { get; set; } = new();
     }
 }

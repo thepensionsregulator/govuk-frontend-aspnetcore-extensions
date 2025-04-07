@@ -5,25 +5,26 @@ using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    [HtmlTargetElement(TagName, ParentTag = TprSectionCardsContainerTagHelper.TagName)]
-    [RestrictChildren(TprSectionCardsCardTitleTagHelper.TagName, TprSectionCardsCardContentTagHelper.TagName)]
+    [HtmlTargetElement(TagName, ParentTag = TprSectionCardsTagHelper.TagName)]
+    [RestrictChildren(TprSectionCardTitleTagHelper.TagName, TprSectionCardContentTagHelper.TagName)]
 
-    public class TprSectionCardsCardTagHelper : TagHelper
+    public class TprSectionCardTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-section-cards-card";
+        internal const string TagName = "tpr-section-card";
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var sectionCardsContext = context.GetContextItem<TprSectionCardsContainerContext>();
-            var cardContext = new TprSectionCardsCardContext
+            var sectionCardsContext = context.GetContextItem<TprSectionCardsContext>();
+            var cardContext = new TprSectionCardContext
             {
                 CardAttributes = output.Attributes.ToAttributeDictionary()
             };
 
-            using (context.SetScopedContextItem(cardContext)) {
+            using (context.SetScopedContextItem(cardContext))
+            {
                 await output.GetChildContentAsync();
             }
-           
+
             sectionCardsContext.AddCard(cardContext);
             output.SuppressOutput();
         }

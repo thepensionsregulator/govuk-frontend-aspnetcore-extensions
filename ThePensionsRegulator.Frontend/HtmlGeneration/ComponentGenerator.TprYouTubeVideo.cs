@@ -73,7 +73,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 {
                     transcriptLink.Attributes.Add("target", video.TranscriptTarget);
                 }
-                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle);
+                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle ?? $"View transcript for '{video.Title}'");
                 containerTag.InnerHtml.AppendHtml(transcriptLink);
             }
 

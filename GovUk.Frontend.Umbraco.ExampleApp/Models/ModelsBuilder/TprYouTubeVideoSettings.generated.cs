@@ -57,7 +57,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool Autoplay => this.Value<bool>(_publishedValueFallback, "autoplay");
 
 		///<summary>
-		/// Plays inline: Play the video within the page (affects iOS devices only).
+		/// Plays inline: Play the video within the page (applies to iOS devices only).
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[ImplementPropertyType("playsInline")]

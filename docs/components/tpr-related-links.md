@@ -5,6 +5,8 @@ A design component for the related links column which can be re-used on TPR site
 ## Example
 
 ```razor
+@addTagHelper *, ThePensionsRegulator.Frontend
+
 <tpr-related-links>
     <tpr-related-links-heading>Related links example heading</tpr-related-links-heading>
     <tpr-related-link href="/">Example link 1</tpr-related-link>

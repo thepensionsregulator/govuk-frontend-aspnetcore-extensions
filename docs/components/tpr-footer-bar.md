@@ -5,7 +5,9 @@ The Pensions Regulator (TPR) uses the TPR footer bar as the footer on its web pa
 ## Example
 
 ```razor
- <tpr-footer-bar>
+@addTagHelper *, ThePensionsRegulator.Frontend
+
+<tpr-footer-bar>
     <tpr-footer-bar-logo href="https://example.org" alt="Go to example" />
     <tpr-footer-bar-copyright>2023 The Pensions Regulator</tpr-footer-bar-copyright>
     <tpr-footer-bar-content>

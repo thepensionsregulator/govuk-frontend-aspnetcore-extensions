@@ -18,9 +18,9 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>Youtube Video Settings</summary>
+	/// <summary>Youtube video settings</summary>
 	[PublishedModel("tprYoutubeVideoSettings")]
-	public partial class TprYoutubeVideoSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
+	public partial class TprYoutubeVideoSettings : PublishedElementModel, IGovukCssClasses
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -57,11 +57,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool Autoplay => this.Value<bool>(_publishedValueFallback, "autoplay");
 
 		///<summary>
-		/// Plays in line: Instructs supporting browsers to play the video "inline"
+		/// Plays inline: Play the video within the page (affects iOS devices only).
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[ImplementPropertyType("playsInLine")]
-		public virtual bool PlaysInLine => this.Value<bool>(_publishedValueFallback, "playsInLine");
+		[ImplementPropertyType("playsInline")]
+		public virtual bool PlaysInline => this.Value<bool>(_publishedValueFallback, "playsInline");
 
 		///<summary>
 		/// Preload: Tells the browser how much media to download when the page loads. Chose 'auto' to download as much as possible and 'metadata' to only download the metadata.
@@ -78,37 +78,5 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClasses")]
 		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
-
-		///<summary>
-		/// CSS classes for row: Applied to the grid row which contains this component and other adjacent components that have the same setting.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("cssClassesForRow")]
-		public virtual string CssClassesForRow => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGrid.GetCssClassesForRow(this, _publishedValueFallback);
-
-		///<summary>
-		/// Column size
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("columnSize")]
-		public virtual string ColumnSize => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetColumnSize(this, _publishedValueFallback);
-
-		///<summary>
-		/// Column size (from desktop): Defaults to 'two-thirds' if both column size properties are left blank.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("columnSizeFromDesktop")]
-		public virtual string ColumnSizeFromDesktop => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetColumnSizeFromDesktop(this, _publishedValueFallback);
-
-		///<summary>
-		/// CSS classes for column: Applied to the grid column which contains this component and other adjacent components that have the same setting.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("cssClassesForColumn")]
-		public virtual string CssClassesForColumn => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetCssClassesForColumn(this, _publishedValueFallback);
 	}
 }

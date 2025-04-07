@@ -1,11 +1,8 @@
-using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Linq;
-using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -22,19 +19,19 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string TitleAttributeName = "title";
         private const string VideoIdAttributeName = "videoId";
         private const string AutoplayAttributeName = "autoplay";
-        private const string PlaysinlineAttributeName = "playsinline";
+        private const string PlaysInlineAttributeName = "playsinline";
         private const string PreloadAttributeName = "preload";
         private const string UseAblePlayerAttributeName = "useAblePlayer";
         private const string TranscriptUrlAttributeName = "transcriptUrl";
         private const string TranscriptTitleAttributeName = "transcriptTitle";
         private const string TranscriptTargetAttributeName = "transcriptTarget";
-        private readonly string[] MinimisedAttributeList = {"autoplay","playsinline","data-able-player", "data-youtube-nocookie","allowfullscreen","credentialless"};
+        private readonly string[] MinimisedAttributeList = { "autoplay", "playsinline", "data-able-player", "data-youtube-nocookie", "allowfullscreen", "credentialless" };
 
         private string _id = string.Empty;
         private string _title = string.Empty;
         private string _videoId = string.Empty;
-        private bool? _autoplay = false; 
-        private bool? _playsinline = true;
+        private bool? _autoplay = false;
+        private bool? _playsInline = true;
         private string _preload = ComponentGenerator.YoutubeVideoDefaultPreload;
         private bool? _useAblePlayer = true;
         private string _transcriptUrl = string.Empty;
@@ -55,13 +52,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
-       [HtmlAttributeName(IdAttributeName)]
+        [HtmlAttributeName(IdAttributeName)]
         public string Id
         {
             get => _id;
             set => _id = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
         }
-       [HtmlAttributeName(TitleAttributeName)]
+        [HtmlAttributeName(TitleAttributeName)]
         public string Title
         {
             get => _title;
@@ -83,46 +80,46 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             set => _autoplay = value;
         }
 
-       [HtmlAttributeName(PlaysinlineAttributeName)]
-        public bool? Playsinline 
+        [HtmlAttributeName(PlaysInlineAttributeName)]
+        public bool? PlaysInline
         {
-            get => _playsinline;
-            set => _playsinline = value; 
+            get => _playsInline;
+            set => _playsInline = value;
         }
 
-       [HtmlAttributeName(PreloadAttributeName)]
-        public string Preload 
+        [HtmlAttributeName(PreloadAttributeName)]
+        public string Preload
         {
             get => _preload;
             set => _preload = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
         }
 
-       [HtmlAttributeName(UseAblePlayerAttributeName)]
-        public bool? UseAblePlayer 
+        [HtmlAttributeName(UseAblePlayerAttributeName)]
+        public bool? UseAblePlayer
         {
             get => _useAblePlayer;
-            set => _useAblePlayer = value; 
+            set => _useAblePlayer = value;
         }
 
         [HtmlAttributeName(TranscriptUrlAttributeName)]
-        public string TranscriptUrl 
+        public string TranscriptUrl
         {
             get => _transcriptUrl;
-            set => _transcriptUrl = value; 
+            set => _transcriptUrl = value;
         }
 
         [HtmlAttributeName(TranscriptTitleAttributeName)]
-        public string TranscriptTitle 
+        public string TranscriptTitle
         {
             get => _transcriptTitle;
-            set => _transcriptTitle = value; 
+            set => _transcriptTitle = value;
         }
 
         [HtmlAttributeName(TranscriptTargetAttributeName)]
-        public string TranscriptTarget 
+        public string TranscriptTarget
         {
             get => _transcriptTarget;
-            set => _transcriptTarget = value; 
+            set => _transcriptTarget = value;
         }
 
 
@@ -131,16 +128,16 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         {
             TagBuilder tagBuilder;
             bool useAutoplay = Autoplay.HasValue ? Autoplay.Value : false;
-            bool playsInLine = Playsinline.HasValue ? Playsinline.Value : true;
-            if(UseAblePlayer.HasValue && UseAblePlayer.Value)
+            bool playsInLine = PlaysInline.HasValue ? PlaysInline.Value : true;
+            if (UseAblePlayer.HasValue && UseAblePlayer.Value)
             {
 
-                tagBuilder = _htmlGenerator.GenerateTprAblePlayer(Id,Title,VideoId,useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
+                tagBuilder = _htmlGenerator.GenerateTprAblePlayer(Id, Title, VideoId, useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
             }
             else
             {
-                
-                tagBuilder = _htmlGenerator.GenerateTprYoutubeNoCookiesEmbeddedPlayer(Id,Title,VideoId,useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
+
+                tagBuilder = _htmlGenerator.GenerateTprYoutubeNoCookiesEmbeddedPlayer(Id, Title, VideoId, useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
             }
 
             output.TagName = tagBuilder.TagName;
@@ -151,15 +148,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             /// If we don't do the following, we end up with attributes with empty quotes like data-youtube-nocookie=""
             /// I can't find a way to set the HtmlAttributeValueStyle.Minimized on the tagBuilder attributes. Therefore we 
             /// have to do it here in the following way
-            foreach(var attr in tagBuilder.Attributes.Keys)
+            foreach (var attr in tagBuilder.Attributes.Keys)
             {
-                if(MinimisedAttributeList.Contains(attr))
+                if (MinimisedAttributeList.Contains(attr) && string.IsNullOrEmpty(tagBuilder.Attributes[attr]))
                 {
-                    output.Attributes.SetAttribute(new TagHelperAttribute(attr, null,HtmlAttributeValueStyle.Minimized));
+                    output.Attributes.SetAttribute(new TagHelperAttribute(attr, null, HtmlAttributeValueStyle.Minimized));
                 }
             }
             output.Content.SetHtmlContent(tagBuilder.InnerHtml);
- 
+
         }
     }
 }

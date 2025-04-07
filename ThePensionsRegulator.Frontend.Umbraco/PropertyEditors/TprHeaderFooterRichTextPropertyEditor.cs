@@ -11,7 +11,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors
     /// </summary>
     /// <remarks>This exists as a hook to apply different <see cref="IPropertyValueFormatter"/> implementations to selected properties.</remarks>
     [DataEditor(
-    PropertyEditorAliases.TprHeaderFooterRichText,
+    TprPropertyEditorAliases.TprHeaderFooterRichText,
     "TPR Rich text editor (Header and footer)",
     "rte",
     ValueType = ValueTypes.Text,

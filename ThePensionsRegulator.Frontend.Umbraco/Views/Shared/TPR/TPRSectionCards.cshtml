@@ -5,25 +5,24 @@
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
 @using System.Web;
+@using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Umbraco.Blocks;
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Extensions
 @using Umbraco.Cms.Web.Common.PublishedModels
 @using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
-@using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases;
-@using ElementTypeAliases = ThePensionsRegulator.Frontend.Umbraco.ElementTypeAliases;
 @{
-    var cards = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.TprSectionCards);
+    var cards = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.SectionCards);
     if (cards == null || cards.Any() == false)
     {
         return;
     }
-    var nameFieldName = Model.Settings.Value<string>(TprPropertyAliases.TprSectionCardNameProperty);
-    var descFieldName = Model.Settings.Value<string>(TprPropertyAliases.TprSectionCardDescriptionProperty);
+    var nameFieldName = Model.Settings.Value<string>(TprPropertyAliases.SectionCardNameProperty);
+    var descFieldName = Model.Settings.Value<string>(TprPropertyAliases.SectionCardDescriptionProperty);
 
     if (string.IsNullOrWhiteSpace(descFieldName))
     {
-        descFieldName = TprPropertyAliases.TprSectionCardDescriptionPropertyDefault;
+        descFieldName = TprPropertyAliases.SectionCardDescriptionPropertyDefault;
     }
     
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
@@ -36,8 +35,8 @@
             var cardClass = card.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
             switch (type)
             {
-                case ElementTypeAliases.TprSectionCard:
-                    var link = card.Content.Value<Link>(TprPropertyAliases.TprSectionCardLink);
+                case TprElementTypeAliases.SectionCard:
+                    var link = card.Content.Value<Link>(TprPropertyAliases.SectionCardLink);
                     if (link == null) { continue; }
                     var name = link.Name;
                     var url = link.Url;
@@ -53,7 +52,7 @@
                         }
                     </tpr-section-card>
                     break;
-                case ElementTypeAliases.TprSectionCardsForChildPages:
+                case TprElementTypeAliases.SectionCardsForChildPages:
                     var page = Umbraco.AssignedContentItem;
                     foreach (var child in page.Children)
                     {

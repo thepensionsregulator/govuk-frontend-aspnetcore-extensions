@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "YouTube video";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds">
+        <p class="govuk-body">Videos can be added to the block grid or block list and are displayed using the 
+            <a href="https://support.google.com/youtube/answer/171780" class="govuk-link">official YouTube player in privacy-enhanced mode</a>.</p>
+
+        <p class="govuk-body">Videos can be set to auto-play, but it should be avoided as it 
+            <a href="https://abilitynet.org.uk/news-blogs/why-autoplay-accessibility-issue" class="govuk-link">creates accessibility problems and uses unnecessary bandwidth</a>.</p>
+
+        <tpr-youtube-video id="example-1" 
+                           useAblePlayer="false" 
+                           title="Master Trusts conference by The Pensions Regulator"
+                           videoId="tTQiv1xKVM4"
+                           preload="false"
+                           autoplay="true"
+                           playsinline="true" />
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds">
+        <p class="govuk-body">Videos will adapt to the size of their container, therefore they work in a multi-column layout.</p>
+        <p class="govuk-body">If a transcript is available it can be linked from under the video.</p>
+    </div>
+    <div class="govuk-grid-column govuk-grid-column-one-third">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-full">
+                <tpr-youtube-video id="example-1"
+                                    useAblePlayer="false"
+                                    title="Master Trusts conference by The Pensions Regulator"
+                                    videoId="tTQiv1xKVM4"
+                                    preload="false"
+                                    playsinline="true"
+                                    transcriptUrl="/"
+                                    transcriptTitle="Transcript of this video"
+                                    transcriptTarget="_self" />
+            </div>
+        </div>
+
+
+    </div>
+</div>

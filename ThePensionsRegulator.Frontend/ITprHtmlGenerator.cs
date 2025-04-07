@@ -15,7 +15,7 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprRelatedLinks(TprRelatedLinks tprRelatedLinks);
         TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards);
         TagBuilder GenerateTprAblePlayer(string id, string title, string videoId, bool autoplay, bool playsInline, string preload, string transcriptUrl, string transcriptTitle, string transcriptTarget);
-        TagBuilder GenerateTprYoutubeNoCookiesEmbeddedPlayer(string id, string title, string videoId, bool autoplay, bool playsInline, string preload, string transcriptUrl, string transcriptTitle, string transcriptTarget);
+        TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(string id, string title, string videoId, bool autoplay, bool playsInline, string preload, string transcriptUrl, string transcriptTitle, string transcriptTarget);
 
     }
 }

@@ -11,8 +11,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     /// Generates a GOV.UK back link component.
     /// </summary>
     [HtmlTargetElement(TagName)]
-    [OutputElementHint(ComponentGenerator.YoutubeVideoElement)]
-    public class TprYoutubeVideoTagHelper : TagHelper
+    [OutputElementHint(ComponentGenerator.YouTubeVideoElement)]
+    public class TprYouTubeVideoTagHelper : TagHelper
     {
         internal const string TagName = "tpr-youtube-video";
         private const string IdAttributeName = "id";
@@ -32,7 +32,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private string _videoId = string.Empty;
         private bool? _autoplay = false;
         private bool? _playsInline = true;
-        private string _preload = ComponentGenerator.YoutubeVideoDefaultPreload;
+        private string _preload = ComponentGenerator.YouTubeVideoDefaultPreload;
         private bool? _useAblePlayer = true;
         private string _transcriptUrl = string.Empty;
         private string _transcriptTitle = string.Empty;
@@ -40,14 +40,14 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private readonly ITprHtmlGenerator _htmlGenerator;
 
         /// <summary>
-        /// Creates a new <see cref="TprYoutubeVideoTagHelper"/>.
+        /// Creates a new <see cref="TprYouTubeVideoTagHelper"/>.
         /// </summary>
-        public TprYoutubeVideoTagHelper()
+        public TprYouTubeVideoTagHelper()
             : this(htmlGenerator: null)
         {
         }
 
-        internal TprYoutubeVideoTagHelper(ITprHtmlGenerator? htmlGenerator)
+        internal TprYouTubeVideoTagHelper(ITprHtmlGenerator? htmlGenerator)
         {
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
@@ -137,7 +137,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             else
             {
 
-                tagBuilder = _htmlGenerator.GenerateTprYoutubeNoCookiesEmbeddedPlayer(Id, Title, VideoId, useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
+                tagBuilder = _htmlGenerator.GenerateTprYouTubeNoCookiesEmbeddedPlayer(Id, Title, VideoId, useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
             }
 
             output.TagName = tagBuilder.TagName;

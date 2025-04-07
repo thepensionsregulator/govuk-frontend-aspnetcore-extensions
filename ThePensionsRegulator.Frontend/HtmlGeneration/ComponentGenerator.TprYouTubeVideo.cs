@@ -6,8 +6,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
     public partial class ComponentGenerator
     {
-        internal const string YoutubeVideoDefaultPreload = "metadata";
-        internal const string YoutubeVideoElement = "video";
+        internal const string YouTubeVideoDefaultPreload = "metadata";
+        internal const string YouTubeVideoElement = "video";
 
         public virtual TagBuilder GenerateTprAblePlayer(
             string id,
@@ -44,7 +44,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             return videoTag;
         }
 
-        public virtual TagBuilder GenerateTprYoutubeNoCookiesEmbeddedPlayer(
+        public virtual TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(
             string id,
             string title,
             string videoId,

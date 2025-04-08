@@ -16,9 +16,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     public class TprYouTubeVideoTagHelper : TagHelper
     {
         internal const string TagName = "tpr-youtube-video";
-        private const string IdAttributeName = "video-id";
         private const string TitleAttributeName = "title";
-        private const string VideoIdAttributeName = "youtube-video-id";
+        private const string YouTubeVideoIdAttributeName = "youtube-video-id";
         private const string AutoplayAttributeName = "autoplay";
         private const string PlaysInlineAttributeName = "plays-inline";
         private const string PreloadAttributeName = "preload";
@@ -28,7 +27,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string TranscriptTargetAttributeName = "transcript-target";
         private readonly string[] MinimisedAttributeList = { "autoplay", "playsinline", "data-able-player", "data-youtube-nocookie", "allowfullscreen", "credentialless" };
 
-        private string _videoId = string.Empty;
         private string _title = string.Empty;
         private string _youTubeVideoId = string.Empty;
         private bool _autoplay = false;
@@ -53,13 +51,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
-        [HtmlAttributeName(IdAttributeName)]
-        public string VideoId
-        {
-            get => _videoId;
-            set => _videoId = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
-        }
-
         [HtmlAttributeName(TitleAttributeName)]
         public string Title
         {
@@ -68,7 +59,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         }
 
 
-        [HtmlAttributeName(VideoIdAttributeName)]
+        [HtmlAttributeName(YouTubeVideoIdAttributeName)]
         public string YouTubeVideoId
         {
             get => _youTubeVideoId;
@@ -134,7 +125,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 tagBuilder = _htmlGenerator.GenerateTprAblePlayer(new TprYouTubeVideo
                 {
                     Attributes = output.Attributes.ToAttributeDictionary(),
-                    VideoId = VideoId,
                     Title = Title,
                     YouTubeVideoId = YouTubeVideoId,
                     Autoplay = Autoplay,
@@ -150,7 +140,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 tagBuilder = _htmlGenerator.GenerateTprYouTubeNoCookiesEmbeddedPlayer(new TprYouTubeVideo
                 {
                     Attributes = output.Attributes.ToAttributeDictionary(),
-                    VideoId = VideoId,
                     Title = Title,
                     YouTubeVideoId = YouTubeVideoId,
                     Autoplay = Autoplay,

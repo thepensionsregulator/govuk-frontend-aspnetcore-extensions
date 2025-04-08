@@ -12,17 +12,12 @@
 @using Umbraco.Cms.Web.Common.PublishedModels
 
 @{
-    @* Since we cannot make AblePlayer work with the existing 
-    security headers, we have hardcoded the following condition to be false
-    and therefore the default YouTube embed iFrame is always used. In order to
-    reverse this, change the useAblePlayer to true and uncomment the block 
-    directly below it. *@
+    @* TODO: Since AblePlayer support is incomplete (see https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions/issues/381)
+       the following condition is set to false and therefore the default YouTube embed iFrame is always used. 
+       
+       If AblePlayer is enabled it will set cookies, so check for consent first.
+       *@
     var useAblePlayer = false;
-    @* // Make it readable by keeping it on separate lines
-    if(!Context.Request.Cookies.TryGetValue("TPR_Cookie_CONSENT", out string? cookieValue) || cookieValue == "Reject")
-    {
-        useAblePlayer = false;
-    } *@
     var videoUrl = Model.Content.Value<string>(TprPropertyAliases.VideoUrl);
     if(string.IsNullOrWhiteSpace(videoUrl))
     {
@@ -52,19 +47,13 @@
 
     var autoplay = Model.Settings.Value<bool>(TprPropertyAliases.VideoAutoplay);
     bool playsInline = Model.Settings.Value<bool>(TprPropertyAliases.VideoPlaysInline)!;
-    string preload = Model?.Settings?.Value<string>(TprPropertyAliases.VideoPreload)!;
-    if(string.IsNullOrWhiteSpace(preload))
-    {
-        preload = "metadata";
-    }
 }
 <tpr-youtube-video
+    id="@id" 
     class="@cssClasses"
-    video-id="@id" 
     title="@title"
     youtube-video-id="@videoId"
     use-able-player="@useAblePlayer"
-    preload="@preload"
     autoplay="@autoplay"
     plays-inline="@playsInline"
     transcript-url="@transcriptUrl"

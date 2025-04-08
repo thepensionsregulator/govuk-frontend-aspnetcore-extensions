@@ -8,7 +8,7 @@ The YouTube video component embeds a YouTube video in a page using the official 
 @addTagHelper *, ThePensionsRegulator.Frontend
 ...
 <tpr-youtube-video
-    video-id="example-video"
+    id="example-video"
     title="Master Trusts conference by The Pensions Regulator"
     youtube-video-id="tTQiv1xKVM4"
     use-able-player="false"
@@ -35,7 +35,6 @@ The YouTube video component embeds a YouTube video in a page using the official 
 | `transcript-target` | `string` | Sets the `target` attribute of the link to the transcript when `transcript-url` is set. Default is `null`.                                                                                                                            |
 | `transcript-title`  | `string` | Text used to link to a transcript when `transcript-url` is set. Default is `View transcript for '{{title}}'` where `{{title}}` is the value of the `title` attribute.                                                                 |
 | `use-able-player`   | `bool`   | Use [Able Player](https://ableplayer.github.io/ableplayer/) instead of the official YouTube player. **Not currently supported. See [#381](https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions/issues/381)**. |
-| `video-id`          | `string` | Sets the HTML id applied to the video. Takes precedence over `id` when the video is the outermost HTML element. Default is `null`.                                                                                                    |
 | `youtube-video-id`  | `string` | An alpha-numeric string uniquely identifying the video to embed, which can be found in the YouTube URL for the video.                                                                                                                 |
 
 ## Umbraco
@@ -62,24 +61,10 @@ In the settings tab, you can set the following properties:
 
 - **Autoplay** - Starts playing the video when the page loads. Default is off.
 - **Plays inline** - Applies to iOS devices only. Sets whether to play the video within the web page rather than full-screen. Default is on.
-- **Preload** - Tells the browser how much media to download when the page loads.
+- **Preload** - Tells the browser how much media to download when the page loads. Applies when using
 
 ![YouTube video settings](/docs/images/youtube-video-settings.png)
 
 The video player will fill the width available to it. Please see the examples below of how it looks in different column widths.
 
 ![YouTube video examples](/docs/images/youtube-video-example2.png)
-
-## ~~Adding Ableplayer dependencies~~
-
-> [!NOTE] > [AblePlayer](https://ableplayer.github.io/ableplayer/) is not currently supported.
-
-~~In order for your consuming web application to be able render the videos using Able Player, you will need to add the dependencies to the page header. The easiest way to this is to render the `\Views\Shared\_VideoPlayerDependencies.cshtml` partial concluded with this package, inside the `head` tag of the page.~~
-
-```razor
-<head>
-    ...
-    <partial name="_VideoPlayerDependencies" />
-</head>
-
-```

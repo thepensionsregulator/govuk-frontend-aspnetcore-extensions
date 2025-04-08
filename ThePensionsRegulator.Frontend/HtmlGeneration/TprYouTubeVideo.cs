@@ -5,7 +5,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public record TprYouTubeVideo
     {
         public required AttributeDictionary Attributes { get; set; }
-        public required string VideoId { get; set; }
         public required string Title { get; set; }
         public required string YouTubeVideoId { get; set; }
         public required bool Autoplay { get; set; }

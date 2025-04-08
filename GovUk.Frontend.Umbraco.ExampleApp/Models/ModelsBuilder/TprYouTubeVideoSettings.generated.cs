@@ -64,14 +64,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool PlaysInline => this.Value<bool>(_publishedValueFallback, "playsInline");
 
 		///<summary>
-		/// Preload: Tells the browser how much media to download when the page loads. Chose 'auto' to download as much as possible and 'metadata' to only download the metadata.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("preload")]
-		public virtual string Preload => this.Value<string>(_publishedValueFallback, "preload");
-
-		///<summary>
 		/// CSS classes: Applied to the outermost HTML element of the component.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]

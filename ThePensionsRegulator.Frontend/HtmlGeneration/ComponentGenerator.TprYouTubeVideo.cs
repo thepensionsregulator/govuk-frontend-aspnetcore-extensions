@@ -1,6 +1,7 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -16,16 +17,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
 
             var videoTag = new TagBuilder("video");
+            if (!video.Attributes.ContainsKey("id")) { video.Attributes.Add("id", Guid.NewGuid().ToString()); } // Able Player requires id
             videoTag.MergeAttributes(video.Attributes);
-            if (!string.IsNullOrWhiteSpace(video.VideoId))
-            {
-                if (videoTag.Attributes.ContainsKey("id")) { videoTag.Attributes.Remove("id"); }
-                videoTag.Attributes.Add("id", video.VideoId);
-            }
             videoTag.Attributes.Add("data-able-player", null);
             videoTag.Attributes.Add("data-youtube-nocookie", null);
             videoTag.Attributes.Add("data-youtube-id", video.YouTubeVideoId);
-            videoTag.Attributes.Add("data-root-path", "/_content/ThePensionsRegulator.Frontend.Umbraco/tpr/lib/ableplayer/");
+            videoTag.Attributes.Add("data-root-path", "/_content/ThePensionsRegulator.Frontend/lib/ableplayer/");
             if (video.Autoplay) { videoTag.Attributes.Add("autoplay", null); }
             if (video.PlaysInline) { videoTag.Attributes.Add("playsinline", null); }
             videoTag.Attributes.Add("preload", video.Preload);
@@ -51,8 +48,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             }
 
             iFrame.Attributes.Add("src", src);
-
-            if (!string.IsNullOrWhiteSpace(video.VideoId)) { iFrame.Attributes.Add("id", video.VideoId); }
             iFrame.Attributes.Add("title", video.Title);
             iFrame.Attributes.Add("frameborder", "0");
             iFrame.Attributes.Add("allow", "accelerometer; autoplay;  encrypted-media; gyroscope; picture-in-picture; web-share");

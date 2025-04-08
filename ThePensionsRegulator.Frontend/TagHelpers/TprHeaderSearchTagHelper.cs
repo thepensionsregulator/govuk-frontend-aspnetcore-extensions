@@ -1,10 +1,7 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
-using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -14,14 +11,16 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
 
         internal const string TagName = "tpr-header-search";
-           
+
+        public string? Url { get; set; }
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var headerSearchContext = context.GetContextItem<TprHeaderBarContext>();
 
             var content = await output.GetChildContentAsync();
 
-            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(),content, !content.IsEmptyOrWhiteSpace, true);
+            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), content, !content.IsEmptyOrWhiteSpace, true);
 
             output.SuppressOutput();
         }

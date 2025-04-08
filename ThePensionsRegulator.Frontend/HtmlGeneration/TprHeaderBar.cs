@@ -19,5 +19,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public AttributeDictionary? SearchAttributes { get; set; }
         public IHtmlContent? SearchBoxPrompt { get; set; }
         public bool SearchBoxAllowHtml { get; set; }
+        public string? LaunguageTwoLetterCode {  get; set; }
+        public string? Url {  get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public AttributeDictionary? ContentAttributes => _content?.Attributes;
         public IHtmlContent? Content => _content?.Content;
         public bool ContentAllowHtml => _content?.AllowHtml ?? false;
-        public bool DispalySearchBar => _search?.DispaySearchBar ?? false;
+        public bool DisplaySearchBar => _search?.DispaySearchBar ?? false;
         public AttributeDictionary? SearchAttributes => _search?.Attributes;
         public IHtmlContent? SearchBoxPrompt => _search?.Prompt;
         public bool SearchAllowHtml => _search?.AllowHtml ?? false;

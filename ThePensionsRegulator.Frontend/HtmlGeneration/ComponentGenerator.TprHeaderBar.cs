@@ -1,5 +1,9 @@
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Builder;
+
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -9,9 +13,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         internal const string DefaultHeaderLabel = "Making workplace pensions work";
         internal const string HeaderLogoDefaultAlt = "The Pensions Regulator home page";
         internal const string HeaderLogoDefaultHref = "https://www.thepensionsregulator.gov.uk";
-
+        
         public virtual TagBuilder GenerateTprHeaderBar(TprHeaderBar tprHeaderBar)
         {
+            
             var tagBuilder = new TagBuilder(TprHeaderBarElement);
             if (tprHeaderBar.HeaderBarAttributes != null) { tagBuilder.MergeAttributes(tprHeaderBar.HeaderBarAttributes); }
             tagBuilder.MergeCssClass("tpr-header");
@@ -92,47 +97,23 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     divTag.AddCssClass("search");
 
                     var form = new TagBuilder("form");
-                    form.Attributes.Add("action", "/en/search-results");
+                    form.Attributes.Add("action", $"{tprHeaderBar.Url}");
                     form.Attributes.Add("id", "form-globalsearch");
                     form.Attributes.Add("method", "get");
-
-                    //var formLabel = new TagBuilder("label");
-                    //formLabel.Attributes.Add("for", "GlobalSearchInputBox");
-                    //if (tprHeaderBar.SearchBoxPrompt != null)
-                    //{
-                    //    if (tprHeaderBar.SearchBoxAllowHtml)
-                    //    {
-                    //        formLabel.InnerHtml.AppendHtml(tprHeaderBar.SearchBoxPrompt);
-                    //    }
-                    //    else
-                    //    {
-                    //        formLabel.InnerHtml.Append(tprHeaderBar.SearchBoxPrompt.ToString()!);
-                    //    }
-                    //}
-
-                    //form.InnerHtml.AppendHtml(formLabel);
-
-                    var searchField = new TagBuilder("div");
+           
+                    var searchField = new TagBuilder("div");                                
                     searchField.AddCssClass("searchFieldWithButton");
 
-                    var autoComplete = new TagBuilder("div");
+                    var autoComplete = new TagBuilder("div");          
                     autoComplete.AddCssClass("easy-autocomplete");
-                    autoComplete.Attributes.Add("id", "autocomplete-container");
+                    //autoComplete.Attributes.Add("style", "width: 313.948px;");
                     searchField.InnerHtml.AppendHtml(autoComplete);
-                    // autoComplete.Attributes.Add("style", "width: 313.948px;");
 
-                    var input = new TagBuilder("input");
-                    input.Attributes.Add("aria-label", "Search");
-                    input.Attributes.Add("autocomplete", "off");
-                    input.AddCssClass("searchbox");
-                    input.Attributes.Add("id", "GlobalSearchInputBox");
-                    input.Attributes.Add("name", "query");
-                    input.Attributes.Add("placeholder", "Search");
-                    input.Attributes.Add("type", "text");
-                    input.Attributes.Add("value", "");
-
-                    searchField.InnerHtml.AppendHtml(input);
-
+                    var autoCompleteContainer = new TagBuilder("div");
+                    autoCompleteContainer.AddCssClass("easy-autocomplete-container");
+                    autoCompleteContainer.Attributes.Add("id", "eac-container-GlobalSearchInputBox");
+                    autoComplete.Attributes.Add("placeholder", "Search");
+                    autoComplete.InnerHtml.AppendHtml(autoCompleteContainer);
 
                     var button = new TagBuilder("button");
                     button.Attributes.Add("type", "submit");
@@ -153,7 +134,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     buttonSvg.InnerHtml.AppendHtml(svgTag1);
 
                     var svgTag2 = new TagBuilder("g");
-                    svgTag2.Attributes.Add("transform", "translate(1.000000, -3.000000)");
+                    svgTag2.Attributes.Add("transform", "translate(1.000000, -5.000000)");
                     svgTag2.Attributes.Add("fill", "#434343");
                     svgTag1.InnerHtml.AppendHtml(svgTag2);
 

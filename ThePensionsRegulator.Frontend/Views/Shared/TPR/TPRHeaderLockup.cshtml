@@ -11,9 +11,13 @@
     var headerLogoAlt = Model.LogoAlternativeText;
     if (string.IsNullOrEmpty(headerLogoAlt) && !string.IsNullOrEmpty(Model.LogoHref)) { headerLogoAlt = ComponentGenerator.HeaderLogoDefaultAlt; }
     var showPhaseBanner = Model.ShowPhaseBanner && !string.IsNullOrEmpty(phase) && phase != "Live";
-    var headerContent = Model.HeaderBarContent;
+    var headerContent = Model.HeaderBarContent;  
+    
 }
-
+<head>
+    <script src="~/js/accessible-autocomplete.min.js"></script>
+    <script src="~/js/autocomplete.js"></script>
+</head>
 @if (Model.ShowSkipLink)
 {
     <govuk-skip-link href="@Model.SkipLinkHref" class="@Model.SkipLinkClass">@skipLink</govuk-skip-link>

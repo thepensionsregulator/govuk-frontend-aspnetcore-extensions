@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Section cards";
+}
+@section OpenWidthContainer {
+}
+@section CloseWidthContainer {
+}
+@section back {
+    <div class="govuk-width-container">
+        <govuk-back-link href="/">Back</govuk-back-link>
+    </div>
+}
+
+<div class="govuk-width-container">
+    <span class="govuk-caption-xl">Example application</span>
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-full">
+            <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+        </div>
+    </div>
+
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+            <p class="govuk-body">The section cards component displays a list of cards for navigation, usually linking to child pages.</p>
+        </div>
+    </div>
+</div>
+
+<div class="tpr-box tpr-box--full-width">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-full">
+                <tpr-section-cards>
+                    <tpr-section-card>
+                        <tpr-section-card-title href="/panel">Section card one</tpr-section-card-title>
+                        <tpr-section-card-content allow-html="true">This is the content of the section card. Set the <code>allow-html</code> property to allow formatting.</tpr-section-card-content>
+                    </tpr-section-card>
+                    <tpr-section-card>
+                        <tpr-section-card-title href="/panel">Section card two</tpr-section-card-title>
+                        <tpr-section-card-content>This is the content of the section card.</tpr-section-card-content>
+                    </tpr-section-card>
+                    <tpr-section-card>
+                        <tpr-section-card-title href="/panel">Section card three</tpr-section-card-title>
+                        <tpr-section-card-content>This is the content of the section card.</tpr-section-card-content>
+                    </tpr-section-card>
+                    <tpr-section-card>
+                        <tpr-section-card-title href="/panel">Section card four</tpr-section-card-title>
+                        <tpr-section-card-content>This is the content of the section card.</tpr-section-card-content>
+                    </tpr-section-card>
+                    <tpr-section-card>
+                        <tpr-section-card-title>Links and content are optional</tpr-section-card-title>
+                    </tpr-section-card>
+                </tpr-section-cards>
+            </div>
+        </div>
+
+
+    </div>
+</div>

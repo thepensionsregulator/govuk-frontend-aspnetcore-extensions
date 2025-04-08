@@ -1,30 +1,36 @@
 @import '_tpr-variables.scss';
 @import 'govuk/base';
 
-.tpr-sectioncards-container {
+.tpr-section-cards {
+    margin-top: 0;
+    margin-left: -$govuk-gutter-half;
+    margin-right: -$govuk-gutter-half;
+    @include govuk-responsive-margin(6, "bottom");
+}
+
+.tpr-section-cards > ul {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
-    margin-top: 0;
-    margin: 0px -15px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     background: $tpr-colour-whisper;
 
     .tpr-box--full-width & {
         background: transparent;
-        margin: 0px -45px;
+        margin-left: $govuk-gutter*-1.5;
+        margin-right: $govuk-gutter*-1.5;
     }
 
     @include govuk-media-query($from:1020px) {
-        margin: 0px -15px;
-
         .tpr-box--full-width & {
-            margin: 0px -15px;
+            margin-left: -$govuk-gutter-half;
+            margin-right: -$govuk-gutter-half;
         }
     }
 }
 
-.tpr-sectioncards {
+.tpr-section-card {
     flex-grow: 1;
     max-width: calc(100% / 3);
     padding: 0;
@@ -38,22 +44,25 @@
     @include govuk-media-query($until:tablet) {
         max-width: 100%;
     }
+}
 
+.tpr-section-card__body {
+    background-color: $tpr-colour-white;
+    margin: 0;
+    @include govuk-responsive-padding(6);
+    margin: 0.9rem;
+    flex-grow: 1;
+}
 
-    .tpr-sectioncards__body {
-        background-color: white;
-        margin: 0;
-        @include govuk-responsive-padding(6);
-        margin: 0.9rem;
-        flex-grow: 1;
+.tpr-section-card__content {
+    @include govuk-responsive-padding(4, "top");
 
-        p {
-            margin-bottom: 0;
-        }
+    > :last-child {
+        margin-bottom: 0;
     }
 }
 
-h2.tpr-sectioncards__title {
+.tpr-section-card__title {
     @include govuk-responsive-padding(6,"right");
     @include govuk-responsive-padding(6,"bottom");
     @include govuk-responsive-padding(6,"left");

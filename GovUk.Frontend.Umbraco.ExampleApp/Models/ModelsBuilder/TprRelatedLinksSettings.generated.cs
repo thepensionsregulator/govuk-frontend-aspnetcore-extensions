@@ -18,7 +18,7 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	/// <summary>TPR related links settings</summary>
+	/// <summary>Related links settings</summary>
 	[PublishedModel("tprRelatedLinksSettings")]
 	public partial class TprRelatedLinksSettings : PublishedElementModel, IGovukCssClasses
 	{

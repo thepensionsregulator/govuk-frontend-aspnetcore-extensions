@@ -12,6 +12,7 @@ using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Web.Common;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ModelBinding
@@ -30,14 +31,16 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private readonly ICultureDictionary _cultureDictionary;
         private readonly IPublishedValueFallback? _publishedValueFallback;
         private readonly bool _acceptMonthNamesInDateInputs;
+        private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
 
-        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter, IUmbracoContextAccessor umbracoContextAccessor, ICultureDictionary cultureDictionary, IPublishedValueFallback? publishedValueFallback, bool acceptMonthNamesInDateInputs)
+        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter, IUmbracoContextAccessor umbracoContextAccessor, ICultureDictionary cultureDictionary, IPublishedValueFallback? publishedValueFallback, bool acceptMonthNamesInDateInputs, IUmbracoHelperAccessor umbracoHelperAccessor)
         {
             _dateInputModelConverter = Guard.ArgumentNotNull(nameof(dateInputModelConverter), dateInputModelConverter);
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
             _cultureDictionary = cultureDictionary ?? throw new ArgumentNullException(nameof(cultureDictionary));
             _publishedValueFallback = publishedValueFallback;
             _acceptMonthNamesInDateInputs = acceptMonthNamesInDateInputs;
+            _umbracoHelperAccessor = umbracoHelperAccessor;
         }
 
         public Task BindModelAsync(ModelBindingContext bindingContext)
@@ -110,7 +113,12 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 }
                 else
                 {
-                    var errorMessage = GetModelStateErrorMessage(blockSettings, _cultureDictionary, parseErrors, bindingContext.ModelMetadata);
+                    if (!_umbracoHelperAccessor.TryGetUmbracoHelper(out var umbracoHelper))
+                    {
+                        throw new InvalidOperationException("Unable to access Umbraco helper");
+                    }
+
+                    var errorMessage = GetModelStateErrorMessage(blockSettings, _cultureDictionary, parseErrors, bindingContext.ModelMetadata, umbracoHelper);
                     bindingContext.ModelState.AddModelError(bindingContext.ModelName, errorMessage);
 
                     bindingContext.Result = ModelBindingResult.Failed();
@@ -121,7 +129,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         }
 
         // internal for testing
-        internal static string GetModelStateErrorMessage(IOverridablePublishedElement? blockSettings, ICultureDictionary umbracoDictionary, DateInputParseErrors parseErrors, ModelMetadata modelMetadata)
+        internal static string GetModelStateErrorMessage(IOverridablePublishedElement? blockSettings, ICultureDictionary umbracoDictionary, DateInputParseErrors parseErrors, ModelMetadata modelMetadata, UmbracoHelper umbracoHelper)
         {
             Debug.Assert(parseErrors != DateInputParseErrors.None);
             Debug.Assert(parseErrors != (DateInputParseErrors.MissingDay | DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingYear));
@@ -139,30 +147,30 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
 
             if (missingDay && !missingMonth && !missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeADay] ?? "{0} must include a day", displayName).Trim();
+                return string.Format(umbracoHelper.GetDictionaryValueOrDefault(DictionaryConstants.DateMustIncludeADay, "{0} must include a day"), displayName).Trim();
             }
             if (!missingDay && missingMonth && !missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeAMonth] ?? "{0} must include a month", displayName).Trim();
+                return string.Format(umbracoHelper.GetDictionaryValueOrDefault(DictionaryConstants.DateMustIncludeAMonth, "{0} must include a month"), displayName).Trim();
             }
             if (!missingDay && !missingMonth && missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeAYear] ?? "{0} must include a year", displayName).Trim();
+                return string.Format(umbracoHelper.GetDictionaryValueOrDefault(DictionaryConstants.DateMustIncludeAYear, "{0} must include a year"), displayName).Trim();
             }
             if (missingDay && missingMonth && !missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeADayAndMonth] ?? "{0} must include a day and month", displayName).Trim();
+                return string.Format(umbracoHelper.GetDictionaryValueOrDefault(DictionaryConstants.DateMustIncludeADayAndMonth, "{0} must include a day and month"), displayName).Trim();
             }
             if (missingDay && !missingMonth && missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeADayAndYear] ?? "{0} must include a day and year", displayName).Trim();
+                return string.Format(umbracoHelper.GetDictionaryValueOrDefault(DictionaryConstants.DateMustIncludeADayAndYear, "{0} must include a day and year"), displayName).Trim();
             }
             if (!missingDay && missingMonth && missingYear)
             {
-                return string.Format(umbracoDictionary[DictionaryConstants.DateMustIncludeAMonthAndYear] ?? "{0} must include a month and year", displayName).Trim();
+                return string.Format(umbracoHelper.GetDictionaryValueOrDefault(DictionaryConstants.DateMustIncludeAMonthAndYear, "{0} must include a month and year"), displayName).Trim();
             }
 
-            return string.Format(umbracoDictionary[DictionaryConstants.DateMustBeARealDate] ?? "{0} must be a real date", displayName).Trim();
+            return string.Format(umbracoHelper.GetDictionaryValueOrDefault(DictionaryConstants.DateMustBeARealDate, "{0} must be a real date"), displayName).Trim();
         }
 
         // internal for testing

@@ -8,6 +8,7 @@ using System.Linq;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Web.Common;
 
 namespace GovUk.Frontend.Umbraco.ModelBinding
 {
@@ -17,17 +18,20 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private readonly ICultureDictionary _cultureDictionary;
         private readonly IPublishedValueFallback? _publishedValueFallback;
         private readonly GovUkFrontendAspNetCoreOptions _options;
+        private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
 
         public ModelBindingMvcConfiguration(
             GovUkFrontendAspNetCoreOptionsProvider optionsProvider,
             IUmbracoContextAccessor umbracoContextAccessor,
             ICultureDictionary cultureDictionary,
-            IPublishedValueFallback? publishedValueFallback)
+            IPublishedValueFallback? publishedValueFallback,
+            IUmbracoHelperAccessor umbracoHelperAccessor)
         {
             _options = optionsProvider?.Options ?? throw new ArgumentNullException(nameof(optionsProvider));
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
             _cultureDictionary = cultureDictionary ?? throw new ArgumentNullException(nameof(cultureDictionary));
             _publishedValueFallback = publishedValueFallback;
+            _umbracoHelperAccessor = umbracoHelperAccessor;
         }
 
         public void Configure(MvcOptions options)
@@ -37,7 +41,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             var govukDateBinder = options.ModelBinderProviders.FirstOrDefault(x => x.GetType().FullName == typeof(DateInputModelBinderProvider).FullName);
             if (govukDateBinder != null) { options.ModelBinderProviders.Remove(govukDateBinder); }
 
-            options.ModelBinderProviders.Insert(0, new UmbracoDateInputModelBinderProvider(_options, _umbracoContextAccessor, _cultureDictionary, _publishedValueFallback));
+            options.ModelBinderProviders.Insert(0, new UmbracoDateInputModelBinderProvider(_options, _umbracoContextAccessor, _cultureDictionary, _publishedValueFallback, _umbracoHelperAccessor));
         }
     }
 }

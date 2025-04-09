@@ -52,10 +52,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.SassCompiler" Version="1.77.8" />
-		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.3.2" />
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.7.2" />
 	</ItemGroup>
 
 	<ItemGroup>

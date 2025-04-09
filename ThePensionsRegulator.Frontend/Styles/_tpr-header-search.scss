@@ -3,7 +3,7 @@
 
 
 .search {
-    width: 100%;
+    width: 30%;
     padding: 0.5em 0.5em;
     text-align: center;
     display: flex;
@@ -15,10 +15,11 @@
     align-items: center;
 }
 
-.searchFieldWithButton{
-    display:flex;
-    align-items:center; 
+.searchFieldWithButton {
+    display: flex;
+    align-items: center;
 }
+
 .tpr-autocomplete {
     width: 313.948px
 }
@@ -30,8 +31,8 @@
     height: 2.34rem;
     width: 2.34rem;
     cursor: pointer;
-    margin-left:-65px;
-    z-index:100;
+    margin-left: -65px;
+    z-index: 100;
 }
 
 .searchbox {
@@ -59,17 +60,9 @@ svg {
     vertical-align: bottom;
 }
 
-
-@media(max-width: 960px){
-    .search{
-        display: none;
-    }
-}
-
 .autocomplete__wrapper {
     position: relative;
-    width:85%;
-    
+    width: 85%;
 }
 
 .autocomplete__hint, .autocomplete__input {
@@ -82,29 +75,28 @@ svg {
     line-height: 1.25;
     margin-bottom: 0;
     width: 85%;
-    vertical-align:middle;
+    vertical-align: middle;
 }
 
 .autocomplete__input {
     background-color: #fff;
-    position: relative;       
+    position: relative;
 }
 
 ::placeholder {
-
-    opacity: 1; /* Firefox */
-    font-size:0.8em;
+    opacity: 1;
+    font-size: 0.8em;
 }
 
 .autocomplete__hint {
     color: #505a5f;
     position: absolute;
-    width:100%;
-    left:0;
+    width: 100%;
+    left: 0;
 }
 
 .autocomplete__input--default {
-    padding: 5px;   
+    padding: 5px;
 }
 
 .autocomplete__input--focused {
@@ -138,13 +130,12 @@ svg {
     padding: 0;
     width: 85%;
     width: calc(100% - 4px);
-    font-family: "Segoe UI Symbol"; //correct font
-    
+    font-family: "Segoe UI Symbol";
 }
 
 .autocomplete__menu--visible {
     display: block;
-    max-width:85%;
+    max-width: 85%;
     margin-left: 19.5px;
 }
 
@@ -161,7 +152,7 @@ svg {
 }
 
 .autocomplete__menu--inline {
-    position: absolute;               //Displays drop down in fixed position
+    position: absolute;
     z-index: 100;
 }
 
@@ -172,8 +163,7 @@ svg {
     border-top-width: 1px;
     cursor: pointer;
     display: block;
-    text-align:left;
-
+    text-align: left;
 }
 
 .autocomplete__option > * {
@@ -193,8 +183,8 @@ svg {
     cursor: pointer;
 }
 
-.autocomplete__option--no-results {  
-    display:none;          //No drop down displayed if no option avaible
+.autocomplete__option--no-results {
+    display: none;
 }
 
 .autocomplete__hint, .autocomplete__input, .autocomplete__option {
@@ -206,3 +196,31 @@ svg {
     padding: 5px
 }
 
+@media(max-width: 960px) {
+
+    .search {
+        width: 20%;
+    }
+
+    .searchbox {
+        width: 50%
+    }
+
+    .searchFieldWithButton {
+        width: 80%;
+    }
+
+    .searchButton {
+        margin-left: -52px;
+    }
+
+    .autocomplete__menu--visible {
+        margin-left: 16px;
+    }
+}
+
+@media(max-width: 864px) {
+    .search {
+        display: none;
+    }
+}

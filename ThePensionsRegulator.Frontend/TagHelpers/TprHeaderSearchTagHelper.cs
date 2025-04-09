@@ -3,7 +3,6 @@ using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
 
-
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName, ParentTag = TprHeaderBarTagHelper.TagName)]
@@ -11,8 +10,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
 
         internal const string TagName = "tpr-header-search";
+        private const string ActionAttributeName = "action";
 
-        public string? Url { get; set; }
+        [HtmlAttributeName(ActionAttributeName)]
+        public string? ActionPath { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -20,8 +21,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             var content = await output.GetChildContentAsync();
 
-            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), content, !content.IsEmptyOrWhiteSpace, true);
-
+            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), true, ActionPath);
+           
             output.SuppressOutput();
         }
     }

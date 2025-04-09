@@ -57,8 +57,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 ContentAllowHtml = barContext.ContentAllowHtml,
                 DisplaySearchBar = barContext.DisplaySearchBar,
                 SearchAttributes = barContext?.SearchAttributes,
-                SearchBoxPrompt = barContext?.SearchBoxPrompt,
-                SearchBoxAllowHtml = barContext!.SearchAllowHtml
+                ActionPath = barContext?.ActionPath,
+                
             });
 
             output.TagName = tagBuilder.TagName;

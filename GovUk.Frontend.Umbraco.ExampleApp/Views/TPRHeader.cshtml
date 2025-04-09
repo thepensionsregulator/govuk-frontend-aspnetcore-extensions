@@ -8,15 +8,16 @@
 @using Umbraco.Cms.Web.Common
 @inject IConfiguration Configuration
 @{
-	Layout = null;
+    Layout = null;
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var skipLink = string.IsNullOrEmpty(settings?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : settings?.Value<string>("govukSkipLinkText");
     var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprHeaderLogoAlt");
     var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
+    var actionpath = string.IsNullOrEmpty(settings?.Value<string>("searchActionPath")) ? "search-results" : settings?.Value<string>("actionPath");
+    var languageTwoLetterCode = Umbraco.CultureDictionary.Culture.TwoLetterISOLanguageName;
 
-   
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +34,8 @@
     }
     <title>@Model.PageHeadingOrName()</title>
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/js/accessible-autocomplete.min.js"></script>
+    <script src="~/js/autocomplete.js"></script>
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
@@ -183,6 +186,26 @@
             <tpr-context-bar>
                 <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
             </tpr-context-bar>
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.HeaderWithSearch" />
+            </div>
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-search action="/@languageTwoLetterCode/@actionpath"></tpr-header-search>
+            </tpr-header-bar>
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.HeaderWithSearchAndContext" />
+            </div>
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-search action="/@languageTwoLetterCode/@actionpath"></tpr-header-search>
+            </tpr-header-bar>
+            <tpr-context-bar>
+                <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-2>@Model.Context2TextThatWraps</tpr-context-bar-context-2>
+                <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
+            </tpr-context-bar>
+
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.FinalBlocks" />
             </div>

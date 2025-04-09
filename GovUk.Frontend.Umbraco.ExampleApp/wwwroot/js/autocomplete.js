@@ -1,30 +1,28 @@
-
-
+﻿
 document.addEventListener("DOMContentLoaded", function () {
 
-   accessibleAutocomplete({
-        
-       element: document.querySelector('#eac-container-GlobalSearchInputBox'),
-       id: 'easy-autocomplete',
-      
-        source: async (query, populateResults) => {
-            const URL_PATH = 'https://www.thepensionsregulator.gov.uk'; 
+    const searchBars = document.querySelectorAll('.tpr-autocomplete-container');
+   
+    searchBars.forEach((searchBar) => {
 
-            if (!query) return;
+        accessibleAutocomplete({
 
-            try {
-                const response = await fetch(`${URL_PATH}/api/feature/search/suggestedsearchresults?query=${encodeURIComponent(query)}`);
-                const data = await response.json();
-                populateResults(data.results) || [];
-
-            } catch (error) {
-                console.error('Error fetching autocomplete results:', error);
-            }
+            element: searchBar,
+            id: 'easy-autocomplete',
+            source: function (query, populateResults) {
+                fetch('/data.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const results = data.filter(item => item.title.toLowerCase().includes(query.toLowerCase())).map(item => item.title);
+                        populateResults(results.slice(0,5))                 
+                    })
+                    .catch(error => {
+                        console.error('An error has occured with your fetch operation:', error);
+                    });
         },
+            minLength: 2,
+            placeholder: 'Search'
 
-       minLength: 2,
-       placeholder:'Search'
-
+        });
     });
-
 });

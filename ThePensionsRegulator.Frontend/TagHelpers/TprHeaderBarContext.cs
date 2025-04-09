@@ -9,7 +9,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private (AttributeDictionary Attributes, string? Href, string? AlternativeText)? _logo;
         private (AttributeDictionary Attributes, IHtmlContent? Label, bool AllowHtml)? _label;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
-        private (AttributeDictionary Attributes, IHtmlContent? Prompt, bool AllowHtml, bool DispaySearchBar)? _search;
+        private (AttributeDictionary Attributes, bool DispaySearchBar, string? ActionPath)? _search;
 
         public AttributeDictionary? LogoAttributes => _logo?.Attributes;
         public string? LogoHref => _logo?.Href;
@@ -22,8 +22,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public bool ContentAllowHtml => _content?.AllowHtml ?? false;
         public bool DisplaySearchBar => _search?.DispaySearchBar ?? false;
         public AttributeDictionary? SearchAttributes => _search?.Attributes;
-        public IHtmlContent? SearchBoxPrompt => _search?.Prompt;
-        public bool SearchAllowHtml => _search?.AllowHtml ?? false;
+        public string? ActionPath => _search?.ActionPath;
+
 
         public void SetLogo(AttributeDictionary attributes, string? href, string? alternativeText)
         {
@@ -61,7 +61,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             _content = (attributes, htmlContent, allowHtml);
         }
 
-        public void SetSearch(AttributeDictionary attributes, IHtmlContent htmlContent, bool allowHtml, bool displaySearchBar)
+        public void SetSearch(AttributeDictionary attributes, bool displaySearchBar, string actionPath)
         {
             if (_search != null)
             {
@@ -70,7 +70,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 TprHeaderBarTagHelper.TagName);
             }
 
-            _search = (attributes, htmlContent, allowHtml, displaySearchBar);
+            _search = (attributes, displaySearchBar, actionPath);
         }
     }
 }

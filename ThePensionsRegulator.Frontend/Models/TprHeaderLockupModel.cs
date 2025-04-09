@@ -26,5 +26,6 @@ namespace ThePensionsRegulator.Frontend.Models
         public virtual string? Context1 { get; set; }
         public virtual string? Context2 { get; set; }
         public virtual string? Context3 { get; set; }
+        public virtual string? ActionPath { get; set; } = "en/search-result";
     }
 }

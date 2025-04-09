@@ -17,9 +17,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public bool ContentAllowHtml { get; set; }
         public bool DisplaySearchBar {  get; set; }
         public AttributeDictionary? SearchAttributes { get; set; }
-        public IHtmlContent? SearchBoxPrompt { get; set; }
-        public bool SearchBoxAllowHtml { get; set; }
-        public string? LaunguageTwoLetterCode {  get; set; }
-        public string? Url {  get; set; }
+        public string? ActionPath {  get; set; }
     }
 }

@@ -97,7 +97,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     divTag.AddCssClass("search");
 
                     var form = new TagBuilder("form");
-                    form.Attributes.Add("action", $"{tprHeaderBar.Url}");
+                    form.Attributes.Add("action", $"{tprHeaderBar.ActionPath}");
                     form.Attributes.Add("id", "form-globalsearch");
                     form.Attributes.Add("method", "get");
            

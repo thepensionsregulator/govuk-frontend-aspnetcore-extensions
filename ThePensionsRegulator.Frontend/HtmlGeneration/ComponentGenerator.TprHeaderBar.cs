@@ -1,8 +1,5 @@
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Builder;
 
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
@@ -13,10 +10,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         internal const string DefaultHeaderLabel = "Making workplace pensions work";
         internal const string HeaderLogoDefaultAlt = "The Pensions Regulator home page";
         internal const string HeaderLogoDefaultHref = "https://www.thepensionsregulator.gov.uk";
-        
+
         public virtual TagBuilder GenerateTprHeaderBar(TprHeaderBar tprHeaderBar)
         {
-            
+
             var tagBuilder = new TagBuilder(TprHeaderBarElement);
             if (tprHeaderBar.HeaderBarAttributes != null) { tagBuilder.MergeAttributes(tprHeaderBar.HeaderBarAttributes); }
             tagBuilder.MergeCssClass("tpr-header");
@@ -100,11 +97,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     form.Attributes.Add("action", $"{tprHeaderBar.ActionPath}");
                     form.Attributes.Add("id", "form-globalsearch");
                     form.Attributes.Add("method", "get");
-           
-                    var searchField = new TagBuilder("div");                                
+
+                    var searchField = new TagBuilder("div");
                     searchField.AddCssClass("searchFieldWithButton");
 
-                    var autoComplete = new TagBuilder("div");          
+                    var autoComplete = new TagBuilder("div");
                     autoComplete.AddCssClass("tpr-autocomplete");
                     searchField.InnerHtml.AppendHtml(autoComplete);
 
@@ -158,7 +155,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 }
             }
 
-                tagBuilder.InnerHtml.AppendHtml(headerContent);
+            tagBuilder.InnerHtml.AppendHtml(headerContent);
 
             return tagBuilder;
         }

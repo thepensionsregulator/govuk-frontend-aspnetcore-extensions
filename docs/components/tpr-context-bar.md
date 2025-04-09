@@ -5,7 +5,9 @@ The Pensions Regulator (TPR) uses the TPR context bar as an optional part of the
 ## Example
 
 ```razor
- <tpr-context-bar>
+@addTagHelper *, ThePensionsRegulator.Frontend
+
+<tpr-context-bar>
     <tpr-context-bar-context-1>Example app</tpr-context-bar-context-1>
     <tpr-context-bar-context-2>Name of the thing being displayed or edited</tpr-context-bar-context-2>
     <tpr-context-bar-context-3 allow-html="true">

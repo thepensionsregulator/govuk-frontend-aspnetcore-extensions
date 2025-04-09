@@ -1,0 +1,63 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>;
+@addTagHelper *, ThePensionsRegulator.Frontend
+@inject IYouTubeVideoIdParser videoIdParser
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco.Services
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using ThePensionsRegulator.Umbraco;
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@using Umbraco.Cms.Web.Common.PublishedModels
+
+@{
+    @* TODO: Since AblePlayer support is incomplete (see https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions/issues/381)
+       the following condition is set to false and therefore the default YouTube embed iFrame is always used. 
+       
+       If AblePlayer is enabled it will set cookies, so check for consent first.
+       *@
+    var useAblePlayer = false;
+    var videoUrl = Model.Content.Value<string>(TprPropertyAliases.VideoUrl);
+    if(string.IsNullOrWhiteSpace(videoUrl))
+    {
+        return;
+    }
+    if (!videoIdParser.TryParseUrl(videoUrl, out var videoId))
+    {
+        return;
+    }
+    string id = Model.Content.Key.ToString();
+    var title = Model.Content.Value<string>(TprPropertyAliases.VideoTitle);
+    var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var transcriptLink = Model.Content.Value<Link>(TprPropertyAliases.VideoTranscriptUrl);
+    var transcriptUrl = string.Empty;
+    var transcriptTarget = string.Empty;
+    if (!string.IsNullOrWhiteSpace(transcriptLink?.Url))
+    {
+        transcriptUrl = transcriptLink.Url;
+        transcriptTarget = transcriptLink.Target;
+    }
+    var transcriptTitle = Umbraco.GetDictionaryValueOrDefault("YouTube video - transcript link text", "View transcript for '{{title}}'");
+    if (!string.IsNullOrWhiteSpace(transcriptLink?.Name))
+    {
+        transcriptTitle = transcriptLink.Name;
+    }
+    transcriptTitle = transcriptTitle.Replace("{{title}}", title);
+
+    var autoplay = Model.Settings.Value<bool>(TprPropertyAliases.VideoAutoplay);
+    bool playsInline = Model.Settings.Value<bool>(TprPropertyAliases.VideoPlaysInline)!;
+}
+<tpr-youtube-video
+    id="@id" 
+    class="@cssClasses"
+    title="@title"
+    youtube-video-id="@videoId"
+    use-able-player="@useAblePlayer"
+    autoplay="@autoplay"
+    plays-inline="@playsInline"
+    transcript-url="@transcriptUrl"
+    transcript-title="@transcriptTitle"
+    transcript-target="@transcriptTarget"
+    >
+</tpr-youtube-video>

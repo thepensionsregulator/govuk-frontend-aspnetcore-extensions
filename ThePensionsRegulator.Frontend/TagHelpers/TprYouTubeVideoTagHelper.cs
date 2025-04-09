@@ -1,3 +1,4 @@
+using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
@@ -11,53 +12,45 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     /// Generates a GOV.UK back link component.
     /// </summary>
     [HtmlTargetElement(TagName)]
-    [OutputElementHint(ComponentGenerator.YoutubeVideoElement)]
-    public class TprYoutubeVideoTagHelper : TagHelper
+    [OutputElementHint(ComponentGenerator.YouTubeVideoElement)]
+    public class TprYouTubeVideoTagHelper : TagHelper
     {
         internal const string TagName = "tpr-youtube-video";
-        private const string IdAttributeName = "id";
         private const string TitleAttributeName = "title";
-        private const string VideoIdAttributeName = "videoId";
+        private const string YouTubeVideoIdAttributeName = "youtube-video-id";
         private const string AutoplayAttributeName = "autoplay";
-        private const string PlaysInlineAttributeName = "playsinline";
+        private const string PlaysInlineAttributeName = "plays-inline";
         private const string PreloadAttributeName = "preload";
-        private const string UseAblePlayerAttributeName = "useAblePlayer";
-        private const string TranscriptUrlAttributeName = "transcriptUrl";
-        private const string TranscriptTitleAttributeName = "transcriptTitle";
-        private const string TranscriptTargetAttributeName = "transcriptTarget";
+        private const string UseAblePlayerAttributeName = "use-able-player";
+        private const string TranscriptUrlAttributeName = "transcript-url";
+        private const string TranscriptTitleAttributeName = "transcript-title";
+        private const string TranscriptTargetAttributeName = "transcript-target";
         private readonly string[] MinimisedAttributeList = { "autoplay", "playsinline", "data-able-player", "data-youtube-nocookie", "allowfullscreen", "credentialless" };
 
-        private string _id = string.Empty;
         private string _title = string.Empty;
-        private string _videoId = string.Empty;
-        private bool? _autoplay = false;
-        private bool? _playsInline = true;
-        private string _preload = ComponentGenerator.YoutubeVideoDefaultPreload;
-        private bool? _useAblePlayer = true;
-        private string _transcriptUrl = string.Empty;
-        private string _transcriptTitle = string.Empty;
-        private string _transcriptTarget = string.Empty;
+        private string _youTubeVideoId = string.Empty;
+        private bool _autoplay = false;
+        private bool _playsInline = true;
+        private string _preload = ComponentGenerator.YouTubeVideoDefaultPreload;
+        private bool _useAblePlayer = false;
+        private string? _transcriptUrl = null;
+        private string? _transcriptTitle = null;
+        private string? _transcriptTarget = null;
         private readonly ITprHtmlGenerator _htmlGenerator;
 
         /// <summary>
-        /// Creates a new <see cref="TprYoutubeVideoTagHelper"/>.
+        /// Creates a new <see cref="TprYouTubeVideoTagHelper"/>.
         /// </summary>
-        public TprYoutubeVideoTagHelper()
+        public TprYouTubeVideoTagHelper()
             : this(htmlGenerator: null)
         {
         }
 
-        internal TprYoutubeVideoTagHelper(ITprHtmlGenerator? htmlGenerator)
+        internal TprYouTubeVideoTagHelper(ITprHtmlGenerator? htmlGenerator)
         {
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
-        [HtmlAttributeName(IdAttributeName)]
-        public string Id
-        {
-            get => _id;
-            set => _id = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
-        }
         [HtmlAttributeName(TitleAttributeName)]
         public string Title
         {
@@ -66,22 +59,22 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         }
 
 
-        [HtmlAttributeName(VideoIdAttributeName)]
-        public string VideoId
+        [HtmlAttributeName(YouTubeVideoIdAttributeName)]
+        public string YouTubeVideoId
         {
-            get => _videoId;
-            set => _videoId = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
+            get => _youTubeVideoId;
+            set => _youTubeVideoId = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
         }
 
         [HtmlAttributeName(AutoplayAttributeName)]
-        public bool? Autoplay
+        public bool Autoplay
         {
             get => _autoplay;
             set => _autoplay = value;
         }
 
         [HtmlAttributeName(PlaysInlineAttributeName)]
-        public bool? PlaysInline
+        public bool PlaysInline
         {
             get => _playsInline;
             set => _playsInline = value;
@@ -95,28 +88,28 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         }
 
         [HtmlAttributeName(UseAblePlayerAttributeName)]
-        public bool? UseAblePlayer
+        public bool UseAblePlayer
         {
             get => _useAblePlayer;
             set => _useAblePlayer = value;
         }
 
         [HtmlAttributeName(TranscriptUrlAttributeName)]
-        public string TranscriptUrl
+        public string? TranscriptUrl
         {
             get => _transcriptUrl;
             set => _transcriptUrl = value;
         }
 
         [HtmlAttributeName(TranscriptTitleAttributeName)]
-        public string TranscriptTitle
+        public string? TranscriptTitle
         {
             get => _transcriptTitle;
             set => _transcriptTitle = value;
         }
 
         [HtmlAttributeName(TranscriptTargetAttributeName)]
-        public string TranscriptTarget
+        public string? TranscriptTarget
         {
             get => _transcriptTarget;
             set => _transcriptTarget = value;
@@ -127,17 +120,35 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             TagBuilder tagBuilder;
-            bool useAutoplay = Autoplay.HasValue ? Autoplay.Value : false;
-            bool playsInLine = PlaysInline.HasValue ? PlaysInline.Value : true;
-            if (UseAblePlayer.HasValue && UseAblePlayer.Value)
+            if (UseAblePlayer)
             {
-
-                tagBuilder = _htmlGenerator.GenerateTprAblePlayer(Id, Title, VideoId, useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
+                tagBuilder = _htmlGenerator.GenerateTprAblePlayer(new TprYouTubeVideo
+                {
+                    Attributes = output.Attributes.ToAttributeDictionary(),
+                    Title = Title,
+                    YouTubeVideoId = YouTubeVideoId,
+                    Autoplay = Autoplay,
+                    PlaysInline = PlaysInline,
+                    Preload = Preload,
+                    TranscriptUrl = TranscriptUrl,
+                    TranscriptTitle = TranscriptTitle,
+                    TranscriptTarget = TranscriptTarget
+                });
             }
             else
             {
-
-                tagBuilder = _htmlGenerator.GenerateTprYoutubeNoCookiesEmbeddedPlayer(Id, Title, VideoId, useAutoplay, playsInLine, Preload, TranscriptUrl, TranscriptTitle, TranscriptTarget);
+                tagBuilder = _htmlGenerator.GenerateTprYouTubeNoCookiesEmbeddedPlayer(new TprYouTubeVideo
+                {
+                    Attributes = output.Attributes.ToAttributeDictionary(),
+                    Title = Title,
+                    YouTubeVideoId = YouTubeVideoId,
+                    Autoplay = Autoplay,
+                    PlaysInline = PlaysInline,
+                    Preload = Preload,
+                    TranscriptUrl = TranscriptUrl,
+                    TranscriptTitle = TranscriptTitle,
+                    TranscriptTarget = TranscriptTarget
+                });
             }
 
             output.TagName = tagBuilder.TagName;

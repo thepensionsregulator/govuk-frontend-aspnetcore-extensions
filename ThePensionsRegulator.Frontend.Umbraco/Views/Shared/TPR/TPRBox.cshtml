@@ -5,21 +5,20 @@
 @using Umbraco.Cms.Core.Models.Blocks;
 @using Umbraco.Cms.Core.Models.PublishedContent;
 @using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
-@using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases
 @using Umbraco.Cms.Core.PropertyEditors.ValueConverters
 @inject IOptions<GovUkFrontendUmbracoOptions> govukUmbracoOptions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @if (Model.Areas is not null && Model.Areas.Any())
 {
-    var styleOfBox = Model.Settings.Value<string>(TprPropertyAliases.TprBoxStyle);
+    var styleOfBox = Model.Settings.Value<string>(TprPropertyAliases.BoxStyle);
     var isSolid = styleOfBox == TprBoxStyles.Solid;
     var isFullWidth = styleOfBox == TprBoxStyles.FullWidth;
     var boxClass = (string.IsNullOrEmpty(styleOfBox) || isSolid) ? null : " tpr-box--" + styleOfBox.ToLowerInvariant();
     var cssClasses = (" " + Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();
     if (isSolid || isFullWidth)
     {
-        cssClasses += Model.Settings.Value<ColorPickerValueConverter.PickedColor>(TprPropertyAliases.TprBoxBackgroundColour)?.Label == "Blue" ? " tpr-box--blue" : null;
+        cssClasses += Model.Settings.Value<ColorPickerValueConverter.PickedColor>(TprPropertyAliases.BoxBackgroundColour)?.Label == "Blue" ? " tpr-box--blue" : null;
     }
     <div class="tpr-box@(boxClass)@(cssClasses)">
         @if (isFullWidth)

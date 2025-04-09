@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
-    public class TprSectionCards
+    public record TprSectionCards
     {
-        public AttributeDictionary? ContainerAttributes { get; set; }
+        public AttributeDictionary? Attributes { get; set; }
         public List<TprSectionCard> Cards { get; set; } = new();
     }
 }

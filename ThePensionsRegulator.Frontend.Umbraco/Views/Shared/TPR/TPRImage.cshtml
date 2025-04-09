@@ -3,7 +3,7 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
 
 @{
-    var typedMediaPickerSingle = Model.Content.Value<Umbraco.Cms.Core.Models.MediaWithCrops>(PropertyAliases.TprImage);
+    var typedMediaPickerSingle = Model.Content.Value<Umbraco.Cms.Core.Models.MediaWithCrops>(TprPropertyAliases.Image);
     if (typedMediaPickerSingle != null)
     {
         <img src="@typedMediaPickerSingle.MediaUrl()" alt="@typedMediaPickerSingle.Name" class="tpr-image" />

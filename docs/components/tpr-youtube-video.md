@@ -1,60 +1,67 @@
 # YouTube video
 
-In TPR pages, you can add a YouTube video block. ~~This is rendered using [ableplayer](https://ableplayer.github.io/ableplayer/).~~
+The YouTube video component embeds a YouTube video in a page using the official YouTube player in privacy-enhanced mode.
 
-## Using Tags Helpers (for ASP.NET Razor views)
+## Example
 
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
 ...
 <tpr-youtube-video
-    id="(UNIQUE_ID)"
-    title="(YOUTUBE_TITLE_FOR_ACCESSIBILITY)"
-    videoId="(YOUTUBE_VIDEO_ID)" // https://www.youtube.com/watch?v=>>tTQiv1xKVM4<<
-    useAblePlayer="false" // Redundant until AblePlayer is enabled
-    preload="(OPTIONAL:true(default)|false)"
-    autoplay="(OPTIONAL:true|false(default))"
-    playsinline="metadata(default)|auto|none"
-    transcriptUrl="(URL_TO_TRANSCRIPT)"
-    transcriptTitle="(TRANSCRIPT_TITLE)"
-    transcriptTarget="(OPTIONAL:_blank|_self|_parent|_top)"
-
-    >
-</tpr-youtube-video>
+    id="example-video"
+    title="Master Trusts conference by The Pensions Regulator"
+    youtube-video-id="tTQiv1xKVM4"
+    use-able-player="false"
+    preload="auto"
+    autoplay="false"
+    plays-inline="true"
+    transcript-url="https://example.org/my-video-transcript"
+    transcript-title="View transcript of 'Master Trusts conference by The Pensions Regulator'"
+    transcript-target="_self"
+    />
 ```
 
-## ~~Adding Ableplayer dependencies~~
+## API
 
-> [!NOTE]
-> AblePlayer is not currently supported.
+### `<tpr-youtube-video>`
 
-~~In order for your consuming web application to be able render the videos using Able Player, you will need to add the dependencies to the page header. The easiest way to this is to render the `\Views\Shared\_VideoPlayerDependencies.cshtml` partial concluded with this package, inside the `head` tag of the page.~~
+| Attribute           | Type     | Description                                                                                                                                                                                                                           |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `autoplay`          | `bool`   | Start playing the video when the page loads. Should be avoided as it [creates accessibility problems and uses unnecessary bandwidth](https://abilitynet.org.uk/news-blogs/why-autoplay-accessibility-issue). Default is `false`.      |
+| `plays-inline`      | `bool`   | Applies to iOS devices only. Sets whether to play the video within the web page rather than full-screen. Default is `true`.                                                                                                           |
+| `preload`           | `string` | Applies when `use-able-player="true"`. Tells the browser how much media to download when the page loads. Valid values are `auto`, `metadata` or `none`. Defaults to `metadata`.                                                       |
+| `title`             | `string` | A brief description of the video for assistive technology.                                                                                                                                                                            |
+| `transcript-url`    | `string` | URL of a transcript of the video. Default is `null`.                                                                                                                                                                                  |
+| `transcript-target` | `string` | Sets the `target` attribute of the link to the transcript when `transcript-url` is set. Default is `null`.                                                                                                                            |
+| `transcript-title`  | `string` | Text used to link to a transcript when `transcript-url` is set. Default is `View transcript for '{{title}}'` where `{{title}}` is the value of the `title` attribute.                                                                 |
+| `use-able-player`   | `bool`   | Use [Able Player](https://ableplayer.github.io/ableplayer/) instead of the official YouTube player. **Not currently supported. See [#381](https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions/issues/381)**. |
+| `youtube-video-id`  | `string` | An alpha-numeric string uniquely identifying the video to embed, which can be found in the YouTube URL for the video.                                                                                                                 |
 
-```razor
-<head>
-    ...
-    <partial name="_VideoPlayerDependencies" />
-</head>
+## Umbraco
 
-```
-
-## Umbraco block grid
-
-Add a 'YouTube video' component anywhere in a block grid or block list using the 'TPR block list', 'TPR block grid' or TPR accordion section block grid' data types.
+Add a 'YouTube video' component anywhere in a block grid or block list using the 'TPR block list', 'TPR block grid' or 'TPR accordion section block grid' data types.
 
 ![Add a YouTube video component](/docs/images/youtube-video-block.png)
 
-You have to fill in the following fields:
+You can set the following properties:
 
-- Title - This is used for accessibility purposes. Is not visible to the end user.
-- Url - This is the url of the YouTube video.
-- Transcript url - (Optional) : This adds a link to the video transcript under the video.
+- **Title** - A brief description of the video for assistive technology.
+- **URL** - The URL of the YouTube video which includes the YouTube video id.
+- **Transcript URL** - Optional. A link to the transcript of the video.
 
-In the settings tab, you can adjust the following properties:
+When you provide a transcript URL you can set the link text in three ways:
 
-- Autoplay (off by default) - Starts playing the video when the page loads.
-- Plays inline (on by default) - Instructs supporting browsers to play the video “inline” within the web page.
-- Preload - Tells the browser how much media to download when the page loads.
+- provide a title in the URL dialogue
+- add a dictionary entry with the key 'YouTube video - transcript link text'
+- leave both blank to use the default "View transcript for '{{title}}'"
+
+In any of the above locations a `{{title}}` token is replaced with the title of the video.
+
+In the settings tab, you can set the following properties:
+
+- **Autoplay** - Starts playing the video when the page loads. Default is off.
+- **Plays inline** - Applies to iOS devices only. Sets whether to play the video within the web page rather than full-screen. Default is on.
+- **Preload** - Tells the browser how much media to download when the page loads. Applies when using
 
 ![YouTube video settings](/docs/images/youtube-video-settings.png)
 

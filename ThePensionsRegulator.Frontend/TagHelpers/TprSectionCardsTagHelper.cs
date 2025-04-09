@@ -38,7 +38,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             var sectionCards = new TprSectionCards
             {
-                ContainerAttributes = output.Attributes.ToAttributeDictionary(),
+                Attributes = output.Attributes.ToAttributeDictionary(),
                 Cards = cardsContext.Cards.Select(c => new TprSectionCard
                 {
                     CardAttributes = c.CardAttributes,

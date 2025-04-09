@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
-using Aliases = ThePensionsRegulator.Frontend.Umbraco.PropertyEditorAliases;
+using Aliases = ThePensionsRegulator.Frontend.Umbraco.TprPropertyEditorAliases;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors
 {

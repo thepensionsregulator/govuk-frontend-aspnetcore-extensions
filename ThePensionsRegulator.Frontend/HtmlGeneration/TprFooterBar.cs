@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
-    public class TprFooterBar
+    public record TprFooterBar
     {
         public AttributeDictionary? FooterBarAttributes { get; set; }
         public AttributeDictionary? LogoAttributes { get; set; }

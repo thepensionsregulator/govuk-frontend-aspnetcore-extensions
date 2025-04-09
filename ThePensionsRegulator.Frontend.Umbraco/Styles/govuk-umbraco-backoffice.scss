@@ -21,15 +21,14 @@ p.tpr-add-link {
 
 .tpr-youtube-video-previewbox{
     width: 100%;
-    // padding-bottom: 75%;
     background: white;
     border-radius: 10px;
-    border:5px solid #3d3d3d;
+    border: $govuk-border-width solid $tpr-colour-eclipse;
     display: flex;
     align-content: center;
     box-sizing: border-box;
 }
 
 .tpr-youtube-video-previewbox-play-button{
-    margin:0px 20%;
+    margin:0 20%;
 }

@@ -117,7 +117,28 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Error: " xml:space="preserve">
-    <value>Fout: </value>
+  <data name="Email address must include @" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Field 1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Field must be only numbers (Model Resource)" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Fields must be the same" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Must be 100 or fewer characters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Must be 5 or more characters" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Must be a number between 5 and 50" xml:space="preserve">
+    <value />
+  </data>
+  <data name="String length must be between 5 and 20 (Model Resource)" xml:space="preserve">
+    <value />
   </data>
 </root>

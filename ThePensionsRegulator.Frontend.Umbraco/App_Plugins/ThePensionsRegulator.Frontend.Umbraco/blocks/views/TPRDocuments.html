@@ -1,0 +1,10 @@
+﻿
+<dl class="tpr-documents {{block.settingsData.cssClasses}}">
+    <div ng-repeat="doc in block.data.documents.contentData">
+        <dt>
+            <a href="{{doc.document.link.url}}">{{doc.document.link.name}}</a>
+        </dt>
+        <dd>Published: {{doc.datePublished}}</dd>
+        <dd ng-bind="doc.description"></dd>
+    </div>
+</dl>

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName, ParentTag = TprDocumentsTagHelper.TagName)]
-    [RestrictChildren(TprDocumentTitleTagHelper.TagName, TprDocumentDescriptionTagHelper.TagName)]
-    class TprDocumentTagHelper : TagHelper
+    [RestrictChildren(TprDocumentTitleTagHelper.TagName, TprDocumentDescriptionTagHelper.TagName, "dd")]
+    public class TprDocumentTagHelper : TagHelper
     {
         internal const string TagName = "tpr-document";
 
@@ -18,10 +18,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("pages")]
         public string? Pages { get; set; }
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var documentContext = new TprDocumentContext();
-            context.Items.Add(typeof(TprDocumentTagHelper), documentContext);
+            var documentContext = (TprDocumentContext)context.Items[typeof(TprDocumentsTagHelper)];
+            documentContext.Href = Href;
+            documentContext.KbSize = KbSize;
+            documentContext.Pages = Pages;
+            documentContext.Document = await output.GetChildContentAsync();
 
             output.TagName = "div";
         }

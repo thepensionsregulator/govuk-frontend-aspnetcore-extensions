@@ -3,6 +3,7 @@
 @using Umbraco.Cms.Web.Common
 @using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
 @using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases
+@inject UmbracoHelper Umbraco
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
@@ -10,7 +11,7 @@
     var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.TprDocumentsBlockList);
 }
 
-<tpr-documents class="@OuterCssClasses">
+<tpr-documents class="tpr-documents govuk-body @OuterCssClasses">
 
     @foreach (var document in documents)
     {
@@ -22,11 +23,11 @@
 
         if (docLinkType == LinkType.Media)
         {
-            var docHref = document.Content.Value<Link>(TprPropertyAliases.TprDocument).MediaUrl;
-            var docKB = document.Content.Value<Link>(TprPropertyAliases.TprDocument).GetPropertyValue<int>("umbracoBytes");
+            var docHref = document.Content.Value<Link>(TprPropertyAliases.TprDocument).Url;
+            var docKB = document.Content.Value<string>(TprPropertyAliases.TprDocumentFileSize);
             var docPages = document.Content.Value<string>(TprPropertyAliases.TprDocumentNumberOfPages);
 
-            <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" class="@innerCssClasses">
+            <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" class="tpr-document @innerCssClasses">
 
                 <tpr-document-title>@docTitle</tpr-document-title>
 
@@ -40,7 +41,7 @@
         {
             var docHref = document.Content.Value<Link>(TprPropertyAliases.TprDocument).Url;
 
-            <tpr-document href="@docHref" class="@innerCssClasses">
+            <tpr-document href="@docHref" class="tpr-document @innerCssClasses">
 
                 <tpr-document-title>@docTitle</tpr-document-title>
 

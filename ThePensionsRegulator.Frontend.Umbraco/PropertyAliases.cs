@@ -7,6 +7,7 @@
         public const string TprDocument = "document";
         public const string TprDocumentDatePublished = "datePublished";
         public const string TprDocumentDescription = "description";
+        public const string TprDocumentFileSize = "fileSize";
         public const string TprDocumentNumberOfPages = "numberOfPages";
         public const string TprDocumentsBlockList = "documents";
         public const string TprImage = "image";

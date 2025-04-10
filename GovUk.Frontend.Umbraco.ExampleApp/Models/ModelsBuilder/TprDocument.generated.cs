@@ -74,7 +74,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::Umbraco.Cms.Core.Models.Link Document => this.Value<global::Umbraco.Cms.Core.Models.Link>(_publishedValueFallback, "document");
 
 		///<summary>
-		/// Number of pages
+		/// File size: Only use if a file is linked. Input should be the file size in KB.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
+		[ImplementPropertyType("fileSize")]
+		public virtual int FileSize => this.Value<int>(_publishedValueFallback, "fileSize");
+
+		///<summary>
+		/// Number of pages: Only use if a file is linked.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
 		[ImplementPropertyType("numberOfPages")]

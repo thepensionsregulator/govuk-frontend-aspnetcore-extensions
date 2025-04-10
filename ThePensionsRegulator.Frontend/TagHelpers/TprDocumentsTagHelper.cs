@@ -1,16 +1,21 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using GovUk.Frontend.AspNetCore.Extensions.TagHelpers;
+using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName)]
     [RestrictChildren(TprDocumentTagHelper.TagName)]
-    class TprDocumentsTagHelper : TagHelper
+    public class TprDocumentsTagHelper : TagHelper
     {
         internal const string TagName = "tpr-documents";
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            var documentContext = new TprDocumentContext();
+            context.Items.Add(typeof(TprDocumentsTagHelper), documentContext);
+
+            await output.GetChildContentAsync();
+
             output.TagName = "dl";
         }
     }

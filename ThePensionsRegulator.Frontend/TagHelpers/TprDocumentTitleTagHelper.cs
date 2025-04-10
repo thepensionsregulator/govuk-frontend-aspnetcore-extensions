@@ -5,27 +5,30 @@ using System.Threading.Tasks;
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName, ParentTag = TprDocumentTagHelper.TagName)]
-    class TprDocumentTitleTagHelper : TagHelper
+    public class TprDocumentTitleTagHelper : TagHelper
     {
         internal const string TagName = "tpr-document-title";
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var documentContext = context.GetContextItem<TprDocumentContext>();
-            
+            var documentContext = (TprDocumentContext)context.Items[typeof(TprDocumentsTagHelper)];
+            documentContext.DocumentTitle = await output.GetChildContentAsync();
+
             output.PreElement.SetHtmlContent("<dt>");
-            output.TagName = "a";
+            output.TagName = $"a href='{documentContext.Href}'";
 
             if (documentContext.Href!.EndsWith(".pdf"))
             {
-                output.PostContent.SetHtmlContent($"/n<span class='pdf fileicon'>PDF</span> {documentContext.KbSize}KB, {documentContext.Pages} pages");
+                output.PostContent.SetHtmlContent($"<br><span class='pdf fileicon'>PDF</span> {documentContext.KbSize}KB, {documentContext.Pages} pages </dt>");
             }
-            if (documentContext.Href!.EndsWith(".docx"))
+            else if (documentContext.Href!.EndsWith(".docx"))
             {
-                output.PostContent.SetHtmlContent($"/n<span class='doc fileicon'>WORD</span> {documentContext.KbSize}KB, {documentContext.Pages} pages");
+                output.PostContent.SetHtmlContent($"<br><span class='doc fileicon'>WORD</span> {documentContext.KbSize}KB, {documentContext.Pages} pages </dt>");
             }
-
-            output.PostElement.SetHtmlContent("</dt>");
+            else
+            {
+                output.PostElement.SetHtmlContent("</dt>");
+            }
         }
     }
 }

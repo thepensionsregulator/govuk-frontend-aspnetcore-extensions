@@ -1,14 +1,18 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName, ParentTag = TprDocumentTagHelper.TagName)]
-    class TprDocumentDescriptionTagHelper : TagHelper
+    public class TprDocumentDescriptionTagHelper : TagHelper
     {
         internal const string TagName = "tpr-document-description";
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            var documentContext = (TprDocumentContext)context.Items[typeof(TprDocumentsTagHelper)];
+            documentContext.DocumentDescription = await output.GetChildContentAsync();
+
             output.TagName = "dd";
         }
     }

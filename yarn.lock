@@ -1322,10 +1322,10 @@ globals@^11.1.0:
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
   integrity sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==
 
-govuk-frontend@5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-5.2.0.tgz#f8e0bf98b771b8ee1501fd45bbba24a091f3846d"
-  integrity sha512-beD3wztHpkKz6JUpPwnwop1ejb4rTFMPLCutKLCIDmUS4BPpW59ggVUfctsRqHd2Zjw9wxljdRdeIJ8AZFyyTw==
+govuk-frontend@5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-5.3.1.tgz#d63e2078b0d94a119bfe322431218f04024668a2"
+  integrity sha512-EzegdVdmZVwXUGTQTsBgK4TkMpMyPdOIa2g1kvwX7EeyP9Kah+amXSo97gbiI8N49L6E0J6/2H6qLW4QN3KhMQ==
 
 graceful-fs@^4.2.9:
   version "4.2.10"

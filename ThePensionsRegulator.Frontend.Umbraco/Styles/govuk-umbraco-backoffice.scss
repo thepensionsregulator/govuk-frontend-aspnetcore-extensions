@@ -38,3 +38,33 @@ div.tpr-related-links {
 .tpr-related-links li {
     padding-bottom: 1rem;
 }
+
+.tpr-documents {
+    margin-bottom: 2rem;
+}
+
+.tpr-document {
+    margin-bottom: 1rem;
+}
+
+.tpr-document dd {
+    margin-inline-start: 0;
+}
+
+.tpr-document .fileicon {
+    display: inline-block;
+    color: #fff;
+    margin-right: 5px;
+    padding: 1px 5px;
+    letter-spacing: 1px;
+    font-size: 0.6rem;
+    text-decoration: none;
+}
+
+.tpr-document .fileicon.pdf {
+    background-color: #a91717;
+}
+
+.tpr-document .fileicon.doc {
+    background-color: #006ebc;
+}

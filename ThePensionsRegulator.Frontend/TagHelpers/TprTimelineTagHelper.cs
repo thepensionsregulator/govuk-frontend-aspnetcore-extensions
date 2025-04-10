@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
+using System;
 //using ComponentGenerator = ThePensionsRegulator.Frontend.HtmlGeneration.ComponentGenerator;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -18,9 +19,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         private readonly ITprHtmlGenerator _htmlGenerator;
         
-        [HtmlAttributeName("datesize")]
+        [HtmlAttributeName("date-size")]
         public string? DateSize { get; set; } = string.Empty; 
 
+        [HtmlAttributeName("hide-tail")]
+        public bool? HideTail {get; set;} = false;
 
         /// <summary>
         /// Creates a new <see cref="TprFooterBarTagHelper"/>.
@@ -45,14 +48,22 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();
             }
 
-            timelineContext.DateSize = DateSize;
+            if (!string.IsNullOrWhiteSpace(DateSize))
+            {
+                timelineContext.DateSize = DateSize;
+            }
+            if (HideTail.HasValue)
+            {
+                timelineContext.HideTail = HideTail.Value;
+            }
 
             timelineContext.ThrowIfIncomplete();
 
             var tagBuilder = _htmlGenerator.GenerateTprTimeline(
                 output.Attributes.ToAttributeDictionary(),
                 timelineContext.Tasks,
-                timelineContext.DateSize
+                timelineContext.DateSize,
+                timelineContext.HideTail
             );
 
             output.TagName = tagBuilder.TagName;

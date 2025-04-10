@@ -21,6 +21,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public string DateSize;
 
+        public bool HideTail;
+
         public IReadOnlyList<TprTimelineItem> Tasks => _items;
 
         public void AddItem(TprTimelineItem item)

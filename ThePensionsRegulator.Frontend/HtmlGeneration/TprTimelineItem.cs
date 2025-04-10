@@ -14,6 +14,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public string? DateTime { get; set; }
         public string? Heading { get; set; }
         public string? ByLine { get; set; }
+        public string? LineColour { get; set; }
         public IHtmlContent? Content { get; set; }
     }
 }

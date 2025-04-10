@@ -22,10 +22,113 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
-        <tpr-timeline>
+        <div class="tpr-timeline tpr-timeline--large">
+            <ol class="tpr-timeline__items">
+                <li class="tpr-timeline__item">
+                    <div class="tpr-timeline__item-content">
+                        <p class="tpr-timeline__datetime ">9 Jan 2005</p>
+                        <h2 class="tpr-timeline__heading">Duties start date</h2>
+                    </div>
+                </li>
+                <li class="tpr-timeline__item">
+
+                    <div class="tpr-timeline__item-content">
+                        <p class="tpr-timeline__datetime ">31 Jan 2025</p>
+                        <h2 class="tpr-timeline__heading">Today's date</h2>
+                        <h3 class="govuk-heading-m">Complete these duties</h3>
+                        <ul>
+                            <li>
+                                <a href="#" class="govuk-link">Choose a pension Scheme</a>
+                                <span class="govuk-body">Do this now</span>
+                            </li>
+                            <li>
+                                <a href="#" class="govuk-link">Work out who needs to be put into a pension scheme</a>
+                                <span class="govuk-body">On your duties start date</span>
+                            </li>
+
+                            <li>
+                                <a href="#" class="govuk-link">Write to your staff</a>
+                                <span class="govuk-body">Within 6 weeks of your duties start date</span>
+                            </li>
+
+                            <li>
+                                <a href="#" class="govuk-link">Declare your compliance</a>
+                                <span class="govuk-body">By your deadline</span>
+                            </li>
+                        </ul>
+
+                    </div>
+                </li>
+                <li class="tpr-timeline__item">
+                    <div class="tpr-timeline__item-content">
+                        <p class="tpr-timeline__datetime ">9 Jun 2025</p>
+                        <h2 class="tpr-timeline__heading">Declaration deadlline</h2>
+                        <p class="govuk-body">This is the deadline for completing your declaration of compliance</p>
+                    </div>
+                </li>
+            </ol>
+        </div> 
+
+        <div class="tpr-timeline tpr-timeline--large tpr-timeline--hide-tail">
+            <ol class="tpr-timeline__items">
+                <li class="tpr-timeline__item">
+                    <div class="tpr-timeline__item-content">
+                        <p class="tpr-timeline__datetime ">9 Jan 2005</p>
+                        <h2 class="tpr-timeline__heading">Duties start date</h2>
+                    </div>
+                </li>
+                <li class="tpr-timeline__item tpr-timeline__item--red">
+                    <div class="tpr-timeline__item-content">
+                        <p class="tpr-timeline__datetime ">12 Jan 2005</p>
+                        <h2 class="tpr-timeline__heading">Red section</h2>
+                    </div>
+                </li>
+                <li class="tpr-timeline__item tpr-timeline__item--orange">
+
+                    <div class="tpr-timeline__item-content">
+                        <p class="tpr-timeline__datetime ">31 Jan 2025</p>
+                        <h2 class="tpr-timeline__heading">Today's date</h2>
+                        <h3 class="govuk-heading-m">Complete these duties</h3>
+                        <ul>
+                            <li>
+                                <a href="#" class="govuk-link">Choose a pension Scheme</a>
+                                <span class="govuk-body">Do this now</span>
+                            </li>
+                            <li>
+                                <a href="#" class="govuk-link">Work out who needs to be put into a pension scheme</a>
+                                <span class="govuk-body">On your duties start date</span>
+                            </li>
+
+                            <li>
+                                <a href="#" class="govuk-link">Write to your staff</a>
+                                <span class="govuk-body">Within 6 weeks of your duties start date</span>
+                            </li>
+
+                            <li>
+                                <a href="#" class="govuk-link">Declare your compliance</a>
+                                <span class="govuk-body">By your deadline</span>
+                            </li>
+                        </ul>
+
+                    </div>
+                </li>
+                <li class="tpr-timeline__item">
+                    <div class="tpr-timeline__item-content">
+                        <p class="tpr-timeline__datetime ">9 Jun 2025</p>
+                        <h2 class="tpr-timeline__heading">Declaration deadlline</h2>
+                        <p class="govuk-body">This is the deadline for completing your declaration of compliance</p>
+                    </div>
+                </li>
+            </ol>
+        </div> 
+
+
+
+                
+        <tpr-timeline date-size="large" >
             <tpr-timeline-item date="9 Jan 2005" heading="Duties start date">
             </tpr-timeline-item>
-            <tpr-timeline-item date="31 Jan 2025" heading="Today's date">
+            <tpr-timeline-item date="31 Jan 2025" heading="Today's date" line-colour="orange">
                 <tpr-timeline-item-content>
                     <h3 class="govuk-heading-m">Complete these duties</h3>
                     <ul>
@@ -34,7 +137,8 @@
                             <span class="govuk-body">Do this now</span>
                         </li>
                     <li>
-                        <a href="#" class="govuk-link">Work out who needs to be put into a pension scheme</a>
+                        <a href="#" class="govuk-link">Work out who needs to be put into a <pensi>
+                        <orange></orange>on scheme</a>
                         <span class="govuk-body">On your duties start date</span>
                     </li>
 
@@ -51,7 +155,7 @@
 
                 </tpr-timeline-item-content>
             </tpr-timeline-item>
-            <tpr-timeline-item date="9 Jun 2025" heading="Declaration deadlline">
+            <tpr-timeline-item date="9 Jun 2025" heading="Declaration deadline" line-colour="red">
                 <tpr-timeline-item-content>
                     <p class="govuk-body">This is the deadline for completing your declaration of compliance</p>
                 </tpr-timeline-item-content>

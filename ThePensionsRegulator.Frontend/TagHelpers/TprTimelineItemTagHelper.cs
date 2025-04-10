@@ -9,6 +9,7 @@ using System;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -29,11 +30,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         /// A link to the task.
         /// </summary>
         [HtmlAttributeName("date")]
-        public string? Date { get; set; } = "";
+        public string? Date { get; set; } = string.Empty; 
 
         [HtmlAttributeName("heading")]
-        public string? Heading { get; set; } = "";
+        public string? Heading { get; set; } = string.Empty; 
 
+        [HtmlAttributeName("line-colour")]
+        public string? LineColour { get; set; } = string.Empty;
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -51,7 +54,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 Attributes = output.Attributes.ToAttributeDictionary(),
                 Heading = Heading,
                 DateTime = Date,
-                Content = itemContext.HtmlContent
+                Content = itemContext.HtmlContent,
+                LineColour = LineColour
             });
 
             output.SuppressOutput();

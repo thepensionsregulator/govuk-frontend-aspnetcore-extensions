@@ -13,11 +13,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         internal const string TimelineElement = "div";
         internal const string TimelineItemElement = "li";
+        internal const string TimelineItemContentElement = "div";
 
         public virtual TagBuilder GenerateTprTimeline(
             AttributeDictionary? attributes,
             IEnumerable<TprTimelineItem> items,
-            string dateSize)
+            string dateSize,
+            bool hideTail)
         {
             Guard.ArgumentNotNull(nameof(items), items);
             Guard.ArgumentValid(nameof(items), "A Timeline must contain at least one item", items.Any());
@@ -32,6 +34,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 timelineTagBuilder.AddCssClass("tpr-timeline--" + dateSize.ToLower());
             }
 
+            if (hideTail)
+            {
+                timelineTagBuilder.AddCssClass("tpr-timeline--hide-tail");
+            }
+            
             var innerItems = new TagBuilder("ol");
             innerItems.MergeCssClass("tpr-timeline__items");
 
@@ -42,16 +49,23 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                 var itemBuilder = new TagBuilder(TimelineItemElement);
                 itemBuilder.MergeCssClass("tpr-timeline__item");
+                if(!string.IsNullOrWhiteSpace(item.LineColour))
+                {
+                    itemBuilder.AddCssClass("tpr-timeline__item--" + item.LineColour.ToLower());
+                }
+                var itemContentBuilder = new TagBuilder(TimelineItemContentElement);
+                itemContentBuilder.AddCssClass("tpr-timeline__item-content");
                 
-                if (item.Attributes is not null) { itemBuilder.MergeAttributes(item.Attributes); }
+                if (item.Attributes is not null) { itemContentBuilder.MergeAttributes(item.Attributes); }
+                itemBuilder.InnerHtml.AppendHtml(itemContentBuilder);
                 innerItems.InnerHtml.AppendHtml(itemBuilder);
 
-                itemBuilder.InnerHtml.AppendHtml(BuildDateTime(item, dateSize));
-                itemBuilder.InnerHtml.AppendHtml(BuildHeading(item));
+                itemContentBuilder.InnerHtml.AppendHtml(BuildDateTime(item));
+                itemContentBuilder.InnerHtml.AppendHtml(BuildHeading(item));
 
                 if (item.Content != null)
                 {
-                    itemBuilder.InnerHtml.AppendHtml(item.Content);
+                    itemContentBuilder.InnerHtml.AppendHtml(item.Content);
                 }
             }
 
@@ -60,15 +74,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             return timelineTagBuilder;
         }
 
-        private static TagBuilder BuildDateTime(TprTimelineItem item, string dateSize)
+        private static TagBuilder BuildDateTime(TprTimelineItem item)
         {
             var timelineItemDateTime = new TagBuilder("p");
             timelineItemDateTime.MergeCssClass("tpr-timeline__datetime");
             timelineItemDateTime.InnerHtml.AppendHtml(item.DateTime!.ToString());
-            if (!string.IsNullOrWhiteSpace(dateSize))
-            {
-                timelineItemDateTime.AddCssClass("tpr-timeline__datetime--" + dateSize.ToLower());
-            }
             return timelineItemDateTime;
         }
 

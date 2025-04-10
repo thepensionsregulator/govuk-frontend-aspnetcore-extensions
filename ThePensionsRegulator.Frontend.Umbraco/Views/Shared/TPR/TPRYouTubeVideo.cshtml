@@ -1,8 +1,11 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>;
 @addTagHelper *, ThePensionsRegulator.Frontend
 @inject IYouTubeVideoIdParser videoIdParser
+@inject IConsentCookieReader consentCookie
+@using GovUk.Frontend.AspNetCore.Extensions.Security
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Frontend.Security
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco.Blocks;
@@ -14,10 +17,12 @@
 @{
     @* TODO: Since AblePlayer support is incomplete (see https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions/issues/381)
        the following condition is set to false and therefore the default YouTube embed iFrame is always used. 
-       
-       If AblePlayer is enabled it will set cookies, so check for consent first.
        *@
     var useAblePlayer = false;
+    if (useAblePlayer)
+    {
+        if (!consentCookie.HasConsent(TprConsentCookieReader.TPR_CONSENT_CATEGORY_FUNCTIONALITY)){ useAblePlayer = false; }
+    }
     var videoUrl = Model.Content.Value<string>(TprPropertyAliases.VideoUrl);
     if(string.IsNullOrWhiteSpace(videoUrl))
     {

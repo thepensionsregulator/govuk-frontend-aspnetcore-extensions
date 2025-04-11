@@ -1,5 +1,5 @@
 ﻿// Import and compile govuk-frontend, adding fixes and styles for the components we've added from later versions
-@import 'govuk/all';
+@import 'govuk';
 @import "_govuk-checkboxes.scss";
 @import "_govuk-input.scss";
 @import "_govuk-pagination.scss";

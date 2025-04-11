@@ -56,7 +56,10 @@
             {
                 <govuk-character-count-hint>@hint</govuk-character-count-hint>
             }
-            <govuk-character-count-error-message>@errorMessage</govuk-character-count-error-message>
+            @if (hasErrorMessage)
+            {
+                <govuk-character-count-error-message>@errorMessage</govuk-character-count-error-message>
+            }
             <govuk-character-count-value>@modelStateEntry?.AttemptedValue</govuk-character-count-value>
         </govuk-character-count>
     }
@@ -70,7 +73,10 @@
                 {
                     <govuk-textarea-hint>@hint</govuk-textarea-hint>
                 }
-                <govuk-textarea-error-message>@errorMessage</govuk-textarea-error-message>
+                @if (hasErrorMessage)
+                {
+                    <govuk-textarea-error-message>@errorMessage</govuk-textarea-error-message>
+                }
                 <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>
             </govuk-textarea>
         }
@@ -82,7 +88,10 @@
                 {
                     <govuk-textarea-hint>@hint</govuk-textarea-hint>
                 }
-                <govuk-textarea-error-message>@errorMessage</govuk-textarea-error-message>
+                @if (hasErrorMessage)
+                {
+                    <govuk-textarea-error-message>@errorMessage</govuk-textarea-error-message>
+                }
                 <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>
             </govuk-textarea>
         }

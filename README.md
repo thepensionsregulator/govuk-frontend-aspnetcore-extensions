@@ -54,7 +54,7 @@ We add support for:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
   - [Breadcrumbs](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/breadcrumbs.md)
 
-We target [GOV.UK Frontend v5.7.1](https://github.com/alphagov/govuk-frontend/releases/tag/v5.7.1) in line with James Gunn's base project.
+We target [GOV.UK Frontend v5.8.0](https://github.com/alphagov/govuk-frontend/releases/tag/v5.8.0) in line with James Gunn's base project.
 
 ## ASP.NET projects without Umbraco
 

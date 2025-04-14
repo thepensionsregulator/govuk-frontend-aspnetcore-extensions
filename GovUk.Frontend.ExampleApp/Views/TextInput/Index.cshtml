@@ -5,14 +5,14 @@
 @inject IViewLocalizer localizer;
 @inject IHtmlLocalizer<SharedResource> _shared;
 @{
-    ViewData["Title"] = "Text input";
+    ViewData["Title"] = localizer["Page title"];
 }
 @section language {
     <partial name="_LanguageSwitcher"/>
 }
 
     <form asp-controller="TextInput" asp-action="Post" method="post" novalidate>
-    <span class="govuk-caption-xl">Example application</span>
+    <span class="govuk-caption-xl">@localizer["Caption"]</span>
     <div class="govuk-grid-row govuk-grid-row--tpr-divider">
         <div class="govuk-grid-column govuk-grid-column-full">
             <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
@@ -25,7 +25,7 @@
           <p class="govuk-body">You must apply <code>.govuk-fieldset__legend--for-fieldset</code> if you want TPR styling.</p>
           <govuk-client-side-validation>
               <govuk-fieldset>
-                  <govuk-fieldset-legend class="govuk-fieldset__legend--for-fieldset">The first two fields are in a fieldset</govuk-fieldset-legend>
+                  <govuk-fieldset-legend class="govuk-fieldset__legend--for-fieldset">@localizer["The first two fields are in a fieldset"]</govuk-fieldset-legend>
                       <govuk-input asp-for="Field1">
                           <govuk-input-label>@_shared["field_label"]</govuk-input-label>
                           <govuk-input-hint>This field must be numeric, and between 5 and 20 characters</govuk-input-hint>

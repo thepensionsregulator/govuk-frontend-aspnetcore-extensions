@@ -18,53 +18,17 @@ p.tpr-add-link {
     margin: 5px;
 }
 
-div.tpr-related-links {
-    border-top: solid 4px $tpr-colour-royal-blue;
-    padding-top: 20px;
-    margin-bottom: 30px;
+
+.tpr-youtube-video-previewbox{
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    border: $govuk-border-width solid $tpr-colour-eclipse;
+    display: flex;
+    align-content: center;
+    box-sizing: border-box;
 }
 
-.tpr-related-links ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
-.tpr-related-links li h2 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-}
-
-.tpr-related-links li {
-    padding-bottom: 1rem;
-}
-
-.tpr-documents {
-    margin-bottom: 2rem;
-}
-
-.tpr-document {
-    margin-bottom: 1rem;
-}
-
-.tpr-document dd {
-    margin-inline-start: 0;
-}
-
-.tpr-document .fileicon {
-    display: inline-block;
-    color: #fff;
-    margin-right: 5px;
-    padding: 1px 5px;
-    letter-spacing: 1px;
-    font-size: 0.6rem;
-    text-decoration: none;
-}
-
-.tpr-document .fileicon.pdf {
-    background-color: #a91717;
-}
-
-.tpr-document .fileicon.doc {
-    background-color: #006ebc;
+.tpr-youtube-video-previewbox-play-button{
+    margin:0 20%;
 }

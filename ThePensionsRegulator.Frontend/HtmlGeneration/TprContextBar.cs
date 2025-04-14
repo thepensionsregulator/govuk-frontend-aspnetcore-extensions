@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
-    public class TprContextBar
+    public record TprContextBar
     {
         public AttributeDictionary? ContextBarAttributes { get; set; }
         public AttributeDictionary? Context1Attributes { get; set; }

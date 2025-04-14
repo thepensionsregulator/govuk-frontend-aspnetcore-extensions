@@ -42,8 +42,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
         private static bool BlockIsFullWidthBox(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block)
         {
-            return block.Content.ContentType.Alias == ElementTypeAliases.TprBox &&
-                   block.Settings.Value<string>(PropertyAliases.TprBoxStyle) == TprBoxStyles.FullWidth;
+            return block.Content.ContentType.Alias == TprElementTypeAliases.Box &&
+                   block.Settings.Value<string>(TprPropertyAliases.BoxStyle) == TprBoxStyles.FullWidth;
         }
     }
 }

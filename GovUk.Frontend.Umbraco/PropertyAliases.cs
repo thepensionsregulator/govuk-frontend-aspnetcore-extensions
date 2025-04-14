@@ -32,6 +32,9 @@
         public const string DetailsSummary = "summary";
         public const string DetailsText = "text";
         public const string DisplayName = "displayName";
+        public const string ErrorMessageCustom1 = "customError1";
+        public const string ErrorMessageCustom2 = "customError2";
+        public const string ErrorMessageCustom3 = "customError3";
         public const string ErrorMessagePrefix = "errorMessagePrefix";
         public const string ErrorMessageRequired = "errorMessageRequired";
         public const string ErrorMessageRegex = "errorMessageRegex";

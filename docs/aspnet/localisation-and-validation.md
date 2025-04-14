@@ -110,121 +110,121 @@ This repository includes an example application which demonstrates the validatio
 
 5. To implement a different language, create a resx file inside a Resources folder: you _must_ make sure that the Resource folder path matches the Solution folder structure. For example, if a model class is `~/ViewModels/Home/LoginModel.cs`, the corresponding resx file should be at `~/Resources/ViewModels/Home/LoginModel.de.resx`
 
-## Custom Validation Attributes
+## Custom validation attributes
 
 To implement Custom Validation Attributes _and_ Client Side Validation, you need to do the following:
 
 1. Create a validation attribute that inherits from `ValidationAttribute`. This attribute can take additional parameters, but should override `IsValid`.
 
-```csharp
-[AttributeUsage(AttributeTargets.Property)]
-public class BananaValidatorAttribute : ValidationAttribute
-{
-    private string AdditionalParameter { get; set; }
+   ```csharp
+   [AttributeUsage(AttributeTargets.Property)]
+   public class BananaValidatorAttribute : ValidationAttribute
+   {
+       private string AdditionalParameter { get; set; }
 
-    public BananaValidatorAttribute(string additionalParameter)
-    {
-        AdditionalParameter = additionalParameter;
-    }
+       public BananaValidatorAttribute(string additionalParameter)
+       {
+           AdditionalParameter = additionalParameter;
+       }
 
-    protected override ValidationResult IsValid(object value, ValidationContext context)
-    {
-        // Do some validation here
-        return ValidationResult.Success;
-    }
-}
-```
+       protected override ValidationResult IsValid(object value, ValidationContext context)
+       {
+           // Do some validation here
+           return ValidationResult.Success;
+       }
+   }
+   ```
 
 2. Create an Attribute Adapter - this should inherit from `AttributeAdapterBase<T>` and needs to be able to pass a localiser to the base class, and override `AddValidation`
 
-```csharp
-    public class BananaValidatorAttributeAdapter : AttributeAdapterBase<BananaValidatorAttribute>
-    {
-        public BananaValidatorAttributeAdapter(BananaValidatorAttribute attribute, IStringLocalizer stringLocalizer) : base(attribute, stringLocalizer) { }
+   ```csharp
+       public class BananaValidatorAttributeAdapter : AttributeAdapterBase<BananaValidatorAttribute>
+       {
+           public BananaValidatorAttributeAdapter(BananaValidatorAttribute attribute, IStringLocalizer stringLocalizer) : base(attribute, stringLocalizer) { }
 
-        public override void AddValidation(ClientModelValidationContext context)
-        {
-            MergeAttribute(context.Attributes, "data-val", "true");
-        var errorMessage = GetErrorMessage(context);
-        MergeAttribute(context.Attributes, "data-val-banana", errorMessage);
-        MergeAttribute(context.Attributes, "data-val-banana-additionalParameter", AdditionalParameter);
-        }
+           public override void AddValidation(ClientModelValidationContext context)
+           {
+               MergeAttribute(context.Attributes, "data-val", "true");
+           var errorMessage = GetErrorMessage(context);
+           MergeAttribute(context.Attributes, "data-val-banana", errorMessage);
+           MergeAttribute(context.Attributes, "data-val-banana-additionalParameter", AdditionalParameter);
+           }
 
-        public override string GetErrorMessage(ModelValidationContextBase validationContext)
-        {
-            return GetErrorMessage(validationContext.ModelMetadata, validationContext.ModelMetadata.GetDisplayName());
-        }
-    }
+           public override string GetErrorMessage(ModelValidationContextBase validationContext)
+           {
+               return GetErrorMessage(validationContext.ModelMetadata, validationContext.ModelMetadata.GetDisplayName());
+           }
+       }
 
-```
+   ```
 
 3. Create an Attribute Adapter Provider - you only need one, but you can add multiple Custom Validation Attribute Adapters as you need to:
 
-```csharp
-public class CustomValidationAttributeAdapterProvider : IValidationAttributeAdapterProvider
-    {
-        private readonly IValidationAttributeAdapterProvider _baseProvider = new ValidationAttributeAdapterProvider();
+   ```csharp
+   public class CustomValidationAttributeAdapterProvider : IValidationAttributeAdapterProvider
+       {
+           private readonly IValidationAttributeAdapterProvider _baseProvider = new ValidationAttributeAdapterProvider();
 
-        public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
-        {
-            if (attribute is BananaValidatorAttribute)
-                return new BananaValidatorAttributeAdapter(attribute as BananaValidatorAttribute, stringLocalizer);
-            else
-                return _baseProvider.GetAttributeAdapter(attribute, stringLocalizer);
-        }
-    }
-```
+           public IAttributeAdapter GetAttributeAdapter(ValidationAttribute attribute, IStringLocalizer stringLocalizer)
+           {
+               if (attribute is BananaValidatorAttribute)
+                   return new BananaValidatorAttributeAdapter(attribute as BananaValidatorAttribute, stringLocalizer);
+               else
+                   return _baseProvider.GetAttributeAdapter(attribute, stringLocalizer);
+           }
+       }
+   ```
 
 4. Register this Adapter Provider in `Startup.cs`
 
-```csharp
-services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
-```
+   ```csharp
+   services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
+   ```
 
 5. Apply your attribute to the model as per normal
 
-```csharp
-[BananaValidator("My Additional Attribute", ErrorMessage = "An error message")]
-public string Field { get; set; }
-```
+   ```csharp
+   [BananaValidator("My Additional Attribute", ErrorMessage = "An error message")]
+   public string Field { get; set; }
+   ```
 
 6. In the `.cshtml` file that uses the model, you will need to write a client-side validator that hooks into jquery validate, and can be set up with unobtrusive.
 
-```javascript
-<partial name="GOVUK/Validation" />
-<script type="text/javascript">
-    const govuk = createGovUkValidator();
-    const validator = govuk.getValidator();
-    govuk.createErrorSummary();
+   ```javascript
+   <partial name="GOVUK/Validation" />
+   <script type="text/javascript">
+       const govuk = createGovUkValidator();
+       const validator = govuk.getValidator();
+       govuk.createErrorSummary();
 
-    if (validator) {
-        validator.setDefaults({
-            highlight: govuk.showError,
-            unhighlight: govuk.removeOrUpdateError,
-        });
+       if (validator) {
+           validator.setDefaults({
+               highlight: govuk.showError,
+               unhighlight: govuk.removeOrUpdateError,
+           });
 
-        validator.addMethod('banana', function (value, element, params) {
-            var additionalParameter = params.additionalParameter;
-            // Do some validation here
-            return true;
-        });
+           validator.addMethod('banana', function (value, element, params) {
+               var additionalParameter = params.additionalParameter;
+               // Do some validation here
+               return true;
+           });
 
-        validator.unobtrusive.adapters.add("banana", ["additionalParameter"],
-            function (options) {
-                options.rules['banana'] = options.params;
-                options.messages['banana'] = options.message;
-            }
-        );
-        validator.unobtrusive.parse();
-    }
-</script>
-```
+           validator.unobtrusive.adapters.add("banana", ["additionalParameter"],
+               function (options) {
+                   options.rules['banana'] = options.params;
+                   options.messages['banana'] = options.message;
+               }
+           );
+           validator.unobtrusive.parse();
+       }
+   </script>
+   ```
 
 7. All being well, you should find that the generated html element now has `data-val-banana` and `data-val-banana-additionalparamter` attributes. These correspond to the validation attribute added to the view model.
 
 8. Client-side validation is handled by `$.validator`, which should now have a `banana` method that is called by the govuk-validation.js code.
 
-## Shared Resource Strings
+## Shared resource strings
 
 In larger projects, it is common to have multiple projects with View-Models that share fields - for example, Email, Address, Phone Numbers etc. Each of these fields will have the same validation error message - for example, an Email Address will always need the same "Please enter a valid email address" message
 
@@ -235,9 +235,9 @@ By default, View-Model Data Annotation error messages are found within a `Resour
 The scaffolding for this is:
 
 ```csharp
-    services.AddMvc()
-        .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-        .AddDataAnnotationsLocalization();
+services.AddMvc()
+    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization();
 ```
 
 The _downside_ to this is that it only supports one resource file per model. For example, if a project contains multiple address fields, the same error message will need to be copied throughout the project.
@@ -250,21 +250,21 @@ Setup is simple
 2. Add a `Resources` folder in the same project, and create resource files with the same name as your empty class - for example `SharedResource.es.resx`, `SharedResource.fr.resx`
 3. In `Startup.cs`, instead of the default `AddDataAnnotationsLocalization`, we use `DataAnnotationStringLocalizer` and provide SharedResource as a fallback.
 
-```csharp
-services.AddMvc()
-    .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-    .AddDataAnnotationsLocalization(o =>
-    {
-        o.DataAnnotationLocalizerProvider = (type, factory) =>
-        {
-            var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName!);
+   ```csharp
+   services.AddMvc()
+       .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+       .AddDataAnnotationsLocalization(o =>
+       {
+           o.DataAnnotationLocalizerProvider = (type, factory) =>
+           {
+               var assemblyName = new AssemblyName(typeof(SharedResource).GetTypeInfo().Assembly.FullName!);
 
-            return new DataAnnotationStringLocalizer(
-                factory?.Create(type),
-                factory?.Create(nameof(SharedResource), assemblyName.Name!)
-            );
-        };
-    });
-```
+               return new DataAnnotationStringLocalizer(
+                   factory?.Create(type),
+                   factory?.Create(nameof(SharedResource), assemblyName.Name!)
+               );
+           };
+       });
+   ```
 
 4. Attribute error messages are then searched for by the local project Resource folder (e.g. `Resources/ViewModels/MyModel.de.resx`), and then (if nothing is found) the referenced class - in the example above, `SharedResource`

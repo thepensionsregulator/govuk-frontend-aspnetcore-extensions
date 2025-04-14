@@ -37,4 +37,4 @@ This is what the generated HTML should look like, as well as what is displayed o
 </dl>
 ```
 
-![TPR Documents on screen display](../images/tpr-documents-on-screen-dsiplay.png)
+![TPR Documents on screen display](../images/tpr-documents-on-screen-display.png)

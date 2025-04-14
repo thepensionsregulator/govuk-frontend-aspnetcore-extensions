@@ -2,13 +2,13 @@
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Web.Common
 @using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
-@using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.PropertyAliases
+@using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.TprPropertyAliases
 @inject UmbracoHelper Umbraco
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
     var OuterCssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-    var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.TprDocumentsBlockList);
+    var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.DocumentsBlockList);
 }
 
 <tpr-documents class="tpr-documents govuk-body @OuterCssClasses">
@@ -16,16 +16,16 @@
     @foreach (var document in documents)
     {
         var innerCssClasses = document.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-        var docLinkType = document.Content.Value<Link>(TprPropertyAliases.TprDocument).Type;
-        var docTitle = document.Content.Value<Link>(TprPropertyAliases.TprDocument).Name;
-        var docDatePublished = document.Content.Value<string>(TprPropertyAliases.TprDocumentDatePublished);
-        var docDescription = document.Content.Value<string>(TprPropertyAliases.TprDocumentDescription);
+        var docLinkType = document.Content.Value<Link>(TprPropertyAliases.Document).Type;
+        var docTitle = document.Content.Value<Link>(TprPropertyAliases.Document).Name;
+        var docDatePublished = document.Content.Value<string>(TprPropertyAliases.DocumentDatePublished);
+        var docDescription = document.Content.Value<string>(TprPropertyAliases.DocumentDescription);
 
         if (docLinkType == LinkType.Media)
         {
-            var docHref = document.Content.Value<Link>(TprPropertyAliases.TprDocument).Url;
-            var docKB = document.Content.Value<string>(TprPropertyAliases.TprDocumentFileSize);
-            var docPages = document.Content.Value<string>(TprPropertyAliases.TprDocumentNumberOfPages);
+            var docHref = document.Content.Value<Link>(TprPropertyAliases.Document).Url;
+            var docKB = document.Content.Value<string>(TprPropertyAliases.DocumentFileSize);
+            var docPages = document.Content.Value<string>(TprPropertyAliases.DocumentNumberOfPages);
 
             <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" class="tpr-document @innerCssClasses">
 
@@ -39,7 +39,7 @@
         }
         else
         {
-            var docHref = document.Content.Value<Link>(TprPropertyAliases.TprDocument).Url;
+            var docHref = document.Content.Value<Link>(TprPropertyAliases.Document).Url;
 
             <tpr-document href="@docHref" class="tpr-document @innerCssClasses">
 

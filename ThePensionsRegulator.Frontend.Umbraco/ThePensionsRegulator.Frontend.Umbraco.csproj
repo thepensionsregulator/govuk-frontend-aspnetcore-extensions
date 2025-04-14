@@ -111,6 +111,18 @@
 		<Content Update="uSync\v9\ContentTypes\tprcontextbar3.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprdocument.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprdocuments.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprdocumentsettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="uSync\v9\ContentTypes\tprdocumentssettings.config">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
 		<Content Update="uSync\v9\ContentTypes\tprfooter.config">
 		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>

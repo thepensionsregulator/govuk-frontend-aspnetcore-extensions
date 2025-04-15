@@ -1,7 +1,10 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
+using GovUk.Frontend.AspNetCore.Extensions.Security;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using ThePensionsRegulator.Frontend.Security;
+using ThePensionsRegulator.Frontend.Services;
 
 namespace ThePensionsRegulator.Frontend
 {
@@ -20,6 +23,9 @@ namespace ThePensionsRegulator.Frontend
             {
                 throw new ArgumentNullException(nameof(services));
             }
+
+            services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
+            services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
 
             services.AddGovUkFrontendExtensions(options);
             return services;

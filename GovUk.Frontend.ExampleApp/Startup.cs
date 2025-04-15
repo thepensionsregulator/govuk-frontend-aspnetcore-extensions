@@ -62,7 +62,7 @@ namespace GovUk.Frontend.ExampleApp
 
                 var supportedCultures = new List<CultureInfo> {
                     new CultureInfo("en"),
-                    new CultureInfo("de")
+                    new CultureInfo("cy")
                 };
                 options.DefaultRequestCulture = new RequestCulture("en-GB");
                 options.SupportedCultures = supportedCultures;
@@ -94,7 +94,7 @@ namespace GovUk.Frontend.ExampleApp
             // Localization.
             var supportedCultures = new[] {
                 new CultureInfo("en"),
-                new CultureInfo("de")
+                new CultureInfo("cy")
             };
 
             app.UseRequestLocalization(new RequestLocalizationOptions

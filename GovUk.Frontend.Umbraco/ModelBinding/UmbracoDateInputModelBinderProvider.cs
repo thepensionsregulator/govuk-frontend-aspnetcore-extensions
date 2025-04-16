@@ -6,6 +6,7 @@ using System;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Web.Common;
 
 namespace GovUk.Frontend.Umbraco.ModelBinding
 {
@@ -19,12 +20,14 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
         private readonly ICultureDictionary _cultureDictionary;
         private readonly IPublishedValueFallback? _publishedValueFallback;
+        private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
 
         public UmbracoDateInputModelBinderProvider(
             GovUkFrontendAspNetCoreOptions options,
             IUmbracoContextAccessor umbracoContextAccessor,
             ICultureDictionary cultureDictionary,
-            IPublishedValueFallback? publishedValueFallback)
+            IPublishedValueFallback? publishedValueFallback,
+            IUmbracoHelperAccessor umbracoHelperAccessor)
         {
             Guard.ArgumentNotNull(nameof(options), options);
 
@@ -33,6 +36,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
             _cultureDictionary = cultureDictionary ?? throw new ArgumentNullException(nameof(cultureDictionary));
             _publishedValueFallback = publishedValueFallback;
+            _umbracoHelperAccessor = umbracoHelperAccessor;
         }
 
         public IModelBinder? GetBinder(ModelBinderProviderContext context)
@@ -45,7 +49,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             {
                 if (converter.CanConvertModelType(modelType))
                 {
-                    return new UmbracoDateInputModelBinder(converter, _umbracoContextAccessor, _cultureDictionary, _publishedValueFallback, _acceptMonthNamesInDateInputs);
+                    return new UmbracoDateInputModelBinder(converter, _umbracoContextAccessor, _cultureDictionary, _publishedValueFallback, _acceptMonthNamesInDateInputs, _umbracoHelperAccessor);
                 }
             }
 

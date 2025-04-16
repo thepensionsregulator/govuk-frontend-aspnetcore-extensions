@@ -12,7 +12,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
         [TestCase(Constants.PropertyEditors.Aliases.TinyMce, false)]
         [TestCase(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineRichText, false)]
         [TestCase(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineInverseRichText, false)]
-        [TestCase(PropertyEditorAliases.TprHeaderFooterRichText, true)]
+        [TestCase(TprPropertyEditorAliases.TprHeaderFooterRichText, true)]
         public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)
         {
             // Arrange

@@ -2,6 +2,9 @@
 @{
     ViewData["Title"] = "Textarea";
 }
+@section language {
+    <partial name="_LanguageSwitcher" />
+}
 
 <form asp-controller="Textarea" asp-action="Post" method="post" novalidate>
     <span class="govuk-caption-xl">Example application</span>

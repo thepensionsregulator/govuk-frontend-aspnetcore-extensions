@@ -46,8 +46,7 @@ We add support for:
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR context bar](/docs/components/tpr-context-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
-  - [TPR youtube video](/docs/components/tpr-youtube-video.md)
-  
+  - [TPR YouTube video](/docs/components/tpr-youtube-video.md)
   - [TPR related links](/docs/components/tpr-related-links.md)
   - [TPR section cards](/docs/components/tpr-section-cards.md)
 
@@ -64,6 +63,7 @@ We target [GOV.UK Frontend v5.2.0](https://github.com/alphagov/govuk-frontend/re
 - [Configure a new ASP.NET project (TPR)](docs/aspnet/new-aspnet-project-tpr.md)
 - [Localisation and validation in ASP.NET projects](docs/aspnet/localisation-and-validation.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
+- [Read the TPR consent cookie](docs/aspnet/consent-cookie.md)
 
 ASP.NET support for GOV.UK Design System components is published on NuGet as [ThePensionsRegulator.GovUk.Frontend](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend)
 

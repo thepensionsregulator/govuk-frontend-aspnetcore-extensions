@@ -1,11 +1,10 @@
 ﻿
 <div class="tpr-related-links {{block.settingsData.cssClasses}}">
-    <ul>
-        <li>
-            <h2 ng-bind="block.data.heading"></h2>
-        </li>
+    <h2 class="govuk-heading-m" ng-bind="block.data.heading" ng-if="block.data.heading"></h2>
+    <h2 class="govuk-heading-m" ng-if="!block.data.heading">Related</h2>
+    <ul class="govuk-list">
         <li ng-repeat="link in block.data.links">
-            <a href="{{link.url}}">{{link.name}}</a>
+            <a href="{{link.url}}" class="govuk-link">{{link.name}}</a>
         </li>
     </ul>
 </div>

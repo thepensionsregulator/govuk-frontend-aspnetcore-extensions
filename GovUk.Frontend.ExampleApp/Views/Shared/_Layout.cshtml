@@ -1,13 +1,17 @@
-﻿@using Microsoft.Extensions.Configuration;
+﻿@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Configuration;
 @using Microsoft.AspNetCore.Mvc.Localization
 
 @inject IViewLocalizer localizer;
 @inject IConfiguration Configuration
 @{
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
+    var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@twoLetterCode">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -47,19 +51,33 @@
         @RenderSection("language", required: false)
     </header>
     <div class="tpr-main-wrapper">
-        <div class="govuk-width-container">
-            @if (IsSectionDefined("back"))
-            {
-                @RenderSection("back")
-            }
-            else
-            {
-                <govuk-back-link href="/">Back</govuk-back-link>
-            }
-            <main id="main" class="govuk-main-wrapper">
-                @RenderBody()
-            </main>
-        </div>
+        @if (IsSectionDefined("OpenWidthContainer"))
+        {
+            @RenderSection("OpenWidthContainer")
+        }
+        else
+        {
+            @:<div class="govuk-width-container">            
+        }
+        @if (IsSectionDefined("back"))
+        {
+            @RenderSection("back")
+        }
+        else
+        {
+            <govuk-back-link href="/">Back</govuk-back-link>
+        }
+        <main id="main" class="govuk-main-wrapper">
+            @RenderBody()
+        </main>
+        @if (IsSectionDefined("CloseWidthContainer"))
+        {
+            @RenderSection("CloseWidthContainer")
+        }
+        else
+        {
+            @:</div>        
+        }
     </div>
     @if (useTPRstyles)
     {

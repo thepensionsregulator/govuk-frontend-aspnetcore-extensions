@@ -1,9 +1,11 @@
 using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions.Security;
 using GovUk.Frontend.Umbraco;
 using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using ThePensionsRegulator.Frontend.Security;
 using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
@@ -43,6 +45,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
 
             services.AddGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
 
+            services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
             services.AddTransient<IPropertyValueFormatter, HostNameInRichTextEditorPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();

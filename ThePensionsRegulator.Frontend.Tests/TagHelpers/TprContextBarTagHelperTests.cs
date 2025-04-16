@@ -8,12 +8,11 @@ using System.Text.Encodings.Web;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using ThePensionsRegulator.Frontend.TagHelpers;
 
-namespace ThePensionsRegulator.Frontend.Tests
+namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
 {
-    [TestFixture]
     public class TprContextBarTagHelperTests
     {
-        [Test]
+        [Fact]
         public async Task All_3_contexts_empty_does_not_render_bar()
         {
             // Arrange
@@ -34,7 +33,7 @@ namespace ThePensionsRegulator.Frontend.Tests
             Assert.True(string.IsNullOrEmpty(result.ToString()));
         }
 
-        [Test]
+        [Fact]
         public async Task Context_1_content_is_rendered()
         {
             // Arrange
@@ -60,7 +59,7 @@ namespace ThePensionsRegulator.Frontend.Tests
             htmlGenerator.Verify(x => x.GenerateTprContextBar(It.Is<TprContextBar>(bar => bar.Context1Content != null && bar.Context1Content.ToHtmlString() == CONTEXT_1_CONTENT)), Times.Once);
         }
 
-        [Test]
+        [Fact]
         public async Task Context_2_content_is_rendered()
         {
             // Arrange
@@ -86,7 +85,7 @@ namespace ThePensionsRegulator.Frontend.Tests
             htmlGenerator.Verify(x => x.GenerateTprContextBar(It.Is<TprContextBar>(bar => bar.Context2Content != null && bar.Context2Content.ToHtmlString() == CONTEXT_2_CONTENT)), Times.Once);
         }
 
-        [Test]
+        [Fact]
         public async Task Context_3_content_is_rendered()
         {
             // Arrange

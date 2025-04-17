@@ -3,8 +3,8 @@
 
 // Import and compile GOV.UK classes for components we support
 @import 'govuk/base';
-@import 'govuk/core/all';
-@import "govuk/objects/all";
+@import 'govuk/core';
+@import "govuk/objects";
 @import "govuk/components/accordion";
 @import "govuk/components/back-link";
 @import "govuk/components/button";
@@ -32,8 +32,8 @@
 @import "govuk/components/textarea";
 @import "govuk/components/warning-text";
 @import "govuk/components/breadcrumbs";
-@import "govuk/utilities/all";
-@import "govuk/overrides/all";
+@import "govuk/utilities";
+@import "govuk/overrides";
 @import "_govuk-checkboxes.scss";
 @import "_govuk-input.scss";
 @import "_govuk-pagination.scss";

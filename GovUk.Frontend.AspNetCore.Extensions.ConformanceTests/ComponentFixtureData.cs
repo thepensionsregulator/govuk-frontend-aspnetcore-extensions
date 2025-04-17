@@ -1,13 +1,14 @@
 using GovUk.Frontend.AspNetCore.Extensions.ConformanceTests.OptionsJson;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
 {
     public class ComponentFixtureData
     {
-        public static IEnumerable<object[]> GetTaskListData() => GetData("task-list.json", typeof(TaskList));
+        public static IEnumerable<object[]> GetTaskListData() => GetData<TaskList>("task-list.json", [new TaskListConverter()]);
 
-        public static IEnumerable<object[]> GetData(string fixturesFilename, Type optionsType)
+        public static IEnumerable<object[]> GetData<T>(string fixturesFilename, JsonConverter[]? optionsConverters)
         {
             var fixturesFile = Path.Combine("Fixtures", fixturesFilename);
 
@@ -26,12 +27,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
                 throw new InvalidOperationException($"Couldn't find fixtures in '{fixturesFile}'.");
             }
 
-            var testCaseDataType = typeof(ComponentTestCaseData<>).MakeGenericType(optionsType);
+            var testCaseDataType = typeof(ComponentTestCaseData<>).MakeGenericType(typeof(T));
 
             foreach (var fixture in fixtures)
             {
                 var name = fixture["name"]!.ToString();
-                var options = fixture["options"]!.ToObject(optionsType);
+                var options = JsonConvert.DeserializeObject<T>(fixture["options"]!.ToString(), optionsConverters ?? []);
                 var html = fixture["html"]!.ToString();
 
                 var testCaseData = Activator.CreateInstance(testCaseDataType, name, options, html)!;
@@ -43,4 +44,5 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
             }
         }
     }
+
 }

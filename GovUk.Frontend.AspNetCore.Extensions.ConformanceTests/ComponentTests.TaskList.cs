@@ -13,30 +13,37 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
                 data,
                 (generator, options) =>
                 {
-                    var tasks = new List<TaskListTask>();
+                    var tasks = new List<TaskListTask?>();
                     foreach (var item in options.Items)
                     {
-                        AttributeDictionary taskAttributes = [];
-                        if (!string.IsNullOrEmpty(item.Classes)) { taskAttributes.Add("class", item.Classes); }
-
-                        var taskName = new TaskName { Content = TextOrHtmlHelper.GetHtmlContent(item.Title.Text, item.Title.Html)! };
-                        if (!string.IsNullOrEmpty(item.Title.Classes) && string.IsNullOrEmpty(item.Href)) { taskName.Attributes.Add("class", item.Title.Classes); }
-
-                        Link? linkToTask = !string.IsNullOrEmpty(item.Href) ? new Link { Href = item.Href } : null;
-                        if (!string.IsNullOrEmpty(item.Title.Classes) && linkToTask is not null) { linkToTask.Attributes.Add("class", item.Title.Classes); }
-
-                        var hint = item.Hint is not null ? new Hint { Content = TextOrHtmlHelper.GetHtmlContent(item.Hint.Text, item.Hint.Html) } : null;
-
-                        var status = BuildStatus(item);
-
-                        tasks.Add(new TaskListTask
+                        if (item is null)
                         {
-                            Attributes = taskAttributes,
-                            Name = taskName,
-                            Link = linkToTask,
-                            Hint = hint,
-                            Status = status
-                        });
+                            tasks.Add(null);
+                        }
+                        else
+                        {
+                            AttributeDictionary taskAttributes = [];
+                            if (!string.IsNullOrEmpty(item.Classes)) { taskAttributes.Add("class", item.Classes); }
+
+                            var taskName = new TaskName { Content = TextOrHtmlHelper.GetHtmlContent(item.Title.Text, item.Title.Html)! };
+                            if (!string.IsNullOrEmpty(item.Title.Classes) && string.IsNullOrEmpty(item.Href)) { taskName.Attributes.Add("class", item.Title.Classes); }
+
+                            Link? linkToTask = !string.IsNullOrEmpty(item.Href) ? new Link { Href = item.Href } : null;
+                            if (!string.IsNullOrEmpty(item.Title.Classes) && linkToTask is not null) { linkToTask.Attributes.Add("class", item.Title.Classes); }
+
+                            var hint = item.Hint is not null ? new Hint { Content = TextOrHtmlHelper.GetHtmlContent(item.Hint.Text, item.Hint.Html) } : null;
+
+                            var status = BuildStatus(item);
+
+                            tasks.Add(new TaskListTask
+                            {
+                                Attributes = taskAttributes,
+                                Name = taskName,
+                                Link = linkToTask,
+                                Hint = hint,
+                                Status = status
+                            });
+                        }
                     }
 
                     var taskListAttributes = options.Attributes.ToAttributeDictionary();

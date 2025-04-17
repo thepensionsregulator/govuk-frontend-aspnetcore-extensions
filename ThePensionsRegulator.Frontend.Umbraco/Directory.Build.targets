@@ -25,5 +25,18 @@
 		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)govuk-umbraco-backoffice.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SassPath) $(SassPath)govuk-umbraco-backoffice.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
+	<!-- uSync files are authored in GovUk.Frontend.Umbraco.ExampleApp. Copy here to include them in the NuGet package. 
+		 They must be physically present in the project folder to generate a reference in the <contentFiles> section of the .nuspec file. 
+		 If that reference is missing the consuming project will report a build error. -->
+	<Target Name="TprFrontendUmbraco_CopyUSync" BeforeTargets="BeforeBuild">
+		<ItemGroup>
+			<DataTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v9\DataTypes\TPR*.config"></DataTypes>
+			<ContentTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v9\ContentTypes\tpr*.config"></ContentTypes>
+		</ItemGroup>
+		<Copy SourceFiles="@(DataTypes)"
+			DestinationFiles="$(ProjectDir)uSync\v9\DataTypes\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(ContentTypes)"
+			DestinationFiles="$(ProjectDir)uSync\v9\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)" />
+	</Target>
 
 </Project>

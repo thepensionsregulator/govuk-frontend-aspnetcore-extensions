@@ -1,0 +1,124 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Timeline>
+@section head {
+	<title>@Model.PageHeadingOrName()</title>
+}
+
+<div class="govuk-width-container govuk-!-margin-top-5"><div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@Model.Name</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">
+            This tool allows you to display a timeline. You can apply your own classes in addition to the provide classes so you can control how the timeline looks.
+        </p>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+<div class=" govuk-grid-row--tpr-divider ">
+<h2 class="govuk-caption-xl">Example content</h2>
+</div>
+        <tpr-timeline>
+            <tpr-timeline-item date="9 Jan 2005" heading="Starting title">
+            </tpr-timeline-item>
+            <tpr-timeline-item date="31 Jan 2025" heading="Today's date" line-colour="orange">
+                <tpr-timeline-item-content>
+                    <h3 class="govuk-heading-m">Example of custom content.</h3>
+                <p>You can fill space with your own HTML.</p>
+                </tpr-timeline-item-content>
+            </tpr-timeline-item>
+            <tpr-timeline-item date="9 Jun 2025" heading="Example deadline style" line-colour="red">
+                <tpr-timeline-item-content>
+                    <p>You can add custom content here too.</p>
+                </tpr-timeline-item-content>
+            </tpr-timeline-item>
+        </tpr-timeline>
+
+<span class="govuk-caption-xl">Example of tags and attributes</span>
+        <tpr-timeline date-size="large" hide-tail="true">
+            <tpr-timeline-item date="tpr-timeline-item date attribute" heading="tpr-timeline-item heading attribute">
+                <tpr-timeline-item-content>
+                <p>Content inside tpr-timeline-item-content</p>
+                </tpr-timeline-item-content>
+            </tpr-timeline-item>
+            <tpr-timeline-item date="31 Jan 2025" heading="Today's date" line-colour="orange">
+                <tpr-timeline-item-content>
+                    <h3 class="govuk-heading-m">Example of custom content.</h3>
+                <p>You can fill space with your own HTML.</p>
+                </tpr-timeline-item-content>
+            </tpr-timeline-item>
+            <tpr-timeline-item date="9 Jun 2025" heading="Example of no tail" line-colour="red">
+                <tpr-timeline-item-content>
+                    <p>Notice that the line does not continue thanks to hide-tail="true" on the parent tpr-timeline tag.</p>
+                    <p>Also notice that the dates are larger by adding date-size="large" to the parent tpr-timeline tag.</p>
+                </tpr-timeline-item-content>
+            </tpr-timeline-item>
+        </tpr-timeline>
+
+
+<span class="govuk-caption-xl">Example of different colours</span>
+<style>
+    .tpr-timeline__item--colour1,
+    .tpr-timeline__item--colour1::before,
+    .tpr-timeline__item--colour1:last-of-type::after
+    {
+        border-color: #483b8b;
+    }
+
+    .tpr-timeline__item--colour2,
+    .tpr-timeline__item--colour2::before,
+    .tpr-timeline__item--colour2:last-of-type::after
+    {
+        border-color: #5949ac;
+    }
+
+    .tpr-timeline__item--colour3,
+    .tpr-timeline__item--colour3::before,
+    .tpr-timeline__item--colour3:last-of-type::after
+    {
+        border-color: #7466be;
+    }
+
+    .tpr-timeline__item--colour4,
+    .tpr-timeline__item--colour4::before,
+    .tpr-timeline__item--colour4:last-of-type::after
+    {
+        border-color: #9287cc;
+    }
+
+    .tpr-timeline__item--colour5,
+    .tpr-timeline__item--colour5::before,
+    .tpr-timeline__item--colour5:last-of-type::after
+    {
+        border-color: #b0a7da;
+    }
+</style>
+        <tpr-timeline>
+            <tpr-timeline-item date="Colour 1"  line-colour="colour1">
+            </tpr-timeline-item>
+            <tpr-timeline-item date="Colour 2"  line-colour="colour2">
+            </tpr-timeline-item>
+            <tpr-timeline-item date="Colour 3"  line-colour="colour3">
+                <tpr-timeline-item-content>
+                <p>The default colour is achieved by not defining a line-colour. There are two more default colours. Orange and Red.</p>
+                <p>These colours are defined within the page. They are applied by using line-colour="colour3" property. Therefore consuming applications can control the line colour for each item in the timeline.</p>
+                .tpr-timeline__item--colour3,
+    .tpr-timeline__item--colour3::before,
+    .tpr-timeline__item--colour3:last-of-type::after
+    {
+        border-color: #7466be;
+    }
+                </tpr-timeline-item-content>
+            </tpr-timeline-item>
+            <tpr-timeline-item date="Colour 4"  line-colour="colour4">
+            </tpr-timeline-item>
+            <tpr-timeline-item date="Colour 5"  line-colour="colour5">
+            </tpr-timeline-item>
+        </tpr-timeline>
+    </div>
+</div>
+</div>

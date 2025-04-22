@@ -5,7 +5,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests.OptionsJson
     /// </summary>
     public record TaskList
     {
-        public IList<TaskListTask> Items { get; set; } = new List<TaskListTask>();
+        public IList<TaskListTask?> Items { get; set; } = [];
         public string? Html { get; set; }
         public string? Classes { get; set; }
         public string? IdPrefix { get; set; }

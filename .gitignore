@@ -421,3 +421,9 @@ tpr.css*
 # Jest
 junit.xml
 cobertura-coverage.xml
+
+# uSync files copied for packaging
+GovUk.Frontend.Umbraco/uSync/v9/ContentTypes/
+GovUk.Frontend.Umbraco/uSync/v9/DataTypes/
+ThePensionsRegulator.Frontend.Umbraco/uSync/v9/ContentTypes/
+ThePensionsRegulator.Frontend.Umbraco/uSync/v9/DataTypes/

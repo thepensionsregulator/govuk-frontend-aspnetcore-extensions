@@ -55,7 +55,7 @@ We add support for:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
   - [Breadcrumbs](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/breadcrumbs.md)
 
-We target [GOV.UK Frontend v5.2.0](https://github.com/alphagov/govuk-frontend/releases/tag/v5.2.0) in line with James Gunn's base project.
+We target [GOV.UK Frontend v5.8.0](https://github.com/alphagov/govuk-frontend/releases/tag/v5.8.0) in line with James Gunn's base project.
 
 ## ASP.NET projects without Umbraco
 
@@ -64,6 +64,7 @@ We target [GOV.UK Frontend v5.2.0](https://github.com/alphagov/govuk-frontend/re
 - [Configure a new ASP.NET project (TPR)](docs/aspnet/new-aspnet-project-tpr.md)
 - [Localisation and validation in ASP.NET projects](docs/aspnet/localisation-and-validation.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)
+- [Read the TPR consent cookie](docs/aspnet/consent-cookie.md)
 
 ASP.NET support for GOV.UK Design System components is published on NuGet as [ThePensionsRegulator.GovUk.Frontend](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend)
 

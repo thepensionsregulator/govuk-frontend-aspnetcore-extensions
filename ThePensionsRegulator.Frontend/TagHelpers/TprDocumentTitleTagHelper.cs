@@ -15,15 +15,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             documentContext.DocumentTitle = await output.GetChildContentAsync();
 
             output.PreElement.SetHtmlContent("<dt>");
-            output.TagName = $"a href='{documentContext.Href}'";
+            output.TagName = $"a class=\"govuk-link\" href=\"{documentContext.Href}\"";
 
-            if (documentContext.Href!.EndsWith(".pdf"))
+            if (documentContext.Href.EndsWith(".pdf"))
             {
-                output.PostContent.SetHtmlContent($"<br><span class='pdf fileicon'>PDF</span> {documentContext.KbSize}KB, {documentContext.Pages} pages </dt>");
+                output.PostContent.SetHtmlContent($"<br /><span class=\"pdf fileicon\">PDF</span> {documentContext.KbSize}KB, {documentContext.Pages} pages </dt>");
             }
             else if (documentContext.Href!.EndsWith(".docx"))
             {
-                output.PostContent.SetHtmlContent($"<br><span class='doc fileicon'>WORD</span> {documentContext.KbSize}KB, {documentContext.Pages} pages </dt>");
+                output.PostContent.SetHtmlContent($"<br /><span class=\"doc fileicon\">WORD</span> {documentContext.KbSize}KB, {documentContext.Pages} pages </dt>");
             }
             else
             {

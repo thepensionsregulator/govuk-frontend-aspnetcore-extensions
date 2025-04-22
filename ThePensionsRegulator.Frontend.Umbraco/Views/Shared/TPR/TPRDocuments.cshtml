@@ -7,49 +7,46 @@
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
-    var OuterCssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+    var outerCssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
     var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.DocumentsBlockList);
 }
 
-<tpr-documents class="tpr-documents govuk-body @OuterCssClasses">
+<tpr-documents class="@outerCssClasses">
 
     @foreach (var document in documents)
     {
-        var innerCssClasses = document.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-        var docLinkType = document.Content.Value<Link>(TprPropertyAliases.Document).Type;
-        var docTitle = document.Content.Value<Link>(TprPropertyAliases.Document).Name;
-        var docDatePublished = document.Content.Value<string>(TprPropertyAliases.DocumentDatePublished);
-        var docDescription = document.Content.Value<string>(TprPropertyAliases.DocumentDescription);
-
-        if (docLinkType == LinkType.Media)
+        if (document.Content.Value<Link>(TprPropertyAliases.Document).Url != null)
         {
+            var innerCssClasses = document.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
             var docHref = document.Content.Value<Link>(TprPropertyAliases.Document).Url;
-            var docKB = document.Content.Value<string>(TprPropertyAliases.DocumentFileSize);
+            var docLinkType = document.Content.Value<Link>(TprPropertyAliases.Document).Type;
+            var docTitle = document.Content.Value<Link>(TprPropertyAliases.Document).Name;
             var docPages = document.Content.Value<string>(TprPropertyAliases.DocumentNumberOfPages);
+            var docDatePublished = document.Content.Value<DateTime>(TprPropertyAliases.DocumentDatePublished).ToString("MMMM yyyy");
+            var docDescription = document.Content.Value<string>(TprPropertyAliases.DocumentDescription);
 
-            <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" class="tpr-document @innerCssClasses">
+            if (docLinkType == LinkType.Media)
+            {
+                var docKB = document.Content.Value<string>(TprPropertyAliases.DocumentFileSize);
 
-                <tpr-document-title>@docTitle</tpr-document-title>
+                <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" class="@innerCssClasses">
 
-                <dd>Published: @docDatePublished</dd>
+                    <tpr-document-title>@docTitle</tpr-document-title>
 
-                <tpr-document-description>@docDescription</tpr-document-description>
+                    <tpr-document-description>@docDescription</tpr-document-description>
 
-            </tpr-document>
-        }
-        else
-        {
-            var docHref = document.Content.Value<Link>(TprPropertyAliases.Document).Url;
+                </tpr-document>
+            }
+            else
+            {
+                <tpr-document href="@docHref" pages="@docPages" datepublished="@docDatePublished" class="@innerCssClasses">
 
-            <tpr-document href="@docHref" class="tpr-document @innerCssClasses">
+                    <tpr-document-title>@docTitle</tpr-document-title>
 
-                <tpr-document-title>@docTitle</tpr-document-title>
+                    <tpr-document-description>@docDescription</tpr-document-description>
 
-                <dd>Published: @docDatePublished</dd>
-
-                <tpr-document-description>@docDescription</tpr-document-description>
-
-            </tpr-document>
+                </tpr-document>
+            }
         }
     }
 

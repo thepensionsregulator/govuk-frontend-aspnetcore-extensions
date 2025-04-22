@@ -16,6 +16,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public string? Pages { get; set; }
 
+        public string? DatePublished { get; set; }
+
         public IHtmlContent? Document { get; set; }
 
         public IHtmlContent? DocumentTitle { get; set; }

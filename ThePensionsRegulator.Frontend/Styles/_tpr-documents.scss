@@ -1,9 +1,11 @@
+@import '_tpr-variables.scss';
+
 .tpr-documents {
-    margin-bottom: 2rem;
+    @include govuk-responsive-margin(6, "bottom");
 }
 
 .tpr-document {
-    margin-bottom: 1rem;
+    @include govuk-responsive-margin(6, "bottom");
 }
 
 .tpr-document dd {
@@ -21,9 +23,9 @@
 }
 
 .tpr-document .fileicon.pdf {
-    background-color: #a91717;
+    background-color: $tpr-colour-fire-brick;
 }
 
 .tpr-document .fileicon.doc {
-    background-color: #006ebc;
+    background-color: $tpr-colour-royal-blue;
 }

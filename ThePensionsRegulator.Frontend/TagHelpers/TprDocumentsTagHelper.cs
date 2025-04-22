@@ -16,7 +16,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             await output.GetChildContentAsync();
 
-            output.TagName = "dl";
+            output.TagName = $"dl class=\"{TagName} govuk-list\"";
         }
     }
 }

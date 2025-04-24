@@ -14,16 +14,51 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         private readonly List<TprTimelineItem> _items;
 
+        private int _headingLevel;
+        // private string _dateSize;
+        private bool _hideTail;
+        private string _ariaTitle;
+
+        public IReadOnlyList<TprTimelineItem> Tasks => _items;
+
+        public int HeadingLevel
+        {
+            get
+            {
+                return _headingLevel;
+            }
+            set
+            {
+                _headingLevel = value;
+            }
+        }        
+        public bool HideTail
+        {
+            get
+            {
+                return _hideTail;
+            }
+            set
+            {
+                _hideTail = value;
+            }
+        }
+
+        public string AriaTitle
+        {
+            get
+            {
+                return _ariaTitle;
+            }
+            set
+            {
+                _ariaTitle = value;
+            }
+        }
         public TprTimelineContext()
         {
             _items = new List<TprTimelineItem>();
         }
-
-        public string DateSize;
-
-        public bool HideTail;
-
-        public IReadOnlyList<TprTimelineItem> Tasks => _items;
 
         public void AddItem(TprTimelineItem item)
         {

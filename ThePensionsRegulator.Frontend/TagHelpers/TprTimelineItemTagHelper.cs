@@ -19,25 +19,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-timeline-item";
 
-        /// <summary>
-        /// Additional attributes to add to the generated <c>a</c> element where <c>.govuk-link</c> is applied.
-        /// </summary>
-        //[HtmlAttributeName(DictionaryAttributePrefix = LinkAttributesPrefix)]
-
-        //public IDictionary<string, string?>? LinkAttributes { get; set; } = new Dictionary<string, string?>();
-
-        /// <summary>
-        /// A link to the task.
-        /// </summary>
         [HtmlAttributeName("date")]
         public string? Date { get; set; } = string.Empty; 
 
         [HtmlAttributeName("heading")]
         public string? Heading { get; set; } = string.Empty; 
 
-        [HtmlAttributeName("line-colour")]
-        public string? LineColour { get; set; } = string.Empty;
-        /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var taskListContext = context.GetContextItem<TprTimelineContext>();
@@ -54,8 +41,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 Attributes = output.Attributes.ToAttributeDictionary(),
                 Heading = Heading,
                 DateTime = Date,
-                Content = itemContext.HtmlContent,
-                LineColour = LineColour
+                Content = itemContext.HtmlContent
             });
 
             output.SuppressOutput();

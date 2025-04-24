@@ -1,12 +1,10 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using System;
-//using ComponentGenerator = ThePensionsRegulator.Frontend.HtmlGeneration.ComponentGenerator;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -16,18 +14,37 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     public class TprTimelineTagHelper : TagHelper
     {
         internal const string TagName = "tpr-timeline";
+        internal const int TimelineMinHeadingLevel = 1;
+        internal const int TimelineMaxHeadingLevel = 6;
+        internal const int TimelineDefaultHeadingLevel = 2;
+        private int _headingLevel = TimelineDefaultHeadingLevel;
 
         private readonly ITprHtmlGenerator _htmlGenerator;
         
-        [HtmlAttributeName("date-size")]
-        public string? DateSize { get; set; } = string.Empty; 
-
-        [HtmlAttributeName("hide-tail")]
+        [HtmlAttributeName("hide-tail")] //     
         public bool? HideTail {get; set;} = false;
 
-        /// <summary>
-        /// Creates a new <see cref="TprFooterBarTagHelper"/>.
-        /// </summary>
+        [HtmlAttributeName("heading-level")]
+        public int HeadingLevel
+        {
+            get => _headingLevel;
+            set
+            {
+                if (value < TimelineMinHeadingLevel ||
+                    value > TimelineMaxHeadingLevel)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(value),
+                        $"{nameof(HeadingLevel)} must be between {TimelineMinHeadingLevel} and {TimelineMaxHeadingLevel}.");
+                }
+
+                _headingLevel = value;
+            }
+        }
+        
+        [HtmlAttributeName("aria-title")]
+        public string? AriaTitle { get; set; } = string.Empty; 
+
         public TprTimelineTagHelper()
             : this(htmlGenerator: null)
         {
@@ -43,18 +60,21 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         {
             var timelineContext = new TprTimelineContext();
 
+            if(HideTail.HasValue)
+            {
+                timelineContext.HideTail = HideTail.Value;
+            }
+            
+            timelineContext.HeadingLevel = HeadingLevel;
+
+            if (!string.IsNullOrWhiteSpace(AriaTitle))
+            {
+                timelineContext.AriaTitle = AriaTitle;
+            }
+
             using (context.SetScopedContextItem(timelineContext))
             {
                 await output.GetChildContentAsync();
-            }
-
-            if (!string.IsNullOrWhiteSpace(DateSize))
-            {
-                timelineContext.DateSize = DateSize;
-            }
-            if (HideTail.HasValue)
-            {
-                timelineContext.HideTail = HideTail.Value;
             }
 
             timelineContext.ThrowIfIncomplete();
@@ -62,8 +82,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var tagBuilder = _htmlGenerator.GenerateTprTimeline(
                 output.Attributes.ToAttributeDictionary(),
                 timelineContext.Tasks,
-                timelineContext.DateSize,
-                timelineContext.HideTail
+                timelineContext.HideTail,
+                timelineContext.HeadingLevel,
+                timelineContext.AriaTitle
             );
 
             output.TagName = tagBuilder.TagName;

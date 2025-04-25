@@ -2,12 +2,12 @@
 @import 'govuk/base';
 
 
-.search {
+.tpr-header-search {
     width: 30%;
     padding: 0.5em 0.5em;
     text-align: center;
     display: flex;
-    flex: 0 0, auto;
+    flex: 0 0 auto;
     flex-direction: row;
     flex-direction: column;
     text-align: center;
@@ -15,18 +15,22 @@
     align-items: center;
 }
 
-.searchFieldWithButton {
+.tpr-header-search__field {
     display: flex;
     align-items: center;
 }
 
-.tpr-autocomplete {
+.tpr-header-search-autocomplete {
     width: 313.948px
 }
 
-.searchButton {
-    background-color: #fff;
-    color: #fff;
+.tpr-header-search__input{
+    width:70%;
+    margin-left:-40px
+}
+
+.tpr-header-search__button {
+    background-color: $tpr-colour-white;
     border: none;
     height: 2.34rem;
     width: 2.34rem;
@@ -35,192 +39,40 @@
     z-index: 100;
 }
 
-.searchbox {
-    padding-left: 1.2rem;
-    padding-right: 2rem;
-    height: 3.1em;
+.tpr-header-search__button-image {
     border: none;
-    font-size: 0.9em;
-    margin: 0.3em;
-    vertical-align: middle;
-}
-
-.searchbox[type=text]:focus {
-    outline-width: 0.19em;
-    outline-color: orange;
-    outline-style: solid;
-}
-
-svg {
-    border: none;
-    height: 3.87em;
+    height: 2em;
     width: 2em;
     display: inline-block;
     cursor: pointer;
     vertical-align: bottom;
 }
 
-.autocomplete__wrapper {
-    position: relative;
-    width: 85%;
-}
-
-.autocomplete__hint, .autocomplete__input {
-    -webkit-appearance: none;
-    appearance: none;
-    border: 2px solid #0b0c0c;
-    border-radius: 0;
-    box-sizing: border-box;
-    height: 2.5rem;
-    line-height: 1.25;
-    margin-bottom: 0;
-    width: 85%;
-    vertical-align: middle;
-}
-
-.autocomplete__input {
-    background-color: #fff;
-    position: relative;
-}
-
-::placeholder {
-    opacity: 1;
-    font-size: 0.8em;
-}
-
-.autocomplete__hint {
-    color: #505a5f;
-    position: absolute;
-    width: 100%;
-    left: 0;
-}
-
-.autocomplete__input--default {
-    padding: 5px;
-}
-
-.autocomplete__input--focused {
-    outline: 3px solid #fd0;
-    outline-offset: 0
-}
-
-.autocomplete__input--show-all-values {
-    cursor: pointer;
-    padding: 5px 35px 5px 5px
-}
-
-.autocomplete__dropdown-arrow-down {
-    display: inline-block;
-    height: 24px;
-    position: absolute;
-    right: 8px;
-    top: 10px;
-    width: 24px;
-    z-index: -1
-}
-
-.autocomplete__menu {
-    background-color: #fff;
-    border: 1px solid #b1b4b6;
-    border-top: 0;
-    color: #0b0c0c;
-    margin: 0;
-    max-height: 342px;
-    overflow-x: hidden;
-    padding: 0;
-    width: 85%;
-    width: calc(100% - 4px);
-    font-family: "Segoe UI Symbol";
-}
-
-.autocomplete__menu--visible {
-    display: block;
-    max-width: 85%;
-    margin-left: 19.5px;
-}
-
-.autocomplete__menu--hidden {
-    display: none
-}
-
-.autocomplete__menu--overlay {
-    box-shadow: 0 2px 6px rgba(0,0,0,.257);
-    left: 0;
-    position: absolute;
-    top: 100%;
-    z-index: 100
-}
-
-.autocomplete__menu--inline {
-    position: absolute;
-    z-index: 100;
-}
-
-.autocomplete__option {
-    border-bottom: 1px solid #b1b4b6;
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 1px;
-    cursor: pointer;
-    display: block;
-    text-align: left;
-}
-
-.autocomplete__option > * {
-    pointer-events: none
-}
-
-.autocomplete__option:first-of-type {
-    border-top-width: 0
-}
-
-.autocomplete__option:last-of-type {
-    border-bottom-width: 0
-}
-
-.autocomplete__option--focused, .autocomplete__option:hover {
-    background-color: #e3e3e3;
-    cursor: pointer;
-}
-
-.autocomplete__option--no-results {
-    display: none;
-}
-
-.autocomplete__hint, .autocomplete__input, .autocomplete__option {
-    font-size: 1rem;
-    font-weight: 400
-}
-
-.autocomplete__hint, .autocomplete__option {
-    padding: 5px
-}
-
 @media(max-width: 960px) {
 
-    .search {
+    .tpr-header-search {
         width: 20%;
+        margin-left: 50px;
     }
 
     .searchbox {
         width: 50%
     }
-
-    .searchFieldWithButton {
+    .tpr-header-search__field {
         width: 80%;
     }
 
-    .searchButton {
-        margin-left: -52px;
+    .tpr-header-search__input {      
+        margin-left: -30px
     }
 
-    .autocomplete__menu--visible {
-        margin-left: 16px;
-    }
+    .tpr-header-search__button {
+        margin-left: -52px;
+    }  
 }
 
-@media(max-width: 864px) {
-    .search {
+@media(max-width: 765px) {
+    .tpr-header-search {
         display: none;
     }
 }

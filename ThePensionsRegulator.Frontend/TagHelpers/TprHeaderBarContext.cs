@@ -9,7 +9,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private (AttributeDictionary Attributes, string? Href, string? AlternativeText)? _logo;
         private (AttributeDictionary Attributes, IHtmlContent? Label, bool AllowHtml)? _label;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
-        private (AttributeDictionary Attributes, bool DispaySearchBar, string? ActionPath)? _search;
+        private (AttributeDictionary Attributes, bool DispaySearch, string? ActionPath,string? AutocompleteUrl, string? PlaceholderText, string? SearchAriaLabel)? _search;
 
         public AttributeDictionary? LogoAttributes => _logo?.Attributes;
         public string? LogoHref => _logo?.Href;
@@ -20,9 +20,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public AttributeDictionary? ContentAttributes => _content?.Attributes;
         public IHtmlContent? Content => _content?.Content;
         public bool ContentAllowHtml => _content?.AllowHtml ?? false;
-        public bool DisplaySearchBar => _search?.DispaySearchBar ?? false;
+        public bool DisplaySearch => _search?.DispaySearch ?? false;
         public AttributeDictionary? SearchAttributes => _search?.Attributes;
         public string? ActionPath => _search?.ActionPath;
+        public string? AutoCompleteUrl => _search?.AutocompleteUrl;
+        public string? SearchPlaceholderText => _search?.PlaceholderText;
+        public string? SearchAriaLabel => _search?.SearchAriaLabel;
 
 
         public void SetLogo(AttributeDictionary attributes, string? href, string? alternativeText)
@@ -61,7 +64,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             _content = (attributes, htmlContent, allowHtml);
         }
 
-        public void SetSearch(AttributeDictionary attributes, bool displaySearchBar, string actionPath)
+        public void SetSearch(AttributeDictionary attributes, bool displaySearch, string? actionPath,string? autocompleteUrl, string? placeholderText, string? ariaLabel)
         {
             if (_search != null)
             {
@@ -70,7 +73,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 TprHeaderBarTagHelper.TagName);
             }
 
-            _search = (attributes, displaySearchBar, actionPath);
+            _search = (attributes, displaySearch, actionPath, autocompleteUrl, placeholderText, ariaLabel);
         }
     }
 }

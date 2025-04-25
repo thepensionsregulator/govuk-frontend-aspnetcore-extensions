@@ -2,27 +2,36 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const searchBars = document.querySelectorAll('.tpr-autocomplete-container');
-   
+    
+
     searchBars.forEach((searchBar) => {
+
+        let url = searchBar.getAttribute('autocomplete-url')
+        let placeholderText = searchBar.getAttribute("placeholder");
+        const inputs = document.querySelectorAll('.tpr-header-search__input');
+
+        inputs.forEach((input) => { 
+            input.style.display = 'none'
+        });
 
         accessibleAutocomplete({
 
             element: searchBar,
-            id: 'easy-autocomplete',
+            id: 'tpr-header-search-autocomplete',
             source: function (query, populateResults) {
-                fetch('/data.json')
+                fetch(url)
                     .then(response => response.json())
                     .then(data => {
                         const results = data.filter(item => item.title.toLowerCase().includes(query.toLowerCase())).map(item => item.title);
                         populateResults(results.slice(0,5))                 
                     })
                     .catch(error => {
-                        console.error('An error has occured with your fetch operation:', error);
+                        console.error('An error has occured with tpr-header-search fetch operation:', error);
                     });
         },
             minLength: 2,
-            placeholder: 'Search'
-
+            placeholder: placeholderText,
+            inputClasses: 'govuk-input'
         });
     });
 });

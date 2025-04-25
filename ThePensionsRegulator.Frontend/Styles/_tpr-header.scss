@@ -405,3 +405,9 @@ $tpr-header-left-width-xl: 200px;
         border-bottom: govuk-px-to-rem(1) solid $tpr-colour-blue-marguerite;
     }
 }
+
+@media(max-width: 992px){
+    .tpr-header__label{
+        display:none;
+    }
+}

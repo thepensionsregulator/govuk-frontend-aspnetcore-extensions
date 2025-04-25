@@ -152,7 +152,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             buttonSvg.InnerHtml.AppendHtml(svgTag1);
 
             var svgTag2 = new TagBuilder("g");
-            svgTag2.Attributes.Add("transform", "translate(1.000000, -5.000000)");
+            svgTag2.Attributes.Add("transform", "translate(1.000000, -6.000000)");
             svgTag2.Attributes.Add("fill", "#434343");
             svgTag1.InnerHtml.AppendHtml(svgTag2);
 

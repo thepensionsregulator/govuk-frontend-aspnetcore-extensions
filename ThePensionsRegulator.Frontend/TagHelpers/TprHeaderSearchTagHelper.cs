@@ -12,6 +12,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string ActionAttributeName = "action";
         private const string AutocompleteUrlAttribute = "autocomplete-url";
         private const string PlaceholderAttribute = "placeholder";
+        private const string AriaLabelAttribute = "aria-label";
 
         [HtmlAttributeName(ActionAttributeName)]
         public string? ActionPath { get; set; }
@@ -21,7 +22,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         [HtmlAttributeName(PlaceholderAttribute)]    
         public string? PlaceholderText {  get; set; }
-
+       
+        [HtmlAttributeName(AriaLabelAttribute)]
         public string? AriaLabel {  get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)

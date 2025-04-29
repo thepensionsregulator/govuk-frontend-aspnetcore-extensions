@@ -23,7 +23,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             }
             else if (documentContext.Href!.EndsWith(".docx"))
             {
-                output.PostContent.SetHtmlContent($"<br /><span class=\"doc fileicon\">Word</span> {documentContext.KbSize}KB, {documentContext.Pages} pages </dt>");
+                output.PostContent.SetHtmlContent($"<br /><span class=\"doc fileicon\">WORD</span> {documentContext.KbSize}KB, {documentContext.Pages} pages </dt>");
             }
             else
             {

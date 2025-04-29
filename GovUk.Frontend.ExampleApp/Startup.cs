@@ -30,7 +30,6 @@ namespace GovUk.Frontend.ExampleApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddHttpContextAccessor();
             if (Configuration.GetValue<bool>("TPRStyles"))
             {
                 services.AddTprFrontend();

@@ -1,56 +1,80 @@
-# TPR section cards 
+# TPR section cards
 
 In TPR pages you can add cards that can display a linked heading and description.
 
-## HTML example (for ASP.NET applications)
+## Example
 
 ```razor
-<ul class="tpr-sectioncards-container govuk-list ">
-    <li class="tpr-sectioncards">
-        <div class="tpr-sectioncards__body">
-            <h2 class="tpr-sectioncards__title">
-                <a class="govuk-link" href="/accordion/">Title of card</a>
-            </h2>
-            <p>Description of card</p>
-        </div>
-    </li>
-</ul>
+@addTagHelper *, ThePensionsRegulator.Frontend
+
+<tpr-section-cards>
+    <tpr-section-card>
+            <tpr-section-card-title href="/example" target="_self">Title of card</tpr-section-card-title>
+            <tpr-section-card-content>Description of card</tpr-section-card-content>
+    </tpr-section-card>
+</tpr-section-cards>
 ```
 
-## Umbraco block grid
+## API
 
-Add a 'Section cards' component anywhere in a block grid using the 'TPR block grid' data type. For best results, add the component to a full width container.  
+### `<tpr-section-cards>`
 
-![Add a box component](/docs/images/tpr-section-cards-add.png)
+_Required_
 
-You can then add content to the Cards field.
+### `<tpr-section-card>`
 
-![Add content](/docs/images/tpr-section-cards-add-content.png)
+Creates a single section card. Must be inside a `<tpr-section-cards>` element.
 
-You will then have two options:
-- Section cards children - This list all of the children of the current page. Unless the child page's umbracoNaviHide property = true.
-- Section cards card - This allows you to add a single card to the list.
+### `<tpr-section-card-title>`
+
+Configures the title and link for a single section card.
+
+| Attribute    | Type     | Description                                                                                                                                                                       |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `href`       | `string` | Sets the URL the title links to.                                                                                                                                                  |
+| `target`     | `string` | Sets the target attribute on the link. Rarely needed because [links should not open in a new tab](https://design-system.service.gov.uk/styles/links/#opening-links-in-a-new-tab). |
+| `allow-html` | `bool`   | Sets whether to render HTML without escaping. Default is `false`.                                                                                                                 |
+
+Must be inside a `<tpr-section-card>` element.
+
+### `<tpr-section-card-content>`
+
+Configures the content for a single section card.
+
+| Attribute    | Type   | Description                                                       |
+| ------------ | ------ | ----------------------------------------------------------------- |
+| `allow-html` | `bool` | Sets whether to render HTML without escaping. Default is `false`. |
+
+Must be inside a `<tpr-section-card>` element.
+
+## Umbraco
+
+Add a 'Section cards' component anywhere in a block grid using the 'TPR block grid' data type. For best results, add the component to a full width container.
+
+![Add a Section cards component](/docs/images/tpr-section-cards-add.png)
+
+You can then add cards to the `Cards` property.
+
+![Add cards](/docs/images/tpr-section-cards-add-content.png)
+
+You will have two options:
+
+- **Section cards for child pages** creates a card for every child page of the current page, unless the child page's `umbracoNaviHide` property is set to `true`.
+- **Section card** adds a single editable card to the list.
 
 ![Add content](/docs/images/tpr-section-cards-add-content-options.png)
 
-## Section cards children
-
-This block doesn't require any more fields to be filled in. It will simply display all of the children of the current page.
-
-## Section cards card
-
-Once you add this block, you will have to fill in the link and description fields.
-
-
+When you add a 'Section card' block, you will have to fill in the link and description fields.
 
 ![Add content](/docs/images/tpr-section-cards-add-content-card.png)
 
-## Settings 
+## Settings
 
-The section cards block has the following fields for configuration:
--  Title field name - is the internal field name of the field that contains the title for child items. This defaults to the node name.
-- Description field name - is the internal field name of the field that contains the description for child items. This defaults to 'description'.
-- Css classes - Adds the classes to the container.
+The section cards block has the following properties for configuration:
 
-![Add content](/docs/images/tpr-section-cards-settings-cog.png)
-![Add content](/docs/images/tpr-section-cards-settings-options.png)
+- **Title field name** - is the alias of the property that contains the title for child items. This defaults to the node name.
+- **Description field name** - is the alias of the property that contains the description for child items. This defaults to `description`.
+- **CSS classes** - Classes to add to the outermost `nav` element.
+
+![Click the cog icon to get to the settings of the Section cards block](/docs/images/tpr-section-cards-settings-cog.png)
+![Settings of a Section cards block](/docs/images/tpr-section-cards-settings-options.png)

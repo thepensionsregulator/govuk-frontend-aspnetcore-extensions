@@ -5,7 +5,9 @@ The Pensions Regulator (TPR) uses the TPR header bar as a consistent part of the
 ## Example
 
 ```razor
- <tpr-header-bar>
+@addTagHelper *, ThePensionsRegulator.Frontend
+
+<tpr-header-bar>
     <tpr-header-bar-logo href="https://example.org" alt="Go to example" />
     <tpr-header-bar-label>Making workplace pensions work</tpr-header-bar-label>
     <tpr-header-bar-content>

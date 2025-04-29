@@ -7,6 +7,8 @@ In testing users were confused by a standard 'Cancel' link as they weren't sure 
 ## Example
 
 ```razor
+@addTagHelper *, ThePensionsRegulator.Frontend
+
 <tpr-back-to-menu href="/">Back to menu (your progress for section xxx will be lost)</tpr-back-to-menu>
 ```
 

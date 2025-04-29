@@ -18,7 +18,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
         public TagBuilder GenerateTaskList(
             AttributeDictionary? attributes,
-            IEnumerable<TaskListTask> tasks)
+            IEnumerable<TaskListTask?> tasks)
         {
             Guard.ArgumentNotNull(nameof(tasks), tasks);
             Guard.ArgumentValid(nameof(tasks), "A task list must contain at least one task", tasks.Any());
@@ -27,9 +27,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             if (attributes is not null) { taskListTagBuilder.MergeAttributes(attributes); }
             taskListTagBuilder.MergeCssClass("govuk-task-list");
 
-            var taskNumber = 1;
+            var taskNumber = 0;
             foreach (var task in tasks)
             {
+                taskNumber++;
+                if (task is null) { continue; }
+
                 Guard.ArgumentValid(nameof(tasks), "Task name cannot be null or empty", task.Name.Content != null);
 
                 var taskId = BuildTaskId(attributes, taskNumber, task);
@@ -53,8 +56,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
                 {
                     taskTagBuilder.InnerHtml.AppendHtml(BuildStatus(task, statusId));
                 }
-
-                taskNumber++;
             }
 
             return taskListTagBuilder;

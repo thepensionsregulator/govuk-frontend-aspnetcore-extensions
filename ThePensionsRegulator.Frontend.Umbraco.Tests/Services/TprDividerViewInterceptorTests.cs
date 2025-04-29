@@ -11,7 +11,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
 	public class TprDividerViewInterceptorTests
 	{
-		[TestCase(ElementTypeAliases.TprBox, ElementTypeAliases.TprBoxSettings)]
+		[TestCase(TprElementTypeAliases.Box, TprElementTypeAliases.BoxSettings)]
 		[TestCase(GovUkElementTypeAliases.GridOneQuarter, GovUkElementTypeAliases.GridSingleColumnLayoutSettings)]
 		[TestCase(GovUkElementTypeAliases.GridOneThird, GovUkElementTypeAliases.GridSingleColumnLayoutSettings)]
 		[TestCase(GovUkElementTypeAliases.GridOneHalf, GovUkElementTypeAliases.GridSingleColumnLayoutSettings)]

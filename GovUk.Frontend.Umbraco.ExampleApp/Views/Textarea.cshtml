@@ -4,6 +4,9 @@
 @section head{
     <title>@Model.Page!.PageHeadingOrName()</title>
 }
+@section language {
+    <partial name="_LanguageSwitcher" model="Model.Page" />
+}
 @using (Html.BeginUmbracoForm<TextareaSurfaceController>(nameof(TextareaSurfaceController.Index), new {}, new { novalidate="novalidate" }))
 {
     <partial name="GOVUK/BlockList" model="Model.Page!.Blocks" />

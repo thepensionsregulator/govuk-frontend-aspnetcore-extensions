@@ -13,8 +13,11 @@ using System.Reflection;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Testing;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Routing;
+using Umbraco.Cms.Core.Templates;
+using Umbraco.Cms.Web.Common;
 
 namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 {
@@ -22,6 +25,9 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
     {
 #nullable disable
         private UmbracoTestContext _testContext;
+        private Mock<ICultureDictionary> _cultureDictionary;
+        private Mock<IUmbracoHelperAccessor> _umbracoHelperAccessor;
+        private UmbracoHelper _umbracoHelper;
 #nullable enable
 
         [SetUp]
@@ -29,6 +35,16 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         {
             _testContext = new();
             _testContext.ServiceProvider.Setup(mock => mock.GetService(typeof(DateInputParseErrorsProvider))).Returns(new DateInputParseErrorsProvider());
+
+            _cultureDictionary = new Mock<ICultureDictionary>();
+
+            var cultureDictionaryFactory = new Mock<ICultureDictionaryFactory>();
+            cultureDictionaryFactory.Setup(x => x.CreateDictionary()).Returns(_cultureDictionary.Object);
+
+            _umbracoHelper = new UmbracoHelper(cultureDictionaryFactory.Object, Mock.Of<IUmbracoComponentRenderer>(), Mock.Of<IPublishedContentQuery>());
+
+            _umbracoHelperAccessor = new Mock<IUmbracoHelperAccessor>();
+            _umbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out _umbracoHelper)).Returns(true);
         }
 
         private UmbracoDateInputModelBinder CreateModelBinder(Mock<DateInputModelConverter> converterMock)
@@ -37,7 +53,8 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
                     _testContext.UmbracoContextAccessor.Object,
                     Mock.Of<ICultureDictionary>(),
                     _testContext.PublishedValueFallback.Object,
-                    false
+                    false,
+                    _umbracoHelperAccessor.Object
                 );
 
         [Test]
@@ -266,6 +283,47 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             Assert.AreEqual(0, bindingContext.ModelState.ErrorCount);
         }
 
+        [Test]
+        public void BindModelAsync_CannotAccessUmbracoHelper()
+        {
+            // Arrange
+            var modelType = typeof(DateOnly);
+
+            ModelBindingContext bindingContext = new DefaultModelBindingContext()
+            {
+                ActionContext = CreateActionContext(),
+                ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForType(modelType),
+                ModelName = "TheModelName",
+                ModelState = new ModelStateDictionary(),
+                ValueProvider = new SimpleValueProvider()
+                {
+                    { "TheModelName.Day", "foo" }, // force a validation error so we hit the route for error messaging
+                    { "TheModelName.Month", "4" },
+                    { "TheModelName.Year", "2020" }
+                }
+            };
+
+            var converterMock = new Mock<DateInputModelConverter>();
+            converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
+
+            converterMock
+                .Setup(mock => mock.CreateModelFromDate(modelType, new DateOnly(2020, 4, 1)))
+                .Returns(new DateOnly(2020, 4, 1))
+                .Verifiable();
+
+            var modelBinder = CreateModelBinder(converterMock);
+
+            UmbracoHelper? nullUmbracoHelper = null;
+            _umbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out nullUmbracoHelper)).Returns(false);
+
+            // Act / Assert
+            Assert.Multiple(() =>
+            {
+                var exc = Assert.ThrowsAsync<InvalidOperationException>(() => modelBinder.BindModelAsync(bindingContext));
+                Assert.That(exc?.Message, Is.EqualTo("Unable to access Umbraco helper"));
+            });
+        }
+
         [TestCase(DateInputParseErrors.MissingYear, $"{nameof(ExampleModel.DateProperty)} must include a year")]
         [TestCase(DateInputParseErrors.InvalidYear, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
         [TestCase(DateInputParseErrors.MissingMonth, $"{nameof(ExampleModel.DateProperty)} must include a month")]
@@ -278,13 +336,41 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
         [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
         [TestCase(DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
-        public void GetModelStateErrorMessage(DateInputParseErrors parseErrors, string expectedMessage)
+        public void GetModelStateErrorMessageReturnsDefaultErrorMessage(DateInputParseErrors parseErrors, string expectedMessage)
         {
             // Arrange
+            _cultureDictionary.Setup(x => x[It.IsAny<string>()]).Returns(string.Empty);
             var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
 
             // Act
-            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), Mock.Of<ICultureDictionary>(), parseErrors, modelMetadata);
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _cultureDictionary.Object, parseErrors, modelMetadata, _umbracoHelper);
+
+            // Assert
+            Assert.AreEqual(expectedMessage, result);
+        }
+
+        [TestCase(DateInputParseErrors.MissingYear, DictionaryConstants.DateMustIncludeAYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidYear, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingMonth, DictionaryConstants.DateMustIncludeAMonth, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidMonth, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADay, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingMonth, DictionaryConstants.DateMustIncludeAMonthAndYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADayAndYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADayAndMonth, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [TestCase(DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        public void GetModelStateErrorMessageReturnsCustomErrorMessage(DateInputParseErrors parseErrors, string dictionaryConstant, string expectedMessage)
+        {
+            // Arrange
+            _cultureDictionary
+                .Setup(x => x[dictionaryConstant])
+                .Returns("{0}: custom error message");
+            var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
+
+            // Act
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _cultureDictionary.Object, parseErrors, modelMetadata, _umbracoHelper);
 
             // Assert
             Assert.AreEqual(expectedMessage, result);

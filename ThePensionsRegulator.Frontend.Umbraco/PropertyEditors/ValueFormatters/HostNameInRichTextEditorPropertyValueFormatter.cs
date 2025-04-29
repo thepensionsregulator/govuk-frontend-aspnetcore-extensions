@@ -21,7 +21,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
             Constants.PropertyEditors.Aliases.TinyMce,
             GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineRichText,
             GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineInverseRichText,
-            PropertyEditorAliases.TprHeaderFooterRichText
+            TprPropertyEditorAliases.TprHeaderFooterRichText
         };
 
         public HostNameInRichTextEditorPropertyValueFormatter(IHttpContextAccessor httpContextAccessor, IContextAwareHostUpdater contextAwareHostUpdater)

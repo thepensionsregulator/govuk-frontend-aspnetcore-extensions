@@ -28,14 +28,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
-	  <None Remove="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYoutubeVideo.html" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRImage.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYoutubeVideo.html" />
+		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYouTubeVideo.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRRelatedLinks.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRSectionCards.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
@@ -57,10 +52,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.SassCompiler" Version="1.77.8" />
-		<PackageReference Include="System.Net.Http" Version="4.3.4" />
-		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.3.2" />
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.7.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -76,90 +69,6 @@
 		  <PackagePath>\</PackagePath>
 		</None>
 		<None Include="sasscompiler.json" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Update="uSync\v9\ContentTypes\tpraccordion.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tpraccordionsection.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tpraccordionsectionsettings.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tpraccordionsettings.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprbacktomenu.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprbacktomenusettings.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprbacktotop.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprbox.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprboxsettings.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprcontextbar1.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprcontextbar2.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprcontextbar3.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprfooter.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprheader.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprimage.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprnestedbox.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprnestedboxsettings.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprrelatedlinks.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\ContentTypes\tprrelatedlinkssettings.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRAccordionBlockList.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRAccordionSectionBlockGrid.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRBlockList.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRBlockGrid.config">
-			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRBoxColour.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRBoxStyle.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRNestedBoxStyle.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
-		<Content Update="uSync\v9\DataTypes\TPRRichTextEditorHeaderAndFooter.config">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</Content>
 	</ItemGroup>
 
 	<ItemGroup>

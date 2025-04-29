@@ -5,6 +5,8 @@ A back to top component is [proposed for the GOV.UK Design System](https://githu
 ## Example
 
 ```razor
+@addTagHelper *, ThePensionsRegulator.Frontend
+
 <tpr-back-to-top href="#main">Back to top</tpr-back-to-top>
 ```
 
@@ -38,7 +40,7 @@ Add the 'TPR back to top' composition to one of your document types, typically a
 
 ![TPR back to top composition added to a document type](/docs/images/tpr-back-to-top-umbraco-document-type.png)
 
-Create or edit a content node based on your document type, and you will be able to specify text for the TPR back to top component. 
+Create or edit a content node based on your document type, and you will be able to specify text for the TPR back to top component.
 
 ![Editing TPR back to top content](/docs/images/tpr-back-to-top-umbraco-content.png)
 

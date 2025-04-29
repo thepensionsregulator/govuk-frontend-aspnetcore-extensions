@@ -1,4 +1,16 @@
-# Test pre-release NuGet packages in a consuming application
+# Test pre-release NuGet packages
+
+## Check the contents of the NuGet package
+
+To check that the correct files and folders are included in a package:
+
+1. Open this solution in a separate instance of Visual Studio.
+2. Ensure you build configuration is set to 'Debug', and build the project(s) you want to test. This will generate an updated NuGet package in the `bin\Debug` folder of each project.
+3. Rename the `*.nupkg` file to `*.zip` or associate `*.nupkg` files with a program that can open ZIP files.
+
+You will now be able to open the package file and check the contents without installing it into a consuming application.
+
+## Test in a consuming application
 
 When you need to test the NuGet packages published by this solution in a consuming application before submitting your code in a pull request, follow these steps:
 

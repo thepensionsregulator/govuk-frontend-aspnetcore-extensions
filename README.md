@@ -50,6 +50,7 @@ We add support for:
   - [TPR YouTube video](/docs/components/tpr-youtube-video.md)
   - [TPR related links](/docs/components/tpr-related-links.md)
   - [TPR section cards](/docs/components/tpr-section-cards.md)
+  - [TPR timeline](/docs/components/tpr-timeline.md)
 
 - The Pensions Regulator (TPR) styling for all of the above components, and:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)

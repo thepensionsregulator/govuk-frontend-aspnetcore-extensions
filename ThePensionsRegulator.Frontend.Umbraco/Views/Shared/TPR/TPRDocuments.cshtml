@@ -1,13 +1,13 @@
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Web.Common
-@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
-@using TprPropertyAliases = ThePensionsRegulator.Frontend.Umbraco.TprPropertyAliases
+@using GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco
 @inject UmbracoHelper Umbraco
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
-    var outerCssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+    var outerCssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.DocumentsBlockList);
 }
 
@@ -17,7 +17,7 @@
     {
         if (document.Content.Value<Link>(TprPropertyAliases.Document).Url != null)
         {
-            var innerCssClasses = document.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+            var innerCssClasses = document.Settings.Value<string>(PropertyAliases.CssClasses);
             var docHref = document.Content.Value<Link>(TprPropertyAliases.Document).Url;
             var docLinkType = document.Content.Value<Link>(TprPropertyAliases.Document).Type;
             var docTitle = document.Content.Value<Link>(TprPropertyAliases.Document).Name;

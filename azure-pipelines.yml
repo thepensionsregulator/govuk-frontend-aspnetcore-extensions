@@ -51,14 +51,14 @@ steps:
   - task: Npm@1
     inputs:
       command: custom
-      workingDir:  '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
-      customCommand:  "audit --level moderate --groups dependencies"
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
+      customCommand: "audit --level moderate --groups dependencies"
     displayName: npm audit
 
   - task: Npm@1
     inputs:
       command: ci
-      workingDir:  '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
     displayName: npm ci
     condition: ne(variables.CACHE_RESTORED, 'true')
 
@@ -112,10 +112,9 @@ steps:
       arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
       projects: "$(solution)"
 
-  - task: PublishCodeCoverageResults@1
+  - task: PublishCodeCoverageResults@2
     displayName: "Publish code coverage"
     inputs:
-      codeCoverageTool: Cobertura
       summaryFileLocation: $(Agent.TempDirectory)\**\coverage.cobertura.xml
       failIfCoverageEmpty: true
 

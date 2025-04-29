@@ -14,7 +14,9 @@
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "rootDir": "GovUk.Frontend.AspNetCore.Extensions"
+    "rootDir": "GovUk.Frontend.AspNetCore.Extensions",
+    "collectCoverage": true,
+    "collectCoverageFrom": ["wwwroot/govuk/**/*.js"]
   },
   "resolutions": {
     "json5": "2.2.2"

@@ -102,7 +102,7 @@ steps:
       command: "build"
       arguments: --configuration $(buildConfiguration)
       projects: |
-        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj
+        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\ThePensionsRegulator.Frontend.Umbraco.csproj
         $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco.Testing\ThePensionsRegulator.Umbraco.Testing.csproj
 
   - task: DotNetCoreCLI@2
@@ -120,7 +120,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy GovUk.Frontend package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\bin\$(buildConfiguration)
       Contents: |
@@ -131,7 +130,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy ThePensionsRegulator.Umbraco package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco\bin\$(buildConfiguration)
       Contents: |
@@ -142,7 +140,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy ThePensionsRegulator.Frontend package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend\bin\$(buildConfiguration)
       Contents: |
@@ -153,7 +150,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy GovUk.Frontend.Umbraco package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\bin\$(buildConfiguration)
       Contents: |
@@ -164,7 +160,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy ThePensionsRegulator.Frontend.Umbraco package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\bin\$(buildConfiguration)
       Contents: |
@@ -175,7 +170,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy ThePensionsRegulator.Umbraco.Testing package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco.Testing\bin\$(buildConfiguration)
       Contents: |
@@ -192,3 +186,10 @@ steps:
       packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg"
       nuGetFeedType: external
       publishFeedCredentials: NUGET
+
+  - task: PublishPipelineArtifact@1
+    condition: not(eq(variables.pushPackages, true))
+    displayName: "Publish packages as artifact"
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)
+      artifactName: packages

@@ -411,6 +411,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         [TestCase("1", "-1", "2020", false, DateInputParseErrors.InvalidMonth)]
         [TestCase("1", "13", "2020", false, DateInputParseErrors.InvalidMonth)]
         [TestCase("1", "x", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [TestCase("1", "4", "15", false, DateInputParseErrors.InvalidYear)]
         [TestCase("1", "4", "0", false, DateInputParseErrors.InvalidYear)]
         [TestCase("1", "4", "-1", false, DateInputParseErrors.InvalidYear)]
         [TestCase("1", "4", "10000", false, DateInputParseErrors.InvalidYear)]

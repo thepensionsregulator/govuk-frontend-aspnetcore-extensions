@@ -108,9 +108,18 @@ function createGovUkValidator() {
       if (!summary) {
         return;
       }
-      const list = summary.querySelector("ul");
+
+      const errorSummaryBody = summary.querySelector(".govuk-error-summary__body");
+      if (!errorSummaryBody) {
+          return;
+      }
+
+      const list = errorSummaryBody.querySelector("ul"); 
       if (!list) {
-        return;
+        const ul = errorSummaryBody.createElement("ul");
+        ul.classList.add("govuk-list");
+        ul.classList.add("govuk-error-summary__list");
+        errorSummaryBody.appendChild(ul);
       }
 
       const textNode = 3;

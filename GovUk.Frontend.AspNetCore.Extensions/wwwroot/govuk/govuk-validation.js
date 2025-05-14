@@ -114,17 +114,19 @@ function createGovUkValidator() {
           return;
       }
 
-      const list = errorSummaryBody.querySelector("ul"); 
+      let list = errorSummaryBody.querySelector("ul"); 
       if (!list) {
-        const ul = errorSummaryBody.createElement("ul");
+        const ul = document.createElement("ul");
         ul.classList.add("govuk-list");
         ul.classList.add("govuk-error-summary__list");
         errorSummaryBody.appendChild(ul);
+        list = ul;
       }
 
       const textNode = 3;
 
       // Get the current links in the error summary, and the links that need to be there
+
       const currentErrors = [].slice.call(list.querySelectorAll("a"));
 
       const updatedErrors = [].slice

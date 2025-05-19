@@ -13,8 +13,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var documentContext = (TprDocumentContext)context.Items[typeof(TprDocumentsTagHelper)];
             documentContext.DocumentDescription = await output.GetChildContentAsync();
 
-            output.PreElement.SetHtmlContent($"<dd>Published: {documentContext.DatePublished}</dd>");
-            output.TagName = "dd";
+            if (!string.IsNullOrEmpty(documentContext.DatePublished))
+            {
+                output.PreElement.SetHtmlContent($"<dd>Published: {documentContext.DatePublished}</dd>");
+                output.TagName = "dd";
+            }
         }
     }
 }

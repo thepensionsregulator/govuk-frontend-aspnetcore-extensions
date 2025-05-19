@@ -27,7 +27,7 @@
 
             if (docLinkType == LinkType.Media)
             {
-                var docKB = document.Content.Value<string>(TprPropertyAliases.DocumentFileSize);
+                var docKB = document.Content.Value<Link>(TprPropertyAliases.Document).Content.UmbracoBytes / 1024;
 
                 <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" class="@innerCssClasses">
 

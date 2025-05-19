@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
+using System;
 using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -10,7 +11,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         internal const string TagName = "tpr-document";
 
         [HtmlAttributeName("href")]
-        public string? Href { get; set; }
+        public required string Href { get; set; }
 
         [HtmlAttributeName("kbsize")]
         public string? KbSize { get; set; }
@@ -23,6 +24,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            if (string.IsNullOrEmpty(Href)) { throw new ArgumentNullException(nameof(Href), "Document href cannot be null"); }
+            if (DatePublished == "January 0001") { DatePublished = null; }
+
             var documentContext = (TprDocumentContext)context.Items[typeof(TprDocumentsTagHelper)];
             documentContext.Href = Href;
             documentContext.KbSize = KbSize;

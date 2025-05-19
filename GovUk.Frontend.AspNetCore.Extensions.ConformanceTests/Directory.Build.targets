@@ -11,11 +11,7 @@
 			<Output TaskParameter="ConsoleOutput" PropertyName="CheckForNode" />
 		</Exec>
 		<Error Text="Node.js is not installed. Node.js is required to install the govuk-frontend package which contains the conformance tests. See https://nodejs.org" Condition="$(CheckForNode.Contains('Could not find files'))" />
-		<Exec Command="where yarn" Condition="!Exists('$(GovUkPackageFolder)')" ConsoleToMsBuild="true" IgnoreExitCode="true">
-			<Output TaskParameter="ConsoleOutput" PropertyName="CheckForYarn" />
-		</Exec>
-		<Error Text="Yarn Classic is required to install the govuk-frontend package which contains the conformance tests. Run 'npm install --global yarn'. If you get an error UNABLE_TO_GET_ISSUER_CERT_LOCALLY you need to click the padlock next to any site in the address bar of your browser, and download the CA certificate for your network in .PEM format. Then set the environment variable NODE_EXTRA_CA_CERTS to the path to that certificate, and restart Visual Studio." Condition="$(CheckForYarn.Contains('Could not find files'))" />
-		<Message Text="GOV.UK Frontend NPM package not found. Running 'yarn install'." Condition="!Exists('$(GovUkPackageFolder)')" />
-		<Exec Command="yarn install" WorkingDirectory="$(MsBuildThisFileDirectory).." Condition="!Exists('$(GovUkPackageFolder)')" />
+		<Message Text="govuk-frontend NPM package not found. Running 'npm install'. If you get an error UNABLE_TO_GET_ISSUER_CERT_LOCALLY you need to click the padlock next to any site in the address bar of your browser, and download the CA certificate for your network in .PEM format. Then set the environment variable NODE_EXTRA_CA_CERTS to the path to that certificate, and restart Visual Studio." Condition="!Exists('$(GovUkPackageFolder)')" />
+		<Exec Command="npm install" WorkingDirectory="$(MsBuildThisFileDirectory).." Condition="!Exists('$(GovUkPackageFolder)')" />
 </Target>
 </Project>

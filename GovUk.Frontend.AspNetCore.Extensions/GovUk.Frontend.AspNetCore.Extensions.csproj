@@ -121,7 +121,10 @@
 			<Pack>true</Pack>
 			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\vendor</PackagePath>
 		</Content>
-
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\objects\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\objects</PackagePath>
+		</Content>
 		<None Include="..\tpr-nuget.png">
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>

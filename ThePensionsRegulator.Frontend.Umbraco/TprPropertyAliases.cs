@@ -7,7 +7,6 @@
         public const string Document = "document";
         public const string DocumentDatePublished = "datePublished";
         public const string DocumentDescription = "description";
-        public const string DocumentFileSize = "fileSize";
         public const string DocumentNumberOfPages = "numberOfPages";
         public const string DocumentsBlockList = "documents";
         public const string Image = "image";

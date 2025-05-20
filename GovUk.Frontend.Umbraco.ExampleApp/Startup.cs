@@ -1,3 +1,4 @@
+using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
 using ThePensionsRegulator.Frontend.Umbraco;
+using ThePensionsRegulator.Frontend.Umbraco.Services;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
@@ -56,6 +58,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
             else
             {
                 services.AddGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+                services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
             }
         }
 

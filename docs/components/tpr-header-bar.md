@@ -15,7 +15,7 @@ The Pensions Regulator (TPR) uses the TPR header bar as a consistent part of the
         <a class="govuk-link" href="#">Another link</a>
     </tpr-header-bar-content>
     <tpr-header-search>
-</tpr-header-bar>
+</tpr-header-bar action="en/search-results" autocomplete-url="#" placeholder="search" aria-label="search">
 ```
 
 The red lines in this screenshot highlight the TPR header bar within the TPR header:
@@ -68,13 +68,14 @@ Must be inside a `<govuk-header-bar>` element.
 |     `action`      |`string`| Sets action path of search form submission.                           |
 |`autocomplete-url` |`string`| Sets endpoint for autocomplete.js fetch operation.                    |
 |   `placeholder`   |`string`| Supports setting custom placeholder for generated input elements.     |
-|   `aria-label`    |`string`| Programmatically setting aria-label value of input and button elements|
+|   `aria-label`    |`string`| Programmatically setting aria-label value of button element           |
 
-TPR Header Search will display when there is no header content and DisplayHeaderSearch property is set to true. On smaller screen sizes the tpr mobile menu component will take over, and the header search will display as part of the mobile menu when expanded.
+TPR Header Search will display when there is no header content and DisplayHeaderSearch property is set to true. On smaller screen sizes the TPR mobile menu component will take over, and the header search will display as part of the mobile menu when expanded.
+Mobile Menu behaviour has not yet been implemented therefore is a desktop-only component at this time.
 
-TPR Header Search implements the alphagov/accessible-autocomplete component, rendering an input box and drop-down box for search resuts.
+TPR Header Search implements the [alphagov/accessible-autocomplete](https://github.com/alphagov/accessible-autocomplete) component, rendering an input box and drop-down box for search resuts.
 
-Views which require the tpr-header-search should also include the 'TPRHeaderSearchAutocomplete' partial view, in order to use the autocomplete functionality.
+Views which require the <tpr-header-search> should also include the 'TPRHeaderSearchAutocomplete' partial view, in order to use the autocomplete functionality.
 
 ## Umbraco
 

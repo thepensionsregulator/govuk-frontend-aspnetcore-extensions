@@ -1,31 +1,12 @@
 ﻿
-<script>
-    (function () {
-        $log.info('testing');
-
-        const injector = angular.injector(['umbraco']);
-        const mediaResource = injector.get('mediaResource');
-        
-        $window.getMediaSize = function (doc) {
-            mediaResource.getById(doc.document[0].udi, 'Media').then(function (media) {
-                var prop = media.properties.find(p => p.alias === 'umbracoBytes');
-                if (prop.value) {
-                    doc.document[0].size = Math.round(prop.value / 1024);
-                }
-            });
-        };
-    })();
-</script>
-
-
 <dl class="tpr-documents backoffice-block-view govuk-body {{block.settingsData.cssClasses}}">
-    <div class="tpr-document" ng-repeat="doc in block.data.documents.contentData" ng-init="window.getMediaSize(doc)">
+    <div class="tpr-document" ng-repeat="doc in block.data.documents.contentData">
         <div ng-if="doc.document[0].url.endsWith('.pdf')">
             <dt>
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="pdf fileicon">PDF</span> {{doc.document[0].size}}KB, {{doc.numberOfPages}} page(s)
+                    <span class="pdf fileicon">PDF</span> --KB, {{doc.numberOfPages}} page(s)
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -36,7 +17,7 @@
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="doc fileicon">WORD</span> {{}}KB, {{doc.numberOfPages}} page(s)
+                    <span class="doc fileicon">WORD</span> --KB, {{doc.numberOfPages}} page(s)
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -47,7 +28,7 @@
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="doc fileicon">DOTX</span> {{}}KB
+                    <span class="doc fileicon">DOTX</span> --KB
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -58,7 +39,7 @@
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="powerpoint fileicon">PPTX</span> {{}}KB, {{doc.numberOfPages}} page(s)
+                    <span class="powerpoint fileicon">PPTX</span> --KB, {{doc.numberOfPages}} page(s)
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -69,7 +50,7 @@
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="excel fileicon">XLSX</span> {{}}KB
+                    <span class="excel fileicon">XLSX</span> --KB
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -80,7 +61,7 @@
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="excel fileicon">XLST</span> {{}}KB
+                    <span class="excel fileicon">XLST</span> --KB
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -91,7 +72,7 @@
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="excel fileicon">CSV</span> {{}}KB
+                    <span class="excel fileicon">CSV</span> --KB
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>

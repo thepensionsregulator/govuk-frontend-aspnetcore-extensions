@@ -192,14 +192,14 @@
             </div>
             <tpr-header-bar>
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
-                <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder ="Search" aria-label="Search"></tpr-header-search>
+                <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="@(settings?.Value<string>("tprHeaderPlaceholderText"))" aria-label="@(settings?.Value<string>("tprHeaderAriaLabelText"))"></tpr-header-search>
             </tpr-header-bar>
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.HeaderWithSearchAndContext" />
             </div>
             <tpr-header-bar>
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
-                <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="Search" aria-label="Search"></tpr-header-search>
+                <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="@(settings?.Value<string>("tprHeaderPlaceholderText"))" aria-label="@(settings?.Value<string>("tprHeaderAriaLabelText"))"></tpr-header-search>
             </tpr-header-bar>
             <tpr-context-bar>
                 <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>

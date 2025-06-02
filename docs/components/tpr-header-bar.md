@@ -15,7 +15,7 @@ The Pensions Regulator (TPR) uses the TPR header bar as a consistent part of the
         <a class="govuk-link" href="#">Another link</a>
     </tpr-header-bar-content>
     <tpr-header-search>
-</tpr-header-bar action="en/search-results" autocomplete-url="#" placeholder="search" aria-label="search">
+</tpr-header-bar action="en/search-results" autocomplete-url="#" placeholder="search" aria-label="search" input-query="custom query string">
 ```
 
 The red lines in this screenshot highlight the TPR header bar within the TPR header:

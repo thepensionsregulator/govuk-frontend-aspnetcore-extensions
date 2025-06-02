@@ -3,15 +3,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const searchBars = document.querySelectorAll('.tpr-autocomplete-container');
     
-
     searchBars.forEach((searchBar) => {
 
-        let url = searchBar.getAttribute('autocomplete-url')
-        let placeholderText = searchBar.getAttribute("placeholder");
+        let url = searchBar.getAttribute('data-autocomplete-url')
+              
         const inputs = document.querySelectorAll('.tpr-header-search__input');
+        let placeholderText;
 
         inputs.forEach((input) => { 
-            input.style.display = 'none'
+            input.style.display = 'none';
+             placeholderText = input.getAttribute("placeholder");
+             inputNameText = input.getAttribute("name");
         });
 
         accessibleAutocomplete({
@@ -31,7 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
         },
             minLength: 2,
             placeholder: placeholderText,
-            inputClasses: 'govuk-input'
+            inputClasses: 'govuk-input',   
+            name: inputNameText
         });
     });
 });

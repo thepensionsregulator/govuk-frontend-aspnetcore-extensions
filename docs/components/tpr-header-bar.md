@@ -62,13 +62,16 @@ Typically used for a menu of relevant links.
 Must be inside a `<govuk-header-bar>` element.
 
 
-### <tpr-header-search>
-|    Attribute      | Type   | Description                                                           |
-|-------------------| ------ | ----------------------------------------------------------------------|
-|     `action`      |`string`| Sets action path of search form submission.                           |
-|`autocomplete-url` |`string`| Sets endpoint for autocomplete.js fetch operation.                    |
-|   `placeholder`   |`string`| Supports setting custom placeholder for generated input elements.     |
-|   `aria-label`    |`string`| Programmatically setting aria-label value of button element           |
+### `<tpr-header-search>`
+
+|    Attribute      | Type   | Description                                                            |
+| ----------------- | ------ | ---------------------------------------------------------------------- |
+|     `action`      |`string`| Sets action path of search form submission.                            |
+|`autocomplete-url` |`string`| Sets endpoint for autocomplete.js fetch operation.                     |
+|   `placeholder`   |`string`| Supports setting custom placeholder for generated input elements.      |
+|   `aria-label`    |`string`| Programmatically setting aria-label value of button element            |
+|   `input-query`   |`string`| Enables configuration so that destination page can choose what query string parameter it wants to handle (value for name attribute on input element). Default value is "query"|
+                                                                                           
 
 TPR Header Search will display when there is no header content and DisplayHeaderSearch property is set to true. On smaller screen sizes the TPR mobile menu component will take over, and the header search will display as part of the mobile menu when expanded.
 Mobile Menu behaviour has not yet been implemented therefore is a desktop-only component at this time.

@@ -85,7 +85,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     contentElement.InnerHtml.Append(tprHeaderBar.Content.ToString()!);
                 }
             }
-            else if (tprHeaderBar.DisplaySearchBar)
+            else if (tprHeaderBar.DisplaySearch)
             {
 
                 var headerSearch = GenerateTprHeaderSearch(tprHeaderBar);
@@ -104,7 +104,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             divTag.AddCssClass("tpr-header-search");
 
             var form = new TagBuilder("form");
-            form.Attributes.Add("action", $"{tprHeaderBar.ActionPath}");
+            if (tprHeaderBar.ActionPath != null)
+            {
+                form.Attributes.Add("action", tprHeaderBar.ActionPath);
+            }
             form.Attributes.Add("id", "tpr-header-search__form");
             form.Attributes.Add("method", "get");
 
@@ -113,19 +116,27 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var autoComplete = new TagBuilder("div");
             autoComplete.AddCssClass("tpr-header-search-autocomplete");
+
             searchField.InnerHtml.AppendHtml(autoComplete);
 
             var autoCompleteContainer = new TagBuilder("div");
             autoCompleteContainer.AddCssClass("tpr-autocomplete-container");
-            autoCompleteContainer.Attributes.Add("autocomplete-url", tprHeaderBar.AutoCompleteUrl);
-            autoCompleteContainer.Attributes.Add("placeholder", tprHeaderBar.SearchPlaceholderText);
+            if (tprHeaderBar.AutoCompleteUrl != null)
+            {
+                autoCompleteContainer.Attributes.Add("data-autocomplete-url", tprHeaderBar.AutoCompleteUrl);
+            }        
             autoComplete.InnerHtml.AppendHtml(autoCompleteContainer);
 
             var searchInput = new TagBuilder("input");
-            searchInput.Attributes.Add("aria-label", tprHeaderBar.SearchAriaLabel);
-            searchInput.Attributes.Add("placeholder", tprHeaderBar.SearchPlaceholderText);
+            if (tprHeaderBar.SearchPlaceholderText != null)
+            {
+                searchInput.Attributes.Add("placeholder", tprHeaderBar.SearchPlaceholderText);
+            }
             searchInput.Attributes.Add("type", "search");
-            searchInput.Attributes.Add("name", "query");
+            if (tprHeaderBar.SearchInputQuery != null)
+            {
+                searchInput.Attributes.Add("name", tprHeaderBar.SearchInputQuery);
+            }
             searchInput.AddCssClass("govuk-input");
             searchInput.AddCssClass("tpr-header-search__input");
 
@@ -135,7 +146,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             button.Attributes.Add("type", "submit");
             button.AddCssClass("tpr-header-search__button");
             button.AddCssClass("govuk-input");
-            button.Attributes.Add("aria-label", tprHeaderBar.SearchAriaLabel);
+            if (tprHeaderBar.SearchAriaLabel != null)
+            {
+                button.Attributes.Add("aria-label", tprHeaderBar.SearchAriaLabel);
+            }
 
             var buttonSvg = new TagBuilder("svg");
             buttonSvg.Attributes.Add("viewBox", "0 0 21 6");

@@ -9,7 +9,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private (AttributeDictionary Attributes, string? Href, string? AlternativeText)? _logo;
         private (AttributeDictionary Attributes, IHtmlContent? Label, bool AllowHtml)? _label;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
-        private (AttributeDictionary Attributes, bool DispaySearch, string? ActionPath,string? AutocompleteUrl, string? PlaceholderText, string? SearchAriaLabel)? _search;
+        private (AttributeDictionary Attributes, bool DispaySearch, string? ActionPath,string? AutocompleteUrl, string? PlaceholderText, string? SearchAriaLabel, string? SearchInputQuery)? _search;
 
         public AttributeDictionary? LogoAttributes => _logo?.Attributes;
         public string? LogoHref => _logo?.Href;
@@ -26,6 +26,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public string? AutoCompleteUrl => _search?.AutocompleteUrl;
         public string? SearchPlaceholderText => _search?.PlaceholderText;
         public string? SearchAriaLabel => _search?.SearchAriaLabel;
+        public string? SearchInputQuery => _search?.SearchInputQuery ?? "query";
 
 
         public void SetLogo(AttributeDictionary attributes, string? href, string? alternativeText)
@@ -64,7 +65,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             _content = (attributes, htmlContent, allowHtml);
         }
 
-        public void SetSearch(AttributeDictionary attributes, bool displaySearch, string? actionPath,string? autocompleteUrl, string? placeholderText, string? ariaLabel)
+        public void SetSearch(AttributeDictionary attributes, bool displaySearch, string? actionPath,string? autocompleteUrl, string? placeholderText, string? ariaLabel, string? inputQuery)
         {
             if (_search != null)
             {
@@ -73,7 +74,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 TprHeaderBarTagHelper.TagName);
             }
 
-            _search = (attributes, displaySearch, actionPath, autocompleteUrl, placeholderText, ariaLabel);
+            _search = (attributes, displaySearch, actionPath, autocompleteUrl, placeholderText, ariaLabel, inputQuery);
         }
     }
 }

@@ -32,11 +32,12 @@
     }
     <title>@Model.PageHeadingOrName()</title>
     <link rel="stylesheet" href="~/css/site.css" />  
-    <script src="/_content/ThePensionsRegulator.Frontend/tpr/autocomplete.js"></script>
-    <script src="/_content/ThePensionsRegulator.Frontend/tpr/lib/accessible-autocomplete.min.js"></script>
+ 
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
+    <partial name="TPR/TPRAutocomplete" />
+
     <header role="banner">
         @if (useTPRstyles)
         {
@@ -192,7 +193,7 @@
             </div>
             <tpr-header-bar>
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
-                <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="@(settings?.Value<string>("tprHeaderPlaceholderText"))" aria-label="@(settings?.Value<string>("tprHeaderAriaLabelText"))"></tpr-header-search>
+                <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="@(settings?.Value<string>("tprHeaderPlaceholderText"))" aria-label="@(settings?.Value<string>("tprHeaderAriaLabelText"))" input-query="test"></tpr-header-search>
             </tpr-header-bar>
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.HeaderWithSearchAndContext" />

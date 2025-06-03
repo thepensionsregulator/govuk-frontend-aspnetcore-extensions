@@ -99,9 +99,4 @@
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_tpr-image.scss" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="uSync\v9\ContentTypes\" />
-	  <Folder Include="uSync\v9\DataTypes\" />
-	</ItemGroup>
 </Project>

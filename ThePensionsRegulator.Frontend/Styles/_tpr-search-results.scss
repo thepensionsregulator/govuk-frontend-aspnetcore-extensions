@@ -1,0 +1,32 @@
+﻿@import '_tpr-variables.scss';
+@import 'govuk/base';
+
+.tpr-search-results__heading {
+    background-color: $tpr-colour-white-smoke;
+    @include govuk-responsive-padding(4);
+}
+
+.tpr-search-results__input {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .govuk-form-group {
+        flex-grow: 2
+    }
+
+    button {
+        @include govuk-responsive-margin(2, "left");
+    }
+}
+
+.tpr-search-results__links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    a {
+        display: block;
+    }
+}

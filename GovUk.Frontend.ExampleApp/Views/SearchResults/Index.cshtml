@@ -1,0 +1,43 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model TextInputViewModel
+
+<h1 class="govuk-heading-l">Search results block</h1>
+
+<div class="govuk-grid-row">
+    <h2 class="tpr-search-results__heading govuk-heading-m">Search Q&As</h2>
+
+    <div class="tpr-search-results__input">
+        <govuk-input asp-for="Field1">
+            <govuk-input-label class="govuk-visually-hidden">Search Q&As</govuk-input-label>
+        </govuk-input>
+        <govuk-button class="tpr-button--no-next-step">Ask</govuk-button>
+    </div>
+
+    <govuk-accordion id="accordion1">
+        <govuk-accordion-item>
+            <govuk-accordion-item-heading>Question 1</govuk-accordion-item-heading>
+            <govuk-accordion-item-content>
+                <p class="govuk-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula eros ultricies condimentum tempor. Curabitur scelerisque vel nisl quis congue. Morbi eget ultrices tortor. Morbi at lorem metus. Donec in convallis magna, id ullamcorper ante. Quisque laoreet tincidunt convallis. Aenean elementum tellus vel sem facilisis bibendum. Nunc tristique varius est, in rutrum est pretium tristique. Curabitur et ipsum leo. In condimentum est tellus, ut accumsan mi venenatis et. In quis est a eros tempor tincidunt. Nulla sodales malesuada mauris eu consectetur.</p>
+                <p class="govuk-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc nec nunc nec risus scelerisque scelerisque. Aenean felis dui, rhoncus eget lacinia sit amet, luctus id lectus. Proin augue erat, convallis a venenatis ut, dapibus vel sem. Maecenas leo eros, tristique sit amet aliquet vitae, tristique nec risus. Nullam lectus odio, placerat et sem quis, blandit efficitur urna. Integer et dui eros. Ut iaculis felis non rutrum finibus. Aliquam luctus sapien diam, vitae feugiat turpis auctor id. Mauris mattis nisl enim, non posuere orci varius sed. Vivamus sit amet pellentesque velit.</p>
+            </govuk-accordion-item-content>
+        </govuk-accordion-item>
+   
+        <govuk-accordion-item>
+            <govuk-accordion-item-heading>Question 2</govuk-accordion-item-heading>
+            <govuk-accordion-item-content>
+                <p class="govuk-body">Aliquam neque lacus, malesuada a facilisis sit amet, hendrerit sed ipsum. Nam at lobortis lacus, id congue ipsum. Donec efficitur vehicula semper. Maecenas sit amet diam ut neque sollicitudin auctor. Suspendisse non metus sit amet odio auctor condimentum at vitae nisi. Proin molestie erat ut ipsum ullamcorper, id vehicula felis placerat. Phasellus cursus diam in nisi consequat, eu mollis lorem lacinia. Duis fermentum urna vel elit ultricies interdum. Ut eget gravida neque. Donec lacinia ac mauris vulputate sodales. Cras varius eget elit eget viverra. Integer ex sapien, varius vel mauris vel, maximus cursus enim.</p>
+            </govuk-accordion-item-content>
+        </govuk-accordion-item>
+    </govuk-accordion>
+
+</div>
+
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column tpr-search-results__links">
+        <a class="govuk-link" href="#">Show more questions</a>
+        <a class="govuk-link" href="#">Visit automatic enrolement Q&As</a>
+    </div>
+</div>

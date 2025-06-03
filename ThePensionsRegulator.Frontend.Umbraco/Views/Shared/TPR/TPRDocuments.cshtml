@@ -11,7 +11,7 @@
     var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.DocumentsBlockList);
 }
 
-<tpr-documents class="@outerCssClasses">
+<tpr-documents outercss="@outerCssClasses">
 
     @foreach (var document in documents)
     {
@@ -31,7 +31,7 @@
             {
                 var docKB = documentLink.Content.UmbracoBytes / 1024;
 
-                <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" class="@innerCssClasses">
+                <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
 
                     <tpr-document-title>@docTitle</tpr-document-title>
 
@@ -41,7 +41,7 @@
             }
             else
             {
-                <tpr-document href="@docHref" pages="@docPages" datepublished="@docDatePublished" class="@innerCssClasses">
+                <tpr-document href="@docHref" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
 
                     <tpr-document-title>@docTitle</tpr-document-title>
 

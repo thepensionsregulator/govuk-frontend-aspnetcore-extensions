@@ -22,6 +22,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("datepublished")]
         public string? DatePublished { get; set; }
 
+        [HtmlAttributeName("innercss")]
+        public string? InnerCss { get; set; }
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             if (string.IsNullOrEmpty(Href)) { throw new ArgumentNullException(nameof(Href), "Document href cannot be null"); }
@@ -34,7 +37,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             documentContext.DatePublished = DatePublished;
             documentContext.Document = await output.GetChildContentAsync();
 
-            output.TagName = $"div class=\"{TagName}\"";
+            output.TagName = $"div class=\"{TagName} {InnerCss}\"";
         }
     }
 }

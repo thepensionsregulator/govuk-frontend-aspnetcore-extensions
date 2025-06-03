@@ -9,6 +9,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-documents";
 
+        [HtmlAttributeName("outercss")]
+        public string? OuterCss { get; set; }
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var documentContext = new TprDocumentContext();
@@ -16,7 +19,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             await output.GetChildContentAsync();
 
-            output.TagName = $"dl class=\"{TagName} govuk-list\"";
+            output.TagName = $"dl class=\"{TagName} govuk-list {OuterCss}\"";
         }
     }
 }

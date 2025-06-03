@@ -8,11 +8,11 @@ The 'Documents' block is supported on the 'TPR Block Grid' and 'TPR Block List' 
 
 ![TPR Documents block inside TPR Block Grid / TPR Block List](../images/tpr-documents-block.png)
 
-Once you have clicked on the block, an inner custom Block List will appear that only allows for a TPR Document:
+Once you have clicked on the block, an inner custom Block List will appear that only allows for the pre-created Document type:
 
 ![TPR Documents custom inner block list](../images/tpr-documents-inner-blocklist.png)
 
-After pressing 'Add TPR Document' the following menu should appear, prompting you to link the document as well as fill out any relevant information about the document. The 'Number of pages' field should only be filled out if the document you are linking to is a piece of media such as a .PDF or .DOCX file. A media file that consists of a speadsheet such as an Excel file will not display the 'Number of pages' field.
+After pressing 'Add Document' the following menu should appear, prompting you to link the document (which can be to either a media item that has already been uploaded to Umbraco, or a URL) as well as fill out any relevant information about the document. The 'Number of pages' field should only be filled out if the document you are linking to is a piece of media such as a .PDF or .DOCX file. A media file that consists of a speadsheet such as an Excel file will not display the 'Number of pages' field.
 
 ![TPR Documents document input form](../images/tpr-documents-input-document-form.png)
 

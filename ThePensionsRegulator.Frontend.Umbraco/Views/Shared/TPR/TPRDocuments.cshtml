@@ -15,19 +15,21 @@
 
     @foreach (var document in documents)
     {
-        if (document.Content.Value<Link>(TprPropertyAliases.Document).Url != null)
+        var documentLink = document.Content.Value<Link>(TprPropertyAliases.Document);
+
+        if (documentLink != null)
         {
             var innerCssClasses = document.Settings.Value<string>(PropertyAliases.CssClasses);
-            var docHref = document.Content.Value<Link>(TprPropertyAliases.Document).Url;
-            var docLinkType = document.Content.Value<Link>(TprPropertyAliases.Document).Type;
-            var docTitle = document.Content.Value<Link>(TprPropertyAliases.Document).Name;
+            var docHref = documentLink.Url;
+            var docLinkType = documentLink.Type;
+            var docTitle = documentLink.Name;
             var docPages = document.Content.Value<string>(TprPropertyAliases.DocumentNumberOfPages);
             var docDatePublished = document.Content.Value<DateTime>(TprPropertyAliases.DocumentDatePublished).ToString("MMMM yyyy");
             var docDescription = document.Content.Value<string>(TprPropertyAliases.DocumentDescription);
 
             if (docLinkType == LinkType.Media)
             {
-                var docKB = document.Content.Value<Link>(TprPropertyAliases.Document).Content.UmbracoBytes / 1024;
+                var docKB = documentLink.Content.UmbracoBytes / 1024;
 
                 <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" class="@innerCssClasses">
 

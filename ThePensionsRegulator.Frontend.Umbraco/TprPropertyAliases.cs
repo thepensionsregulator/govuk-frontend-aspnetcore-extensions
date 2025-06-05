@@ -4,6 +4,11 @@
     {
         public const string BackToMenuText = "text";
         public const string BackToMenuLink = "link";
+        public const string Document = "document";
+        public const string DocumentDatePublished = "datePublished";
+        public const string DocumentDescription = "description";
+        public const string DocumentNumberOfPages = "numberOfPages";
+        public const string DocumentsBlockList = "documents";
         public const string Image = "image";
         public const string RelatedLinksHeading = "heading";
         public const string RelatedLinksLinks = "links";

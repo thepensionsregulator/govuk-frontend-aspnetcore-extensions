@@ -33,6 +33,7 @@
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYouTubeVideo.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRRelatedLinks.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRSectionCards.html" />
+		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRDocuments.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
@@ -86,7 +87,7 @@
 		<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </None>
 	</ItemGroup>
-
+	
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\govuk-umbraco-backoffice.scss" />
 	</ItemGroup>

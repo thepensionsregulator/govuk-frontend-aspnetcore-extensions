@@ -2,7 +2,7 @@
 
 namespace GovUk.Frontend.ExampleApp.Controllers
 {
-    public class TimelineController : BaseController
+    public class DocumentsController : BaseController
     {
         public IActionResult Index()
         {

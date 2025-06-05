@@ -1,0 +1,55 @@
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Web.Common
+@using GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco
+@inject UmbracoHelper Umbraco
+@addTagHelper *, ThePensionsRegulator.Frontend
+
+@{
+    var outerCssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.DocumentsBlockList);
+}
+
+<tpr-documents outercss="@outerCssClasses">
+
+    @foreach (var document in documents)
+    {
+        var documentLink = document.Content.Value<Link>(TprPropertyAliases.Document);
+
+        if (documentLink != null)
+        {
+            var innerCssClasses = document.Settings.Value<string>(PropertyAliases.CssClasses);
+            var docHref = documentLink.Url;
+            var docLinkType = documentLink.Type;
+            var docTitle = documentLink.Name;
+            var docPages = document.Content.Value<string>(TprPropertyAliases.DocumentNumberOfPages);
+            var docDatePublished = document.Content.Value<DateTime>(TprPropertyAliases.DocumentDatePublished).ToString("MMMM yyyy");
+            var docDescription = document.Content.Value<string>(TprPropertyAliases.DocumentDescription);
+
+            if (docLinkType == LinkType.Media)
+            {
+                var docKB = documentLink.Content.UmbracoBytes / 1024;
+
+                <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
+
+                    <tpr-document-title>@docTitle</tpr-document-title>
+
+                    <tpr-document-description>@docDescription</tpr-document-description>
+
+                </tpr-document>
+            }
+            else
+            {
+                <tpr-document href="@docHref" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
+
+                    <tpr-document-title>@docTitle</tpr-document-title>
+
+                    <tpr-document-description>@docDescription</tpr-document-description>
+
+                </tpr-document>
+            }
+        }
+    }
+
+</tpr-documents>

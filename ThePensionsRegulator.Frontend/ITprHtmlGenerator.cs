@@ -16,6 +16,7 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards);
         TagBuilder GenerateTprAblePlayer(TprYouTubeVideo video);
         TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(TprYouTubeVideo video);
+        TagBuilder GenerateTprMobileMenu(TprMobileMenu tprMobileMenu);
 
     }
 }

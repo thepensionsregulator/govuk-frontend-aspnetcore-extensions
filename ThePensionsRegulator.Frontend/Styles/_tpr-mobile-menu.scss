@@ -1,0 +1,66 @@
+@import 'tpr.scss';
+
+.tpr-header .tpr-mobile-menu-toggle {
+    display: none;
+    cursor: pointer;
+
+}
+
+.tpr-mobile-menu__icon {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.closed {
+    display: inline;
+    padding-left: 0.6rem;
+    background: 0 0;
+    border: none;
+    color: $tpr-colour-white;
+}
+
+.open {
+    display: none;
+    font-weight: 700;
+    color: #2570b6;
+    background: 0 0;
+    border: none;
+}
+
+.open::before {
+    content: "×";
+    font-size: 1.8rem;
+    vertical-align: sub;
+    font-weight: 700;
+    padding-right: 0.6rem;
+}
+
+.mobile-menu-toggle.mobileactive {
+    background-color: #fff;
+    z-index: 1500;
+}
+
+.mobile-menu-toggle.mobileactive .open {
+    display: inline;
+}
+
+.mobile-menu-toggle.mobileactive svg {
+    display: none;
+}
+
+.tpr-mobile-menu__svg {
+    width: 1.5rem;
+    height: 1.6rem;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    -webkit-filter: FlipH;
+    filter: FlipH;
+    -ms-filter: FlipH;
+    vertical-align: bottom;
+    display:none;
+}
+
+.tpr-mobile-menu-toggle .si-glyph-fill {
+    fill: $tpr-colour-white;
+}

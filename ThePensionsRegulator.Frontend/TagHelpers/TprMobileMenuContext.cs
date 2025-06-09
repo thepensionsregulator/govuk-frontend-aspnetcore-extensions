@@ -11,9 +11,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public IReadOnlyList<TprMobileMenuItemsContext> MenuItems => _menuItems;
 
-        public void AddItem(TprMobileMenuItemsContext link)
+        public void AddItem(TprMobileMenuItemsContext item)
         {
-            _menuItems.Add(link);
+            _menuItems.Add(item);
         }
     }
 }

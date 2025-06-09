@@ -10,19 +10,29 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-mobile-menu-item-sub-item";
 
+        private const string UrlAttribute = "url";
+        
+        [HtmlAttributeName(UrlAttribute)] 
+        public string? Url { get; set; }
+
+        public string? LinkText { get; set; }
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var mobileMenuContext = context.GetContextItem<TprMobileMenuItemsContext>();
-            var mobileMenuItemContext = new TprMobileMenuItemsSubItemsContext
+            var mobileMenuItemContext = context.GetContextItem<TprMobileMenuItemsContext>();
+            var mobileMenuSubItemContext = new TprMobileMenuItemsSubItemsContext
             {
-                Attributes = output.Attributes.ToAttributeDictionary(),
+                Attributes = output.Attributes.ToAttributeDictionary(),              
             };
 
-            using (context.SetScopedContextItem(mobileMenuItemContext))
+            using (context.SetScopedContextItem(mobileMenuSubItemContext))
             {
                 await output.GetChildContentAsync();
             }
-
+            
+            mobileMenuSubItemContext.SetSubItem(mobileMenuSubItemContext.Attributes, LinkText, Url, mobileMenuSubItemContext.Placement, mobileMenuSubItemContext.Hierarchy);
+            mobileMenuItemContext.AddSubMenuItem(mobileMenuSubItemContext);
+            
             output.TagName = TagName;
             output.SuppressOutput();
         }

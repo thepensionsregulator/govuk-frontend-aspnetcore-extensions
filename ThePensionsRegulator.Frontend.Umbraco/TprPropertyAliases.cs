@@ -9,6 +9,11 @@
         public const string RelatedLinksLinks = "links";
         public const string BoxStyle = "styleOfBox";
         public const string BoxBackgroundColour = "backgroundColour";
+        public const string Document = "document";
+        public const string DocumentDatePublished = "datePublished";
+        public const string DocumentDescription = "description";
+        public const string DocumentNumberOfPages = "numberOfPages";
+        public const string DocumentsBlockList = "documents";
         public const string SectionCards = "cards";
         public const string SectionCardLink = "link";
         public const string SectionCardNameProperty = "titleFieldName";

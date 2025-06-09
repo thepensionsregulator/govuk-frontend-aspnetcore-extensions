@@ -16,10 +16,6 @@
         public const string ContextBarContext1 = "tprContextBar1";
         public const string ContextBarContext2 = "tprContextBar2";
         public const string ContextBarContext3 = "tprContextBar3";
-        public const string Document = "tprDocument";
-        public const string DocumentSettings = "tprDocumentSettings";
-        public const string Documents = "tprDocuments";
-        public const string DocumentsSettings = "tprDocumentsSettings";
         public const string Footer = "tprFooter";
         public const string Header = "tprHeader";
         public const string Image = "tprImage";

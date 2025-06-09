@@ -104,7 +104,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             divTag.AddCssClass("tpr-header-search");
 
             var form = new TagBuilder("form");
-            if (tprHeaderBar.ActionPath != null)
+            if (!string.IsNullOrEmpty(tprHeaderBar.ActionPath))
             {
                 form.Attributes.Add("action", tprHeaderBar.ActionPath);
             }
@@ -121,19 +121,19 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var autoCompleteContainer = new TagBuilder("div");
             autoCompleteContainer.AddCssClass("tpr-autocomplete-container");
-            if (tprHeaderBar.AutoCompleteUrl != null)
+            if (!string.IsNullOrEmpty(tprHeaderBar.AutoCompleteUrl)) ;
             {
                 autoCompleteContainer.Attributes.Add("data-autocomplete-url", tprHeaderBar.AutoCompleteUrl);
             }        
             autoComplete.InnerHtml.AppendHtml(autoCompleteContainer);
 
             var searchInput = new TagBuilder("input");
-            if (tprHeaderBar.SearchPlaceholderText != null)
+            if (!string.IsNullOrEmpty(tprHeaderBar.SearchPlaceholderText))
             {
                 searchInput.Attributes.Add("placeholder", tprHeaderBar.SearchPlaceholderText);
             }
             searchInput.Attributes.Add("type", "search");
-            if (tprHeaderBar.SearchInputQuery != null)
+            if (!string.IsNullOrEmpty(tprHeaderBar.SearchInputQuery))
             {
                 searchInput.Attributes.Add("name", tprHeaderBar.SearchInputQuery);
             }
@@ -146,7 +146,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             button.Attributes.Add("type", "submit");
             button.AddCssClass("tpr-header-search__button");
             button.AddCssClass("govuk-input");
-            if (tprHeaderBar.SearchAriaLabel != null)
+            if (!string.IsNullOrEmpty(tprHeaderBar.SearchAriaLabel))
             {
                 button.Attributes.Add("aria-label", tprHeaderBar.SearchAriaLabel);
             }

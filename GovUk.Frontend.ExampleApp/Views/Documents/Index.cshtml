@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "Documents";
+}
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <p class="govuk-body">
+            This is an example of a list of documents. Each document in the list is made up of 
+            a link to the respective document, the date the document was published, and a 
+            description of the document. If the document is a piece of media, such as a '.pdf', 
+            '.docx', or '.pptx', then the size of the file in KB (Kilobytes) and how many pages the 
+            document consists of will be included. However, if the media is a varient of an excel file
+            such as '.xlsx', '.xlst', or '.csv', then the listing will not include pages.
+        </p>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <tpr-documents>
+            <tpr-document href="nonexistentfile.pdf" kbsize="20" pages="1" datepublished="May 2025">
+                <tpr-document-title>Example PDF file</tpr-document-title>
+                <tpr-document-description>This is an example PDF file, this link is for example purposes and is not functional.</tpr-document-description>
+            </tpr-document>
+            <tpr-document href="nonexistentfile.docx" kbsize="13" pages="1" datepublished="May 2025">
+                <tpr-document-title>Example Word file</tpr-document-title>
+                <tpr-document-description>This is an example Word file, this link is for example purposes and is not functional.</tpr-document-description>
+            </tpr-document>
+            <tpr-document href="nonexistentfile.pptx" kbsize="37" pages="3" datepublished="May 2025">
+                <tpr-document-title>Example PowerPoint file</tpr-document-title>
+                <tpr-document-description>This is an example PowerPoint file, this link is for example purposes and is not functional.</tpr-document-description>
+            </tpr-document>
+            <tpr-document href="nonexistentfile.xlsx" kbsize="18" datepublished="May 2025">
+                <tpr-document-title>Example Excel file</tpr-document-title>
+                <tpr-document-description>This is an example Excel file, this link is for example purposes and is not functional.</tpr-document-description>
+            </tpr-document>
+            <tpr-document href="/Home">
+                <tpr-document-title>Home page</tpr-document-title>
+                <tpr-document-description>This directs you back to the homepage for example purposes. In practice, this would link to a document or article on another page.</tpr-document-description>
+            </tpr-document>
+        </tpr-documents>
+    </div>
+</div>

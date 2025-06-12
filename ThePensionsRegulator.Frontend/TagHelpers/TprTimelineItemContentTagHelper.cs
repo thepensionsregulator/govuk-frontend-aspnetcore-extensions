@@ -34,7 +34,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 }
             }
 
-            taskContext.HtmlContent = htmlContent ;
+            taskContext.HtmlContent = htmlContent;
             output.SuppressOutput();
         }
 

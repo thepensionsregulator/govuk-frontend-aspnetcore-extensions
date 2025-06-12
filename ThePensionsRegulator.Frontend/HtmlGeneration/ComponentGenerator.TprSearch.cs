@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -11,10 +7,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         internal const string SearchElement = "aside";
 
-        public virtual TagBuilder GenerateTprSearch()
+        public virtual TagBuilder GenerateTprSearch(string faqApiUrl)
         {
             var section = new TagBuilder(SearchElement);
-            section.AddCssClass("govuk-grid-row");
+            section.AddCssClass("tpr-search");
+            section.Attributes.Add("id", "tpr-search");
+            section.Attributes.Add("data-api-url", faqApiUrl);
             return section;
         }
     }

@@ -16,10 +16,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var outer = new TagBuilder("div");
             outer.AddCssClass("govuk-grid-row");
 
-
             var button = new TagBuilder("button");
             button.AddCssClass("govuk-button");
             button.AddCssClass("tpr-button--no-next-step");
+            button.Attributes.Add("id", "ask-button");
             button.InnerHtml.Append("Ask");
 
             var formGroup = new TagBuilder("div");
@@ -28,10 +28,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var label = new TagBuilder("label");
             label.AddCssClass("govuk-label govuk-visually-hidden");
             label.InnerHtml.Append(searchLabel);
-            // TODO add for and id for label and input?
 
             var input = new TagBuilder("input");
             input.Attributes.Add("type", "text");
+            input.Attributes.Add("id", "ask-input");
             input.AddCssClass("govuk-input");
 
             formGroup.InnerHtml.AppendHtml(label);

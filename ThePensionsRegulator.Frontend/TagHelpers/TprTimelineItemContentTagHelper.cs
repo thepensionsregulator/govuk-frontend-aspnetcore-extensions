@@ -1,15 +1,9 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions;
-using GovUk.Frontend.AspNetCore;
+﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
-using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
-using System.Collections.Generic;
 using ComponentGenerator = ThePensionsRegulator.Frontend.HtmlGeneration.ComponentGenerator;
-using System;
-using ThePensionsRegulator.Frontend.HtmlGeneration;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Html;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -19,7 +13,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-timeline-item-content";
 
-        
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var taskContext = context.GetContextItem<TprTimelineItemContext>();

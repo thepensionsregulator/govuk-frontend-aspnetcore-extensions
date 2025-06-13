@@ -1,11 +1,6 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Html;
+﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 
@@ -28,14 +23,14 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public TprSearchTagHelper() : this(null)
         {
-            
+
         }
 
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var tagBuilder = _htmlGenerator.GenerateTprSearch(FaqApiUrl);
-            
+
             var result = await output.GetChildContentAsync();
             tagBuilder.InnerHtml.SetHtmlContent(result);
             output.TagName = tagBuilder.TagName;

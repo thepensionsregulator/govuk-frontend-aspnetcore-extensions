@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Configuration;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {

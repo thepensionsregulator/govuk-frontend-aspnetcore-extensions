@@ -43,6 +43,9 @@
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkTextInputPreview.html" />
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkWarningTextPreview.html" />
       <None Include="wwwroot\media\.gitignore" />
+      <None Include="wwwroot\media\grphyhbj\example-powerpoint-file.pptx" />
+      <None Include="wwwroot\media\icaposfq\example-pdf-file.pdf" />
+      <None Include="wwwroot\media\pjebff53\example-word-file.docx" />
       <None Include="wwwroot\_content\.gitignore" />
     </ItemGroup>
 

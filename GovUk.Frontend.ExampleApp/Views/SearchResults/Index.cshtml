@@ -30,6 +30,10 @@
         <p class="govuk-body">
             This component relies on JavaScript to display content. If JavaScript is not available then this component will not display. The JavaScript file 'tpr-search.js' is provided as part of the 'ThePensionsRegulator.Frontend' nuget package. This will need to be included in any view that uses this component.
         </p>
+
+        <p class="govuk-body">
+            The URL for the required API can be configured in appsettings.json file under the key "FaqApiUrl". This should point to the API that provides the Q&A content. The API should return a JSON response that matches the expected structure for the search results.
+        </p>
         <tpr-search faq-api-url=@config["FaqApiUrl"]>
             <tpr-search-input></tpr-search-input>
             <tpr-search-footer-links></tpr-search-footer-links>

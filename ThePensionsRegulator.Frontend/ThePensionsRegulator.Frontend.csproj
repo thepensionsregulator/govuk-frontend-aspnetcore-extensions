@@ -297,6 +297,10 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <None Remove="Styles\_tpr-phase-banner.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_tpr-textarea.scss" />
 	</ItemGroup>
 	

@@ -5,7 +5,7 @@
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
 @using ThePensionsRegulator.Frontend.Models;
 @{
-    var phase = Model.Phase ?? "(None)";
+    var phase = Model.Phase ?? "Live";
     var skipLink = Model.SkipLinkText;
     if (string.IsNullOrEmpty(skipLink)) { skipLink = "Skip to main content"; }
     var headerLogoAlt = Model.LogoAlternativeText;

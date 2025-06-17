@@ -1,0 +1,21 @@
+﻿<div class="js-enabled">
+    <aside class="backoffice-block-view {{block.settingsData.cssClasses}}">
+        <h2 class="govuk-heading-m tpr-search-results__heading" ng-bind="block.data.heading" ng-if="block.data.heading"></h2>
+        <h2 class="govuk-heading-m tpr-search-results__heading" ng-if="!block.data.heading">Search Q&As</h2>
+        
+        <div class="tpr-search-results__input">
+            <div class="govuk-form-group">
+                <label class=govuk=label govuk-visually-hidden>{{block.data.heading}}</label>
+                <input class="govuk-input" />
+            </div>
+            <button class="govuk-button tpr-button--no-next-step">Ask</button>
+        </div>
+        <footer>
+            <ul class="govuk-list tpr-search-results__links">
+                <li ng-repeat="link in block.data.footerLinks">
+                    <a href="{{link.url}}" class="govuk-link">{{link.name}}</a>
+                </li>
+            </ul>
+        </footer>
+    </aside>
+</div>

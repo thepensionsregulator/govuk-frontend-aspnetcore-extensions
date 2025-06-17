@@ -1,0 +1,25 @@
+﻿@using ThePensionsRegulator.Frontend.Umbraco
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Web.Common
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
+@inject UmbracoHelper Umbraco
+@addTagHelper *, ThePensionsRegulator.Frontend
+
+@{
+    var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+    var heading = Model.Content.Value<string>(TprPropertyAliases.RelatedLinksHeading);
+    var links = Model.Content.Value<IEnumerable<Link>>("footerlinks");
+}
+
+
+<tpr-search class="@cssClasses">
+    <tpr-search-input>@heading</tpr-search-input>
+    <tpr-search-footer-links>
+        @foreach(var link in links)
+        {
+            <tpr-search-footer-link href="@link.Url">@link.Name</tpr-search-footer-link>
+        }
+    </tpr-search-footer-links>
+
+    
+</tpr-search>

@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 
@@ -19,7 +15,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
-        public TprSearchInputTagHelper() : this (null) { }
+        public TprSearchInputTagHelper() : this(null) { }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -29,7 +25,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var result = _htmlGenerator.GenerateTprSearchInput(content);
 
             output.TagName = "div";
-            output.Content.SetHtmlContent(result);
+
+            output.Content.AppendHtml(result.InnerHtml);
         }
     }
 }

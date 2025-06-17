@@ -8,7 +8,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     [HtmlTargetElement(TagName, ParentTag = TprSearchFooterLinksTagHelper.TagName)]
     public class TprSearchFooterLinkTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-search-footer-link";
+        internal const string TagName = "a";
 
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)

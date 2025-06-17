@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,36 +26,22 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             outer.InnerHtml.AppendHtml(list);
 
-
-            if (footerLinks.Links.Any())
+            var showMoreQuestionsAttributes = new AttributeDictionary
             {
-                foreach(var link in footerLinks.Links)
-                {
-                    var li = CreateLink(link.Attributes, link.Content);
-                    list.InnerHtml.AppendHtml(li);
-                }
-            }
-            else
+                {"id", "show-more-questions" }
+            };
+
+            var builder = new HtmlContentBuilder();
+            builder.Append(DefaultShowMoreQuestionsContent);
+
+            var li = CreateLink(showMoreQuestionsAttributes, builder);
+
+            list.InnerHtml.AppendHtml(li);
+
+            foreach(var link in footerLinks.Links)
             {
-                var builder1 = new HtmlContentBuilder();
-                builder1.Append("Show more questions");
-                var dictionary1 = new AttributeDictionary
-                {
-                    { "href", "/#" }
-                };
-
-                var builder2 = new HtmlContentBuilder();
-                builder2.Append("Visit automatic enrolment Q&As");
-                var dictionary2 = new AttributeDictionary
-                {
-                    {"href", "/#" }
-                };
-                
-                var link1 = CreateLink(dictionary1, builder1);
-                var link2 = CreateLink(dictionary2, builder2);
-
-                list.InnerHtml.AppendHtml(link1);
-                list.InnerHtml.AppendHtml(link2);
+                var anchorListItem = CreateLink(link.Attributes, link.Content);
+                list.InnerHtml.AppendHtml(anchorListItem);
             }
 
             return outer;

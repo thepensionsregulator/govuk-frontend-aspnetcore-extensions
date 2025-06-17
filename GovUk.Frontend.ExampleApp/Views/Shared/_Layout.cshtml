@@ -30,10 +30,6 @@
     <partial name="GOVUK/BodyOpen" />
     <govuk-skip-link href="#main">Skip to main content</govuk-skip-link>
     <header role="banner">
-        <govuk-phase-banner class="govuk-width-container">
-            <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
-            This is a new service - your <a href="#" class="govuk-link">feedback</a> will help us to improve it.
-        </govuk-phase-banner>
         @if (useTPRstyles)
         {
             <tpr-header-bar>
@@ -48,6 +44,10 @@
                 <tpr-context-bar-context-3>ID: 12345678</tpr-context-bar-context-3>
             </tpr-context-bar>
         }
+        <govuk-phase-banner class="govuk-width-container">
+            <govuk-phase-banner-tag>Beta</govuk-phase-banner-tag>
+            This is a new service - your <a href="#" class="govuk-link">feedback</a> will help us to improve it.
+        </govuk-phase-banner>
         @RenderSection("language", required: false)
     </header>
     <div class="tpr-main-wrapper">

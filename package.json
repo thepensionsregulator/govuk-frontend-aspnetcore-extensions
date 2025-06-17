@@ -27,6 +27,7 @@
     }
   },
   "dependencies": {
+    "brace-expansion":"1.1.12",
     "govuk-frontend": "5.8.0"
   }
 }

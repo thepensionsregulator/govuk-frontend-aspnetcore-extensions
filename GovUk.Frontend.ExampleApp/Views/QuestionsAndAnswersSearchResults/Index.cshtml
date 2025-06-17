@@ -1,0 +1,47 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration config;
+@model TextInputViewModel
+@section scripts {
+
+    <script src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search.js" type="module"></script>
+}
+@{
+    ViewData["Title"] = "Question and answers search results";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">
+            The AE Q&As search results component can be added to any page where you want the user to be able to search the Q&A content accessible on <a class="govuk-link" href="https://www.thepensionsregulator.gov.uk/faq-landing-page">The Pensions Regulator website</a>.
+            Currently this is focused on Q&As for Automatic Enrolment.
+            This component should be accompanied with a link, styled as a button, that takes the user to the search results component on the page.
+        </p>
+
+        <p class="govuk-body">
+            The title and footer links can be overridden.
+        </p>
+
+        <p class="govuk-body">
+            This component relies on JavaScript to display content. 
+            If JavaScript is not available then this component will not display and the accompanying button should link the user to the Q&A landing page.
+            The JavaScript file 'tpr-search.js' is provided as part of the 'ThePensionsRegulator.Frontend' nuget package. This will need to be included in any view that uses this component.
+        </p>
+
+        <p class="govuk-body">
+            The URL for the required API should be configured using the 'faq-api-url' attribute on the 'tpr-search' tag helper. This example app provides the configuration via the appsettings.json file under the key "FaqApiUrl". This should point to the API that provides the Q&A content. The API should return a JSON response that matches the expected structure for the search results.
+        </p>
+
+        <tpr-search faq-api-url=@config["FaqApiUrl"]>
+            <tpr-search-input></tpr-search-input>
+            <tpr-search-footer-links><a href="/test-link">some place</a></tpr-search-footer-links>
+        </tpr-search>
+    </div>
+</div>

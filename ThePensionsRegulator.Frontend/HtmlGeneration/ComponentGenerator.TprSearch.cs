@@ -10,7 +10,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         {
             var section = new TagBuilder(SearchElement);
             section.AddCssClass("tpr-search");
-            section.Attributes.Add("id", "tpr-search");
             section.Attributes.Add("data-api-url", faqApiUrl);
             return section;
         }

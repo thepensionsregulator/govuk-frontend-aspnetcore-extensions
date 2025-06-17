@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("ask-button");
     searchButton.addEventListener("click", buttonOnClick);
 
-    const searchAside = document.getElementById("tpr-search");
+    const searchAside = document.getElementsByClassName("tpr-search")[0];
     const apiUrl = searchAside.getAttribute("data-api-url");
 
     async function initaliseAccordion() {

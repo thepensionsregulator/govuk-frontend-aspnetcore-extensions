@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("search-results-ask-button");
     searchButton.addEventListener("click", buttonOnClick);
 
-    const showMoreButton = document.getElementById("show-more-questions");
+    const showMoreButton = document.getElementById("search-results-show-more-questions");
     showMoreButton.addEventListener('click', showMoreAnswersOnClick);
 
     const searchAside = document.getElementsByClassName("tpr-search")[0];

@@ -16,7 +16,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public partial class ComponentGenerator
     {
         internal const string DefaultShowMoreQuestionsContent = "Show more questions";
-        public virtual TagBuilder GenerateTprSearchFooterLinks(TprSearchFooterLinks footerLinks)
+        public virtual TagBuilder GenerateTprSearchResultsFooterLinks(TprSearchFooterLinks footerLinks)
         {
             var outer = new TagBuilder("footer");
 

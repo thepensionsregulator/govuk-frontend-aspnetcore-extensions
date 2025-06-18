@@ -6,18 +6,18 @@ using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    [HtmlTargetElement(TagName, ParentTag = TprSearchTagHelper.TagName)]
-    public class TprSearchFooterLinksTagHelper : TagHelper
+    [HtmlTargetElement(TagName, ParentTag = TprSearchResultsTagHelper.TagName)]
+    public class TprSearchResultsFooterLinksTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-search-footer-links";
+        internal const string TagName = "tpr-search-results-footer-links";
         private readonly ITprHtmlGenerator _htmlGenerator;
 
-        internal TprSearchFooterLinksTagHelper(ITprHtmlGenerator? htmlGenerator)
+        internal TprSearchResultsFooterLinksTagHelper(ITprHtmlGenerator? htmlGenerator)
         {
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
-        public TprSearchFooterLinksTagHelper() : this(null) { }
+        public TprSearchResultsFooterLinksTagHelper() : this(null) { }
 
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -29,7 +29,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();
             }
 
-            var tagBuilder = _htmlGenerator.GenerateTprSearchFooterLinks(new TprSearchFooterLinks
+            var tagBuilder = _htmlGenerator.GenerateTprSearchResultsFooterLinks(new TprSearchFooterLinks
             {
                 Links = footerLinksContext.Links
             });

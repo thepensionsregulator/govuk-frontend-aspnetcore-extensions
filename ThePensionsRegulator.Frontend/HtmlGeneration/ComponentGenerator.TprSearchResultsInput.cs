@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.ObjectPool;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -6,7 +7,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         internal const string DefaultSearchLabel = "Search Q&As";
 
-        public TagBuilder GenerateTprSearchInput(string? searchLabel = null)
+        public const int SearchResultsMinHeadingLevel = 2;
+        public const int SearchResultsMaxHeadingLevel = 6;
+
+        //public const string[] 
+        public static string[] AllHeadingClasses = ["govuk-heading-xl", "govuk-heading-l", "govuk-heading-m", "govuk-heading-s"];
+
+        public TagBuilder GenerateTprSearchResultsInput(int headingLevel, string headingClass, string? searchLabel = null)
         {
             if (string.IsNullOrWhiteSpace(searchLabel))
             {
@@ -31,14 +38,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var input = new TagBuilder("input");
             input.Attributes.Add("type", "text");
-            input.Attributes.Add("id", "ask-input");
+            input.Attributes.Add("id", "search-results-ask-input");
             input.AddCssClass("govuk-input");
 
             formGroup.InnerHtml.AppendHtml(label);
             formGroup.InnerHtml.AppendHtml(input);
 
-            var heading = new TagBuilder("h2");
-            heading.AddCssClass("govuk-heading-m");
+            var heading = new TagBuilder($"h{headingLevel}");
+            heading.AddCssClass(headingClass);
             heading.AddCssClass("tpr-search-results__heading");
             heading.InnerHtml.Append(searchLabel);
             outer.InnerHtml.AppendHtml(heading);

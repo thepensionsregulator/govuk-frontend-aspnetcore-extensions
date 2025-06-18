@@ -20,7 +20,7 @@
 <div class="govuk-grid-row">
     <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
         <p class="govuk-body">
-            The AE Q&As search results component can be added to any page where you want the user to be able to search the Q&A content accessible on <a class="govuk-link" href="https://www.thepensionsregulator.gov.uk/faq-landing-page">The Pensions Regulator website</a>.
+            The question and answers search results component can be added to any page where you want the user to be able to search the Q&A content accessible on <a class="govuk-link" href="https://www.thepensionsregulator.gov.uk/faq-landing-page">The Pensions Regulator website</a>.
             Currently this is focused on Q&As for Automatic Enrolment.
             This component should be accompanied with a link, styled as a button, that takes the user to the search results component on the page.
         </p>
@@ -36,12 +36,17 @@
         </p>
 
         <p class="govuk-body">
-            The URL for the required API should be configured using the 'faq-api-url' attribute on the 'tpr-search' tag helper. This example app provides the configuration via the appsettings.json file under the key "FaqApiUrl". This should point to the API that provides the Q&A content. The API should return a JSON response that matches the expected structure for the search results.
+            Three URLs are required to be configured to allow this component to show content. These are configured via attributes on the tag helper.
+            <ul class="govuk-list govuk-list--bullet">
+                <li>popular-content-url - This should return a list of content to show when the page loads. The example app provides <a href="/QuestionsAndAnswersData/popularContentExample.json" targt="_blank">an example of the expected structure</a></li>
+                <li>content-by-id-url - This should return a singular result and allow the id of the item to be appended to the URL. The example app provides <a href="/QuestionsAndAnswersData/example1.json" target="_blank">an example of the expected structure </a></li>
+                <li>search-content-url - This should return a list of keys that can be retrieved by id. The example app provides <a href="/QuestionsAndAnswersData/searchResults.json" target="_blank">an example of the expected structure </a></li>
+            </ul>
         </p>
 
-        <tpr-search faq-api-url=@config["FaqApiUrl"]>
-            <tpr-search-input></tpr-search-input>
-            <tpr-search-footer-links><a href="/test-link">some place</a></tpr-search-footer-links>
-        </tpr-search>
+        <tpr-search-results popular-content-url="/QuestionsAndAnswersData/popularContentExample.json" content-by-id-url="/QuestionsAndAnswersData" search-content-url="/QuestionsAndAnswersData/searchResults.json">
+            <tpr-search-results-input heading-level=2 govuk-heading-class="govuk-heading-m"></tpr-search-results-input>
+            <tpr-search-results-footer-links><a href="/">Home</a></tpr-search-results-footer-links>
+        </tpr-search-results>
     </div>
 </div>

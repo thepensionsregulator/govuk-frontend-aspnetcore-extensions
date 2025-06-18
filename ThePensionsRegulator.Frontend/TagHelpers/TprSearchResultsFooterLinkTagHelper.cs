@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    [HtmlTargetElement(TagName, ParentTag = TprSearchFooterLinksTagHelper.TagName)]
-    public class TprSearchFooterLinkTagHelper : TagHelper
+    [HtmlTargetElement(TagName, ParentTag = TprSearchResultsFooterLinksTagHelper.TagName)]
+    public class TprSearchResultsFooterLinkTagHelper : TagHelper
     {
         internal const string TagName = "a";
 

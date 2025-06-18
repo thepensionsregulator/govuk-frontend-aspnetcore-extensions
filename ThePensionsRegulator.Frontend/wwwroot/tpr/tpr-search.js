@@ -1,14 +1,21 @@
 ﻿import { Accordion } from '/govuk/all.min.js';
 document.addEventListener("DOMContentLoaded", function () {
 
-    const searchButton = document.getElementById("ask-button");
+    const searchButton = document.getElementById("search-results-ask-button");
     searchButton.addEventListener("click", buttonOnClick);
 
+    const showMoreButton = document.getElementById("show-more-questions");
+    showMoreButton.addEventListener('click', showMoreAnswersOnClick);
+
     const searchAside = document.getElementsByClassName("tpr-search")[0];
-    const apiUrl = searchAside.getAttribute("data-api-url");
+    const popularContentApiUrl = searchAside.getAttribute("data-popular-content-url");
+    const searchContentApiUrl = searchAside.getAttribute("data-search-content-url");
+    const getContentByIdApiUrl = searchAside.getAttribute("content-by-id-url");
+
+    let searchResults = [];
 
     async function initaliseAccordion() {
-        const response = await fetch(`${apiUrl}/api/faq/content/popular`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        const response = await fetch(`${popularContentApiUrl}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
 
         const results = (await response.json());
 
@@ -18,9 +25,17 @@ document.addEventListener("DOMContentLoaded", function () {
             searchBlock.after(noResultsHeading);
         } else {
             const accordionSections = [];
-            results.forEach(result => {
+
+            searchResults = results;
+
+            const showNow = searchResults.slice(0, 2);
+
+            showNow.forEach(result => {
                 accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key));
             });
+
+            console.log(searchResults);
+
             createAccordion(accordionSections);
         }
     }
@@ -48,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const accordionHeader = createElementWithClassName("div", "govuk-accordion__section-header");
 
-        const accordionHeadingElement = createElementWithClassName("h3", "govuk-accordion__section-heading"); 
+        const accordionHeadingElement = createElementWithClassName("h3", "govuk-accordion__section-heading");
 
         const accordionHeadingElementText = document.createTextNode(heading);
 
@@ -70,16 +85,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     async function fetchContentById(contentId) {
-        const response = await fetch(`${apiUrl}/api/faq/content/${contentId}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-        return await response.json(); 
+        const response = await fetch(`${getContentByIdApiUrl}/${contentId}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+        return await response.json();
     }
 
     async function buttonOnClick() {
         const searchInput = document.getElementById("ask-input");
         const searchValue = searchInput.value
 
-        const response = await fetch(`${apiUrl}/api/faq/content/search?searchTerm=${searchValue}&page=1&pageSize=5`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-
+        const response = await fetch(`${searchContentApiUrl}?&searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
 
         const results = (await response.json()).results;
 
@@ -91,18 +105,32 @@ document.addEventListener("DOMContentLoaded", function () {
             searchBlock.after(noResultsHeading);
         } else {
 
-            const accordionSections = [];
-            await Promise.all(results.map(async (result, index) => {
+            searchResults = [];
+
+            await Promise.all(results.map(async (result) => {
                 const content = await fetchContentById(result.key);
-                const header = content.name;
-                const pageContent = content.pageContent;
-
-                accordionSections.push(createAccordionSection(header, pageContent, index))
+                searchResults.push(content);
             }));
+
+            const showNow = searchResults.slice(0, 2);
+            const accordionSections = [];
+            showNow.forEach(result => {
+                accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
+            });
+
             createAccordion(accordionSections);
-
         }
+    }
 
+    async function showMoreAnswersOnClick() {
+        removeAccordion("search-results-accordion");
+
+        const accordionSections = [];
+        searchResults.forEach(result => {
+            accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key));
+        });
+
+        createAccordion(accordionSections);
     }
 
     function createElementWithClassName(elementName, className) {
@@ -115,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function createNoResultsFoundHeading() {
         const noResultsHeading = document.createElement("h3");
         noResultsHeading.className = "govuk-heading-m";
-        noResultsHeading.textContent = "No Results Found";
+        noResultsHeading.textContent = "No results found";
         return noResultsHeading;
 
     }

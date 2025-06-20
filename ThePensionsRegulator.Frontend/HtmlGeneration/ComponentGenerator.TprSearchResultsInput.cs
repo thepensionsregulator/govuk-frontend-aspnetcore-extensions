@@ -25,7 +25,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var button = new TagBuilder("button");
             button.AddCssClass("govuk-button");
             button.AddCssClass("tpr-button--no-next-step");
-            button.Attributes.Add("id", "search-results-ask-button");
+            button.Attributes.Add("id", "tpr-search-results-ask-button");
             button.InnerHtml.Append("Ask");
 
             var formGroup = new TagBuilder("div");
@@ -33,12 +33,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var label = new TagBuilder("label");
             label.AddCssClass("govuk-label govuk-visually-hidden");
-            label.Attributes.Add("for", "search-results-ask-input");
+            label.Attributes.Add("for", "tpr-search-results-ask-input");
             label.InnerHtml.Append(searchLabel);
 
             var input = new TagBuilder("input");
             input.Attributes.Add("type", "text");
-            input.Attributes.Add("id", "search-results-ask-input");
+            input.Attributes.Add("id", "tpr-search-results-ask-input");
             input.AddCssClass("govuk-input");
 
             formGroup.InnerHtml.AppendHtml(label);

@@ -28,7 +28,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var showMoreQuestionsAttributes = new AttributeDictionary
             {
-                {"id", "search-results-show-more-questions" }
+                {"id", "tpr-search-results-show-more-questions" }
             };
 
             var builder = new HtmlContentBuilder();

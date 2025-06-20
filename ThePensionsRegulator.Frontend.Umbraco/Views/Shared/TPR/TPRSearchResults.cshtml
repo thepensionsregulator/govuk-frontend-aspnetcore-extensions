@@ -10,25 +10,20 @@
     var links = Model.Content.Value<IEnumerable<Link>>("footerlinks");
     
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-    // var headingLevel = Model.Settings.Value<int?>(GovUkPropertyAliases.HeadingLevel);
     var headingClass = Model.Settings.Value<string?>("headingClass");
 
     if (!Int32.TryParse(Model.Settings?.Value<string>(GovUkPropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out int headingLevel))
     {
         headingLevel = 2;
     }
-
 }
-
 
 <tpr-search-results class="@cssClasses">
     <tpr-search-results-input heading-level=@headingLevel govuk-heading-class=@headingClass>@heading</tpr-search-results-input>
     <tpr-search-results-footer-links>
         @foreach(var link in links)
         {
-            <a href="@link.Url">@link.Name</a>
+            <a href="@link.Url" target="@link.Target">@link.Name</a>
         }
     </tpr-search-results-footer-links>
-
-    
 </tpr-search-results>

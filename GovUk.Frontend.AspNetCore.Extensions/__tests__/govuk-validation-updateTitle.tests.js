@@ -1,4 +1,6 @@
-const govuk = require("../wwwroot/govuk/govuk-validation");
+import { govuk } from "../wwwroot/govuk/govuk-validation";
+import { jest } from '@jest/globals';
+
 const errorPlaceholderHtml =
   '<p class="govuk-error-message" id="some-field-error" data-valmsg-for="some-field" data-valmsg-replace="false"><span class="govuk-visually-hidden">Error:</span></p>';
 const errorHtml =

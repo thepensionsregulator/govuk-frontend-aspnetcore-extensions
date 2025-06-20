@@ -1,4 +1,5 @@
-const govuk = require("../wwwroot/govuk/govuk-validation");
+import { govuk } from "../wwwroot/govuk/govuk-validation";
+import { jest } from '@jest/globals';
 
 let _mockUpdateError;
 const _mockValidator = {
@@ -22,7 +23,7 @@ function mockCalledFunctions(testSubject) {
     .mockImplementation(() => null);
 }
 
-_allValidatorsApplied = `
+let _allValidatorsApplied = `
     <input value=""
            data-val="true" 
            data-val-required="This field is required"   

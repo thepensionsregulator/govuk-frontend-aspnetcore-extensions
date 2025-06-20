@@ -62,7 +62,7 @@ steps:
     displayName: npm ci
     condition: ne(variables.CACHE_RESTORED, 'true')
 
-  - task: Mpm@1
+  - task: Npm@1
     inputs:
       command: test
       workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'

@@ -17,14 +17,15 @@ namespace ThePensionsRegulator.Frontend.Tests.Security
             _contextAccessor.Setup(x => x.HttpContext).Returns(_context);
         }
 
-        private static IRequestCookieCollection MockRequestCookieCollection(string key, string value)
+        private static IRequestCookieCollection MockRequestCookieCollection(string key, string? value)
         {
             var requestFeature = new HttpRequestFeature();
             var featureCollection = new FeatureCollection();
 
             requestFeature.Headers = new HeaderDictionary();
-            requestFeature.Headers.Append(HeaderNames.Cookie, new StringValues(key + "=" + value));
-
+            if (value != null) {
+                requestFeature.Headers.Append(HeaderNames.Cookie, new StringValues(key + "=" + value));
+            }
             featureCollection.Set<IHttpRequestFeature>(requestFeature);
 
             var cookiesFeature = new RequestCookiesFeature(featureCollection);
@@ -91,6 +92,25 @@ namespace ThePensionsRegulator.Frontend.Tests.Security
 
             // Act
             var result = reader.HasConsent(category);
+
+            // Assert
+            Assert.Equal(expectedResponse, result);
+        }
+
+        [Theory]
+        [InlineData($"{TprConsentCookieReader.TPR_CONSENT_COOKIE_NAME}=All|", true)]
+        [InlineData($"{TprConsentCookieReader.TPR_CONSENT_COOKIE_NAME}=Reject|", true)]
+        [InlineData($"{TprConsentCookieReader.TPR_CONSENT_COOKIE_NAME}={TprConsentCookieReader.TPR_CONSENT_CATEGORY_FUNCTIONALITY}=On|", true)]
+        [InlineData("", false)]
+        [InlineData(null, false)]
+        public void Validate_ConsentCookie_Presence(string? cookieValue, bool expectedResponse)
+        {
+            // Arrange
+            _context.Request.Cookies = MockRequestCookieCollection(TprConsentCookieReader.TPR_CONSENT_COOKIE_NAME, cookieValue);
+            var reader = new TprConsentCookieReader(_contextAccessor.Object);
+
+            // Act
+            var result = reader.IsConsentCookiePresent();
 
             // Assert
             Assert.Equal(expectedResponse, result);

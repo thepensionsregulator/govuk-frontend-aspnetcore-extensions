@@ -81,7 +81,7 @@ async function fetchContentById(contentId) {
 }
 
 async function buttonOnClick() {
-    const searchInput = document.getElementById("tpr-search-results-ask-input");
+    const searchInput = document.getElementById('tpr-search-results-ask-input');
     const searchValue = searchInput.value
 
     const response = await fetch(`${searchContentApiUrl}?&searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
@@ -147,7 +147,7 @@ function createNoResultsFoundHeading() {
     }
 
     const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
-    noResultsHeading.className = "govuk-heading-m search-results-no-results-found";
+    noResultsHeading.className = "govuk-heading-m tpr-search-results-no-results-found";
     noResultsHeading.textContent = "No results found";
     return noResultsHeading;
 }

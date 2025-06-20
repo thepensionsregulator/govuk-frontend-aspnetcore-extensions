@@ -11,8 +11,8 @@ const setupBlankComponent = () => {
                 <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
                 <div class="tpr-search-results__input">
                     <div class="govuk-form-group">
-                        <label class="govuk-label govuk-visually-hidden" for="search-results-ask-input">Search Q&amp;As</label>
-                        <input class="govuk-input" id="search-results-ask-input" type="text">
+                        <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
+                        <input class="govuk-input" id="tpr-search-results-ask-input" type="text">
                     </div>
                     <button class="govuk-button tpr-button--no-next-step" id="search-results-ask-button">Ask</button>
                 </div>
@@ -27,8 +27,8 @@ const setupComponentWithAccordion = () => {
                 <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
                 <div class="tpr-search-results__input">
                     <div class="govuk-form-group">
-                        <label class="govuk-label govuk-visually-hidden" for="search-results-ask-input">Search Q&amp;As</label>
-                        <input class="govuk-input" id="search-results-ask-input" type="text">
+                        <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
+                        <input class="govuk-input" id="tpr-search-results-ask-input" type="text">
                     </div>
                     <button class="govuk-button tpr-button--no-next-step" id="search-results-ask-button">Ask</button>
                 </div>
@@ -51,7 +51,7 @@ describe('initialise accordion', () => {
 
         await initaliseAccordion();
 
-        const result = document.body.querySelector('.search-results-no-results-found');
+        const result = document.body.querySelector('.tpr-search-results-no-results-found');
         const searchHeading = document.getElementsByClassName('tpr-search-results__heading')[0];
         const headingLevel = searchHeading.tagName.toLowerCase();
         const headingLevelNumber = parseInt(headingLevel.replace('h', ''));
@@ -92,14 +92,14 @@ describe('initialise accordion', () => {
             }
         });
 
-        const searchInput = document.getElementById("search-results-ask-input");
-        searchInput.value = "test";
-
         setupComponentWithAccordion();
+
+        const searchInput = document.getElementById("tpr-search-results-ask-input");
+        searchInput.value = "test";
 
         await buttonOnClick();
 
-        var result = document.body.querySelector('.search-results-no-results-found');
+        var result = document.body.querySelector('.tpr-search-results-no-results-found');
 
         expect(result).toHaveTextContent('No results found');
     });
@@ -133,7 +133,7 @@ describe('initialise accordion', () => {
 
         setupComponentWithAccordion();
 
-        document.getElementById('search-results-ask-input').value = 'test';
+        document.getElementById('tpr-search-results-ask-input').value = 'test';
 
         await buttonOnClick();
 

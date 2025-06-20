@@ -62,9 +62,10 @@ steps:
     displayName: npm ci
     condition: ne(variables.CACHE_RESTORED, 'true')
 
-  - script: |
-      cd $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions
-      npm test
+  - task: Mpm@1
+    inputs:
+      command: test
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
     displayName: Run JS tests
     continueOnError: false # Test failures should fail the build
 

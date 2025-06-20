@@ -133,7 +133,20 @@ function createElementWithClassName(elementName, className) {
 }
 
 function createNoResultsFoundHeading() {
-    const noResultsHeading = document.createElement("h3");
+    const searchResultsSection = document.getElementsByClassName("govuk-heading-m tpr-search-results__heading")[0];
+    const headingLevel = searchResultsSection.tagName.toLowerCase();
+
+    const headingLevelNumber = parseInt(headingLevel.replace('h', ''));
+    let newHeadingLevel;
+
+    if (headingLevelNumber >= 6) {
+        newHeadingLevel = 6;
+    }
+    else {
+        newHeadingLevel = headingLevelNumber + 1;
+    }
+
+    const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
     noResultsHeading.className = "govuk-heading-m search-results-no-results-found";
     noResultsHeading.textContent = "No results found";
     return noResultsHeading;

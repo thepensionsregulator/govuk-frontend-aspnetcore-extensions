@@ -40,13 +40,13 @@
         <p class="govuk-body">
             Three URLs are required to be configured to allow this component to show content. These are configured via attributes on the tag helper.
             <ul class="govuk-list govuk-list--bullet">
-                <li>popular-content-url - This should return a list of content to show when the page loads. The example app provides <a href="/QuestionsAndAnswersData/popularContentExample.json" targt="_blank">an example of the expected structure</a></li>
-                <li>content-by-id-url - This should return a singular result and allow the id of the item to be appended to the URL. The example app provides <a href="/QuestionsAndAnswersData/example1.json" target="_blank">an example of the expected structure </a></li>
-                <li>search-content-url - This should return a list of keys that can be retrieved by id. The example app provides <a href="/QuestionsAndAnswersData/searchResults.json" target="_blank">an example of the expected structure </a></li>
+                <li>popular-content-url - This should return a list of content to show when the page loads. The example app provides <a href="/SearchResults/popularContentExample.json" target="_blank">an example of the expected structure</a></li>
+                <li>content-by-id-url - This should return a singular result and allow the id of the item to be appended to the URL. The example app provides <a href="/SearchResults/example1.json" target="_blank">an example of the expected structure </a></li>
+                <li>search-content-url - This should return a list of keys that can be retrieved by id. The example app provides <a href="/SearchResults/searchResults.json" target="_blank">an example of the expected structure </a></li>
             </ul>
         </p>
 
-        <tpr-search-results popular-content-url="/QuestionsAndAnswersData/popularContentExample.json" content-by-id-url="/QuestionsAndAnswersData" search-content-url="/QuestionsAndAnswersData/searchResults.json">
+        <tpr-search-results popular-content-url="/SearchResultsData/popularContentExample.json" content-by-id-url="/SearchResultsData" search-content-url="/SearchResultsData/searchResults.json">
             <tpr-search-results-input heading-level=2 govuk-heading-class="govuk-heading-m"></tpr-search-results-input>
             <tpr-search-results-footer-links><a href="/">Home</a></tpr-search-results-footer-links>
         </tpr-search-results>

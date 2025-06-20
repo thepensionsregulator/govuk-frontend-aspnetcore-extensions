@@ -6,7 +6,7 @@ import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchRes
 
 const setupBlankComponent = () => {
     document.body.innerHTML = `
-        <aside class="tpr-search" content-by-id-url="/QuestionsAndAnswersData" data-popular-content-url="/QuestionsAndAnswersData/popularContentExample.json" data-search-content-url="/QuestionsAndAnswersData/searchResults.json">
+        <aside class="tpr-search" content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
             <div>
                 <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
                 <div class="tpr-search-results__input">
@@ -22,7 +22,7 @@ const setupBlankComponent = () => {
 
 const setupComponentWithAccordion = () => {
     document.body.innerHTML = `
-        <aside class="tpr-search" content-by-id-url="/QuestionsAndAnswersData" data-popular-content-url="/QuestionsAndAnswersData/popularContentExample.json" data-search-content-url="/QuestionsAndAnswersData/searchResults.json">
+        <aside class="tpr-search" content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
             <div>
                 <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
                 <div class="tpr-search-results__input">
@@ -51,9 +51,13 @@ describe('initialise accordion', () => {
 
         await initaliseAccordion();
 
-        var result = document.body.querySelector('.search-results-no-results-found');
+        const result = document.body.querySelector('.search-results-no-results-found');
+        const searchHeading = document.getElementsByClassName('tpr-search-results__heading')[0];
+        const headingLevel = searchHeading.tagName.toLowerCase();
+        const headingLevelNumber = parseInt(headingLevel.replace('h', ''));
 
         expect(result).toHaveTextContent('No results found');
+        expect(result.tagName).toBe(`H${headingLevelNumber + 1}`);
     });
 
     it('should create accordion sections if popular content API returns results', async () => {
@@ -117,7 +121,6 @@ describe('initialise accordion', () => {
                     };
                 }
             })
-
             .mockResolvedValueOnce({
                 json: async () => {
                     return {
@@ -140,8 +143,6 @@ describe('initialise accordion', () => {
         expect(content).toHaveTextContent(pageContent);
         expect(document.querySelectorAll(".govuk-accordion__section").length).toBe(1);
     });
-
-    
 
     it('should show all answers when "show more" is clicked', async () => {
 

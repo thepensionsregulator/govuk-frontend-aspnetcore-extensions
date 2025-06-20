@@ -2,7 +2,7 @@
 
 // For Jest tests
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-  module.exports = createGovUkValidator;
+    module.exports = createGovUkValidator;
 }
 
 function createGovUkValidator() {
@@ -645,3 +645,5 @@ window.addEventListener("DOMContentLoaded", function () {
     validator.unobtrusive.parse();
   }
 });
+
+export { createGovUkValidator as govuk }

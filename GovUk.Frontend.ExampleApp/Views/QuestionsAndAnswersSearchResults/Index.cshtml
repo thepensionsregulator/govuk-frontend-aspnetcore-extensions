@@ -1,0 +1,54 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration config;
+@model TextInputViewModel
+@section scripts {
+
+    <script src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search.js" type="module"></script>
+}
+@{
+    ViewData["Title"] = "Search results";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">
+            The search results component can be added to any page where you want the user to be able to search the Q&A content accessible on <a class="govuk-link" href="https://www.thepensionsregulator.gov.uk/faq-landing-page">The Pensions Regulator website</a>.
+            Currently this is focused on Q&As for Automatic Enrolment.
+            This component should be accompanied with a link, styled as a button, that takes the user to the search results component on the page.
+        </p>
+
+        <p class="govuk-body">
+            The title and footer links can be overridden. 
+            Footer links will always contain a 'Show more questions' link, that will show the remaining three questions, two are shown when the page loads. 
+            The heading level of the title and it's CSS class can be configured via the 'tpr-search-results-input' tag helper.
+        </p>
+
+        <p class="govuk-body">
+            This component relies on JavaScript to display content. 
+            If JavaScript is not available then this component will not display and the accompanying button should link the user to the Q&A landing page.
+            The JavaScript file 'tpr-search.js' is provided as part of the 'ThePensionsRegulator.Frontend' nuget package. This will need to be included in any view that uses this component.
+        </p>
+
+        <p class="govuk-body">
+            Three URLs are required to be configured to allow this component to show content. These are configured via attributes on the tag helper.
+            <ul class="govuk-list govuk-list--bullet">
+                <li>popular-content-url - This should return a list of content to show when the page loads. The example app provides <a href="/QuestionsAndAnswersData/popularContentExample.json" targt="_blank">an example of the expected structure</a></li>
+                <li>content-by-id-url - This should return a singular result and allow the id of the item to be appended to the URL. The example app provides <a href="/QuestionsAndAnswersData/example1.json" target="_blank">an example of the expected structure </a></li>
+                <li>search-content-url - This should return a list of keys that can be retrieved by id. The example app provides <a href="/QuestionsAndAnswersData/searchResults.json" target="_blank">an example of the expected structure </a></li>
+            </ul>
+        </p>
+
+        <tpr-search-results popular-content-url="/QuestionsAndAnswersData/popularContentExample.json" content-by-id-url="/QuestionsAndAnswersData" search-content-url="/QuestionsAndAnswersData/searchResults.json">
+            <tpr-search-results-input heading-level=2 govuk-heading-class="govuk-heading-m"></tpr-search-results-input>
+            <tpr-search-results-footer-links><a href="/">Home</a></tpr-search-results-footer-links>
+        </tpr-search-results>
+    </div>
+</div>

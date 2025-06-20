@@ -60,7 +60,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		///<summary>
 		/// GOV.UK blocks
 		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.7.2+fd5b8de")]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.8.1+dcbbed4")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("govukBlocks")]
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel GovukBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "govukBlocks");

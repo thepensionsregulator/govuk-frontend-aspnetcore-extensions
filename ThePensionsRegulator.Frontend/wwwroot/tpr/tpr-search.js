@@ -81,7 +81,7 @@ async function fetchContentById(contentId) {
 }
 
 async function buttonOnClick() {
-    const searchInput = document.getElementById("search-results-ask-input");
+    const searchInput = document.getElementById("tpr-search-results-ask-input");
     const searchValue = searchInput.value
 
     const response = await fetch(`${searchContentApiUrl}?&searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });

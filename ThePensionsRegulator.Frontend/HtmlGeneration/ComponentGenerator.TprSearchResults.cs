@@ -12,7 +12,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             section.AddCssClass("tpr-search");
             section.Attributes.Add("data-popular-content-url", popularContentApiUrl);
             section.Attributes.Add("data-search-content-url", searchContentApiUrl);
-            section.Attributes.Add("content-by-id-url", contentByIdUrl);
+            section.Attributes.Add("data-content-by-id-url", contentByIdUrl);
             return section;
         }
     }

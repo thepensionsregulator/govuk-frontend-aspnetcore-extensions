@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchAside = document.getElementsByClassName("tpr-search")[0];
     popularContentApiUrl = searchAside.getAttribute("data-popular-content-url");
     searchContentApiUrl = searchAside.getAttribute("data-search-content-url");
-    getContentByIdApiUrl = searchAside.getAttribute("content-by-id-url");
+    getContentByIdApiUrl = searchAside.getAttribute("data-content-by-id-url");
 
     initaliseAccordion(popularContentApiUrl);
 });

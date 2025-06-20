@@ -2,7 +2,7 @@
 
 namespace GovUk.Frontend.ExampleApp.Controllers
 {
-    public class QuestionsAndAnswersSearchResultsController : Controller
+    public class SearchResultsController : Controller
     {
         public IActionResult Index()
         {

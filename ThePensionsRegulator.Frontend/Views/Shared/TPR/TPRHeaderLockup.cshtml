@@ -5,7 +5,7 @@
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
 @using ThePensionsRegulator.Frontend.Models;
 @{
-    var phase = Model.Phase;
+    var phase = Model.Phase ?? "Live";
     var skipLink = Model.SkipLinkText;
     if (string.IsNullOrEmpty(skipLink)) { skipLink = "Skip to main content"; }
     var headerLogoAlt = Model.LogoAlternativeText;
@@ -19,13 +19,6 @@
 @if (showPhaseBanner || Model.ShowHeader)
 {
     <header role="banner">
-        @if (showPhaseBanner)
-        {
-            <govuk-phase-banner class="govuk-width-container @Model.PhaseBannerClass">
-                <govuk-phase-banner-tag>@phase</govuk-phase-banner-tag>
-                @Html.Raw(Model.PhaseBannerText)
-            </govuk-phase-banner>
-        }
         @if (Model.ShowHeader)
         {
             <tpr-header-bar class="@Model.HeaderBarClass">
@@ -44,6 +37,12 @@
                 <tpr-context-bar-context-3 allow-html="@Model.Context3AllowHtml">@Html.Raw(Model.Context3)</tpr-context-bar-context-3>
             </tpr-context-bar>
         }
-
+        @if (showPhaseBanner)
+        {
+            <govuk-phase-banner class="govuk-width-container @Model.PhaseBannerClass">
+                <govuk-phase-banner-tag>@phase</govuk-phase-banner-tag>
+                @Html.Raw(Model.PhaseBannerText)
+            </govuk-phase-banner>
+        }
     </header>
 }

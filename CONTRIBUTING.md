@@ -4,7 +4,7 @@ This project prioritises the components required by The Pensions Regulator (TPR)
 
 We also encourage contributions to the base project we're building upon, [govuk-frontend-aspnetcore](https://github.com/gunndabad/govuk-frontend-aspnetcore).
 
-Our tests depend on [Node.js](https://nodejs.org/en) and [Yarn Classic](https://classic.yarnpkg.com/lang/en/) to build and run.
+Our tests depend on [Node.js](https://nodejs.org/en) to build and run.
 
 - [Update govuk-frontend-aspnetcore and GOV.UK Frontend](/docs/contributing/update-govuk-frontend.md)
 - [Include SASS files in packages for consuming applications to use](/docs/contributing/include-sass-in-packages.md)

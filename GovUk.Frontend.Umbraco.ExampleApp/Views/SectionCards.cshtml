@@ -1,8 +1,20 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SectionCards>
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration Configuration
+@{
+    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+}
 @section head {
 	<title>@Model.PageHeadingOrName()</title>
 }
 
-<partial name="GOVUK/BlockGrid" model="Model.GridBlocks" />
+@if (useTPRstyles)
+{
+    <partial name="GOVUK/BlockGrid" model="Model.GridBlocks" />
+}
+else
+{
+    <partial name="GOVUK/BlockList" model="Model.GovukBlocks" />
+}
 
             

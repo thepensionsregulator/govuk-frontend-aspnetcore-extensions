@@ -147,6 +147,9 @@ coverage*.json
 coverage*.xml
 coverage*.info
 
+# Jest code coverage results
+coverage/
+
 # Visual Studio code coverage results
 *.coverage
 *.coveragexml

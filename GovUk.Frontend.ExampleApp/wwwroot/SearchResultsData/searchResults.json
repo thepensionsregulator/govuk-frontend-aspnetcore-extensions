@@ -1,23 +1,23 @@
 {
   "results": [
     {
-      "key": "example1.json",
+      "key": "example1",
       "name": "Who trained Obi-Wan Kenobi?"
     },
     {
-      "key": "example2.json",
+      "key": "example2",
       "name": "What is a lightsaber?"
     },
     {
-      "key": "example3.json",
+      "key": "example3",
       "name": "Who is the Mandalorian?"
     },
     {
-      "key": "example4.json",
+      "key": "example4",
       "name": "What is the Millennium Falcon?"
     },
     {
-      "key": "example5.json",
+      "key": "example5",
       "name": "What are midi-chlorians?"
     }
   ]

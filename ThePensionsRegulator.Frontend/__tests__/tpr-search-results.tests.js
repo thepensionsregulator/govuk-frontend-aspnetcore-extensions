@@ -1,12 +1,12 @@
 ﻿import '@testing-library/jest-dom';
 
 import { jest } from '@jest/globals';
-import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults } from '../wwwroot/tpr/tpr-search';
+import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults } from '../wwwroot/tpr/tpr-search-results';
 
 
 const setupBlankComponent = () => {
     document.body.innerHTML = `
-        <aside class="tpr-search" content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
+        <aside class="tpr-search-results" content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
             <div>
                 <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
                 <div class="tpr-search-results__input">
@@ -22,7 +22,7 @@ const setupBlankComponent = () => {
 
 const setupComponentWithAccordion = () => {
     document.body.innerHTML = `
-        <aside class="tpr-search" content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
+        <aside class="tpr-search-results" content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
             <div>
                 <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
                 <div class="tpr-search-results__input">

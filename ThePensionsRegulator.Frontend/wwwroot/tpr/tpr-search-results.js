@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showMoreButton.addEventListener('click', showMoreAnswersOnClick);
 
 
-    const searchAside = document.getElementsByClassName("tpr-search")[0];
+    const searchAside = document.getElementsByClassName("tpr-search-results")[0];
     popularContentApiUrl = searchAside.getAttribute("data-popular-content-url");
     searchContentApiUrl = searchAside.getAttribute("data-search-content-url");
     getContentByIdApiUrl = searchAside.getAttribute("data-content-by-id-url");

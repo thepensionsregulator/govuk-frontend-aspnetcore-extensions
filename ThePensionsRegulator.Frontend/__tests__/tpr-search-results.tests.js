@@ -97,7 +97,7 @@ describe('initialise accordion', () => {
         const searchInput = document.getElementById("tpr-search-results-ask-input");
         searchInput.value = "test";
 
-        await buttonOnClick();
+        await buttonOnClick({ preventDefault: jest.fn() });
 
         var result = document.body.querySelector('.tpr-search-results-no-results-found');
 
@@ -135,7 +135,7 @@ describe('initialise accordion', () => {
 
         document.getElementById('tpr-search-results-ask-input').value = 'test';
 
-        await buttonOnClick();
+        await buttonOnClick({ preventDefault: jest.fn() });
 
         const heading = document.querySelector(".govuk-accordion__section-heading");
         const content = document.querySelector(".govuk-accordion__section-content");

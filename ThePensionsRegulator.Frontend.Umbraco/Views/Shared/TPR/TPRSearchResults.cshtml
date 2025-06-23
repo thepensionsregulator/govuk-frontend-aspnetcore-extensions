@@ -8,13 +8,18 @@
 @{
     var heading = Model.Content.Value<string>(TprPropertyAliases.RelatedLinksHeading);
     var links = Model.Content.Value<IEnumerable<Link>>("footerlinks");
-    
+
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
     var headingClass = Model.Settings.Value<string?>("headingClass");
 
     if (!Int32.TryParse(Model.Settings?.Value<string>(GovUkPropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out int headingLevel))
     {
         headingLevel = 2;
+    }
+
+    if (string.IsNullOrEmpty(headingClass))
+    {
+        headingClass = "govuk-heading-l";
     }
 }
 

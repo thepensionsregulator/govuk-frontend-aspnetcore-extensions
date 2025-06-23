@@ -1,7 +1,7 @@
 ﻿import '@testing-library/jest-dom';
 
 import { jest } from '@jest/globals';
-import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults } from '../wwwroot/tpr/tpr-search-results';
+import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick } from '../wwwroot/tpr/tpr-search-results';
 
 
 const setupBlankComponent = () => {
@@ -97,11 +97,13 @@ describe('initialise accordion', () => {
         const searchInput = document.getElementById("tpr-search-results-ask-input");
         searchInput.value = "test";
 
-        await buttonOnClick({ preventDefault: jest.fn() });
+        const mockEvent = { preventDefault: jest.fn() };
+        await buttonOnClick(mockEvent);
 
         var result = document.body.querySelector('.tpr-search-results-no-results-found');
 
         expect(result).toHaveTextContent('No results found');
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
 
     it('should fetch and display search results on ask button click', async () => {
@@ -134,14 +136,15 @@ describe('initialise accordion', () => {
         setupComponentWithAccordion();
 
         document.getElementById('tpr-search-results-ask-input').value = 'test';
-
-        await buttonOnClick({ preventDefault: jest.fn() });
+        const mockEvent = { preventDefault: jest.fn() };
+        await buttonOnClick(mockEvent);
 
         const heading = document.querySelector(".govuk-accordion__section-heading");
         const content = document.querySelector(".govuk-accordion__section-content");
         expect(heading).toHaveTextContent(contentHeading);
         expect(content).toHaveTextContent(pageContent);
         expect(document.querySelectorAll(".govuk-accordion__section").length).toBe(1);
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
 
     it('should show all answers when "show more" is clicked', async () => {
@@ -168,5 +171,31 @@ describe('initialise accordion', () => {
             expect(heading).toHaveTextContent(lastSearchResults[index].name);
             expect(content).toHaveTextContent(lastSearchResults[index].pageContent);
         });
+    });
+});
+
+describe('navigateToSearchButtonOnClick', () => {
+    beforeEach(() => {
+        document.body.innerHTML = `
+            <input id="tpr-search-results-ask-input" type="text" />
+        `;
+    });
+
+    it('focuses the input and prevents default', () => {
+        const input = document.getElementById('tpr-search-results-ask-input');
+        input.focus = jest.fn();
+        const mockEvent = { preventDefault: jest.fn() };
+
+        navigateToSearchButtonOnClick(mockEvent);
+
+        expect(input.focus).toHaveBeenCalled();
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
+    });
+
+    it('does not throw if input is not found', () => {
+        const mockEvent = { preventDefault: jest.fn() };
+
+        expect(() => navigateToSearchButtonOnClick(mockEvent)).not.toThrow();
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
 });

@@ -158,6 +158,16 @@ function setSearchResults(toSet) {
     searchResults = toSet;
 }
 
+function navigateToSearchButtonOnClick(event) {
+    const searchResultsAside = document.getElementById('tpr-search-results-ask-input');
+    if (searchResultsAside != null) {
+        searchResultsAside.focus();
+    }
+
+    event.preventDefault();
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("tpr-search-results-ask-button");
     searchButton.addEventListener("click", buttonOnClick);
@@ -172,6 +182,12 @@ document.addEventListener("DOMContentLoaded", function () {
     getContentByIdApiUrl = searchAside.getAttribute("data-content-by-id-url");
 
     initaliseAccordion(popularContentApiUrl);
+
+    const navigateToSearchButton = document.getElementById("tpr-search-results-nav-button");
+    if (navigateToSearchButton != null) {
+        navigateToSearchButton.addEventListener("click", navigateToSearchButtonOnClick);
+    }
+
 });
 
-export { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults }
+export { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick }

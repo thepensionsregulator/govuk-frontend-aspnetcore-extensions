@@ -161,6 +161,7 @@ function setSearchResults(toSet) {
 function navigateToSearchButtonOnClick(event) {
     const searchResultsAside = document.getElementById('tpr-search-results-ask-input');
     if (searchResultsAside != null) {
+        searchResultsAside.scrollIntoView({ behavior: 'smooth' });
         searchResultsAside.focus();
     }
 
@@ -183,7 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     initaliseAccordion(popularContentApiUrl);
 
-    const navigateToSearchButton = document.getElementById("tpr-search-results-nav-button");
+    const navigateToSearchButton = document.getElementsByClassName("tpr-search-results-nav-button")[0];
     if (navigateToSearchButton != null) {
         navigateToSearchButton.addEventListener("click", navigateToSearchButtonOnClick);
     }

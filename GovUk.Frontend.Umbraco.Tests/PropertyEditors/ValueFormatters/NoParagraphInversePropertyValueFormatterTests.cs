@@ -72,8 +72,23 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
         [TestCase("upper-roman")]
         public void Permitted_style_attribute_is_converted_to_class_from_ordered_lists(string listStyleType)
         {
-            TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassFromOrderedLists(
+            TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnOrderedLists(
                 new NoParagraphInversePropertyValueFormatter(), listStyleType);
+        }
+
+        [Test]
+        public void Style_attribute_is_removed_from_unordered_lists()
+        {
+            TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromUnorderedLists(
+                new GovUkTypographyPropertyValueFormatter());
+        }
+
+        [TestCase("circle")]
+        [TestCase("square")]
+        public void Permitted_style_attribute_is_converted_to_class_on_unordered_lists(string listStyleType)
+        {
+            TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnUnorderedLists(
+                new GovUkTypographyPropertyValueFormatter(), listStyleType);
         }
     }
 }

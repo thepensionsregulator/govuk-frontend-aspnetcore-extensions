@@ -1,5 +1,6 @@
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.ExampleApp.Middleware;
 using GovUk.Frontend.ExampleApp.Models.Validators;
 using GovUk.Frontend.ExampleSharedResource;
 using Microsoft.AspNetCore.Builder;
@@ -89,6 +90,7 @@ namespace GovUk.Frontend.ExampleApp
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSecurityHeaders();
 
             app.UseRouting();
 

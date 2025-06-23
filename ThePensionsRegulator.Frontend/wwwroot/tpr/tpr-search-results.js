@@ -80,7 +80,9 @@ async function fetchContentById(contentId) {
     return await response.json();
 }
 
-async function buttonOnClick() {
+async function buttonOnClick(event) {
+    event.preventDefault();
+
     const searchInput = document.getElementById('tpr-search-results-ask-input');
     const searchValue = searchInput.value
 

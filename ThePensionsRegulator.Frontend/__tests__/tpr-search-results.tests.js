@@ -175,14 +175,13 @@ describe('initialise accordion', () => {
 });
 
 describe('navigateToSearchButtonOnClick', () => {
-    beforeEach(() => {
+    it('focuses the input and prevents default', () => {
         document.body.innerHTML = `
             <input id="tpr-search-results-ask-input" type="text" />
         `;
-    });
 
-    it('focuses the input and prevents default', () => {
         const input = document.getElementById('tpr-search-results-ask-input');
+        input.scrollIntoView = jest.fn();
         input.focus = jest.fn();
         const mockEvent = { preventDefault: jest.fn() };
 

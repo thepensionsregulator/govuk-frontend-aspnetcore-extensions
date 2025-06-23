@@ -1,18 +1,18 @@
 ﻿import '@testing-library/jest-dom';
 
 import { jest } from '@jest/globals';
-import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults } from '../wwwroot/tpr/tpr-search';
+import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick } from '../wwwroot/tpr/tpr-search-results';
 
 
 const setupBlankComponent = () => {
     document.body.innerHTML = `
-        <aside class="tpr-search" content-by-id-url="/QuestionsAndAnswersData" data-popular-content-url="/QuestionsAndAnswersData/popularContentExample.json" data-search-content-url="/QuestionsAndAnswersData/searchResults.json">
+        <aside class="tpr-search-results" content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
             <div>
                 <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
                 <div class="tpr-search-results__input">
                     <div class="govuk-form-group">
-                        <label class="govuk-label govuk-visually-hidden" for="search-results-ask-input">Search Q&amp;As</label>
-                        <input class="govuk-input" id="search-results-ask-input" type="text">
+                        <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
+                        <input class="govuk-input" id="tpr-search-results-ask-input" type="text">
                     </div>
                     <button class="govuk-button tpr-button--no-next-step" id="search-results-ask-button">Ask</button>
                 </div>
@@ -22,13 +22,13 @@ const setupBlankComponent = () => {
 
 const setupComponentWithAccordion = () => {
     document.body.innerHTML = `
-        <aside class="tpr-search" content-by-id-url="/QuestionsAndAnswersData" data-popular-content-url="/QuestionsAndAnswersData/popularContentExample.json" data-search-content-url="/QuestionsAndAnswersData/searchResults.json">
+        <aside class="tpr-search-results" content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
             <div>
                 <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
                 <div class="tpr-search-results__input">
                     <div class="govuk-form-group">
-                        <label class="govuk-label govuk-visually-hidden" for="search-results-ask-input">Search Q&amp;As</label>
-                        <input class="govuk-input" id="search-results-ask-input" type="text">
+                        <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
+                        <input class="govuk-input" id="tpr-search-results-ask-input" type="text">
                     </div>
                     <button class="govuk-button tpr-button--no-next-step" id="search-results-ask-button">Ask</button>
                 </div>
@@ -51,9 +51,13 @@ describe('initialise accordion', () => {
 
         await initaliseAccordion();
 
-        var result = document.body.querySelector('.search-results-no-results-found');
+        const result = document.body.querySelector('.tpr-search-results-no-results-found');
+        const searchHeading = document.getElementsByClassName('tpr-search-results__heading')[0];
+        const headingLevel = searchHeading.tagName.toLowerCase();
+        const headingLevelNumber = parseInt(headingLevel.replace('h', ''));
 
         expect(result).toHaveTextContent('No results found');
+        expect(result.tagName).toBe(`H${headingLevelNumber + 1}`);
     });
 
     it('should create accordion sections if popular content API returns results', async () => {
@@ -88,16 +92,18 @@ describe('initialise accordion', () => {
             }
         });
 
-        const searchInput = document.getElementById("search-results-ask-input");
-        searchInput.value = "test";
-
         setupComponentWithAccordion();
 
-        await buttonOnClick();
+        const searchInput = document.getElementById("tpr-search-results-ask-input");
+        searchInput.value = "test";
 
-        var result = document.body.querySelector('.search-results-no-results-found');
+        const mockEvent = { preventDefault: jest.fn() };
+        await buttonOnClick(mockEvent);
+
+        var result = document.body.querySelector('.tpr-search-results-no-results-found');
 
         expect(result).toHaveTextContent('No results found');
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
 
     it('should fetch and display search results on ask button click', async () => {
@@ -117,7 +123,6 @@ describe('initialise accordion', () => {
                     };
                 }
             })
-
             .mockResolvedValueOnce({
                 json: async () => {
                     return {
@@ -130,18 +135,17 @@ describe('initialise accordion', () => {
 
         setupComponentWithAccordion();
 
-        document.getElementById('search-results-ask-input').value = 'test';
-
-        await buttonOnClick();
+        document.getElementById('tpr-search-results-ask-input').value = 'test';
+        const mockEvent = { preventDefault: jest.fn() };
+        await buttonOnClick(mockEvent);
 
         const heading = document.querySelector(".govuk-accordion__section-heading");
         const content = document.querySelector(".govuk-accordion__section-content");
         expect(heading).toHaveTextContent(contentHeading);
         expect(content).toHaveTextContent(pageContent);
         expect(document.querySelectorAll(".govuk-accordion__section").length).toBe(1);
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
-
-    
 
     it('should show all answers when "show more" is clicked', async () => {
 
@@ -167,5 +171,31 @@ describe('initialise accordion', () => {
             expect(heading).toHaveTextContent(lastSearchResults[index].name);
             expect(content).toHaveTextContent(lastSearchResults[index].pageContent);
         });
+    });
+});
+
+describe('navigateToSearchButtonOnClick', () => {
+    beforeEach(() => {
+        document.body.innerHTML = `
+            <input id="tpr-search-results-ask-input" type="text" />
+        `;
+    });
+
+    it('focuses the input and prevents default', () => {
+        const input = document.getElementById('tpr-search-results-ask-input');
+        input.focus = jest.fn();
+        const mockEvent = { preventDefault: jest.fn() };
+
+        navigateToSearchButtonOnClick(mockEvent);
+
+        expect(input.focus).toHaveBeenCalled();
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
+    });
+
+    it('does not throw if input is not found', () => {
+        const mockEvent = { preventDefault: jest.fn() };
+
+        expect(() => navigateToSearchButtonOnClick(mockEvent)).not.toThrow();
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
 });

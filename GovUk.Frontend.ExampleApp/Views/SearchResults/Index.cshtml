@@ -3,7 +3,7 @@
 @model TextInputViewModel
 @section scripts {
 
-    <script src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search.js" type="module"></script>
+    <script src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.js" type="module"></script>
 }
 @{
     ViewData["Title"] = "Search results";
@@ -28,7 +28,7 @@
         <p class="govuk-body">
             The title and footer links can be overridden. 
             Footer links will always contain a 'Show more questions' link, that will show the remaining three questions, two are shown when the page loads. 
-            The heading level of the title and it's CSS class can be configured via the 'tpr-search-results-input' tag helper.
+            The heading level of the title and its CSS class can be configured via the 'tpr-search-results-input' tag helper.
         </p>
 
         <p class="govuk-body">
@@ -40,17 +40,24 @@
         <p class="govuk-body">
             Three URLs are required to be configured to allow this component to show content. These are configured via attributes on the tag helper.
             <ul class="govuk-list govuk-list--bullet">
-                <li>popular-content-url - This should return a list of content to show when the page loads. The example app provides <a href="/QuestionsAndAnswersData/popularContentExample.json" target="_blank">an example of the expected structure</a></li>
-                <li>content-by-id-url - This should return a singular result and allow the id of the item to be appended to the URL. The example app provides <a href="/QuestionsAndAnswersData/example1.json" target="_blank">an example of the expected structure </a></li>
-                <li>search-content-url - This should return a list of keys that can be retrieved by id. The example app provides <a href="/QuestionsAndAnswersData/searchResults.json" target="_blank">an example of the expected structure </a></li>
+                <li>popular-content-url - This should return a list of content to show when the page loads. The example app provides <a href="/SearchResults/popularContentExample.json" target="_blank">an example of the expected structure</a></li>
+                <li>content-by-id-url - This should return a singular result and allow the id of the item to be appended to the URL. The example app provides <a href="/SearchResults/example1.json" target="_blank">an example of the expected structure </a></li>
+                <li>search-content-url - This should return a list of keys that can be retrieved by id. The example app provides <a href="/SearchResults/searchResults.json" target="_blank">an example of the expected structure </a></li>
             </ul>
         </p>
 
-        <tpr-search-results popular-content-url="/QuestionsAndAnswersData/popularContentExample.json" content-by-id-url="/QuestionsAndAnswersData" search-content-url="/QuestionsAndAnswersData/searchResults.json">
+        <tpr-search-results popular-content-url="/SearchResultsData/popularContentExample.json" content-by-id-url="/SearchResultsData" search-content-url="/SearchResultsData/searchResults.json">
             <tpr-search-results-input heading-level=2 govuk-heading-class="govuk-heading-m"></tpr-search-results-input>
             <tpr-search-results-footer-links>
                 <a href="/">Home</a>
             </tpr-search-results-footer-links>
         </tpr-search-results>
     </div>
+
+    <div class="govuk-grid-column govuk-grid-column-one-third-from-desktop">
+        <div class="govuk-grid-row">
+            <govuk-button-link is-start-button="false" class="tpr-button--no-next-step" id="tpr-search-results-nav-button" href="https://www.thepensionsregulator.gov.uk/faq-landing-page" target="_blank">Search Q&A's</govuk-button-link>
+        </div>
+    </div>
+
 </div>

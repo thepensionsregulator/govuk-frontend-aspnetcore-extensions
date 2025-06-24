@@ -49,6 +49,7 @@ We add support for:
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
   - [TPR YouTube video](/docs/components/tpr-youtube-video.md)
   - [TPR related links](/docs/components/tpr-related-links.md)
+  - [TPR search results](/docs/components/tpr-search-results.md)
   - [TPR section cards](/docs/components/tpr-section-cards.md)
   - [TPR timeline](/docs/components/tpr-timeline.md)
 

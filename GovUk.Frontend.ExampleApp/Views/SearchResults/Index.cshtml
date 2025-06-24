@@ -5,17 +5,18 @@
 
     <script src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.js" type="module"></script>
 }
+
 @{
     ViewData["Title"] = "Search results";
 }
 
 <span class="govuk-caption-xl">Example application</span>
+
 <div class="govuk-grid-row govuk-grid-row--tpr-divider">
     <div class="govuk-grid-column govuk-grid-column-full">
         <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
     </div>
 </div>
-
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
@@ -41,8 +42,8 @@
             Three URLs are required to be configured to allow this component to show content. These are configured via attributes on the tag helper.
             <ul class="govuk-list govuk-list--bullet">
                 <li>popular-content-url - This should return a list of content to show when the page loads. The example app provides <a href="/SearchResultsData/popularContentExample.json" target="_blank">an example of the expected structure</a></li>
-                <li>content-by-id-url - This should return a singular result and allow the id of the item to be appended to the URL. The example app provides <a href="/SearchResultsData/example1.json" target="_blank">an example of the expected structure </a></li>
-                <li>search-content-url - This should return a list of keys that can be retrieved by id. The example app provides <a href="/SearchResultsData/searchResults.json" target="_blank">an example of the expected structure </a></li>
+                <li>content-by-id-url - This should return a singular result and allow the id of the item to be appended to the URL. The example app provides <a href="/SearchResultsData/example1.json" target="_blank">an example of the expected structure</a></li>
+                <li>search-content-url - This should return a list of keys that can be retrieved by id. The example app provides <a href="/SearchResultsData/searchResults.json" target="_blank">an example of the expected structure</a></li>
             </ul>
         </p>
 
@@ -54,8 +55,7 @@
 
     <div class="govuk-grid-column govuk-grid-column-one-third-from-desktop">
         <div class="govuk-grid-row">
-            <govuk-button-link is-start-button="false" class="tpr-button--no-next-step tpr-search-results-nav-button" href="https://www.thepensionsregulator.gov.uk/faq-landing-page" target="_blank">Search Q&A's</govuk-button-link>
+            <govuk-button-link is-start-button="false" class="tpr-button--no-next-step tpr-search-results-nav-button" href="https://www.thepensionsregulator.gov.uk/faq-landing-page">Search Q&As</govuk-button-link>
         </div>
     </div>
-
 </div>

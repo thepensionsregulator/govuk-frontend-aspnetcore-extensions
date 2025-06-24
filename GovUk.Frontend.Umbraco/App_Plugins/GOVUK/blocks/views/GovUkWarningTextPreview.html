@@ -2,6 +2,6 @@
     <span aria-hidden="true" class="govuk-warning-text__icon">!</span>
     <strong class="govuk-warning-text__text" aria-hidden="true">
         <span class="govuk-visually-hidden">Warning</span>
-        <span ng-bind-html="block.data.text.markup"></span>
+        <span ng-bind-html="block.data.text.markup | safe_html"></span>
     </strong>
 </div>

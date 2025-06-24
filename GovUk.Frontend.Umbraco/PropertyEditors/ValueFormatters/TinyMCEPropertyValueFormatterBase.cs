@@ -9,11 +9,14 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
     {
         protected IHtmlEncodedString ApplyGovUkTypographyToTinyMCE(object value, TypographyOptions? options = null)
         {
-            return ApplyPermittedStylesToOrderedLists(
-                new HtmlEncodedString(
-                    GovUkTypography.Apply(
-                        value is IHtmlEncodedString html ? html.ToHtmlString() : value as string,
-                        options
+            return
+                ApplyPermittedStylesToUnorderedLists(
+                    ApplyPermittedStylesToOrderedLists(
+                    new HtmlEncodedString(
+                        GovUkTypography.Apply(
+                            value is IHtmlEncodedString html ? html.ToHtmlString() : value as string,
+                            options
+                        )
                     )
                 )
             );
@@ -45,6 +48,21 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
             return html;
         }
 
+        /// <summary>
+        /// TinyMCE's unordered lists button has a setting for selecting the style of the unordered list, so we need to enable it or it looks broken.
+        /// However it is serialized to the style attribute which we don't want to allow free use of, so convert permitted style attribute values
+        /// to classes for display, and remove any others.
+        /// </summary>
+        /// <param name="document"></param>
+        protected static IHtmlEncodedString ApplyPermittedStylesToUnorderedLists(IHtmlEncodedString html)
+        {
+            var permittedStyleAttributes = new Dictionary<string, string> {
+                {"list-style-type: circle;" , "govuk-list--circle" },
+                {"list-style-type: square;" , "govuk-list--square" }
+            };
+
+            return ApplyPermittedStylesToLists(html, permittedStyleAttributes, "ul", "govuk-list--bullet");
+        }
 
         /// <summary>
         /// TinyMCE's ordered lists button has a setting for selecting the style of the ordered list, so we need to enable it or it looks broken.
@@ -62,12 +80,17 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
                 {"list-style-type: upper-roman;" , "govuk-list--upper-roman" }
             };
 
+            return ApplyPermittedStylesToLists(html, permittedStyleAttributes, "ol", "govuk-list--number");
+        }
+
+        private static IHtmlEncodedString ApplyPermittedStylesToLists(IHtmlEncodedString html, Dictionary<string, string> permittedStyleAttributes, string tagName, string defaultStyleClass)
+        {
             if (!string.IsNullOrWhiteSpace(html.ToHtmlString()))
             {
                 var document = new HtmlDocument();
                 document.LoadHtml(html.ToHtmlString());
 
-                var nodes = document.DocumentNode.SelectNodes("//ol[@style]");
+                var nodes = document.DocumentNode.SelectNodes($"//{tagName}[@style]");
                 if (nodes != null)
                 {
                     foreach (var node in nodes)
@@ -76,7 +99,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
                         {
                             if (node.Attributes["style"].Value.Contains(permittedStyle))
                             {
-                                node.RemoveClass("govuk-list--number");
+                                node.RemoveClass(defaultStyleClass);
                                 node.AddClass(permittedStyleAttributes[permittedStyle]);
                                 break;
                             }

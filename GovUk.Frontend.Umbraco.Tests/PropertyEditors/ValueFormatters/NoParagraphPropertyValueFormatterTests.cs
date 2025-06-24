@@ -44,9 +44,16 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
         }
 
         [Test]
-        public void Single_wrapping_paragraph_is_removed()
+        public void Single_wrapping_paragraph_with_no_class_is_removed()
         {
-            TinyMCEValueFormattersTestHelper.SingleWrappingParagraphIsRemoved(
+            TinyMCEValueFormattersTestHelper.SingleWrappingParagraphWithNoClassIsRemoved(
+                new NoParagraphPropertyValueFormatter());
+        }
+
+        [Test]
+        public void Single_wrapping_paragraph_with_class_is_left_alone()
+        {
+            TinyMCEValueFormattersTestHelper.SingleWrappingParagraphWithClassIsLeftAlone(
                 new NoParagraphPropertyValueFormatter());
         }
 
@@ -79,7 +86,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
         public void Style_attribute_is_removed_from_unordered_lists()
         {
             TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromUnorderedLists(
-                new GovUkTypographyPropertyValueFormatter());
+                new NoParagraphPropertyValueFormatter());
         }
 
         [TestCase("circle")]
@@ -87,7 +94,23 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
         public void Permitted_style_attribute_is_converted_to_class_on_unordered_lists(string listStyleType)
         {
             TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnUnorderedLists(
-                new GovUkTypographyPropertyValueFormatter(), listStyleType);
+                new NoParagraphPropertyValueFormatter(), listStyleType);
+        }
+
+
+        [Test]
+        public void Style_attribute_is_removed_from_paragraphs()
+        {
+            TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromParagraphs(
+                new NoParagraphPropertyValueFormatter());
+        }
+
+        [TestCase("center")]
+        [TestCase("right")]
+        public void Permitted_style_attribute_is_converted_to_class_on_paragraphs(string alignmentStyle)
+        {
+            TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(
+                new NoParagraphPropertyValueFormatter(), alignmentStyle);
         }
     }
 }

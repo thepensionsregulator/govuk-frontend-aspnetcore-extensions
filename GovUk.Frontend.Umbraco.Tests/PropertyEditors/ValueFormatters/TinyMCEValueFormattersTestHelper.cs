@@ -7,13 +7,22 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
     internal class TinyMCEValueFormattersTestHelper
     {
-        internal static void SingleWrappingParagraphIsRemoved(IPropertyValueFormatter formatter)
+        internal static void SingleWrappingParagraphWithNoClassIsRemoved(IPropertyValueFormatter formatter)
         {
             var html = "<p>Some content</p>";
 
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             Assert.AreEqual("Some content", result.ToHtmlString());
+        }
+
+        internal static void SingleWrappingParagraphWithClassIsLeftAlone(IPropertyValueFormatter formatter)
+        {
+            var html = "<p class=\"some-class\">Some content</p>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            Assert.AreEqual("<p class=\"some-class govuk-body\">Some content</p>", result.ToHtmlString());
         }
 
         internal static void MultipleWrappingParagraphsAreLeftAlone(IPropertyValueFormatter formatter)
@@ -75,6 +84,31 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//ul").Count);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//ul[contains(@class,'govuk-list--{listStyleType}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ul[@style]"));
+        }
+
+        internal static void TestStyleAttributeIsRemovedFromParagraphs(IPropertyValueFormatter formatter)
+        {
+            var html = "<p style=\"text-align: center;\">Example text</p><p style=\"color: red;\">Example text</p>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString());
+            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
+        }
+
+        internal static void TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(IPropertyValueFormatter formatter, string alignmentStyle)
+        {
+            var html = $"<p style=\"text-align: {alignmentStyle};\">Example text</p>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString());
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//p").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//p[contains(@class,'govuk-!-text-align-{(alignmentStyle == "center" ? "centre" : alignmentStyle)}')]").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
         }
     }
 }

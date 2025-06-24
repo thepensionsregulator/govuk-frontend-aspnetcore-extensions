@@ -85,7 +85,7 @@ async function fetchContentById(contentId) {
 async function buttonOnClick(event) {
     event.preventDefault();
 
-    const searchInput = document.getElementById('tpr-search-results-ask-input');
+    const searchInput = document.getElementById("tpr-search-results-ask-input");
     const searchValue = searchInput.value
 
     const response = await fetch(`${searchContentApiUrl}?&searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
@@ -148,22 +148,21 @@ function setSearchResults(toSet) {
 }
 
 function navigateToSearchButtonOnClick(event) {
-    const searchResultsAside = document.getElementById('tpr-search-results-ask-input');
+    const searchResultsAside = document.getElementById("tpr-search-results-ask-input");
     if (searchResultsAside != null) {
-        searchResultsAside.scrollIntoView({ behavior: 'smooth' });
-        searchResultsAside.focus();
+        searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        searchResultsAside.focus({ preventScroll: true });
     }
 
     event.preventDefault();
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("tpr-search-results-ask-button");
     searchButton.addEventListener("click", buttonOnClick);
 
     const showMoreButton = document.getElementById("tpr-search-results-show-more-questions");
-    showMoreButton.addEventListener('click', showMoreAnswersOnClick);
+    showMoreButton.addEventListener("click", showMoreAnswersOnClick);
 
     const searchAside = document.getElementsByClassName("tpr-search-results")[0];
     popularContentApiUrl = searchAside.getAttribute("data-popular-content-url");
@@ -186,10 +185,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const navigateToSearchButton = document.getElementsByClassName("tpr-search-results-nav-button")[0];
     if (navigateToSearchButton != null) {
-        navigateToSearchButton.removeAttribute("title");
+        const newTabSpan = navigateToSearchButton.querySelector("span.govuk-visually-hidden");
+        if (newTabSpan) {
+            newTabSpan.remove();
+        }
+
+        if (navigateToSearchButton.hasAttribute("rel")) {
+            navigateToSearchButton.removeAttribute("rel");
+        }
+
         navigateToSearchButton.addEventListener("click", navigateToSearchButtonOnClick);
     }
-
 });
 
 export { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick }

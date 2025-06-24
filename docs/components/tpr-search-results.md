@@ -29,6 +29,9 @@ _Required_
 
 ### `<tpr-search-results-input>`
 _Required_
+
+Creates the label, input and button elements. Allows label title and heading to be overwritten.
+
 | Attribute             | Type                  | Description   |
 |-----------------------|-----------------------|---------------|
 | `heading-level`       | `int`                 | asdaskl.jlj   |

@@ -6,6 +6,8 @@ let popularContentApiUrl = "";
 let searchContentApiUrl = "";
 let getContentByIdApiUrl = "";
 
+let newHeadingLevel = 3;
+
 async function initaliseAccordion() {
     const response = await fetch(`${popularContentApiUrl}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
 
@@ -54,7 +56,7 @@ function createAccordionSection(heading, content, index) {
 
     const accordionHeader = createElementWithClassName("div", "govuk-accordion__section-header");
 
-    const accordionHeadingElement = createElementWithClassName("h3", "govuk-accordion__section-heading");
+    const accordionHeadingElement = createElementWithClassName(`h${newHeadingLevel}`, "govuk-accordion__section-heading");
 
     const accordionHeadingElementText = document.createTextNode(heading);
 
@@ -135,19 +137,6 @@ function createElementWithClassName(elementName, className) {
 }
 
 function createNoResultsFoundHeading() {
-    const searchResultsSection = document.getElementsByClassName("govuk-heading-m tpr-search-results__heading")[0];
-    const headingLevel = searchResultsSection.tagName.toLowerCase();
-
-    const headingLevelNumber = parseInt(headingLevel.replace('h', ''));
-    let newHeadingLevel;
-
-    if (headingLevelNumber >= 6) {
-        newHeadingLevel = 6;
-    }
-    else {
-        newHeadingLevel = headingLevelNumber + 1;
-    }
-
     const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
     noResultsHeading.className = "govuk-heading-m tpr-search-results-no-results-found";
     noResultsHeading.textContent = "No results found";
@@ -180,6 +169,18 @@ document.addEventListener("DOMContentLoaded", function () {
     popularContentApiUrl = searchAside.getAttribute("data-popular-content-url");
     searchContentApiUrl = searchAside.getAttribute("data-search-content-url");
     getContentByIdApiUrl = searchAside.getAttribute("data-content-by-id-url");
+
+    const searchResultsSection = document.getElementsByClassName("govuk-heading-m tpr-search-results__heading")[0];
+    const headingLevel = searchResultsSection.tagName.toLowerCase();
+
+    const headingLevelNumber = parseInt(headingLevel.replace('h', ''));
+
+    if (headingLevelNumber >= 6) {
+        newHeadingLevel = 6;
+    }
+    else {
+        newHeadingLevel = headingLevelNumber + 1;
+    }
 
     initaliseAccordion(popularContentApiUrl);
 

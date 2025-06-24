@@ -1,0 +1,29 @@
+@using GovUk.Frontend.Umbraco.Models
+@using ThePensionsRegulator.Umbraco
+@using ThePensionsRegulator.Umbraco.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@addTagHelper *, GovUk.Frontend.AspNetCore
+
+@inject IPublishedUrlProvider publishedUrlProvider
+@inject IUmbracoPublishedContentAccessor publishedContext
+@{
+    var currentPage = publishedContext.PublishedContent;
+    var selection = currentPage.Ancestors();
+    if (!selection.Any()) return;
+
+    var currentPageName = Model.GetHighestPriorityField(currentPage);
+}
+<govuk-breadcrumbs collapse-on-mobile="true">
+
+    @foreach (var item in selection.OrderBy(x => x.Level))
+    {
+        var itemName = Model.GetHighestPriorityField(item);
+
+        <govuk-breadcrumbs-item href="@item.Url(publishedUrlProvider)">@itemName</govuk-breadcrumbs-item>
+    }
+    <govuk-breadcrumbs-item>@currentPageName</govuk-breadcrumbs-item>
+
+</govuk-breadcrumbs>

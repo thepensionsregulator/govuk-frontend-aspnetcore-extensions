@@ -34,7 +34,7 @@
 
         <p class="govuk-body">
             This component relies on JavaScript to display content. 
-            If JavaScript is not available then this component will not display and the accompanying button should link the user to the Q&A landing page.
+            If JavaScript is not available then this component will not display and the accompanying button should take the user to the Q&A landing page in a new tab. Feedback from users is that they like not losing where they were on original page. Opening in a new tab provides a similar user experience. A title attribute can be added to the button to tell users that the link will open in a new tab.
             The JavaScript file 'tpr-search-results.js' is provided as part of the 'ThePensionsRegulator.Frontend' nuget package. This will need to be included in any view that uses this component.
         </p>
 
@@ -55,7 +55,7 @@
 
     <div class="govuk-grid-column govuk-grid-column-one-third-from-desktop">
         <div class="govuk-grid-row">
-            <govuk-button-link is-start-button="false" class="tpr-button--no-next-step tpr-search-results-nav-button" href="https://www.thepensionsregulator.gov.uk/faq-landing-page">Search Q&As</govuk-button-link>
+            <govuk-button-link is-start-button="false" class="tpr-button--no-next-step tpr-search-results-nav-button" href="https://www.thepensionsregulator.gov.uk/faq-landing-page" target="_blank" title="Opens in a new tab">Search Q&As</govuk-button-link>
         </div>
     </div>
 </div>

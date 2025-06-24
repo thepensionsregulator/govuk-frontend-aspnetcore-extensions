@@ -176,7 +176,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const showMoreButton = document.getElementById("tpr-search-results-show-more-questions");
     showMoreButton.addEventListener('click', showMoreAnswersOnClick);
 
-
     const searchAside = document.getElementsByClassName("tpr-search-results")[0];
     popularContentApiUrl = searchAside.getAttribute("data-popular-content-url");
     searchContentApiUrl = searchAside.getAttribute("data-search-content-url");
@@ -186,6 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const navigateToSearchButton = document.getElementsByClassName("tpr-search-results-nav-button")[0];
     if (navigateToSearchButton != null) {
+        navigateToSearchButton.removeAttribute("title");
         navigateToSearchButton.addEventListener("click", navigateToSearchButtonOnClick);
     }
 

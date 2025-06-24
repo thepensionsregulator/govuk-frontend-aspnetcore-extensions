@@ -1,3 +1,4 @@
+using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
 using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -75,6 +76,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
             }
 
             app.UseHttpsRedirection();
+            app.UseSecurityHeaders();
 
             app.UseUmbraco()
                 .WithMiddleware(u =>

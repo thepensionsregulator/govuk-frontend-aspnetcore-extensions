@@ -39,7 +39,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
         }
 
-        internal static void TestPermittedStyleAttributeIsConvertedToClassFromOrderedLists(IPropertyValueFormatter formatter, string listStyleType)
+        internal static void TestPermittedStyleAttributeIsConvertedToClassOnOrderedLists(IPropertyValueFormatter formatter, string listStyleType)
         {
             var html = $"<ol style=\"list-style-type: {listStyleType};\"><li>Item 1</li><li>Item 2</li></ol>";
 
@@ -50,6 +50,31 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//ol").Count);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//ol[contains(@class,'govuk-list--{listStyleType}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
+        }
+
+        internal static void TestStyleAttributeIsRemovedFromUnorderedLists(IPropertyValueFormatter formatter)
+        {
+            var html = "<ul style=\"list-style-type: circle;\"><li>Item 1</li><li>Item 2</li></ul><ul style=\"color: red;\"><li>Item 3</li><li>Item 4</li></ul>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString());
+            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//ul").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//ul[@style]"));
+        }
+
+        internal static void TestPermittedStyleAttributeIsConvertedToClassOnUnorderedLists(IPropertyValueFormatter formatter, string listStyleType)
+        {
+            var html = $"<ul style=\"list-style-type: {listStyleType};\"><li>Item 1</li><li>Item 2</li></ul>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString());
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//ul").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//ul[contains(@class,'govuk-list--{listStyleType}')]").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//ul[@style]"));
         }
     }
 }

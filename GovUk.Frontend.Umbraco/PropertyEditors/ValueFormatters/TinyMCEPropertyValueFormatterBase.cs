@@ -9,19 +9,24 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
     {
         protected IHtmlEncodedString ApplyGovUkTypographyToTinyMCE(object value, TypographyOptions? options = null)
         {
-            return
-                ApplyPermittedStylesToParagraphs(
-                    ApplyPermittedStylesToUnorderedLists(
-                        ApplyPermittedStylesToOrderedLists(
-                        new HtmlEncodedString(
-                            GovUkTypography.Apply(
-                                value is IHtmlEncodedString html ? html.ToHtmlString() : value as string,
-                                options
-                            )
-                        )
-                    )
-                )
+            var govukHtml = GovUkTypography.Apply(
+                value is IHtmlEncodedString html ? html.ToHtmlString() : value as string,
+                options
             );
+
+            if (!string.IsNullOrWhiteSpace(govukHtml))
+            {
+                var document = new HtmlDocument();
+                document.LoadHtml(govukHtml);
+
+                document = ApplyPermittedStylesToParagraphs(document);
+                document = ApplyPermittedStylesToUnorderedLists(document);
+                document = ApplyPermittedStylesToOrderedLists(document);
+
+                govukHtml = document.DocumentNode.OuterHtml;
+            }
+
+            return new HtmlEncodedString(govukHtml);
         }
 
         /// <summary>
@@ -58,14 +63,14 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         /// to classes for display, and remove any others.
         /// </summary>
         /// <param name="document"></param>
-        protected static IHtmlEncodedString ApplyPermittedStylesToUnorderedLists(IHtmlEncodedString html)
+        private static HtmlDocument ApplyPermittedStylesToUnorderedLists(HtmlDocument document)
         {
             var permittedStyleAttributes = new Dictionary<string, string> {
                 {"list-style-type: circle;" , "govuk-list--circle" },
                 {"list-style-type: square;" , "govuk-list--square" }
             };
 
-            return ApplyPermittedStylesToLists(html, permittedStyleAttributes, "ul", "govuk-list--bullet");
+            return ApplyPermittedStylesToElements(document, permittedStyleAttributes, "ul", "govuk-list--bullet");
         }
 
         /// <summary>
@@ -74,7 +79,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         /// to classes for display, and remove any others.
         /// </summary>
         /// <param name="document"></param>
-        protected static IHtmlEncodedString ApplyPermittedStylesToOrderedLists(IHtmlEncodedString html)
+        private static HtmlDocument ApplyPermittedStylesToOrderedLists(HtmlDocument document)
         {
             var permittedStyleAttributes = new Dictionary<string, string> {
                 {"list-style-type: lower-alpha;" , "govuk-list--lower-alpha" },
@@ -84,7 +89,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
                 {"list-style-type: upper-roman;" , "govuk-list--upper-roman" }
             };
 
-            return ApplyPermittedStylesToLists(html, permittedStyleAttributes, "ol", "govuk-list--number");
+            return ApplyPermittedStylesToElements(document, permittedStyleAttributes, "ol", "govuk-list--number");
         }
 
         /// <summary>
@@ -92,46 +97,43 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         /// so convert permitted style attribute values to classes for display, and remove any others.
         /// </summary>
         /// <param name="document"></param>
-        protected static IHtmlEncodedString ApplyPermittedStylesToParagraphs(IHtmlEncodedString html)
+        private static HtmlDocument ApplyPermittedStylesToParagraphs(HtmlDocument document)
         {
             var permittedStyleAttributes = new Dictionary<string, string> {
                 {"text-align: center;" , "govuk-!-text-align-centre" },
-                {"text-align: right;" , "govuk-!-text-align-right" }
+                {"text-align: right;" , "govuk-!-text-align-right" },
+                {"padding-left: 40px", "govuk-!-padding-left-7" },
+                {"padding-left: 80px", "govuk-!-padding-left-14" },
+                {"padding-left: 120px", "govuk-!-padding-left-21" },
+                {"padding-left: 160px", "govuk-!-padding-left-28" },
+                {"padding-left: 200px", "govuk-!-padding-left-35" }
             };
 
-            return ApplyPermittedStylesToLists(html, permittedStyleAttributes, "p", null);
+            return ApplyPermittedStylesToElements(document, permittedStyleAttributes, "p", null);
         }
 
-        private static IHtmlEncodedString ApplyPermittedStylesToLists(IHtmlEncodedString html, Dictionary<string, string> permittedStyleAttributes, string tagName, string? defaultStyleClass)
+        private static HtmlDocument ApplyPermittedStylesToElements(HtmlDocument document, Dictionary<string, string> permittedStyleAttributes, string tagName, string? defaultStyleClass)
         {
-            if (!string.IsNullOrWhiteSpace(html.ToHtmlString()))
+            var nodes = document.DocumentNode.SelectNodes($"//{tagName}[@style]");
+            if (nodes != null)
             {
-                var document = new HtmlDocument();
-                document.LoadHtml(html.ToHtmlString());
-
-                var nodes = document.DocumentNode.SelectNodes($"//{tagName}[@style]");
-                if (nodes != null)
+                foreach (var node in nodes)
                 {
-                    foreach (var node in nodes)
+                    foreach (var permittedStyle in permittedStyleAttributes.Keys)
                     {
-                        foreach (var permittedStyle in permittedStyleAttributes.Keys)
+                        if (node.Attributes["style"].Value.Contains(permittedStyle))
                         {
-                            if (node.Attributes["style"].Value.Contains(permittedStyle))
-                            {
-                                if (defaultStyleClass is not null) { node.RemoveClass(defaultStyleClass); }
-                                node.AddClass(permittedStyleAttributes[permittedStyle]);
-                                break;
-                            }
+                            if (defaultStyleClass is not null) { node.RemoveClass(defaultStyleClass); }
+                            node.AddClass(permittedStyleAttributes[permittedStyle]);
+                            break;
                         }
-
-                        node.Attributes.Remove("style");
                     }
 
-                    html = new HtmlEncodedString(document.DocumentNode.OuterHtml);
+                    node.Attributes.Remove("style");
                 }
             }
 
-            return html;
+            return document;
         }
     }
 }

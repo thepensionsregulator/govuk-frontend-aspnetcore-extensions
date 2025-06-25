@@ -104,12 +104,12 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
                 new NoParagraphInversePropertyValueFormatter());
         }
 
-        [TestCase("center")]
-        [TestCase("right")]
-        public void Permitted_style_attribute_is_converted_to_class_on_paragraphs(string alignmentStyle)
+        [TestCase("text-align: center", "govuk-!-text-align-centre")]
+        [TestCase("text-align: right", "govuk-!-text-align-right")]
+        public void Permitted_style_attribute_is_converted_to_class_on_paragraphs(string styleAttribute, string expectedClass)
         {
             TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(
-                new NoParagraphInversePropertyValueFormatter(), alignmentStyle);
+                new NoParagraphInversePropertyValueFormatter(), styleAttribute, expectedClass);
         }
     }
 }

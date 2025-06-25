@@ -1,0 +1,39 @@
+﻿@import 'govuk/base';
+
+/* GOV.UK design system provides spacing classes up to 9, where 9 = 60px on large screens (as at v5.8.0)
+   https://design-system.service.gov.uk/styles/spacing/ 
+
+   Umbraco rich text editors support indenting text to multiple levels, and to support this we need spacing
+   classes beyond the highest level provided by the GOV.UK design system.
+
+   These classes follow the pattern and scale established by the GOV.UK design system, but define extra levels
+   at the spacing units needed to support up to 5 levels of indentation.
+*/
+.govuk-\!-padding-left-14 {
+    padding-left: 50px !important;
+    
+    @include govuk-media-query($from: tablet) {
+            padding-left: 80px !important;
+    }
+}
+.govuk-\!-padding-left-21 {
+    padding-left: 75px !important;
+
+    @include govuk-media-query($from: tablet) {
+        padding-left: 120px !important;
+    }
+}
+.govuk-\!-padding-left-28 {
+    padding-left: 100px !important;
+
+    @include govuk-media-query($from: tablet) {
+        padding-left: 160px !important;
+    }
+}
+.govuk-\!-padding-left-35 {
+    padding-left: 125px !important;
+
+    @include govuk-media-query($from: tablet) {
+        padding-left: 200px !important;
+    }
+}

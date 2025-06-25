@@ -75,7 +75,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             var result = _htmlGenerator.GenerateTprSearchResultsInput(_headingLevel, _headingClass, content);
 
-            output.TagName = "div";
+            output.TagName = null;
 
             output.Content.AppendHtml(result.InnerHtml);
         }

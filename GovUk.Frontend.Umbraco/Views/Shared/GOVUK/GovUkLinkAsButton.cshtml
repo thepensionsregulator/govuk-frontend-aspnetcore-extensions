@@ -24,14 +24,23 @@
 
 @if(!string.IsNullOrEmpty(target))
 {
-    <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses" target="@target">
-        @text
+    @if (openInNewTab)
+    {
+        <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses" target="@target" rel="noreferrer noopener">
+            @text
 
-        @if (openInNewTab)
-        {
-            <span class="govuk-visually-hidden">(opens in new tab)</span>
-        }
-    </govuk-button-link>
+            @if (openInNewTab)
+            {
+                <span class="govuk-visually-hidden">(opens in new tab)</span>
+            }
+        </govuk-button-link>
+    }
+    else
+    {
+        <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses" target="@target">
+            @text
+        </govuk-button-link>
+    }
 }
 else
 {

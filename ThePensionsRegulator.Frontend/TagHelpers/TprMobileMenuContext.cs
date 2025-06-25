@@ -7,13 +7,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         public AttributeDictionary? Attributes { get; set; }
 
-        private readonly List<TprMobileMenuItemsContext> _menuItems = new();
-
-        public IReadOnlyList<TprMobileMenuItemsContext> MenuItems => _menuItems;
-
-        public void AddItem(TprMobileMenuItemsContext item)
+        private readonly List<TprMobileMenuParentItemsContext> _menuParentItems = new();
+        public IReadOnlyList<TprMobileMenuParentItemsContext> MenuParentItems => _menuParentItems;
+        public string? MobileMenuAriaLabel {  get; set; }
+     
+        public void AddParentItem(TprMobileMenuParentItemsContext item)
         {
-            _menuItems.Add(item);
+            _menuParentItems.Add(item);
         }
     }
 }

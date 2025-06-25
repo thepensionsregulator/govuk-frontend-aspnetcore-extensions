@@ -1,6 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderFooterTpr>
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
+@using ThePensionsRegulator.Umbraco.Blocks
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Cms.Web.Common.PublishedModels;
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
@@ -15,7 +16,10 @@
     var skipLink = string.IsNullOrEmpty(settings?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : settings?.Value<string>("govukSkipLinkText");
     var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprHeaderLogoAlt");
     var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
-   
+
+    var mobileMenu = settings?.Value<OverridableBlockListModel>("tprMobileMenu");
+    var mobileMenuParentItems = mobileMenu?.Where(i => i.Content.ContentType.Alias == "tprMobileMenuParentItems");
+    
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -31,12 +35,13 @@
         <partial name="GOVUK/Head" />
     }
     <title>@Model.PageHeadingOrName()</title>
-    <link rel="stylesheet" href="~/css/site.css" />  
- 
+    <link rel="stylesheet" href="~/css/site.css" />
+
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
     <partial name="TPR/TPRAutocomplete" />
+    <partial name="TPR/TPRMobileMenu" />
 
     <header role="banner">
         @if (useTPRstyles)
@@ -75,7 +80,7 @@
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
             </tpr-header-bar>
 
-            <div class="govuk-width-container govuk-!-margin-top-5">
+             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithManyLinks" />
             </div>
             <tpr-header-bar>
@@ -84,9 +89,9 @@
                 <tpr-header-bar-content allow-html="true">
                     @Model.ManyLinksForHeader
                 </tpr-header-bar-content>
-            </tpr-header-bar>
+            </tpr-header-bar> 
 
-            <div class="govuk-width-container govuk-!-margin-top-5">
+             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithListOfLinks" />
             </div>
             <tpr-header-bar>
@@ -95,7 +100,7 @@
                 <tpr-header-bar-content allow-html="true">
                     @Model.ListOfLinksForHeader
                 </tpr-header-bar-content>
-            </tpr-header-bar>
+            </tpr-header-bar> 
 
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.AboveHeaderWithNoLabelOrLinks" />
@@ -207,16 +212,44 @@
                 <tpr-context-bar-context-2>@Model.Context2TextThatWraps</tpr-context-bar-context-2>
                 <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
             </tpr-context-bar>
-
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.HeaderWithMobileMenuAndSearch" />
+            </div>
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="@(settings?.Value<string>("tprHeaderPlaceholderText"))" aria-label="@(settings?.Value<string>("tprHeaderAriaLabelText"))"></tpr-header-search>
+                <tpr-mobile-menu aria-label="@(settings?.Value<string>("tprMobileMenuAriaLabel"))">
+                    @if (mobileMenuParentItems != null)
+                    {
+                        @foreach (var item in mobileMenuParentItems)
+                        {
+                            var linkText = item?.Content.Value<string>("linkText");
+                            var linkUrl = item?.Content.Value<Link>("linkUrl");
+                            var mobileMenuChildItems = item?.Content.Value<OverridableBlockListModel>("tprMobileMenuChildItems");
+                            <tpr-mobile-menu-parent-item href="@linkUrl?.Url" link-text="@linkText">
+                                @if (mobileMenuChildItems != null)
+                                {
+                                    @foreach (var child in mobileMenuChildItems)
+                                    {
+                                        var childLinkText = child?.Content.Value<string>("linkText");
+                                        var childLinkUrl = child?.Content.Value<Link>("linkUrl");
+                                        <tpr-mobile-menu-child-item href="@childLinkUrl?.Url" link-text="@childLinkText"></tpr-mobile-menu-child-item>                                        
+                                    }
+                                }
+                            </tpr-mobile-menu-parent-item>
+                        }
+                    }
+                </tpr-mobile-menu>           
+            </tpr-header-bar>
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.FinalBlocks" />
             </div>
         }
         else
         {
-             <div class="govuk-width-container">
+            <div class="govuk-width-container">
                 <partial name="GOVUK/BlockList" model="Model.GovukBlocks" />
-            </div>            
+            </div>
         }
     </header>
     <tpr-back-to-top href="#main">@Umbraco.GetDictionaryValue("Back to top")</tpr-back-to-top>

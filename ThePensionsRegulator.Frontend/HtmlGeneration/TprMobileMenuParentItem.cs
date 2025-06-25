@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Collections.Generic;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
-    public class TprMobileMenuSubMenuItem
+    public class TprMobileMenuParentItem
     {
-        public AttributeDictionary? Attriubutes {  get; set; }
-        public string? Id { get; set; }
+        public AttributeDictionary? Attributes { get; set; }
         public string? LinkText { get; set; }
         public string? LinkDestination { get; set; }
+        public List<TprMobileMenuChildItem> SubMenuItems { get; set; } = new();
     }
 }

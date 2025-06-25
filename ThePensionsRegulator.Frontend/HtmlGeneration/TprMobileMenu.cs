@@ -7,6 +7,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public class TprMobileMenu
     {
         public AttributeDictionary? Attributes { get; set; }
-        public List<TprMobileMenuItem>? MobileMenuItems { get; set; } = new();
+        public List<TprMobileMenuParentItem>? MobileMenuItems { get; set; } = new();
+        public string? AriaLabel { get; set; }
     }
 }

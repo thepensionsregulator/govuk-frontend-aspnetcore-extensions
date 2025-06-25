@@ -1,4 +1,5 @@
-﻿using ThePensionsRegulator.Frontend.HtmlGeneration;
+﻿using System.Collections.Generic;
+using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend.Models
 {
@@ -30,6 +31,11 @@ namespace ThePensionsRegulator.Frontend.Models
         public virtual string? ActionPath { get; set; } 
         public virtual string? AutocompleteUrl { get; set; }
         public virtual string? PlaceholderText { get; set; } 
-        public virtual string? AriaLabel { get; set; } 
+        public virtual string? AriaLabel { get; set; }
+        public virtual bool DisplayMobileMenu {  get; init; }
+        public virtual List<TprMobileMenuParentItem>? MobileMenuParentItems { get; set; }  
+        public virtual List<TprMobileMenuChildItem>? MobileMenuChildItems { get; set; }  
+      
+    
     }
 }

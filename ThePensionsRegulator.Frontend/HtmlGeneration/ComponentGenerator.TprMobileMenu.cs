@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -7,6 +6,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         public TagBuilder GenerateTprMobileMenu(TprMobileMenu tprMobileMenu)
         {
+
             var mobileMenuDiv = new TagBuilder("div");
             mobileMenuDiv.AddCssClass("tpr-mobile-menu-toggle");
 
@@ -53,10 +53,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var closeButton = new TagBuilder("button");
             closeButton.AddCssClass("closed");
             closeButton.Attributes.Add("aria-haspopup", "true");
-
-            var openButton = new TagBuilder("button");
-            openButton.AddCssClass("open");
-            closeButton.Attributes.Add("aria-label", "Close menu");
+            closeButton.InnerHtml.Append("Menu");
 
             svg1.InnerHtml.AppendHtml(svg2);
 
@@ -66,21 +63,17 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             mobileMenuDiv.InnerHtml.AppendHtml(icon);
             mobileMenuDiv.InnerHtml.AppendHtml(closeButton);
-            mobileMenuDiv.InnerHtml.AppendHtml(openButton);
-
-            var nav = GenerateTprMobileMenuNav(tprMobileMenu);
-            mobileMenuDiv.InnerHtml.AppendHtml(nav);
 
             return mobileMenuDiv;
         }
 
-        public TagBuilder GenerateTprMobileMenuNav(TprMobileMenu mobileMenu)
+        public TagBuilder GenerateTprMobileMenuNav(TprMobileMenu mobileMenu, TprHeaderBar tprHeaderBar)
         {
             var mobileMenuNav = new TagBuilder("nav");
-            mobileMenuNav.AddCssClass("mobileactive");
+            mobileMenuNav.AddCssClass("tpr-mobile-menu-nav");
 
             var tprWrapper = new TagBuilder("div");
-            tprWrapper.AddCssClass("tpr-main-wrapper");
+            tprWrapper.AddCssClass("tpr-mobile-menu-nav__inner-container");
             mobileMenuNav.InnerHtml.AppendHtml(tprWrapper);
 
             var govContainer = new TagBuilder("div");
@@ -92,8 +85,22 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             govContainer.InnerHtml.AppendHtml(navContainer);
 
             var mobileMenuList = new TagBuilder("ul");
-            mobileMenuList.Attributes.Add("aria-label", "Use alt + down arrow to open menu and alt + up arrow to close menu."); 
+
+            if (!string.IsNullOrWhiteSpace(mobileMenu.AriaLabel))
+            {
+                mobileMenuList.Attributes.Add("aria-label", mobileMenu.AriaLabel);
+            }
             navContainer.InnerHtml.AppendHtml(mobileMenuList);
+
+            if (tprHeaderBar.DisplaySearch)
+            {
+                var searchContainer = new TagBuilder("li");
+                searchContainer.AddCssClass("tpr-mobile-menu__header-search-container");
+                mobileMenuList.InnerHtml.AppendHtml(searchContainer);
+                var tprHeaderSearch = GenerateTprHeaderSearch(tprHeaderBar);
+                tprHeaderSearch.AddCssClass("mobile");
+                searchContainer.InnerHtml.AppendHtml(tprHeaderSearch);
+            }
 
             if (mobileMenu.MobileMenuItems != null)
             {
@@ -101,24 +108,20 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 {
                     var mobileMenuItem = new TagBuilder("li");
 
-                    if(item.Attributes != null)
+                    if (item.Attributes != null)
                     {
                         mobileMenuItem.MergeAttributes(item.Attributes);
                     }
 
-                    if (item != mobileMenu.MobileMenuItems.Last())
-                    {
-                        mobileMenuItem.AddCssClass("navigation__menu-item");
-                    }
-                    else
-                    {
-                        mobileMenuItem.AddCssClass("navigation__menu-item navigation__final-item");
-                    }
+                    mobileMenuItem.AddCssClass("navigation__menu-item");
 
                     mobileMenuList.InnerHtml.AppendHtml(mobileMenuItem);
 
+                    var arrow = new TagBuilder("i");
+                    arrow.AddCssClass("arrow right");
+                    mobileMenuItem.InnerHtml.AppendHtml(arrow);
+
                     var anchorTag = new TagBuilder("a");
-                    anchorTag.Attributes.Add("id", item.Id);
 
                     if (!string.IsNullOrWhiteSpace(item.LinkDestination))
                     {
@@ -153,10 +156,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                         var mobileMenuSubMenuItemTitle = new TagBuilder("div");
                         mobileMenuSubMenuItemTitle.AddCssClass("navigation__sub-menu-item-title");
-                        mobileMenuItem.InnerHtml.AppendHtml(mobileMenuSubMenuItemTitle);
+                        mobileMenuSubMenuItem.InnerHtml.AppendHtml(mobileMenuSubMenuItemTitle);
 
                         var aTag = new TagBuilder("a");
-                        aTag.Attributes.Add("id", subMenuItem.Id);
 
                         if (!string.IsNullOrWhiteSpace(subMenuItem.LinkDestination))
                         {
@@ -168,11 +170,16 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                         if (!string.IsNullOrWhiteSpace(subMenuItem.LinkText))
                         {
-                            anchorTag.InnerHtml.Append(subMenuItem.LinkText);
+                            aTag.InnerHtml.Append(subMenuItem.LinkText);
                         }
                     }
                 }
             }
+
+            var overlay = new TagBuilder("div");
+            overlay.AddCssClass("nav-overlay");
+            mobileMenuNav.InnerHtml.AppendHtml(overlay);
+
             return mobileMenuNav;
         }
     }

@@ -1,63 +1,39 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
-using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System.Linq;
 using System.Threading.Tasks;
-using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     public class TprMobileMenuTagHelper : TagHelper
     {
-        private readonly ITprHtmlGenerator _htmlGenerator;
 
         internal const string TagName = "tpr-mobile-menu";
+       
+        private const string AriaLabelName = "aria-label";
 
-        public TprMobileMenuTagHelper()
-          : this(htmlGenerator: null)
-        {
-        }
+        [HtmlAttributeName(AriaLabelName)]
+        public string? AriaLabel { get; set; }
 
-        internal TprMobileMenuTagHelper(ITprHtmlGenerator? htmlGenerator)
-        {
-            _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
-        }
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var mobileMenuContext = new TprMobileMenuContext();
+            mobileMenuContext.MobileMenuAriaLabel = AriaLabel;
+
+            if (output.Attributes != null)
+            {
+                mobileMenuContext.Attributes = output.Attributes.ToAttributeDictionary();
+            }
 
             using (context.SetScopedContextItem(mobileMenuContext))
             {
                 await output.GetChildContentAsync();
             }
 
-            var mobileMenu = new TprMobileMenu
-            {
-                Attributes = mobileMenuContext.Attributes,
-                MobileMenuItems = mobileMenuContext.MenuItems.Select(i => new TprMobileMenuItem
-                {
-                    Attributes = i.Attributes,
-                    LinkText = i.LinkText,
-                    LinkDestination = i.LinkDestination,
-                    Hierarchy = i.Hierarchy,
-                    Placement = i.Placement,
-                    SubMenuItems = i.SubMenuItems.Select(s => new TprMobileMenuSubMenuItem
-                    {
-                        LinkDestination = s.LinkDestination,
-                        LinkText = s.LinkText,
-                    }).ToList()
+            var headerBarContext = context.GetContextItem<TprHeaderBarContext>();
 
-                }).ToList()
-            };
-
-            var tagBuilder = _htmlGenerator.GenerateTprMobileMenu(mobileMenu);
-
-            output.TagName = tagBuilder.TagName;
-            output.TagMode = TagMode.StartTagAndEndTag;
-            output.Attributes.Clear();
-            output.MergeAttributes(tagBuilder);
-            output.Content.SetHtmlContent(tagBuilder.InnerHtml);
+            headerBarContext.SetMobileMenu(mobileMenuContext);
+            output.SuppressOutput();
         }
     }
 }

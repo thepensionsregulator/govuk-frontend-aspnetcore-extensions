@@ -170,9 +170,17 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel GovukBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "govukBlocks");
 
 		///<summary>
+		/// Header with Mobile Menu and Search
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.8.1+dcbbed4")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headerWithMobileMenuAndSearch")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel HeaderWithMobileMenuAndSearch => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "headerWithMobileMenuAndSearch");
+
+		///<summary>
 		/// Header with search
 		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.8.1+dcbbed4")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("headerWithSearch")]
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel HeaderWithSearch => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "headerWithSearch");
@@ -180,7 +188,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		///<summary>
 		/// Header with search and context
 		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.3.2+696a711")]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.8.1+dcbbed4")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("headerWithSearchAndContext")]
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel HeaderWithSearchAndContext => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "headerWithSearchAndContext");

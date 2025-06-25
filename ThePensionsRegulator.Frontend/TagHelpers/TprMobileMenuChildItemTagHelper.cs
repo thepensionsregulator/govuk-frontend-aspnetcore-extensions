@@ -5,22 +5,24 @@ using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    [HtmlTargetElement(TagName, ParentTag = TprMobileMenuItemTagHelper.TagName)]
-    public class TprMobileMenuItemSubItemTagHelper : TagHelper
+    [HtmlTargetElement(TagName, ParentTag = TprMobileMenuParentItemTagHelper.TagName)]
+    public class TprMobileMenuChildItemTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-mobile-menu-item-sub-item";
+        internal const string TagName = "tpr-mobile-menu-child-item";
 
-        private const string UrlAttribute = "url";
+        private const string UrlAttributeName = "href";
+        private const string LinkTextAttributeName = "link-text";
         
-        [HtmlAttributeName(UrlAttribute)] 
+        [HtmlAttributeName(UrlAttributeName)] 
         public string? Url { get; set; }
 
+        [HtmlAttributeName(LinkTextAttributeName)]
         public string? LinkText { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var mobileMenuItemContext = context.GetContextItem<TprMobileMenuItemsContext>();
-            var mobileMenuSubItemContext = new TprMobileMenuItemsSubItemsContext
+            var mobileMenuItemContext = context.GetContextItem<TprMobileMenuParentItemsContext>();
+            var mobileMenuSubItemContext = new TprMobileMenuChildItemsContext
             {
                 Attributes = output.Attributes.ToAttributeDictionary(),              
             };
@@ -30,8 +32,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();
             }
             
-            mobileMenuSubItemContext.SetSubItem(mobileMenuSubItemContext.Attributes, LinkText, Url, mobileMenuSubItemContext.Placement, mobileMenuSubItemContext.Hierarchy);
-            mobileMenuItemContext.AddSubMenuItem(mobileMenuSubItemContext);
+            mobileMenuSubItemContext.SetChildItem(mobileMenuSubItemContext.Attributes, LinkText, Url);
+            mobileMenuItemContext.AddChildItem(mobileMenuSubItemContext);
             
             output.TagName = TagName;
             output.SuppressOutput();

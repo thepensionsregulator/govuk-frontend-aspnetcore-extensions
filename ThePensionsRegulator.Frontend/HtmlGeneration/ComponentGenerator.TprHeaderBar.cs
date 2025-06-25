@@ -1,5 +1,6 @@
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Linq;
 
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
@@ -10,7 +11,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         internal const string DefaultHeaderLabel = "Making workplace pensions work";
         internal const string HeaderLogoDefaultAlt = "The Pensions Regulator home page";
         internal const string HeaderLogoDefaultHref = "https://www.thepensionsregulator.gov.uk";
-
+    
         public virtual TagBuilder GenerateTprHeaderBar(TprHeaderBar tprHeaderBar)
         {
 
@@ -87,13 +88,36 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             }
             else if (tprHeaderBar.DisplaySearch)
             {
-
                 var headerSearch = GenerateTprHeaderSearch(tprHeaderBar);
                 headerContent.InnerHtml.AppendHtml(headerSearch);
             }
 
-            tagBuilder.InnerHtml.AppendHtml(headerContent);
+            if (tprHeaderBar.DisplayMobileMenu)
+            {
+                var navDiv = new TagBuilder("div");
+                navDiv.AddCssClass("tpr-mobile-menu__container");
+                headerContent.InnerHtml.AppendHtml(navDiv);  
 
+                var mobileMenu = new TprMobileMenu
+                {
+
+                    Attributes = tprHeaderBar.MobileMenuAttributes,
+                    MobileMenuItems = tprHeaderBar.MobileMenuItems,
+                };
+               
+                var mobileMenuToggle = GenerateTprMobileMenu(mobileMenu);
+                navDiv.InnerHtml.AppendHtml(mobileMenuToggle);
+
+                tagBuilder.InnerHtml.AppendHtml(headerContent);
+
+                var moibleMenuNav = GenerateTprMobileMenuNav(mobileMenu, tprHeaderBar);
+                tagBuilder.InnerHtml.AppendHtml(moibleMenuNav);
+            }
+            else
+            {
+
+                tagBuilder.InnerHtml.AppendHtml(headerContent);
+            }
             return tagBuilder;
         }
 
@@ -121,7 +145,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var autoCompleteContainer = new TagBuilder("div");
             autoCompleteContainer.AddCssClass("tpr-autocomplete-container");
-            if (!string.IsNullOrEmpty(tprHeaderBar.AutoCompleteUrl)) ;
+            if (!string.IsNullOrEmpty(tprHeaderBar.AutoCompleteUrl))
             {
                 autoCompleteContainer.Attributes.Add("data-autocomplete-url", tprHeaderBar.AutoCompleteUrl);
             }        
@@ -189,6 +213,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             divTag.InnerHtml.AppendHtml(form);
 
             return divTag;
-        }
+        }      
     }
 }

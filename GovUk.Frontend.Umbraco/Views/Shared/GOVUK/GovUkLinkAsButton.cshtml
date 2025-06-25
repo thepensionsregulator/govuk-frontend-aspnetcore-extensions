@@ -9,10 +9,12 @@
 @{
     var text = Model.Content.Value<string>(PropertyAliases.LinkText);
     var link = Model.Content.Value<Link>(PropertyAliases.Link);
+    var target = link?.Target;
+    var openInNewTab = target?.Equals("_blank") ?? false;
+
     var isStartButton = Model.Settings.Value<bool>(PropertyAliases.LinkAsStartButton);
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var buttonStyle = Model.Settings.Value<string[]>(PropertyAliases.ButtonStyle) ?? Array.Empty<string>();
-    var openInNewTab = link?.Target?.Equals("_blank") ?? false;
 
     if (buttonStyle.Contains("Secondary")) { buttonStyle[buttonStyle.IndexOf("Secondary")] = "govuk-button--secondary"; }
     if (buttonStyle.Contains("Warning")) { buttonStyle[buttonStyle.IndexOf("Warning")] = "govuk-button--warning"; }
@@ -20,12 +22,15 @@
     if (buttonStyle.Length > 0 && !string.IsNullOrEmpty(cssClasses)) { cssClasses = " " + cssClasses; }
 }
 
-
-@if (openInNewTab)
+@if(!string.IsNullOrEmpty(target))
 {
-    <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses" target="_blank">
+    <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses" target="@target">
         @text
-        <span class="govuk-visually-hidden">(opens in new tab)</span>
+
+        @if (openInNewTab)
+        {
+            <span class="govuk-visually-hidden">(opens in new tab)</span>
+        }
     </govuk-button-link>
 }
 else
@@ -34,4 +39,3 @@ else
         @text
     </govuk-button-link>
 }
-

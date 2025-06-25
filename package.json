@@ -8,26 +8,40 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "jest-junit": "^14.0.0"
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "rootDir": "GovUk.Frontend.AspNetCore.Extensions",
+    "roots": [
+      "GovUk.Frontend.AspNetCore.Extensions",
+      "ThePensionsRegulator.Frontend"
+    ],
     "collectCoverage": true,
-    "collectCoverageFrom": ["wwwroot/govuk/**/*.js"]
+    "collectCoverageFrom": [
+      "wwwroot/govuk/**/*.js"
+    ],
+    "transform": {},
+    "moduleNameMapper": {
+      "/govuk/all.min.js$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js"
+    }
   },
+  "type": "module",
   "resolutions": {
     "json5": "2.2.2"
   },
   "overrides": {
-    "jest-environment-jsdom":{
+    "jest-environment-jsdom": {
       "jsdom": "26.1.0"
     }
   },
   "dependencies": {
     "brace-expansion":"1.1.12",
     "govuk-frontend": "5.8.0"
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura"
   }
 }

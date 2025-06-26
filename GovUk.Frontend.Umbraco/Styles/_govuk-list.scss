@@ -1,7 +1,15 @@
 ﻿/* Extra list styles not in govuk-frontend, but available in the Umbraco UI and therefore supported */
+.govuk-list--circle {
+    padding-left: govuk-spacing(4);
+    list-style-type: circle;
+}
+.govuk-list--square {
+    padding-left: govuk-spacing(4);
+    list-style-type: square;
+}
 .govuk-list--lower-alpha {
     padding-left: govuk-spacing(4);
-    list-style-type: lower-alpha
+    list-style-type: lower-alpha;
 }
 .govuk-list--lower-greek {
     padding-left: govuk-spacing(4);

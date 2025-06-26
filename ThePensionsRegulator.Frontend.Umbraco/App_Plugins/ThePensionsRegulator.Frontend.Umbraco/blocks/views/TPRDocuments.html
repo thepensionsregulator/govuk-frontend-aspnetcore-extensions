@@ -12,12 +12,12 @@
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
             <dd ng-bind="doc.description"></dd>
         </div>
-        <div ng-if="doc.document[0].url.endsWith('.docx')">
+        <div ng-if="doc.document[0].url.endsWith('.docx') || doc.document[0].url.endsWith('.doc')">
             <dt>
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="doc fileicon">WORD</span> --KB, {{doc.numberOfPages}} page(s)
+                    <span class="doc fileicon">Word</span> --KB, {{doc.numberOfPages}} page(s)
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -45,12 +45,34 @@
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
             <dd ng-bind="doc.description"></dd>
         </div>
+        <div ng-if="doc.document[0].url.endsWith('.rtf')">
+            <dt>
+                <a class="govuk-link" href="{{doc.document[0].url}}">
+                    {{doc.document[0].name}}
+                    <br>
+                    <span class="misc fileicon">RTF</span> --KB, {{doc.numberOfPages}} page(s)
+                </a>
+            </dt>
+            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
+            <dd ng-bind="doc.description"></dd>
+        </div>
+        <div ng-if="doc.document[0].url.endsWith('.odt')">
+            <dt>
+                <a class="govuk-link" href="{{doc.document[0].url}}">
+                    {{doc.document[0].name}}
+                    <br>
+                    <span class="misc fileicon">ODT</span> --KB, {{doc.numberOfPages}} page(s)
+                </a>
+            </dt>
+            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
+            <dd ng-bind="doc.description"></dd>
+        </div>
         <div ng-if="doc.document[0].url.endsWith('.xlsx')">
             <dt>
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="excel fileicon">XLSX</span> --KB
+                    <span class="excel fileicon">Excel</span> --KB
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -81,7 +103,8 @@
         <div ng-if="doc.document[0].url.endsWith('.pdf') == false && doc.document[0].url.endsWith('.docx') == false
              && doc.document[0].url.endsWith('.dotx') == false && doc.document[0].url.endsWith('.pptx') == false
              && doc.document[0].url.endsWith('.xlsx') == false && doc.document[0].url.endsWith('.xlst') == false
-             && doc.document[0].url.endsWith('.csv') == false">
+             && doc.document[0].url.endsWith('.csv') == false && doc.document[0].url.endsWith('.rtf') == false
+             && doc.document[0].url.endsWith('.odt') == false && doc.document[0].url.endsWith('.doc')">
             <dt>
                 <a class="govuk-link" href="{{doc.document[0].url}}">{{doc.document[0].name}}</a>
             </dt>

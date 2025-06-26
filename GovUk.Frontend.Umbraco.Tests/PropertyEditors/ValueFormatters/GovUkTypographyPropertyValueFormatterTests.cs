@@ -75,5 +75,20 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnUnorderedLists(
                 new GovUkTypographyPropertyValueFormatter(), listStyleType);
         }
+
+        [Test]
+        public void Style_attribute_is_removed_from_paragraphs()
+        {
+            TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromParagraphs(
+                new GovUkTypographyPropertyValueFormatter());
+        }
+
+        [TestCase("center")]
+        [TestCase("right")]
+        public void Permitted_style_attribute_is_converted_to_class_on_paragraphs(string alignmentStyle)
+        {
+            TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(
+                new GovUkTypographyPropertyValueFormatter(), alignmentStyle);
+        }
     }
 }

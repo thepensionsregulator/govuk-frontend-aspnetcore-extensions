@@ -16,3 +16,17 @@
 .debug-grid .govuk-grid-column {
     outline: 1px dotted blue;
 }
+
+/**umb_name:Custom class*/
+p.custom-class {
+    position: static;
+}
+p.custom-class::after {
+    content: " [custom class applied]";
+    color: forestgreen;
+    font-weight:bold
+}
+.govuk-notification-banner__content > p.custom-class::after,
+.govuk-panel__body > p.custom-class::after {
+    color: goldenrod;
+}

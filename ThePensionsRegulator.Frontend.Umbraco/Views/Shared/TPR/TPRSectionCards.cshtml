@@ -32,7 +32,7 @@
         @foreach (var card in cards)
         {           
             var type = card.Content.ContentType.Alias;
-            var cardClass = card.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+            var cardClass = card.Settings?.Value<string>(GovUkPropertyAliases.CssClasses);
             switch (type)
             {
                 case TprElementTypeAliases.SectionCard:

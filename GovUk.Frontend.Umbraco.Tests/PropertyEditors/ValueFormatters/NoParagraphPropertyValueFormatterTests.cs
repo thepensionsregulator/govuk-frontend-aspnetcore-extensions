@@ -105,12 +105,17 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
                 new NoParagraphPropertyValueFormatter());
         }
 
-        [TestCase("center")]
-        [TestCase("right")]
-        public void Permitted_style_attribute_is_converted_to_class_on_paragraphs(string alignmentStyle)
+        [TestCase("text-align: center", "govuk-!-text-align-centre")]
+        [TestCase("text-align: right", "govuk-!-text-align-right")]
+        [TestCase("padding-left: 40px", "govuk-!-padding-left-7")]
+        [TestCase("padding-left: 80px", "govuk-!-padding-left-14")]
+        [TestCase("padding-left: 120px", "govuk-!-padding-left-21")]
+        [TestCase("padding-left: 160px", "govuk-!-padding-left-28")]
+        [TestCase("padding-left: 200px", "govuk-!-padding-left-35")]
+        public void Permitted_style_attribute_is_converted_to_class_on_paragraphs(string styleAttribute, string expectedClass)
         {
             TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(
-                new NoParagraphPropertyValueFormatter(), alignmentStyle);
+                new NoParagraphPropertyValueFormatter(), styleAttribute, expectedClass);
         }
     }
 }

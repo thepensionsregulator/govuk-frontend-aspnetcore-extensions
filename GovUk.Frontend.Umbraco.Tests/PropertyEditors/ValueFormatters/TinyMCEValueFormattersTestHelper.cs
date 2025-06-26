@@ -98,16 +98,16 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
         }
 
-        internal static void TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(IPropertyValueFormatter formatter, string alignmentStyle)
+        internal static void TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(IPropertyValueFormatter formatter, string styleAttribute, string expectedClass)
         {
-            var html = $"<p style=\"text-align: {alignmentStyle};\">Example text</p>";
+            var html = $"<p style=\"{styleAttribute};\">Example text</p>";
 
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result.ToHtmlString());
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//p").Count);
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//p[contains(@class,'govuk-!-text-align-{(alignmentStyle == "center" ? "centre" : alignmentStyle)}')]").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//p[contains(@class,'{expectedClass}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
         }
     }

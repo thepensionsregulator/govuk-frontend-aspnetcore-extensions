@@ -54,6 +54,7 @@
 @import '_tpr-details.scss';
 @import '_tpr-fieldset.scss';
 @import '_tpr-file-upload.scss';
+@import '_tpr-hint.scss';
 @import '_tpr-input.scss';
 @import '_tpr-inset-text.scss';
 @import '_tpr-label.scss';
@@ -66,6 +67,7 @@
 @import '_tpr-table.scss';
 @import '_tpr-tag.scss';
 @import '_tpr-textarea.scss';
+@import '_tpr-warning-text.scss';
 
 // Add different components and customisations that are not part of the GOV.UK Design System (or are in a later version than the one we're targeting)
 @import '_tpr-add-link.scss';

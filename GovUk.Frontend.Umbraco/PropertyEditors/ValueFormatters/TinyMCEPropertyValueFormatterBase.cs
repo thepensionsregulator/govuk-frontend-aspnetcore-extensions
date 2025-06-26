@@ -10,12 +10,14 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         protected IHtmlEncodedString ApplyGovUkTypographyToTinyMCE(object value, TypographyOptions? options = null)
         {
             return
-                ApplyPermittedStylesToUnorderedLists(
-                    ApplyPermittedStylesToOrderedLists(
-                    new HtmlEncodedString(
-                        GovUkTypography.Apply(
-                            value is IHtmlEncodedString html ? html.ToHtmlString() : value as string,
-                            options
+                ApplyPermittedStylesToParagraphs(
+                    ApplyPermittedStylesToUnorderedLists(
+                        ApplyPermittedStylesToOrderedLists(
+                        new HtmlEncodedString(
+                            GovUkTypography.Apply(
+                                value is IHtmlEncodedString html ? html.ToHtmlString() : value as string,
+                                options
+                            )
                         )
                     )
                 )
@@ -23,11 +25,11 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         }
 
         /// <summary>
-        /// TinyMCE automatically surrounds text in a paragraph. Remove that paragraph.
+        /// TinyMCE automatically surrounds text in a paragraph. Remove that paragraph unless it has a class applied.
         /// </summary>
         /// <param name="html"></param>
         /// <returns></returns>
-        protected static IHtmlEncodedString RemoveWrappingParagraph(IHtmlEncodedString html)
+        protected static IHtmlEncodedString RemoveWrappingParagraphIfNoClass(IHtmlEncodedString html)
         {
             if (!string.IsNullOrWhiteSpace(html.ToHtmlString()))
             {
@@ -36,7 +38,9 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
 
                 if (document.DocumentNode.ChildNodes.Count == 1 &&
                 document.DocumentNode.FirstChild.NodeType == HtmlNodeType.Element &&
-                document.DocumentNode.FirstChild.Name == "p")
+                document.DocumentNode.FirstChild.Name == "p" &&
+                (string.IsNullOrWhiteSpace(document.DocumentNode.FirstChild.GetAttributeValue("class", null)) ||
+                 document.DocumentNode.FirstChild.GetAttributeValue("class", null) == "govuk-body"))
                 {
                     html = new HtmlEncodedString(document.DocumentNode.FirstChild.InnerHtml);
                 }
@@ -83,7 +87,22 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
             return ApplyPermittedStylesToLists(html, permittedStyleAttributes, "ol", "govuk-list--number");
         }
 
-        private static IHtmlEncodedString ApplyPermittedStylesToLists(IHtmlEncodedString html, Dictionary<string, string> permittedStyleAttributes, string tagName, string defaultStyleClass)
+        /// <summary>
+        /// TinyMCE's alignment buttons are serialized to the style attribute which we don't want to allow free use of, 
+        /// so convert permitted style attribute values to classes for display, and remove any others.
+        /// </summary>
+        /// <param name="document"></param>
+        protected static IHtmlEncodedString ApplyPermittedStylesToParagraphs(IHtmlEncodedString html)
+        {
+            var permittedStyleAttributes = new Dictionary<string, string> {
+                {"text-align: center;" , "govuk-!-text-align-centre" },
+                {"text-align: right;" , "govuk-!-text-align-right" }
+            };
+
+            return ApplyPermittedStylesToLists(html, permittedStyleAttributes, "p", null);
+        }
+
+        private static IHtmlEncodedString ApplyPermittedStylesToLists(IHtmlEncodedString html, Dictionary<string, string> permittedStyleAttributes, string tagName, string? defaultStyleClass)
         {
             if (!string.IsNullOrWhiteSpace(html.ToHtmlString()))
             {
@@ -99,7 +118,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
                         {
                             if (node.Attributes["style"].Value.Contains(permittedStyle))
                             {
-                                node.RemoveClass(defaultStyleClass);
+                                if (defaultStyleClass is not null) { node.RemoveClass(defaultStyleClass); }
                                 node.AddClass(permittedStyleAttributes[permittedStyle]);
                                 break;
                             }

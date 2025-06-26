@@ -7,3 +7,7 @@
     border-left-width: govuk-px-to-rem(10px);
     font-weight: $tpr-font-weight-semi-bold;
 }
+
+.govuk-inset-text > p.govuk-body {
+    font-weight: $tpr-font-weight-semi-bold;
+}

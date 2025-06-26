@@ -17,7 +17,7 @@
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="doc fileicon">WORD</span> --KB, {{doc.numberOfPages}} page(s)
+                    <span class="doc fileicon">Word</span> --KB, {{doc.numberOfPages}} page(s)
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -72,7 +72,7 @@
                 <a class="govuk-link" href="{{doc.document[0].url}}">
                     {{doc.document[0].name}}
                     <br>
-                    <span class="excel fileicon">EXCEL</span> --KB
+                    <span class="excel fileicon">Excel</span> --KB
                 </a>
             </dt>
             <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
@@ -104,7 +104,7 @@
              && doc.document[0].url.endsWith('.dotx') == false && doc.document[0].url.endsWith('.pptx') == false
              && doc.document[0].url.endsWith('.xlsx') == false && doc.document[0].url.endsWith('.xlst') == false
              && doc.document[0].url.endsWith('.csv') == false && doc.document[0].url.endsWith('.rtf') == false
-             && doc.document[0].url.endsWith('.odt') == false">
+             && doc.document[0].url.endsWith('.odt') == false && doc.document[0].url.endsWith('.doc')">
             <dt>
                 <a class="govuk-link" href="{{doc.document[0].url}}">{{doc.document[0].name}}</a>
             </dt>

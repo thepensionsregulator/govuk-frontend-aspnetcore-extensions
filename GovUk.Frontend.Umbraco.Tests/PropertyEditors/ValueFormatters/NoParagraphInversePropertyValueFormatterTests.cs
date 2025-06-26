@@ -43,11 +43,17 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             Assert.That(((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
         }
 
+        [Test]
+        public void Single_wrapping_paragraph_with_no_class_is_removed()
+        {
+            TinyMCEValueFormattersTestHelper.SingleWrappingParagraphWithNoClassIsRemoved(
+                new NoParagraphInversePropertyValueFormatter());
+        }
 
         [Test]
-        public void Single_wrapping_paragraph_is_removed()
+        public void Single_wrapping_paragraph_with_class_is_left_alone()
         {
-            TinyMCEValueFormattersTestHelper.SingleWrappingParagraphIsRemoved(
+            TinyMCEValueFormattersTestHelper.SingleWrappingParagraphWithClassIsLeftAlone(
                 new NoParagraphInversePropertyValueFormatter());
         }
 
@@ -80,7 +86,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
         public void Style_attribute_is_removed_from_unordered_lists()
         {
             TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromUnorderedLists(
-                new GovUkTypographyPropertyValueFormatter());
+                new NoParagraphInversePropertyValueFormatter());
         }
 
         [TestCase("circle")]
@@ -88,7 +94,22 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
         public void Permitted_style_attribute_is_converted_to_class_on_unordered_lists(string listStyleType)
         {
             TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnUnorderedLists(
-                new GovUkTypographyPropertyValueFormatter(), listStyleType);
+                new NoParagraphInversePropertyValueFormatter(), listStyleType);
+        }
+
+        [Test]
+        public void Style_attribute_is_removed_from_paragraphs()
+        {
+            TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromParagraphs(
+                new NoParagraphInversePropertyValueFormatter());
+        }
+
+        [TestCase("text-align: center", "govuk-!-text-align-centre")]
+        [TestCase("text-align: right", "govuk-!-text-align-right")]
+        public void Permitted_style_attribute_is_converted_to_class_on_paragraphs(string styleAttribute, string expectedClass)
+        {
+            TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(
+                new NoParagraphInversePropertyValueFormatter(), styleAttribute, expectedClass);
         }
     }
 }

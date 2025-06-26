@@ -16,5 +16,7 @@
         public const string TaskListStatusCompleted = "Task list - Completed";
         public const string TaskListStatusNotApplicable = "Task list - Not applicable";
         public const string TaskListStatusError = "Task list - Error";
+
+        public const string OpensInNewTab = "(opens in a new tab)";
     }
 }

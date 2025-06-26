@@ -32,7 +32,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 }
                 else if (documentContext.Href.EndsWith(".docx") || documentContext.Href.EndsWith(".doc"))
                 {
-                    if (string.IsNullOrEmpty(documentContext.Pages))
+                    if (documentContext.Pages == "0")
                     {
                         output.PostContent.SetHtmlContent($"<br /><span class=\"doc fileicon\">Word</span> {documentContext.KbSize}KB </dt>");
                     }
@@ -43,7 +43,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 }
                 else if (documentContext.Href.EndsWith(".dotx"))
                 {
-                    if (string.IsNullOrEmpty(documentContext.Pages))
+                    if (documentContext.Pages == "0")
                     {
                         output.PostContent.SetHtmlContent($"<br /><span class=\"doc fileicon\">DOTX</span> {documentContext.KbSize}KB </dt>");
                     }
@@ -54,7 +54,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 }
                 else if (documentContext.Href.EndsWith(".pptx"))
                 {
-                    if (string.IsNullOrEmpty(documentContext.Pages))
+                    if (documentContext.Pages == "0")
                     {
                         output.PostContent.SetHtmlContent($"<br /><span class=\"powerpoint fileicon\">PPTX</span> {documentContext.KbSize}KB </dt>");
                     }
@@ -65,7 +65,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 }
                 else if (documentContext.Href.EndsWith(".rtf"))
                 {
-                    if (string.IsNullOrEmpty(documentContext.Pages))
+                    if (documentContext.Pages == "0")
                     {
                         output.PostContent.SetHtmlContent($"<br /><span class=\"misc fileicon\">RTF</span> {documentContext.KbSize}KB </dt>");
                     }
@@ -76,7 +76,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 }
                 else if (documentContext.Href.EndsWith(".odt"))
                 {
-                    if (string.IsNullOrEmpty(documentContext.Pages))
+                    if (documentContext.Pages == "0")
                     {
                         output.PostContent.SetHtmlContent($"<br /><span class=\"misc fileicon\">ODT</span> {documentContext.KbSize}KB </dt>");
                     }

@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
     searchContentApiUrl = searchAside.getAttribute("data-search-content-url");
     getContentByIdApiUrl = searchAside.getAttribute("data-content-by-id-url");
 
-    const searchResultsSection = document.getElementsByClassName("govuk-heading-m tpr-search-results__heading")[0];
+    const searchResultsSection = document.getElementsByClassName("tpr-search-results__heading")[0];
     const headingLevel = searchResultsSection.tagName.toLowerCase();
 
     const headingLevelNumber = parseInt(headingLevel.replace('h', ''));

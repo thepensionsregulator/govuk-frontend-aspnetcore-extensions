@@ -37,4 +37,9 @@
 
 .tpr-document .fileicon.excel {
     background-color: $tpr-colour-camarone;
+    text-transform: uppercase;
+}
+
+.tpr-document .fileicon.misc {
+    background-color: $tpr-colour-eclipse;
 }

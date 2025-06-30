@@ -200,7 +200,7 @@ describe('navigateToSearchButtonOnClick', () => {
 });
 
 describe('removeNoResultsFound', () => {
-    it('remove the no result found heading if available', () => {
+    it('removes the no result found heading if available', () => {
         document.body.innerHTML = `
             <h3 class="tpr-search-results-no-results-found">No results found</h3>
         `;

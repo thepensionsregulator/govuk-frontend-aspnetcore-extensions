@@ -61,9 +61,7 @@ The Search results component also has the following settings for configuration:
 
 ![Search results component block settings](../images/tpr-search-results-component-block-settings.png)
 
-This component should be accompanied with a `link, styled as a button` component that takes the user to the search results component on the page.
-
-The link requires the following the CSS class `tpr-search-results-nav-button`
+This component should be accompanied with a `link, styled as a button` component using the CSS class `tpr-search-results-nav-button`. When clicked, it should navigate the user to the search results section on the page.
 
 ![Search Q&As link button](../images/tpr-search-results-component-link-button-settings.png)
 

@@ -1,7 +1,7 @@
 ﻿import '@testing-library/jest-dom';
 
 import { jest } from '@jest/globals';
-import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick } from '../wwwroot/tpr/tpr-search-results';
+import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound } from '../wwwroot/tpr/tpr-search-results';
 
 
 const setupBlankComponent = () => {
@@ -196,5 +196,18 @@ describe('navigateToSearchButtonOnClick', () => {
 
         expect(() => navigateToSearchButtonOnClick(mockEvent)).not.toThrow();
         expect(mockEvent.preventDefault).toHaveBeenCalled();
+    });
+});
+
+describe('removeNoResultsFound', () => {
+    it('remove the no result found heading if available', () => {
+        document.body.innerHTML = `
+            <h3 class="tpr-search-results-no-results-found">No results found</h3>
+        `;
+
+        removeNoResultsFound();
+
+        const noResultsFound = document.getElementsByClassName('tpr-search-results-no-results-found')[0]
+        expect(noResultsFound).toBeUndefined();
     });
 });

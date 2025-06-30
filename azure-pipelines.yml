@@ -64,7 +64,7 @@ steps:
 
   - script: |
       cd $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions
-      npx jest --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura
+      npm test
     displayName: Run JS tests
     continueOnError: false # Test failures should fail the build
 

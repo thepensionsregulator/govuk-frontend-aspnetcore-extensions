@@ -22,7 +22,7 @@ We add support for:
 
 - Configuring the text for the following components in Umbraco:
 
-  - [Button](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/button.md)
+  - [Button](/docs/components/button.md)  
   - [Checkboxes](/docs/components/checkboxes.md)
   - [Character count](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/character-count.md)
   - [Date input](/docs/components/date-input.md)
@@ -40,18 +40,18 @@ We add support for:
 
   - [Task list summary](/docs/components/task-list-summary.md)
   - [Task list](/docs/components/task-list.md)
-  - [TPR back to top](/docs/components/tpr-back-to-top.md)
   - [TPR back to menu](/docs/components/tpr-back-to-menu.md)
+  - [TPR back to top](/docs/components/tpr-back-to-top.md)
   - [TPR box](/docs/components/tpr-box.md)
+  - [TPR context bar](/docs/components/tpr-context-bar.md)  
   - [TPR documents](/docs/components/tpr-documents.md)
   - [TPR header bar](/docs/components/tpr-header-bar.md)
-  - [TPR context bar](/docs/components/tpr-context-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
-  - [TPR YouTube video](/docs/components/tpr-youtube-video.md)
   - [TPR related links](/docs/components/tpr-related-links.md)
   - [TPR search results](/docs/components/tpr-search-results.md)
   - [TPR section cards](/docs/components/tpr-section-cards.md)
   - [TPR timeline](/docs/components/tpr-timeline.md)
+  - [TPR YouTube video](/docs/components/tpr-youtube-video.md)
 
 - The Pensions Regulator (TPR) styling for all of the above components, and:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)

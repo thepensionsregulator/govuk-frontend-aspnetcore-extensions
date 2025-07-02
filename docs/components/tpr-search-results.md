@@ -22,9 +22,9 @@ _Required_
 
 | Attribute             | Type                   | Description  |
 |-----------------------|------------------------|------------- |
-| `popular-content-url` | `string`               | This should return a list of content to show when the page loads. The example app provides an example of the expected structure                              |
-| `content-by-id-url`   | `string`               | This should return a singular result and allow the id of the item to be appended to the URL. The example app provides an example of the expected structure   |
-| `search-content-url`  | `string`               | This should return a list of keys that can be retrieved by id. The example app provides an example of the expected structure                                 |
+| `popular-content-url` | `string`               | This should return a list of content to show when the page loads. The expected structure is documented below.                          |
+| `content-by-id-url`   | `string`               | This should return a singular result and allow the id of the item to be appended to the URL. The expected structure is documented below.   |
+| `search-content-url`  | `string`               | This should return a list of keys that can be retrieved by id. The expected structure is documented below.                                |
 
 ### `<tpr-search-results-input>`
 _Required_

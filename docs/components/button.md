@@ -3,7 +3,7 @@
 Implements the [Button component](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/button.md) from the GOV.UK Design System.  
 See [ASP.NET syntax for the Button component](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/button.md) for usage examples.
 
-## Umbraco Integration
+## Umbraco
 
 You can add a Button component to a block grid or block list in Umbraco.  
 For usage examples, see the 'Button' page in the Umbraco example app.
@@ -20,4 +20,4 @@ If you use the `Link, styled as a button` component:
   <span class="govuk-visually-hidden">(opens in new tab)</span>
   ```
 
-- The text inside the span is defined by the `OpensInNewTab` dictionary value in `DictionaryConstants.cs`
+- The text inside the span is set using the `(opens in new tab)` dictionary key in Umbraco. You can configure the value in Umbraco to change the message shown to screen reader users.

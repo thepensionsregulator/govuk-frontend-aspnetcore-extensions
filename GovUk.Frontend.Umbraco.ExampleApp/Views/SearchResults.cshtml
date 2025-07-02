@@ -2,6 +2,10 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SearchResults>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 
+@section head {
+    <title>@Model.PageHeadingOrName()</title>
+}
+
 @section scripts {
     <script src="/_Content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.js" type="module"></script>
 }

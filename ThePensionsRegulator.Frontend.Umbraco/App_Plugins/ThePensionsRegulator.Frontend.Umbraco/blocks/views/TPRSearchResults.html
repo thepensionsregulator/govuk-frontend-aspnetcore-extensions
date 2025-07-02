@@ -37,7 +37,7 @@
                 </li>
 
                 <li ng-repeat="link in block.data.footerLinks">
-                    <a href="{{link.url}}" class="govuk-link">{{link.name}}</a>
+                    <a href="{{link.url}}" class="govuk-link">{{link.nodeName || link.name}}</a>
                 </li>
             </ul>
         </footer>

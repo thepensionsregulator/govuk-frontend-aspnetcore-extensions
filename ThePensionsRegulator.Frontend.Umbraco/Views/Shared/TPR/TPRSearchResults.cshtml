@@ -3,18 +3,17 @@
 @using Umbraco.Cms.Web.Common
 @using Microsoft.Extensions.Configuration
 @using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
-@inject UmbracoHelper Umbraco
-@inject IConfiguration Configuration
+@inject IConfiguration configuration
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
-    var searchResultsSection = Configuration.GetSection("SearchResultsApiEndpoints");
+    var searchResultsSection = configuration.GetSection("SearchResultsApiEndpoints");
 
     var heading = Model.Content.Value<string>(TprPropertyAliases.RelatedLinksHeading);
-    var links = Model.Content.Value<IEnumerable<Link>>("footerlinks");
+    var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.FooterLinks);
 
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-    var headingClass = Model.Settings.Value<string?>("headingClass");
+    var headingClass = Model.Settings.Value<string?>(TprPropertyAliases.HeadingClass);
 
     if (!Int32.TryParse(Model.Settings?.Value<string>(GovUkPropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out int headingLevel))
     {

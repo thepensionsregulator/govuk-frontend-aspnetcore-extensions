@@ -14,6 +14,8 @@
         public const string DocumentDescription = "description";
         public const string DocumentNumberOfPages = "numberOfPages";
         public const string DocumentsBlockList = "documents";
+        public const string FooterLinks = "footerlinks";
+        public const string HeadingClass = "headingClass";
         public const string SectionCards = "cards";
         public const string SectionCardLink = "link";
         public const string SectionCardNameProperty = "titleFieldName";

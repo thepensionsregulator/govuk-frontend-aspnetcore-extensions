@@ -29,6 +29,12 @@
 
     a {
         display: block;
+        margin-right: govuk-spacing(3);
+        border: 2px solid red;
+
+        &:last-child {
+            margin-right: 0;
+        }
     }
 
     #tpr-search-results-show-more-questions {

@@ -144,13 +144,13 @@ function createElementWithClassName(elementName, className) {
 
 function createNoResultsFoundHeading() {
     const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
-    noResultsHeading.className = "govuk-heading-m tpr-search-results-no-results-found";
+    noResultsHeading.className = "govuk-heading-m tpr-search-results__no-results-found";
     noResultsHeading.textContent = "No results found";
     return noResultsHeading;
 }
 
 function removeNoResultsFound() {
-    const element = document.getElementsByClassName('tpr-search-results-no-results-found')[0];
+    const element = document.getElementsByClassName('tpr-search-results__no-results-found')[0];
     if (element != null) {
         element.remove();
     }
@@ -196,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     initaliseAccordion(popularContentApiUrl);
 
-    const navigateToSearchButton = document.getElementsByClassName("tpr-search-results-nav-button")[0];
+    const navigateToSearchButton = document.getElementsByClassName("tpr-search-results__nav-button")[0];
     if (navigateToSearchButton != null) {
         const newTabSpan = navigateToSearchButton.querySelector("span.govuk-visually-hidden");
         if (newTabSpan) {

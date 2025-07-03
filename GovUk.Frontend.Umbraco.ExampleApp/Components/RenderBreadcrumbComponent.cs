@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using ThePensionsRegulator.Frontend.Umbraco.Models;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco;
@@ -19,10 +20,12 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Components
             else if (breadcrumbLinksService is null)
             {
                 ViewModel.Error = "Breadcrumb links service is not initialised.";
+                throw new ArgumentNullException(nameof(breadcrumbLinksService), ViewModel.Error);
             }
             else
             {
                 ViewModel.Error = "Published context is not initialised.";
+                throw new ArgumentNullException(nameof(publishedContext), ViewModel.Error);
             }
         }
 

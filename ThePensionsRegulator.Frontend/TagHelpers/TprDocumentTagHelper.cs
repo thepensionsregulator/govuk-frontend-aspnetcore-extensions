@@ -28,7 +28,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             if (string.IsNullOrEmpty(Href)) { throw new ArgumentNullException(nameof(Href), "Document href cannot be null"); }
-            if (DatePublished == "January 0001" || DatePublished == "Ionawr 0001") { DatePublished = null; }
 
             var documentContext = (TprDocumentContext)context.Items[typeof(TprDocumentsTagHelper)];
             documentContext.Href = Href;

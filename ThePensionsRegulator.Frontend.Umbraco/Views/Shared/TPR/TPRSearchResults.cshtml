@@ -9,13 +9,13 @@
 @{
     var searchResultsSection = configuration.GetSection("SearchResultsApiEndpoints");
 
-    var heading = Model.Content.Value<string>(TprPropertyAliases.RelatedLinksHeading);
-    var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.FooterLinks);
+    var heading = Model.Content.Value<string>(TprPropertyAliases.SearchResultsHeading);
+    var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.SearchResultsFooterLinks);
 
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-    var headingClass = Model.Settings.Value<string?>(TprPropertyAliases.HeadingClass);
+    var headingClass = Model.Settings.Value<string?>(TprPropertyAliases.SearchResultsHeadingClass);
 
-    string headingLevelProperty = Model.Settings?.Value<string>(GovUkPropertyAliases.HeadingLevel) ?? string.Empty;
+    string headingLevelProperty = Model.Settings?.Value<string>(TprPropertyAliases.SearchResultsHeadingLevel) ?? string.Empty;
     var headingLevel = headingLevelProperty.Replace("h", string.Empty).Replace("H", string.Empty);
 
     if (!int.TryParse(headingLevel, out int numericHeadingLevel))

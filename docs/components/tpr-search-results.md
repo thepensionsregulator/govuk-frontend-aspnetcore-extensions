@@ -3,6 +3,7 @@
 You can add a search results component to your razor views by using the provided tag helper tags.
 
 ## Example
+
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
 <tpr-search-results popular-content-url="/SearchResultsData/popularContentExample.json" content-by-id-url="/SearchResultsData" search-content-url="/SearchResultsData/searchResults.json">
@@ -18,31 +19,33 @@ You can add a search results component to your razor views by using the provided
 ## API
 
 ### `<tpr-search-results>`
+
 _Required_
 
-| Attribute             | Type                   | Description  |
-|-----------------------|------------------------|------------- |
-| `popular-content-url` | `string`               | This should return a list of content to show when the page loads. The expected structure is documented below.                          |
-| `content-by-id-url`   | `string`               | This should return a singular result and allow the id of the item to be appended to the URL. The expected structure is documented below.   |
-| `search-content-url`  | `string`               | This should return a list of keys that can be retrieved by id. The expected structure is documented below.                                |
+| Attribute             | Type     | Description                                                                                                                              |
+| --------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `popular-content-url` | `string` | This should return a list of content to show when the page loads. The expected structure is documented below.                            |
+| `content-by-id-url`   | `string` | This should return a singular result and allow the id of the item to be appended to the URL. The expected structure is documented below. |
+| `search-content-url`  | `string` | This should return a list of keys that can be retrieved by id. The expected structure is documented below.                               |
 
 ### `<tpr-search-results-input>`
+
 _Required_
 
 Creates the label, input and button elements. Allows label title and heading to be overwritten.
 
-| Attribute             | Type                  | Default value   | Description   |
-|-----------------------|-----------------------|-----------------|---------------|
-| `heading-level`       | `int`                 | 2               | The heading level which contains the heading text. Must be between 2 and 6    |
-| `govuk-heading-class` | `string`              | govuk-heading-l | The class of the heading and must be one of the following 'govuk-heading-s', 'govuk-heading-m', 'govuk-heading-l' or 'govuk-heading-xl'   |
+| Attribute             | Type     | Default value   | Description                                                                                                                             |
+| --------------------- | -------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `heading-level`       | `int`    | 2               | The heading level which contains the heading text. Must be between 2 and 6                                                              |
+| `govuk-heading-class` | `string` | govuk-heading-l | The class of the heading and must be one of the following 'govuk-heading-s', 'govuk-heading-m', 'govuk-heading-l' or 'govuk-heading-xl' |
 
 ### `<tpr-search-results-footer-links>`
 
-Sets the HTML content for the footer. Child elements are required to be `a` tags. 
+Sets the HTML content for the footer. Child elements are required to be `a` tags.
 
 ## Umbraco
 
-Add a `Search results` component anywhere in a block grid or block list using the `TPR block grid` data type. 
+Add a `Search results` component anywhere in a block grid or block list using the `TPR block grid` data type.
 
 ![Search results component block](../images/tpr-search-results-component-block.png)
 
@@ -61,7 +64,7 @@ The Search results component also has the following settings for configuration:
 
 ![Search results component block settings](../images/tpr-search-results-component-block-settings.png)
 
-This component should be accompanied with a `link, styled as a button` component using the CSS class `tpr-search-results-nav-button`. When clicked, it should navigate the user to the search results section on the page.
+This component should be accompanied with a `link, styled as a button` component using the CSS class `tpr-search-results__nav-button`. When clicked, it should navigate the user to the search results section on the page.
 
 ![Search Q&As link button](../images/tpr-search-results-component-link-button-settings.png)
 
@@ -70,10 +73,14 @@ If JavaScript is not available then this component will not display and the acco
 ### Configuration
 
 #### JavaScript
+
 The JavaScript file `tpr-search-results.js` is provided as part of the `ThePensionsRegulator.Frontend` nuget package. This will need to be included in any view that uses this component.
 
 ```html
-<script src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.js" type="module"></script>
+<script
+  src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.js"
+  type="module"
+></script>
 ```
 
 #### Appsettings
@@ -81,8 +88,9 @@ The JavaScript file `tpr-search-results.js` is provided as part of the `ThePensi
 Three URLs are required to be configured to allow this component to show content.
 
 `PopularContentUrl`
-This should return a list of content to show when the page loads. 
+This should return a list of content to show when the page loads.
 Example of the expected structure
+
 ```json
 [
   {
@@ -101,8 +109,9 @@ Example of the expected structure
 ```
 
 `ContentByIdUrl`
-This should return a singular result and allow the id of the item to be appended to the URL. 
+This should return a singular result and allow the id of the item to be appended to the URL.
 Example of the expected structure
+
 ```json
 {
   "key": "example1.json",
@@ -112,8 +121,9 @@ Example of the expected structure
 ```
 
 `SearchContentUrl`
-This should return a list of keys that can be retrieved by id. 
+This should return a list of keys that can be retrieved by id.
 Example of the expected structure
+
 ```json
 {
   "results": [

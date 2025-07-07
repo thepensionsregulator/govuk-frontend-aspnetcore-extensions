@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Who is Luke Skywalker's father?",
+    "pageContent": "<p class=\"govuk-body\">Luke Skywalker's father is Anakin Skywalker, who later becomes known as Darth Vader.</p>"
+  },
+  {
+    "name": "What is the Force?",
+    "pageContent": "<p class=\"govuk-body\">The Force is a mystical energy field in the Star Wars universe that gives Jedi and Sith their power. It binds the galaxy together and can be used for both good and evil.</p>"
+  },
+  {
+    "name": "What order should I watch the Star Wars movies in?",
+    "pageContent": "<p class=\"govuk-body\">You can watch Star Wars movies in release order, chronological order, or the 'Machete Order.' Release order starts with Episode IV, while chronological order starts with Episode I.</p>"
+  },
+  {
+    "name": "Who are the Sith and the Jedi?",
+    "pageContent": "<p class=\"govuk-body\">The Jedi are peacekeepers who use the light side of the Force, while the Sith are their adversaries who use the dark side for power and domination.</p>"
+  },
+  {
+    "name": "What is the difference between the Death Star and Starkiller Base?",
+    "pageContent": "<p class=\"govuk-body\">The Death Star is a massive space station capable of destroying planets, while Starkiller Base is a larger weapon built into a planet that can destroy entire star systems.</p>"
+  }
+]

@@ -24,7 +24,8 @@
             var docLinkType = documentLink.Type;
             var docTitle = documentLink.Name;
             var docPages = document.Content.Value<string>(TprPropertyAliases.DocumentNumberOfPages);
-            var docDatePublished = document.Content.Value<DateTime>(TprPropertyAliases.DocumentDatePublished).ToString("MMMM yyyy");
+            var dteValue = document.Content.Value<DateTime>(TprPropertyAliases.DocumentDatePublished);
+            var docDatePublished = dteValue > DateTime.MinValue ? dteValue.ToString("MMMM yyyy") : null;
             var docDescription = document.Content.Value<string>(TprPropertyAliases.DocumentDescription);
 
             if (docLinkType == LinkType.Media)

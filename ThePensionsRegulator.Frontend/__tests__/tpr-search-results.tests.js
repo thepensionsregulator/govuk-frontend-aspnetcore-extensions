@@ -1,7 +1,7 @@
 ﻿import '@testing-library/jest-dom';
 
 import { jest } from '@jest/globals';
-import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick } from '../wwwroot/tpr/tpr-search-results';
+import { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound } from '../wwwroot/tpr/tpr-search-results';
 
 
 const setupBlankComponent = () => {
@@ -51,7 +51,7 @@ describe('initialise accordion', () => {
 
         await initaliseAccordion();
 
-        const result = document.body.querySelector('.tpr-search-results-no-results-found');
+        const result = document.body.querySelector('.tpr-search-results__no-results-found');
         const searchHeading = document.getElementsByClassName('tpr-search-results__heading')[0];
         const headingLevel = searchHeading.tagName.toLowerCase();
         const headingLevelNumber = parseInt(headingLevel.replace('h', ''));
@@ -100,7 +100,7 @@ describe('initialise accordion', () => {
         const mockEvent = { preventDefault: jest.fn() };
         await buttonOnClick(mockEvent);
 
-        var result = document.body.querySelector('.tpr-search-results-no-results-found');
+        var result = document.body.querySelector('.tpr-search-results__no-results-found');
 
         expect(result).toHaveTextContent('No results found');
         expect(mockEvent.preventDefault).toHaveBeenCalled();
@@ -196,5 +196,18 @@ describe('navigateToSearchButtonOnClick', () => {
 
         expect(() => navigateToSearchButtonOnClick(mockEvent)).not.toThrow();
         expect(mockEvent.preventDefault).toHaveBeenCalled();
+    });
+});
+
+describe('removeNoResultsFound', () => {
+    it('removes the no result found heading if available', () => {
+        document.body.innerHTML = `
+            <h3 class="tpr-search-results__no-results-found">No results found</h3>
+        `;
+
+        removeNoResultsFound();
+
+        const noResultsFound = document.getElementsByClassName('tpr-search-results__no-results-found')[0]
+        expect(noResultsFound).toBeUndefined();
     });
 });

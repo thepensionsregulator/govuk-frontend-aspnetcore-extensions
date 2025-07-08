@@ -25,9 +25,15 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
 
     a {
         display: block;
+        margin-right: govuk-spacing(3);
+    }
+
+    & > :last-child a {
+            margin-right: 0;
     }
 
     #tpr-search-results-show-more-questions {

@@ -10,10 +10,6 @@
 @inject IUmbracoPublishedContentAccessor publishedContext
 @{
     var currentPage = publishedContext.PublishedContent;
-    var ancestors = currentPage.Ancestors();
-    var siblings = currentPage.Siblings();
-    var children = currentPage.Children();
-
     var rootAncestorLink = Model.Content.Value<Link>(TprPropertyAliases.SideNavigationRoot);
     var rootAncestorChildren = rootAncestorLink.Content.Children;
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
@@ -26,31 +22,48 @@
     <ul>
         @foreach (IPublishedContent level1Child in rootAncestorChildren)
         {
-            @if (level1Child.Level == rootAncestorLink.Content.Level + 1)
+            @if (level1Child == currentPage || currentPage.Ancestors().Contains(level1Child))
             {
-                @if (level1Child == currentPage || level1Child.Children().Contains(currentPage))
-                {
-                    <li>
-                        <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
-                        @if (level1Child.Children().Any())
-                        {
-                            <ul>
-                                @foreach (IPublishedContent level2Child in level1Child.Children())
+                <li>
+                    <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
+                    @if (level1Child.Children().Any())
+                    {
+                        <ul>
+                            @foreach (IPublishedContent level2Child in level1Child.Children())
+                            {
+                                @if (level2Child == currentPage || currentPage.Ancestors().Contains(level2Child))
+                                {
+                                    <li>
+                                        <a class="govuk-link" href="@level2Child.Url(publishedUrlProvider)">@level2Child.Name</a>
+                                        @if (level2Child.Children().Any())
+                                        {
+                                            <ul>
+                                                @foreach (IPublishedContent level3Child in level2Child.Children())
+                                                {
+                                                    <li>
+                                                        <a class="govuk-link" href="@level3Child.Url(publishedUrlProvider)">@level3Child.Name</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                    </li>
+                                }
+                                else
                                 {
                                     <li>
                                         <a class="govuk-link" href="@level2Child.Url(publishedUrlProvider)">@level2Child.Name</a>
                                     </li>
                                 }
-                            </ul>
-                        }
-                    </li>
-                }
-                else
-                {
-                    <li>
-                        <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
-                    </li>
-                }
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
+                </li>
             }
         }
     </ul>

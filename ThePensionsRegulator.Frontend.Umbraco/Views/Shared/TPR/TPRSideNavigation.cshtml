@@ -13,6 +13,15 @@
     var rootAncestorLink = Model.Content.Value<Link>(TprPropertyAliases.SideNavigationRoot);
     var rootAncestorChildren = rootAncestorLink.Content.Children;
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+
+    var blacklistedPages = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.SideNavigationBlacklistedPages);
+    List<string> blacklistedNames = new();
+    List<string> blacklistedUrls = new();
+    foreach (var pageLink in blacklistedPages)
+    {
+        blacklistedNames.Add(pageLink.Name);
+        blacklistedUrls.Add(pageLink.Url);
+    }
 }
 
 <nav class="@cssClasses">
@@ -22,6 +31,8 @@
     <ul>
         @foreach (IPublishedContent level1Child in rootAncestorChildren)
         {
+            @if (blacklistedNames.Contains(level1Child.Name) || blacklistedUrls.Contains(level1Child.Url(publishedUrlProvider))) { continue; }
+
             @if (level1Child == currentPage || currentPage.Ancestors().Contains(level1Child))
             {
                 <li>
@@ -31,6 +42,8 @@
                         <ul>
                             @foreach (IPublishedContent level2Child in level1Child.Children())
                             {
+                                @if (blacklistedNames.Contains(level2Child.Name) || blacklistedUrls.Contains(level2Child.Url(publishedUrlProvider))) { continue; }
+
                                 @if (level2Child == currentPage || currentPage.Ancestors().Contains(level2Child))
                                 {
                                     <li>
@@ -40,6 +53,8 @@
                                             <ul>
                                                 @foreach (IPublishedContent level3Child in level2Child.Children())
                                                 {
+                                                    @if (blacklistedNames.Contains(level3Child.Name) || blacklistedUrls.Contains(level3Child.Url(publishedUrlProvider))) { continue; }
+
                                                     <li>
                                                         <a class="govuk-link" href="@level3Child.Url(publishedUrlProvider)">@level3Child.Name</a>
                                                     </li>

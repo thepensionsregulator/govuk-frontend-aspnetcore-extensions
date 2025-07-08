@@ -22,7 +22,7 @@ namespace ThePensionsRegulator.Frontend.Services
 
             var destination = new Uri(destinationUrl, UriKind.RelativeOrAbsolute);
 
-            if (!destination.IsAbsoluteUri || !IsTprHost(destination.Host) || !IsTprHost(requestHost))
+            if (!destination.IsAbsoluteUri || !IsTprHost(destination.Host) || IsTprAutomaticEnrolmentHost(destination.Host) || !IsTprHost(requestHost))
             {
                 return destinationUrl;
             }
@@ -72,19 +72,25 @@ namespace ThePensionsRegulator.Frontend.Services
             return IsTprLocal(segments) || IsTprNonProd(segments) || IsTprProd(segments);
         }
 
+        private static bool IsTprAutomaticEnrolmentHost(string host)
+        {
+            var segments = host.ToLowerInvariant().Split(".");
+            return segments.Length > 4 && segments[^4] == "ae" && segments[^3] == "tpr" && segments[^2] == "gov" && segments[^1] == "uk";
+        }
+
         private static bool IsTprProd(string[] segments)
         {
-            return segments.Length > 3 && segments[segments.Length - 3] == "thepensionsregulator" && segments[segments.Length - 2] == "gov" && segments[segments.Length - 1] == "uk";
+            return segments.Length > 3 && segments[^3] == "thepensionsregulator" && segments[^2] == "gov" && segments[^1] == "uk";
         }
 
         private static bool IsTprNonProd(string[] segments)
         {
-            return segments.Length > 4 && segments[segments.Length - 3] == "tpr" && segments[segments.Length - 2] == "gov" && segments[segments.Length - 1] == "uk";
+            return segments.Length > 4 && segments[^3] == "tpr" && segments[^2] == "gov" && segments[^1] == "uk";
         }
 
         private static bool IsTprLocal(string[] segments)
         {
-            return segments.Length > 2 && segments[segments.Length - 2] == "tpr" && segments[segments.Length - 1] == "local";
+            return segments.Length > 2 && segments[^2] == "tpr" && segments[^1] == "local";
         }
     }
 }

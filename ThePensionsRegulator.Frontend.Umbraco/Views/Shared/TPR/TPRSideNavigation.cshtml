@@ -1,0 +1,57 @@
+@using GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@inject IPublishedUrlProvider publishedUrlProvider
+@inject IUmbracoPublishedContentAccessor publishedContext
+@{
+    var currentPage = publishedContext.PublishedContent;
+    var ancestors = currentPage.Ancestors();
+    var siblings = currentPage.Siblings();
+    var children = currentPage.Children();
+
+    var rootAncestorLink = Model.Content.Value<Link>(TprPropertyAliases.SideNavigationRoot);
+    var rootAncestorChildren = rootAncestorLink.Content.Children;
+    var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+}
+
+<nav class="@cssClasses">
+    <h2>
+        <a class="govuk-link" href="@rootAncestorLink.Url">@rootAncestorLink.Name</a>
+    </h2>
+    <ul>
+        @foreach (IPublishedContent level1Child in rootAncestorChildren)
+        {
+            @if (level1Child.Level == rootAncestorLink.Content.Level + 1)
+            {
+                @if (level1Child == currentPage || level1Child.Children().Contains(currentPage))
+                {
+                    <li>
+                        <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
+                        @if (level1Child.Children().Any())
+                        {
+                            <ul>
+                                @foreach (IPublishedContent level2Child in level1Child.Children())
+                                {
+                                    <li>
+                                        <a class="govuk-link" href="@level2Child.Url(publishedUrlProvider)">@level2Child.Name</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
+                    </li>
+                }
+            }
+        }
+    </ul>
+</nav>

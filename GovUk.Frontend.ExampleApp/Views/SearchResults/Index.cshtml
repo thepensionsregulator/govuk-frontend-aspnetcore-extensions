@@ -1,8 +1,8 @@
 ﻿@using Microsoft.Extensions.Configuration
 @inject IConfiguration config;
 @model TextInputViewModel
-@section scripts {
 
+@section scripts {
     <script src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.js" type="module"></script>
 }
 
@@ -40,7 +40,7 @@
         </p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>the CSS class <strong>'tpr-search-results-nav-button'</strong></li>
+            <li>the CSS class <strong>'tpr-search-results__nav-button'</strong></li>
             <li>a span tag inside the link value to inform screen readers that this link will open in a new tab (only if JavaScript is disabled)</li>
         </ul>
 
@@ -55,7 +55,7 @@
             <p class="govuk-body">
                 <strong>Full example link code</strong><br />
                 &lt;a href="https://www.thepensionsregulator.gov.uk/faq-landing-page" 
-                class="tpr-button--no-next-step tpr-search-results-nav-button" rel="noreferrer noopener" target="_blank"&gt;
+                class="tpr-button--no-next-step tpr-search-results__nav-button" rel="noreferrer noopener" target="_blank"&gt;
                 Search Q&As
                 &lt;span class="govuk-visually-hidden">(opens in new tab)&lt;/span&gt;&lt;/a&gt;
             </p>
@@ -93,13 +93,15 @@
 
         <tpr-search-results popular-content-url="/SearchResultsData/popularContentExample.json" content-by-id-url="/SearchResultsData" search-content-url="/SearchResultsData/searchResults.json">
             <tpr-search-results-input heading-level=2 govuk-heading-class="govuk-heading-m"></tpr-search-results-input>
-            <tpr-search-results-footer-links><a href="/">Home</a></tpr-search-results-footer-links>
+            <tpr-search-results-footer-links>
+                <a href="/">Home</a>
+            </tpr-search-results-footer-links>
         </tpr-search-results>
     </div>
 
     <div class="govuk-grid-column govuk-grid-column-one-third-from-desktop">
         <div class="govuk-grid-row">
-            <govuk-button-link is-start-button="false" rel="noreferrer noopener" class="tpr-button--no-next-step tpr-search-results-nav-button" href="https://www.thepensionsregulator.gov.uk/faq-landing-page" target="_blank">
+            <govuk-button-link is-start-button="false" rel="noreferrer noopener" class="tpr-button--no-next-step tpr-search-results__nav-button" href="https://www.thepensionsregulator.gov.uk/faq-landing-page" target="_blank">
                 Search Q&As
                 <span class="govuk-visually-hidden">(opens in new tab)</span>
             </govuk-button-link>

@@ -1,0 +1,40 @@
+﻿@using ThePensionsRegulator.Frontend.Umbraco
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Web.Common
+@using Microsoft.Extensions.Configuration
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
+@inject IConfiguration configuration
+@addTagHelper *, ThePensionsRegulator.Frontend
+
+@{
+    var searchResultsSection = configuration.GetSection("SearchResultsApiEndpoints");
+
+    var heading = Model.Content.Value<string>(TprPropertyAliases.SearchResultsHeading);
+    var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.SearchResultsFooterLinks);
+
+    var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+    var headingClass = Model.Settings.Value<string?>(TprPropertyAliases.SearchResultsHeadingClass);
+
+    string headingLevelProperty = Model.Settings?.Value<string>(TprPropertyAliases.SearchResultsHeadingLevel) ?? string.Empty;
+    var headingLevel = headingLevelProperty.Replace("h", string.Empty).Replace("H", string.Empty);
+
+    if (!int.TryParse(headingLevel, out int numericHeadingLevel))
+    {
+        numericHeadingLevel = 2;
+    }
+
+    if (string.IsNullOrEmpty(headingClass))
+    {
+        headingClass = "govuk-heading-l";
+    }
+}
+
+<tpr-search-results class="@cssClasses" content-by-id-url=@searchResultsSection["ContentByIdUrl"] search-content-url=@searchResultsSection["SearchContentUrl"] popular-content-url=@searchResultsSection["PopularContentUrl"]>
+    <tpr-search-results-input heading-level=@numericHeadingLevel govuk-heading-class=@headingClass>@heading</tpr-search-results-input>
+    <tpr-search-results-footer-links>
+        @foreach(var link in links)
+        {
+            <a href="@link.Url" target="@link.Target">@link.Name</a>
+        }
+    </tpr-search-results-footer-links>
+</tpr-search-results>

@@ -14,10 +14,7 @@ async function initaliseAccordion() {
     const results = (await response.json());
 
     if (results.length === 0) {
-        const noResultsHeading = createNoResultsFoundHeading();
-        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
-
-        searchBlock.after(noResultsHeading);
+        createNoResultsFoundHeading();
     } else {
         const accordionSections = [];
 
@@ -35,7 +32,10 @@ async function initaliseAccordion() {
 
 function removeAccordion(id) {
     const accordion = document.getElementById(id);
-    accordion.remove();
+
+    if (accordion != null) {
+        accordion.remove();
+    }
 }
 
 function createAccordion(accordionSections) {
@@ -88,17 +88,23 @@ async function buttonOnClick(event) {
     const searchInput = document.getElementById("tpr-search-results-ask-input");
     const searchValue = searchInput.value
 
-    const response = await fetch(`${searchContentApiUrl}?&searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+    if (!searchValue || searchValue.trim() === '') {
+        navigateToSearchInput(false);
+        return;
+    }
 
-    const results = (await response.json()).results;
+    const response = await fetch(`${searchContentApiUrl}?searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+
+    const jsonResults = await response.json();
+
+    const results = jsonResults.results;
 
     removeAccordion("search-results-accordion");
 
     if (results.length === 0) {
-        const noResultsHeading = createNoResultsFoundHeading();
-        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
-        searchBlock.after(noResultsHeading);
+        createNoResultsFoundHeading();
     } else {
+        removeNoResultsFound();
 
         searchResults = [];
 
@@ -137,10 +143,22 @@ function createElementWithClassName(elementName, className) {
 }
 
 function createNoResultsFoundHeading() {
-    const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
-    noResultsHeading.className = "govuk-heading-m tpr-search-results-no-results-found";
-    noResultsHeading.textContent = "No results found";
-    return noResultsHeading;
+    const existingHeading = document.getElementsByClassName('tpr-search-results__no-results-found')[0];
+    if (existingHeading == null) {
+        const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
+        noResultsHeading.className = "govuk-heading-m tpr-search-results__no-results-found";
+        noResultsHeading.textContent = "No results found";
+
+        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
+        searchBlock.after(noResultsHeading);
+    }
+}
+
+function removeNoResultsFound() {
+    const element = document.getElementsByClassName('tpr-search-results__no-results-found')[0];
+    if (element != null) {
+        element.remove();
+    }
 }
 
 function setSearchResults(toSet) {
@@ -148,13 +166,18 @@ function setSearchResults(toSet) {
 }
 
 function navigateToSearchButtonOnClick(event) {
+    navigateToSearchInput(true);
+    event.preventDefault();
+}
+
+function navigateToSearchInput(scrollIntoView) {
     const searchResultsAside = document.getElementById("tpr-search-results-ask-input");
     if (searchResultsAside != null) {
-        searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (scrollIntoView === true) {
+            searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         searchResultsAside.focus({ preventScroll: true });
     }
-
-    event.preventDefault();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -183,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     initaliseAccordion(popularContentApiUrl);
 
-    const navigateToSearchButton = document.getElementsByClassName("tpr-search-results-nav-button")[0];
+    const navigateToSearchButton = document.getElementsByClassName("tpr-search-results__nav-button")[0];
     if (navigateToSearchButton != null) {
         const newTabSpan = navigateToSearchButton.querySelector("span.govuk-visually-hidden");
         if (newTabSpan) {
@@ -198,4 +221,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-export { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick }
+export { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound }

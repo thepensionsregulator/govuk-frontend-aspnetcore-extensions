@@ -14,10 +14,7 @@ async function initaliseAccordion() {
     const results = (await response.json());
 
     if (results.length === 0) {
-        const noResultsHeading = createNoResultsFoundHeading();
-        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
-
-        searchBlock.after(noResultsHeading);
+        createNoResultsFoundHeading();
     } else {
         const accordionSections = [];
 
@@ -91,7 +88,12 @@ async function buttonOnClick(event) {
     const searchInput = document.getElementById("tpr-search-results-ask-input");
     const searchValue = searchInput.value
 
-    const response = await fetch(`${searchContentApiUrl}?&searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+    if (!searchValue || searchValue.trim() === '') {
+        navigateToSearchInput(false);
+        return;
+    }
+
+    const response = await fetch(`${searchContentApiUrl}?searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
 
     const jsonResults = await response.json();
 
@@ -100,9 +102,7 @@ async function buttonOnClick(event) {
     removeAccordion("search-results-accordion");
 
     if (results.length === 0) {
-        const noResultsHeading = createNoResultsFoundHeading();
-        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
-        searchBlock.after(noResultsHeading);
+        createNoResultsFoundHeading();
     } else {
         removeNoResultsFound();
 
@@ -143,10 +143,15 @@ function createElementWithClassName(elementName, className) {
 }
 
 function createNoResultsFoundHeading() {
-    const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
-    noResultsHeading.className = "govuk-heading-m tpr-search-results__no-results-found";
-    noResultsHeading.textContent = "No results found";
-    return noResultsHeading;
+    const existingHeading = document.getElementsByClassName('tpr-search-results__no-results-found')[0];
+    if (existingHeading == null) {
+        const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
+        noResultsHeading.className = "govuk-heading-m tpr-search-results__no-results-found";
+        noResultsHeading.textContent = "No results found";
+
+        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
+        searchBlock.after(noResultsHeading);
+    }
 }
 
 function removeNoResultsFound() {
@@ -161,13 +166,18 @@ function setSearchResults(toSet) {
 }
 
 function navigateToSearchButtonOnClick(event) {
+    navigateToSearchInput(true);
+    event.preventDefault();
+}
+
+function navigateToSearchInput(scrollIntoView) {
     const searchResultsAside = document.getElementById("tpr-search-results-ask-input");
     if (searchResultsAside != null) {
-        searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (scrollIntoView === true) {
+            searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         searchResultsAside.focus({ preventScroll: true });
     }
-
-    event.preventDefault();
 }
 
 document.addEventListener("DOMContentLoaded", function () {

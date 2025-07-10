@@ -10,8 +10,6 @@ variables:
     value: "Any CPU"
   - name: buildConfiguration
     value: "Release"
-  - name: YARN_CACHE_FOLDER
-    value: $(Pipeline.Workspace)/.yarn
   - name: pushPackages
     value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/v')]
 
@@ -44,28 +42,29 @@ steps:
     displayName: Set Node version
 
   - task: Cache@2
+    displayName: Cache node_modules
     inputs:
-      key: 'yarn | "$(Agent.OS)" | $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\yarn.lock'
-      restoreKeys: |
-        yarn | "$(Agent.OS)"
-      path: $(YARN_CACHE_FOLDER)
-    displayName: Cache Yarn packages
+      key: 'npm | "$(Agent.OS)" | $(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/package-lock.json'
+      path: $(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/node_modules
+      cacheHitVar: CACHE_RESTORED
 
-  - task: Yarn@3
+  - task: Npm@1
     inputs:
-      projectDirectory: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
-      arguments: "audit --level moderate --groups dependencies"
-    displayName: yarn audit
+      command: custom
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
+      customCommand: "audit --level moderate --groups dependencies"
+    displayName: npm audit
 
-  - task: Yarn@3
+  - task: Npm@1
     inputs:
-      projectDirectory: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
-      arguments: "--frozen-lockfile"
-    displayName: yarn build
+      command: ci
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
+    displayName: npm ci
+    condition: ne(variables.CACHE_RESTORED, 'true')
 
   - script: |
       cd $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions
-      yarn jest --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura
+      npm test
     displayName: Run JS tests
     continueOnError: false # Test failures should fail the build
 
@@ -103,7 +102,7 @@ steps:
       command: "build"
       arguments: --configuration $(buildConfiguration)
       projects: |
-        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj
+        $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\ThePensionsRegulator.Frontend.Umbraco.csproj
         $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco.Testing\ThePensionsRegulator.Umbraco.Testing.csproj
 
   - task: DotNetCoreCLI@2
@@ -113,16 +112,14 @@ steps:
       arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage"'
       projects: "$(solution)"
 
-  - task: PublishCodeCoverageResults@1
+  - task: PublishCodeCoverageResults@2
     displayName: "Publish code coverage"
     inputs:
-      codeCoverageTool: Cobertura
       summaryFileLocation: $(Agent.TempDirectory)\**\coverage.cobertura.xml
       failIfCoverageEmpty: true
 
   - task: CopyFiles@2
     displayName: Copy GovUk.Frontend package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\bin\$(buildConfiguration)
       Contents: |
@@ -133,7 +130,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy ThePensionsRegulator.Umbraco package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco\bin\$(buildConfiguration)
       Contents: |
@@ -144,7 +140,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy ThePensionsRegulator.Frontend package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend\bin\$(buildConfiguration)
       Contents: |
@@ -155,7 +150,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy GovUk.Frontend.Umbraco package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\bin\$(buildConfiguration)
       Contents: |
@@ -166,7 +160,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy ThePensionsRegulator.Frontend.Umbraco package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\bin\$(buildConfiguration)
       Contents: |
@@ -177,7 +170,6 @@ steps:
 
   - task: CopyFiles@2
     displayName: Copy ThePensionsRegulator.Umbraco.Testing package to staging folder
-    condition: and(succeeded(), eq(variables.pushPackages, true))
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco.Testing\bin\$(buildConfiguration)
       Contents: |
@@ -194,3 +186,10 @@ steps:
       packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg"
       nuGetFeedType: external
       publishFeedCredentials: NUGET
+
+  - task: PublishPipelineArtifact@1
+    condition: not(eq(variables.pushPackages, true))
+    displayName: "Publish packages as artifact"
+    inputs:
+      targetPath: $(Build.ArtifactStagingDirectory)
+      artifactName: packages

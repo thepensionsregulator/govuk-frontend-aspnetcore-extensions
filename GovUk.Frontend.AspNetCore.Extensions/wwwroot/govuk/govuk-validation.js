@@ -2,7 +2,7 @@
 
 // For Jest tests
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-  module.exports = createGovUkValidator;
+    module.exports = createGovUkValidator;
 }
 
 function createGovUkValidator() {
@@ -108,14 +108,25 @@ function createGovUkValidator() {
       if (!summary) {
         return;
       }
-      const list = summary.querySelector("ul");
+
+      const errorSummaryBody = summary.querySelector(".govuk-error-summary__body");
+      if (!errorSummaryBody) {
+          return;
+      }
+
+      let list = errorSummaryBody.querySelector("ul"); 
       if (!list) {
-        return;
+        const ul = document.createElement("ul");
+        ul.classList.add("govuk-list");
+        ul.classList.add("govuk-error-summary__list");
+        errorSummaryBody.appendChild(ul);
+        list = ul;
       }
 
       const textNode = 3;
 
       // Get the current links in the error summary, and the links that need to be there
+
       const currentErrors = [].slice.call(list.querySelectorAll("a"));
 
       const updatedErrors = [].slice
@@ -634,3 +645,5 @@ window.addEventListener("DOMContentLoaded", function () {
     validator.unobtrusive.parse();
   }
 });
+
+export { createGovUkValidator as govuk }

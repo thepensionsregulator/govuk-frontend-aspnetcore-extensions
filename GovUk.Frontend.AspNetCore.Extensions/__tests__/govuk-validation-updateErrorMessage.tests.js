@@ -1,4 +1,5 @@
-const govuk = require("../wwwroot/govuk/govuk-validation");
+import { govuk } from "../wwwroot/govuk/govuk-validation";
+import { jest } from '@jest/globals';
 
 describe("updateErrorMessage", () => {
   it("should set the error message id based on the id of the invalid element", () => {

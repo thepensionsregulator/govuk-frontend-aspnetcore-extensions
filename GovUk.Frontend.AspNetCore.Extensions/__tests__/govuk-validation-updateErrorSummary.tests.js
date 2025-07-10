@@ -1,10 +1,13 @@
-const govuk = require("../wwwroot/govuk/govuk-validation");
+import { govuk } from "../wwwroot/govuk/govuk-validation";
+import { jest } from '@jest/globals';
 
 describe("updateSummary", () => {
   it("should display summary when there is an error", () => {
     document.body.innerHTML = `
       <div class="govuk-error-summary">
-        <ul class="govuk-list govuk-error-summary__list"></ul>
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list"></ul>
+        </div>
       </div>
       <p class="govuk-error-message">Error message</p>`;
 
@@ -20,7 +23,9 @@ describe("updateSummary", () => {
   it("should hide summary when there is no error", () => {
     document.body.innerHTML = `
       <div class="govuk-error-summary">
-        <ul class="govuk-list govuk-error-summary__list"></ul>
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list"></ul>
+        </div>
       </div>`;
 
     govuk().updateErrorSummary();
@@ -35,10 +40,12 @@ describe("updateSummary", () => {
   it("should replace all existing errors", () => {
     document.body.innerHTML = `
       <div class="govuk-error-summary">
-        <ul class="govuk-list govuk-error-summary__list">
-          <li><a href="#old1">Old one</a></li>
-          <li><a href="#old2">Old two</a></li>
-        </ul>
+            <div class="govuk-error-summary__body">
+                <ul class="govuk-list govuk-error-summary__list">
+                    <li><a href="#old1">Old one</a></li>
+                    <li><a href="#old2">Old two</a></li>
+                </ul>
+            </div>
       </div>
       <p id="new1-error" class="govuk-error-message">New one</p>
       <p id="new2-error" class="govuk-error-message">New two</p>`;
@@ -46,7 +53,7 @@ describe("updateSummary", () => {
     govuk().updateErrorSummary();
 
     expect(
-      document.querySelector(".govuk-error-summary > .govuk-list")
+      document.querySelector(".govuk-error-summary__body > .govuk-list")
         .childElementCount
     ).toBe(2);
     expect(
@@ -60,7 +67,9 @@ describe("updateSummary", () => {
   it("doesn't copy the prefix from the error", () => {
     document.body.innerHTML = `
       <div class="govuk-error-summary">
-        <ul class="govuk-list govuk-error-summary__list"></ul>
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list"></ul>
+        </div>
       </div>
       <p id="new1-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span>New one</p>`;
 
@@ -77,7 +86,9 @@ describe("updateSummary", () => {
   it("ignores errors with no content or whitespace", () => {
     document.body.innerHTML = `
       <div class="govuk-error-summary">
-        <ul class="govuk-list govuk-error-summary__list"></ul>
+        <div class="govuk-error-summary__body">
+            <ul class="govuk-list govuk-error-summary__list"></ul>
+        </div>
       </div>
       <p id="new1-error" class="govuk-error-message"><span class="govuk-visually-hidden">Error: </span> </p>`; // deliberate whitespace instead of message
 
@@ -87,4 +98,16 @@ describe("updateSummary", () => {
       document.querySelector(".govuk-error-summary__list").hasChildNodes()
     ).toBe(false);
   });
+
+    it("creates an govuk-error-summary__list if it doesn't exist", () => {
+        document.body.innerHTML = `
+        <div class="govuk-error-summary">
+            <div class="govuk-error-summary__body"></div>
+        </div>
+        <p class="govuk-error-message">Error message</p>`
+
+        govuk().updateErrorSummary();
+
+        expect(document.querySelector(".govuk-error-summary__list")).not.toBeNull();
+    });
 });

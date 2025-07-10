@@ -21,8 +21,8 @@ cd lib\govuk-frontend
 git pull
 git checkout v4.3.0
 cd ..\..
-yarn add govuk-frontend@4.3.0
+npm install govuk-frontend@4.3.0
 git commit -am "Update govuk-frontend to v4.3.0"
 ```
 
-If you've worked on this project before it's possible that someone else has updated the version of GOV.UK Frontend in the meantime. You should run `git submodule update` and `yarn install` periodically to ensure you stay up-to-date.
+If you've worked on this project before it's possible that someone else has updated the version of GOV.UK Frontend in the meantime. You should run `git submodule update` and `npm install` periodically to ensure you stay up-to-date.

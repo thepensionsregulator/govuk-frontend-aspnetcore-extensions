@@ -1,4 +1,5 @@
-const govuk = require("../wwwroot/govuk/govuk-validation");
+import { govuk } from "../wwwroot/govuk/govuk-validation";
+import { jest } from '@jest/globals';
 
 const _mockValidator = {
   methods: {
@@ -14,7 +15,9 @@ describe("govuk-validation with only jQuery Validator mocked", () => {
         </head>
         <main>
             <div class="govuk-error-summary">
-                <ul class="govuk-list govuk-error-summary__list"></ul>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list"></ul>
+                </div>
             </div>
             <div class="govuk-form-group">
                 <input class="govuk-input" data-val="true" data-val-required="This field is required" />
@@ -40,9 +43,11 @@ describe("govuk-validation with only jQuery Validator mocked", () => {
         </head>
         <main>
             <div class="govuk-error-summary">
-                <ul class="govuk-list govuk-error-summary__list">
-                    <li><a href="#field">Error message</a></li>
-                </ul>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        <li><a href="#field">Error message</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="govuk-form-group">
                 <p class="govuk-error-message" id="field-error" data-valmsg-for="field">Error message</p>

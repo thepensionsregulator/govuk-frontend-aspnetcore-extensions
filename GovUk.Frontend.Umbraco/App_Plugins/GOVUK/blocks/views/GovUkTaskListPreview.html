@@ -3,7 +3,7 @@
     <li class="govuk-task-list__item--with-link govuk-task-list__item" ng-repeat="task in block.data.tasks.contentData" aria-hidden="true">
         <div class="govuk-task-list__name-and-hint">
             <span class="govuk-task-list__link govuk-link" href="#" ng-bind-html="task.taskName"></span>
-            <div class="govuk-task-list__hint" ng-bind-html="task.hint.markup" ng-if="task.hint.markup"></div>
+            <div class="govuk-task-list__hint" ng-bind-html="task.hint.markup | safe_html" ng-if="task.hint.markup"></div>
         </div>
         <div class="govuk-task-list__status govuk-task-list__status--not-started">
             <strong class="govuk-tag">Status</strong>

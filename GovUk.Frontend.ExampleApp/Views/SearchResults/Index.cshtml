@@ -1,0 +1,110 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration config;
+@model TextInputViewModel
+
+@section scripts {
+    <script src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.js" type="module"></script>
+}
+
+@{
+    ViewData["Title"] = "Search results";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">
+            The search results component can be added to any page where you want the user to be able to search the Q&A content accessible on <a class="govuk-link" href="https://www.thepensionsregulator.gov.uk/faq-landing-page">The Pensions Regulator website</a>.
+            Currently this is focused on Q&As for Automatic Enrolment.
+        </p>
+
+        <p class="govuk-body">
+            The title and footer links can be overridden. 
+            Footer links will always contain a <strong>'Show more questions'</strong> link, that will show the remaining three questions, two are shown when the page loads.
+            The heading level of the title and its CSS class can be configured via the <strong>'tpr-search-results-input'</strong> tag helper.
+        </p>
+
+        <p class="govuk-body">
+            This component should be accompanied with a link, styled as a button that takes the user to the search results component on the page.
+        </p>
+
+        <p class="govuk-body">
+            The link requires the following
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>the CSS class <strong>'tpr-search-results__nav-button'</strong></li>
+            <li>a span tag inside the link value to inform screen readers that this link will open in a new tab (only if JavaScript is disabled)</li>
+        </ul>
+
+        <div class="tpr-box">
+            <p class="govuk-body">
+                <strong>Example span code</strong><br/>
+                &lt;span class="govuk-visually-hidden">(opens in new tab)&lt;/span&gt;
+            </p>
+        </div>
+
+        <div class="tpr-box">
+            <p class="govuk-body">
+                <strong>Full example link code</strong><br />
+                &lt;a href="https://www.thepensionsregulator.gov.uk/faq-landing-page" 
+                class="tpr-button--no-next-step tpr-search-results__nav-button" rel="noreferrer noopener" target="_blank"&gt;
+                Search Q&As
+                &lt;span class="govuk-visually-hidden">(opens in new tab)&lt;/span&gt;&lt;/a&gt;
+            </p>
+        </div>
+
+        <p class="govuk-body">
+            The JavaScript file <strong>'tpr-search-results.js'</strong> is provided as part of the <strong>'ThePensionsRegulator.Frontend'</strong> nuget package. This will need to be included in any view that uses this component.
+        </p>
+
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-visually-hidden">Warning</span>
+                This component relies on JavaScript to display content.
+            </strong>
+        </div>
+
+        <p class="govuk-body">
+            If JavaScript is <strong>not available</strong> then this component will <strong>not display</strong> and the accompanying button should take the user to the Q&A landing page in a new tab.
+        </p>
+
+        <p class="govuk-body">
+            Users have shared that they appreciate not losing their place on the original page and opening links in a new tab offers a similar, seamless experience.
+        </p>
+
+        <p class="govuk-body">
+            Three URLs are required to be configured to allow this component to show content. These are configured via attributes on the tag helper.
+        </p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>popular-content-url - This should return a list of content to show when the page loads. The example app provides <a href="/SearchResultsData/popularContentExample.json" target="_blank">an example of the expected structure</a></li>
+            <li>content-by-id-url - This should return a singular result and allow the id of the item to be appended to the URL. The example app provides <a href="/SearchResultsData/example1.json" target="_blank">an example of the expected structure</a></li>
+            <li>search-content-url - This should return a list of keys that can be retrieved by id. The example app provides <a href="/SearchResultsData/searchResults.json" target="_blank">an example of the expected structure</a></li>
+        </ul>
+
+        <tpr-search-results popular-content-url="/SearchResultsData/popularContentExample.json" content-by-id-url="/SearchResultsData" search-content-url="/SearchResultsData/searchResults.json">
+            <tpr-search-results-input heading-level=2 govuk-heading-class="govuk-heading-m"></tpr-search-results-input>
+            <tpr-search-results-footer-links>
+                <a href="/">Home</a>
+            </tpr-search-results-footer-links>
+        </tpr-search-results>
+    </div>
+
+    <div class="govuk-grid-column govuk-grid-column-one-third-from-desktop">
+        <div class="govuk-grid-row">
+            <govuk-button-link is-start-button="false" rel="noreferrer noopener" class="tpr-button--no-next-step tpr-search-results__nav-button" href="https://www.thepensionsregulator.gov.uk/faq-landing-page" target="_blank">
+                Search Q&As
+                <span class="govuk-visually-hidden">(opens in new tab)</span>
+            </govuk-button-link>
+        </div>
+    </div>
+</div>

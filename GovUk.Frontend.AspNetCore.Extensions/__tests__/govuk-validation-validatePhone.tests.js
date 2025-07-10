@@ -1,4 +1,5 @@
-const govuk = require("../wwwroot/govuk/govuk-validation");
+import { govuk } from "../wwwroot/govuk/govuk-validation";
+import { jest } from '@jest/globals';
 
 describe("validatePhone", () => {
   it("should allow valid patterns", () => {

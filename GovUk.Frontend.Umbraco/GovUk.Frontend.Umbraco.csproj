@@ -67,6 +67,7 @@
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />
 		<Content Include="App_Plugins\GOVUK\package.manifest" />
+		<Content Include="Styles\_govuk-spacing.scss" />
 		<Content Include="Styles\_govuk-list.scss" />
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
@@ -88,7 +89,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.7.2" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.9.2" />
 	</ItemGroup>
 
 	<ItemGroup>

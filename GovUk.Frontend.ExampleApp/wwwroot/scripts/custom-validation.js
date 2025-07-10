@@ -1,7 +1,7 @@
-const govuk = createGovUkValidator();
+import { govuk } from "../_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-validation.js";
 
-const validator = govuk.getValidator();
-govuk.createErrorSummary();
+const validator = govuk().getValidator();
+govuk().createErrorSummary();
 
 if (validator) {
     validator.setDefaults({

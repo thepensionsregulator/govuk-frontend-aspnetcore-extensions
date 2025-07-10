@@ -33,7 +33,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Middleware
                         $"style-src 'self' {styleSrcForAblePlayer};" +
                         "img-src 'self' https://i.ytimg.com; " +
                         "frame-src youtube.com www.youtube.com www.youtube-nocookie.com; " +
-                        $"connect-src {connectSrcForHotReload}");
+                        $"connect-src {connectSrcForHotReload} https://www.dev02.tpr.gov.uk/");
             }
 
             await _next(context);

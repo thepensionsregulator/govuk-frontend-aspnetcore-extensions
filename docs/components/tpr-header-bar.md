@@ -76,9 +76,9 @@ Must be inside a `<govuk-header-bar>` element.
 TPR Header Search will display when there is no header content and DisplayHeaderSearch property is set to true. On smaller screen sizes the TPR mobile menu component will take over, and the header search will display as part of the mobile menu when expanded.
 Mobile Menu behaviour has not yet been implemented therefore is a desktop-only component at this time.
 
-TPR Header Search implements the [alphagov/accessible-autocomplete](https://github.com/alphagov/accessible-autocomplete) component, rendering an input box and drop-down box for search resuts.
+TPR Header Search implements the [alphagov/accessible-autocomplete](https://github.com/alphagov/accessible-autocomplete) component, rendering an input box and drop-down box for search results.
 
-Views which require the <tpr-header-search> should also include the 'TPRHeaderSearchAutocomplete' partial view, in order to use the autocomplete functionality.
+Views which require the `<tpr-header-search>` should also include the 'TPRHeaderSearchAutocomplete' partial view, in order to use the autocomplete functionality.
 
 ## Umbraco
 

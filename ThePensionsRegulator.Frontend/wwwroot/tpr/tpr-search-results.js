@@ -169,10 +169,10 @@ function toggleShowMoreButton(hideButton) {
     const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
     if (showMoreButton != null) {
         if (hideButton) {
-            showMoreButton.classList.add('tpr-search-results-show-more-questions__hidden');
+            showMoreButton.classList.add('govuk-visually-hidden');
         }
         else {
-            showMoreButton.classList.remove('tpr-search-results-show-more-questions__hidden');
+            showMoreButton.classList.remove('govuk-visually-hidden');
         }
     }
 }

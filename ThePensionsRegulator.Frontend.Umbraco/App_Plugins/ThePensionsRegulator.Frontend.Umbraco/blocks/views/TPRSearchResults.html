@@ -2,7 +2,7 @@
     <aside class="backoffice-block-view {{block.settingsData.cssClasses}}">
         <ng-content ng-switch="block.settingsData.headingLevel[0]">
             <h3 ng-switch-when="Heading 3" class="{{block.settingsData.headingClass[0]}} tpr-search-results__heading">
-                {{ block.data.heading || 'Search Q&As' }} 
+                {{ block.data.heading || 'Search Q&As' }}
             </h3>
 
             <h4 ng-switch-when="Heading 4" class="{{block.settingsData.headingClass[0]}} tpr-search-results__heading">
@@ -30,7 +30,7 @@
             <button class="govuk-button tpr-button--no-next-step">Ask</button>
         </div>
 
-        <footer>
+        <footer class="tpr-search-results__footer">
             <ul class="govuk-list tpr-search-results__links">
                 <li>
                     <a href="#" class="govuk-link">Show more questions</a>

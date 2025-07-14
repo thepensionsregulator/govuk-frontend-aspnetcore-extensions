@@ -1,0 +1,15 @@
+﻿@using Umbraco.Cms.Core.Routing
+@addTagHelper *, GovUk.Frontend.AspNetCore
+
+@if (string.IsNullOrEmpty(Model.Error))
+{
+    <govuk-breadcrumbs collapse-on-mobile="true">
+
+        @foreach (var item in Model.Ancestors)
+        {
+            <govuk-breadcrumbs-item href="@item.Url">@item.Name</govuk-breadcrumbs-item>
+        }
+        <govuk-breadcrumbs-item>@Model.CurrentPage.Name</govuk-breadcrumbs-item>
+
+    </govuk-breadcrumbs>
+}

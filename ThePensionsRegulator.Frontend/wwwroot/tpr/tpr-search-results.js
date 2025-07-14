@@ -14,10 +14,7 @@ async function initaliseAccordion() {
     const results = (await response.json());
 
     if (results.length === 0) {
-        const noResultsHeading = createNoResultsFoundHeading();
-        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
-
-        searchBlock.after(noResultsHeading);
+        createNoResultsFoundHeading();
     } else {
         const accordionSections = [];
 
@@ -91,7 +88,15 @@ async function buttonOnClick(event) {
     const searchInput = document.getElementById("tpr-search-results-ask-input");
     const searchValue = searchInput.value
 
-    const response = await fetch(`${searchContentApiUrl}?&searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+    if (!searchValue || searchValue.trim() === '') {
+        navigateToSearchInput(false);
+        return;
+    }
+
+    let searchUrl = new URL(searchContentApiUrl, window.location.origin);
+    searchUrl.searchParams.set('searchTerm', searchValue);
+
+    const response = await fetch(searchUrl.toString(), { method: 'GET', headers: { 'Content-Type': 'application/json' } });
 
     const jsonResults = await response.json();
 
@@ -100,9 +105,7 @@ async function buttonOnClick(event) {
     removeAccordion("search-results-accordion");
 
     if (results.length === 0) {
-        const noResultsHeading = createNoResultsFoundHeading();
-        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
-        searchBlock.after(noResultsHeading);
+        createNoResultsFoundHeading();
     } else {
         removeNoResultsFound();
 
@@ -113,13 +116,17 @@ async function buttonOnClick(event) {
             searchResults.push(content);
         }));
 
-        const showNow = searchResults.slice(0, 2);
         const accordionSections = [];
+
+        const showNow = searchResults.slice(0, 2);
+
         showNow.forEach(result => {
             accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
         });
 
         createAccordion(accordionSections);
+
+        toggleShowMoreButton(accordionSections.length == searchResults.length);
     }
 }
 
@@ -133,6 +140,8 @@ async function showMoreAnswersOnClick() {
     });
 
     createAccordion(accordionSections);
+
+    toggleShowMoreButton(accordionSections.length == searchResults.length);
 }
 
 function createElementWithClassName(elementName, className) {
@@ -143,10 +152,29 @@ function createElementWithClassName(elementName, className) {
 }
 
 function createNoResultsFoundHeading() {
-    const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
-    noResultsHeading.className = "govuk-heading-m tpr-search-results__no-results-found";
-    noResultsHeading.textContent = "No results found";
-    return noResultsHeading;
+    const existingHeading = document.getElementsByClassName('tpr-search-results__no-results-found')[0];
+    if (existingHeading == null) {
+        const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
+        noResultsHeading.className = "govuk-heading-m tpr-search-results__no-results-found";
+        noResultsHeading.textContent = "No results found";
+
+        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
+        searchBlock.after(noResultsHeading);
+    }
+
+    toggleShowMoreButton(true);
+}
+
+function toggleShowMoreButton(hideButton) {
+    const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
+    if (showMoreButton != null) {
+        if (hideButton) {
+            showMoreButton.classList.add('govuk-visually-hidden');
+        }
+        else {
+            showMoreButton.classList.remove('govuk-visually-hidden');
+        }
+    }
 }
 
 function removeNoResultsFound() {
@@ -161,13 +189,18 @@ function setSearchResults(toSet) {
 }
 
 function navigateToSearchButtonOnClick(event) {
+    navigateToSearchInput(true);
+    event.preventDefault();
+}
+
+function navigateToSearchInput(scrollIntoView) {
     const searchResultsAside = document.getElementById("tpr-search-results-ask-input");
     if (searchResultsAside != null) {
-        searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (scrollIntoView === true) {
+            searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         searchResultsAside.focus({ preventScroll: true });
     }
-
-    event.preventDefault();
 }
 
 document.addEventListener("DOMContentLoaded", function () {

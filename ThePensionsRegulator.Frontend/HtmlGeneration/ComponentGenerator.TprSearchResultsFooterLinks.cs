@@ -1,15 +1,7 @@
 ﻿using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -19,6 +11,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public virtual TagBuilder GenerateTprSearchResultsFooterLinks(TprSearchFooterLinks footerLinks)
         {
             var outer = new TagBuilder("footer");
+            outer.AddCssClass("tpr-search-results__footer");
 
             var list = new TagBuilder("ul");
             list.AddCssClass("govuk-list");

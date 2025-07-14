@@ -1,0 +1,9 @@
+@import '_tpr-variables.scss';
+
+.side-nav-level2::before {
+    content: "—";
+}
+
+.side-nav-level1 {
+    text-decoration: none;
+}

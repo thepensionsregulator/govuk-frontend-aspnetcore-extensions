@@ -1,73 +1,359 @@
 ﻿@{
     ViewData["Title"] = "Button";
 }
-<span class="govuk-caption-xl">Example application</span>
-<div class="govuk-grid-row govuk-grid-row--tpr-divider">
-    <div class="govuk-grid-column govuk-grid-column-full">
-        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+@section OpenWidthContainer {
+}
+@section CloseWidthContainer {
+}
+@section back {
+    <div class="govuk-width-container">
+        <govuk-back-link href="/">Back</govuk-back-link>
     </div>
-</div>
-
-<p class="govuk-body">The following button styles are supported when using The Pensions Regulator branding. Combining button classes to produce other combinations is not yet supported.</p>
-
-<govuk-button-link is-start-button="true" href="/">Start now</govuk-button-link>
-
-<div class="govuk-button-group">
-    <govuk-button-link is-start-button="false" href="/">Link to next page</govuk-button-link>
-    <govuk-button-link is-start-button="false" class="govuk-button--secondary" href="/">Secondary link</govuk-button-link>
-    <govuk-button-link is-start-button="false" class="govuk-button--warning" href="/">Warning link</govuk-button-link>
-    <govuk-button-link is-start-button="false" class="govuk-button--secondary govuk-button--warning" href="/">Secondary warning link</govuk-button-link>
-</div>
-
-<div class="govuk-button-group">
-    <govuk-button type="submit">Primary button</govuk-button>
-    <govuk-button type="submit" disabled="true">Primary disabled</govuk-button>
-    <govuk-button class="govuk-button--secondary" type="button">Secondary button</govuk-button>
-    <govuk-button class="govuk-button--secondary" type="button" disabled="true">Secondary disabled</govuk-button>
-    <govuk-button class="govuk-button--warning" type="button">Warning button</govuk-button>
-    <govuk-button class="govuk-button--warning" type="button" disabled="true">Warning disabled</govuk-button>
-    <govuk-button class="govuk-button--secondary govuk-button--warning" type="button">Secondary warning button</govuk-button>
-    <govuk-button class="govuk-button--secondary govuk-button--warning" type="button" disabled="true">Secondary warning disabled</govuk-button>
-    <a href="/" class="govuk-link">Cancel</a>
-</div>
-
-<div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds-from-desktop">
-        <p class="govuk-body">The following group of buttons have a TPR-specific style applied which indicates that the button ends a process. 
-            With GOV.UK styling they will look the same as the previous group of buttons</p>
+}
+<div class="govuk-width-container">
+    <span class="govuk-caption-xl">Example application</span>
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-full">
+            <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+        </div>
     </div>
-</div>
 
-<div class="govuk-button-group">
-    <govuk-button-link is-start-button="false" class="tpr-button--no-next-step" href="/">Link to next page</govuk-button-link>
-    <govuk-button-link is-start-button="false" class="tpr-button--no-next-step govuk-button--secondary" href="/">Secondary link</govuk-button-link>
-    <govuk-button-link is-start-button="false" class="tpr-button--no-next-step govuk-button--warning" href="/">Warning link</govuk-button-link>
-    <govuk-button-link is-start-button="false" class="tpr-button--no-next-step govuk-button--secondary govuk-button--warning" href="/">Secondary warning link</govuk-button-link>
-</div>
+    <p class="govuk-body">The following button styles are supported when using The Pensions Regulator branding. Combining button classes to produce other combinations is not yet supported.</p>
 
-<div class="govuk-button-group">
-    <govuk-button type="submit" class="tpr-button--no-next-step">Primary button</govuk-button>
-    <govuk-button type="submit" class="tpr-button--no-next-step" disabled="true">Primary disabled</govuk-button>
-    <govuk-button class="tpr-button--no-next-step govuk-button--secondary" type="button">Secondary button</govuk-button>
-    <govuk-button class="tpr-button--no-next-step govuk-button--secondary" type="button" disabled="true">Secondary disabled</govuk-button>
-    <govuk-button class="tpr-button--no-next-step govuk-button--warning" type="button">Warning button</govuk-button>
-    <govuk-button class="tpr-button--no-next-step govuk-button--warning" type="button" disabled="true">Warning disabled</govuk-button>
-    <govuk-button class="tpr-button--no-next-step govuk-button--secondary govuk-button--warning" type="button">Secondary warning button</govuk-button>
-    <govuk-button class="tpr-button--no-next-step govuk-button--secondary govuk-button--warning" type="button" disabled="true">Secondary warning disabled</govuk-button>
-</div>
+    <govuk-button-link is-start-button="true" href="/">Start now</govuk-button-link>
 
-<div class="govuk-grid-row govuk-grid-row--dark-background">
-    <div class="govuk-grid-column govuk-grid-column-two-thirds">
+    <div class="govuk-button-group">
+        <govuk-button-link is-start-button="false" href="/">Link to next page</govuk-button-link>
+        <govuk-button-link is-start-button="false" class="govuk-button--secondary" href="/">Secondary link</govuk-button-link>
+        <govuk-button-link is-start-button="false" class="govuk-button--warning" href="/">Warning link</govuk-button-link>
+        <govuk-button-link is-start-button="false" class="govuk-button--secondary govuk-button--warning" href="/">Secondary warning link</govuk-button-link>
+    </div>
+
+    <div class="govuk-button-group">
+        <govuk-button type="submit">Primary button</govuk-button>
+        <govuk-button type="submit" disabled="true">Primary disabled</govuk-button>
+        <govuk-button class="govuk-button--secondary" type="button">Secondary button</govuk-button>
+        <govuk-button class="govuk-button--secondary" type="button" disabled="true">Secondary disabled</govuk-button>
+        <govuk-button class="govuk-button--warning" type="button">Warning button</govuk-button>
+        <govuk-button class="govuk-button--warning" type="button" disabled="true">Warning disabled</govuk-button>
+        <govuk-button class="govuk-button--secondary govuk-button--warning" type="button">Secondary warning button</govuk-button>
+        <govuk-button class="govuk-button--secondary govuk-button--warning" type="button" disabled="true">Secondary warning disabled</govuk-button>
+        <a href="/" class="govuk-link">Cancel</a>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <p class="govuk-body">The following group of buttons have a TPR-specific style applied which indicates that the button ends a process. 
+                With GOV.UK styling they will look the same as the previous group of buttons</p>
+        </div>
+    </div>
+
+    <div class="govuk-button-group">
+        <govuk-button-link is-start-button="false" class="tpr-button--no-next-step" href="/">Link to next page</govuk-button-link>
+        <govuk-button-link is-start-button="false" class="tpr-button--no-next-step govuk-button--secondary" href="/">Secondary link</govuk-button-link>
+        <govuk-button-link is-start-button="false" class="tpr-button--no-next-step govuk-button--warning" href="/">Warning link</govuk-button-link>
+        <govuk-button-link is-start-button="false" class="tpr-button--no-next-step govuk-button--secondary govuk-button--warning" href="/">Secondary warning link</govuk-button-link>
+    </div>
+
+    <div class="govuk-button-group">
+        <govuk-button type="submit" class="tpr-button--no-next-step">Primary button</govuk-button>
+        <govuk-button type="submit" class="tpr-button--no-next-step" disabled="true">Primary disabled</govuk-button>
+        <govuk-button class="tpr-button--no-next-step govuk-button--secondary" type="button">Secondary button</govuk-button>
+        <govuk-button class="tpr-button--no-next-step govuk-button--secondary" type="button" disabled="true">Secondary disabled</govuk-button>
+        <govuk-button class="tpr-button--no-next-step govuk-button--warning" type="button">Warning button</govuk-button>
+        <govuk-button class="tpr-button--no-next-step govuk-button--warning" type="button" disabled="true">Warning disabled</govuk-button>
+        <govuk-button class="tpr-button--no-next-step govuk-button--secondary govuk-button--warning" type="button">Secondary warning button</govuk-button>
+        <govuk-button class="tpr-button--no-next-step govuk-button--secondary govuk-button--warning" type="button" disabled="true">Secondary warning disabled</govuk-button>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--dark-background">
+        <div class="govuk-grid-column govuk-grid-column-two-thirds">
+            <govuk-button class="govuk-button--inverse" type="button">Reversed button</govuk-button>
+        </div>
+    </div>
+
+    <govuk-notification-banner>
+        <p class="govuk-body">Reversed buttons should be used inside a notification banner.</p>
         <govuk-button class="govuk-button--inverse" type="button">Reversed button</govuk-button>
+    </govuk-notification-banner>
+
+    <govuk-notification-banner type="Success">
+        <p class="govuk-body">Reversed buttons should be used inside a notification banner.</p>
+        <govuk-button class="govuk-button--inverse" type="button">Reversed button</govuk-button>
+    </govuk-notification-banner>
+
+    <h2 class="govuk-heading-m">Button in a box</h2>
+    <p class="govuk-body">Using TPR styles when you put a button as the last child within a box,
+        or in a row with a divider applied, we need an extra style rule to preserve the padding correctly.
+        This must support multiple variants of HTML.</p>
+
+    <div class="tpr-box">
+        <govuk-button>Button in a box</govuk-button>
+    </div>
+
+    <div class="govuk-grid-row tpr-box">
+        <div class="govuk-grid-column govuk-grid-column-full">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-full">
+            <govuk-button>Button above a divider</govuk-button>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-full">
+                <govuk-button>Button in a box</govuk-button>
+            </div>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row tpr-box">
+        <div class="govuk-grid-column govuk-grid-column-full">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column govuk-grid-column-full">
+                    <govuk-button>Button in a box</govuk-button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-full">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column govuk-grid-column-full">
+                    <govuk-button>Button above a divider</govuk-button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-one-quarter">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-one-third">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-one-half">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-two-thirds">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-three-quarters">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-full">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-one-quarter">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-one-third">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-one-half">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-two-thirds">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-three-quarters">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-full">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-one-quarter-from-desktop">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-one-third-from-desktop">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-one-half-from-desktop">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-three-quarters-from-desktop">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tpr-box">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-full-from-desktop">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-full">
+                        <govuk-button>Button in a box</govuk-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-one-quarter-from-desktop">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-one-third-from-desktop">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-one-half-from-desktop">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-three-quarters-from-desktop">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column-full-from-desktop">
+            <govuk-button>Button in a box</govuk-button>
+        </div>
     </div>
 </div>
 
-<govuk-notification-banner>
-    <p class="govuk-body">Reversed buttons should be used inside a notification banner.</p>
-    <govuk-button class="govuk-button--inverse" type="button">Reversed button</govuk-button>
-</govuk-notification-banner>
-
-<govuk-notification-banner type="Success">
-    <p class="govuk-body">Reversed buttons should be used inside a notification banner.</p>
-    <govuk-button class="govuk-button--inverse" type="button">Reversed button</govuk-button>
-</govuk-notification-banner>
+<div class="tpr-box tpr-box--full-width tpr-box--blue">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column">
+                <govuk-button>Button in a box</govuk-button>
+            </div>
+        </div>
+    </div>
+</div>

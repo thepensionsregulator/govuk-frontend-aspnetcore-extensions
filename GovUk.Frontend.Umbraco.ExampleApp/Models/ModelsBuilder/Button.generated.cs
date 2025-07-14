@@ -58,6 +58,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel Blocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "blocks");
 
 		///<summary>
+		/// Grid
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("gridBlocks")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel GridBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel>(_publishedValueFallback, "gridBlocks");
+
+		///<summary>
 		/// Next page
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]

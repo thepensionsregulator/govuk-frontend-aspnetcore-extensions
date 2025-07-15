@@ -93,7 +93,10 @@ async function buttonOnClick(event) {
         return;
     }
 
-    const response = await fetch(`${searchContentApiUrl}?searchTerm=${searchValue}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+    let searchUrl = new URL(searchContentApiUrl, window.location.origin);
+    searchUrl.searchParams.set('searchTerm', searchValue);
+
+    const response = await fetch(searchUrl.toString(), { method: 'GET', headers: { 'Content-Type': 'application/json' } });
 
     const jsonResults = await response.json();
 
@@ -113,13 +116,17 @@ async function buttonOnClick(event) {
             searchResults.push(content);
         }));
 
-        const showNow = searchResults.slice(0, 2);
         const accordionSections = [];
+
+        const showNow = searchResults.slice(0, 2);
+
         showNow.forEach(result => {
             accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
         });
 
         createAccordion(accordionSections);
+
+        toggleShowMoreButton(accordionSections.length == searchResults.length);
     }
 }
 
@@ -133,6 +140,8 @@ async function showMoreAnswersOnClick() {
     });
 
     createAccordion(accordionSections);
+
+    toggleShowMoreButton(accordionSections.length == searchResults.length);
 }
 
 function createElementWithClassName(elementName, className) {
@@ -151,6 +160,20 @@ function createNoResultsFoundHeading() {
 
         const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
         searchBlock.after(noResultsHeading);
+    }
+
+    toggleShowMoreButton(true);
+}
+
+function toggleShowMoreButton(hideButton) {
+    const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
+    if (showMoreButton != null) {
+        if (hideButton) {
+            showMoreButton.classList.add('govuk-visually-hidden');
+        }
+        else {
+            showMoreButton.classList.remove('govuk-visually-hidden');
+        }
     }
 }
 

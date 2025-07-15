@@ -1,21 +1,23 @@
 ﻿using System.Linq;
-using ThePensionsRegulator.Frontend.Umbraco.Models;
-using ThePensionsRegulator.Frontend.Umbraco.Services;
+using GovUk.Frontend.Umbraco.Models;
+using GovUk.Frontend.Umbraco.Services;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Services
 {
-    public class BreadcrumbLinksServiceForExampleApp : IBreadcrumbLinksService
+    public class BreadcrumbLinksServiceForExampleApp : IGovUkBreadcrumbLinksService
     {
-        public BreadcrumbViewModel GetLinks(IPublishedContent Page)
+        public BreadcrumbViewModel GetLinks(IPublishedContent page)
         {
             BreadcrumbViewModel breadcrumbViewModel = new();
-            foreach (var ancestor in Page.Ancestors().OrderBy(x => x.Level)) 
+            foreach (var ancestor in page.Ancestors().OrderBy(x => x.Level)) 
             {
                 breadcrumbViewModel.Ancestors.Add(new BreadcrumbLink { Name = ancestor.Name, Url = ancestor.Url() }); 
             }
-            breadcrumbViewModel.CurrentPage = Page;
+
+            breadcrumbViewModel.Ancestors.Add(new BreadcrumbLink { Name = page.Name }); 
+            breadcrumbViewModel.CurrentPage = page;
             return breadcrumbViewModel;
         }
     }

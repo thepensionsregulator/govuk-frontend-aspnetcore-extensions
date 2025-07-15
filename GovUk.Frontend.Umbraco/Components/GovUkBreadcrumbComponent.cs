@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using ThePensionsRegulator.Frontend.Umbraco.Models;
-using ThePensionsRegulator.Frontend.Umbraco.Services;
+using GovUk.Frontend.Umbraco.Models;
+using GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco;
 
-namespace GovUk.Frontend.Umbraco.ExampleApp.Components
+namespace GovUk.Frontend.Umbraco.Components
 {
-    [ViewComponent(Name = "Breadcrumb")]
-    public class RenderBreadcrumbComponent : ViewComponent
+    [ViewComponent(Name = "GovUkBreadcrumb")]
+    public class GovUkBreadcrumbComponent : ViewComponent
     {
         private BreadcrumbViewModel ViewModel;
 
-        public RenderBreadcrumbComponent(IBreadcrumbLinksService breadcrumbLinksService, IUmbracoPublishedContentAccessor publishedContext)
+        public GovUkBreadcrumbComponent(IGovUkBreadcrumbLinksService breadcrumbLinksService, IUmbracoPublishedContentAccessor publishedContext)
         {
             if (breadcrumbLinksService is not null && publishedContext is not null)
             {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace ThePensionsRegulator.Frontend.Umbraco.Models
+namespace GovUk.Frontend.Umbraco.Models
 {
     public class BreadcrumbViewModel
     {

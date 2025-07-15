@@ -8,4 +8,5 @@
 @using (Html.BeginUmbracoForm<ButtonSurfaceController>(nameof(ButtonSurfaceController.Index), new { }, new { novalidate = "novalidate" }))
 {
 	<partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
+	<partial name="GOVUK/BlockGrid" model="Model.Page.GridBlocks" />
 }

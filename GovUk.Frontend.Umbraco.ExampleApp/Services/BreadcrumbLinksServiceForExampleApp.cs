@@ -13,10 +13,10 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
             BreadcrumbViewModel breadcrumbViewModel = new();
             foreach (var ancestor in page.Ancestors().OrderBy(x => x.Level)) 
             {
-                breadcrumbViewModel.Ancestors.Add(new BreadcrumbLink { Name = ancestor.Name, Url = ancestor.Url() }); 
+                breadcrumbViewModel.Links.Add(new BreadcrumbLink { Name = ancestor.Name, Url = ancestor.Url() }); 
             }
 
-            breadcrumbViewModel.Ancestors.Add(new BreadcrumbLink { Name = page.Name }); 
+            breadcrumbViewModel.Links.Add(new BreadcrumbLink { Name = page.Name }); 
             breadcrumbViewModel.CurrentPage = page;
             return breadcrumbViewModel;
         }

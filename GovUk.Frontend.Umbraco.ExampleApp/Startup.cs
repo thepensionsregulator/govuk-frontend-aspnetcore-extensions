@@ -63,7 +63,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                 services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
             }
 
-            services.AddTransient<IBreadcrumbLinksService, BreadcrumbLinksServiceForExampleApp>();
+            services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServiceForExampleApp>();
         }
 
         /// <summary>

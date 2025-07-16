@@ -88,7 +88,6 @@ a.govuk-button--secondary:hover {
 }
 
 .govuk-button--warning {
-    background: $govuk-button-background-colour url(/_content/ThePensionsRegulator.Frontend/tpr/chevron_right_white_24dp.svg) right center no-repeat;
     background-color: $tpr-colour-fire-brick;
     padding-right: $tpr-button-padding*2;
 }
@@ -98,7 +97,6 @@ a.govuk-button--secondary:hover {
 }
 
 .govuk-button--warning:disabled, .govuk-button--warning[aria-disabled=true] {
-    background-image: none;
     background-color: $tpr-colour-petite-orchid;
 }
 

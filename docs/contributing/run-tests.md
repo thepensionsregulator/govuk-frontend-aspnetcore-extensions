@@ -6,7 +6,7 @@ To run unit tests on the client-side validation JavaScript:
 
 ```cmd
 npm install
-npx jest
+npm test
 ```
 
 To run unit tests on the .NET code:

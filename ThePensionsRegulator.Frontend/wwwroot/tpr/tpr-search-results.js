@@ -1,0 +1,247 @@
+﻿import { Accordion } from '/govuk/all.min.js';
+
+let searchResults = [];
+
+let popularContentApiUrl = "";
+let searchContentApiUrl = "";
+let getContentByIdApiUrl = "";
+
+let newHeadingLevel = 3;
+
+async function initaliseAccordion() {
+    const response = await fetch(`${popularContentApiUrl}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+
+    const results = (await response.json());
+
+    if (results.length === 0) {
+        createNoResultsFoundHeading();
+    } else {
+        const accordionSections = [];
+
+        searchResults = results;
+
+        const showNow = searchResults.slice(0, 2);
+
+        showNow.forEach(result => {
+            accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key));
+        });
+
+        createAccordion(accordionSections);
+    }
+}
+
+function removeAccordion(id) {
+    const accordion = document.getElementById(id);
+
+    if (accordion != null) {
+        accordion.remove();
+    }
+}
+
+function createAccordion(accordionSections) {
+    const newAccordion = createElementWithClassName("div", "govuk-accordion");
+    newAccordion.setAttribute("id", "search-results-accordion");
+    newAccordion.setAttribute("data-module", "govuk-accordion");
+
+    accordionSections.forEach((accordionSection) => { newAccordion.appendChild(accordionSection); });
+
+    new Accordion(newAccordion);
+
+    const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
+    searchBlock.after(newAccordion);
+}
+
+function createAccordionSection(heading, content, index) {
+    const accordionSection = createElementWithClassName("div", "govuk-accordion__section");
+
+    const accordionHeader = createElementWithClassName("div", "govuk-accordion__section-header");
+
+    const accordionHeadingElement = createElementWithClassName(`h${newHeadingLevel}`, "govuk-accordion__section-heading");
+
+    const accordionHeadingElementText = document.createTextNode(heading);
+
+    const accordionHeadingButtonElement = createElementWithClassName("span", "govuk-accordion__section-button");
+    accordionHeadingButtonElement.setAttribute("id", `accordion1-heading-${index}`);
+    accordionHeadingButtonElement.appendChild(accordionHeadingElementText);
+
+    accordionHeadingElement.appendChild(accordionHeadingButtonElement);
+    accordionHeader.appendChild(accordionHeadingElement);
+
+    const accordionContent = document.createElement("div");
+    accordionContent.className = "govuk-accordion__section-content";
+    accordionContent.innerHTML = content;
+
+    accordionSection.appendChild(accordionHeader);
+    accordionSection.appendChild(accordionContent);
+
+    return accordionSection;
+}
+
+async function fetchContentById(contentId) {
+    const response = await fetch(`${getContentByIdApiUrl}/${contentId}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+    return await response.json();
+}
+
+async function buttonOnClick(event) {
+    event.preventDefault();
+
+    const searchInput = document.getElementById("tpr-search-results-ask-input");
+    const searchValue = searchInput.value
+
+    if (!searchValue || searchValue.trim() === '') {
+        navigateToSearchInput(false);
+        return;
+    }
+
+    let searchUrl = new URL(searchContentApiUrl, window.location.origin);
+    searchUrl.searchParams.set('searchTerm', searchValue);
+
+    const response = await fetch(searchUrl.toString(), { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+
+    const jsonResults = await response.json();
+
+    const results = jsonResults.results;
+
+    removeAccordion("search-results-accordion");
+
+    if (results.length === 0) {
+        createNoResultsFoundHeading();
+    } else {
+        removeNoResultsFound();
+
+        searchResults = [];
+
+        await Promise.all(results.map(async (result) => {
+            const content = await fetchContentById(result.key);
+            searchResults.push(content);
+        }));
+
+        const accordionSections = [];
+
+        const showNow = searchResults.slice(0, 2);
+
+        showNow.forEach(result => {
+            accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
+        });
+
+        createAccordion(accordionSections);
+
+        toggleShowMoreButton(accordionSections.length == searchResults.length);
+    }
+}
+
+async function showMoreAnswersOnClick() {
+    removeAccordion("search-results-accordion");
+
+    const accordionSections = [];
+
+    searchResults.forEach(result => {
+        accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key));
+    });
+
+    createAccordion(accordionSections);
+
+    toggleShowMoreButton(accordionSections.length == searchResults.length);
+}
+
+function createElementWithClassName(elementName, className) {
+    const element = document.createElement(elementName);
+    element.className = className;
+
+    return element;
+}
+
+function createNoResultsFoundHeading() {
+    const existingHeading = document.getElementsByClassName('tpr-search-results__no-results-found')[0];
+    if (existingHeading == null) {
+        const noResultsHeading = document.createElement(`h${newHeadingLevel}`);
+        noResultsHeading.className = "govuk-heading-m tpr-search-results__no-results-found";
+        noResultsHeading.textContent = "No results found";
+
+        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
+        searchBlock.after(noResultsHeading);
+    }
+
+    toggleShowMoreButton(true);
+}
+
+function toggleShowMoreButton(hideButton) {
+    const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
+    if (showMoreButton != null) {
+        if (hideButton) {
+            showMoreButton.classList.add('govuk-visually-hidden');
+        }
+        else {
+            showMoreButton.classList.remove('govuk-visually-hidden');
+        }
+    }
+}
+
+function removeNoResultsFound() {
+    const element = document.getElementsByClassName('tpr-search-results__no-results-found')[0];
+    if (element != null) {
+        element.remove();
+    }
+}
+
+function setSearchResults(toSet) {
+    searchResults = toSet;
+}
+
+function navigateToSearchButtonOnClick(event) {
+    navigateToSearchInput(true);
+    event.preventDefault();
+}
+
+function navigateToSearchInput(scrollIntoView) {
+    const searchResultsAside = document.getElementById("tpr-search-results-ask-input");
+    if (searchResultsAside != null) {
+        if (scrollIntoView === true) {
+            searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        searchResultsAside.focus({ preventScroll: true });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const searchButton = document.getElementById("tpr-search-results-ask-button");
+    searchButton.addEventListener("click", buttonOnClick);
+
+    const showMoreButton = document.getElementById("tpr-search-results-show-more-questions");
+    showMoreButton.addEventListener("click", showMoreAnswersOnClick);
+
+    const searchAside = document.getElementsByClassName("tpr-search-results")[0];
+    popularContentApiUrl = searchAside.getAttribute("data-popular-content-url");
+    searchContentApiUrl = searchAside.getAttribute("data-search-content-url");
+    getContentByIdApiUrl = searchAside.getAttribute("data-content-by-id-url");
+
+    const searchResultsSection = document.getElementsByClassName("tpr-search-results__heading")[0];
+    const headingLevel = searchResultsSection.tagName.toLowerCase();
+
+    const headingLevelNumber = parseInt(headingLevel.replace('h', ''));
+
+    if (headingLevelNumber >= 6) {
+        newHeadingLevel = 6;
+    }
+    else {
+        newHeadingLevel = headingLevelNumber + 1;
+    }
+
+    initaliseAccordion(popularContentApiUrl);
+
+    const navigateToSearchButton = document.getElementsByClassName("tpr-search-results__nav-button")[0];
+    if (navigateToSearchButton != null) {
+        const newTabSpan = navigateToSearchButton.querySelector("span.govuk-visually-hidden");
+        if (newTabSpan) {
+            newTabSpan.remove();
+        }
+
+        if (navigateToSearchButton.hasAttribute("rel")) {
+            navigateToSearchButton.removeAttribute("rel");
+        }
+
+        navigateToSearchButton.addEventListener("click", navigateToSearchButtonOnClick);
+    }
+});
+
+export { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound }

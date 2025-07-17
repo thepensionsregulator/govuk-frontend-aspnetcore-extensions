@@ -19,6 +19,6 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         /// This property type should return <see cref="IHtmlEncodedString"/> but accept <c>string</c> as well so that
         /// it is possible to provide a string of HTML to <see cref="OverridablePublishedElement.OverrideValue(string, object)"/>.
         /// </remarks>
-        public object FormatValue(object value) => RemoveWrappingParagraph(ApplyGovUkTypographyToTinyMCE(value));
+        public object FormatValue(object value) => RemoveWrappingParagraphIfNoClass(ApplyGovUkTypographyToTinyMCE(value));
     }
 }

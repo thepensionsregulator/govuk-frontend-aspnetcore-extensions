@@ -1,0 +1,45 @@
+﻿<div class="js-enabled">
+    <aside class="backoffice-block-view {{block.settingsData.cssClasses}}">
+        <ng-content ng-switch="block.settingsData.headingLevel[0]">
+            <h3 ng-switch-when="Heading 3" class="{{block.settingsData.headingClass[0]}} tpr-search-results__heading">
+                {{ block.data.heading || 'Search Q&As' }}
+            </h3>
+
+            <h4 ng-switch-when="Heading 4" class="{{block.settingsData.headingClass[0]}} tpr-search-results__heading">
+                {{ block.data.heading || 'Search Q&As' }}
+            </h4>
+
+            <h5 ng-switch-when="Heading 5" class="{{block.settingsData.headingClass[0]}} tpr-search-results__heading">
+                {{ block.data.heading || 'Search Q&As' }}
+            </h5>
+
+            <h6 ng-switch-when="Heading 6" class="{{block.settingsData.headingClass[0]}} tpr-search-results__heading">
+                {{ block.data.heading || 'Search Q&As' }}
+            </h6>
+
+            <h2 ng-switch-default class="{{block.settingsData.headingClass[0]}} tpr-search-results__heading">
+                {{ block.data.heading || 'Search Q&As' }}
+            </h2>
+        </ng-content>
+
+        <div class="tpr-search-results__input">
+            <div class="govuk-form-group">
+                <label class=govuk-label govuk-visually-hidden>{{block.data.heading}}</label>
+                <input class="govuk-input" />
+            </div>
+            <button class="govuk-button tpr-button--no-next-step">Ask</button>
+        </div>
+
+        <footer class="tpr-search-results__footer">
+            <ul class="govuk-list tpr-search-results__links">
+                <li>
+                    <a href="#" class="govuk-link">Show more questions</a>
+                </li>
+
+                <li ng-repeat="link in block.data.footerLinks">
+                    <a href="{{link.url}}" class="govuk-link">{{link.nodeName || link.name}}</a>
+                </li>
+            </ul>
+        </footer>
+    </aside>
+</div>

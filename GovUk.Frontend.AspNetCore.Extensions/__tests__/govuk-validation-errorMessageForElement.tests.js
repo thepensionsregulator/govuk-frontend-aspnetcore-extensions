@@ -1,4 +1,5 @@
-const govuk = require("../wwwroot/govuk/govuk-validation");
+import { govuk } from "../wwwroot/govuk/govuk-validation";
+import { jest } from '@jest/globals';
 
 describe("errorMessageForElement", () => {
   it("returns an existing .govuk-error-message if it exists", () => {

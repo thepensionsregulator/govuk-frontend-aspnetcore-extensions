@@ -29,10 +29,12 @@
 
 	<ItemGroup>
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
+		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRSearchResults.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRImage.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYouTubeVideo.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRRelatedLinks.html" />
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRSectionCards.html" />
+		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRDocuments.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
@@ -53,7 +55,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.8.1" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.9.2" />
 	</ItemGroup>
 
 	<ItemGroup>

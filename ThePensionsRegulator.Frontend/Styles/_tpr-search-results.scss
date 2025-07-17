@@ -1,0 +1,78 @@
+﻿@import '_tpr-variables.scss';
+@import 'govuk/base';
+
+.tpr-search-results__heading {
+    background-color: $tpr-colour-white-smoke;
+    @include govuk-responsive-padding(4);
+}
+
+.tpr-search-results__input {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    .govuk-form-group {
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 0;
+        margin-left: 0;
+    }
+
+    @include govuk-media-query($from: tablet) {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .govuk-form-group {
+            flex-grow: 2;
+            width: auto;
+        }
+
+        button {
+            width: auto;
+            @include govuk-responsive-margin(2, "left");
+        }
+    }
+}
+
+.tpr-search-results__footer {
+    all: unset;
+    display: block;
+    width: 100%;
+}
+
+.tpr-search-results__links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    a {
+        display: block;
+        margin-right: govuk-spacing(3);
+    }
+
+    & > :last-child a {
+        margin-right: 0;
+    }
+
+    #tpr-search-results-show-more-questions {
+        cursor: pointer;
+        color: $govuk-link-colour;
+    }
+}
+
+.js-enabled{
+    .tpr-search-results{
+        display: block;
+    }
+}
+
+.tpr-search-results {
+    display: none;
+}

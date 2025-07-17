@@ -42,5 +42,12 @@ namespace ThePensionsRegulator.Frontend.Security
             }
             return false;
         }
+
+        public bool IsConsentCookiePresent()
+        {
+            var context = _httpContextAccessor.HttpContext ?? throw new InvalidOperationException("HttpContext cannot be null");
+            return context.Request?.Cookies != null 
+                && context.Request.Cookies.Any(x=>x.Key.Equals(TPR_CONSENT_COOKIE_NAME,StringComparison.OrdinalIgnoreCase));
+        }
     }
 }

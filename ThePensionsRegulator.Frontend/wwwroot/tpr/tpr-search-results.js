@@ -205,9 +205,13 @@ function navigateToSearchInput(scrollIntoView) {
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("tpr-search-results-ask-button");
-    searchButton.addEventListener("click", buttonOnClick);
-
     const showMoreButton = document.getElementById("tpr-search-results-show-more-questions");
+
+    if (searchButton == null || showMoreButton == null) {
+        return;
+    }
+
+    searchButton.addEventListener("click", buttonOnClick);
     showMoreButton.addEventListener("click", showMoreAnswersOnClick);
 
     const searchAside = document.getElementsByClassName("tpr-search-results")[0];

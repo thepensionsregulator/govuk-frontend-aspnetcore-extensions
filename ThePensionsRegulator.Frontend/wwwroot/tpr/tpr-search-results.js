@@ -111,10 +111,11 @@ async function buttonOnClick(event) {
 
         searchResults = [];
 
-        await Promise.all(results.map(async (result) => {
-            const content = await fetchContentById(result.key);
-            searchResults.push(content);
-        }));
+        searchResults = await Promise.all(
+            results.map(async (result) => {
+                return await fetchContentById(result.key);
+            })
+        );
 
         const accordionSections = [];
 

@@ -71,13 +71,6 @@ a.govuk-button--secondary:hover {
     border-color: $tpr-colour-cornflower;
 }
 
-.govuk-button--start:focus:not(:active):not(:hover),
-.govuk-button--secondary:focus:not(:active):not(:hover),
-.govuk-file-upload::file-selector-button:focus:not(:active):not(:hover),
-.govuk-button--inverse:focus:not(:active):not(:hover) {
-    background-image: none;
-}
-
 .govuk-button--warning {
     background-color: $tpr-colour-fire-brick;
     padding-right: $tpr-button-padding*2;

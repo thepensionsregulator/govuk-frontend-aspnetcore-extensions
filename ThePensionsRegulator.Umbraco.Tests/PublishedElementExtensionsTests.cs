@@ -7,7 +7,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
 {
     public class PublishedElementExtensionsTests
 	{
-		[Test]
+		[Fact]
 		public void IPublishedElement_is_converted_to_ModelsBuilder_model()
 		{
 			var contentType = new Mock<IPublishedContentType>();
@@ -18,7 +18,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
 
 			var result = blockContent.Object.AsPublishedElementModel<ExampleModelsBuilderModel>();
 
-			Assert.That(result, Is.Not.Null);
+			Assert.NotNull(result);
 		}
 	}
 }

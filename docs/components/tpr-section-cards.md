@@ -7,7 +7,7 @@ In TPR pages you can add cards that can display a linked heading and description
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
 
-<tpr-section-cards>
+<tpr-section-cards new-tab-text="(opens in a new tab)">
     <tpr-section-card>
             <tpr-section-card-title href="/example" target="_self">Title of card</tpr-section-card-title>
             <tpr-section-card-content>Description of card</tpr-section-card-content>
@@ -20,6 +20,10 @@ In TPR pages you can add cards that can display a linked heading and description
 ### `<tpr-section-cards>`
 
 _Required_
+
+| Attribute    | Type     | Description                                                                                                                                                                       |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `new-tab-text`       | `string` | For title links that open in a new tab, this text will be appended to the end of title link to inform users that a new tab will open when the link is clicked. e.g. '(opens in a new tab)'                                                                                                                                                  |
 
 ### `<tpr-section-card>`
 

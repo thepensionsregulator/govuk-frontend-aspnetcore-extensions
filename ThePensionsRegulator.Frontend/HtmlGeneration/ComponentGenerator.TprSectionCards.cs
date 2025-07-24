@@ -47,24 +47,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                             anchorElement.InnerHtml.Append(card.Title.ToHtmlString());
                         }
 
-                        if (!string.IsNullOrWhiteSpace(card.TitleTarget))
+                        if (!string.IsNullOrWhiteSpace(card.TitleTarget) && card.TitleTarget.ToLower() == "_blank" && !string.IsNullOrWhiteSpace(tprSectionCards.NewTabText))
                         {
-                            anchorElement.Attributes.Add("target", card.TitleTarget);
-                            if (card.TitleTarget.ToLower() == "_blank")
-                            {
+                            anchorElement.Attributes.Add("target", "_blank");
+                            anchorElement.Attributes.Add("rel", "noopener noreferrer");
 
-                                var newTabText = new TagBuilder("span");
-                                switch (culture)
-                                {
-                                    case "cy":
-                                        newTabText.InnerHtml.Append("(agor mewn tab newydd)");
-                                        break;
-                                    default:
-                                        newTabText.InnerHtml.Append("(opens in a new tab)");
-                                        break;
-                                }
-                                anchorElement.InnerHtml.AppendHtml(newTabText);
-                            }
+                            var newTabText = new TagBuilder("span");
+                            newTabText.InnerHtml.Append($" {tprSectionCards.NewTabText}");
+                            anchorElement.InnerHtml.AppendHtml(newTabText);
                         }
                         tprSectionCardTitle.InnerHtml.AppendHtml(anchorElement);
                     }

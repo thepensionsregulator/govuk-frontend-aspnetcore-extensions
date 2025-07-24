@@ -24,18 +24,19 @@
 
 <nav class="side-nav @cssClasses">
     <h2>
-        <a class="govuk-link" href="@rootAncestorLink.Url">@rootAncestorLink.Name</a>
+        <button type="button" class="govuk-link side-nav-mobile-expand-toggle">@rootAncestorLink.Name</button>
+        <a class="govuk-link side-nav-desktop-link" href="@rootAncestorLink.Url">@rootAncestorLink.Name</a>
     </h2>
-    <ul class="side-nav-list-level1">
+    <ul class="side-nav-list">
         @foreach (IPublishedContent level1Child in rootAncestorChildren)
         {
             @if (blacklistedUrls.Contains(level1Child.Url(publishedUrlProvider))) { continue; }
 
             @if ((level1Child == currentPage || currentPage.Ancestors().Contains(level1Child)) && level1Child.Children().Any())
             {
-                <li class="side-nav-list-level1-item-expanded">
-                    <a class="govuk-link side-nav-link-level1" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
-                    <ul class="side-nav-list-level2">
+                <li class="side-nav-list-item-expanded">
+                    <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
+                    <ul>
                         @foreach (IPublishedContent level2Child in level1Child.Children())
                         {
                             @if (blacklistedUrls.Contains(level2Child.Url(publishedUrlProvider))) { continue; }
@@ -43,14 +44,14 @@
                             @if ((level2Child == currentPage || currentPage.Ancestors().Contains(level2Child)) && level2Child.Children().Any())
                             {
                                 <li>
-                                    <a class="govuk-link side-nav-link-level2" href="@level2Child.Url(publishedUrlProvider)">@level2Child.Name</a>
-                                    <ul class="side-nav-list-level3">
+                                    <a class="govuk-link" href="@level2Child.Url(publishedUrlProvider)">@level2Child.Name</a>
+                                    <ul>
                                         @foreach (IPublishedContent level3Child in level2Child.Children())
                                         {
                                             @if (blacklistedUrls.Contains(level3Child.Url(publishedUrlProvider))) { continue; }
 
                                             <li>
-                                                <a class="govuk-link side-nav-link-level3" href="@level3Child.Url(publishedUrlProvider)">@level3Child.Name</a>
+                                                <a class="govuk-link" href="@level3Child.Url(publishedUrlProvider)">@level3Child.Name</a>
                                             </li>
                                         }
                                     </ul>
@@ -59,7 +60,7 @@
                             else
                             {
                                 <li>
-                                    <a class="govuk-link side-nav-link-level2" href="@level2Child.Url(publishedUrlProvider)">@level2Child.Name</a>
+                                    <a class="govuk-link" href="@level2Child.Url(publishedUrlProvider)">@level2Child.Name</a>
                                 </li>
                             }
                         }
@@ -69,7 +70,7 @@
             else
             {
                 <li>
-                    <a class="govuk-link side-nav-link-level1" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
+                    <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
                 </li>
             }
         }

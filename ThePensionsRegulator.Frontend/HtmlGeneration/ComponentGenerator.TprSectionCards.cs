@@ -1,4 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore;
+﻿using System.Globalization;
+using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
@@ -14,6 +15,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var ulTag = new TagBuilder("ul");
             nav.InnerHtml.AppendHtml(ulTag);
             ulTag.MergeCssClass("govuk-list");
+            var culture = CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
 
             foreach (var card in tprSectionCards.Cards)
             {
@@ -36,11 +38,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         anchorElement.MergeCssClass("govuk-link");
                         anchorElement.Attributes.Add("href", card.TitleUrl);
 
-                        if (!string.IsNullOrWhiteSpace(card.TitleTarget))
-                        {
-                            anchorElement.Attributes.Add("target", card.TitleTarget);
-                        }
-
                         if (card.TitleAllowHtml)
                         {
                             anchorElement.InnerHtml.AppendHtml(card.Title);
@@ -50,6 +47,15 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                             anchorElement.InnerHtml.Append(card.Title.ToHtmlString());
                         }
 
+                        if (!string.IsNullOrWhiteSpace(card.TitleTarget) && card.TitleTarget.ToLower() == "_blank" && !string.IsNullOrWhiteSpace(tprSectionCards.NewTabText))
+                        {
+                            anchorElement.Attributes.Add("target", "_blank");
+                            anchorElement.Attributes.Add("rel", "noopener noreferrer");
+
+                            var newTabText = new TagBuilder("span");
+                            newTabText.InnerHtml.Append($" {tprSectionCards.NewTabText}");
+                            anchorElement.InnerHtml.AppendHtml(newTabText);
+                        }
                         tprSectionCardTitle.InnerHtml.AppendHtml(anchorElement);
                     }
                     else

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.ObjectPool;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -24,7 +23,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var button = new TagBuilder("button");
             button.AddCssClass("govuk-button");
-            button.AddCssClass("tpr-button--no-next-step");
             button.Attributes.Add("id", "tpr-search-results-ask-button");
             button.Attributes.Add("type", "submit");
             button.InnerHtml.Append("Ask");

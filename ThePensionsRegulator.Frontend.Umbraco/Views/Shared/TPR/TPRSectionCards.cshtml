@@ -26,8 +26,7 @@
     }
     
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-    
-    <tpr-section-cards class="@cssClasses">
+    <tpr-section-cards class="@cssClasses" new-tab-text="@Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)">
     
         @foreach (var card in cards)
         {           

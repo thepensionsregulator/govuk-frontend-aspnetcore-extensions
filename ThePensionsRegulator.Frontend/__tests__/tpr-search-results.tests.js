@@ -13,7 +13,7 @@ const setupBlankComponent = () => {
                         <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
                         <input class="govuk-input" id="tpr-search-results-ask-input" type="text">
                     </div>
-                    <button class="govuk-button tpr-button--no-next-step" id="search-results-ask-button">Ask</button>
+                    <button class="govuk-button" id="search-results-ask-button">Ask</button>
                 </div>
             <footer><ul class="govuk-list tpr-search-results__links"><li><a class="govuk-link" id="search-results-show-more-questions">Show more questions</a></li><li><a class="govuk-link" href="/">Home</a></li></ul></footer>
         </aside>`
@@ -28,7 +28,7 @@ const setupComponentWithAccordion = () => {
                     <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
                     <input class="govuk-input" id="tpr-search-results-ask-input" type="text">
                 </div>
-                <button class="govuk-button tpr-button--no-next-step" id="search-results-ask-button">Ask</button>
+                <button class="govuk-button" id="search-results-ask-button">Ask</button>
             </div>
             <footer class="tpr-search-results__footer">
                 <ul class="govuk-list tpr-search-results__links">

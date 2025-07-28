@@ -7,5 +7,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         public AttributeDictionary? Attributes { get; set; }
         public List<TprSectionCard> Cards { get; set; } = new();
+        public string? NewTabText { get; set; }
     }
 }

@@ -18,6 +18,16 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         internal const string TagName = "tpr-section-cards";
 
+        internal const string NewTabTextAttributeName = "new-tab-text";
+
+        private string? _newTabText = null;
+
+        [HtmlAttributeName(NewTabTextAttributeName)]
+        public string? NewTabText
+        {
+            get => _newTabText;
+            set => _newTabText = value;
+        }
         public TprSectionCardsTagHelper()
           : this(htmlGenerator: null)
         {
@@ -50,7 +60,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     ContentAttributes = c.ContentAttributes,
                     Content = c.Content,
                     ContentAllowHtml = c.ContentAllowHtml,
-                }).ToList()
+                }).ToList(),
+                NewTabText = NewTabText
             };
 
             var tagBuilder = _htmlGenerator.GenerateTprSectionCards(sectionCards);

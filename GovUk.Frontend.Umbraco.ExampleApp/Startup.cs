@@ -1,4 +1,5 @@
 using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
+using GovUk.Frontend.Umbraco.ExampleApp.Services;
 using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -61,6 +62,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                 services.AddGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
                 services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
             }
+
+            services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServiceForExampleApp>();
         }
 
         /// <summary>

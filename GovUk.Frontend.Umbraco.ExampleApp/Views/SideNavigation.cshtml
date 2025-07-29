@@ -1,4 +1,5 @@
-﻿@using Umbraco.Cms.Web.Common.PublishedModels;
+﻿@using ThePensionsRegulator.Umbraco
+@using Umbraco.Cms.Web.Common.PublishedModels;
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SideNavigation>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @section head {
@@ -6,3 +7,14 @@
 }
 
 <partial name="GOVUK/BlockGrid" model="Model.Grid" />
+
+@inject IUmbracoPublishedContentAccessor publishedContext
+@inject Umbraco.Cms.Web.Common.UmbracoHelper UmbracoHelper
+
+<div class="govuk-width-container">
+	@await Component.InvokeAsync("TprSideNavigation", new {
+		currentPage = publishedContext.PublishedContent,
+		rootAncestor = UmbracoHelper.Content(1386),
+		blacklistedUrls = new string[] { }
+	})
+</div>

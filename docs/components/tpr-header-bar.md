@@ -14,7 +14,7 @@ The Pensions Regulator (TPR) uses the TPR header bar as a consistent part of the
         <a class="govuk-link" href="#">A link</a>
         <a class="govuk-link" href="#">Another link</a>
     </tpr-header-bar-content>
-    <tpr-header-search action="en/search-results" autocomplete-url="#" placeholder="search" aria-label="search" input-query="custom query string"></tpr-header-search>
+    <tpr-header-search action="en/search-results" autocomplete-url="#" placeholder="search" aria-label="search" input-name="custom query string"></tpr-header-search>
 </tpr-header-bar>
 ```
 
@@ -70,7 +70,7 @@ Must be inside a `<govuk-header-bar>` element.
 |`autocomplete-url` |`string`| Sets endpoint for autocomplete.js fetch operation.                     |
 |   `placeholder`   |`string`| Supports setting custom placeholder for generated input elements.      |
 |   `aria-label`    |`string`| Programmatically setting aria-label value of button element            |
-|   `input-query`   |`string`| Enables configuration so that destination page can choose what query string parameter it wants to handle (value for name attribute on input element). Default value is "query"|
+|   `input-name`    |`string`| Enables configuration so that destination page can choose what query string parameter it wants to handle (value for name attribute on input element). Default value is "query"|
                                                                                            
 
 TPR Header Search will display when there is no header content and DisplayHeaderSearch property is set to true. On smaller screen sizes the TPR mobile menu component will take over, and the header search will display as part of the mobile menu when expanded.

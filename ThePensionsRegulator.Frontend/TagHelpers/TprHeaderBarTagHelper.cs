@@ -55,7 +55,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 ContentAttributes = barContext.ContentAttributes,
                 Content = barContext.Content,
                 ContentAllowHtml = barContext.ContentAllowHtml,
-                DisplaySearch = barContext.DisplaySearch,
+                ShowSearch = barContext.ShowSearch,
                 SearchAttributes = barContext?.SearchAttributes,
                 ActionPath = barContext?.ActionPath,
                 AutoCompleteUrl = barContext?.AutoCompleteUrl,

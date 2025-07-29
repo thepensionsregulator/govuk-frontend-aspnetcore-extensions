@@ -13,7 +13,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string AutocompleteUrlAttribute = "autocomplete-url";
         private const string PlaceholderAttribute = "placeholder";
         private const string AriaLabelAttribute = "aria-label";
-        private const string InputQueryAttribute = "input-query";
+        private const string InputNameAttribute = "input-name";
 
         [HtmlAttributeName(ActionAttributeName)]
         public string? ActionPath { get; set; }
@@ -27,8 +27,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName(AriaLabelAttribute)]
         public string? AriaLabel {  get; set; }
 
-        [HtmlAttributeName(InputQueryAttribute)]
-        public string? InputQuery { get; set; }
+        [HtmlAttributeName(InputNameAttribute)]
+        public string? InputName { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -36,7 +36,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             var content = await output.GetChildContentAsync();
 
-            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), true, ActionPath, AutocompleteUrl, PlaceholderText, AriaLabel, InputQuery);
+            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), true, ActionPath, AutocompleteUrl, PlaceholderText, AriaLabel, InputName);
            
             output.SuppressOutput();
         }

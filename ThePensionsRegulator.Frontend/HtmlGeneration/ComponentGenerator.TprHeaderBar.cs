@@ -85,7 +85,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     contentElement.InnerHtml.Append(tprHeaderBar.Content.ToString()!);
                 }
             }
-            else if (tprHeaderBar.DisplaySearch)
+            else if (tprHeaderBar.ShowSearch)
             {
 
                 var headerSearch = GenerateTprHeaderSearch(tprHeaderBar);
@@ -121,7 +121,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var autoCompleteContainer = new TagBuilder("div");
             autoCompleteContainer.AddCssClass("tpr-autocomplete-container");
-            if (!string.IsNullOrEmpty(tprHeaderBar.AutoCompleteUrl)) ;
+            if (!string.IsNullOrEmpty(tprHeaderBar.AutoCompleteUrl)) 
             {
                 autoCompleteContainer.Attributes.Add("data-autocomplete-url", tprHeaderBar.AutoCompleteUrl);
             }        

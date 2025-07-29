@@ -25,7 +25,7 @@
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@Model.LogoHref" />
                 <tpr-header-bar-label>@Model.HeaderBarLabel</tpr-header-bar-label>
                 <tpr-header-bar-content allow-html="@Model.HeaderBarContentAllowHtml">@Html.Raw(Model.HeaderBarContent)</tpr-header-bar-content>
-                @if (Model.HeaderBarContent == null && Model.DisplaySearch)
+                @if (Model.HeaderBarContent == null && Model.ShowSearch)
                 {
                     <tpr-header-search action="@Model.ActionPath" autocomplete-url="@Model.AutocompleteUrl" placeholder="@Model.PlaceholderText"></tpr-header-search>
                 }

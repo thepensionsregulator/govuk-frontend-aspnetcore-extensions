@@ -12,8 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         inputs.forEach((input) => { 
             input.style.display = 'none';
-             placeholderText = input.getAttribute("placeholder");
-             inputNameText = input.getAttribute("name");
+            placeholderText = input.getAttribute("placeholder");
         });
 
         accessibleAutocomplete({
@@ -34,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
             minLength: 2,
             placeholder: placeholderText,
             inputClasses: 'govuk-input',   
-            name: inputNameText
         });
     });
 });

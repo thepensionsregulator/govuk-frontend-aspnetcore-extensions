@@ -22,8 +22,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 	/// <summary>TPR header</summary>
 	public partial interface ITprHeader : IPublishedElement
 	{
+		/// <summary>DisplayMobileMenu</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		bool DisplayMobileMenu { get; }
+
 		/// <summary>Search aria-label text</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.7.2+fd5b8de")]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string TprHeaderAriaLabelText { get; }
 
@@ -48,7 +52,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		global::Umbraco.Cms.Core.Models.Link TprHeaderLogoHref { get; }
 
 		/// <summary>Search placeholder text</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.7.2+fd5b8de")]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string TprHeaderPlaceholderText { get; }
 	}
@@ -85,15 +89,26 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// DisplayMobileMenu
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[ImplementPropertyType("displayMobileMenu")]
+		public virtual bool DisplayMobileMenu => GetDisplayMobileMenu(this, _publishedValueFallback);
+
+		/// <summary>Static getter for DisplayMobileMenu</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		public static bool GetDisplayMobileMenu(ITprHeader that, IPublishedValueFallback publishedValueFallback) => that.Value<bool>(publishedValueFallback, "displayMobileMenu");
+
+		///<summary>
 		/// Search aria-label text: Aria label for search button
 		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.7.2+fd5b8de")]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderAriaLabelText")]
 		public virtual string TprHeaderAriaLabelText => GetTprHeaderAriaLabelText(this, _publishedValueFallback);
 
 		/// <summary>Static getter for Search aria-label text</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.7.2+fd5b8de")]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static string GetTprHeaderAriaLabelText(ITprHeader that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprHeaderAriaLabelText");
 
@@ -152,13 +167,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		///<summary>
 		/// Search placeholder text
 		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.7.2+fd5b8de")]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderPlaceholderText")]
 		public virtual string TprHeaderPlaceholderText => GetTprHeaderPlaceholderText(this, _publishedValueFallback);
 
 		/// <summary>Static getter for Search placeholder text</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.7.2+fd5b8de")]
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static string GetTprHeaderPlaceholderText(ITprHeader that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprHeaderPlaceholderText");
 	}

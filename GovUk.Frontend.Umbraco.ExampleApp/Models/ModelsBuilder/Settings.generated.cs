@@ -50,22 +50,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Mobile Menu
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("tprMobileMenu")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprMobileMenu => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "tprMobileMenu");
-
-		///<summary>
-		/// Mobile menu aria label
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("tprMobileMenuAriaLabel")]
-		public virtual string TprMobileMenuAriaLabel => this.Value<string>(_publishedValueFallback, "tprMobileMenuAriaLabel");
-
-		///<summary>
 		/// Phase
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
@@ -154,21 +138,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::Umbraco.Cms.Core.Models.Link TprFooterLogoHref => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterLogoHref(this, _publishedValueFallback);
 
 		///<summary>
-		/// DisplayMobileMenu
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
-		[ImplementPropertyType("displayMobileMenu")]
-		public virtual bool DisplayMobileMenu => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetDisplayMobileMenu(this, _publishedValueFallback);
-
-		///<summary>
-		/// Search aria-label text: Aria label for search button
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("tprHeaderAriaLabelText")]
-		public virtual string TprHeaderAriaLabelText => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderAriaLabelText(this, _publishedValueFallback);
-
-		///<summary>
 		/// Content: A small number of links, or blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
@@ -201,11 +170,26 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::Umbraco.Cms.Core.Models.Link TprHeaderLogoHref => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderLogoHref(this, _publishedValueFallback);
 
 		///<summary>
-		/// Search placeholder text
+		/// Search aria-label text: Aria label for header search button
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("tprHeaderPlaceholderText")]
-		public virtual string TprHeaderPlaceholderText => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderPlaceholderText(this, _publishedValueFallback);
+		[ImplementPropertyType("tprHeaderSearchAriaLabel")]
+		public virtual string TprHeaderSearchAriaLabel => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderSearchAriaLabel(this, _publishedValueFallback);
+
+		///<summary>
+		/// Search placeholder text: Value displayed inside header search box
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderSearchPlaceholderText")]
+		public virtual string TprHeaderSearchPlaceholderText => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderSearchPlaceholderText(this, _publishedValueFallback);
+
+		///<summary>
+		/// ShowSearch: Enable to display header search
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[ImplementPropertyType("tprHeaderShowSearch")]
+		public virtual bool TprHeaderShowSearch => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderShowSearch(this, _publishedValueFallback);
 	}
 }

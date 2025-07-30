@@ -27,7 +27,7 @@
                 <tpr-header-bar-content allow-html="@Model.HeaderBarContentAllowHtml">@Html.Raw(Model.HeaderBarContent)</tpr-header-bar-content>
                 @if (Model.HeaderBarContent == null && Model.ShowSearch)
                 {
-                    <tpr-header-search action="@Model.ActionPath" autocomplete-url="@Model.AutocompleteUrl" placeholder="@Model.PlaceholderText"></tpr-header-search>
+                    <tpr-header-search action="@Model.HeaderSearchActionPath" autocomplete-url="@Model.HeaderSearchAutocompleteUrl" placeholder="@Model.HeaderSearchPlaceholderText" aria-label="@Model.HeaderSearchAriaLabel" input-name="@Model.HeaderSearchInputName"></tpr-header-search>
                 }
             </tpr-header-bar>
 

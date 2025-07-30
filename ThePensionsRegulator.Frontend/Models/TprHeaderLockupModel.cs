@@ -27,9 +27,10 @@ namespace ThePensionsRegulator.Frontend.Models
         public virtual string? Context2 { get; set; }
         public virtual string? Context3 { get; set; }
         public virtual bool ShowSearch { get; init; }
-        public virtual string? ActionPath { get; set; } 
-        public virtual string? AutocompleteUrl { get; set; }
-        public virtual string? PlaceholderText { get; set; } 
-        public virtual string? AriaLabel { get; set; } 
+        public virtual string? HeaderSearchActionPath { get; set; } 
+        public virtual string? HeaderSearchAutocompleteUrl { get; set; }
+        public virtual string? HeaderSearchPlaceholderText { get; set; } 
+        public virtual string? HeaderSearchAriaLabel { get; set; } 
+        public virtual string? HeaderSearchInputName { get; set; } 
     }
 }

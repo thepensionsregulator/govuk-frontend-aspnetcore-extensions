@@ -81,6 +81,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool UmbracoNaviHide => this.Value<bool>(_publishedValueFallback, "umbracoNaviHide");
 
 		///<summary>
+		/// umbracoUrlName
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("umbracoUrlName")]
+		public virtual string UmbracoUrlName => this.Value<string>(_publishedValueFallback, "umbracoUrlName");
+
+		///<summary>
 		/// Page heading size: Sets the h1 size. Defaults to govuk-heading-l if not set.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]

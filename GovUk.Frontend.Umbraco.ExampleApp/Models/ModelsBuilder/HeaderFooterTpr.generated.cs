@@ -170,14 +170,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel GovukBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "govukBlocks");
 
 		///<summary>
-		/// Header with Mobile Menu and Search
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("headerWithMobileMenuAndSearch")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel HeaderWithMobileMenuAndSearch => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "headerWithMobileMenuAndSearch");
-
-		///<summary>
 		/// Header with search
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]

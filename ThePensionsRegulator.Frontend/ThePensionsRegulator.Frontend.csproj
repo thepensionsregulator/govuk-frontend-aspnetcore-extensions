@@ -253,10 +253,6 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-notification-banner.scss" />
-	</ItemGroup>
-	
-	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_tpr-phase-banner.scss" />
 	</ItemGroup>
 	

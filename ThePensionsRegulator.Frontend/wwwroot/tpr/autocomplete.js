@@ -1,38 +1,38 @@
 ﻿
 document.addEventListener("DOMContentLoaded", function () {
 
-    const searchBars = document.querySelectorAll('.tpr-autocomplete-container');
-    
-    searchBars.forEach((searchBar) => {
+    const containers = document.querySelectorAll('.tpr-autocomplete-container');
 
-        let url = searchBar.getAttribute('data-autocomplete-url')
-              
-        const inputs = document.querySelectorAll('.tpr-header-search__input');
-        let placeholderText;
+    containers.forEach((container, index) => {
 
-        inputs.forEach((input) => { 
-            input.style.display = 'none';
-            placeholderText = input.getAttribute("placeholder");
-        });
+        let url = container.getAttribute('data-autocomplete-url')
+
+        const input = container.querySelector('.govuk-input');
+        input.style.display = 'none';
+
+        let inputNameText = input.getAttribute('name');
+        input.removeAttribute('name');
+
+        let placeholderText = input.getAttribute('placeholder');
 
         accessibleAutocomplete({
-
-            element: searchBar,
-            id: 'tpr-header-search-autocomplete',
+            element: container,
+            id: `tpr-autocomplete__input-${index + 1}`,
             source: function (query, populateResults) {
                 fetch(url)
                     .then(response => response.json())
                     .then(data => {
                         const results = data.filter(item => item.title.toLowerCase().includes(query.toLowerCase())).map(item => item.title);
-                        populateResults(results.slice(0,5))                 
+                        populateResults(results.slice(0,5))
                     })
                     .catch(error => {
-                        console.error('An error has occured with tpr-header-search fetch operation:', error);
+                        console.error('An error has occured with autocomplete fetch operation:', error);
                     });
-        },
+            },
             minLength: 2,
             placeholder: placeholderText,
-            inputClasses: 'govuk-input',   
+            inputClasses: 'govuk-input',
+            name: inputNameText,
         });
     });
 });

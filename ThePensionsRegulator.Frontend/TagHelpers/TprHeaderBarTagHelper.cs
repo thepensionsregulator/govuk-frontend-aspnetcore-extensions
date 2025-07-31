@@ -61,7 +61,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 AutoCompleteUrl = barContext?.AutoCompleteUrl,
                 SearchPlaceholderText = barContext?.SearchPlaceholderText,
                 SearchAriaLabel = barContext?.SearchAriaLabel,
-                SearchInputQuery = barContext?.SearchInputQuery                  
+                SearchInputName = barContext?.SearchInputName                  
             });
 
             output.TagName = tagBuilder.TagName;

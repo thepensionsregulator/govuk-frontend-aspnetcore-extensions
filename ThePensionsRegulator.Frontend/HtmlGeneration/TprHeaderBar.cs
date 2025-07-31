@@ -21,7 +21,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public string? AutoCompleteUrl {  get; set; }     
         public string? SearchPlaceholderText {  get; set; }
         public string? SearchAriaLabel {  get; set; }
-        public string? SearchInputQuery { get; set; } 
+        public string? SearchInputName { get; set; } 
 
     }
 }

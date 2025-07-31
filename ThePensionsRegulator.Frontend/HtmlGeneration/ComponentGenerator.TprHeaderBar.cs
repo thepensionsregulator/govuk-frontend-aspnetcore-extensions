@@ -133,9 +133,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 searchInput.Attributes.Add("placeholder", tprHeaderBar.SearchPlaceholderText);
             }
             searchInput.Attributes.Add("type", "search");
-            if (!string.IsNullOrEmpty(tprHeaderBar.SearchInputQuery))
+            if (!string.IsNullOrEmpty(tprHeaderBar.SearchInputName))
             {
-                searchInput.Attributes.Add("name", tprHeaderBar.SearchInputQuery);
+                searchInput.Attributes.Add("name", tprHeaderBar.SearchInputName);
             }
             searchInput.AddCssClass("govuk-input");
             searchInput.AddCssClass("tpr-header-search__input");

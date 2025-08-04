@@ -30,6 +30,7 @@
 	<ItemGroup>
 	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
 	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
+	  <None Remove="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -67,6 +68,7 @@
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />
 		<Content Include="App_Plugins\GOVUK\package.manifest" />
+		<Content Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
 		<Content Include="Styles\_govuk-spacing.scss" />
 		<Content Include="Styles\_govuk-list.scss" />
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.targets">

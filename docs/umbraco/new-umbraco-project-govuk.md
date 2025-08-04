@@ -8,7 +8,7 @@
 
 4. In your Umbraco project install the `uSync` NuGet package, making sure that the version aligns with the version of Umbraco you installed. See [uSync for Umbraco](https://jumoo.co.uk/usync/).
 
-5. In `appsettings.json` add the following configuration. The settings shown for `Umbraco:CMS` are in addition to those present by default, not a replacement.
+5. In `appsettings.json` add the following configuration. This includes the [Paste from Word plugin for TinyMCE](https://github.com/pangaeatech/tinymce-paste-from-word-plugin). The settings shown for `Umbraco:CMS` are in addition to those present by default, not a replacement.
 
    ```json
    {
@@ -35,8 +35,11 @@
              "table_header_type": "sectionCells",
              "table_sizing_mode": "relative",
              "table_resize_bars": "false",
-             "object_resizing": "img"
-             "contextmenu": "link lists table"
+             "object_resizing": "img",
+             "contextmenu": "link lists table",
+             "external_plugins": "{\"paste_from_word\":\"/App_Plugins/GOVUK/tinymce/paste-from-word.min.js\"}",
+             "paste_webkit_styles": "all",
+             "paste_remove_styles_if_webkit": "false"
            }
          },
          "RuntimeMinification": {

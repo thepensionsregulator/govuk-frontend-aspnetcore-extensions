@@ -36,6 +36,7 @@
              "table_sizing_mode": "relative",
              "table_resize_bars": "false",
              "object_resizing": "img"
+             "contextmenu": "link lists table"
            }
          },
          "RuntimeMinification": {

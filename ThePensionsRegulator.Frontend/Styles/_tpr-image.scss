@@ -1,0 +1,12 @@
+﻿.tpr-image {
+    display: block;
+    @include govuk-responsive-margin(6, "bottom");
+}
+.tpr-image--fit-container {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+.tpr-image--no-space-after {
+    margin-bottom: 0;
+}

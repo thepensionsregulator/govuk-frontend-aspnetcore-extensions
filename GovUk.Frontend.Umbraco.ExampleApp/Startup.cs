@@ -55,7 +55,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
 
             if (_config.GetValue<bool>("TPRStyles"))
             {
-                services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+                services.AddTprFrontendUmbraco(options => options.UpdateDestinationHostnames = []);
             }
             else
             {

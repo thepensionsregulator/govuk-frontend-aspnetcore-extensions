@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Image";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">When using TPR styles apply the class <code>tpr-image</code> to images.</p>
+
+        <img src="/img/workie-small.png" alt="Example image (Workie on a bench)" class="tpr-image">
+
+        <p class="govuk-body">Add class <code>tpr-image--fit-container</code> when you want to resize the image to fit the width of its container, to support responsive design.</p>
+
+        <img src="/img/workie-large.jpg" alt="Example image (Workie)" class="tpr-image tpr-image--fit-container">
+
+
+        <p class="govuk-body">Images have the same spacing after that is used by all components. Add class <code>tpr-image--no-space-after</code> if you want to switch this off so that they can be placed together.</p>
+
+
+        <img src="/img/workie-large.jpg" alt="Example image (Workie)" class="tpr-image tpr-image--fit-container tpr-image--no-space-after">
+
+
+        <img src="/img/workie-large.jpg" alt="Example image (Workie)" class="tpr-image tpr-image--fit-container tpr-image--no-space-after">
+    </div>
+</div>

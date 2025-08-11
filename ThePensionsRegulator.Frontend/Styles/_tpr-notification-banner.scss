@@ -1,0 +1,19 @@
+﻿.govuk-notification-banner {
+
+    .govuk-notification-banner__content {
+        > .govuk-width-container {
+            margin: 0;
+
+            > .govuk-grid-row {
+
+                .govuk-button {
+                    margin-bottom: 0;
+                }
+
+                .govuk-button-group {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}

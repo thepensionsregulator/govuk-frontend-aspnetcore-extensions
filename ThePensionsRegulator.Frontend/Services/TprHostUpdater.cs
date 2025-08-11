@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Linq;
 
 namespace ThePensionsRegulator.Frontend.Services
@@ -6,7 +7,7 @@ namespace ThePensionsRegulator.Frontend.Services
     /// <summary>
     /// Updates the host for a TPR service so that, for example, links to service.tpr.local can be transformed to service.thepensionsregulator.gov.uk in production
     /// </summary>
-    public class TprHostUpdater : IContextAwareHostUpdater
+    public class TprHostUpdater(IOptions<TprFrontendOptions> _tprOptions) : IContextAwareHostUpdater
     {
         public string UpdateHost(string destinationUrl, string requestHost)
         {
@@ -22,7 +23,7 @@ namespace ThePensionsRegulator.Frontend.Services
 
             var destination = new Uri(destinationUrl, UriKind.RelativeOrAbsolute);
 
-            if (!destination.IsAbsoluteUri || !IsTprHost(destination.Host) || IsTprAutomaticEnrolmentHost(destination.Host) || !IsTprHost(requestHost))
+            if (!destination.IsAbsoluteUri || !IsTprHost(destination.Host) || IsTprAutomaticEnrolmentHost(destination.Host) || !IsTprHost(requestHost) || !IsAllowedDestinationHost(destination.Host))
             {
                 return destinationUrl;
             }
@@ -30,6 +31,17 @@ namespace ThePensionsRegulator.Frontend.Services
             var newDestination = new UriBuilder(destination);
             newDestination.Host = TprService(destination.Host) + TprDomain(requestHost);
             return newDestination.Uri.ToString();
+        }
+
+        private bool IsAllowedDestinationHost(string host)
+        {
+            var hostAllowList = _tprOptions?.Value?.UpdateDestinationHostnames;
+            if (hostAllowList is null) { return true; }
+
+            var segments = host.ToLowerInvariant().Split(".");
+            if (segments.Length == 0) { return true; }
+
+            return hostAllowList.Contains(segments[0]);
         }
 
         private string TprService(string host)

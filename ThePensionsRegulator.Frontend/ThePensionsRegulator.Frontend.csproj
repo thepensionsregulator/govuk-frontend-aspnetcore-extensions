@@ -60,6 +60,9 @@
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
+		<None Update="Styles\_tpr-image.scss">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>

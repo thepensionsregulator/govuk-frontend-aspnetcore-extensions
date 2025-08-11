@@ -13,7 +13,10 @@
         public const string DocumentDatePublished = "datePublished";
         public const string DocumentDescription = "description";
         public const string DocumentNumberOfPages = "numberOfPages";
+        public const string DocumentTitle = "documentTitle";
         public const string DocumentsBlockList = "documents";
+        public const string ImageAltText = "altText";
+        public const string ImageDecorative = "decorativeImage";
         public const string ImageSize = "imageSize";
         public const string ImageSpaceAfter = "spaceAfter";
         public const string SearchResultsHeading = "heading";

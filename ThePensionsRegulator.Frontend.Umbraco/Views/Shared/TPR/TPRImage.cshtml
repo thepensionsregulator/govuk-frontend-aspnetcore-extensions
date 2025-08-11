@@ -10,6 +10,12 @@
     var typedMediaPickerSingle = Model.Content.Value<Umbraco.Cms.Core.Models.MediaWithCrops>(TprPropertyAliases.Image);
     if (typedMediaPickerSingle is not null)
     {
+        var altText = typedMediaPickerSingle.Value<string>(TprPropertyAliases.ImageAltText);
+        if (string.IsNullOrEmpty(altText))
+        {
+            altText = typedMediaPickerSingle.Name;
+        }
+
         var cssClasses = new List<string>() { TprClassNames.Image };
         if (Model.Settings is not null)
         {
@@ -23,12 +29,17 @@
             {
                 cssClasses.Add(TprClassNames.ImageNoSpaceAfter);
             }
+
+            if (Model.Settings.Value<bool>(TprPropertyAliases.ImageDecorative))
+            {
+                altText = "";
+            }
         }
         else 
         { 
             cssClasses.Add(TprClassNames.ImageStretch); 
         }
 
-        <img src="@typedMediaPickerSingle.MediaUrl()" alt="@typedMediaPickerSingle.Name" class="@string.Join(" ", cssClasses)" />
+        <img src="@typedMediaPickerSingle.MediaUrl()" alt="@altText" class="@string.Join(" ", cssClasses)" />
     }
 }

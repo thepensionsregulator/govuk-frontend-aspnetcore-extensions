@@ -22,7 +22,6 @@
             var innerCssClasses = document.Settings.Value<string>(PropertyAliases.CssClasses);
             var docHref = documentLink.Url;
             var docLinkType = documentLink.Type;
-            var docTitle = documentLink.Name;
             var docPages = document.Content.Value<string>(TprPropertyAliases.DocumentNumberOfPages);
             var dteValue = document.Content.Value<DateTime>(TprPropertyAliases.DocumentDatePublished);
             var docDatePublished = dteValue > DateTime.MinValue ? dteValue.ToString("MMMM yyyy") : null;
@@ -31,6 +30,12 @@
             if (docLinkType == LinkType.Media)
             {
                 var docKB = documentLink.Content.UmbracoBytes / 1024;
+
+                var docTitle = documentLink.Content?.DocumentTitle;
+                if (string.IsNullOrEmpty(docTitle))
+                {
+                    docTitle = documentLink.Name;
+                }
 
                 <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
 
@@ -44,7 +49,7 @@
             {
                 <tpr-document href="@docHref" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
 
-                    <tpr-document-title>@docTitle</tpr-document-title>
+                    <tpr-document-title>@documentLink.Name</tpr-document-title>
 
                     <tpr-document-description>@docDescription</tpr-document-description>
 

@@ -50,6 +50,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Decorative image: Sets the alt text to "" if the image is for decorative purposes only.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[ImplementPropertyType("decorativeImage")]
+		public virtual bool DecorativeImage => this.Value<bool>(_publishedValueFallback, "decorativeImage");
+
+		///<summary>
 		/// Image size: Fits full width of container if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]

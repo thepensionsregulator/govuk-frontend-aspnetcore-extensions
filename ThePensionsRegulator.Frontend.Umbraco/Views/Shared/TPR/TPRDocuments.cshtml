@@ -9,7 +9,6 @@
 @{
     var outerCssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.DocumentsBlockList);
-    var imageExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".svg" }.ToList();
 }
 
 <tpr-documents outercss="@outerCssClasses">
@@ -30,12 +29,21 @@
             if (docLinkType == LinkType.Media)
             {
                 var docKB = documentLink.Content.UmbracoBytes / 1024;
-                var docTitle = documentLink.Name;
-                var extension = System.IO.Path.GetExtension(docHref)?.ToLowerInvariant();
+                var docTitle = "";
 
-                if (!imageExtensions.Contains(extension) && !string.IsNullOrEmpty(documentLink.Content?.DocumentTitle))
+                var mediaLinkDocName = documentLink.Content.Name;
+                var mediaLinkTitle = documentLink.Name;
+                var mediaType = documentLink.Content?.ContentType?.Alias;
+
+                if (!string.Equals(mediaLinkDocName, mediaLinkTitle, StringComparison.OrdinalIgnoreCase))
                 {
-                    docTitle = documentLink.Content.DocumentTitle;
+                    docTitle = mediaLinkTitle;
+                }
+                else
+                {
+                    docTitle = (mediaType == "File" && !string.IsNullOrEmpty(documentLink.Content?.DocumentTitle))
+                        ? documentLink.Content.DocumentTitle
+                        : mediaLinkDocName;
                 }
 
                 <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">

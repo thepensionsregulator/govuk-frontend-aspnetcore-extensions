@@ -13,8 +13,6 @@
 
 <div class="govuk-width-container">
 	@await Component.InvokeAsync("TprSideNavigation", new {
-		currentPage = publishedContext.PublishedContent,
-		rootAncestor = UmbracoHelper.Content(1386),
-		blacklistedUrls = new string[] { }
+	rootNavigationNode = UmbracoHelper.Content(1386)
 	})
 </div>

@@ -1,69 +1,93 @@
 @using GovUk.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco.Models
 @using ThePensionsRegulator.Umbraco
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Core.Routing
 @using Umbraco.Extensions
+@model TprSideNavigationViewModel
 
-@inject IPublishedUrlProvider publishedUrlProvider
+<div>Hello world</div>
+@foreach(var link in Model.NavigationLinks)
+{
+    <div>
+        <a href="@link.Url">@link.Name</a>
+    </div>
+}
+@* @inject IPublishedUrlProvider publishedUrlProvider
 @{
-    IPublishedContent currentPage = Model.CurrentPage;
-    IPublishedContent rootAncestor = Model.RootAncestor;
-    string[] blacklistedUrls = Model.BlacklistedUrls;
 }
 
-<nav class="side-nav">
-    <h2>
-        <button type="button" class="govuk-link side-nav-mobile-expand-toggle">@rootAncestor.Name</button>
-        <a class="govuk-link side-nav-desktop-link" href="@rootAncestor.Url(publishedUrlProvider)">@rootAncestor.Name</a>
-    </h2>
-    <ul class="side-nav-list">
-        @foreach (IPublishedContent level1Child in rootAncestor.Children)
-        {
-            @if (blacklistedUrls.Contains(level1Child.Url(publishedUrlProvider))) { continue; }
+    <nav class="side-nav">
+    @if (Model.TitleLink is not null)
+    {
+        <h2>
+            <button type="button" class="govuk-link side-nav-mobile-expand-toggle">@Model.TitleLink.Name</button>
+            <a class="govuk-link side-nav-desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
+        </h2>
+    }
 
-            @if ((level1Child == currentPage || currentPage.Ancestors().Contains(level1Child)) && level1Child.Children().Any())
+        @{
+            RenderNavListLayer(rootAncestor, true);
+        }
+
+    </nav>
+
+@{
+    void RenderNavListLayer(IPublishedContent CurrentChild, bool IsFirstLayer) {
+        <text>
+            @if (IsFirstLayer)
             {
-                <li class="side-nav-list-item-expanded">
-                    <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
-                    <ul>
-                        @foreach (IPublishedContent level2Child in level1Child.Children())
+                <ul class="side-nav-list">
+                    @foreach (IPublishedContent child in CurrentChild.Children)
+                    {
+                        @if (blacklistedUrls.Contains(child.Url(publishedUrlProvider))) { continue; }
+
+                        @if ((child == currentPage || currentPage.Ancestors().Contains(child)) && child.Children().Any())
                         {
-                            @if (blacklistedUrls.Contains(level2Child.Url(publishedUrlProvider))) { continue; }
-
-                            @if ((level2Child == currentPage || currentPage.Ancestors().Contains(level2Child)) && level2Child.Children().Any())
-                            {
-                                <li>
-                                    <a class="govuk-link" href="@level2Child.Url(publishedUrlProvider)">@level2Child.Name</a>
-                                    <ul>
-                                        @foreach (IPublishedContent level3Child in level2Child.Children())
-                                        {
-                                            @if (blacklistedUrls.Contains(level3Child.Url(publishedUrlProvider))) { continue; }
-
-                                            <li>
-                                                <a class="govuk-link" href="@level3Child.Url(publishedUrlProvider)">@level3Child.Name</a>
-                                            </li>
-                                        }
-                                    </ul>
-                                </li>
-                            }
-                            else
-                            {
-                                <li>
-                                    <a class="govuk-link" href="@level2Child.Url(publishedUrlProvider)">@level2Child.Name</a>
-                                </li>
-                            }
+                            <li class="side-nav-list-item-expanded">
+                                <a class="govuk-link" href="@child.Url(publishedUrlProvider)">@child.Name</a>
+                                @{
+                                    RenderNavListLayer(child, false);
+                                }
+                            </li>
                         }
-                    </ul>
-                </li>
+                        else
+                        {
+                            <li>
+                                <a class="govuk-link" href="@child.Url(publishedUrlProvider)">@child.Name</a>
+                            </li>
+                        }
+                    }
+                </ul>
             }
             else
             {
-                <li>
-                    <a class="govuk-link" href="@level1Child.Url(publishedUrlProvider)">@level1Child.Name</a>
-                </li>
+                <ul>
+                    @foreach (IPublishedContent child in CurrentChild.Children)
+                    {
+                        @if (blacklistedUrls.Contains(child.Url(publishedUrlProvider))) { continue; }
+
+                        @if ((child == currentPage || currentPage.Ancestors().Contains(child)) && child.Children().Any())
+                        {
+                            <li>
+                                <a class="govuk-link" href="@child.Url(publishedUrlProvider)">@child.Name</a>
+                                @{
+                                    RenderNavListLayer(child, false);
+                                }
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a class="govuk-link" href="@child.Url(publishedUrlProvider)">@child.Name</a>
+                            </li>
+                        }
+                    }
+                </ul>
             }
-        }
-    </ul>
-</nav>
+
+        </text>
+    }
+} *@

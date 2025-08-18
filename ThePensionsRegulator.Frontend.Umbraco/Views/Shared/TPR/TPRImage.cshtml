@@ -1,11 +1,45 @@
-﻿@using ThePensionsRegulator.Frontend.Umbraco
+﻿@using GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Extensions
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.Blocks.BlockGridItem>
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IBlockReference<IPublishedElement, IPublishedElement>>
 
 @{
     var typedMediaPickerSingle = Model.Content.Value<Umbraco.Cms.Core.Models.MediaWithCrops>(TprPropertyAliases.Image);
-    if (typedMediaPickerSingle != null)
+    if (typedMediaPickerSingle is not null)
     {
-        <img src="@typedMediaPickerSingle.MediaUrl()" alt="@typedMediaPickerSingle.Name" class="tpr-image" />
+        var altText = typedMediaPickerSingle.Value<string>(TprPropertyAliases.ImageAltText);
+        if (string.IsNullOrEmpty(altText))
+        {
+            altText = typedMediaPickerSingle.Name;
+        }
+
+        var cssClasses = new List<string>() { TprClassNames.Image };
+        if (Model.Settings is not null)
+        {
+            cssClasses.AddRange(new TokenList(Model.Settings, PropertyAliases.CssClasses));
+            if (Model.Settings.Value<string>(TprPropertyAliases.ImageSize) != TprImageSize.RetainOriginal)
+            {
+                cssClasses.Add(TprClassNames.ImageStretch);
+            }
+
+            if (Model.Settings.Value<bool>(TprPropertyAliases.ImageSpaceAfter) == false)
+            {
+                cssClasses.Add(TprClassNames.ImageNoSpaceAfter);
+            }
+
+            if (Model.Settings.Value<bool>(TprPropertyAliases.ImageDecorative))
+            {
+                altText = "";
+            }
+        }
+        else 
+        { 
+            cssClasses.Add(TprClassNames.ImageStretch); 
+        }
+
+        <img src="@typedMediaPickerSingle.MediaUrl()" alt="@altText" class="@string.Join(" ", cssClasses)" />
     }
 }

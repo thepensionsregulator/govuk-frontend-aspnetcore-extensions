@@ -84,9 +84,6 @@
 	  <None Update="Styles\govuk-umbraco-backoffice.scss">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </None>
-	  <None Update="Styles\_tpr-image.scss">
-		<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -95,9 +92,5 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-image.scss" />
 	</ItemGroup>
 </Project>

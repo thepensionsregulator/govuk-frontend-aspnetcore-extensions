@@ -8,7 +8,7 @@
 
 4. In your Umbraco project install the `uSync` NuGet package, making sure that the version aligns with the version of Umbraco you installed. See [uSync for Umbraco](https://jumoo.co.uk/usync/).
 
-5. In `appsettings.json` add the following configuration. The settings shown for `Umbraco:CMS` are in addition to those present by default, not a replacement.
+5. In `appsettings.json` add the following configuration. This includes the [Paste from Word plugin for TinyMCE](https://github.com/pangaeatech/tinymce-paste-from-word-plugin). The settings shown for `Umbraco:CMS` are in addition to those present by default, not a replacement.
 
    ```json
    {
@@ -31,7 +31,15 @@
              "table_default_attributes": "{}",
              "table_default_styles": "{}",
              "table_class_list": "[{\"title\":\"None\",\"value\":\"\"},{\"title\": \"Width: three-quarters\",\"value\": \"govuk-!-width-three-quarters\"},{\"title\": \"Width: two-thirds\",\"value\": \"govuk-!-width-two-thirds\"},{\"title\": \"Width: one-half\",\"value\": \"govuk-!-width-one-half\"}]",
-             "table_cell_class_list": "[{\"title\":\"None\",\"value\":\"\"},{\"title\": \"Numeric header cell\",\"value\": \"govuk-table__header--numeric\"},{\"title\": \"Numeric data cell\",\"value\": \"govuk-table__cell--numeric\"},{\"title\": \"Width: one-half\",\"value\": \"govuk-!-width-one-half\"},{\"title\": \"Width: one-third\",\"value\": \"govuk-!-width-one-third\"},{\"title\": \"Width: one-quarter\",\"value\": \"govuk-!-width-one-quarter\"}]"
+             "table_cell_class_list": "[{\"title\":\"None\",\"value\":\"\"},{\"title\":\"Header cell\",\"value\":\"govuk-table__header\"},{\"title\": \"Numeric header cell\",\"value\": \"govuk-table__header--numeric\"},{\"title\": \"Numeric data cell\",\"value\": \"govuk-table__cell--numeric\"},{\"title\": \"Width: one-half\",\"value\": \"govuk-!-width-one-half\"},{\"title\": \"Width: one-third\",\"value\": \"govuk-!-width-one-third\"},{\"title\": \"Width: one-quarter\",\"value\": \"govuk-!-width-one-quarter\"}]",
+             "table_header_type": "sectionCells",
+             "table_sizing_mode": "relative",
+             "table_resize_bars": "false",
+             "object_resizing": "img",
+             "contextmenu": "link lists table",
+             "external_plugins": "{\"paste_from_word\":\"/App_Plugins/GOVUK/tinymce/paste-from-word.min.js\"}",
+             "paste_webkit_styles": "all",
+             "paste_remove_styles_if_webkit": "false"
            }
          },
          "RuntimeMinification": {

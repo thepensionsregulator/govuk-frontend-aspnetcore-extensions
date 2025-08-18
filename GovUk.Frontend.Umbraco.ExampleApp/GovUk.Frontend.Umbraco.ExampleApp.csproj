@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
       <None Include="App_Plugins\GOVUK\blocks\views\GovUkCaption.html" />

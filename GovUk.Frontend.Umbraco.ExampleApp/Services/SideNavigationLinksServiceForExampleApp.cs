@@ -1,6 +1,4 @@
-﻿using GovUk.Frontend.Umbraco.Models;
-using GovUk.Frontend.Umbraco.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ThePensionsRegulator.Frontend.Umbraco.Models;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
@@ -14,23 +12,13 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
         public TprSideNavigationViewModel GetLinks(IPublishedContent currentPage)
         {
             var rootNode = currentPage.Root();
-            TprSideNavigationViewModel breadcrumbViewModel = new();
-            breadcrumbViewModel.TitleLink = new TprSideNavigationLink { Name = "title", Url = "/"};
-            breadcrumbViewModel.NavigationLinks = new List<TprSideNavigationLink>
+            TprSideNavigationViewModel sideNavigationViewModel = new();
+            foreach (var child in rootNode.Children)
             {
-                new TprSideNavigationLink { Name = "First", Url = "/first"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-                new TprSideNavigationLink { Name = "title", Url = "/"},
-            };
-            return breadcrumbViewModel;
+                sideNavigationViewModel.NavigationLinks.Add(new TprSideNavigationLink { Name = child.Name, Url = child.Url() });
+            }
+            sideNavigationViewModel.TitleLink = new TprSideNavigationLink { Name = rootNode.Name, Url = rootNode.Url()};
+            return sideNavigationViewModel;
         }
     }
 }

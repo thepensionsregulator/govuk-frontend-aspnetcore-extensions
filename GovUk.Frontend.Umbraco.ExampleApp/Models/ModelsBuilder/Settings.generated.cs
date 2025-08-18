@@ -168,5 +168,28 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderLogoHref")]
 		public virtual global::Umbraco.Cms.Core.Models.Link TprHeaderLogoHref => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderLogoHref(this, _publishedValueFallback);
+
+		///<summary>
+		/// Search aria-label text: Aria label for header search button
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderSearchAriaLabel")]
+		public virtual string TprHeaderSearchAriaLabel => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderSearchAriaLabel(this, _publishedValueFallback);
+
+		///<summary>
+		/// Search placeholder text: Value displayed inside header search box
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderSearchPlaceholderText")]
+		public virtual string TprHeaderSearchPlaceholderText => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderSearchPlaceholderText(this, _publishedValueFallback);
+
+		///<summary>
+		/// ShowSearch: Enable to display header search
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[ImplementPropertyType("tprHeaderShowSearch")]
+		public virtual bool TprHeaderShowSearch => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderShowSearch(this, _publishedValueFallback);
 	}
 }

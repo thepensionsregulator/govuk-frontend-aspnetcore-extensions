@@ -25,5 +25,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Models
         public override string? Context1 => _settings.Value<IHtmlEncodedString>("tprContext1")?.ToHtmlString();
         public override string? Context2 => _settings.Value<IHtmlEncodedString>("tprContext2")?.ToHtmlString();
         public override string? Context3 => _settings.Value<IHtmlEncodedString>("tprContext3")?.ToHtmlString();
+        public override bool ShowSearch => _settings.Value<bool?>("tprHeaderShowSearch") ?? false;  
+        public override string? HeaderSearchPlaceholderText => _settings.Value<string>("tprHeaderSearchPlaceholderText");
+        public override string? HeaderSearchAriaLabel => _settings.Value<string>("tprHeaderSearchAriaLabel");
     }
 }

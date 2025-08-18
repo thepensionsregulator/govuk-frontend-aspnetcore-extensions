@@ -12,7 +12,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     /// Generates a TPR header bar component
     /// </summary>
     [HtmlTargetElement(TagName)]
-    [RestrictChildren(TprHeaderBarLogoTagHelper.TagName, TprHeaderBarLabelTagHelper.TagName, TprHeaderBarContentTagHelper.TagName)]
+    [RestrictChildren(TprHeaderBarLogoTagHelper.TagName, TprHeaderBarLabelTagHelper.TagName, TprHeaderBarContentTagHelper.TagName, TprHeaderSearchTagHelper.TagName)]
     [OutputElementHint(ComponentGenerator.TprHeaderBarElement)]
     public class TprHeaderBarTagHelper : TagHelper
     {
@@ -54,7 +54,14 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 LabelAllowHtml = barContext.LabelAllowHtml,
                 ContentAttributes = barContext.ContentAttributes,
                 Content = barContext.Content,
-                ContentAllowHtml = barContext.ContentAllowHtml
+                ContentAllowHtml = barContext.ContentAllowHtml,
+                ShowSearch = barContext.ShowSearch,
+                SearchAttributes = barContext?.SearchAttributes,
+                ActionPath = barContext?.ActionPath,
+                AutoCompleteUrl = barContext?.AutoCompleteUrl,
+                SearchPlaceholderText = barContext?.SearchPlaceholderText,
+                SearchAriaLabel = barContext?.SearchAriaLabel,
+                SearchInputName = barContext?.SearchInputName                  
             });
 
             output.TagName = tagBuilder.TagName;

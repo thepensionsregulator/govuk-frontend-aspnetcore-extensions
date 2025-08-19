@@ -13,12 +13,28 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
         {
             var rootNode = currentPage.Root();
             TprSideNavigationViewModel sideNavigationViewModel = new();
+
+            sideNavigationViewModel.TitleLink = new TprSideNavigationLink { Name = rootNode.Name, Url = rootNode.Url(), IsCurrentPage = (rootNode == currentPage) };
+            
             foreach (var child in rootNode.Children)
             {
-                sideNavigationViewModel.NavigationLinks.Add(new TprSideNavigationLink { Name = child.Name, Url = child.Url() });
+                sideNavigationViewModel.NavigationLinks.Add(new TprSideNavigationLink { Name = child.Name, Url = child.Url(), IsCurrentPage = (child == currentPage), Children = CreateSideNavigationLinkChildren(currentPage, child.Children) });
             }
-            sideNavigationViewModel.TitleLink = new TprSideNavigationLink { Name = rootNode.Name, Url = rootNode.Url()};
             return sideNavigationViewModel;
+        }
+
+        private List<TprSideNavigationLink> CreateSideNavigationLinkChildren(IPublishedContent currentPage, IEnumerable<IPublishedContent> childPages)
+        {
+            List<TprSideNavigationLink> children = new();
+
+            if (childPages is not null && childPages.Any())
+            {
+                foreach (var child in childPages)
+                {
+                    children.Add(new TprSideNavigationLink { Name = child.Name, Url = child.Url(), IsCurrentPage = (child == currentPage), Children = CreateSideNavigationLinkChildren(currentPage, child.Children) });
+                }
+            }
+           return children;
         }
     }
 }

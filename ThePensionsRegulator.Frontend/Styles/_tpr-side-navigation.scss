@@ -1,8 +1,8 @@
 @import '_tpr-variables.scss';
 @import 'govuk/base';
 
-$side-nav-indentation-space: 10px;
-$side-nav-selection-border-size: 5px;
+$side-nav-indentation-space: govuk-spacing(2);
+$side-nav-selection-border-size: govuk-spacing(1);
 
 
 .side-nav a:hover {
@@ -26,7 +26,7 @@ button.side-nav-mobile-expand-toggle {
 
 .side-nav a {
     text-decoration: none;
-    padding: 5px;
+    padding: govuk-spacing(1);
     padding-left:$side-nav-indentation-space;
     display: block;
     position:relative;
@@ -43,8 +43,6 @@ button.side-nav-mobile-expand-toggle {
 
 .side-nav li {
     // @include govuk-responsive-margin(4, "top");
-    // margin: $side-nav-indentation-space ($side-nav-indentation-space * -1);
-
     border-left: $side-nav-selection-border-size solid;
     border-color: transparent;
 }
@@ -59,13 +57,8 @@ ul.side-nav-list {
 }
 
 li.side-nav-list-item-active {
-    // border-left: 5px solid;
-    // border-color: $tpr-colour-royal-blue;
-    // margin-left: -20px;
-    // padding-left: 15px;
-    
-            border-left: $side-nav-selection-border-size solid;
-            border-color: $tpr-colour-royal-blue;
+    border-left: $side-nav-selection-border-size solid;
+    border-color: $tpr-colour-royal-blue;
             
     > a.govuk-link
     {
@@ -95,10 +88,6 @@ li.side-nav-list-item-active {
     @include govuk-media-query($until:tablet) {
 
         ul.side-nav-list {
-            //max-height: 0;
-            //display: none;
-            // overflow-x: visible;
-            // overflow: hidden;
             transition: max-height 0.5s;
         }
 

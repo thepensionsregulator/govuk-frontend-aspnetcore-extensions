@@ -7,15 +7,30 @@
 @using Umbraco.Cms.Core.Routing
 @using Umbraco.Extensions
 @model TprSideNavigationViewModel
+<nav class="side-nav">
+    @if (Model.TitleLink is not null)
+    {
+        <h2>
+            <button type="button" class="govuk-link side-nav-mobile-expand-toggle">@Model.TitleLink.Name</button>
+            <a class="govuk-link side-nav-desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
+        </h2>
+    }
 
-<div>Hello world</div>
+
+    @{
+        RenderNavListLayer(Model.NavigationLinks);
+    }
+    @* <ul class="acnav__list acnav__list--level0" id="single-code-list-items">
 @foreach(var link in Model.NavigationLinks)
 {
-    <div>
-        <a href="@link.Url">@link.Name</a>
-    </div>
+            <li class="has-children is-open root">
+                <div class="acnav__label">
+                    <a class="govuk-link acnav__link acnav__link--level1 " href="@link.Url">@link.Name</a>
+                </div>
+            </li>
 }
-@* @inject IPublishedUrlProvider publishedUrlProvider
+</ul> *@
+    @* @inject IPublishedUrlProvider publishedUrlProvider
 @{
 }
 
@@ -33,35 +48,28 @@
         }
 
     </nav>
+*@
 
+</nav>
 @{
-    void RenderNavListLayer(IPublishedContent CurrentChild, bool IsFirstLayer) {
-        <text>
+    void RenderNavListLayer(List<TprSideNavigationLink> navigationLinks)
+    {
+        @* <text>
             @if (IsFirstLayer)
+            { *@
+        <ul class="side-nav-list">
+            @foreach (var child in navigationLinks)
             {
-                <ul class="side-nav-list">
-                    @foreach (IPublishedContent child in CurrentChild.Children)
+                <li class="@(child.IsCurrentPage ? "side-nav-list-item-active" : string.Empty) @(child.IsExpanded ? "side-nav-list-item-expanded" : string.Empty)">
+                    <a class="govuk-link" href="@child.Url">@child.Name</a>
+                    @if (child.Children is not null && child.Children.Any())
                     {
-                        @if (blacklistedUrls.Contains(child.Url(publishedUrlProvider))) { continue; }
-
-                        @if ((child == currentPage || currentPage.Ancestors().Contains(child)) && child.Children().Any())
-                        {
-                            <li class="side-nav-list-item-expanded">
-                                <a class="govuk-link" href="@child.Url(publishedUrlProvider)">@child.Name</a>
-                                @{
-                                    RenderNavListLayer(child, false);
-                                }
-                            </li>
-                        }
-                        else
-                        {
-                            <li>
-                                <a class="govuk-link" href="@child.Url(publishedUrlProvider)">@child.Name</a>
-                            </li>
-                        }
+                        RenderNavListLayer(child.Children);
                     }
-                </ul>
+                </li>
             }
+        </ul>
+        @* }
             else
             {
                 <ul>
@@ -86,8 +94,8 @@
                         }
                     }
                 </ul>
-            }
+            } *@
 
-        </text>
+        @* </text> *@
     }
-} *@
+}

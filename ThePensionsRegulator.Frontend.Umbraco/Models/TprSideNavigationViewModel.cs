@@ -13,6 +13,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Models
         public string Name { get; set; }
         public string Url { get; set; }
         public bool IsCurrentPage { get; set; }
+        public bool IsExpanded { get; set; }
+        public TprSideNavigationLink Parent { get; set; }
         public List<TprSideNavigationLink> Children { get; set; } = new();
     }
 }

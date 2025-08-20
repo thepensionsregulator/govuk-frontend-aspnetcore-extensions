@@ -15,15 +15,11 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
             TprSideNavigationViewModel sideNavigationViewModel = new();
 
             sideNavigationViewModel.TitleLink = new TprSideNavigationLink { Name = rootNode.Name, Url = rootNode.Url(), IsCurrentPage = (rootNode == currentPage) };
-            
-            foreach (var child in rootNode.Children)
-            {
-                sideNavigationViewModel.NavigationLinks.Add(new TprSideNavigationLink { Name = child.Name, Url = child.Url(), IsCurrentPage = (child == currentPage), Children = CreateSideNavigationLinkChildren(currentPage, child.Children) });
-            }
+            sideNavigationViewModel.NavigationLinks = CreateSideNavigationLinkChildren(currentPage, null, rootNode.Children);
             return sideNavigationViewModel;
         }
 
-        private List<TprSideNavigationLink> CreateSideNavigationLinkChildren(IPublishedContent currentPage, IEnumerable<IPublishedContent> childPages)
+        private List<TprSideNavigationLink> CreateSideNavigationLinkChildren(IPublishedContent currentPage, TprSideNavigationLink parent, IEnumerable<IPublishedContent> childPages)
         {
             List<TprSideNavigationLink> children = new();
 
@@ -31,7 +27,19 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
             {
                 foreach (var child in childPages)
                 {
-                    children.Add(new TprSideNavigationLink { Name = child.Name, Url = child.Url(), IsCurrentPage = (child == currentPage), Children = CreateSideNavigationLinkChildren(currentPage, child.Children) });
+                    var childIsCurrentPage = child == currentPage;
+                    var childNavItem = new TprSideNavigationLink { Name = child.Name, Url = child.Url(), IsCurrentPage = childIsCurrentPage, IsExpanded = childIsCurrentPage, Parent = parent};
+                    if (childIsCurrentPage)
+                    {
+                        var upOneLevel = parent;
+                        while (upOneLevel is not null)
+                        {
+                            parent.IsExpanded = true;
+                            upOneLevel = parent.Parent;
+                        }
+                    }
+                    childNavItem.Children = CreateSideNavigationLinkChildren(currentPage, childNavItem, child.Children);
+                    children.Add(childNavItem);
                 }
             }
            return children;

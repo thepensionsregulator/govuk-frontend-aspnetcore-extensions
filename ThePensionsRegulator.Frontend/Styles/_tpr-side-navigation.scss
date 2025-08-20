@@ -1,8 +1,20 @@
 @import '_tpr-variables.scss';
 @import 'govuk/base';
 
+$side-nav-indentation-space: 10px;
+$side-nav-selection-border-size: 5px;
+
 .side-nav a {
     text-decoration: none;
+    padding: 5px;
+    padding-left:$side-nav-indentation-space;
+    display: block;
+    position:relative;
+    &.govuk-link
+    {
+        font-weight:normal;
+    }
+
 }
 
 .side-nav a:hover {
@@ -25,7 +37,11 @@ button.side-nav-mobile-expand-toggle {
 }
 
 .side-nav li {
-    @include govuk-responsive-margin(4, "top");
+    // @include govuk-responsive-margin(4, "top");
+    margin: $side-nav-indentation-space ($side-nav-indentation-space * -1);
+
+    border-left: $side-nav-selection-border-size solid;
+    border-color: transparent;
 }
 
 ul.side-nav-list {
@@ -37,16 +53,26 @@ ul.side-nav-list {
     padding-inline-start: 20px;
 }
 
-li.side-nav-list-item-expanded {
-    border-left: 5px solid;
-    border-color: $tpr-colour-royal-blue;
-    margin-left: -20px;
-    padding-left: 15px;
+li.side-nav-list-item-active {
+    // border-left: 5px solid;
+    // border-color: $tpr-colour-royal-blue;
+    // margin-left: -20px;
+    // padding-left: 15px;
+    
+            border-left: $side-nav-selection-border-size solid;
+            border-color: $tpr-colour-royal-blue;
+            
+    > a.govuk-link
+    {
+        font-weight:bold;
+    }
 }
 
-.side-nav-list-item-expanded li::marker {
+.side-nav-list-item-active li a::before {
     content: '\2014' ' '; /* em dash */
     color: $tpr-colour-eclipse;
+    position:absolute;
+    margin-left:-1.3em;
 }
 
 @media (scripting: none) {
@@ -64,9 +90,9 @@ li.side-nav-list-item-expanded {
     @include govuk-media-query($until:tablet) {
 
         ul.side-nav-list {
-            max-height: 0;
-            overflow-x: visible;
-            overflow: hidden;
+            // max-height: 0;
+            // overflow-x: visible;
+            // overflow: hidden;
             transition: max-height 0.5s;
         }
 

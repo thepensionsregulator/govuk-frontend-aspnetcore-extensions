@@ -32,3 +32,19 @@ p.tpr-add-link {
 .tpr-youtube-video-previewbox-play-button{
     margin:0 20%;
 }
+
+table {
+    @extend .govuk-table;
+}
+
+caption {
+    @extend .govuk-table__caption;
+}
+
+th {
+    @extend .govuk-table__header;
+}
+
+td, td:last-child {
+    @extend .govuk-table__cell;
+}

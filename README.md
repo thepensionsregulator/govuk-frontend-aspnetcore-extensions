@@ -22,7 +22,7 @@ We add support for:
 
 - Configuring the text for the following components in Umbraco:
 
-  - [Button](/docs/components/button.md)  
+  - [Button](/docs/components/button.md)
   - [Checkboxes](/docs/components/checkboxes.md)
   - [Character count](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/character-count.md)
   - [Date input](/docs/components/date-input.md)
@@ -43,7 +43,7 @@ We add support for:
   - [TPR back to menu](/docs/components/tpr-back-to-menu.md)
   - [TPR back to top](/docs/components/tpr-back-to-top.md)
   - [TPR box](/docs/components/tpr-box.md)
-  - [TPR context bar](/docs/components/tpr-context-bar.md)  
+  - [TPR context bar](/docs/components/tpr-context-bar.md)
   - [TPR documents](/docs/components/tpr-documents.md)
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
@@ -105,6 +105,7 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 - [Use SASS for CSS](docs/aspnet/sass.md)
 - [Configure the rich text editor](/docs/umbraco/rich-text-editor.md)
 - [Configure heading levels](/docs/umbraco/configure-heading-levels.md)
+- [Update TPR hostnames in non-production environments](docs/umbraco/tpr-hostnames.md)
 
 Umbraco GOV.UK Design System support is published on NuGet as [ThePensionsRegulator.GovUk.Frontend.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.GovUk.Frontend.Umbraco)
 

@@ -90,7 +90,8 @@ li.side-nav-list-item-active {
     @include govuk-media-query($until:tablet) {
 
         ul.side-nav-list {
-            // max-height: 0;
+            max-height: 0;
+            display: none;
             // overflow-x: visible;
             // overflow: hidden;
             transition: max-height 0.5s;

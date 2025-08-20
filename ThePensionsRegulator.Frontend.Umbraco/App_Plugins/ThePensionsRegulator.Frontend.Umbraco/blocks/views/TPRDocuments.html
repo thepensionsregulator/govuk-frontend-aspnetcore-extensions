@@ -1,115 +1,37 @@
-﻿
-<dl class="tpr-documents backoffice-block-view govuk-list {{block.settingsData.cssClasses}}">
-    <div class="tpr-document" ng-repeat="doc in block.data.documents.contentData">
-        <div ng-if="doc.document[0].url.endsWith('.pdf')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">
-                    {{doc.document[0].name}}
-                    <br>
-                    <span class="pdf fileicon">PDF</span> --KB, {{doc.numberOfPages}} page(s)
-                </a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-        <div ng-if="doc.document[0].url.endsWith('.docx') || doc.document[0].url.endsWith('.doc')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">
-                    {{doc.document[0].name}}
-                    <br>
-                    <span class="doc fileicon">Word</span> --KB, {{doc.numberOfPages}} page(s)
-                </a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-        <div ng-if="doc.document[0].url.endsWith('.dotx')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">
-                    {{doc.document[0].name}}
-                    <br>
-                    <span class="doc fileicon">DOTX</span> --KB
-                </a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-        <div ng-if="doc.document[0].url.endsWith('.pptx')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">
-                    {{doc.document[0].name}}
-                    <br>
-                    <span class="powerpoint fileicon">PPTX</span> --KB, {{doc.numberOfPages}} page(s)
-                </a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-        <div ng-if="doc.document[0].url.endsWith('.rtf')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">
-                    {{doc.document[0].name}}
-                    <br>
-                    <span class="misc fileicon">RTF</span> --KB, {{doc.numberOfPages}} page(s)
-                </a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-        <div ng-if="doc.document[0].url.endsWith('.odt')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">
-                    {{doc.document[0].name}}
-                    <br>
-                    <span class="misc fileicon">ODT</span> --KB, {{doc.numberOfPages}} page(s)
-                </a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-        <div ng-if="doc.document[0].url.endsWith('.xlsx')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">
-                    {{doc.document[0].name}}
-                    <br>
-                    <span class="excel fileicon">Excel</span> --KB
-                </a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-        <div ng-if="doc.document[0].url.endsWith('.xlst')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">
-                    {{doc.document[0].name}}
-                    <br>
-                    <span class="excel fileicon">XLST</span> --KB
-                </a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-        <div ng-if="doc.document[0].url.endsWith('.csv')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">
-                    {{doc.document[0].name}}
-                    <br>
-                    <span class="excel fileicon">CSV</span> --KB
-                </a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-        <div ng-if="doc.document[0].url.endsWith('.pdf') == false && doc.document[0].url.endsWith('.docx') == false
-             && doc.document[0].url.endsWith('.dotx') == false && doc.document[0].url.endsWith('.pptx') == false
-             && doc.document[0].url.endsWith('.xlsx') == false && doc.document[0].url.endsWith('.xlst') == false
-             && doc.document[0].url.endsWith('.csv') == false && doc.document[0].url.endsWith('.rtf') == false
-             && doc.document[0].url.endsWith('.odt') == false && doc.document[0].url.endsWith('.doc')">
-            <dt>
-                <a class="govuk-link" href="{{doc.document[0].url}}">{{doc.document[0].name}}</a>
-            </dt>
-            <dd ng-if="doc.datePublished != ''">Published: {{doc.datePublished}}</dd>
-            <dd ng-bind="doc.description"></dd>
-        </div>
-    </div>
+﻿<dl class="tpr-documents backoffice-block-view govuk-list {{block.settingsData.cssClasses}}">
+    <ng-content ng-repeat="doc in block.data.documents.contentData">
+        <ng-content ng-init="
+            ext = doc.document[0].url.split('.').pop().toLowerCase();
+            known = ['csv', 'doc', 'docx', 'dotx', 'odt', 'pdf', 'pptx', 'rtf', 'xlst', 'xlsx'];
+            isKnown = known.indexOf(ext) !== -1;
+            docName = doc.document[0].name ? doc.document[0].name : doc.document[0].nodeName;">
+
+            <div class="tpr-document">
+                <dt>
+                    <a class="govuk-link" href="{{doc.document[0].url}}">
+                        {{docName}}
+                        <ng-content ng-if="isKnown === true">
+                            <br>
+                            <span ng-if="ext == 'csv'" class="excel fileicon">CSV</span>
+                            <span ng-if="ext == 'doc'" class="doc fileicon">Word</span>
+                            <span ng-if="ext == 'docx'" class="doc fileicon">Word</span>
+                            <span ng-if="ext == 'dotx'" class="doc fileicon">DOTX</span>
+                            <span ng-if="ext == 'odt'" class="misc fileicon">ODT</span>
+                            <span ng-if="ext == 'pdf'" class="pdf fileicon">PDF</span>
+                            <span ng-if="ext == 'pptx'" class="powerpoint fileicon">PPTX</span>
+                            <span ng-if="ext == 'rtf'" class="misc fileicon">RTF</span>
+                            <span ng-if="ext == 'xlst'" class="excel fileicon">XLST</span>
+                            <span ng-if="ext == 'xlsx'" class="excel fileicon">Excel</span>
+                            <span>--KB, </span>
+                            <ng-content ng-if="doc.numberOfPages">
+                                {{doc.numberOfPages}} page(s)
+                            </ng-content>
+                        </ng-content>
+                    </a>
+                </dt>
+                <dd ng-if="doc.datePublished">Published: {{doc.datePublished}}</dd>
+                <dd ng-if="doc.description">{{doc.description}}</dd>
+            </div>
+        </ng-content>
+    </ng-content>
 </dl>

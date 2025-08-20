@@ -4,18 +4,6 @@
 $side-nav-indentation-space: 10px;
 $side-nav-selection-border-size: 5px;
 
-.side-nav a {
-    text-decoration: none;
-    padding: 5px;
-    padding-left:$side-nav-indentation-space;
-    display: block;
-    position:relative;
-    &.govuk-link
-    {
-        font-weight:normal;
-    }
-
-}
 
 .side-nav a:hover {
     text-decoration: underline;
@@ -36,9 +24,26 @@ button.side-nav-mobile-expand-toggle {
     cursor: pointer;
 }
 
+.side-nav a {
+    text-decoration: none;
+    padding: 5px;
+    padding-left:$side-nav-indentation-space;
+    display: block;
+    position:relative;
+    &.govuk-link
+    {
+        font-weight:normal;
+    }
+
+}
+// Root ul only
+.side-nav > ul {
+    margin: $side-nav-indentation-space ($side-nav-indentation-space * -1);
+}
+
 .side-nav li {
     // @include govuk-responsive-margin(4, "top");
-    margin: $side-nav-indentation-space ($side-nav-indentation-space * -1);
+    // margin: $side-nav-indentation-space ($side-nav-indentation-space * -1);
 
     border-left: $side-nav-selection-border-size solid;
     border-color: transparent;

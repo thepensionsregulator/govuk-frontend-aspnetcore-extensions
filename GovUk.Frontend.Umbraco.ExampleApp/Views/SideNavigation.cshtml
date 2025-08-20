@@ -6,13 +6,22 @@
 	<title>@Model.PageHeadingOrName()</title>
 }
 
-<partial name="GOVUK/BlockGrid" model="Model.Grid" />
-
-@inject IUmbracoPublishedContentAccessor publishedContext
 @inject Umbraco.Cms.Web.Common.UmbracoHelper UmbracoHelper
 
 <div class="govuk-width-container">
-	@await Component.InvokeAsync("TprSideNavigation", new {
-	rootNavigationNode = UmbracoHelper.Content(1386)
-	})
+	<div class="govuk-grid-row">
+		<div class="govuk-grid-column govuk-grid-column-one-third">
+
+			@await Component.InvokeAsync("TprSideNavigation", new {
+				rootNavigationNode = UmbracoHelper.Content(1386)
+			})
+
+		</div>
+
+		<div class="govuk-grid-column govuk-grid-column-two-thirds">
+
+			<partial name="GOVUK/BlockGrid" model="Model.Grid" />
+
+		</div>
+	</div>
 </div>

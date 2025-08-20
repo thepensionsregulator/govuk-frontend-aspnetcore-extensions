@@ -7,13 +7,23 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function ExpandOrRetractSideNav() {
-    var content = this.parentNode.nextElementSibling;
-    if (content.style.maxHeight !== "0px") {
-        content.style.maxHeight = "0px";
-        //content.style.display = "none";
+    var ul = this.parentNode.nextElementSibling;
+    if (ul.parentNode.classList.contains("side-nav-list--collapse")) {
+        ExpandSideNav(ul);
     }
     else {
-        //content.style.display = "block";
-        content.style.maxHeight = content.scrollHeight + "px";
+        CollapseSideNav(ul);
     }
+}
+
+function ExpandSideNav(ul) {
+    ul.style.display = "block";
+    ul.style.maxHeight = ul.scrollHeight + "px";
+    ul.parentNode.classList.remove("side-nav-list--collapse");
+}
+
+function CollapseSideNav(ul) {
+    ul.style.maxHeight = "0px";
+    ul.style.display = "none";
+    ul.parentNode.classList.add("side-nav-list--collapse");
 }

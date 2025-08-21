@@ -15,6 +15,13 @@ The Pensions Regulator (TPR) uses the TPR header bar as a consistent part of the
         <a class="govuk-link" href="#">Another link</a>
     </tpr-header-bar-content>
     <tpr-header-search action="en/search-results" autocomplete-url="#" placeholder="search" aria-label="search" input-name="custom query string"></tpr-header-search>
+     <tpr-mobile-menu aria-label="Example instructions for navigation" no-js-navigation="/example-page">
+        <tpr-mobile-menu-parent-item href="#" link-text="Example parent item 1">
+            <tpr-mobile-menu-child-item href="#" link-text="Example child item 1"></tpr-mobile-menu-child-item>
+        </tpr-mobile-menu-parent-item href="#" link-text="Example parent item 2">
+             <tpr-mobile-menu-child-item href="#" link-text="Example child item 2"></tpr-mobile-menu-child-item>
+        </tpr-mobile-menu-parent-item>
+    </tpr-mobile-menu>
 </tpr-header-bar>
 ```
 
@@ -79,6 +86,34 @@ Mobile Menu behaviour has not yet been implemented therefore is a desktop-only c
 TPR Header Search implements the [alphagov/accessible-autocomplete](https://github.com/alphagov/accessible-autocomplete) component, rendering an input box and drop-down box for search results.
 
 Views which require the `<tpr-header-search>` should also include the 'TPRHeaderSearchAutocomplete' partial view, in order to use the autocomplete functionality.
+
+### `<tpr-mobile-menu>`
+
+| Attribute         | Type   | Description                                                                                                                                                |
+| ----------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|   `aria-label`    |`string`| Sets aria-label for `<ul>` element whithin navigation menu.                                                                                                |     
+| `no-js-navigation`|`string`| Set destination for a page that would display all navigation items for the mobile menu when when JavaScript is disabled.                                   |
+
+Using the `<tpr-mobile-menu>` tag will generate the toggle as part of the header bar and the associated nav which will dispay underneath the header.
+Adding  `<tpr-mobile-menu-parent-item>` will create items to populate the the menu and `<tpr-mobile-menu-child-item>` can be nested inside these parent items to populate each sub menu.
+ 
+### `<tpr-mobile-menu-parent-item>`
+
+| Attribute    | Type   | Description                                                       |
+| ------------ | ------ | ----------------------------------------------------------------- |
+| `href`       |`string`| Sets destination for the menu item.                               |     
+| `link-text`  |`string`| Inner HTML value for menu item title.                             | 
+
+Must be used inside the `<tpr-mobile-menu>` tag
+
+### `<tpr-mobile-menu-child-item>`
+
+| Attribute    | Type   | Description                                                       |
+| ------------ | ------ | ----------------------------------------------------------------- |
+| `href`       |`string`| Sets destination for the menu item.                               |     
+| `link-text`  |`string`| Inner HTML value for menu item title.                             | 
+
+Must be used inside the `<tpr-mobile-menu-parent-item>` tag
 
 ## Umbraco
 

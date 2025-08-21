@@ -158,7 +158,7 @@
         flex-direction: column;
     }
 
-    .arrow_container {    
+    .arrow_container {
         padding: 4.5px;
         position: absolute;
         left: 85%;
@@ -250,21 +250,21 @@
             padding: 1rem;
         }
 
-        a:hover{
+        a:hover {
             background: $tpr-colour-white;
             text-decoration: underline;
             color: $tpr-colour-black;
         }
     }
 
-    .navigation__menu-item{
-       
+    .navigation__menu-item {
+
         a:focus-within {
             outline: $govuk-focus-width solid $govuk-focus-colour;
         }
     }
 
-    .navigation__menu-item:hover .navigation__sub-menu, .navigation__menu-item:focus-within .navigation__sub-menu { 
+    .navigation__menu-item:hover .navigation__sub-menu, .navigation__menu-item:focus-within .navigation__sub-menu {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         background: $tpr-colour-white;
@@ -302,14 +302,13 @@
         border-bottom: solid 1px $tpr-colour-royal-blue;
     }
 
-    .navigation__sub-menu-item-title{
-    .navigation__sub-menu-item-title{
-        display:flex
+    .navigation__sub-menu-item-title {
+        display: flex
     }
 
 
     .navigation__menu-item.navigation__final-item {
-        margin-left: 15.5rem; 
+        margin-left: 15.5rem;
     }
 
     .tpr-header-menu-nav__inner-container {
@@ -338,5 +337,3 @@
         display: none;
     }
 }
-
-

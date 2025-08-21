@@ -102,5 +102,13 @@ li.side-nav-list-item-active {
         button.side-nav-mobile-expand-toggle {
             display: block;
         }
+
+        @include govuk-media-query($until:desktop) {
+
+            .side-nav-list--collapse > ul {
+                display: none;
+                max-height: 0px;
+            }
+        }
     }
 }

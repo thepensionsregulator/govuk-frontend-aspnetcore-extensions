@@ -16,7 +16,6 @@
     @foreach (var document in documents)
     {
         var documentLink = document.Content.Value<Link>(TprPropertyAliases.Document);
-
         if (documentLink != null)
         {
             var innerCssClasses = document.Settings.Value<string>(PropertyAliases.CssClasses);
@@ -30,11 +29,21 @@
             if (docLinkType == LinkType.Media)
             {
                 var docKB = documentLink.Content.UmbracoBytes / 1024;
+                var docTitle = "";
 
-                var docTitle = documentLink.Content?.DocumentTitle;
-                if (string.IsNullOrEmpty(docTitle))
+                var mediaLinkDocName = documentLink.Content.Name;
+                var mediaLinkTitle = documentLink.Name;
+                var mediaType = documentLink.Content?.ContentType?.Alias;
+
+                if (!string.Equals(mediaLinkDocName, mediaLinkTitle, StringComparison.OrdinalIgnoreCase))
                 {
-                    docTitle = documentLink.Name;
+                    docTitle = mediaLinkTitle;
+                }
+                else
+                {
+                    docTitle = (mediaType == "File" && !string.IsNullOrEmpty(documentLink.Content?.DocumentTitle))
+                        ? documentLink.Content.DocumentTitle
+                        : mediaLinkDocName;
                 }
 
                 <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">

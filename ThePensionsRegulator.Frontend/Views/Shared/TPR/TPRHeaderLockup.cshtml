@@ -11,6 +11,7 @@
     var headerLogoAlt = Model.LogoAlternativeText;
     if (string.IsNullOrEmpty(headerLogoAlt) && !string.IsNullOrEmpty(Model.LogoHref)) { headerLogoAlt = ComponentGenerator.HeaderLogoDefaultAlt; }
     var showPhaseBanner = Model.ShowPhaseBanner && !string.IsNullOrEmpty(phase) && phase != "Live";
+    var extraLinks = Model.ExtraChildItem;
 }
 @if (Model.ShowSkipLink)
 {
@@ -28,6 +29,31 @@
                 @if (Model.HeaderBarContent == null && Model.ShowSearch)
                 {
                     <tpr-header-search action="@Model.HeaderSearchActionPath" autocomplete-url="@Model.HeaderSearchAutocompleteUrl" placeholder="@Model.HeaderSearchPlaceholderText" aria-label="@Model.HeaderSearchAriaLabel" input-name="@Model.HeaderSearchInputName"></tpr-header-search>
+                }
+                  @if (Model.ShowHeaderMenu)
+                {
+                    <tpr-header-menu>
+                        @if (Model.HeaderMenuParentItems != null)
+                        {
+                            @foreach (var item in Model.HeaderMenuParentItems)
+                            {
+                                <tpr-header-menu-parent-item href="@item?.LinkDestination" link-text="@item?.LinkText">
+                                    @if (item?.HeaderMenuChildItems != null)
+                                    {
+                                        if (extraLinks != null)
+                                        {
+                                            @* item?.SubMenuItems.Add(extraLinks); *@
+                                        }
+                                        @foreach (var child in item.HeaderMenuChildItems)
+                                        {
+                                            <tpr-header-menu-child-item href="@child?.LinkDestination" link-text="@child?.LinkText"></tpr-header-menu-child-item>
+                                        }
+
+                                    }
+                                </tpr-header-menu-parent-item>
+                            }
+                        }
+                    </tpr-header-menu>
                 }
             </tpr-header-bar>
 

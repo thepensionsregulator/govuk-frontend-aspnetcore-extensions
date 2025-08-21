@@ -91,8 +91,31 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 var headerSearch = GenerateTprHeaderSearch(tprHeaderBar);
                 headerContent.InnerHtml.AppendHtml(headerSearch);
             }
+            if (tprHeaderBar.DisplayHeaderMenu)
+            {
+                var navDiv = new TagBuilder("div");
+                navDiv.AddCssClass("tpr-mobile-menu__container");
+                headerContent.InnerHtml.AppendHtml(navDiv);
 
-            tagBuilder.InnerHtml.AppendHtml(headerContent);
+                var mobileMenu = new TprHeaderMenu
+                {
+
+                    Attributes = tprHeaderBar.HeaderMenuAttributes,
+                    HeaderMenuParentItems = tprHeaderBar.HeaderMenuItems,
+                };
+
+                var headerMenu = GenerateTprHeaderMenu(mobileMenu, tprHeaderBar);
+                navDiv.InnerHtml.AppendHtml(headerMenu);
+
+                tagBuilder.InnerHtml.AppendHtml(headerContent);
+
+                var headerMenuNav = GenerateTprHeaderNav(mobileMenu, tprHeaderBar);
+                tagBuilder.InnerHtml.AppendHtml(headerMenuNav);
+            }
+            else
+            {
+                tagBuilder.InnerHtml.AppendHtml(headerContent);
+            }
 
             return tagBuilder;
         }

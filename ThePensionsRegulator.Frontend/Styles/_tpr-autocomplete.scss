@@ -141,3 +141,23 @@
         margin-left: 16px;
     }
 }
+
+@media(max-width:765px ) {
+    .autocomplete__hint, .autocomplete__input, .autocomplete__option {
+        width: 99%;
+    }
+
+    .autocomplete__menu--visible {
+        display: block;
+        max-width: 100%;
+        margin-left: 19.5px;
+    }
+
+    .autocomplete__menu {
+        width: calc(99.5% - 4px);
+    }
+
+    .autocomplete__menu--visible {
+        width: 99%
+    }
+}

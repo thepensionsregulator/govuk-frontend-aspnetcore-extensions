@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Collections.Generic;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -21,7 +22,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public string? AutoCompleteUrl {  get; set; }     
         public string? SearchPlaceholderText {  get; set; }
         public string? SearchAriaLabel {  get; set; }
-        public string? SearchInputName { get; set; } 
+        public string? SearchInputName { get; set; }
+        public bool DisplayHeaderMenu { get; set; }
+        public AttributeDictionary? HeaderMenuAttributes { get; set; }
+        public List<TprHeaderMenuParentItem>? HeaderMenuItems { get; set; } = new();
+        public string? HeaderMenuAriaLabel { get; set; }
+        public string? MobileMenuNoJsNavPage { get; set; }
 
     }
 }

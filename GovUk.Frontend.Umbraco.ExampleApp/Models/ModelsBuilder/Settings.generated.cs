@@ -50,6 +50,37 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// No JS Nav Page
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("noJSNavPage")]
+		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent NoJsnavPage => this.Value<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>(_publishedValueFallback, "noJSNavPage");
+
+		///<summary>
+		/// Show header menu
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[ImplementPropertyType("showHeaderMenu")]
+		public virtual bool ShowHeaderMenu => this.Value<bool>(_publishedValueFallback, "showHeaderMenu");
+
+		///<summary>
+		/// TPR header menu
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenu")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenu => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "tprHeaderMenu");
+
+		///<summary>
+		/// Header Menu Aria Label
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenuAriaLabel")]
+		public virtual string TprHeaderMenuAriaLabel => this.Value<string>(_publishedValueFallback, "tprHeaderMenuAriaLabel");
+
+		///<summary>
 		/// Phase
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]

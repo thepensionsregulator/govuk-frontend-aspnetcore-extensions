@@ -96,6 +96,9 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<IBlockViewInterceptor, TprDividerViewInterceptor>();
             services.AddTransient<IDefaultColumnClassProvider, TPRSectionCardsColumnClassProvider>();
             services.AddTransient<IYouTubeVideoIdParser, YouTubeVideoIdParser>();
+            services.AddTransient<ITprGlobalNavigationSerivce, TprGlobalNavigationService>();
+            services.AddTransient<IContentUrlProvider, ContentUrlProvider>();
+            services.AddTransient<IContentVisibilityChecker, ContentVisibilityChecker>();
 
             return services;
         }

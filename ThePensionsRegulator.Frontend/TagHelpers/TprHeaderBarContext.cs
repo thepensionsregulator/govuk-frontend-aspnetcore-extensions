@@ -10,6 +10,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private (AttributeDictionary Attributes, IHtmlContent? Label, bool AllowHtml)? _label;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
         private (AttributeDictionary Attributes, bool ShowSearch, string? ActionPath,string? AutocompleteUrl, string? PlaceholderText, string? SearchAriaLabel, string? SearchInputName)? _search;
+        private TprHeaderMenuContext? _headerMenuContext;
 
         public AttributeDictionary? LogoAttributes => _logo?.Attributes;
         public string? LogoHref => _logo?.Href;
@@ -27,6 +28,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public string? SearchPlaceholderText => _search?.PlaceholderText;
         public string? SearchAriaLabel => _search?.SearchAriaLabel;
         public string? SearchInputName => _search?.SearchInputName ?? "query";
+        public bool DisplayHeaderMenu => _headerMenuContext != null;
+        public TprHeaderMenuContext? TprMobileMenuContext => _headerMenuContext;
+        public string? MobileMenuAriaLabel => _headerMenuContext?.HeaderMenuAriaLabel;
+        public string? MobileMenuNoJsNavPage => _headerMenuContext?.MobileMenuNoJsNavPage;
 
 
         public void SetLogo(AttributeDictionary attributes, string? href, string? alternativeText)
@@ -75,6 +80,17 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             }
 
             _search = (attributes, showSearch, actionPath, autocompleteUrl, placeholderText, ariaLabel, inputName);
+        }
+        public void SetHeaderMenu(TprHeaderMenuContext tprMobileMenuContext)
+        {
+            if (_headerMenuContext != null)
+            {
+                throw ExceptionHelper.OnlyOneElementIsPermittedIn(
+                    TprHeaderMenuTagHelper.TagName,
+                    TprHeaderBarTagHelper.TagName
+                    );
+            }
+            _headerMenuContext = tprMobileMenuContext;
         }
     }
 }

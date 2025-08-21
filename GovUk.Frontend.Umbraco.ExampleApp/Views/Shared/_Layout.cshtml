@@ -3,10 +3,12 @@
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.Umbraco.Models;
+@using ThePensionsRegulator.Frontend.Umbraco.Services
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
 @inject IConfiguration Configuration
+@inject ITprGlobalNavigationSerivce NavigationSerivce;
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
@@ -16,6 +18,9 @@
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
     var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
+
+    var menuItems = NavigationSerivce.GetMenuItems(home.Id);
+    headerLockup.HeaderMenuParentItems = menuItems;
 }
 <!DOCTYPE html>
 <html lang="@twoLetterCode">
@@ -37,6 +42,7 @@
 
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
+    <partial name="TPR/TPRHeaderMenu" />
     <partial name="TPR/TPRHeaderLockup" model="headerLockup" />
     <div class="tpr-main-wrapper">
         @RenderSection("language", required: false)

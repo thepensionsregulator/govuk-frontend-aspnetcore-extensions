@@ -2,7 +2,10 @@ using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 
@@ -12,7 +15,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     /// Generates a TPR header bar component
     /// </summary>
     [HtmlTargetElement(TagName)]
-    [RestrictChildren(TprHeaderBarLogoTagHelper.TagName, TprHeaderBarLabelTagHelper.TagName, TprHeaderBarContentTagHelper.TagName, TprHeaderSearchTagHelper.TagName)]
+    [RestrictChildren(TprHeaderBarLogoTagHelper.TagName, TprHeaderBarLabelTagHelper.TagName, TprHeaderBarContentTagHelper.TagName, TprHeaderSearchTagHelper.TagName, TprHeaderMenuTagHelper.TagName)]
     [OutputElementHint(ComponentGenerator.TprHeaderBarElement)]
     public class TprHeaderBarTagHelper : TagHelper
     {
@@ -43,6 +46,25 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();
             }
 
+            List<TprHeaderMenuParentItem>? headerMenuItems = null;
+            AttributeDictionary? headerMenuAttributes = null;
+
+            if (barContext.TprMobileMenuContext != null)
+            {
+                headerMenuAttributes = barContext.TprMobileMenuContext.Attributes;
+                headerMenuItems = barContext.TprMobileMenuContext.HeaderMenuParentItems.Select(i => new TprHeaderMenuParentItem
+                {
+                    Attributes = i.Attributes,
+                    LinkText = i.LinkText,
+                    LinkDestination = i.LinkDestination,
+                    HeaderMenuChildItems = i.HeaderMenuChildItems.Select(s => new TprHeaderMenuChildItem
+                    {
+                        LinkDestination = s.LinkDestination,
+                        LinkText = s.LinkText,
+                    }).ToList()
+                }).ToList();
+            }
+
             var tagBuilder = _htmlGenerator.GenerateTprHeaderBar(new TprHeaderBar
             {
                 HeaderBarAttributes = output.Attributes.ToAttributeDictionary(),
@@ -61,7 +83,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 AutoCompleteUrl = barContext?.AutoCompleteUrl,
                 SearchPlaceholderText = barContext?.SearchPlaceholderText,
                 SearchAriaLabel = barContext?.SearchAriaLabel,
-                SearchInputName = barContext?.SearchInputName                  
+                SearchInputName = barContext?.SearchInputName,
+                DisplayHeaderMenu = barContext.DisplayHeaderMenu,
+                HeaderMenuAttributes = headerMenuAttributes,
+                HeaderMenuItems = headerMenuItems,
+                HeaderMenuAriaLabel = barContext?.MobileMenuAriaLabel,
+                MobileMenuNoJsNavPage = barContext?.MobileMenuNoJsNavPage
             });
 
             output.TagName = tagBuilder.TagName;

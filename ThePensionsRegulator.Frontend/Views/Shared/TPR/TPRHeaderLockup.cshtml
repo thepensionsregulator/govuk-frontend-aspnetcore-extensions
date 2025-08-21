@@ -30,7 +30,7 @@
                 {
                     <tpr-header-search action="@Model.HeaderSearchActionPath" autocomplete-url="@Model.HeaderSearchAutocompleteUrl" placeholder="@Model.HeaderSearchPlaceholderText" aria-label="@Model.HeaderSearchAriaLabel" input-name="@Model.HeaderSearchInputName"></tpr-header-search>
                 }
-                  @if (Model.ShowHeaderMenu)
+                @if (Model.ShowHeaderMenu)
                 {
                     <tpr-header-menu>
                         @if (Model.HeaderMenuParentItems != null)
@@ -42,13 +42,18 @@
                                     {
                                         if (extraLinks != null)
                                         {
-                                            @* item?.SubMenuItems.Add(extraLinks); *@
+                                            foreach (var link in extraLinks)
+                                            {
+                                                item?.HeaderMenuChildItems.Add(link);
+                                            }
                                         }
-                                        @foreach (var child in item.HeaderMenuChildItems)
+                                        if (item?.HeaderMenuChildItems != null)
                                         {
-                                            <tpr-header-menu-child-item href="@child?.LinkDestination" link-text="@child?.LinkText"></tpr-header-menu-child-item>
+                                            @foreach (var child in item.HeaderMenuChildItems)
+                                            {
+                                                <tpr-header-menu-child-item href="@child?.LinkDestination" link-text="@child?.LinkText"></tpr-header-menu-child-item>
+                                            }
                                         }
-
                                     }
                                 </tpr-header-menu-parent-item>
                             }

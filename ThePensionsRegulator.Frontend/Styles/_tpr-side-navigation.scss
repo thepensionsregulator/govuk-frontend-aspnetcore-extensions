@@ -1,0 +1,114 @@
+@import '_tpr-variables.scss';
+@import 'govuk/base';
+
+$side-nav-indentation-space: govuk-spacing(2);
+$side-nav-selection-border-size: govuk-spacing(1);
+
+
+.side-nav a:hover {
+    text-decoration: underline;
+}
+
+a.side-nav-desktop-link {
+    display: block;
+}
+
+button.side-nav-mobile-expand-toggle {
+    display: none;
+    color: $tpr-colour-royal-blue;
+    border: none;
+    background-color: transparent;
+    text-decoration: none;
+    font-size: 1em;
+    padding-left: 0;
+    cursor: pointer;
+}
+
+.side-nav a {
+    text-decoration: none;
+    padding: govuk-spacing(1);
+    padding-left:$side-nav-indentation-space;
+    display: block;
+    position:relative;
+    &.govuk-link
+    {
+        font-weight:normal;
+    }
+
+}
+.side-nav a.side-nav-desktop-link
+{
+    padding-left: govuk-spacing(1);
+}
+// Root ul only
+.side-nav > ul {
+    margin: $side-nav-indentation-space ($side-nav-indentation-space * -1);
+}
+
+.side-nav li {
+    // @include govuk-responsive-margin(4, "top");
+    border-left: $side-nav-selection-border-size solid;
+    border-color: transparent;
+}
+
+ul.side-nav-list {
+    list-style-type: none;
+    padding-inline-start: 0;
+}
+
+.side-nav-list ul {
+    padding-inline-start: 20px;
+}
+
+li.side-nav-list-item-active {
+    border-left: $side-nav-selection-border-size solid;
+    border-color: $tpr-colour-royal-blue;
+            
+    > a.govuk-link
+    {
+        font-weight:bold;
+    }
+}
+
+.side-nav-list-item-active li a::before {
+    content: '\2014' ' '; /* em dash */
+    color: $tpr-colour-eclipse;
+    position:absolute;
+    margin-left:-1.3em;
+}
+
+@media (scripting: none) {
+
+    @include govuk-media-query($until:tablet) {
+
+        .side-nav-list ul {
+            display: none;
+        }
+    }
+}
+
+@media (scripting: enabled) {
+
+    @include govuk-media-query($until:tablet) {
+
+        ul.side-nav-list {
+            transition: max-height 0.5s;
+        }
+
+        a.side-nav-desktop-link {
+            display: none;
+        }
+
+        button.side-nav-mobile-expand-toggle {
+            display: block;
+        }
+
+        @include govuk-media-query($until:desktop) {
+
+            .side-nav-list--collapse > ul {
+                display: none;
+                max-height: 0px;
+            }
+        }
+    }
+}

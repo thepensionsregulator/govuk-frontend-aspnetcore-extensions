@@ -64,6 +64,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
             }
 
             services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServiceForExampleApp>();
+            services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
         }
 
         /// <summary>

@@ -1,0 +1,27 @@
+﻿@using ThePensionsRegulator.Umbraco
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SideNavigation>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@section head {
+	<title>@Model.PageHeadingOrName()</title>
+}
+
+@inject Umbraco.Cms.Web.Common.UmbracoHelper UmbracoHelper
+
+<div class="govuk-width-container">
+	<div class="govuk-grid-row">
+		<div class="govuk-grid-column govuk-grid-column-one-third">
+
+			@await Component.InvokeAsync("TprSideNavigation", new {
+				rootNavigationNode = UmbracoHelper.Content(1386)
+			})
+
+		</div>
+
+		<div class="govuk-grid-column govuk-grid-column-two-thirds">
+
+			<partial name="GOVUK/BlockGrid" model="Model.Grid" />
+
+		</div>
+	</div>
+</div>

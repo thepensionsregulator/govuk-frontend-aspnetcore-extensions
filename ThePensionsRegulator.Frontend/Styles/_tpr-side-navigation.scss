@@ -61,20 +61,21 @@ ul.side-nav-list {
 }
 
 li.side-nav-list-item-active {
-    border-left: $side-nav-selection-border-size solid;
-    border-color: $tpr-colour-royal-blue;
-            
-    > a.govuk-link
-    {
-        font-weight:bold;
+    > a.govuk-link {
+        font-weight: bold;
     }
 }
 
-.side-nav-list-item-active li a::before {
+li.side-nav-list-item-expanded {
+    border-left: $side-nav-selection-border-size solid;
+    border-color: $tpr-colour-royal-blue;
+}
+
+.side-nav-list-item-expanded li a::before {
     content: '\2014' ' '; /* em dash */
     color: $tpr-colour-eclipse;
-    position:absolute;
-    margin-left:-1.3em;
+    position: absolute;
+    margin-left: -1.3em;
 }
 
 @media (scripting: none) {

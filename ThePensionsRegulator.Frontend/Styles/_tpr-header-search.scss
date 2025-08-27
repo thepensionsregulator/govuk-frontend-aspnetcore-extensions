@@ -21,9 +21,9 @@
     width: 313.948px
 }
 
-.tpr-header-search__input{
-    width:64%;
-    margin-left:-20px
+.tpr-header-search__input {
+    width: 64%;
+    margin-left: -20px
 }
 
 .tpr-header-search__button {
@@ -51,24 +51,21 @@
         width: 20%;
         margin-left: 50px;
     }
-  
+
     .tpr-header-search__field {
         width: 80%;
     }
 
- /*   .tpr-header-search__input {      
-        margin-left: -30px
-    }*/
-
     .tpr-header-search__button {
         margin-left: -52px;
-    }  
+    }
 }
 
 @media(max-width: 765px) {
     .tpr-header-search {
         display: none;
     }
+
     .tpr-mobile-menu-nav.active .tpr-header-search.mobile .tpr-header-search-autocomplete {
         width: 100%;
     }

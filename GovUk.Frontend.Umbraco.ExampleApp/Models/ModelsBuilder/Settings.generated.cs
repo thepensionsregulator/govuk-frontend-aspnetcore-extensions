@@ -55,7 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("noJSNavPage")]
-		public virtual global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent NoJsnavPage => this.Value<global::Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>(_publishedValueFallback, "noJSNavPage");
+		public virtual global::Umbraco.Cms.Core.Models.Link NoJsnavPage => this.Value<global::Umbraco.Cms.Core.Models.Link>(_publishedValueFallback, "noJSNavPage");
 
 		///<summary>
 		/// Show header menu

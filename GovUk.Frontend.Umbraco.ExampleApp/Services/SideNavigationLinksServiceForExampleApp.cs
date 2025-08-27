@@ -32,7 +32,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
                     if (childIsCurrentPage)
                     {
                         var upOneLevel = parent;
-                        while (upOneLevel is not null)
+                        if (upOneLevel is not null)
                         {
                             parent.IsExpanded = true;
                             upOneLevel = parent.Parent;

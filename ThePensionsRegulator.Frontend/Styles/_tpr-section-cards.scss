@@ -1,56 +1,63 @@
+@use "sass:map";
 @import '_tpr-variables.scss';
 @import 'govuk/base';
 
+/* .tpr-section-cards needs a default background and padding for the cards to contrast against. 
+    Display the cards in rows, where extra cards can wrap to the next row.
+*/
 .tpr-section-cards {
-    margin-top: 0;
-    margin-left: -$govuk-gutter-half;
-    margin-right: -$govuk-gutter-half;
     @include govuk-responsive-margin(6, "bottom");
-}
+    
+    background: $tpr-colour-whisper; 
+    padding: $govuk-gutter;
 
-.tpr-section-cards > ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: left;
-    margin: 0;
-    padding: 0;
-    background: $tpr-colour-whisper;
+    container-type: inline-size;
 
-    .tpr-box--full-width & {
-        background: transparent;
-        margin-left: $govuk-gutter*-1.5;
-        margin-right: $govuk-gutter*-1.5;
+    > ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $govuk-gutter;
+        margin: 0;
+        padding: 0;
     }
 
-    @include govuk-media-query($from:1020px) {
-        .tpr-box--full-width & {
-            margin-left: -$govuk-gutter-half;
-            margin-right: -$govuk-gutter-half;
-        }
-    }
-}
+    .tpr-section-card {
+        flex-grow: 1; /* Fills unused space to make section boxes equal width */
+        display: flex; /* Fills unused space to make section boxes equal height */
 
-.tpr-section-card {
-    flex-grow: 1;
-    max-width: calc(100% / 3);
-    padding: 0;
-    box-sizing: border-box;
-    display: flex;
+        margin: 0;
+        padding: 0;
 
-    @include govuk-media-query($until:desktop) {
-        max-width: calc(100% / 2);
-    }
-
-    @include govuk-media-query($until:tablet) {
+        $tablet-breakpoint: map.get($govuk-breakpoints, "tablet")-($govuk-gutter*3);
+        $desktop-breakpoint: map.get($govuk-breakpoints, "desktop")-($govuk-gutter*3);
         max-width: 100%;
+
+        @container (width >= #{$tablet-breakpoint}) {
+            max-width: calc((100% - $govuk-gutter) / 2 );
+        }
+
+        @container (width >= #{$desktop-breakpoint}) {
+            max-width: calc((100% - ($govuk-gutter*2)) / 3);
+        }
+
     }
 }
+
+/* If .tpr-section-cards is added within .tpr-box, let .tpr-box handle the background and padding. */
+.tpr-box:not(.tpr-box--bordered) .tpr-section-cards {
+    padding: 0;
+    background: none; 
+}
+
+.tpr-box .tpr-section-cards:last-child {
+    margin: 0;
+}
+
 
 .tpr-section-card__body {
     background-color: $tpr-colour-white;
     margin: 0;
     @include govuk-responsive-padding(6);
-    margin: 0.9rem;
     flex-grow: 1;
 }
 
@@ -63,14 +70,7 @@
 }
 
 .tpr-section-card__title {
-    @include govuk-responsive-padding(6,"right");
-    @include govuk-responsive-padding(6,"bottom");
-    @include govuk-responsive-padding(6,"left");
-    margin: 0 govuk-spacing(-4);
+    @include govuk-responsive-padding(4,"bottom");
+    margin: 0;
     border-bottom: solid 1px $tpr-colour-very-light-grey;
-    
-    @include govuk-media-query($from:tablet) {
-        margin: 0 govuk-spacing(-6);
-    }
-
 }

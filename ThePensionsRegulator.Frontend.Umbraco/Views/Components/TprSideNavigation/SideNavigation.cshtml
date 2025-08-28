@@ -26,7 +26,7 @@
             @foreach (var child in navigationLinks)
             {
                 <li class="@(child.IsCurrentPage ? "side-nav-list-item-active" : string.Empty) @(child.IsExpanded ? "side-nav-list-item-expanded" : string.Empty)">
-                    <a class="govuk-link" href="@child.Url">@child.Name</a>
+                    <a class="govuk-link--no-visited-state" href="@child.Url">@child.Name</a>
                     @if (child.Children is not null && child.Children.Any())
                     {
                         RenderNavListLayer(child.Children);

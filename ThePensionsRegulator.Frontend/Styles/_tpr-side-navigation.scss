@@ -27,14 +27,14 @@ button.side-nav-mobile-expand-toggle {
 .side-nav a {
     text-decoration: none;
     padding: govuk-spacing(1);
-    padding-left:$side-nav-indentation-space;
+    padding-left: $side-nav-indentation-space;
     display: block;
-    position:relative;
-    &.govuk-link
-    {
-        font-weight:normal;
-    }
+    position: relative;
 
+    &.govuk-link--no-visited-state {
+        font-weight: normal;
+        font-family: "Open Sans", Arial, sans-serif;
+    }
 }
 .side-nav a.side-nav-desktop-link
 {

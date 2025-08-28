@@ -12,7 +12,7 @@
 @if (Model.Areas is not null && Model.Areas.Any())
 {
     var styleOfBox = Model.Settings.Value<string>(TprPropertyAliases.BoxStyle);
-    var isSolid = styleOfBox == TprBoxStyles.Solid;
+    var isSolid = string.IsNullOrEmpty(styleOfBox) || styleOfBox == TprBoxStyles.Solid;
     var isFullWidth = styleOfBox == TprBoxStyles.FullWidth;
     var boxClass = (string.IsNullOrEmpty(styleOfBox) || isSolid) ? null : " tpr-box--" + styleOfBox.ToLowerInvariant();
     var cssClasses = (" " + Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();

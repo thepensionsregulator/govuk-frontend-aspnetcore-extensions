@@ -11,31 +11,35 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
     {
         public TprSideNavigationViewModel GetLinks(IPublishedContent currentPage)
         {
-            var rootNode = currentPage.Root();
+            var rootNode = currentPage.Root().Children.FirstOrDefault(x => x.Name == "Side navigation");
             TprSideNavigationViewModel sideNavigationViewModel = new();
 
             sideNavigationViewModel.TitleLink = new TprSideNavigationLink { Name = rootNode.Name, Url = rootNode.Url(), IsCurrentPage = (rootNode == currentPage) };
-            sideNavigationViewModel.NavigationLinks = CreateSideNavigationLinkChildren(currentPage, null, rootNode.Children);
+            sideNavigationViewModel.NavigationLinks = CreateSideNavigationLinkChildren(currentPage, null, rootNode);
             return sideNavigationViewModel;
         }
 
-        private List<TprSideNavigationLink> CreateSideNavigationLinkChildren(IPublishedContent currentPage, TprSideNavigationLink parent, IEnumerable<IPublishedContent> childPages)
+        private List<TprSideNavigationLink> CreateSideNavigationLinkChildren(IPublishedContent currentPage, TprSideNavigationLink parent, IPublishedContent rootNode)
         {
             List<TprSideNavigationLink> children = new();
 
-            if (childPages is not null && childPages.Any())
+            if (rootNode.Children is not null && rootNode.Children.Any())
             {
-                foreach (var child in childPages)
+                foreach (var child in rootNode.Children)
                 {
-                    var childNavItem = new TprSideNavigationLink { 
-                        Name = child.Name, 
-                        Url = child.Url(), 
-                        IsCurrentPage = child == currentPage, 
-                        IsExpanded = (currentPage.Ancestors().Contains(child) || child == currentPage) && child.Level == 2, 
-                        Parent = parent 
-                    };
-                    childNavItem.Children = CreateSideNavigationLinkChildren(currentPage, childNavItem, child.Children);
-                    children.Add(childNavItem);
+                    if ((parent is not null && (parent.IsExpanded || parent.IsCurrentPage)) || currentPage.Ancestors().Contains(child) || child.Level == 3 || currentPage.Level == child.Level)
+                    {
+                        var childNavItem = new TprSideNavigationLink
+                        {
+                            Name = child.Name,
+                            Url = child.Url(),
+                            IsCurrentPage = child == currentPage,
+                            IsExpanded = (currentPage.Ancestors().Contains(child) || child == currentPage) && child.Level == 3,
+                            Parent = parent
+                        };
+                        childNavItem.Children = CreateSideNavigationLinkChildren(currentPage, childNavItem, child);
+                        children.Add(childNavItem);
+                    }
                 }
             }
            return children;

@@ -13,7 +13,7 @@
         {
             <h2 class="govuk-heading-m">
                 <button aria-expanded="false" type="button" class="govuk-link--no-visited-state tpr-side-nav__mobile-expand-toggle">@Model.TitleLink.Name</button>
-                <a aria-current="page" class="govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
+                <a class="govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
             </h2>
         }
         RenderNavListLayer(Model.NavigationLinks);
@@ -26,7 +26,7 @@
             @foreach (var child in navigationLinks)
             {
                 <li @(child.IsCurrentPage && !child.IsExpanded ? "class=tpr-side-nav__list-item--active" : string.Empty) @(child.IsExpanded && !child.IsCurrentPage ? "class=tpr-side-nav__list-item--expanded" : string.Empty) @Html.Raw(child.IsCurrentPage && child.IsExpanded ? "class='tpr-side-nav__list-item--active tpr-side-nav__list-item--expanded'" : string.Empty)>
-                    <a class="govuk-link--no-visited-state" href="@child.Url">@child.Name</a>
+                    <a class="govuk-link--no-visited-state" @(child.IsCurrentPage ? "aria-current=page" : string.Empty) href="@child.Url">@child.Name</a>
                     @if (child.Children is not null && child.Children.Any())
                     {
                         RenderNavListLayer(child.Children);

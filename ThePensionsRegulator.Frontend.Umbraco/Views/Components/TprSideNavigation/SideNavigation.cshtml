@@ -12,8 +12,8 @@
         if (Model.TitleLink is not null)
         {
             <h2>
-                <button type="button" class="govuk-link side-nav-mobile-expand-toggle">@Model.TitleLink.Name</button>
-                <a class="govuk-link side-nav-desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
+                <button type="button" class="govuk-link--no-visited-state side-nav-mobile-expand-toggle">@Model.TitleLink.Name</button>
+                <a class="govuk-link--no-visited-state side-nav-desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
             </h2>
         }
         RenderNavListLayer(Model.NavigationLinks);

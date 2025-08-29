@@ -4,7 +4,6 @@
 $side-nav-indentation-space: govuk-spacing(2);
 $side-nav-selection-border-size: govuk-spacing(1);
 
-
 .side-nav a:hover {
     text-decoration: underline;
 }
@@ -61,7 +60,7 @@ ul.side-nav-list {
 }
 
 li.side-nav-list-item-active {
-    > a.govuk-link {
+    > a.govuk-link--no-visited-state {
         font-weight: bold;
     }
 }

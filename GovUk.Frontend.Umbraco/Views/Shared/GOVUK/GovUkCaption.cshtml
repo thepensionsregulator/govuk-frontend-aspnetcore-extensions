@@ -1,12 +1,14 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
+@inject IGovUkHeadingClassProvider headingClassProvider
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco.Blocks;
 @using ThePensionsRegulator.Umbraco;
 @using Umbraco.Extensions
 @{
-    var headingClasses = GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem);
+    var headingClasses = headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem);
     var caption = Model.Content.Value<string>(PropertyAliases.Caption);
     var cssClasses = ($"{headingClasses.Caption} {Model.Settings?.Value<string>(PropertyAliases.CssClasses)}").TrimEnd();
 }

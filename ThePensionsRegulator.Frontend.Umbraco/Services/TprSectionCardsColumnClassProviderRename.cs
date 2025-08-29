@@ -1,7 +1,7 @@
 ﻿namespace GovUk.Frontend.Umbraco.Services
 {
     /// <inheritdoc />
-    public class TPRSectionCardsColumnClassProvider : IDefaultColumnClassProvider
+    public class TprSectionCardsColumnClassProvider : IDefaultColumnClassProvider
     {
         /// <inheritdoc />
         public string ColumnClasses => GovUkClassNames.ColumnFullWidth;

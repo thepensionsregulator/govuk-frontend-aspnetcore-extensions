@@ -7,13 +7,13 @@
 @using Umbraco.Cms.Core.Routing
 @using Umbraco.Extensions
 @model TprSideNavigationViewModel
-<nav class="side-nav side-nav-list--collapse">
+<nav class="tpr-side-nav tpr-side-nav__list--collapse">
     @{
         if (Model.TitleLink is not null)
         {
-            <h2>
-                <button type="button" class="govuk-link--no-visited-state side-nav-mobile-expand-toggle">@Model.TitleLink.Name</button>
-                <a class="govuk-link--no-visited-state side-nav-desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
+            <h2 class="govuk-heading-m">
+                <button type="button" class="govuk-link--no-visited-state tpr-side-nav__mobile-expand-toggle">@Model.TitleLink.Name</button>
+                <a class="govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
             </h2>
         }
         RenderNavListLayer(Model.NavigationLinks);
@@ -22,10 +22,10 @@
 @{
     void RenderNavListLayer(List<TprSideNavigationLink> navigationLinks)
     {
-        <ul class="side-nav-list">
+        <ul class="tpr-side-nav__list">
             @foreach (var child in navigationLinks)
             {
-                <li class="@(child.IsCurrentPage ? "side-nav-list-item-active" : string.Empty) @(child.IsExpanded ? "side-nav-list-item-expanded" : string.Empty)">
+                <li class="@(child.IsCurrentPage ? "tpr-side-nav__list-item--active" : string.Empty) @(child.IsExpanded ? "tpr-side-nav__list-item--expanded" : string.Empty)">
                     <a class="govuk-link--no-visited-state" href="@child.Url">@child.Name</a>
                     @if (child.Children is not null && child.Children.Any())
                     {

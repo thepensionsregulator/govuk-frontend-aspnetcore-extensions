@@ -2,8 +2,6 @@
 using ThePensionsRegulator.Frontend.Umbraco.Models;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco;
-using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Components
 {
@@ -19,7 +17,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Components
             _publishedContext = publishedContext;
         }
 
-        public IViewComponentResult Invoke(IPublishedContent rootNavigationNode)
+        public IViewComponentResult Invoke()
         {
             TprSideNavigationViewModel ViewModel = _sideNavigationLinksService.GetLinks(_publishedContext.PublishedContent);
             return View("SideNavigation", ViewModel);

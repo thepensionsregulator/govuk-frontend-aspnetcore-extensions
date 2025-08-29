@@ -4,7 +4,6 @@
 $side-nav-indentation-space: govuk-spacing(2);
 $side-nav-selection-border-size: govuk-spacing(1);
 
-
 .side-nav a:hover {
     text-decoration: underline;
 }
@@ -27,14 +26,14 @@ button.side-nav-mobile-expand-toggle {
 .side-nav a {
     text-decoration: none;
     padding: govuk-spacing(1);
-    padding-left:$side-nav-indentation-space;
+    padding-left: $side-nav-indentation-space;
     display: block;
-    position:relative;
-    &.govuk-link
-    {
-        font-weight:normal;
-    }
+    position: relative;
 
+    &.govuk-link--no-visited-state {
+        font-weight: normal;
+        font-family: "Open Sans", Arial, sans-serif;
+    }
 }
 .side-nav a.side-nav-desktop-link
 {
@@ -61,20 +60,21 @@ ul.side-nav-list {
 }
 
 li.side-nav-list-item-active {
-    border-left: $side-nav-selection-border-size solid;
-    border-color: $tpr-colour-royal-blue;
-            
-    > a.govuk-link
-    {
-        font-weight:bold;
+    > a.govuk-link--no-visited-state {
+        font-weight: bold;
     }
 }
 
-.side-nav-list-item-active li a::before {
+li.side-nav-list-item-expanded {
+    border-left: $side-nav-selection-border-size solid;
+    border-color: $tpr-colour-royal-blue;
+}
+
+.side-nav-list-item-expanded li a::before {
     content: '\2014' ' '; /* em dash */
     color: $tpr-colour-eclipse;
-    position:absolute;
-    margin-left:-1.3em;
+    position: absolute;
+    margin-left: -1.3em;
 }
 
 @media (scripting: none) {

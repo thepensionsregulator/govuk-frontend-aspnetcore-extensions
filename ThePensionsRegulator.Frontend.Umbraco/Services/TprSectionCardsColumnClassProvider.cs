@@ -1,5 +1,10 @@
-﻿namespace GovUk.Frontend.Umbraco.Services
+﻿using System;
+
+namespace GovUk.Frontend.Umbraco.Services
 {
+    [Obsolete("Use TprSectionCardsColumnClassProvider")]
+    public class TPRSectionCardsColumnClassProvider : TprSectionCardsColumnClassProvider { }
+
     /// <inheritdoc />
     public class TprSectionCardsColumnClassProvider : IDefaultColumnClassProvider
     {

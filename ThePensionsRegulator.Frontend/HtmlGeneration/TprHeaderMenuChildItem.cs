@@ -10,9 +10,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
         public TprHeaderMenuChildItem(){}
 
-        public TprHeaderMenuChildItem(AttributeDictionary? attriubutes, string? linkText, string? linkDestination)
+        public TprHeaderMenuChildItem(string? linkText, string? linkDestination)
         {
-            Attriubutes = attriubutes;
             LinkText = linkText;
             LinkDestination = linkDestination;
         }

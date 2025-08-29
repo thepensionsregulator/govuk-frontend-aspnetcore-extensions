@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -12,9 +13,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
         public TprHeaderMenuParentItem(){}
 
-        public TprHeaderMenuParentItem(AttributeDictionary? attributes, string? linkText, string? linkDestination, List<TprHeaderMenuChildItem> subMenuItems)
+        public TprHeaderMenuParentItem(string? linkText, string? linkDestination, List<TprHeaderMenuChildItem>? subMenuItems = null)
         {
-            Attributes = attributes;
             LinkText = linkText;
             LinkDestination = linkDestination;
             HeaderMenuChildItems = subMenuItems;

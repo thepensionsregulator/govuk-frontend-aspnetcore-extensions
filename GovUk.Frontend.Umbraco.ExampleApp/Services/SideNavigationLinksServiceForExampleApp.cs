@@ -11,15 +11,15 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
     {
         public TprSideNavigationViewModel GetLinks(IPublishedContent currentPage)
         {
-            var rootNode = currentPage.Root().Children.FirstOrDefault(x => x.Name == "Side navigation");
-            TprSideNavigationViewModel sideNavigationViewModel = new();
-
-            sideNavigationViewModel.TitleLink = new TprSideNavigationLink { Name = rootNode.Name, Url = rootNode.Url(), IsCurrentPage = (rootNode == currentPage) };
-            sideNavigationViewModel.NavigationLinks = CreateSideNavigationLinkChildren(currentPage, null, rootNode);
+            var rootNode = currentPage.Root().Children.FirstOrDefault(x => x.Name == "Side navigation") ?? currentPage.Root();
+            TprSideNavigationViewModel sideNavigationViewModel = new() {
+                TitleLink = new TprSideNavigationLink { Name = rootNode.Name, Url = rootNode.Url(), IsCurrentPage = (rootNode == currentPage) },
+                NavigationLinks = CreateSideNavigationLinkChildren(currentPage, null, rootNode)
+            };
             return sideNavigationViewModel;
         }
 
-        private List<TprSideNavigationLink> CreateSideNavigationLinkChildren(IPublishedContent currentPage, TprSideNavigationLink parent, IPublishedContent rootNode)
+        private List<TprSideNavigationLink> CreateSideNavigationLinkChildren(IPublishedContent currentPage, TprSideNavigationLink? parent, IPublishedContent rootNode)
         {
             List<TprSideNavigationLink> children = new();
 

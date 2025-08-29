@@ -25,7 +25,7 @@
         <ul class="tpr-side-nav__list">
             @foreach (var child in navigationLinks)
             {
-                <li class="@(child.IsCurrentPage ? "tpr-side-nav__list-item--active" : string.Empty) @(child.IsExpanded ? "tpr-side-nav__list-item--expanded" : string.Empty)">
+                <li @(child.IsCurrentPage && !child.IsExpanded ? "class=tpr-side-nav__list-item--active" : string.Empty) @(child.IsExpanded && !child.IsCurrentPage ? "class=tpr-side-nav__list-item--expanded" : string.Empty) @Html.Raw(child.IsCurrentPage && child.IsExpanded ? "class='tpr-side-nav__list-item--active tpr-side-nav__list-item--expanded'" : string.Empty)>
                     <a class="govuk-link--no-visited-state" href="@child.Url">@child.Name</a>
                     @if (child.Children is not null && child.Children.Any())
                     {

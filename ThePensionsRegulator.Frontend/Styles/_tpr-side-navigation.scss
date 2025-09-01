@@ -5,6 +5,8 @@ $side-nav-indentation-space: govuk-spacing(2);
 $side-nav-selection-border-size: govuk-spacing(1);
 
 .tpr-side-nav {
+    padding-top: 40px;
+    padding-bottom: 40px;
     @include govuk-responsive-margin(6, "bottom");
 }
 

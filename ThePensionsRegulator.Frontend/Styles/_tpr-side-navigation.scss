@@ -98,10 +98,6 @@ li.tpr-side-nav__list-item--expanded {
         display: block;
     }
 
-    .tpr-side-nav > .tpr-side-nav__list--no-js ~ .tpr-side-nav__list--no-js {
-        display: none;
-    }
-
     ul.tpr-side-nav__list {
         transition: max-height 0.5s;
     }

@@ -27,17 +27,13 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
             {
                 foreach (var child in childPages)
                 {
-                    var childIsCurrentPage = child == currentPage;
-                    var childNavItem = new TprSideNavigationLink { Name = child.Name, Url = child.Url(), IsCurrentPage = childIsCurrentPage, IsExpanded = childIsCurrentPage, Parent = parent};
-                    if (childIsCurrentPage)
-                    {
-                        var upOneLevel = parent;
-                        while (upOneLevel is not null)
-                        {
-                            parent.IsExpanded = true;
-                            upOneLevel = parent.Parent;
-                        }
-                    }
+                    var childNavItem = new TprSideNavigationLink { 
+                        Name = child.Name, 
+                        Url = child.Url(), 
+                        IsCurrentPage = child == currentPage, 
+                        IsExpanded = (currentPage.Ancestors().Contains(child) || child == currentPage) && child.Level == 2, 
+                        Parent = parent 
+                    };
                     childNavItem.Children = CreateSideNavigationLinkChildren(currentPage, childNavItem, child.Children);
                     children.Add(childNavItem);
                 }

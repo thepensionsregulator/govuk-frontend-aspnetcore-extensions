@@ -1,8 +1,13 @@
 ﻿
 document.addEventListener("DOMContentLoaded", function () {
-    var toggle = document.getElementsByClassName("tpr-side-nav__mobile-expand-toggle");
-    for (var i = 0; i < toggle.length; i++) {
-        toggle[i].addEventListener("click", ExpandOrRetractSideNav);
+    var buttonToggle = document.getElementsByClassName("tpr-side-nav__mobile-expand-toggle");
+    for (var i = 0; i < buttonToggle.length; i++) {
+        buttonToggle[i].parentNode.parentNode.classList.add("tpr-side-nav__list--collapse");
+        buttonToggle[i].addEventListener("click", ExpandOrRetractSideNav);
+    }
+    var sideNavLists = document.getElementsByClassName("tpr-side-nav__list");
+    for (var i = 0; i < sideNavLists.length; i++) {
+        sideNavLists[i].classList.remove("tpr-side-nav__list--no-js");
     }
 });
 

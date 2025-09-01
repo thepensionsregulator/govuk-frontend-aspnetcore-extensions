@@ -7,7 +7,7 @@
 @using Umbraco.Cms.Core.Routing
 @using Umbraco.Extensions
 @model TprSideNavigationViewModel
-<nav class="tpr-side-nav tpr-side-nav__list--collapse">
+<nav class="tpr-side-nav">
     @{
         if (Model.TitleLink is not null)
         {
@@ -22,7 +22,7 @@
 @{
     void RenderNavListLayer(List<TprSideNavigationLink> navigationLinks)
     {
-        <ul class="tpr-side-nav__list">
+        <ul class="tpr-side-nav__list tpr-side-nav__list--no-js">
             @foreach (var child in navigationLinks)
             {
                 <li @(child.IsCurrentPage && !child.IsExpanded ? "class=tpr-side-nav__list-item--active" : string.Empty) @(child.IsExpanded && !child.IsCurrentPage ? "class=tpr-side-nav__list-item--expanded" : string.Empty) @Html.Raw(child.IsCurrentPage && child.IsExpanded ? "class='tpr-side-nav__list-item--active tpr-side-nav__list-item--expanded'" : string.Empty)>

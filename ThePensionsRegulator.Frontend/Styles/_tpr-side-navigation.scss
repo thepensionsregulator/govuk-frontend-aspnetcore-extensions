@@ -83,38 +83,42 @@ li.tpr-side-nav__list-item--expanded {
     margin-left: -1.3em;
 }
 
-@media (scripting: none) {
+@include govuk-media-query($until:tablet) {
 
-    @include govuk-media-query($until:tablet) {
-
-        .tpr-side-nav__list ul {
-            display: none;
-        }
+    .tpr-side-nav {
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
-}
 
-@media (scripting: enabled) {
+    .tpr-side-nav__list--no-js {
+        display: none;
+    }
 
-    @include govuk-media-query($until:tablet) {
+    .tpr-side-nav > .tpr-side-nav__list--no-js {
+        display: block;
+    }
 
-        ul.tpr-side-nav__list {
-            transition: max-height 0.5s;
-        }
+    .tpr-side-nav > .tpr-side-nav__list--no-js ~ .tpr-side-nav__list--no-js {
+        display: none;
+    }
 
-        a.tpr-side-nav__desktop-link {
+    ul.tpr-side-nav__list {
+        transition: max-height 0.5s;
+    }
+
+    a.tpr-side-nav__desktop-link {
+        display: none;
+    }
+
+    button.tpr-side-nav__mobile-expand-toggle {
+        display: block;
+    }
+
+    @include govuk-media-query($until:desktop) {
+
+        .tpr-side-nav__list--collapse > ul {
             display: none;
-        }
-
-        button.tpr-side-nav__mobile-expand-toggle {
-            display: block;
-        }
-
-        @include govuk-media-query($until:desktop) {
-
-            .tpr-side-nav__list--collapse > ul {
-                display: none;
-                max-height: 0px;
-            }
+            max-height: 0px;
         }
     }
 }

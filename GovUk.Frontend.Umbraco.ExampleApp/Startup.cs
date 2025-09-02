@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System;
+using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using Umbraco.Cms.Core.DependencyInjection;

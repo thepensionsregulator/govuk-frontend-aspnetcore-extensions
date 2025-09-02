@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ThePensionsRegulator.Frontend.Umbraco.Models
+namespace ThePensionsRegulator.Frontend.Models
 {
     public class TprSideNavigationLink
     {

@@ -1,13 +1,7 @@
-@using GovUk.Frontend.Umbraco
-@using ThePensionsRegulator.Frontend.Umbraco
-@using ThePensionsRegulator.Frontend.Umbraco.Models
-@using ThePensionsRegulator.Umbraco
-@using Umbraco.Cms.Core.Models
-@using Umbraco.Cms.Core.Models.PublishedContent
-@using Umbraco.Cms.Core.Routing
-@using Umbraco.Extensions
+@using ThePensionsRegulator.Frontend
+@using ThePensionsRegulator.Frontend.Models
 @model TprSideNavigationViewModel
-<nav class="tpr-side-nav">
+<nav class="tpr-side-nav" aria-label="@Model.AriaNavigationLabel">
     @{
         if (Model.TitleLink is not null)
         {

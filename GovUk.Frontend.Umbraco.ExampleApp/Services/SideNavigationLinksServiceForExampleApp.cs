@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using ThePensionsRegulator.Frontend.Umbraco.Models;
-using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.Frontend.Models;
+using ThePensionsRegulator.Frontend.Services;
+using ThePensionsRegulator.Umbraco;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
@@ -9,8 +11,16 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
 {
     public class SideNavigationLinksServiceForExampleApp : ITprSideNavigationLinksService
     {
-        public TprSideNavigationViewModel GetLinks(IPublishedContent currentPage)
+        private IUmbracoPublishedContentAccessor _publishedContext;
+
+        public SideNavigationLinksServiceForExampleApp(IUmbracoPublishedContentAccessor publishedContext)
         {
+            _publishedContext = publishedContext;
+        }
+
+        public TprSideNavigationViewModel GetLinks()
+        {
+            var currentPage = _publishedContext.PublishedContent ?? throw new ArgumentNullException(nameof(_publishedContext.PublishedContent), "Published context is not initialised.");
             var rootNode = currentPage.Root().Children.FirstOrDefault(x => x.Name == "Side navigation") ?? currentPage.Root();
             TprSideNavigationViewModel sideNavigationViewModel = new() {
                 TitleLink = new TprSideNavigationLink { Name = rootNode.Name, Url = rootNode.Url(), IsCurrentPage = (rootNode == currentPage) },

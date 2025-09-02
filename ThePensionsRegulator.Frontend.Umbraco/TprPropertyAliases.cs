@@ -28,6 +28,8 @@
         public const string SectionCardNameProperty = "titleFieldName";
         public const string SectionCardDescriptionProperty = "descriptionFieldName";
         public const string SectionCardDescriptionPropertyDefault = "description";
+        public const string SideNavigationRoot = "navigationRoot";
+        public const string SideNavigationBlacklistedPages = "blacklistedPages";
         public const string VideoUrl = "url";
         public const string VideoTitle = "title";
         public const string VideoTranscriptUrl = "transcriptUrl";

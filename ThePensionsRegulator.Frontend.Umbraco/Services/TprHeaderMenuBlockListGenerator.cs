@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.Trees;
 using Umbraco.Cms.Core.Services;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
@@ -27,18 +27,25 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
         {
 
             var settings = _contentService.GetById(settingsId);
-            if(settings == null)
+            if (settings == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Settings node Id cannot be null");
             }
 
             var contentTypes = _contentTypeService.GetAll();
             var parentItemType = contentTypes.Where(x => x.Alias == "tprHeaderMenuParentItem").FirstOrDefault();
             var chidlItemType = contentTypes.Where(x => x.Alias == "tprHeaderMenuChildItem").FirstOrDefault();
 
-            var mainBlockList = new TprHeaderMenuBlockList();
-            var mainContentData = new List<Dictionary<string, object>>();
-            var mainLayoutUdis = new List<Dictionary<string, string>>();
+            var exsitingBlockListData = GetExsisitngBlockListData(settings, settings.ContentType.Alias);
+
+            var finalBlockList = new BlockList();
+            var finalContentData = new List<Dictionary<string, object>>(exsitingBlockListData.contentData);
+            var finalLayoutUdis = new List<Dictionary<string, object>>(exsitingBlockListData.layout);
+            var finalSettingsData = new List<Dictionary<string, object>>(exsitingBlockListData.settingsData);
+
+
+            var newContentData = new List<Dictionary<string, object>>();
+            var newLayourUdis = new List<Dictionary<string, object>>();
 
             var menuItems = _tprGlobalNavigationSerivce.GetMenuItems(rootId);
 
@@ -50,7 +57,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                 {
                     { "contentTypeKey", parentItemType.Key.ToString() },
                     { "linkText", menuItem.LinkText },
-                    //{ "linkDestination", menuItem.LinkDestination },
                     { "udi", contentUdi.ToString() }
                 };
 
@@ -66,24 +72,27 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                     mainItemData.Add("linkDestination", "");
                 }
 
-                mainContentData.Add(mainItemData);
+                newContentData.Add(mainItemData);
 
                 if (menuItem.HeaderMenuChildItems != null)
                 {
 
                     var childMenuBlock = GenerateChildMenuBlockList(menuItem.HeaderMenuChildItems, chidlItemType);
-                    mainContentData.Add(new Dictionary<string, object> { { "tprHeaderMenuChildItems", childMenuBlock } });
+                    newContentData.Add(new Dictionary<string, object> { { "tprHeaderMenuChildItems", childMenuBlock } });
                 }
 
-                //mainContentData.Add(mainItemData);
 
-                mainLayoutUdis.Add(new Dictionary<string, string> { { "contentUdi", contentUdi.ToString() } });
+                newLayourUdis.Add(new Dictionary<string, object> { { "contentUdi", contentUdi.ToString() } });
             }
-            mainBlockList.layout = new TprHeaderMenuBlockListUdi(mainLayoutUdis);
-            mainBlockList.contentData = mainContentData;
-            mainBlockList.settingsData = new List<Dictionary<string, string>>();
 
-            settings?.SetValue("tprHeaderMenu", JsonConvert.SerializeObject(mainBlockList));
+            finalContentData.InsertRange(0, newContentData);
+            finalLayoutUdis.InsertRange(0, newLayourUdis);
+
+            finalBlockList.layout = new BlockListUdi(newLayourUdis);
+            finalBlockList.contentData = finalContentData;
+            finalBlockList.settingsData = finalSettingsData;
+
+            settings?.SetValue("tprHeaderMenu", JsonConvert.SerializeObject(finalBlockList));
 
             if (settings != null)
             {
@@ -92,11 +101,76 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
         }
 
-        public TprHeaderChildMenuBlockList GenerateChildMenuBlockList(List<TprHeaderMenuChildItem> childItems, IContentType contentType)
+        private ExsistingBlockList GetExsisitngBlockListData(IContent settingsNode, string propertyAlias)
         {
-            var childBlockList = new TprHeaderChildMenuBlockList();
+            var exsistingValue = settingsNode.GetValue(propertyAlias)?.ToString();
+
+            if (string.IsNullOrWhiteSpace(exsistingValue))
+            {
+                return new ExsistingBlockList
+                {
+                    layout = new List<Dictionary<string, object>>(),
+                    contentData = new List<Dictionary<string, object>>(),
+                    settingsData = new List<Dictionary<string, object>>()
+
+                };
+            }
+
+            try
+            {
+                var exsisitngJson = JObject.Parse(exsistingValue);
+
+                var layoutUdis = new List<Dictionary<string, object>>();
+                if (exsisitngJson["layout"]?["Umbraco.BlockList"] is JArray layoutArray)
+                {
+                    foreach (var item in layoutArray)
+                    {
+                        layoutUdis.Add(item.ToObject<Dictionary<string, object>>());
+                    }
+                }
+
+                var contentData = new List<Dictionary<string, object>>();
+                if (exsisitngJson["contentData"]?["Umbraco.BlockList"] is JArray contentArray)
+                {
+                    foreach (var item in contentArray)
+                    {
+                        contentData.Add(item.ToObject<Dictionary<string, object>>());
+                    }
+                }
+
+                var settingsData = new List<Dictionary<string, object>>();
+                if (exsisitngJson["settingsData"] is JArray settingsArray)
+                {
+                    foreach (var item in settingsArray)
+                    {
+                        settingsData.Add(item.ToObject<Dictionary<string, object>>());
+                    }
+                }
+
+                return new ExsistingBlockList
+                {
+                    layout = layoutUdis,
+                    contentData = contentData,
+                    settingsData = settingsData
+                };
+
+            }
+            catch (JsonException)
+            {
+                return new ExsistingBlockList
+                {
+                    layout = new List<Dictionary<string, object>>(),
+                    contentData = new List<Dictionary<string, object>>(),
+                    settingsData = new List<Dictionary<string, object>>()
+                };
+            }
+        }
+
+        public BlockList GenerateChildMenuBlockList(List<TprHeaderMenuChildItem> childItems, IContentType contentType)
+        {
+            var childBlockList = new BlockList();
             var childContentData = new List<Dictionary<string, object>>();
-            var childLayoutUdis = new List<Dictionary<string, string>>();
+            var childLayoutUdis = new List<Dictionary<string, object>>();
 
             foreach (var item in childItems)
             {
@@ -122,17 +196,17 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                     childItemData.Add("linkDestination", "");
                 }
 
-                    childContentData.Add(childItemData);
-                childLayoutUdis.Add(new Dictionary<string, string>
+                childContentData.Add(childItemData);
+                childLayoutUdis.Add(new Dictionary<string, object>
                 {
                     {"contentUdi", childItemUdi.ToString()},
                 });
 
             }
 
-            childBlockList.layout = new TprHeaderMenuBlockListUdi(childLayoutUdis);
+            childBlockList.layout = new BlockListUdi(childLayoutUdis);
             childBlockList.contentData = childContentData;
-            childBlockList.settingsData = new List<Dictionary<string, string>>();
+            childBlockList.settingsData = new List<Dictionary<string, object>>();
 
             return childBlockList;
 
@@ -140,38 +214,45 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
     }
 
 
-    public class TprHeaderMenuBlockList
+    public class BlockList
     {
-        public TprHeaderMenuBlockListUdi? layout { get; set; }
+        public BlockListUdi? layout { get; set; }
         public List<Dictionary<string, object>>? contentData { get; set; }
-        public List<Dictionary<string, string>>? settingsData { get; set; }
+        public List<Dictionary<string, object>>? settingsData { get; set; }
     }
 
-    public class TprHeaderMenuBlockListUdi
+    public class ExsistingBlockList
+    {
+        public List<Dictionary<string, object>>? layout { get; set; }
+        public List<Dictionary<string, object>>? contentData { get; set; }
+        public List<Dictionary<string, object>>? settingsData { get; set; }
+    }
+
+    public class BlockListUdi
     {
         [JsonProperty("Umbraco.BlockList")]
-        public List<Dictionary<string, string>> _contentUdi { get; set; }
+        public List<Dictionary<string, object>> _contentUdi { get; set; }
 
-        public TprHeaderMenuBlockListUdi(List<Dictionary<string, string>> contentUdi)
+        public BlockListUdi(List<Dictionary<string, object>> contentUdi)
         {
 
             _contentUdi = contentUdi;
         }
     }
 
-    public class TprHeaderChildMenuBlockList
-    {
-        public TprHeaderMenuBlockListUdi? layout { get; set; }
-        public List<Dictionary<string, object>>? contentData { get; set; }
-        public List<Dictionary<string, string>>? settingsData { get; set; }
-    }
+    //public class TprHeaderChildMenuBlockList
+    //{
+    //    public BlockListUdi? layout { get; set; }
+    //    public List<Dictionary<string, object>>? contentData { get; set; }
+    //    public List<Dictionary<string, string>>? settingsData { get; set; }
+    //}
 
     public interface ITprHeaderMenuBlockListGenerator
     {
 
         public void GenerateTprHeaderMenuBlockList(int rootId, int settingsId);
 
-        public TprHeaderChildMenuBlockList GenerateChildMenuBlockList(List<TprHeaderMenuChildItem> childItems, IContentType contentType);
+        public BlockList GenerateChildMenuBlockList(List<TprHeaderMenuChildItem> childItems, IContentType contentType);
     }
 
 

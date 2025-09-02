@@ -20,7 +20,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         private const int homeNodeId = 1234;
         private const int settingsNodeId = 567;
         private const string TestPropertyAlias = "tprHeaderMenu";
-        //private const string capturedJson = null;
+        private string? _capturedJson;
 
         [SetUp]
         public void SetUp()
@@ -35,10 +35,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 
             _mockChildMenuType = new Mock<IContentType>();
             _mockChildMenuType.Setup(x => x.Alias).Returns("tprHeaderMenuChildItem");
-            _mockChildMenuType.Setup(x => x.Key).Returns(Guid.NewGuid()); //This may need to be hard coded to show correct JSON structure
+            _mockChildMenuType.Setup(x => x.Key).Returns(Guid.NewGuid());
 
             _mockSettingsNode = new Mock<IContent>();
             _mockSettingsNode.Setup(x => x.Id).Returns(settingsNodeId);
+            _mockSettingsNode.Setup(x => x.ContentType.Alias).Returns(TestPropertyAlias);
 
             _mockHomeNode = new Mock<IContent>();
             _mockHomeNode.Setup(x => x.Id).Returns(homeNodeId);
@@ -62,18 +63,17 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 
 
             _sut = new TprHeaderMenuBlockListGenerator(_mockContentService.Object, _mockContentTypeService.Object, _mockNavigationSerivce.Object);
+
+            _capturedJson = null;
+            _mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => _capturedJson = value.ToString());
+
+            _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
         }
 
         [Test]
-        public void GenerateTprHeaderMenuBlockList_WithValidSettingsNide_SetsValueAndSaves()
+        public void GenerateTprHeaderMenuBlockList_WithValidSettingsNode_SetsValueAndSaves()
         {
-            //Arrange
-            string capturedJson = null;
-            _mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => capturedJson = value.ToString());
-
-            //Act
-            _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
-
+            
             //Assert
             _mockContentService.Verify(x => x.GetById(settingsNodeId), Times.Once);
             _mockContentService.Verify(x => x.SaveAndPublish(_mockSettingsNode.Object, It.IsAny<string>(), It.IsAny<int>()), Times.Once);
@@ -83,24 +83,24 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public void CreateBlockList_WithInvaldSettingsNode_ThrowsException()
         {
             //Arrange
+            var invalidSettingsNodeId = 321;
+            var expectedExceptionMessage = "Settings node Id cannot be null";
+
+            //Assert
+            var ex = Assert.Throws<ArgumentException>(() => _sut.GenerateTprHeaderMenuBlockList(homeNodeId, invalidSettingsNodeId));
+            Assert.That(ex.Message, Is.EqualTo(expectedExceptionMessage));         
         }
 
         [Test]
         public void GenerateTprHeaderMenuBlockList_CreatesCorrectJsonStructure()
         {
-            //Arrange
-            string capturedJson = null;
-            _mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => capturedJson = value.ToString());
-
-            //Act
-            _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
 
             //Assert
             Assert.Multiple(() =>
             {
-                Assert.That(capturedJson, Is.Not.Null);
+                Assert.That(_capturedJson, Is.Not.Null);
 
-                var jsonObject = JObject.Parse(capturedJson);
+                var jsonObject = JObject.Parse(_capturedJson);
                 Assert.That(jsonObject.ContainsKey("layout"), Is.True);
                 Assert.That(jsonObject.ContainsKey("contentData"), Is.True);
                 Assert.That(jsonObject.ContainsKey("settingsData"), Is.True);
@@ -121,64 +121,58 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Test]
         public void GenerateTprHeaderMenuBlockList_CreatesCorrectParentMenuItemStructure()
         {
-            //Arrange
-            string capturedJson = null;
-            _mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => capturedJson = value.ToString());
-
-            //Act
-            _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
 
             //Assert
-            var jsonObject = JObject.Parse(capturedJson);
+            var jsonObject = JObject.Parse(_capturedJson);
             var contentData = jsonObject["contentData"] as JArray;
             var firstItem = contentData?[0] as JObject;
 
-            Assert.True(firstItem?.ContainsKey("contentTypeKey"));
-            Assert.True(firstItem?.ContainsKey("linkText"));
-            Assert.True(firstItem?.ContainsKey("linkDestination"));
-            Assert.True(firstItem?.ContainsKey("udi"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(firstItem?.ContainsKey("contentTypeKey"), Is.True);
+                Assert.That(firstItem?.ContainsKey("linkText"), Is.True);
+                Assert.That(firstItem?.ContainsKey("linkDestination"), Is.True);
+                Assert.That(firstItem?.ContainsKey("udi"), Is.True);
 
-            //Assert content tpye key are equal??
+                //Assert content tpye key are equal??
 
-            var udi = firstItem?["udi"].ToString();
-            Assert.True(udi?.StartsWith("umb://element/"));
+                var udi = firstItem?["udi"].ToString();
+                Assert.That(udi?.StartsWith("umb://element/"), Is.True);
+            });
 
         }
 
         [Test]
         public void GenerateChildMenuBlockList_CreatesNestedChildMenuItems()
         {
-            //Arrange
-            string capturedJson = null;
-            _mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => capturedJson = value.ToString());
-
-            //Act
-            _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
 
             //Assert
-            var jsonObject = JObject.Parse(capturedJson);
+            var jsonObject = JObject.Parse(_capturedJson);
             var contentData = jsonObject["contentData"] as JArray;
             var childItemBlock = contentData?[1] as JObject;
 
-            Assert.True(childItemBlock?.ContainsKey("tprHeaderMenuChildItems"));
+            Assert.Multiple(() =>
+            {
 
-            var childItems = childItemBlock["tprHeaderMenuChildItems"] as JObject;
-            Assert.NotNull(childItems);
+                Assert.That(childItemBlock?.ContainsKey("tprHeaderMenuChildItems"), Is.True);
 
-            Assert.That(childItems.ContainsKey("layout"), Is.True);
-            Assert.That(childItems.ContainsKey("contentData"), Is.True);
-            Assert.That(childItems.ContainsKey("settingsData"), Is.True);
+                var childItems = childItemBlock["tprHeaderMenuChildItems"] as JObject;
+                Assert.That(childItems, Is.Not.Null);
 
-            var childContentData = childItems["contentData"] as JArray;
-            Assert.NotNull(childContentData);
-            Assert.AreEqual(2, childContentData.Count);
+                Assert.That(childItems.ContainsKey("layout"), Is.True);
+                Assert.That(childItems.ContainsKey("contentData"), Is.True);
+                Assert.That(childItems.ContainsKey("settingsData"), Is.True);
 
-            var firstChild = childContentData[0] as JObject;
-            Assert.True(firstChild?.ContainsKey("contentTypeKey"));
-            Assert.True(firstChild?.ContainsKey("linkText"));
-            Assert.True(firstChild?.ContainsKey("linkDestination"));
-            Assert.True(firstChild?.ContainsKey("udi"));
+                var childContentData = childItems["contentData"] as JArray;
+                Assert.That(childContentData, Is.Not.Null);
+                Assert.That(childContentData.Count, Is.EqualTo(2));
 
+                var firstChild = childContentData[0] as JObject;
+                Assert.That(firstChild?.ContainsKey("contentTypeKey"), Is.True);
+                Assert.That(firstChild?.ContainsKey("linkText"), Is.True);
+                Assert.That(firstChild?.ContainsKey("linkDestination"), Is.True);
+                Assert.That(firstChild?.ContainsKey("udi"), Is.True);
+            });
             //Assert guid
         }
 
@@ -186,8 +180,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public void GenerateChildMenuBlockList_HandlesEmptyUrls()
         {
             //Arrange
-            string capturedJson = null;
-            _mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => capturedJson = value.ToString());
+           
 
             //Act
             _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
@@ -199,40 +192,34 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Test]
         public void GenerateChildMenuBlockList_CreatesValidUdiReference()
         {
-            //Arrange
-            string capturedJson = null;
-            _mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => capturedJson = value.ToString());
-
-            //Act
-            _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
-
             //Assert
-            var jsonObject = JObject.Parse(capturedJson);
-            var layout = jsonObject["layout"]["Umbraco.BlockList"] as JArray;
+            var jsonObject = JObject.Parse(_capturedJson);
+            var layout = jsonObject?["layout"]["Umbraco.BlockList"] as JArray;
             var contentData = jsonObject["contentData"] as JArray;
 
-            for(int i= 0; i < layout.Count;i = i + 2)
+            for(int i= 0; i < layout?.Count;i = i + 2)
             {
                 var layoutUdi = layout[i]["contentUdi"].ToString();
                 var contentUdi = contentData[i]["udi"].ToString();
 
-                Assert.AreEqual(layoutUdi, contentUdi);
+                Assert.That(contentUdi, Is.EqualTo(layoutUdi));
             }
         }
+
         //This may not be needed, as umbraco should do this 
         [Test]
         public void GenerateChildMenuBlockList_ProduceCompatibleOutput()
         {
             //Arrange
-            string capturedJson = null;
-            _mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => capturedJson = value.ToString());
+            //string capturedJson = null;
+            //_mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => capturedJson = value.ToString());
 
             //Act
             _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
 
             //Assert
 
-            var simulatedXmlStoreage = $"<{TestPropertyAlias}><Value><![CDATA[{capturedJson}]]></Value></{TestPropertyAlias}>";
+            var simulatedXmlStoreage = $"<{TestPropertyAlias}><Value><![CDATA[{_capturedJson}]]></Value></{TestPropertyAlias}>";
 
             var startTag = "<Value><![CDATA[";
             var endTaga = "]]></Value>";
@@ -241,7 +228,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 
             var extractedJson = simulatedXmlStoreage.Substring(startIndex, endIndex - startIndex);
 
-            Assert.AreEqual(capturedJson, extractedJson);
+            Assert.That(extractedJson, Is.EqualTo(_capturedJson));
 
         }
     }

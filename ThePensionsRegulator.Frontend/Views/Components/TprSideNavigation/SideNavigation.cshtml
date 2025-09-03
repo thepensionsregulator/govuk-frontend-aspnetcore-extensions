@@ -23,6 +23,7 @@
                     <a class="govuk-link--no-visited-state" @(child.IsCurrentPage ? "aria-current=page" : string.Empty) href="@child.Url">@child.Name</a>
                     @if (child.Children is not null && child.Children.Any())
                     {
+                        <img alt="tpr-arrow-image" class="tpr-side-nav__list-item__arrow" aria-expanded="false" />
                         RenderNavListLayer(child.Children);
                     }
                 </li>

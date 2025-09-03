@@ -33,10 +33,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             }
 
             var contentTypes = _contentTypeService.GetAll();
-            var parentItemType = contentTypes.Where(x => x.Alias == "tprHeaderMenuParentItem").FirstOrDefault();
+            var parentItemType = contentTypes.Where(x => x.Alias == "tprHeaderMenuParentItems").FirstOrDefault();
             var chidlItemType = contentTypes.Where(x => x.Alias == "tprHeaderMenuChildItem").FirstOrDefault();
 
-            var exsitingBlockListData = GetExsisitngBlockListData(settings, settings.ContentType.Alias);
+            var exsitingBlockListData = GetExsisitngBlockListData(settings, "tprHeaderMenu");
 
             var finalBlockList = new BlockList();
             var finalContentData = new List<Dictionary<string, object>>(exsitingBlockListData.contentData);
@@ -62,14 +62,14 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
                 if (!string.IsNullOrEmpty(menuItem.LinkDestination))
                 {
-                    mainItemData.Add("linkDestination", new List<Dictionary<string, object>>
+                    mainItemData.Add("linkUrl", new List<Dictionary<string, object>>
                     {
                         new Dictionary<string, object>{ {"url", menuItem.LinkDestination } }
                     });
                 }
                 else
                 {
-                    mainItemData.Add("linkDestination", "");
+                    mainItemData.Add("linkUrl", "");
                 }
 
                 newContentData.Add(mainItemData);
@@ -88,7 +88,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             finalContentData.InsertRange(0, newContentData);
             finalLayoutUdis.InsertRange(0, newLayourUdis);
 
-            finalBlockList.layout = new BlockListUdi(newLayourUdis);
+            finalBlockList.layout = new BlockListUdi(finalLayoutUdis);
             finalBlockList.contentData = finalContentData;
             finalBlockList.settingsData = finalSettingsData;
 
@@ -130,7 +130,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                 }
 
                 var contentData = new List<Dictionary<string, object>>();
-                if (exsisitngJson["contentData"]?["Umbraco.BlockList"] is JArray contentArray)
+                if (exsisitngJson["contentData"] is JArray contentArray)
                 {
                     foreach (var item in contentArray)
                     {
@@ -181,19 +181,18 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                     {"contentTypeKey", contentType.Key.ToString() },
                     {"udi", childItemUdi.ToString() },
                     {"linkText", item.LinkText },
-                    //{"linkDestination", item.LinkDestination}
                 };
 
                 if (!string.IsNullOrEmpty(item.LinkDestination))
                 {
-                    childItemData.Add("linkDestination", new List<Dictionary<string, object>>
+                    childItemData.Add("linkUrl", new List<Dictionary<string, object>>
                     {
                         new Dictionary<string, object>{ {"url", item.LinkDestination } }
                     });
                 }
                 else
                 {
-                    childItemData.Add("linkDestination", "");
+                    childItemData.Add("linkUrl", "");
                 }
 
                 childContentData.Add(childItemData);
@@ -239,13 +238,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             _contentUdi = contentUdi;
         }
     }
-
-    //public class TprHeaderChildMenuBlockList
-    //{
-    //    public BlockListUdi? layout { get; set; }
-    //    public List<Dictionary<string, object>>? contentData { get; set; }
-    //    public List<Dictionary<string, string>>? settingsData { get; set; }
-    //}
 
     public interface ITprHeaderMenuBlockListGenerator
     {

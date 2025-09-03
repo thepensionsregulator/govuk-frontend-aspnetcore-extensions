@@ -99,6 +99,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<ITprGlobalNavigationSerivce, TprGlobalNavigationService>();
             services.AddTransient<IContentUrlProvider, ContentUrlProvider>();
             services.AddTransient<IContentVisibilityChecker, ContentVisibilityChecker>();
+            services.AddTransient<ITprHeaderMenuBlockListGenerator, TprHeaderMenuBlockListGenerator>();
 
             return services;
         }

@@ -24,7 +24,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco
 
                 bundles.CreateJs("tpr-frontend-js", "~/govuk/all.min.js",
                     "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-js-init.js",
-                    "/_content/ThePensionsRegulator.Frontend/tpr/tpr-back-to-top.js");
+                    "/_content/ThePensionsRegulator.Frontend/tpr/tpr-back-to-top.js",
+                    "/_content/ThePensionsRegulator.Frontend/tpr/tpr-side-navigation.js");
             });
 
             return app;

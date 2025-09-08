@@ -16,8 +16,8 @@ namespace ThePensionsRegulator.Frontend.Components
 
         public IViewComponentResult Invoke()
         {
-            TprSideNavigationViewModel ViewModel = _sideNavigationLinksService.GetLinks();
-            return View("SideNavigation", ViewModel);
+            TprSideNavigationViewModel? viewModel = _sideNavigationLinksService.GetLinks();
+            return viewModel is null ? Content(string.Empty) : View("SideNavigation", viewModel);
         }
     }
 }

@@ -2,9 +2,11 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 @addTagHelper *, GovUk.Frontend.Umbraco
+@inject IGovUkHeadingClassProvider headingClassProvider
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using ThePensionsRegulator.Umbraco.Blocks;
@@ -42,7 +44,7 @@
     var cssClass = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var legendClass = legendIsPageHeading ? GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
+    var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hint?.ToHtmlString()) ? null : modelPropertyName + "-hint";

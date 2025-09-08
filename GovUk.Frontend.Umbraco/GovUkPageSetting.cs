@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Typography;
+using System;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
@@ -7,6 +8,7 @@ namespace GovUk.Frontend.Umbraco
     /// <summary>
     /// Gets settings from well-known GOV.UK properties on an Umbraco content node.
     /// </summary>
+    [Obsolete("Use IGovUkHeadingClassProvider")]
     public static class GovUkPageSetting
     {
         /// <summary>

@@ -1,4 +1,25 @@
-﻿using System;
+# TPR side navigation
+
+A design component that is used to display a navigational menu on the left-hand side of a page. This component is implemented using a view component and allows you to customise how the navigational links are rendered within the menu via a dedicated service class within your project.
+
+## How it's implemented
+
+The `govuk-frontend-aspnetcore-extensions` project supplies you with a service interface named `ITprSideNavigationLinksService` in the `ThePensionsRegulator.Frontend.Services` namespace, located within the `ThePensionsRegulator.Frontend` package.
+
+Create your own implementation of the `ITprSideNavigationLinksService` interface by inheriting from it in your own custom service class e.g: 
+
+```csharp
+public class SideNavigationLinksServiceForExampleApp : ITprSideNavigationLinksService
+```
+
+This allows you to provide your own navigational links to the TPR side navigation component. You simply need to implement the `public TprSideNavigationViewModel? GetLinks()` method in your custom service class and return a populated `ThePensionsRegulator.Frontend.Models.TprSideNavigationViewModel` object.
+
+## Create your ITprSideNavigationLinksService implementation
+
+Here is an example of this implementation from within the `Govuk.Frontend.Umbraco.ExampleApp`:
+
+```csharp
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ThePensionsRegulator.Frontend.Models;
@@ -53,3 +74,20 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
         }
     }
 }
+```
+
+## Register your service
+
+You should register your service class within your Program/Startup file (or wherever you keep your services declarations) with code such as the following:
+
+```csharp
+services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
+```
+
+## Render the side navigation
+
+You can then render the TPR side navigation component in your project by calling the `TprSideNavigation` view component.
+
+```csharp
+@await Component.InvokeAsync("TprSideNavigation")
+```

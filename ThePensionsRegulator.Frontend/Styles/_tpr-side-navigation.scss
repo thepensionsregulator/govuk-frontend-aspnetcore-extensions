@@ -4,30 +4,53 @@
 $side-nav-indentation-space: govuk-spacing(2);
 $side-nav-selection-border-size: govuk-spacing(1);
 
-.side-nav a:hover {
+.tpr-side-nav {
+    @include govuk-responsive-margin(6, "top");
+    @include govuk-responsive-margin(6, "bottom");
+}
+
+.tpr-side-nav a:hover {
     text-decoration: underline;
 }
 
-a.side-nav-desktop-link {
+a.tpr-side-nav__desktop-link {
     display: block;
 }
 
-button.side-nav-mobile-expand-toggle {
+.tpr-side-nav li {
+    border-left: $side-nav-selection-border-size solid;
+    border-color: transparent;
+    display: inline-block;
+    margin-top: govuk-spacing(1);
+    margin-bottom: govuk-spacing(1);
+}
+
+.tpr-side-nav__mobile-expand-toggle {
     display: none;
     color: $tpr-colour-royal-blue;
     border: none;
     background-color: transparent;
     text-decoration: none;
     font-size: 1em;
-    padding-left: 0;
+    padding: govuk-spacing(1) 0;
+    margin-right: ($side-nav-indentation-space * -1); 
     cursor: pointer;
+    width: 100%;
+    text-align: left;
 }
 
-.side-nav a {
+.tpr-side-nav__mobile-expand-toggle__arrow {
+    content: url(../../ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg);
+    max-height: 25px;
+    max-width: 25px;
+    float: inline-end;
+}
+
+.tpr-side-nav a {
     text-decoration: none;
     padding: govuk-spacing(1);
     padding-left: $side-nav-indentation-space;
-    display: block;
+    display: inline-block;
     position: relative;
 
     &.govuk-link--no-visited-state {
@@ -35,80 +58,133 @@ button.side-nav-mobile-expand-toggle {
         font-family: "Open Sans", Arial, sans-serif;
     }
 }
-.side-nav a.side-nav-desktop-link
-{
+.tpr-side-nav a.tpr-side-nav__desktop-link {
     padding-left: govuk-spacing(1);
 }
+
 // Root ul only
-.side-nav > ul {
+.tpr-side-nav > ul {
     margin: $side-nav-indentation-space ($side-nav-indentation-space * -1);
 }
 
-.side-nav li {
-    // @include govuk-responsive-margin(4, "top");
-    border-left: $side-nav-selection-border-size solid;
-    border-color: transparent;
-}
-
-ul.side-nav-list {
+ul.tpr-side-nav__list {
     list-style-type: none;
     padding-inline-start: 0;
 }
 
-.side-nav-list ul {
-    padding-inline-start: 20px;
+.tpr-side-nav__list ul {
+    padding-inline-start: 1.3em;
+    transition: max-height 0.5s;
+    max-height: 0px;
+    overflow: hidden;
 }
 
-li.side-nav-list-item-active {
-    > a.govuk-link--no-visited-state {
-        font-weight: bold;
+.tpr-side-nav__list-item-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tpr-side-nav__list-item__expand-toggle {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    display: flex;
+}
+
+.tpr-side-nav__list-item__arrow {
+    content: url(../../ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg);
+    max-height: 25px;
+    max-width: 25px;
+    float: inline-end;
+    padding: 0.2em;
+    cursor: pointer;
+}
+
+.tpr-side-nav__arrow--up {
+    transform: rotate(180deg);
+}
+
+li.tpr-side-nav__list-item--active {
+    > .tpr-side-nav__list-item-wrapper {
+        > a.govuk-link--no-visited-state {
+            font-weight: bold;
+            text-decoration: underline;
+            color: $tpr-colour-eclipse;
+        }
     }
 }
+.tpr-side-nav__list-item--expanded > ul {
+    display: block;
+}
 
-li.side-nav-list-item-expanded {
-    border-left: $side-nav-selection-border-size solid;
+li.tpr-side-nav__list-item--expanded--active {
     border-color: $tpr-colour-royal-blue;
 }
 
-.side-nav-list-item-expanded li a::before {
-    content: '\2014' ' '; /* em dash */
+.tpr-side-nav__list-item--expanded li {
+    border-color: transparent;
+}
+
+.tpr-side-nav__list-item--expanded li a::before {
+    content: '\2014'; /* em dash */
     color: $tpr-colour-eclipse;
     position: absolute;
     margin-left: -1.3em;
 }
 
-@media (scripting: none) {
+.tpr-side-nav__list-item--expanded > .tpr-side-nav__list--no-js {
+    max-height: unset;
+    overflow: visible;
+}
 
-    @include govuk-media-query($until:tablet) {
+.tpr-side-nav__list--no-js {
 
-        .side-nav-list ul {
-            display: none;
+    li.tpr-side-nav__list-item--expanded {
+        border-color: $tpr-colour-royal-blue;
+    }
+
+    .tpr-side-nav__list-item--expanded li {
+        border-color: transparent;
+    }
+
+    .tpr-side-nav__list-item--expanded {
+        .tpr-side-nav__list-item__arrow {
+            transform: rotate(180deg);
         }
     }
 }
 
-@media (scripting: enabled) {
+@include govuk-media-query($until:tablet) {
 
-    @include govuk-media-query($until:tablet) {
+    .tpr-side-nav__list--no-js {
+        display: none;
+    }
 
-        ul.side-nav-list {
-            transition: max-height 0.5s;
-        }
+    .tpr-side-nav > .tpr-side-nav__list--no-js {
+        display: block;
+    }
 
-        a.side-nav-desktop-link {
+    ul.tpr-side-nav__list {
+        transition: max-height 0.5s;
+    }
+
+    a.tpr-side-nav__desktop-link {
+        display: none;
+    }
+
+    button.tpr-side-nav__mobile-expand-toggle {
+        display: block;
+    }
+
+    .tpr-side-nav li {
+        display: block;
+    }
+
+    @include govuk-media-query($until:desktop) {
+
+        .tpr-side-nav__list--collapse > ul {
             display: none;
-        }
-
-        button.side-nav-mobile-expand-toggle {
-            display: block;
-        }
-
-        @include govuk-media-query($until:desktop) {
-
-            .side-nav-list--collapse > ul {
-                display: none;
-                max-height: 0px;
-            }
+            max-height: 0px;
         }
     }
 }

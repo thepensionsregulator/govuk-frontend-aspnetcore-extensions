@@ -24,7 +24,7 @@ namespace GovUk.Frontend.Umbraco
         }
 
         public static IServiceCollection AddGovUkFrontendUmbraco(this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions)
+            Action<GovUkFrontendOptions> configureGovUkOptions)
         {
             return services.AddGovUkFrontendUmbraco(configureGovUkOptions, options => { });
         }
@@ -37,7 +37,7 @@ namespace GovUk.Frontend.Umbraco
 
         public static IServiceCollection AddGovUkFrontendUmbraco(
             this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions,
+            Action<GovUkFrontendOptions> configureGovUkOptions,
             Action<GovUkFrontendUmbracoOptions> configureGovUkUmbracoOptions)
         {
             if (services == null)

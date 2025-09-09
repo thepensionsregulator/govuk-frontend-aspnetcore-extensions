@@ -11,7 +11,7 @@ using Umbraco.Cms.Web.Common;
 namespace GovUk.Frontend.Umbraco.ModelBinding
 {
     /// <summary>
-    /// This is a copy of the date model binder provider from the base project, but this one works with our custom version of the date model binder 
+    /// This is a copy of the date model binder provider from the base project, but this one works with our custom version of the date model binder
     /// </summary>
     public class UmbracoDateInputModelBinderProvider : IModelBinderProvider
     {
@@ -23,7 +23,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
 
         public UmbracoDateInputModelBinderProvider(
-            GovUkFrontendAspNetCoreOptions options,
+            GovUkFrontendOptions options,
             IUmbracoContextAccessor umbracoContextAccessor,
             ICultureDictionary cultureDictionary,
             IPublishedValueFallback? publishedValueFallback,

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
@@ -133,7 +134,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
         private static string? BuildStatusId(TaskListTask task, string taskId)
         {
-            if (!task.Status.Status.HasValue && string.IsNullOrEmpty(task.Status.Content?.ToHtmlString())) { return null; }
+            if (!task.Status.Status.HasValue && string.IsNullOrEmpty(task.Status.Content?.ToHtmlString(HtmlEncoder.Default))) { return null; }
 
             string statusId = string.Empty;
             if (task.Status.Attributes.ContainsKey("id"))
@@ -194,7 +195,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
         {
             return "govuk-task-list__status-" + Regex.Replace(status.ToString(), "([A-Z])", "-$1").ToLowerInvariant();
         }
-
 
         private static string BuildTaskId(AttributeDictionary? taskListAttributes, int taskNumber, TaskListTask task)
         {

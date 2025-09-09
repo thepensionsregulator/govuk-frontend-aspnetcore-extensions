@@ -16,7 +16,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
 
         public static IServiceCollection AddGovUkFrontendExtensions(
             this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureOptions)
+            Action<GovUkFrontendOptions> configureOptions)
         {
             if (services == null)
             {

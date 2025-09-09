@@ -1,9 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Extensions.Options;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
@@ -16,14 +16,14 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         private const string DefaultErrorPrefix = "Error: ";
         private const string ErrorPrefixAttributeName = "gfa-error-prefix";
 
-        private readonly GovUkFrontendAspNetCoreOptions _options;
+        private readonly GovUkFrontendOptions _options;
 
         private string? _errorPrefix = DefaultErrorPrefix;
 
         /// <summary>
         /// Creates a new <see cref="TitleTagHelper"/>.
         /// </summary>
-        public TitleTagHelper(IOptions<GovUkFrontendAspNetCoreOptions> optionsAccessor)
+        public TitleTagHelper(IOptions<GovUkFrontendOptions> optionsAccessor)
         {
             _options = Guard.ArgumentNotNull(nameof(optionsAccessor), optionsAccessor).Value;
         }
@@ -48,6 +48,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
         [ViewContext]
         [DisallowNull]
         public ViewContext? ViewContext { get; set; }
+
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {

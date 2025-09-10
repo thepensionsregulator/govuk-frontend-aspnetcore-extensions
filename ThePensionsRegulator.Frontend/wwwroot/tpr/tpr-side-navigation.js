@@ -1,123 +1,59 @@
 ﻿
 document.addEventListener("DOMContentLoaded", function () {
     // mobile menu expand/collapse handling
-    var buttonToggle = document.getElementsByClassName("tpr-side-nav__mobile-expand-toggle");
-    for (var i = 0; i < buttonToggle.length; i++) {
-        buttonToggle[i].parentNode.parentNode.classList.add("tpr-side-nav__list--collapse");
-        buttonToggle[i].addEventListener("click", ExpandOrCollapseSideNav);
-    }
-    // js/no-js handling
-    var sideNavLists = document.getElementsByClassName("tpr-side-nav__list");
-    for (var i = 0; i < sideNavLists.length; i++) {
-        sideNavLists[i].classList.remove("tpr-side-nav__list--no-js");
-    }
+    var buttonToggle = document.getElementsByClassName("tpr-side-nav__mobile-expand-toggle")[0]
+        .addEventListener("click", expandOrCollapseMobileNav);
+   
     // list item expand/collapse handling
     var sideNavListItemToggle = document.getElementsByClassName("tpr-side-nav__list-item__expand-toggle");
     for (var i = 0; i < sideNavListItemToggle.length; i++) {
-        sideNavListItemToggle[i].addEventListener("click", ExpandOrCollapseListItem);
-        if (sideNavListItemToggle[i].parentNode.parentNode.classList.contains("tpr-side-nav__list-item--expanded")) {
-            ExpandListItem(sideNavListItemToggle[i].firstElementChild);
-        }
+        sideNavListItemToggle[i].addEventListener("click", expandOrCollapseListItem);
     }
 });
-
-function ExpandOrCollapseListItem() {
-    var liArrow = this.firstElementChild;
-    if (liArrow.classList.contains("tpr-side-nav__arrow--up")) {
-        CollapseListItem(liArrow);
+function expandOrCollapseMobileNav() {
+    let firstLevelNav = this.closest("nav").querySelector("ul");
+    if (firstLevelNav.style.display == 'block') {
+        firstLevelNav.style.display = 'none';
+        this.querySelector("img").classList.remove("tpr-side-nav__arrow--up");
     }
     else {
-        ExpandListItem(liArrow);
+        firstLevelNav.style.display = 'block';
+        this.querySelector("img").classList.add("tpr-side-nav__arrow--up");
     }
 }
-
-function ExpandListItem(liArrow) {
-    if (liArrow.parentNode.parentNode.parentNode.parentNode.style.overflow === "visible") {
-        liArrow.parentNode.parentNode.nextElementSibling.style.overflow = "visible hidden";
+function expandOrCollapseListItem(e) {
+    var el = this.firstElementChild;
+    if (el.classList.contains("tpr-side-nav__arrow--up")) {
+        collapseListItem(el);
     }
     else {
-        liArrow.parentNode.parentNode.nextElementSibling.style.overflow = "visible";
+        expandListItem(el);
     }
-    liArrow.parentNode.parentNode.nextElementSibling.style.maxHeight = liArrow.parentNode.parentNode.nextElementSibling.scrollHeight + "px";
-
-    var rootUl = document.getElementsByClassName("tpr-side-nav__list")[0];
-    rootUl.style.maxHeight = rootUl.scrollHeight + "px";
-
-    liArrow.parentNode.parentNode.parentNode.parentNode.style.maxHeight = liArrow.parentNode.parentNode.parentNode.parentNode.scrollHeight + "px";
-
-    var rootLiAncestor = liArrow.closest(".tpr-side-nav__list-item--expanded--active");
-
-    for (var i = 0; i < rootUl.children.length; i++) {
-        if (rootUl.children[i].classList.contains("tpr-side-nav__list-item--expanded--active")) {
-            rootUl.children[i].classList.remove("tpr-side-nav__list-item--expanded--active");
-        }
-    }
-    
+}
+function expandListItem(liArrow) {
+    //check for open branches outside this path and close them first
+    clearExpandedBranches(liArrow);
     liArrow.classList.add("tpr-side-nav__arrow--up");
-    liArrow.parentNode.parentNode.parentNode.classList.add("tpr-side-nav__list-item--expanded");
-    liArrow.parentNode.setAttribute("aria-expanded", "true");
-
-    if (rootLiAncestor !== null) {
-        rootLiAncestor.classList.add("tpr-side-nav__list-item--expanded--active");
-    }
-    else {
-        Furthest(liArrow, "tpr-side-nav__list-item--expanded").classList.add("tpr-side-nav__list-item--expanded--active");
-    }
+    liArrow.closest("li").classList.add("tpr-side-nav__list-item--expanded");
+    
 }
-
-function Furthest(element, selector) {
-    var match = null;
-    var current = element.parentElement;
-    while (current) {
-        if (current.classList.contains(selector)) {
-            match = current;
-        }
-        current = current.parentElement;
-    }
-    return match;
-}
-
-
-function CollapseListItem(liArrow) {
-    liArrow.parentNode.parentNode.nextElementSibling.style.overflow = "hidden";
-    liArrow.parentNode.parentNode.nextElementSibling.style.maxHeight = "0px";
-
-    liArrow.parentNode.parentNode.parentNode.parentNode.style.maxHeight = liArrow.parentNode.parentNode.parentNode.parentNode.scrollHeight + "px";
-
-    var rootUl = document.getElementsByClassName("tpr-side-nav__list")[0];
-    rootUl.style.maxHeight = rootUl.scrollHeight + "px";
-
-    if (liArrow.parentNode.parentNode.parentNode.classList.contains("tpr-side-nav__list-item--expanded--active")) {
-        liArrow.parentNode.parentNode.parentNode.classList.remove("tpr-side-nav__list-item--expanded--active");
-    }
-
+function collapseListItem(liArrow) {
     liArrow.classList.remove("tpr-side-nav__arrow--up");
-    liArrow.parentNode.parentNode.parentNode.classList.remove("tpr-side-nav__list-item--expanded");
-    liArrow.parentNode.setAttribute("aria-expanded", "false");
+    liArrow.closest("li").classList.remove("tpr-side-nav__list-item--expanded");
 }
-
-function ExpandOrCollapseSideNav() {
-    var ul = this.parentNode.nextElementSibling;
-    if (ul.parentNode.classList.contains("tpr-side-nav__list--collapse")) {
-        ExpandSideNav(ul);
+function clearExpandedBranches(el) {
+    if (el.closest("li").classList.contains("tpr-side-nav__list-item--expanded")) {
+        return;
     }
-    else {
-        CollapseSideNav(ul);
+    let parent = el.closest("ul");
+    if (parent.dataset.level > 1 && parent.closest("li").classList.contains("tpr-side-nav__list-item--expanded")) {
+        return;
     }
-}
-
-function ExpandSideNav(ul) {
-    ul.style.display = "block";
-    ul.style.maxHeight = ul.scrollHeight + "px";
-    ul.parentNode.classList.remove("tpr-side-nav__list--collapse");
-    ul.parentNode.firstElementChild.firstElementChild.setAttribute("aria-expanded", "true");
-    ul.parentNode.firstElementChild.firstElementChild.firstElementChild.classList.add("tpr-side-nav__arrow--up");
-}
-
-function CollapseSideNav(ul) {
-    ul.style.maxHeight = "0px";
-    ul.style.display = "none";
-    ul.parentNode.classList.add("tpr-side-nav__list--collapse");
-    ul.parentNode.firstElementChild.firstElementChild.setAttribute("aria-expanded", "false");
-    ul.parentNode.firstElementChild.firstElementChild.firstElementChild.classList.remove("tpr-side-nav__arrow--up");
+    for(let node of el.closest("ul[data-level='1']").children){
+        node.classList.remove("tpr-side-nav__list-item--expanded");
+        let nodeArrow = node.querySelector("img.tpr-side-nav__list-item__arrow");
+        if (nodeArrow != null) {
+            nodeArrow.classList.remove("tpr-side-nav__arrow--up");
+        }
+    }
 }

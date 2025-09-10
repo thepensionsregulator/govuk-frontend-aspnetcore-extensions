@@ -20,7 +20,7 @@ a.tpr-side-nav__desktop-link {
 .tpr-side-nav li {
     border-left: $side-nav-selection-border-size solid;
     border-color: transparent;
-    display: inline-block;
+    display: block;
     margin-top: govuk-spacing(1);
     margin-bottom: govuk-spacing(1);
 }
@@ -151,10 +151,6 @@ li.tpr-side-nav__list-item--expanded {
     }
 
     button.tpr-side-nav__mobile-expand-toggle {
-        display: block;
-    }
-
-    .tpr-side-nav li {
         display: block;
     }
 }

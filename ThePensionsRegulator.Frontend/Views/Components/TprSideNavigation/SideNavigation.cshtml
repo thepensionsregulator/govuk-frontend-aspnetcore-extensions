@@ -3,6 +3,7 @@
 @model TprSideNavigationViewModel
 <nav class="tpr-side-nav" aria-label="@Model.AriaNavigationLabel">
     @{
+        var level = 1;
         if (Model.TitleLink is not null)
         {
             <h2 class="govuk-heading-m">
@@ -13,13 +14,13 @@
                 <a class="govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
             </h2>
         }
-        RenderNavListLayer(Model.NavigationLinks);
+        RenderNavListLayer(Model.NavigationLinks, level);
     }
 </nav>
 @{
-    void RenderNavListLayer(List<TprSideNavigationLink> navigationLinks)
+    void RenderNavListLayer(List<TprSideNavigationLink> navigationLinks, int level)
     {
-        <ul class="tpr-side-nav__list tpr-side-nav__list--no-js">
+        <ul class="tpr-side-nav__list" data-level="@level">
             @foreach (var child in navigationLinks)
             {
                 <li @(child.IsCurrentPage && !child.IsExpanded ? "class=tpr-side-nav__list-item--active" : string.Empty) @(child.IsExpanded && !child.IsCurrentPage ? "class=tpr-side-nav__list-item--expanded" : string.Empty) @Html.Raw(child.IsCurrentPage && child.IsExpanded ? "class='tpr-side-nav__list-item--active tpr-side-nav__list-item--expanded'" : string.Empty)>
@@ -27,14 +28,14 @@
                         <a class="govuk-link--no-visited-state" @(child.IsCurrentPage ? "aria-current=page" : string.Empty) href="@child.Url">@child.Name</a>
                         @if (child.Children is not null && child.Children.Any())
                         {
-                            <button type="button" class="tpr-side-nav__list-item__expand-toggle" aria-expanded="false">
-                                <img alt="tpr-arrow-image" class="tpr-side-nav__list-item__arrow" />
+                            <button type="button" class="tpr-side-nav__list-item__expand-toggle" aria-expanded="@child.IsExpanded">
+                                <img alt="tpr-arrow-image" class="tpr-side-nav__list-item__arrow @(child.IsExpanded ? "tpr-side-nav__arrow--up" : "")" />
                             </button>
                         }
                     </div>
                     @if (child.Children is not null && child.Children.Any())
                     {
-                        RenderNavListLayer(child.Children);
+                        RenderNavListLayer(child.Children, ++level);
                     }
                 </li>
             }

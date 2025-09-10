@@ -1,22 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
     public class TprHeaderMenuParentItem
     {
         public AttributeDictionary? Attributes { get; set; }
-        public string? LinkText { get; set; }
-        public string? LinkDestination { get; set; }
+        public required string LinkText { get; set; }
+        public required string LinkUrl { get; set; }
         public List<TprHeaderMenuChildItem>? HeaderMenuChildItems { get; set; } = new();
 
-        public TprHeaderMenuParentItem(){}
+        public TprHeaderMenuParentItem() { }
 
-        public TprHeaderMenuParentItem(string? linkText, string? linkDestination, List<TprHeaderMenuChildItem>? subMenuItems = null)
+        [SetsRequiredMembers]
+        public TprHeaderMenuParentItem(string linkText, string linkUrl, List<TprHeaderMenuChildItem>? subMenuItems = null)
         {
             LinkText = linkText;
-            LinkDestination = linkDestination;
+            LinkUrl = linkUrl;
             HeaderMenuChildItems = subMenuItems;
         }
     }

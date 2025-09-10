@@ -56,10 +56,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 {
                     Attributes = i.Attributes,
                     LinkText = i.LinkText,
-                    LinkDestination = i.LinkDestination,
+                    LinkUrl = i.LinkUrl,
                     HeaderMenuChildItems = i.HeaderMenuChildItems.Select(s => new TprHeaderMenuChildItem
                     {
-                        LinkDestination = s.LinkDestination,
+                        LinkUrl = s.LinkUrl,
                         LinkText = s.LinkText,
                     }).ToList()
                 }).ToList();

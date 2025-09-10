@@ -1,6 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderFooterTpr>
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
+@using ThePensionsRegulator.Frontend.Umbraco;
 @using ThePensionsRegulator.Umbraco.Blocks
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Cms.Web.Common.PublishedModels;
@@ -18,8 +19,8 @@
     var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
     var showSearch = bool.Parse(settings?.Value<string>("tprHeaderShowSearch") ?? "false");
 
-    var headerMenu = settings?.Value<OverridableBlockListModel>("tprHeaderMenu");
-    var headerMenuParentItems = headerMenu?.Where(i => i.Content.ContentType.Alias == "tprHeaderMenuParentItems");
+    var headerMenu = settings?.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenu); ;
+    var headerMenuParentItems = headerMenu?.Where(i => i.Content.ContentType.Alias == TprElementTypeAliases.HeaderMenuItem);
 
 }
 <!DOCTYPE html>
@@ -224,21 +225,21 @@
             <tpr-header-bar>
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
                 <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="@(settings?.Value<string>("tprHeaderSearchPlaceholderText"))" aria-label="@(settings?.Value<string>("tprHeaderAriaLabelText"))"></tpr-header-search>
-                <tpr-header-menu aria-label="@(settings?.Value<string>("tprHeaderMenuAriaLabel"))" no-js-destination="@(settings?.Value<Link>("noJSNavPage")?.Url)">
+                <tpr-header-menu aria-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuAriaLabel))" no-js-destination="@(settings?.Value<Link>(TprPropertyAliases.HeaderMenuNoJsNavPage)?.Url)">
                     @if (headerMenuParentItems != null)
                     {
                         @foreach (var item in headerMenuParentItems)
                         {
-                            var linkText = item?.Content.Value<string>("linkText");
-                            var linkUrl = item?.Content.Value<Link>("linkUrl");
-                            var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>("tprHeaderMenuChildItems");
+                            var linkText = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
+                            var linkUrl = item?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
+                            var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenuChildItems);
                             <tpr-header-menu-parent-item href="@linkUrl?.Url" link-text="@linkText">
                                 @if (headerMenuChildItems != null)
                                 {
                                     @foreach (var child in headerMenuChildItems)
                                     {
-                                        var childLinkText = child?.Content.Value<string>("linkText");
-                                        var childLinkUrl = child?.Content.Value<Link>("linkUrl");
+                                        var childLinkText = child?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
+                                        var childLinkUrl = child?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
                                         <tpr-header-menu-child-item href="@childLinkUrl?.Url" link-text="@childLinkText"></tpr-header-menu-child-item>                                        
                                     }
                                 }

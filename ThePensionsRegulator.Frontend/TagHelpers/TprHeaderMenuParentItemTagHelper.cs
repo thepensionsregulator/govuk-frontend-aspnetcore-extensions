@@ -12,12 +12,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         internal const string TagName = "tpr-header-menu-parent-item";
 
         private const string UrlAttributeName = "href";
-        private const string LinkTextAttriubuteName = "link-text";
+        private const string LinkTextAttributeName = "link-text";
 
         [HtmlAttributeName(UrlAttributeName)]
         public string? Url {  get; set; }
 
-        [HtmlAttributeName(LinkTextAttriubuteName)]
+        [HtmlAttributeName(LinkTextAttributeName)]
         public string? LinkText { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)

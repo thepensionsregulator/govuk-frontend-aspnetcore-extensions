@@ -49,7 +49,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
             var html = value is IHtmlEncodedString encoded ? encoded.ToHtmlString() : value.ToString();
             var document = new HtmlDocument();
             document.LoadHtml(html);
-            var links = document.DocumentNode.SelectNodes("//a[@href]");
+            var links = document.DocumentNode.SelectNodes("//a[@href and @href!='' and normalize-space(@href) != ' ']");
             if (links != null)
             {
                 foreach (var link in links)

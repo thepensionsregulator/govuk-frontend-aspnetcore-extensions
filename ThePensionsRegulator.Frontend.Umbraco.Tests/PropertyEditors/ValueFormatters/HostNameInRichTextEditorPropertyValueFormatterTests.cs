@@ -56,5 +56,30 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             // Assert
             Assert.That(((HtmlEncodedString)result)?.ToHtmlString(), Is.EqualTo(INPUT));
         }
+
+
+        [TestCase("")]
+        [TestCase(" ")]
+        [TestCase("  ")]
+        public void Ignores_empty_href(string hrefValue)
+        {
+            // Arrange
+            string INPUT = $"<p><a href='{hrefValue}'>Example</a></p>";
+
+            var context = new UmbracoTestContext();
+            var accessor = new Mock<IHttpContextAccessor>();
+            accessor.Setup(x => x.HttpContext).Returns(context.HttpContext.Object);
+
+            var hostUpdater = new Mock<IContextAwareHostUpdater>();
+            hostUpdater.Setup(x => x.UpdateHost("", context.HttpContext.Object.Request.Host.Host)).Returns("https://example.com");
+
+            var formatter = new HostNameInRichTextEditorPropertyValueFormatter(accessor.Object, hostUpdater.Object);
+
+            // Act
+            var result = formatter.FormatValue(INPUT);
+
+            // Assert
+            Assert.That(((HtmlEncodedString)result)?.ToHtmlString(), Is.EqualTo(INPUT));
+        }
     }
 }

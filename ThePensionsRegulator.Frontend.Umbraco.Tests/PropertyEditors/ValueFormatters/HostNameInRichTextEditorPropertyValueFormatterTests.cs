@@ -7,10 +7,9 @@ using Umbraco.Cms.Core.Strings;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
-    [TestFixture]
     public class HostNameInRichTextEditorPropertyValueFormatterTests
     {
-        [Test]
+        [Fact]
         public void Accepts_string_or_HtmlEncodedString_as_input_and_replaces_links()
         {
             // Arrange
@@ -31,11 +30,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             var resultOfHtmlEncodedString = formatter.FormatValue(new HtmlEncodedString(INPUT));
 
             // Assert
-            Assert.That(((HtmlEncodedString)resultOfString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
-            Assert.That(((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
+            Assert.Equal(EXPECTED, ((HtmlEncodedString)resultOfString)?.ToHtmlString());
+            Assert.Equal(EXPECTED, ((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString());
         }
 
-        [Test]
+        [Fact]
         public void Ignores_anchor_link_targets()
         {
             // Arrange
@@ -54,13 +53,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             var result = formatter.FormatValue(INPUT);
 
             // Assert
-            Assert.That(((HtmlEncodedString)result)?.ToHtmlString(), Is.EqualTo(INPUT));
+            Assert.Equal(INPUT, ((HtmlEncodedString)result)?.ToHtmlString());
         }
 
-
-        [TestCase("")]
-        [TestCase(" ")]
-        [TestCase("  ")]
+        [Theory]
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData("  ")]
         public void Ignores_empty_href(string hrefValue)
         {
             // Arrange
@@ -79,7 +78,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             var result = formatter.FormatValue(INPUT);
 
             // Assert
-            Assert.That(((HtmlEncodedString)result)?.ToHtmlString(), Is.EqualTo(INPUT));
+            Assert.Equal(INPUT, ((HtmlEncodedString)result)?.ToHtmlString());
         }
     }
 }

@@ -7,10 +7,9 @@ using Umbraco.Cms.Core.Models;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
-    [TestFixture]
     public class HostNameInMultiUrlPickerPropertyValueFormatterTests
     {
-        [Test]
+        [Fact]
         public void Accepts_Link_as_input_and_replaces_link()
         {
             // Arrange
@@ -30,10 +29,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             var result = formatter.FormatValue(input);
 
             // Assert
-            Assert.That(((Link?)result)?.Url, Is.EqualTo(expected));
+            Assert.Equal(expected, ((Link?)result)?.Url);
         }
 
-        [Test]
+        [Fact]
         public void Accepts_List_of_Link_as_input_and_replaces_all_links()
         {
             // Arrange
@@ -61,7 +60,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             Assert.NotNull(links);
             foreach (var result in links!)
             {
-                Assert.That(((Link?)result)?.Url, Is.EqualTo(expected));
+                Assert.Equal(expected, ((Link?)result)?.Url);
             }
         }
     }

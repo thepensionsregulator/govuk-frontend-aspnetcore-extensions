@@ -1,8 +1,11 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@addTagHelper *, Smidge
-<environment names="Development">
-    <script src="govuk-frontend-validation" debug="true"></script>
-</environment>
-<environment names="Staging,Production">
-    <script src="govuk-frontend-validation"></script>
-</environment>
+﻿@using Microsoft.AspNetCore.Hosting
+@using Microsoft.Extensions.Hosting
+@inject Smidge.SmidgeHelper smidgeHelper
+@inject IWebHostEnvironment environment
+@{
+    var urls = await smidgeHelper.GenerateJsUrlsAsync("govuk-frontend-validation", environment.EnvironmentName.Equals(Environments.Development, StringComparison.OrdinalIgnoreCase));
+}
+@foreach (var url in urls)
+{
+    <script src="@url" type="module"></script>
+}

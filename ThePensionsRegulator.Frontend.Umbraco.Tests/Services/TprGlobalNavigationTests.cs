@@ -20,8 +20,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         private Guid _rootKey;
         private TprGlobalNavigationService _sut;
         private List<Mock<IPublishedContent>> _content;
-        private List<Mock<IPublishedContent>> _test;
-
+    
         [SetUp]
         public void SetUp()
         {
@@ -73,14 +72,16 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             var mockContentAccessor = new Mock<IUmbracoContextAccessor>();
 
             var mockContext = new Mock<IUmbracoContext>();
+            
+            mockContext.Setup(x => x!.Content!.GetById(It.IsAny<Guid>())).Returns(_rootNode.Object);
 
-            mockContentAccessor.Setup(x => x.TryGetUmbracoContext(out It.Ref<IUmbracoContext>.IsAny)).Callback(new TryGetUmbracoContextCallback((out IUmbracoContext context) =>
+            mockContentAccessor.Setup(x => x.TryGetUmbracoContext(out It.Ref<IUmbracoContext?>.IsAny)).Callback(new TryGetUmbracoContextCallback((out IUmbracoContext context) =>
             {
                 context = mockContext.Object;
+
             }
             )).Returns(true);
 
-            mockContext.Setup(x => x.Content.GetById(It.IsAny<Guid>())).Returns(_rootNode.Object);
 
             var fakeChecker = new FakeContentVisibilityChecker(true);
 
@@ -111,10 +112,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 
                 Assert.That(result?[0].HeaderMenuChildItems?[0].LinkUrl, Is.EqualTo("/0.1"));
                 Assert.That(result?[0].HeaderMenuChildItems?[0].LinkText, Is.EqualTo("Test"));
+                Assert.That(result?[0].HeaderMenuChildItems?[1].LinkText, Is.EqualTo("Test"));
                 Assert.That(result?[0].HeaderMenuChildItems?[1].LinkUrl, Is.EqualTo("/0.2"));
                 Assert.That(result?[0]?.HeaderMenuChildItems?.Count, Is.EqualTo(_content[0].Object.Children.Count()));
-            });
-           
+            });          
         }
 
         [Test]

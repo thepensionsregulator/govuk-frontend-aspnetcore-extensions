@@ -8,7 +8,7 @@
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
 @inject IConfiguration Configuration
-@inject ITprGlobalNavigationService NavigationSerivce;
+@inject ITprGlobalNavigationService navigationSerivce;
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
@@ -19,7 +19,7 @@
     var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
     var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
 
-    var menuItems = NavigationSerivce.GetMenuItems(home.Key);
+    var menuItems = navigationSerivce.GetMenuItems(home.Key);
     headerLockup.HeaderMenuParentItems = menuItems;
 }
 <!DOCTYPE html>

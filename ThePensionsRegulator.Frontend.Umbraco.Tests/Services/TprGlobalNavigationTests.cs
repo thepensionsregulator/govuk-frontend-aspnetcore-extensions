@@ -1,7 +1,10 @@
 ﻿using Moq;
+using NUnit.Framework.Internal;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 
@@ -13,26 +16,24 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public delegate void TryGetUmbracoContextCallback(out IUmbracoContext context);
 
         private Mock<IPublishedContent> _rootNode;
-        private int _rootId;
+        private string _guidString;
+        private Guid _rootKey;
         private TprGlobalNavigationService _sut;
-        private string _expectedLinkText;
-        private string _expectedLinkDestination;
-        private List<Mock<IPublishedContent>> _childMocks;
+        private List<Mock<IPublishedContent>> _content;
+        private List<Mock<IPublishedContent>> _test;
 
         [SetUp]
         public void SetUp()
         {
-            _rootId = 1;
+            _guidString = "36cd375f-4aa3-4e61-9526-8e69642f106a";
+            _rootKey = Guid.Parse(_guidString);
             _rootNode = new Mock<IPublishedContent>();
-            _rootNode.Setup(x => x.Id).Returns(_rootId);
+            _rootNode.Setup(x => x.Key).Returns(_rootKey);
             _rootNode.Setup(x => x.Name).Returns("Home");
 
-            var fakeChecker = new FakeContentVisibilityChecker(true);
+            var mockUrlProvider = new Mock<IPublishedUrlProvider>();
 
-            var mockUrlProvider = new Mock<IContentUrlProvider>();
-
-            var childContent = new Mock<IPublishedContent>();
-            _childMocks = new List<Mock<IPublishedContent>>
+            _content = new List<Mock<IPublishedContent>>
             {
                 new Mock<IPublishedContent>(),
                 new Mock<IPublishedContent>(),
@@ -40,27 +41,34 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
                 new Mock<IPublishedContent>(),
             };
 
-            int index = 0;
-            foreach (var child in _childMocks)
-            {
-                index++;
-
-                child.Setup(x => x.Name).Returns($"Test content {index}");
-                mockUrlProvider.Setup(x => x.GetUrl(It.IsAny<IPublishedContent>())).Returns($"/test{index}");
-            }
-
-            var children = _childMocks.Select(m => m.Object).ToList();
+            var children = _content.Select(m => m.Object).ToList();
 
             _rootNode.Setup(x => x.Children).Returns(children);
 
+            var childContent = new Mock<IPublishedContent>();
+            childContent.Setup(x => x.Name).Returns("test");
+
             var mockNestedContent = new List<Mock<IPublishedContent>>
             {
-                new Mock<IPublishedContent>(),
-                new Mock<IPublishedContent>(),
+                childContent,
+                childContent,
             };
 
             var nestedContent = mockNestedContent.Select(m => m.Object).ToList();
-            _childMocks[0].Setup(c => c.Children).Returns(nestedContent);
+            _content[0].Setup(c => c.Children).Returns(nestedContent);
+
+            for (int i = 0; i < _content.Count; i++)
+            {
+                _content[i].Setup(x => x.Name).Returns($"Test content {i}");
+                
+            }
+            mockUrlProvider.SetupSequence(x => x.GetUrl(It.IsAny<IPublishedContent>(), It.IsAny<UrlMode>(), It.IsAny<string>(), It.IsAny<Uri>())).Returns("/0")
+                .Returns("/0.1")
+                .Returns("/0.2")
+                .Returns("/1")
+                .Returns("/2")
+                .Returns("/3");
+
 
             var mockContentAccessor = new Mock<IUmbracoContextAccessor>();
 
@@ -72,41 +80,51 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             }
             )).Returns(true);
 
-            mockContext.Setup(x => x.Content.GetById(It.IsAny<int>())).Returns(_rootNode.Object);
+            mockContext.Setup(x => x.Content.GetById(It.IsAny<Guid>())).Returns(_rootNode.Object);
+
+            var fakeChecker = new FakeContentVisibilityChecker(true);
 
             _sut = new TprGlobalNavigationService(mockContentAccessor.Object, mockUrlProvider.Object, fakeChecker);
-
-            _expectedLinkText = "Test content 4";
-            _expectedLinkDestination = "/test4";
-
         }
 
         [Test]
+
         public void GetMenuItems_ShouldReturnExpectedMenuItems()
         {
-            //Arrange
-            SetUp();
 
             //Act
-            var result = _sut.GetMenuItems(_rootId);
+            var result = _sut.GetMenuItems(_rootKey);
 
             //Assert 
-            Assert.That(result?.Count, Is.EqualTo(_rootNode.Object.Children.Count()));
-            Assert.That(result[3].LinkText, Is.EqualTo(_expectedLinkText));
-            Assert.That(result[3].LinkDestination, Is.EqualTo(_expectedLinkDestination));
+            Assert.Multiple(() =>
+            {
+                Assert.That(result?.Count, Is.EqualTo(_rootNode.Object.Children.Count()));
 
-            Assert.That(result[0]?.HeaderMenuChildItems?.Count, Is.EqualTo(_childMocks[0].Object.Children.Count()));
+                int index = 0;
+
+                foreach (var child in _rootNode.Object.Children)
+                {
+                    Assert.That(result?[index].LinkText, Is.EqualTo($"Test content {index}"));
+                    Assert.That(result?[index].LinkUrl, Is.EqualTo($"/{index}"));
+                    index++;
+                }
+
+                Assert.That(result?[0].HeaderMenuChildItems?[0].LinkUrl, Is.EqualTo("/0.1"));
+                Assert.That(result?[0].HeaderMenuChildItems?[0].LinkText, Is.EqualTo("Test"));
+                Assert.That(result?[0].HeaderMenuChildItems?[1].LinkUrl, Is.EqualTo("/0.2"));
+                Assert.That(result?[0]?.HeaderMenuChildItems?.Count, Is.EqualTo(_content[0].Object.Children.Count()));
+            });
+           
         }
 
         [Test]
         public void AddParentMenuItem_ShouldAdd_A_MenuItem_InCorrectLocation()
         {
             //Arrange
-            SetUp();
-            var newParentItem = new TprHeaderMenuParentItem();
+            var newParentItem = new TprHeaderMenuParentItem("", "");
 
             //Act
-            var result = _sut.AddParentMenuItem(_rootId, 1, newParentItem);
+            var result = _sut.AddParentMenuItem(_rootKey, 1, newParentItem);
 
             //Assert
             Assert.That(result.Count, Is.EqualTo(5));
@@ -116,11 +134,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public void AddChildMenuItem_ShouldAdd_A_MenuItem_InCorrectLocation()
         {
             //Arrange
-            SetUp();
-            var newChildItem = new TprHeaderMenuChildItem();
+            var newChildItem = new TprHeaderMenuChildItem("", "");
 
             //Act
-            var result = _sut.AddChildMenuItem(_rootId, 1, 0, newChildItem);
+            var result = _sut.AddChildMenuItem(_rootKey, 1, 0, newChildItem);
 
             //Assert
             Assert.That(result[1]?.HeaderMenuChildItems?.Count, Is.EqualTo(1));

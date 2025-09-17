@@ -1,8 +1,11 @@
 ﻿
 document.addEventListener("DOMContentLoaded", function () {
+    var buttonToggle = document.getElementsByClassName("tpr-side-nav__mobile-expand-toggle");
+    if (buttonToggle.length === 0) {
+        return;
+    }
     // mobile menu expand/collapse handling
-    var buttonToggle = document.getElementsByClassName("tpr-side-nav__mobile-expand-toggle")[0]
-        .addEventListener("click", expandOrCollapseMobileNav);
+    buttonToggle[0].addEventListener("click", expandOrCollapseMobileNav);
    
     // list item expand/collapse handling
     var sideNavListItemToggle = document.getElementsByClassName("tpr-side-nav__list-item__expand-toggle");

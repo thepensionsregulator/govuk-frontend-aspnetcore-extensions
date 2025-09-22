@@ -25,14 +25,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 if (documentContext.Href.Contains('.')) { fileExtension = documentContext.Href.Split(".").Skip(1).ToArray()[0].ToString(); }
                 var isMediaLink = knownFileExtensions.Contains(fileExtension);
 
-                if (isMediaLink)
-                {
-                    output.TagName = $"a class=\"govuk-link\" href=\"{documentContext.Href}\" download";
-                }
-                else
-                {
-                    output.TagName = $"a class=\"govuk-link\" href=\"{documentContext.Href}\"";
-                }
+                output.TagName = $"a class=\"govuk-link\" href=\"{documentContext.Href}\"";
+
+                if (isMediaLink) { output.TagName += "download"; }
 
                 if (documentContext.Href.EndsWith(".pdf"))
                 {

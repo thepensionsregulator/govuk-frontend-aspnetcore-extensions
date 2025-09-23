@@ -14,19 +14,19 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
     {
         private readonly IContentService _contentService;
         private readonly IContentTypeService _contentTypeService;
-        private readonly ITprGlobalNavigationSerivce _tprGlobalNavigationSerivce;
+        private readonly ITprGlobalNavigationService _tprGlobalNavigationSerivce;
 
-        public TprHeaderMenuBlockListGenerator(IContentService contentService, IContentTypeService contentTypeService, ITprGlobalNavigationSerivce tprGlobalNavigationSerivce)
+        public TprHeaderMenuBlockListGenerator(IContentService contentService, IContentTypeService contentTypeService, ITprGlobalNavigationService tprGlobalNavigationSerivce)
         {
             _contentService = contentService;
             _contentTypeService = contentTypeService;
             _tprGlobalNavigationSerivce = tprGlobalNavigationSerivce;
         }
 
-        public void GenerateTprHeaderMenuBlockList(int rootId, int settingsId)
+        public void GenerateTprHeaderMenuBlockList(Guid rootKey, Guid settingsKey)
         {
 
-            var settings = _contentService.GetById(settingsId);
+            var settings = _contentService.GetById(settingsKey);
             if (settings == null)
             {
                 throw new ArgumentException("Settings node Id cannot be null");
@@ -47,7 +47,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             var newContentData = new List<Dictionary<string, object>>();
             var newLayourUdis = new List<Dictionary<string, object>>();
 
-            var menuItems = _tprGlobalNavigationSerivce.GetMenuItems(rootId);
+            var menuItems = _tprGlobalNavigationSerivce.GetMenuItems(rootKey);
 
             foreach (var menuItem in menuItems)
             {
@@ -60,11 +60,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                     { "udi", contentUdi.ToString() }
                 };
 
-                if (!string.IsNullOrEmpty(menuItem.LinkDestination))
+                if (!string.IsNullOrEmpty(menuItem.LinkUrl))
                 {
                     mainItemData.Add("linkUrl", new List<Dictionary<string, object>>
                     {
-                        new Dictionary<string, object>{ {"url", menuItem.LinkDestination } }
+                        new Dictionary<string, object>{ {"url", menuItem.LinkUrl } }
                     });
                 }
                 else
@@ -183,11 +183,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                     {"linkText", item.LinkText },
                 };
 
-                if (!string.IsNullOrEmpty(item.LinkDestination))
+                if (!string.IsNullOrEmpty(item.LinkUrl))
                 {
                     childItemData.Add("linkUrl", new List<Dictionary<string, object>>
                     {
-                        new Dictionary<string, object>{ {"url", item.LinkDestination } }
+                        new Dictionary<string, object>{ {"url", item.LinkUrl } }
                     });
                 }
                 else
@@ -242,7 +242,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
     public interface ITprHeaderMenuBlockListGenerator
     {
 
-        public void GenerateTprHeaderMenuBlockList(int rootId, int settingsId);
+        public void GenerateTprHeaderMenuBlockList(Guid rootKey, Guid settingsKey);
 
         public BlockList GenerateChildMenuBlockList(List<TprHeaderMenuChildItem> childItems, IContentType contentType);
     }

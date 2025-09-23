@@ -15,10 +15,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         private Mock<IContent> _mockHomeNode;
         private Mock<IContentType> _mockMainMenuType;
         private Mock<IContentType> _mockChildMenuType;
-        private Mock<ITprGlobalNavigationSerivce> _mockNavigationSerivce;
+        private Mock<ITprGlobalNavigationService> _mockNavigationSerivce;
         private TprHeaderMenuBlockListGenerator _sut;
-        private const int homeNodeId = 1234;
-        private const int settingsNodeId = 567;
+        private  Guid homeNodeId = Guid.NewGuid();
+        private  Guid settingsNodeId = Guid.NewGuid();
         private const string TestPropertyAlias = "tprHeaderMenu";
         private string? _capturedJson;
         private List<TprHeaderMenuParentItem> _parentItems;
@@ -39,11 +39,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             _mockChildMenuType.Setup(x => x.Key).Returns(Guid.NewGuid());
 
             _mockSettingsNode = new Mock<IContent>();
-            _mockSettingsNode.Setup(x => x.Id).Returns(settingsNodeId);
+            _mockSettingsNode.Setup(x => x.Key).Returns(settingsNodeId);
             _mockSettingsNode.Setup(x => x.ContentType.Alias).Returns(TestPropertyAlias);
 
             _mockHomeNode = new Mock<IContent>();
-            _mockHomeNode.Setup(x => x.Id).Returns(homeNodeId);
+            _mockHomeNode.Setup(x => x.Key).Returns(homeNodeId);
 
             var contentTypes = new List<IContentType> { _mockMainMenuType.Object, _mockChildMenuType.Object };
             _mockContentTypeService.Setup(x => x.GetAll()).Returns(contentTypes);
@@ -60,8 +60,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 
             };
 
-            _mockNavigationSerivce = new Mock<ITprGlobalNavigationSerivce>();
-            _mockNavigationSerivce.Setup(x => x.GetMenuItems(It.IsAny<int>())).Returns(_parentItems);
+            _mockNavigationSerivce = new Mock<ITprGlobalNavigationService>();
+            _mockNavigationSerivce.Setup(x => x.GetMenuItems(It.IsAny<Guid>())).Returns(_parentItems);
 
             _sut = new TprHeaderMenuBlockListGenerator(_mockContentService.Object, _mockContentTypeService.Object, _mockNavigationSerivce.Object);
 
@@ -78,18 +78,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             //Assert
             _mockContentService.Verify(x => x.GetById(settingsNodeId), Times.Once);
             _mockContentService.Verify(x => x.SaveAndPublish(_mockSettingsNode.Object, It.IsAny<string>(), It.IsAny<int>()), Times.Once);
-        }
-
-        [Test]
-        public void CreateBlockList_WithInvaldSettingsNode_ThrowsException()
-        {
-            //Arrange
-            var invalidSettingsNodeId = 321;
-            var expectedExceptionMessage = "Settings node Id cannot be null";
-
-            //Assert
-            var ex = Assert.Throws<ArgumentException>(() => _sut.GenerateTprHeaderMenuBlockList(homeNodeId, invalidSettingsNodeId));
-            Assert.That(ex.Message, Is.EqualTo(expectedExceptionMessage));         
         }
 
         [Test]

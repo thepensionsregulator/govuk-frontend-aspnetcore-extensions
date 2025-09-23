@@ -23,7 +23,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         private string? _capturedJson;
         private List<TprHeaderMenuParentItem> _parentItems;
 
-        [SetUp]
+        public MenuBlockListGeneratorTests()
         public void SetUp()
         {
             _mockContentService = new Mock<IContentService>();
@@ -71,7 +71,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
         }
 
-        [Test]
+        [Fact]
         public void GenerateTprHeaderMenuBlockList_WithValidSettingsNode_SetsValueAndSaves()
         {
             
@@ -80,34 +80,34 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             _mockContentService.Verify(x => x.SaveAndPublish(_mockSettingsNode.Object, It.IsAny<string>(), It.IsAny<int>()), Times.Once);
         }
 
-        [Test]
+        [Fact]
         public void GenerateTprHeaderMenuBlockList_CreatesCorrectJsonStructure()
         {
 
             //Assert
             Assert.Multiple(() =>
             {
-                Assert.That(_capturedJson, Is.Not.Null);
+                Assert.NotNull(_capturedJson);
 
                 var jsonObject = JObject.Parse(_capturedJson);
-                Assert.That(jsonObject.ContainsKey("layout"), Is.True);
-                Assert.That(jsonObject.ContainsKey("contentData"), Is.True);
-                Assert.That(jsonObject.ContainsKey("settingsData"), Is.True);
+                Assert.True(jsonObject.ContainsKey("layout"));
+                Assert.True(jsonObject.ContainsKey("contentData"));
+                Assert.True(jsonObject.ContainsKey("settingsData"));
 
                 var layout = jsonObject["layout"];
                 Assert.Multiple(() =>
                 {
-                    Assert.That(layout.HasValues, Is.True);
-                    Assert.That(layout["Umbraco.BlockList"] != null, Is.True);
+                    Assert.True(layout.HasValues);
+                    Assert.True(layout["Umbraco.BlockList"] != null);
                 });
 
                 var contentData = jsonObject["contentData"] as JArray;
-                Assert.That(contentData, Is.Not.Null);
-                Assert.That(contentData.Any(), Is.True);
+                Assert.NotNull(contentData);
+                Assert.True(contentData.Any());
             });
         }
 
-        [Test]
+        [Fact]
         public void GenerateTprHeaderMenuBlockList_CreatesCorrectParentMenuItemStructure()
         {
 
@@ -118,18 +118,18 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 
             Assert.Multiple(() =>
             {
-                Assert.That(firstItem?.ContainsKey("contentTypeKey"), Is.True);
-                Assert.That(firstItem?.ContainsKey("linkText"), Is.True);
-                Assert.That(firstItem?.ContainsKey("linkUrl"), Is.True);
-                Assert.That(firstItem?.ContainsKey("udi"), Is.True);
+                Assert.True(firstItem?.ContainsKey("contentTypeKey"));
+                Assert.True(firstItem?.ContainsKey("linkText"));
+                Assert.True(firstItem?.ContainsKey("linkUrl"));
+                Assert.True(firstItem?.ContainsKey("udi"));
 
                 var udi = firstItem?["udi"].ToString();
-                Assert.That(udi?.StartsWith("umb://element/"), Is.True);
+                Assert.True(udi?.StartsWith("umb://element/"));
             });
 
         }
 
-        [Test]
+        [Fact]
         public void GenerateChildMenuBlockList_CreatesNestedChildMenuItems()
         {
 
@@ -141,29 +141,29 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             Assert.Multiple(() =>
             {
 
-                Assert.That(childItemBlock?.ContainsKey("tprHeaderMenuChildItems"), Is.True);
+                Assert.True(childItemBlock?.ContainsKey("tprHeaderMenuChildItems"));
 
                 var childItems = childItemBlock["tprHeaderMenuChildItems"] as JObject;
-                Assert.That(childItems, Is.Not.Null);
+                Assert.NotNull(childItems);
 
-                Assert.That(childItems.ContainsKey("layout"), Is.True);
-                Assert.That(childItems.ContainsKey("contentData"), Is.True);
-                Assert.That(childItems.ContainsKey("settingsData"), Is.True);
+                Assert.True(childItems.ContainsKey("layout"));
+                Assert.True(childItems.ContainsKey("contentData"));
+                Assert.True(childItems.ContainsKey("settingsData"));
 
                 var childContentData = childItems["contentData"] as JArray;
-                Assert.That(childContentData, Is.Not.Null);
-                Assert.That(childContentData.Count, Is.EqualTo(2));
+                Assert.NotNull(childContentData);
+                Assert.Equal(2, childContentData.Count);
 
                 var firstChild = childContentData[0] as JObject;
-                Assert.That(firstChild?.ContainsKey("contentTypeKey"), Is.True);
-                Assert.That(firstChild?.ContainsKey("linkText"), Is.True);
-                Assert.That(firstChild?.ContainsKey("linkUrl"), Is.True);
-                Assert.That(firstChild?.ContainsKey("udi"), Is.True);
+                Assert.True(firstChild?.ContainsKey("contentTypeKey"));
+                Assert.True(firstChild?.ContainsKey("linkText"));
+                Assert.True(firstChild?.ContainsKey("linkUrl"));
+                Assert.True(firstChild?.ContainsKey("udi"));
             });
         }
 
-        [Test]
-        public void GenerateChildMenuBlockList_HandlesEmptyUrls()
+        [Fact]
+        public void GenerateTprHeaderMenuBlockList_DoesNotOverwrite_ExistingItems()
         {
             //Arrange
            
@@ -175,7 +175,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 
         }
 
-        [Test]
+        [Fact]
         public void GenerateChildMenuBlockList_CreatesValidUdiReference()
         {
             //Assert
@@ -188,7 +188,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
                 var layoutUdi = layout[i]["contentUdi"].ToString();
                 var contentUdi = contentData[i]["udi"].ToString();
 
-                Assert.That(contentUdi, Is.EqualTo(layoutUdi));
+                Assert.Equal(layoutUdi, contentUdi);
             }
         }
     }

@@ -1,8 +1,6 @@
 ﻿using Moq;
-using NUnit.Framework.Internal;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
-using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Web;
@@ -11,7 +9,7 @@ using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
-    internal class TprGlobalNavigationTests
+    public class TprGlobalNavigationTests
     {
         public delegate void TryGetUmbracoContextCallback(out IUmbracoContext context);
 
@@ -20,9 +18,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         private Guid _rootKey;
         private TprGlobalNavigationService _sut;
         private List<Mock<IPublishedContent>> _content;
-    
-        [SetUp]
-        public void SetUp()
+
+        public TprGlobalNavigationTests()
         {
             _guidString = "36cd375f-4aa3-4e61-9526-8e69642f106a";
             _rootKey = Guid.Parse(_guidString);
@@ -59,7 +56,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             for (int i = 0; i < _content.Count; i++)
             {
                 _content[i].Setup(x => x.Name).Returns($"Test content {i}");
-                
+
             }
             mockUrlProvider.SetupSequence(x => x.GetUrl(It.IsAny<IPublishedContent>(), It.IsAny<UrlMode>(), It.IsAny<string>(), It.IsAny<Uri>())).Returns("/0")
                 .Returns("/0.1")
@@ -72,7 +69,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             var mockContentAccessor = new Mock<IUmbracoContextAccessor>();
 
             var mockContext = new Mock<IUmbracoContext>();
-            
+
             mockContext.Setup(x => x!.Content!.GetById(It.IsAny<Guid>())).Returns(_rootNode.Object);
 
             mockContentAccessor.Setup(x => x.TryGetUmbracoContext(out It.Ref<IUmbracoContext?>.IsAny)).Callback(new TryGetUmbracoContextCallback((out IUmbracoContext context) =>
@@ -88,8 +85,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             _sut = new TprGlobalNavigationService(mockContentAccessor.Object, mockUrlProvider.Object, fakeChecker);
         }
 
-        [Test]
-
+        [Fact]
         public void GetMenuItems_ShouldReturnExpectedMenuItems()
         {
 
@@ -99,26 +95,26 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             //Assert 
             Assert.Multiple(() =>
             {
-                Assert.That(result?.Count, Is.EqualTo(_rootNode.Object.Children.Count()));
+                Assert.Equal(result?.Count, _rootNode.Object.Children.Count());
 
                 int index = 0;
 
                 foreach (var child in _rootNode.Object.Children)
                 {
-                    Assert.That(result?[index].LinkText, Is.EqualTo($"Test content {index}"));
-                    Assert.That(result?[index].LinkUrl, Is.EqualTo($"/{index}"));
+                    Assert.Equal(result?[index].LinkText, $"Test content {index}");
+                    Assert.Equal(result?[index].LinkUrl, $"/{index}");
                     index++;
                 }
 
-                Assert.That(result?[0].HeaderMenuChildItems?[0].LinkUrl, Is.EqualTo("/0.1"));
-                Assert.That(result?[0].HeaderMenuChildItems?[0].LinkText, Is.EqualTo("Test"));
-                Assert.That(result?[0].HeaderMenuChildItems?[1].LinkText, Is.EqualTo("Test"));
-                Assert.That(result?[0].HeaderMenuChildItems?[1].LinkUrl, Is.EqualTo("/0.2"));
-                Assert.That(result?[0]?.HeaderMenuChildItems?.Count, Is.EqualTo(_content[0].Object.Children.Count()));
-            });          
+                Assert.Equal("/0.1", result?[0].HeaderMenuChildItems?[0].LinkUrl);
+                Assert.Equal("Test", result?[0].HeaderMenuChildItems?[0].LinkText);
+                Assert.Equal("Test", result?[0].HeaderMenuChildItems?[1].LinkText);
+                Assert.Equal("/0.2", result?[0].HeaderMenuChildItems?[1].LinkUrl);
+                Assert.Equal(result?[0]?.HeaderMenuChildItems?.Count, _content[0].Object.Children.Count());
+            });
         }
 
-        [Test]
+        [Fact]
         public void AddParentMenuItem_ShouldAdd_A_MenuItem_InCorrectLocation()
         {
             //Arrange
@@ -128,10 +124,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             var result = _sut.AddParentMenuItem(_rootKey, 1, newParentItem);
 
             //Assert
-            Assert.That(result.Count, Is.EqualTo(5));
+            Assert.Equal(5, result.Count);
         }
 
-        [Test]
+        [Fact]
         public void AddChildMenuItem_ShouldAdd_A_MenuItem_InCorrectLocation()
         {
             //Arrange
@@ -141,8 +137,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             var result = _sut.AddChildMenuItem(_rootKey, 1, 0, newChildItem);
 
             //Assert
-            Assert.That(result[1]?.HeaderMenuChildItems?.Count, Is.EqualTo(1));
-            Assert.That(result[3]?.HeaderMenuChildItems?.Count, Is.EqualTo(0));
+            Assert.Equal(1, result[1]?.HeaderMenuChildItems?.Count);
+            Assert.Equal(0, result[3]?.HeaderMenuChildItems?.Count);
         }
     }
 }

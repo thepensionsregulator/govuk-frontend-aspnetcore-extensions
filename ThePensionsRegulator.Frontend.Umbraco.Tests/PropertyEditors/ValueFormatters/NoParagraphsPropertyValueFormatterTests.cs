@@ -6,13 +6,13 @@ using Umbraco.Cms.Core.Strings;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
-    [TestFixture]
     public class NoParagraphsPropertyValueFormatterTests
     {
-        [TestCase(Constants.PropertyEditors.Aliases.TinyMce, false)]
-        [TestCase(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineRichText, false)]
-        [TestCase(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineInverseRichText, false)]
-        [TestCase(TprPropertyEditorAliases.TprHeaderFooterRichText, true)]
+        [Theory]
+        [InlineData(Constants.PropertyEditors.Aliases.TinyMce, false)]
+        [InlineData(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineRichText, false)]
+        [InlineData(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineInverseRichText, false)]
+        [InlineData(TprPropertyEditorAliases.TprHeaderFooterRichText, true)]
         public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)
         {
             // Arrange
@@ -23,10 +23,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             var result = formatter.IsFormatter(propertyType);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void Accepts_string_or_HtmlEncodedString_as_input()
         {
             // Arrange
@@ -39,8 +39,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             var resultOfHtmlEncodedString = formatter.FormatValue(new HtmlEncodedString(INPUT));
 
             // Assert
-            Assert.That(((HtmlEncodedString)resultOfString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
-            Assert.That(((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
+            Assert.Equal(EXPECTED, ((HtmlEncodedString)resultOfString)?.ToHtmlString());
+            Assert.Equal(EXPECTED, ((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString());
         }
     }
 }

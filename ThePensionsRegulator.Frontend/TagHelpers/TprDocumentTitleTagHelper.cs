@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -14,11 +15,20 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var documentContext = (TprDocumentContext)context.Items[typeof(TprDocumentsTagHelper)];
             documentContext.DocumentTitle = await output.GetChildContentAsync();
 
-            output.PreElement.SetHtmlContent("<dt>");
-            output.TagName = $"a class=\"govuk-link\" href=\"{documentContext.Href}\"";
-
             if (documentContext.Href != null)
             {
+                output.PreElement.SetHtmlContent("<dt>");
+
+                string[] knownFileExtensions = ["csv", "doc", "docx", "dotx", "odt", "pdf", "pptx", "rtf", "xlst", "xlsx"];
+                var fileExtension = string.Empty;
+
+                if (documentContext.Href.Contains('.')) { fileExtension = documentContext.Href.Split(".").Skip(1).ToArray()[0].ToString(); }
+                var isMediaLink = knownFileExtensions.Contains(fileExtension);
+
+                output.TagName = $"a class=\"govuk-link\" href=\"{documentContext.Href}\"";
+
+                if (isMediaLink) { output.TagName += "download"; }
+
                 if (documentContext.Href.EndsWith(".pdf"))
                 {
                     if (documentContext.Pages == "0")

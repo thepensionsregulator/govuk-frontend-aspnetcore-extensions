@@ -56,9 +56,27 @@
                 </div>
             }
         }
-        <main id="main" class="govuk-main-wrapper">
-            @RenderBody()
-        </main>
+        @if(Umbraco.AssignedContentItem.ContentType.Alias == "sideNavigation")
+        {
+            <div class="govuk-width-container">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column govuk-grid-column-one-third">
+                        @await Component.InvokeAsync("TprSideNavigation")
+                    </div>
+                    <div class="govuk-grid-column govuk-grid-column-two-thirds">
+                        <main id="main" class="govuk-main-wrapper">
+                            @RenderBody()
+                        </main>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <main id="main" class="govuk-main-wrapper">
+                @RenderBody()
+            </main>
+        }
     </div>
     @if (useTPRstyles)
     {

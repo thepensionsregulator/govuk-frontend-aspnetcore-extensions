@@ -1,9 +1,11 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@inject IGovUkHeadingClassProvider headingClassProvider
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using ThePensionsRegulator.Umbraco;
@@ -25,7 +27,7 @@
     var fieldsetHint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(fieldsetHint?.ToHtmlString()) ? null : modelPropertyName + "-hint";
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
-    var legendClass = legendIsPageHeading ? GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
+    var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
     var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var isInvalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any());
     var ariaInvalid = isInvalid.ToString().ToLowerInvariant();

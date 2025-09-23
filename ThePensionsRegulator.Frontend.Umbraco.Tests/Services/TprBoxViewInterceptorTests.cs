@@ -9,8 +9,9 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
     public class TprBoxViewInterceptorTests
     {
-        [TestCase(true)]
-        [TestCase(false)]
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public void Full_width_box_should_not_render_width_container_if_RenderWidthContainerForBlocks_enabled(bool renderWidthContainerInitialValue)
         {
             // Arrange
@@ -22,12 +23,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             interceptor.InterceptBlockView(blockView);
 
             // Assert
-            Assert.That(blockView.OpenWidthContainer, Is.False);
-            Assert.That(blockView.CloseWidthContainer, Is.False);
+            Assert.False(blockView.OpenWidthContainer);
+            Assert.False(blockView.CloseWidthContainer);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public void Full_width_box_should_not_change_whether_to_render_width_container_if_RenderWidthContainerForBlocks_disabled(bool renderWidthContainerInitialValue)
         {
             // Arrange
@@ -39,12 +41,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             interceptor.InterceptBlockView(blockView);
 
             // Assert
-            Assert.That(blockView.OpenWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
-            Assert.That(blockView.CloseWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
+            Assert.Equal(renderWidthContainerInitialValue, blockView.OpenWidthContainer);
+            Assert.Equal(renderWidthContainerInitialValue, blockView.CloseWidthContainer);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public void Other_box_should_not_change_whether_to_render_width_container(bool renderWidthContainerInitialValue)
         {
             // Arrange
@@ -56,12 +59,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             interceptor.InterceptBlockView(blockView);
 
             // Assert
-            Assert.That(blockView.OpenWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
-            Assert.That(blockView.CloseWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
+            Assert.Equal(renderWidthContainerInitialValue, blockView.OpenWidthContainer);
+            Assert.Equal(renderWidthContainerInitialValue, blockView.CloseWidthContainer);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public void Other_block_should_not_change_whether_to_render_width_container(bool renderWidthContainerInitialValue)
         {
             // Arrange
@@ -78,25 +82,26 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             interceptor.InterceptBlockView(blockView);
 
             // Assert
-            Assert.That(blockView.OpenWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
-            Assert.That(blockView.CloseWidthContainer, Is.EqualTo(renderWidthContainerInitialValue));
+            Assert.Equal(renderWidthContainerInitialValue, blockView.OpenWidthContainer);
+            Assert.Equal(renderWidthContainerInitialValue, blockView.CloseWidthContainer);
         }
 
-        [TestCase(false, false, false, true)]
-        [TestCase(true, false, false, true)]
-        [TestCase(false, true, false, true)]
-        [TestCase(false, false, true, true)]
-        [TestCase(true, true, false, true)]
-        [TestCase(true, false, true, true)]
-        [TestCase(false, true, true, true)]
+        [Theory]
+        [InlineData(false, false, false, true)]
+        [InlineData(true, false, false, true)]
+        [InlineData(false, true, false, true)]
+        [InlineData(false, false, true, true)]
+        [InlineData(true, true, false, true)]
+        [InlineData(true, false, true, true)]
+        [InlineData(false, true, true, true)]
 
-        [TestCase(false, false, false, false)]
-        [TestCase(true, false, false, false)]
-        [TestCase(false, true, false, false)]
-        [TestCase(false, false, true, false)]
-        [TestCase(true, true, false, false)]
-        [TestCase(true, false, true, false)]
-        [TestCase(false, true, true, false)]
+        [InlineData(false, false, false, false)]
+        [InlineData(true, false, false, false)]
+        [InlineData(false, true, false, false)]
+        [InlineData(false, false, true, false)]
+        [InlineData(true, true, false, false)]
+        [InlineData(true, false, true, false)]
+        [InlineData(false, true, true, false)]
         public void WidthContainer_is_updated_to_reflect_whether_blocks_are_full_width_boxes(bool previousIsBox, bool currentIsBox, bool nextIsBox, bool boxesAreFullWidth)
         {
             // Arrange
@@ -131,19 +136,19 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             // Assert
             if (boxesAreFullWidth)
             {
-                Assert.That(blockViewWidthContainer.OpenWidthContainer, Is.EqualTo(!currentIsBox));
-                Assert.That(blockViewNoWidthContainer.OpenWidthContainer, Is.EqualTo(previousIsBox && !currentIsBox));
-                Assert.That(blockViewWidthContainer.CloseWidthContainer, Is.EqualTo(!currentIsBox));
-                Assert.That(blockViewNoWidthContainer.CloseWidthContainer, Is.EqualTo(!currentIsBox && nextIsBox));
+                Assert.Equal(!currentIsBox, blockViewWidthContainer.OpenWidthContainer);
+                Assert.Equal(previousIsBox && !currentIsBox, blockViewNoWidthContainer.OpenWidthContainer);
+                Assert.Equal(!currentIsBox, blockViewWidthContainer.CloseWidthContainer);
+                Assert.Equal(!currentIsBox && nextIsBox, blockViewNoWidthContainer.CloseWidthContainer);
             }
 
             // Assert - should not be updated
             if (!boxesAreFullWidth)
             {
-                Assert.That(blockViewWidthContainer.OpenWidthContainer, Is.True);
-                Assert.That(blockViewWidthContainer.CloseWidthContainer, Is.True);
-                Assert.That(blockViewNoWidthContainer.OpenWidthContainer, Is.False);
-                Assert.That(blockViewNoWidthContainer.CloseWidthContainer, Is.False);
+                Assert.True(blockViewWidthContainer.OpenWidthContainer);
+                Assert.True(blockViewWidthContainer.CloseWidthContainer);
+                Assert.False(blockViewNoWidthContainer.OpenWidthContainer);
+                Assert.False(blockViewNoWidthContainer.CloseWidthContainer);
             }
 
         }

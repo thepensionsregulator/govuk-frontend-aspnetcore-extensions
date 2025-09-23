@@ -17,3 +17,5 @@ For the rare cases where you need to change the typography scale for a better vi
 Using either typography scale, an editor has the option to select the most appropriate heading size in the rich text editor. This allows them to follow the standard for the site, but also in rare cases to select a different appearance for a better visual balance, while retaining the correct heading hierarchy.
 
 ![Heading levels in the rich text editor](/docs/images/heading-levels-in-rich-text-editor.png)
+
+To customise how heading levels are assigned using these settings, you can replace the default implementation of `IGovUkHeadingClassProvider`.

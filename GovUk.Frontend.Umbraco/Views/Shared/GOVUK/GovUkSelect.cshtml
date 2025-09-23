@@ -1,8 +1,10 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@inject IGovUkHeadingClassProvider headingClassProvider
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using ThePensionsRegulator.Umbraco.Blocks;
@@ -23,7 +25,7 @@
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var label = Model.Content.Value<string>(PropertyAliases.SelectLabel)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var labelIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.LabelIsPageHeading);
-    var labelClass = labelIsPageHeading ? GovUkPageSetting.HeadingClasses(Umbraco.AssignedContentItem).LabelAsHeading1 : null;
+    var labelClass = labelIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LabelAsHeading1 : null;
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
     var invalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any()).ToString().ToLowerInvariant();

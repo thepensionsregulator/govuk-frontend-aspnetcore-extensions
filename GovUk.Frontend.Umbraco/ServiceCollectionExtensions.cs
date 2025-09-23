@@ -66,6 +66,7 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IGovUkGridClassBuilder, GovUkGridClassBuilder>();
             services.AddTransient<IDefaultColumnClassProvider, GovUkCaptionColumnClassProvider>();
             services.AddTransient<IDefaultColumnClassProvider, GovUkPageHeadingColumnClassProvider>();
+            services.AddTransient<IGovUkHeadingClassProvider, GovUkHeadingClassProvider>();
             services.AddTransient<BlockViewService>();
 
             return services;

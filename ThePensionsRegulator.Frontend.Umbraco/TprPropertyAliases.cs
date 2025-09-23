@@ -18,7 +18,9 @@
         public const string HeaderMenuAriaLabel = "tprHeaderMenuAriaLabel";
         public const string HeaderMenuLinkText = "linkText";
         public const string HeaderMenuLinkUrl = "linkUrl";
-        public const string HeaderMenuNoJsNavPage = "noJSNavPage";      
+        public const string HeaderMenuNoJsNavPage = "noJSNavPage";
+        public const string HeaderMenuToggleClosedText = "headerMenuToggleClosedText";
+        public const string HeaderMenuToggleOpenText = "headerMenuToggleOpenText";
         public const string HeaderSearchAriaLabel = "tprHeaderAriaLabelText";
         public const string HeaderSearchPlaceholderText = "tprHeaderSearchPlaceholderText";     
         public const string ImageAltText = "altText";

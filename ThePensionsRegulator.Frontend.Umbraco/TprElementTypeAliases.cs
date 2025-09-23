@@ -22,7 +22,7 @@
         public const string DocumentsSettings = "tprDocumentsSettings";
         public const string Footer = "tprFooter";
         public const string Header = "tprHeader";
-        public const string HeaderMenu = "tprHeaderMenu";
+        public const string HeaderMenu = "tprHeaderMenuBlockList";
         public const string HeaderMenuItem = "tprHeaderMenuParentItem";
         public const string HeaderMenuChildItems = "tprHeaderMenuChildItems";
         public const string Image = "tprImage";

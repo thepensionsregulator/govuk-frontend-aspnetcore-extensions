@@ -36,7 +36,7 @@ namespace ThePensionsRegulator.Frontend.Models
         public virtual bool ShowHeaderMenu { get; init; }
         public virtual string? HeaderMenuAriaLabel { get; set; }
         public virtual string? HeaderMenuNoJSNavPage { get; set; }
-        public virtual List<TprHeaderMenuParentItem>? HeaderMenuParentItems { get; set; }
-        public virtual List<TprHeaderMenuChildItem>? ExtraChildItem { get; set; }
+        public virtual IList<TprHeaderMenuParentItem>? HeaderMenuParentItems { get; set; }
+        public virtual IList<TprHeaderMenuChildItem>? ExtraChildItems { get; set; }
     }
 }

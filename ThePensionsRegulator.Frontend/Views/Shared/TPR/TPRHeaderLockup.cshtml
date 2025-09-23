@@ -11,7 +11,8 @@
     var headerLogoAlt = Model.LogoAlternativeText;
     if (string.IsNullOrEmpty(headerLogoAlt) && !string.IsNullOrEmpty(Model.LogoHref)) { headerLogoAlt = ComponentGenerator.HeaderLogoDefaultAlt; }
     var showPhaseBanner = Model.ShowPhaseBanner && !string.IsNullOrEmpty(phase) && phase != "Live";
-    var extraLinks = Model.ExtraChildItem;
+    var extraLinks = Model.ExtraChildItems;
+ 
 }
 @if (Model.ShowSkipLink)
 {
@@ -30,14 +31,14 @@
                 {
                     <tpr-header-search action="@Model.HeaderSearchActionPath" autocomplete-url="@Model.HeaderSearchAutocompleteUrl" placeholder="@Model.HeaderSearchPlaceholderText" aria-label="@Model.HeaderSearchAriaLabel" input-name="@Model.HeaderSearchInputName"></tpr-header-search>
                 }
-                @if (Model.ShowHeaderMenu)
+                @if (Model.HeaderBarContent == null && Model.ShowHeaderMenu)
                 {
                     <tpr-header-menu>
                         @if (Model.HeaderMenuParentItems != null)
                         {
-                            @foreach (var item in Model.HeaderMenuParentItems)
+                            @foreach (var item in Model.HeaderMenuParentItems.OfType<TprHeaderMenuParentItem>())
                             {
-                                <tpr-header-menu-parent-item href="@item?.LinkDestination" link-text="@item?.LinkText">
+                                <tpr-header-menu-parent-item href="@item?.LinkUrl" link-text="@item?.LinkText">
                                     @if (item?.HeaderMenuChildItems != null)
                                     {
                                         if (extraLinks != null)
@@ -49,9 +50,9 @@
                                         }
                                         if (item?.HeaderMenuChildItems != null)
                                         {
-                                            @foreach (var child in item.HeaderMenuChildItems)
+                                            @foreach (var child in item.HeaderMenuChildItems.OfType<TprHeaderMenuChildItem>())
                                             {
-                                                <tpr-header-menu-child-item href="@child?.LinkDestination" link-text="@child?.LinkText"></tpr-header-menu-child-item>
+                                                <tpr-header-menu-child-item href="@child?.LinkUrl" link-text="@child?.LinkText"></tpr-header-menu-child-item>
                                             }
                                         }
                                     }

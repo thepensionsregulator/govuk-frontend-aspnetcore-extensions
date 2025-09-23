@@ -4,14 +4,14 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     internal class TprHeaderMenuChildItemsContext
     {
-        private (AttributeDictionary Attributes, string? LinkText, string? LinkDestination)? _menuChildItem;
+        private (AttributeDictionary Attributes, string? LinkText, string? LinkUrl)? _menuChildItem;
         public AttributeDictionary? Attributes { get; set; }
         public string? LinkText => _menuChildItem?.LinkText;
-        public string? LinkDestination => _menuChildItem?.LinkDestination;
+        public string? LinkUrl => _menuChildItem?.LinkUrl;
 
-        public void SetChildItem(AttributeDictionary attributes, string? linkText, string? linkDestination)
+        public void SetChildItem(AttributeDictionary attributes, string? linkText, string? linkUrl)
         {
-            _menuChildItem = (attributes, linkText, linkDestination);
+            _menuChildItem = (attributes, linkText, linkUrl);
         }
     }
 }

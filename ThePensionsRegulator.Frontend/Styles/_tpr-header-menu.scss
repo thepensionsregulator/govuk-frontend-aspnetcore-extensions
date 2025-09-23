@@ -262,6 +262,9 @@
         a:focus-within {
             outline: $govuk-focus-width solid $govuk-focus-colour;
         }
+
+        
+        
     }
 
     .tpr-header-menu__nav-menu-item:hover .tpr-header-menu__nav-sub-menu, .tpr-header-menu__nav-menu-item:focus-within .tpr-header-menu__nav-sub-menu {

@@ -28,6 +28,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public List<TprHeaderMenuParentItem>? HeaderMenuItems { get; set; } = new();
         public string? HeaderMenuAriaLabel { get; set; }
         public string? MobileMenuNoJsNavPage { get; set; }
+        public string? HeaderMenuToggleClosed { get; set; }
+        public string? HeaderMenuToggleOpen { get; set; }
 
     }
 }

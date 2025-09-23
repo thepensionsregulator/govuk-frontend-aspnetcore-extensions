@@ -30,8 +30,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public string? SearchInputName => _search?.SearchInputName ?? "query";
         public bool DisplayHeaderMenu => _headerMenuContext != null;
         public TprHeaderMenuContext? TprMobileMenuContext => _headerMenuContext;
-        public string? MobileMenuAriaLabel => _headerMenuContext?.HeaderMenuAriaLabel;
+        public string? HeaderMenuAriaLabel => _headerMenuContext?.HeaderMenuAriaLabel;
         public string? MobileMenuNoJsNavPage => _headerMenuContext?.MobileMenuNoJsNavPage;
+        public string? HeaderMenuToggleClosed => _headerMenuContext?.HeaderMenuToggleClosed;
+        public string? HeaderMenuToggleOpen => _headerMenuContext?.HeaderMenuToggleOpen;
 
 
         public void SetLogo(AttributeDictionary attributes, string? href, string? alternativeText)

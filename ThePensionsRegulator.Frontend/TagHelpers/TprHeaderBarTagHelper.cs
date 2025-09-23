@@ -87,8 +87,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 DisplayHeaderMenu = barContext.DisplayHeaderMenu,
                 HeaderMenuAttributes = headerMenuAttributes,
                 HeaderMenuItems = headerMenuItems,
-                HeaderMenuAriaLabel = barContext?.MobileMenuAriaLabel,
-                MobileMenuNoJsNavPage = barContext?.MobileMenuNoJsNavPage
+                HeaderMenuAriaLabel = barContext?.HeaderMenuAriaLabel,
+                MobileMenuNoJsNavPage = barContext?.MobileMenuNoJsNavPage,
+                HeaderMenuToggleClosed = barContext?.HeaderMenuToggleClosed,
+                HeaderMenuToggleOpen = barContext?.HeaderMenuToggleOpen
+
             });
 
             output.TagName = tagBuilder.TagName;

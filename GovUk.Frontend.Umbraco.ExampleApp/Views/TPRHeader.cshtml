@@ -225,7 +225,7 @@
             <tpr-header-bar>
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
                 <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="@(settings?.Value<string>("tprHeaderSearchPlaceholderText"))" aria-label="@(settings?.Value<string>("tprHeaderAriaLabelText"))"></tpr-header-search>
-                <tpr-header-menu aria-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuAriaLabel))" no-js-destination="@(settings?.Value<Link>(TprPropertyAliases.HeaderMenuNoJsNavPage)?.Url)">
+                <tpr-header-menu aria-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuAriaLabel))" no-js-destination="@(settings?.Value<Link>(TprPropertyAliases.HeaderMenuNoJsNavPage)?.Url)" open-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuToggleOpenText))" close-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuToggleClosedText))">
                     @if (headerMenuParentItems != null)
                     {
                         @foreach (var item in headerMenuParentItems)

@@ -11,6 +11,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public IReadOnlyList<TprHeaderMenuParentItemsContext> HeaderMenuParentItems => _headerMenuParentItems;
         public string? HeaderMenuAriaLabel {  get; set; }
         public string? MobileMenuNoJsNavPage {  get; set; }
+        public string? HeaderMenuToggleOpen {  get; set; }
+        public string? HeaderMenuToggleClosed {  get; set; }
      
         public void AddParentItem(TprHeaderMenuParentItemsContext item)
         {

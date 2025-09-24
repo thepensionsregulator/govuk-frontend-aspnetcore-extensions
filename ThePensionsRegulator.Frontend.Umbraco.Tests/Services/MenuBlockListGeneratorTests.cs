@@ -24,7 +24,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         private List<TprHeaderMenuParentItem> _parentItems;
 
         public MenuBlockListGeneratorTests()
-        public void SetUp()
         {
             _mockContentService = new Mock<IContentService>();
             _mockContentTypeService = new Mock<IContentTypeService>();

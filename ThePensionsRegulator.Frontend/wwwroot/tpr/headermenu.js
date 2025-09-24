@@ -117,7 +117,6 @@ function toggleMobileMenu() {
 
     mobileMenus.forEach((menu) => {
         menu.removeAttribute("href");
-        menu.setAttribute("role", "button");
 
         menu.addEventListener("click", function () {
             menu.classList.toggle("tpr-mobile-menu__toggle--open");

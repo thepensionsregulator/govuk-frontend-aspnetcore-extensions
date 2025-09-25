@@ -38,7 +38,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
             var exsitingBlockListData = GetExsisitngBlockListData(settings, "tprHeaderMenu");
 
-            var finalBlockList = new BlockList();
+
             var finalContentData = new List<Dictionary<string, object>>(exsitingBlockListData.contentData);
             var finalLayoutUdis = new List<Dictionary<string, object>>(exsitingBlockListData.layout);
             var finalSettingsData = new List<Dictionary<string, object>>(exsitingBlockListData.settingsData);
@@ -49,48 +49,58 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
             var menuItems = _tprGlobalNavigationSerivce.GetMenuItems(rootKey);
 
+            var validUdis = new HashSet<string>();
+
             foreach (var menuItem in menuItems)
             {
-                GuidUdi contentUdi = new GuidUdi("element", Guid.NewGuid());
+                var stableUdi = GenerateStableUdi(menuItem.ContentKey);
+                var exsistingBlock = finalContentData.FirstOrDefault(x => x.TryGetValue("udi", out var udi) && udi.ToString() == stableUdi.ToString());
 
-                var mainItemData = new Dictionary<string, object>
+                if (exsistingBlock != null)
                 {
-                    { "contentTypeKey", parentItemType.Key.ToString() },
-                    { "linkText", menuItem.LinkText },
-                    { "udi", contentUdi.ToString() }
-                };
-
-                if (!string.IsNullOrEmpty(menuItem.LinkUrl))
-                {
-                    mainItemData.Add("linkUrl", new List<Dictionary<string, object>>
-                    {
-                        new Dictionary<string, object>{ {"url", menuItem.LinkUrl } }
-                    });
+                    exsistingBlock["linkText"] = menuItem.LinkText;
+                    exsistingBlock["linkUrl"] = menuItem.LinkUrl;
                 }
                 else
                 {
-                    mainItemData.Add("linkUrl", "");
+                    var newBlock = new Dictionary<string, object>
+                    {
+                        { "contentTypeKey", parentItemType.Key.ToString() },
+                        {"linkText", menuItem.LinkText },
+                        {"udi", stableUdi.ToString() }
+
+                    };
+
+                    if (!string.IsNullOrEmpty(menuItem.LinkUrl))
+                    {
+                        newBlock.Add("linkUrl", new List<Dictionary<string, object>>()
+                        {
+                            new Dictionary<string, object> { { "url", menuItem.LinkUrl } } });
+                    }
+
+
+                    if (menuItem.HeaderMenuChildItems != null)
+                    {
+
+                        var childMenuBlock = GenerateChildMenuBlockList(menuItem.HeaderMenuChildItems, chidlItemType);
+                        newBlock.Add("tprHeaderMenuChildItems", childMenuBlock);
+                    }
+
+                    finalContentData.Add(newBlock);
+                    finalLayoutUdis.Add(new Dictionary<string, object> { { "contentUdi", stableUdi.ToString() } });
                 }
-
-                newContentData.Add(mainItemData);
-
-                if (menuItem.HeaderMenuChildItems != null)
-                {
-
-                    var childMenuBlock = GenerateChildMenuBlockList(menuItem.HeaderMenuChildItems, chidlItemType);
-                    newContentData.Add(new Dictionary<string, object> { { "tprHeaderMenuChildItems", childMenuBlock } });
-                }
-
-
-                newLayourUdis.Add(new Dictionary<string, object> { { "contentUdi", contentUdi.ToString() } });
+                validUdis.Add(stableUdi.ToString());
             }
 
-            finalContentData.InsertRange(0, newContentData);
-            finalLayoutUdis.InsertRange(0, newLayourUdis);
+            finalContentData.RemoveAll(block => block.TryGetValue("udi", out var udi) && !validUdis.Contains(udi));
+            finalLayoutUdis.RemoveAll(layout => layout.TryGetValue("contentUdi", out var udi) && !validUdis.Contains(udi));
 
-            finalBlockList.layout = new BlockListUdi(finalLayoutUdis);
-            finalBlockList.contentData = finalContentData;
-            finalBlockList.settingsData = finalSettingsData;
+            var finalBlockList = new BlockList
+            {
+                layout = new BlockListUdi(finalLayoutUdis),
+                contentData = finalContentData,
+                settingsData = finalSettingsData
+            };
 
             settings?.SetValue("tprHeaderMenu", JsonConvert.SerializeObject(finalBlockList));
 
@@ -98,7 +108,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             {
                 _contentService.SaveAndPublish(settings);
             }
+        }
 
+        private GuidUdi GenerateStableUdi(Guid contentKey)
+        {
+            return new GuidUdi("element", contentKey);
         }
 
         private ExsistingBlockList GetExsisitngBlockListData(IContent settingsNode, string propertyAlias)
@@ -174,12 +188,12 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
             foreach (var item in childItems)
             {
-                GuidUdi childItemUdi = new GuidUdi("element", Guid.NewGuid());
+                var stableUdi = GenerateStableUdi(item.ContentKey);
 
                 var childItemData = new Dictionary<string, object>
                 {
                     {"contentTypeKey", contentType.Key.ToString() },
-                    {"udi", childItemUdi.ToString() },
+                    {"udi", stableUdi.ToString()},
                     {"linkText", item.LinkText },
                 };
 
@@ -198,7 +212,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                 childContentData.Add(childItemData);
                 childLayoutUdis.Add(new Dictionary<string, object>
                 {
-                    {"contentUdi", childItemUdi.ToString()},
+                    {"contentUdi", stableUdi.ToString()},
                 });
 
             }

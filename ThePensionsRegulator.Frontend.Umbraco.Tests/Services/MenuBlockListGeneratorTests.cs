@@ -22,7 +22,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         private const string TestPropertyAlias = "tprHeaderMenu";
         private string? _capturedJson;
         private List<TprHeaderMenuParentItem> _parentItems;
-
+      
         public MenuBlockListGeneratorTests()
         {
             _mockContentService = new Mock<IContentService>();
@@ -50,12 +50,12 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             _mockContentService.Setup(x => x.GetById(settingsNodeId)).Returns(_mockSettingsNode.Object);
 
             _parentItems = new List<TprHeaderMenuParentItem>  {
-                new TprHeaderMenuParentItem("link one", "/1", new List<TprHeaderMenuChildItem>
+                new TprHeaderMenuParentItem(Guid.NewGuid(),"link one", "/1", new List<TprHeaderMenuChildItem>
                 {
-                    new TprHeaderMenuChildItem("child link one", "/1.1"),
-                    new TprHeaderMenuChildItem("child link two", "1.2")
+                    new TprHeaderMenuChildItem(Guid.NewGuid(),"child link one", "/1.1"),
+                    new TprHeaderMenuChildItem(Guid.NewGuid(), "child link two", "1.2")
                 }),
-                new TprHeaderMenuParentItem("link two", "/2")
+                new TprHeaderMenuParentItem(Guid.NewGuid(), "link two", "/2")
 
             };
 
@@ -66,6 +66,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 
             _capturedJson = null;
             _mockSettingsNode.Setup(x => x.SetValue(TestPropertyAlias, It.IsAny<object>(), It.IsAny<string>(), It.IsAny<string>())).Callback<string, object, string, string>((alias, value, z, y) => _capturedJson = value.ToString());
+            
+           
 
             _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
         }
@@ -73,7 +75,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void GenerateTprHeaderMenuBlockList_WithValidSettingsNode_SetsValueAndSaves()
         {
-            
+
             //Assert
             _mockContentService.Verify(x => x.GetById(settingsNodeId), Times.Once);
             _mockContentService.Verify(x => x.SaveAndPublish(_mockSettingsNode.Object, It.IsAny<string>(), It.IsAny<int>()), Times.Once);
@@ -135,10 +137,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             //Assert
             var jsonObject = JObject.Parse(_capturedJson);
             var contentData = jsonObject["contentData"] as JArray;
-            var childItemBlock = contentData?[1] as JObject;
+            var childItemBlock = contentData?[0] as JObject;
 
-            Assert.Multiple(() =>
-            {
+            //Assert.Multiple(() =>
+            //{
 
                 Assert.True(childItemBlock?.ContainsKey("tprHeaderMenuChildItems"));
 
@@ -158,21 +160,42 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
                 Assert.True(firstChild?.ContainsKey("linkText"));
                 Assert.True(firstChild?.ContainsKey("linkUrl"));
                 Assert.True(firstChild?.ContainsKey("udi"));
-            });
+            //});
         }
 
-        [Fact]
-        public void GenerateTprHeaderMenuBlockList_DoesNotOverwrite_ExistingItems()
-        {
-            //Arrange
-           
+        //[Fact]
+        //public void GenerateTprHeaderMenuBlockList_DoesNotOverwrite_ExistingItems()
+        //{
+        //    //Arrange
+        //    var jsonObject = JObject.Parse(_capturedJson);
+        //    var contentData = jsonObject["contentData"] as JArray;
+ 
 
-            //Act
-            _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
+        //    var newItem = new JObject
+        //    {
+        //        {"contentTypeKey", Guid.NewGuid() },
+        //        {"linkText", "New Item" },
+        //        {"linkUrl", JObject.FromObject(new Dictionary<string, string>{ {"url", "/new-item" } }) },
+        //        {"udi", "umb://element/new-item" }
+        //    };
+         
+               
 
-            //Assert
+        //    var expectedContentDataCount = 3;
+        //    Assert.Equal(expectedContentDataCount, contentData?.Count);
 
-        }
+            
+        //    var UpdatedJson = JObject.Parse(_capturedJson);
+        //    //Act
+        //    _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
+
+        //    //Assert
+        //    var finalJson = JObject.Parse(_capturedJson);
+        //    var finalContentData = finalJson["contentData"] as JArray;
+
+        //    Assert.Equal(expectedContentDataCount, finalContentData?.Count);
+        //    Assert.True(finalContentData?.Any(x => x["linkText"]?.ToString() == "New Item"));
+        //}
 
         [Fact]
         public void GenerateChildMenuBlockList_CreatesValidUdiReference()

@@ -33,19 +33,21 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
             if (rootNode == null)
             {
-                throw new InvalidOperationException($"No content found with ID {rootKey}.");
+                throw new InvalidOperationException($"No content found with GUID {rootKey}.");
             }
 
             var menuItems = rootNode.Children
                 .Where(x => _contentVisibilityChecker.IsVisible(x))
                 .Select(x => new TprHeaderMenuParentItem
                 {
+                    ContentKey = x.Key,
                     LinkText = x.Name.ToFirstUpper(),
                     LinkUrl = _contentUrlProvider.GetUrl(x),
                     HeaderMenuChildItems = x.Children
                         .Where(c => _contentVisibilityChecker.IsVisible(c))
                         .Select(c => new TprHeaderMenuChildItem
                         {
+                            ContentKey = c.Key,
                             LinkText = c.Name.ToFirstUpper(),
                             LinkUrl = _contentUrlProvider.GetUrl(c)
                         })

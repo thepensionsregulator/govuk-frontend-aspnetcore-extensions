@@ -118,7 +118,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public void AddParentMenuItem_ShouldAdd_A_MenuItem_InCorrectLocation()
         {
             //Arrange
-            var newParentItem = new TprHeaderMenuParentItem("", "");
+            var newParentItem = new TprHeaderMenuParentItem(Guid.NewGuid(), "", "");
 
             //Act
             var result = _sut.AddParentMenuItem(_rootKey, 1, newParentItem);
@@ -131,7 +131,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public void AddChildMenuItem_ShouldAdd_A_MenuItem_InCorrectLocation()
         {
             //Arrange
-            var newChildItem = new TprHeaderMenuChildItem("", "");
+            var newChildItem = new TprHeaderMenuChildItem(Guid.NewGuid(), "", "");
 
             //Act
             var result = _sut.AddChildMenuItem(_rootKey, 1, 0, newChildItem);

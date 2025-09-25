@@ -55,6 +55,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var closeButton = new TagBuilder("button");
             closeButton.AddCssClass("tpr-header-menu__button");
             closeButton.Attributes.Add("aria-haspopup", "true");
+            closeButton.Attributes.Add("aria-expanded", "false");
             closeButton.Attributes.Add("type", "button");
 
             if (!string.IsNullOrEmpty(tprHeaderBar.HeaderMenuToggleOpen))

@@ -290,7 +290,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             var childLayout = exsistingChildBlock["layout"]["Umbraco.BlockList"] as JArray;
             childLayout.Add(new JObject { { "contentUdi", $"umb://element/{manualChildUdi}" } });
 
-            _mockHomeNode.Setup(x => x.GetValue("tprHeaderMenu", It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(initialJson.ToString());
+            _mockSettingsNode.Setup(x => x.GetValue("tprHeaderMenu", It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(initialJson.ToString());
 
             //Act
             _sut.GenerateTprHeaderMenuBlockList(homeNodeId, settingsNodeId);
@@ -298,11 +298,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             //Assert
             var finalJson = JObject.Parse(_capturedJson);
             var finalContentData = finalJson["contentData"] as JArray;
-            var finalFirstParent = finalContentData.FirstOrDefault(x => x["linkText"]?.ToString() == "linkone") as JObject;
+            var finalFirstParent = finalContentData.FirstOrDefault(x => x["linkText"]?.ToString() == "link one") as JObject;
 
             Assert.NotNull(finalFirstParent);
             var finalChildBlock = finalFirstParent["tprHeaderMenuChildItems"] as JObject;
-            var finalChildContentData = finalFirstParent["contentData"] as JArray;
+            var finalChildContentData = finalChildBlock["contentData"] as JArray;
 
             Assert.Contains(finalChildContentData, item =>
             item["linkText"]?.ToString() == "Manual Child Item" &&
@@ -314,8 +314,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
            item["linkText"]?.ToString() == "child link two");
 
             Assert.Equal(3, finalChildContentData.Count);
-
-
         }
 
         [Fact]

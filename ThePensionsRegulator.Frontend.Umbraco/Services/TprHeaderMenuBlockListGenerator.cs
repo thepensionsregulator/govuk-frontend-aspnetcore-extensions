@@ -8,6 +8,7 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 
+
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {
     public class TprHeaderMenuBlockListGenerator : ITprHeaderMenuBlockListGenerator
@@ -74,7 +75,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             foreach (var menuItem in menuItems)
             {
                 var stableUdi = GenerateStableUdi(menuItem.ContentKey);
-                var exsistingBlock = finalContentData.FirstOrDefault(x => x.TryGetValue("udi", out var udi) && udi.ToString() == stableUdi.ToString());
+                var exsistingBlock = exsitingBlockListData.contentData.FirstOrDefault(x => x.TryGetValue("udi", out var udi) && udi.ToString() == stableUdi.ToString());
 
                 if (exsistingBlock != null)
                 {
@@ -87,11 +88,15 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                     if (menuItem.HeaderMenuChildItems != null && menuItem.HeaderMenuChildItems.Any())
                     {
 
-                        var childMenuBlock = GenerateChildMenuBlockList(menuItem.HeaderMenuChildItems, chidlItemType);
+                        var childMenuBlock = GenerateChildMenuBlockListWithManualPreservation(menuItem.HeaderMenuChildItems, chidlItemType, exsistingBlock);
                         updatedBlock["tprHeaderMenuChildItems"] = childMenuBlock;
                     }
+                    else if (exsistingBlock.ContainsKey("tprHeaderMenuChildItems"))
+                    {
+                        updatedBlock["tprHeaderMenuChildItems"] = PreserveManualChildItems(exsistingBlock);
+                    }
 
-                        finalContentData.Add(updatedBlock);
+                    finalContentData.Add(updatedBlock);
                 }
                 else
                 {
@@ -261,43 +266,149 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             return childBlockList;
 
         }
-    }
 
-
-    public class BlockList
-    {
-        public BlockListUdi? layout { get; set; }
-        public List<Dictionary<string, object>>? contentData { get; set; }
-        public List<Dictionary<string, object>>? settingsData { get; set; }
-    }
-
-    public class ExsistingBlockList
-    {
-        public List<Dictionary<string, object>>? layout { get; set; }
-        public List<Dictionary<string, object>>? contentData { get; set; }
-        public List<Dictionary<string, object>>? settingsData { get; set; }
-    }
-
-    public class BlockListUdi
-    {
-        [JsonProperty("Umbraco.BlockList")]
-        public List<Dictionary<string, object>> _contentUdi { get; set; }
-
-        public BlockListUdi(List<Dictionary<string, object>> contentUdi)
+        public BlockList GenerateChildMenuBlockListWithManualPreservation(List<TprHeaderMenuChildItem> childItems, IContentType contentType, Dictionary<string, object> exsistingParentBlock)
         {
+            object? exsistingChildBlockObj = null;
+            exsistingParentBlock?.TryGetValue("tprHeaderMenuChildItems", out exsistingChildBlockObj);
 
-            _contentUdi = contentUdi;
+            var exsistingChildBlock = exsistingChildBlockObj as JObject ?? (exsistingChildBlockObj as Dictionary<string, object> !=null ? JObject.FromObject(exsistingChildBlockObj) : null);
+          
+            var contentChildUdis = new HashSet<string>();       
+            foreach (var item in childItems)
+            {
+                contentChildUdis.Add(GenerateStableUdi(item.ContentKey).ToString());
+            }
+
+            var manualChildContentData = new List<Dictionary<string, object>>();
+            var manualChildLayoutUdis = new List<Dictionary<string, object>>();
+            var manualChildUdis = new HashSet<string>();
+
+            if (exsistingChildBlock != null)
+            {
+                var exsistingContentData = exsistingChildBlock["contentData"] as JArray;
+                var exsistingLayout = exsistingChildBlock["layout"]?["Umbraco.BlockList"] as JArray;
+
+                if(exsistingContentData != null)
+                {
+                   foreach(var item in exsistingContentData)
+                    {
+                        var itemDictionary = item.ToObject<Dictionary<string, object>>();
+                        if(itemDictionary.TryGetValue("udi", out var udi) && !contentChildUdis.Contains(udi))
+                        {
+                            manualChildContentData.Add(itemDictionary);
+                            manualChildUdis.Add(udi.ToString());
+                        }
+                    }
+                }
+
+                if (exsistingLayout != null) {
+                    foreach (var layout in exsistingLayout)
+                    {
+                        var layoutDictionary = layout.ToObject<Dictionary<string, object>>();
+                        if (layoutDictionary.TryGetValue("contentUdi", out var udi) && !contentChildUdis.Contains(udi))
+                        {
+                            manualChildLayoutUdis.Add(layoutDictionary);
+                            
+                        }
+                    }
+                }
+            }
+
+            var finalChildContentData = new List<Dictionary<string, object>>(manualChildContentData);
+            var finalChildLayoutUdis = new List<Dictionary<string, object>>(manualChildLayoutUdis);
+
+            foreach (var item in childItems)
+            {
+                var stableUdi = GenerateStableUdi(item.ContentKey);
+
+                var childItemData = new Dictionary<string, object>
+                {
+                    {"contentTypeKey", contentType.Key.ToString() },
+                    {"udi", stableUdi.ToString()},
+                    {"linkText", item.LinkText },
+                };
+
+                if (!string.IsNullOrEmpty(item.LinkUrl))
+                {
+                    childItemData.Add("linkUrl", new List<Dictionary<string, object>>
+                    {
+                        new Dictionary<string, object>{ {"url", item.LinkUrl } }
+                    });
+                }
+                else
+                {
+                    childItemData.Add("linkUrl", "");
+                }
+
+                finalChildContentData.Add(childItemData);
+                finalChildLayoutUdis.Add(new Dictionary<string, object>
+                {
+                    {"contentUdi", stableUdi.ToString()},
+                });
+
+            }
+
+            return new BlockList
+            {
+                layout = new BlockListUdi(finalChildLayoutUdis),
+                contentData = finalChildContentData,
+                settingsData = new List<Dictionary<string, object>>()
+            };
+
+        }
+
+
+        public object PreserveManualChildItems(object exsistingChildBlock)
+        {
+            if (exsistingChildBlock is JObject jObj)
+            {
+                return jObj;
+            }
+            else if (exsistingChildBlock is Dictionary<string, object> dict)
+            {
+                return dict;
+            }
+            return exsistingChildBlock;
         }
     }
 
-    public interface ITprHeaderMenuBlockListGenerator
-    {
 
-        public void GenerateTprHeaderMenuBlockList(Guid rootKey, Guid settingsKey);
+        public class BlockList
+        {
+            public BlockListUdi? layout { get; set; }
+            public List<Dictionary<string, object>>? contentData { get; set; }
+            public List<Dictionary<string, object>>? settingsData { get; set; }
+        }
 
-        public BlockList GenerateChildMenuBlockList(List<TprHeaderMenuChildItem> childItems, IContentType contentType);
+        public class ExsistingBlockList
+        {
+            public List<Dictionary<string, object>>? layout { get; set; }
+            public List<Dictionary<string, object>>? contentData { get; set; }
+            public List<Dictionary<string, object>>? settingsData { get; set; }
+        }
+
+        public class BlockListUdi
+        {
+            [JsonProperty("Umbraco.BlockList")]
+            public List<Dictionary<string, object>> _contentUdi { get; set; }
+
+            public BlockListUdi(List<Dictionary<string, object>> contentUdi)
+            {
+
+                _contentUdi = contentUdi;
+            }
+        }
+
+        public interface ITprHeaderMenuBlockListGenerator
+        {
+
+            public void GenerateTprHeaderMenuBlockList(Guid rootKey, Guid settingsKey);
+
+            public BlockList GenerateChildMenuBlockList(List<TprHeaderMenuChildItem> childItems, IContentType contentType);
+        }
+
+
     }
 
-
-}
 

@@ -5,21 +5,29 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
     public class YouTubeVideoIdParserTests
     {
         [Theory]
-        [InlineData("https://www.youtube.com/embed/tTQiv1xKVM4")]
-        [InlineData("https://www.youtube.com/embed/tTQiv1xKVM4?utm_source=example")]
-        [InlineData("https://www.youtube-nocookie.com/embed/tTQiv1xKVM4")]
-        [InlineData("https://www.youtube-nocookie.com/embed/tTQiv1xKVM4?utm_source=example")]
-        [InlineData("https://www.youtube.com/watch?v=tTQiv1xKVM4")]
-        [InlineData("https://www.youtube.com/watch?v=tTQiv1xKVM4&utm_source=example")]
-        [InlineData("https://youtu.be/tTQiv1xKVM4")]
-        [InlineData("https://youtu.be/tTQiv1xKVM4?utm_source=example")]
-        public void Valid_URL_returns_video_id(string originalUrl)
+        [InlineData("https://www.youtube.com/embed/tTQiv1xKVM4", "tTQiv1xKVM4")]
+        [InlineData("https://www.youtube.com/embed/tTQiv1xKVM4?utm_source=example", "tTQiv1xKVM4")]
+        [InlineData("https://www.youtube-nocookie.com/embed/tTQiv1xKVM4", "tTQiv1xKVM4")]
+        [InlineData("https://www.youtube-nocookie.com/embed/tTQiv1xKVM4?utm_source=example", "tTQiv1xKVM4")]
+        [InlineData("https://www.youtube.com/watch?v=tTQiv1xKVM4", "tTQiv1xKVM4")]
+        [InlineData("https://www.youtube.com/watch?v=tTQiv1xKVM4&utm_source=example", "tTQiv1xKVM4")]
+        [InlineData("https://youtu.be/tTQiv1xKVM4", "tTQiv1xKVM4")]
+        [InlineData("https://youtu.be/tTQiv1xKVM4?utm_source=example", "tTQiv1xKVM4")]
+        [InlineData("https://www.youtube.com/embed/-w5YtMpS4J0", "-w5YtMpS4J0")]
+        [InlineData("https://www.youtube.com/embed/-w5YtMpS4J0?utm_source=example", "-w5YtMpS4J0")]
+        [InlineData("https://www.youtube-nocookie.com/embed/-w5YtMpS4J0", "-w5YtMpS4J0")]
+        [InlineData("https://www.youtube-nocookie.com/embed/-w5YtMpS4J0?utm_source=example", "-w5YtMpS4J0")]
+        [InlineData("https://www.youtube.com/watch?v=-w5YtMpS4J0", "-w5YtMpS4J0")]
+        [InlineData("https://www.youtube.com/watch?v=-w5YtMpS4J0&utm_source=example", "-w5YtMpS4J0")]
+        [InlineData("https://youtu.be/-w5YtMpS4J0", "-w5YtMpS4J0")]
+        [InlineData("https://youtu.be/-w5YtMpS4J0?utm_source=example", "-w5YtMpS4J0")]
+        public void Valid_URL_returns_video_id(string originalUrl, string expectedVideoId)
         {
             var normaliser = new YouTubeVideoIdParser();
             var result = normaliser.TryParseUrl(new Uri(originalUrl), out var videoId);
 
             Assert.True(result);
-            Assert.Equal("tTQiv1xKVM4", videoId);
+            Assert.Equal(expectedVideoId, videoId);
         }
 
         [Theory]

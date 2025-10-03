@@ -24,7 +24,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                 return false;
             }
 
-            var match = Regex.Match(urlToParse, @"(\/embed\/|\/watch\?v=|youtu.be\/)(?<VideoId>[A-Z0-9_]+)", RegexOptions.IgnoreCase);
+            var match = Regex.Match(urlToParse, @"(\/embed\/|\/watch\?v=|youtu.be\/)(?<VideoId>[A-Z0-9_-]+)", RegexOptions.IgnoreCase);
             if (!match.Success)
             {
                 videoId = null;

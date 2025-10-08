@@ -5,17 +5,17 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
-    public class TprHeaderMenuParentItem
+    public class TprHeaderMenuItem
     {
         public AttributeDictionary? Attributes { get; set; }
         public required string LinkText { get; set; }
         public required string LinkUrl { get; set; }
         public IList<TprHeaderMenuChildItem>? HeaderMenuChildItems { get; set; } = [];
 
-        public TprHeaderMenuParentItem() { }
+        public TprHeaderMenuItem() { }
 
         [SetsRequiredMembers]
-        public TprHeaderMenuParentItem( string linkText, string linkUrl, IList<TprHeaderMenuChildItem>? subMenuItems = null)
+        public TprHeaderMenuItem( string linkText, string linkUrl, IList<TprHeaderMenuChildItem>? subMenuItems = null)
         {
             LinkText = linkText;
             LinkUrl = linkUrl;

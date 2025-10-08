@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    [HtmlTargetElement(TagName, ParentTag = TprHeaderMenuParentItemTagHelper.TagName)]
+    [HtmlTargetElement(TagName, ParentTag = TprHeaderMenuItemTagHelper.TagName)]
     public class TprHeaderMenuChildItemTagHelper : TagHelper
     {
         internal const string TagName = "tpr-header-menu-child-item";
@@ -21,7 +21,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var mobileMenuItemContext = context.GetContextItem<TprHeaderMenuParentItemsContext>();
+            var mobileMenuItemContext = context.GetContextItem<TprHeaderMenuItemsContext>();
             var mobileMenuSubItemContext = new TprHeaderMenuChildItemsContext
             {
                 Attributes = output.Attributes.ToAttributeDictionary(),              

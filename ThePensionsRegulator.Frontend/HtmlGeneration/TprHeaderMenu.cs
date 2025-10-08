@@ -7,7 +7,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public class TprHeaderMenu
     {
         public AttributeDictionary? Attributes { get; set; }
-        public List<TprHeaderMenuParentItem>? HeaderMenuParentItems { get; set; } = new();
+        public List<TprHeaderMenuItem>? HeaderMenuItems { get; set; } = new();
         public string? AriaLabel { get; set; }
     }
 }

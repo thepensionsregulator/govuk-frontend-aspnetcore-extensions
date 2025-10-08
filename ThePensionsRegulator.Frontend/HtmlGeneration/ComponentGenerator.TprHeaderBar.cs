@@ -101,7 +101,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 {
 
                     Attributes = tprHeaderBar.HeaderMenuAttributes,
-                    HeaderMenuParentItems = tprHeaderBar.HeaderMenuItems,
+                    HeaderMenuItems = tprHeaderBar.HeaderMenuItems,
                 };
 
                 var headerMenu = GenerateTprHeaderMenu(mobileMenu, tprHeaderBar);

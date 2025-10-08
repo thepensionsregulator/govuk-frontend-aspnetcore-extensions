@@ -46,13 +46,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();
             }
 
-            List<TprHeaderMenuParentItem>? headerMenuItems = null;
+            List<TprHeaderMenuItem>? headerMenuItems = null;
             AttributeDictionary? headerMenuAttributes = null;
 
             if (barContext.TprMobileMenuContext != null)
             {
                 headerMenuAttributes = barContext.TprMobileMenuContext.Attributes;
-                headerMenuItems = barContext.TprMobileMenuContext.HeaderMenuParentItems.Select(i => new TprHeaderMenuParentItem
+                headerMenuItems = barContext.TprMobileMenuContext.HeaderMenuParentItems.Select(i => new TprHeaderMenuItem
                 {
                     Attributes = i.Attributes,
                     LinkText = i.LinkText,

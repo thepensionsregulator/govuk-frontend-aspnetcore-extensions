@@ -33,9 +33,9 @@
                 @if (Model.HeaderBarContent == null && Model.ShowHeaderMenu)
                 {
                     <tpr-header-menu>
-                        @if (Model.HeaderMenuParentItems != null)
+                        @if (Model.HeaderMenuItems != null)
                         {
-                            @foreach (var item in Model.HeaderMenuParentItems.OfType<TprHeaderMenuParentItem>())
+                            @foreach (var item in Model.HeaderMenuItems.OfType<TprHeaderMenuItem>())
                             {
                                 <tpr-header-menu-parent-item href="@item?.LinkUrl" link-text="@item?.LinkText">
 

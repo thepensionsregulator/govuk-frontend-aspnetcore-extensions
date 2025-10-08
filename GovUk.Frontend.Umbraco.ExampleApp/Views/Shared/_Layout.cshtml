@@ -2,6 +2,7 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Configuration;
+@using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Models;
 @using ThePensionsRegulator.Frontend.Umbraco.Services
 @using Umbraco.Cms.Core.Models
@@ -18,9 +19,10 @@
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
     var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
+    var headerViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprElementTypeAliases.HeaderMenuItem, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
 
-    var menuItems = navigationSerivce.GetMenuItems(home.Key);
-    headerLockup.HeaderMenuParentItems = menuItems;
+    var menuItems = navigationSerivce.GetMenuItems(settings, headerViewModel);
+    headerLockup.HeaderMenuItems = menuItems;
 }
 <!DOCTYPE html>
 <html lang="@twoLetterCode">

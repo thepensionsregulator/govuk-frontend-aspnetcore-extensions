@@ -233,7 +233,7 @@
                             var linkText = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
                             var linkUrl = item?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
                             var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenuChildItems);
-                            <tpr-header-menu-parent-item href="@linkUrl?.Url" link-text="@linkText">
+                            <tpr-header-menu-item href="@linkUrl?.Url" link-text="@linkText">
                                 @if (headerMenuChildItems != null)
                                 {
                                     @foreach (var child in headerMenuChildItems)
@@ -243,7 +243,7 @@
                                         <tpr-header-menu-child-item href="@childLinkUrl?.Url" link-text="@childLinkText"></tpr-header-menu-child-item>                                        
                                     }
                                 }
-                            </tpr-header-menu-parent-item>
+                            </tpr-header-menu-item>
                         }
                     }
                 </tpr-header-menu>           
@@ -261,7 +261,7 @@
         }
     </header>
     <tpr-back-to-top href="#main">@Umbraco.GetDictionaryValue("Back to top")</tpr-back-to-top>
-    @if (useTPRstyles)
+    @if (!__tagHelperExecutionContext.Output.IsContentModified)
     {
         <tpr-footer-bar>
             <tpr-footer-bar-logo alt="@footerLogoAlt" href="@(settings?.Value<Link>("tprFooterLogoHref")?.Url)" />

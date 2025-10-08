@@ -25,7 +25,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public string? SearchInputName { get; set; }
         public bool DisplayHeaderMenu { get; set; }
         public AttributeDictionary? HeaderMenuAttributes { get; set; }
-        public List<TprHeaderMenuParentItem>? HeaderMenuItems { get; set; } = new();
+        public List<TprHeaderMenuItem>? HeaderMenuItems { get; set; } = new();
         public string? HeaderMenuAriaLabel { get; set; }
         public string? MobileMenuNoJsNavPage { get; set; }
         public string? HeaderMenuToggleClosed { get; set; }

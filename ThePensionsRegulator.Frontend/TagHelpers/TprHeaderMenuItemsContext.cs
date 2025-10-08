@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
-    internal class TprHeaderMenuParentItemsContext
+    internal class TprHeaderMenuItemsContext
     {
-        private (AttributeDictionary Attributes, string? LinkText, string? LinkUrl)? _menuIParentItem;
+        private (AttributeDictionary Attributes, string? LinkText, string? LinkUrl)? _menuItem;
         public AttributeDictionary? Attributes { get; set; }
-        public string? LinkText => _menuIParentItem?.LinkText;
-        public string? LinkUrl => _menuIParentItem?.LinkUrl;
+        public string? LinkText => _menuItem?.LinkText;
+        public string? LinkUrl => _menuItem?.LinkUrl;
 
         private readonly List<TprHeaderMenuChildItemsContext> _headerMenuChildItems = new();
         public IReadOnlyList<TprHeaderMenuChildItemsContext> HeaderMenuChildItems => _headerMenuChildItems;
 
-        public void SetParentItem(AttributeDictionary attributes, string? linkText, string? linkUrl)
+        public void SetMenuItem(AttributeDictionary attributes, string? linkText, string? linkUrl)
         {
-            _menuIParentItem = (attributes, linkText, linkUrl);
+            _menuItem = (attributes, linkText, linkUrl);
         }
 
         public void AddChildItem(TprHeaderMenuChildItemsContext tprMobileMenuItemsSubItemsContext)

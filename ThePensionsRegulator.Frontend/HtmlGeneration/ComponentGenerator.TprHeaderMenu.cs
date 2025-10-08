@@ -116,9 +116,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 searchContainer.InnerHtml.AppendHtml(tprHeaderSearch);
             }
 
-            if (headerMenu.HeaderMenuParentItems != null)
+            if (headerMenu.HeaderMenuItems != null)
             {
-                foreach (var item in headerMenu.HeaderMenuParentItems)
+                foreach (var item in headerMenu.HeaderMenuItems)
                 {
                     var mobileMenuItem = new TagBuilder("li");
 
@@ -127,7 +127,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         mobileMenuItem.MergeAttributes(item.Attributes);
                     }
 
-                    if (item != headerMenu.HeaderMenuParentItems.Last())
+                    if (item != headerMenu.HeaderMenuItems.Last())
                     {
                         mobileMenuItem.AddCssClass("tpr-header-menu__nav-menu-item");
                     }

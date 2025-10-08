@@ -1,87 +1,67 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {
     public class TprGlobalNavigationService : ITprGlobalNavigationService
-    {
-        public IList<TprHeaderMenuParentItem>? GetMenuItems(IContent settingsNode, string propertyAlias, string linkTextAlias, string linkUrlAlias, string childAlias)
+    {     
+        public IList<TprHeaderMenuItem>? GetMenuItems(IPublishedContent settingsNode, TprHeaderMenuViewModel tprHeaderMenuViewModel)
         {
+                    
+            var headerMenuBlockList = settingsNode?.Value<OverridableBlockListModel>(tprHeaderMenuViewModel.MenuBlockListAlias);
+            if (headerMenuBlockList == null) { return null; }
 
-            var headerMenuBlockList = settingsNode.GetValue(propertyAlias)?.ToString();
-            if (headerMenuBlockList == null) { throw new ArgumentNullException($"No block list with alias `{propertyAlias}` could be found in {settingsNode}"); }
+            var blockListMenuItems = headerMenuBlockList?.Where(i => i.Content.ContentType.Alias == tprHeaderMenuViewModel.MenuItemAlias);
 
-            var blockListJson = JsonConvert.DeserializeObject<BlockValue>(headerMenuBlockList);
-            if (blockListJson == null) { throw new JsonException($"An error has occured reading {headerMenuBlockList}"); }
-
-            IList<TprHeaderMenuParentItem> menuItems = [];
+            IList<TprHeaderMenuItem> menuItems = [];
             IList<TprHeaderMenuChildItem>? childMenuItems = [];
-
-            foreach (var item in blockListJson.ContentData)
+            if (headerMenuBlockList != null)
             {
-                var linkText = item.RawPropertyValues[linkTextAlias]?.ToString();
-
-                var linkUrlJson = item.RawPropertyValues[linkUrlAlias]?.ToString();
-                var linkUrl = GetUrlFromJson(linkUrlJson);
-
-                var childItems = item.RawPropertyValues[childAlias]?.ToString();
-                if (childItems != null)
+                foreach (var item in headerMenuBlockList)
                 {
-                    var children = JsonConvert.DeserializeObject<BlockValue>(childItems);
-                    if (children != null)
+                    var linkText = item?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
+                    var linkUrl = item?.Content.Value<Link>(tprHeaderMenuViewModel.LinkUrlAlias);
+
+                    var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(tprHeaderMenuViewModel.MenuItemsChildAlias);
+                    if (headerMenuChildItems != null)
                     {
-                        foreach (var childItem in children.ContentData)
+                        foreach (var child in headerMenuChildItems)
                         {
-                            var childLinkText = childItem.RawPropertyValues[linkTextAlias]?.ToString();
+                            var childLinkText = child?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
+                            var childLinkUrl = child?.Content.Value<Link>(tprHeaderMenuViewModel.LinkUrlAlias);
 
-                            var childLinkUrlJson = childItem.RawPropertyValues[linkUrlAlias]?.ToString();
-
-                            var childLinkUrl = GetUrlFromJson(childLinkUrlJson);
-
-                            childMenuItems.Add(new TprHeaderMenuChildItem(childLinkText, childLinkUrl));
+                            childMenuItems.Add(new TprHeaderMenuChildItem(childLinkText, childLinkUrl.Url));
                         }
                     }
+                    var newItem = new TprHeaderMenuItem(linkText, linkUrl.Url, childMenuItems);
+                    menuItems.Add(newItem);
                 }
-                var newItem = new TprHeaderMenuParentItem(linkText, linkUrl, childMenuItems);
-
-                menuItems.Add(newItem);
             }
-
             return menuItems;
-        }
-
-        public string? GetUrlFromJson(string? json)
-        {
-            if(json == null) { return null; }
-
-            var data = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(json);
-            string? linkUrl = null;
-
-            if (data != null && data.Count > 0)
-            {
-                var item = data[0];
-                if (item.ContainsKey("url"))
-                {
-                    linkUrl = item["url"];
-                }
-                else if (item.ContainsKey("udi"))
-                {
-                    linkUrl = item["udi"];
-                }
-            }
-            return linkUrl;
         }
     }
 
     public class TprHeaderMenuViewModel
     {
-        public string? TprHeaderMenuBlockListAlias { get; set; }
-        public string? LinkTextAlias { get; set; }
-        public string? LinkUrlAlias { get; set; }
-        public string? ChildMenuItemsAlias { get; set; }
+        [SetsRequiredMembers]
+        public TprHeaderMenuViewModel(string menuAlias, string menuItemAlias, string linkTextAlias, string linkUrlAlias, string menuItemChildAlias)
+        {
+            MenuBlockListAlias = menuAlias;
+            MenuItemAlias = menuItemAlias;
+            LinkTextAlias = linkTextAlias;
+            LinkUrlAlias = linkUrlAlias;
+            MenuItemsChildAlias = menuItemAlias;
+        }
+        public required string MenuBlockListAlias { get; set; }
+        public required string MenuItemAlias { get; set; }
+        public required string LinkTextAlias { get; set; }
+        public required string LinkUrlAlias { get; set; }
+        public required string MenuItemsChildAlias { get; set; }
     }
 }

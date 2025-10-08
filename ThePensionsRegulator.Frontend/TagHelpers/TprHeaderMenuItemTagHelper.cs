@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     [HtmlTargetElement(TagName, ParentTag = TprHeaderMenuTagHelper.TagName)]
-    public class TprHeaderMenuParentItemTagHelper : TagHelper
+    public class TprHeaderMenuItemTagHelper : TagHelper
     {
-        internal const string TagName = "tpr-header-menu-parent-item";
+        internal const string TagName = "tpr-header-menu-item";
 
         private const string UrlAttributeName = "href";
         private const string LinkTextAttributeName = "link-text";
@@ -23,7 +23,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var headerMenuContext = context.GetContextItem<TprHeaderMenuContext>();
-            var headerMenuItemContext = new TprHeaderMenuParentItemsContext
+            var headerMenuItemContext = new TprHeaderMenuItemsContext
             {
                 Attributes = output.Attributes.ToAttributeDictionary(),               
             };
@@ -33,8 +33,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();                           
             }
             
-            headerMenuItemContext.SetParentItem(headerMenuItemContext.Attributes, LinkText, Url);
-            headerMenuContext.AddParentItem(headerMenuItemContext);
+            headerMenuItemContext.SetMenuItem(headerMenuItemContext.Attributes, LinkText, Url);
+            headerMenuContext.AddMenuItem(headerMenuItemContext);
             
             output.TagName = TagName;
             output.SuppressOutput();

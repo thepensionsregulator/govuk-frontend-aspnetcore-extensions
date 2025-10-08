@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
+using Umbraco.Cms.Core.Models;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {
     public interface ITprGlobalNavigationService
     {
-        public IList<TprHeaderMenuParentItem> GetMenuItems(Guid rootKey);
-        public IList<TprHeaderMenuParentItem> AddParentMenuItem(Guid rootKey, int placement, TprHeaderMenuParentItem parentMenuItem);
-        public IList<TprHeaderMenuParentItem> AddChildMenuItem(Guid rootKey, int placement, int hierarchy, TprHeaderMenuChildItem childMenuItem);
+        public IList<TprHeaderMenuParentItem>? GetMenuItems(IContent settingsNode, string propertyAlias, string linkTextAlias, string linkUrlAlias, string childAlias);
+        public string? GetUrlFromJson(string? json);
     }
 }

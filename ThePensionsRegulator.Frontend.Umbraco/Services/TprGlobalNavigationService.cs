@@ -1,85 +1,87 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
-using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.Routing;
-using Umbraco.Cms.Core.Web;
-using Umbraco.Extensions;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.Blocks;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {
-    internal class TprGlobalNavigationService : ITprGlobalNavigationService
+    public class TprGlobalNavigationService : ITprGlobalNavigationService
     {
-        private readonly IUmbracoContextAccessor _umbracoContextAccessor;
-        private readonly IPublishedUrlProvider _contentUrlProvider;
-        private readonly IContentVisibilityChecker _contentVisibilityChecker;
-     
-        public TprGlobalNavigationService(IUmbracoContextAccessor umbracoContextAccessor, IPublishedUrlProvider contentUrlProvider, IContentVisibilityChecker contentVisibilityChecker)
+        public IList<TprHeaderMenuParentItem>? GetMenuItems(IContent settingsNode, string propertyAlias, string linkTextAlias, string linkUrlAlias, string childAlias)
         {
-            _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
-            _contentUrlProvider = contentUrlProvider ?? throw new ArgumentNullException(nameof(contentUrlProvider));
-            _contentVisibilityChecker = contentVisibilityChecker;
-        }
 
-        public IList<TprHeaderMenuParentItem> GetMenuItems(Guid rootKey)
-        {
-            if (!_umbracoContextAccessor.TryGetUmbracoContext(out var umbracoContext))
+            var headerMenuBlockList = settingsNode.GetValue(propertyAlias)?.ToString();
+            if (headerMenuBlockList == null) { throw new ArgumentNullException($"No block list with alias `{propertyAlias}` could be found in {settingsNode}"); }
+
+            var blockListJson = JsonConvert.DeserializeObject<BlockValue>(headerMenuBlockList);
+            if (blockListJson == null) { throw new JsonException($"An error has occured reading {headerMenuBlockList}"); }
+
+            IList<TprHeaderMenuParentItem> menuItems = [];
+            IList<TprHeaderMenuChildItem>? childMenuItems = [];
+
+            foreach (var item in blockListJson.ContentData)
             {
-                throw new InvalidOperationException("Umbraco context is not available.");
-            }
+                var linkText = item.RawPropertyValues[linkTextAlias]?.ToString();
 
-            var rootNode = umbracoContext.Content?.GetById(rootKey);
+                var linkUrlJson = item.RawPropertyValues[linkUrlAlias]?.ToString();
+                var linkUrl = GetUrlFromJson(linkUrlJson);
 
-            if (rootNode == null)
-            {
-                throw new InvalidOperationException($"No content found with GUID {rootKey}.");
-            }
-
-            var menuItems = rootNode.Children
-                .Where(x => _contentVisibilityChecker.IsVisible(x))
-                .Select(x => new TprHeaderMenuParentItem
+                var childItems = item.RawPropertyValues[childAlias]?.ToString();
+                if (childItems != null)
                 {
-                    ContentKey = x.Key,
-                    LinkText = x.Name.ToFirstUpper(),
-                    LinkUrl = _contentUrlProvider.GetUrl(x),
-                    HeaderMenuChildItems = x.Children
-                        .Where(c => _contentVisibilityChecker.IsVisible(c))
-                        .Select(c => new TprHeaderMenuChildItem
+                    var children = JsonConvert.DeserializeObject<BlockValue>(childItems);
+                    if (children != null)
+                    {
+                        foreach (var childItem in children.ContentData)
                         {
-                            ContentKey = c.Key,
-                            LinkText = c.Name.ToFirstUpper(),
-                            LinkUrl = _contentUrlProvider.GetUrl(c)
-                        })
-                        .ToList()
-                })
-                .ToList();
+                            var childLinkText = childItem.RawPropertyValues[linkTextAlias]?.ToString();
+
+                            var childLinkUrlJson = childItem.RawPropertyValues[linkUrlAlias]?.ToString();
+
+                            var childLinkUrl = GetUrlFromJson(childLinkUrlJson);
+
+                            childMenuItems.Add(new TprHeaderMenuChildItem(childLinkText, childLinkUrl));
+                        }
+                    }
+                }
+                var newItem = new TprHeaderMenuParentItem(linkText, linkUrl, childMenuItems);
+
+                menuItems.Add(newItem);
+            }
 
             return menuItems;
         }
 
-        public IList<TprHeaderMenuParentItem> AddParentMenuItem(Guid rootKey, int index, TprHeaderMenuParentItem parentItem)
+        public string? GetUrlFromJson(string? json)
         {
-            var navigation = GetMenuItems(rootKey);
+            if(json == null) { return null; }
 
-            if (parentItem != null)
+            var data = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(json);
+            string? linkUrl = null;
+
+            if (data != null && data.Count > 0)
             {
-                navigation.Insert(index, parentItem);
+                var item = data[0];
+                if (item.ContainsKey("url"))
+                {
+                    linkUrl = item["url"];
+                }
+                else if (item.ContainsKey("udi"))
+                {
+                    linkUrl = item["udi"];
+                }
             }
-
-            return navigation;
+            return linkUrl;
         }
+    }
 
-        public IList<TprHeaderMenuParentItem> AddChildMenuItem(Guid rootKey, int index, int hierarchy, TprHeaderMenuChildItem childItem)
-        {
-            var navigation = GetMenuItems(rootKey);
-
-            if (childItem != null)
-            {
-                navigation[index]?.HeaderMenuChildItems?.Insert(hierarchy, childItem);
-            }
-
-            return navigation;
-        }
+    public class TprHeaderMenuViewModel
+    {
+        public string? TprHeaderMenuBlockListAlias { get; set; }
+        public string? LinkTextAlias { get; set; }
+        public string? LinkUrlAlias { get; set; }
+        public string? ChildMenuItemsAlias { get; set; }
     }
 }

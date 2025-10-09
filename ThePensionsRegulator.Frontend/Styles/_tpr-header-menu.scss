@@ -85,37 +85,6 @@
     font-weight: $tpr-font-weight-regular;
     flex-direction: column;
 
-    .tpr-header-search__mobile {
-        display: inline;
-        flex-direction: row;
-    }
-
-    .tpr-mobile-menu__header-search-container {
-        background: $tpr-colour-whisper;
-        align-content: center;
-        padding-left: 1rem;
-    }
-
-    .tpr-header-search__mobile .tpr-header-search__field {
-        width: 100%
-    }
-
-    .tpr-header-search__mobile .tpr-header-search-autocomplete {
-        width: 90%;
-    }
-
-    .tpr-header-search__mobile .autocomplete__wrapper {
-        position: relative;
-        width: 99%;
-    }
-
-    @media(max-with:764px) {
-
-        .tpr-header-search__mobile .tpr-header-search {
-            display: none
-        }
-    }
-
     ul {
         margin: 0;
         padding: 0;
@@ -327,8 +296,4 @@
     }
 }
 
-@media(min-width:765px) {
-    .tpr-header-menu__nav.tpr-header-menu__nav--active .tpr-header-search__mobile {
-        display: none;
-    }
-}
+

@@ -17,7 +17,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 
         public TprGlobalNavigationTests()
         {
-
             var testContext = new UmbracoTestContext();
 
             var children = new List<TprHeaderMenuChildItem>

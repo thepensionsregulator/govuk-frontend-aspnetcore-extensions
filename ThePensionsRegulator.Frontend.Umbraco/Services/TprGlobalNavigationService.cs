@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models;
@@ -13,13 +12,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
     {
         public IList<TprHeaderMenuItem> GetMenuItems(IPublishedContent settingsNode, TprHeaderMenuViewModel tprHeaderMenuViewModel)
         {
-            if(tprHeaderMenuViewModel == null) { return new List<TprHeaderMenuItem>(); }
+            if (tprHeaderMenuViewModel == null) { return new List<TprHeaderMenuItem>(); }
 
             var headerMenuBlockList = settingsNode?.Value<OverridableBlockListModel>(tprHeaderMenuViewModel.MenuBlockListAlias);
             if (headerMenuBlockList == null) { return new List<TprHeaderMenuItem>(); }
 
             IList<TprHeaderMenuItem> menuItems = [];
-            
+
             foreach (var item in headerMenuBlockList)
             {
                 var linkText = item?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);

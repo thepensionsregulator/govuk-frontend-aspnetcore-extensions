@@ -19,7 +19,7 @@
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
     var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
-    var headerViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprElementTypeAliases.HeaderMenuItem, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
+    var headerViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
 
     var menuItems = navigationSerivce.GetMenuItems(settings, headerViewModel);
     headerLockup.HeaderMenuItems = menuItems;

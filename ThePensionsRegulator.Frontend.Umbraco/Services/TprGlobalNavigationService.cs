@@ -10,39 +10,44 @@ using Umbraco.Extensions;
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {
     public class TprGlobalNavigationService : ITprGlobalNavigationService
-    {     
-        public IList<TprHeaderMenuItem>? GetMenuItems(IPublishedContent settingsNode, TprHeaderMenuViewModel tprHeaderMenuViewModel)
+    {
+        public IList<TprHeaderMenuItem> GetMenuItems(IPublishedContent settingsNode, TprHeaderMenuViewModel tprHeaderMenuViewModel)
         {
-                    
-            var headerMenuBlockList = settingsNode?.Value<OverridableBlockListModel>(tprHeaderMenuViewModel.MenuBlockListAlias);
-            if (headerMenuBlockList == null) { return null; }
+            if(tprHeaderMenuViewModel == null) { return new List<TprHeaderMenuItem>(); }
 
-            var blockListMenuItems = headerMenuBlockList?.Where(i => i.Content.ContentType.Alias == tprHeaderMenuViewModel.MenuItemAlias);
+            var headerMenuBlockList = settingsNode?.Value<OverridableBlockListModel>(tprHeaderMenuViewModel.MenuBlockListAlias);
+            if (headerMenuBlockList == null) { return new List<TprHeaderMenuItem>(); }
 
             IList<TprHeaderMenuItem> menuItems = [];
-            IList<TprHeaderMenuChildItem>? childMenuItems = [];
-            if (headerMenuBlockList != null)
+            
+            foreach (var item in headerMenuBlockList)
             {
-                foreach (var item in headerMenuBlockList)
+                var linkText = item?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
+                var linkUrl = item?.Content.Value<Link>(tprHeaderMenuViewModel.LinkUrlAlias);
+
+                IList<TprHeaderMenuChildItem>? childMenuItems = [];
+
+                var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(tprHeaderMenuViewModel.MenuItemsChildAlias);
+                if (headerMenuChildItems != null)
                 {
-                    var linkText = item?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
-                    var linkUrl = item?.Content.Value<Link>(tprHeaderMenuViewModel.LinkUrlAlias);
-
-                    var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(tprHeaderMenuViewModel.MenuItemsChildAlias);
-                    if (headerMenuChildItems != null)
+                    foreach (var child in headerMenuChildItems)
                     {
-                        foreach (var child in headerMenuChildItems)
-                        {
-                            var childLinkText = child?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
-                            var childLinkUrl = child?.Content.Value<Link>(tprHeaderMenuViewModel.LinkUrlAlias);
+                        var childLinkText = child?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
+                        var childLinkUrl = child?.Content.Value<Link>(tprHeaderMenuViewModel.LinkUrlAlias);
 
-                            childMenuItems.Add(new TprHeaderMenuChildItem(childLinkText, childLinkUrl.Url));
+                        if (childLinkText != null && childLinkUrl?.Url != null)
+                        {
+                            childMenuItems.Add(new TprHeaderMenuChildItem(childLinkText.ToFirstUpper(), childLinkUrl.Url));
                         }
                     }
-                    var newItem = new TprHeaderMenuItem(linkText, linkUrl.Url, childMenuItems);
+                }
+                if (linkText != null && linkUrl?.Url != null)
+                {
+                    var newItem = new TprHeaderMenuItem(linkText.ToFirstUpper(), linkUrl.Url, childMenuItems);
                     menuItems.Add(newItem);
                 }
             }
+
             return menuItems;
         }
     }
@@ -50,16 +55,14 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
     public class TprHeaderMenuViewModel
     {
         [SetsRequiredMembers]
-        public TprHeaderMenuViewModel(string menuAlias, string menuItemAlias, string linkTextAlias, string linkUrlAlias, string menuItemChildAlias)
+        public TprHeaderMenuViewModel(string menuAlias, string linkTextAlias, string linkUrlAlias, string menuItemChildAlias)
         {
             MenuBlockListAlias = menuAlias;
-            MenuItemAlias = menuItemAlias;
             LinkTextAlias = linkTextAlias;
             LinkUrlAlias = linkUrlAlias;
-            MenuItemsChildAlias = menuItemAlias;
+            MenuItemsChildAlias = menuItemChildAlias;
         }
         public required string MenuBlockListAlias { get; set; }
-        public required string MenuItemAlias { get; set; }
         public required string LinkTextAlias { get; set; }
         public required string LinkUrlAlias { get; set; }
         public required string MenuItemsChildAlias { get; set; }

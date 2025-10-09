@@ -1,127 +1,115 @@
 ﻿using Moq;
-using Newtonsoft.Json;
+using ThePensionsRegulator.Frontend.HtmlGeneration;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.PublishedContent;
 
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
     public class TprGlobalNavigationTests
     {
-        private Mock<IContent> _settingsNode;
-        private string _propertyAlias;
-        private string _linkTextAlias;
-        private string _linkUrlAlias;
-        private string _childItemsAlias;
+        private Mock<IPublishedContent> _settingsNode;
         private TprGlobalNavigationService _sut;
+        private TprHeaderMenuViewModel _menuViewModel;
 
         public TprGlobalNavigationTests()
         {
 
-            _settingsNode = new Mock<IContent>();
-            _propertyAlias = "tprHeaderMenu";
-            _linkTextAlias = "linkText";
-            _linkUrlAlias = "linkUrl";
-            _childItemsAlias = "tprHeaderMenuChildItems";
+            var testContext = new UmbracoTestContext();
+
+            var children = new List<TprHeaderMenuChildItem>
+            {
+                new TprHeaderMenuChildItem("ChildTest", "/childTest"),
+                new TprHeaderMenuChildItem("ChildTest1", "/childTest1"),
+            };
+
+            var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel([CreateMenuBlock("Test", "/test", children), CreateMenuBlock("Test1", "/test1", null)]);
+            _settingsNode = UmbracoContentFactory.CreateContent<IPublishedContent>();
+            _settingsNode.SetupUmbracoBlockListPropertyValue(TprElementTypeAliases.HeaderMenu, blockList);
+
             _sut = new TprGlobalNavigationService();
 
-            var blockList = new BlockListJson();
-
-            _settingsNode.Setup(x => x.GetValue(_propertyAlias, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(blockList.HeaderBlockListJson);
+            _menuViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
         }
 
         [Fact]
         public void GetMenuItems_ShouldReturnExpectedMenuItems()
         {
             //Act
-            var result = _sut.GetMenuItems(_settingsNode.Object, _propertyAlias, _linkTextAlias, _linkUrlAlias, _childItemsAlias);
+            var result = _sut.GetMenuItems(_settingsNode.Object, _menuViewModel);
+
+            var childItems = result[0]?.HeaderMenuChildItems;
 
             //Assert 
             Assert.Multiple(() =>
             {
-                Assert.Equal(2, result?.Count);
-                Assert.Equal("Employers", result?[0].LinkText);
-                Assert.Equal("/test", result?[0].LinkUrl);
-                Assert.Equal("Business Advisors", result?[1].LinkText);
-                Assert.Equal("umb://document/contentpage", result?[1].LinkUrl);
-
-
-                Assert.Equal(result?[0].HeaderMenuChildItems?.Count, 2);
-                Assert.Equal("Child One", result?[0].HeaderMenuChildItems?[0].LinkText);
-                Assert.Equal("/child1", result?[0].HeaderMenuChildItems?[0].LinkUrl);
-                Assert.Equal("Child Two", result?[0].HeaderMenuChildItems?[1].LinkText);
-                Assert.Equal("/child2", result?[0].HeaderMenuChildItems?[1].LinkUrl);
+                Assert.Equal(2, result.Count);
+                Assert.Equal("Test", result[0].LinkText);
+                Assert.Equal("/test", result[0].LinkUrl);
+                
+                Assert.Equal(2, result[0]?.HeaderMenuChildItems?.Count);
+                Assert.Equal("ChildTest", childItems?[0].LinkText);
+                Assert.Equal("/childTest", childItems?[0]?.LinkUrl);
+                Assert.Equal("ChildTest1", childItems?[1]?.LinkText);
+                Assert.Equal("/childTest1", childItems?[1]?.LinkUrl);
+              
+                Assert.Equal("Test1", result[1].LinkText);
+                Assert.Equal("/test1", result[1].LinkUrl);
+                Assert.Equal(0, result[1]?.HeaderMenuChildItems?.Count);
             });
         }
 
+        [Fact]
+        public void GetMenuItems_WhenSettingsNodeIsNull_ReturnsEmptyList()
+        {
+            //Act
+            var result = _sut.GetMenuItems(null, _menuViewModel);
+
+            //Arrange
+            Assert.Empty(result);
+        }
 
         [Fact]
-        public void GetMenuItems_WithInvlaidAliasAndJson_ThrowsExpectedExceptions()
+        public void GetMenuItems_WhenHeaderMenuBlockListAliasIsNull_ReturnsEmptyList()
         {
+            //Act
+            var result = _sut.GetMenuItems(_settingsNode.Object, null);
+
             //Arrange
-            var invlaidAlias = "invalidValue";
-            _settingsNode.Setup(x => x.GetValue(_propertyAlias, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>())).Returns("");
-
-            //Assert
-            Assert.Throws<ArgumentNullException>(() => _sut.GetMenuItems(_settingsNode.Object, invlaidAlias, _linkTextAlias, _linkUrlAlias, _childItemsAlias));
-            Assert.Throws<JsonException>(() => _sut.GetMenuItems(_settingsNode.Object, _propertyAlias, _linkTextAlias, _linkUrlAlias, _childItemsAlias));
+            Assert.Empty(result);
         }
-    }
 
-    public class BlockListJson
-    {
-        public string _headerBlockListJson = @"{
- 
-  ""contentData"": [
-    {
-      ""contentTypeKey"": ""7cddfcdc-5921-4dcf-a203-2ce06c447ebf"",
-      ""linkText"": ""Employers"",
-      ""linkUrl"": [
+        private OverridableBlockListItem CreateMenuBlock(string linkText, string linkUrl, List<TprHeaderMenuChildItem>? childItems = null)
         {
-          ""url"": ""/test""
-        }
-      ],
-      ""tprHeaderMenuChildItems"": {
-        
-        ""contentData"": [
-          {
-            ""linkText"": ""Child One"",
-            ""linkUrl"": [
-              {
-                ""url"": ""/child1""
-              }
-            ],
-            
-          },
-          {
-            ""linkText"": ""Child Two"",
-            ""linkUrl"": [
-              {
-                ""url"": ""/child2""
-              }
-            ],
-            
-          }
-        ],
-        ""settingsData"": []
-      },
-     
-    },
-    {
-  
-      ""linkText"": ""Business Advisors"",
-      ""linkUrl"": [
-        {
-          ""udi"": ""umb://document/contentpage""
-        }
-      ],
-      ""tprHeaderMenuChildItems"": """",
-      ""udi"": ""umb://element/133e6a93ed184ff792320f951dd801d0""
-    }
-  ],
-  ""settingsData"": []
-}";
+            var contentElement = UmbracoBlockListFactory.CreateContentOrSettings();
+            contentElement.SetupUmbracoTextboxPropertyValue(TprPropertyAliases.HeaderMenuLinkText, linkText);
+            contentElement.SetupUmbracoMultiUrlPickerPropertyValue(TprPropertyAliases.HeaderMenuLinkUrl, new Link { Url = linkUrl });
+            if (childItems != null)
+            {
+                contentElement.SetupUmbracoBlockListPropertyValue(TprElementTypeAliases.HeaderMenuChildItems, UmbracoBlockListFactory.CreateOverridableBlockListModel(CreateChildMenuBlock(childItems)));
+            }
+            var block = UmbracoBlockListFactory.CreateOverridableBlock(contentElement.Object);
 
-        public string HeaderBlockListJson { get { return _headerBlockListJson; } }
+            return block;
+        }
+
+        private List<OverridableBlockListItem> CreateChildMenuBlock(List<TprHeaderMenuChildItem> childItems)
+        {
+            var blockListItems = new List<OverridableBlockListItem>();
+            foreach (var child in childItems)
+            {
+                var contentElement = UmbracoBlockListFactory.CreateContentOrSettings();
+                contentElement.SetupUmbracoTextboxPropertyValue(TprPropertyAliases.HeaderMenuLinkText, child.LinkText);
+                contentElement.SetupUmbracoMultiUrlPickerPropertyValue(TprPropertyAliases.HeaderMenuLinkUrl, new Link { Url = child.LinkUrl });
+
+                var block = UmbracoBlockListFactory.CreateOverridableBlock(contentElement.Object);
+
+                blockListItems.Add(block);
+            }
+            return blockListItems;
+        }
     }
 }

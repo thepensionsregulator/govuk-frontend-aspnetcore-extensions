@@ -1,12 +1,15 @@
-﻿using System.Globalization;
-using GovUk.Frontend.AspNetCore;
+﻿using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
     public partial class ComponentGenerator
     {
-        public virtual TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards)
+        public const int SectionCardTitlesMinHeadingLevel = 1;
+        public const int SectionCardTitlesMaxHeadingLevel = 6;
+
+        public virtual TagBuilder GenerateTprSectionCards(int sectionCardsTitleHeadingLevel, TprSectionCards tprSectionCards)
         {
             var nav = new TagBuilder("nav");
             if (tprSectionCards.Attributes != null) { nav.MergeAttributes(tprSectionCards.Attributes); }
@@ -28,7 +31,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                 if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToHtmlString()))
                 {
-                    var tprSectionCardTitle = new TagBuilder("h2");
+                    var tprSectionCardTitle = new TagBuilder($"h{sectionCardsTitleHeadingLevel}");
                     if (card.TitleAttributes != null) { tprSectionCardTitle.MergeAttributes(card.TitleAttributes); }
                     tprSectionCardTitle.MergeCssClass("tpr-section-card__title");
 

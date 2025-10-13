@@ -17,17 +17,25 @@
     {
         return;
     }
+
     var nameFieldName = Model.Settings.Value<string>(TprPropertyAliases.SectionCardNameProperty);
     var descFieldName = Model.Settings.Value<string>(TprPropertyAliases.SectionCardDescriptionProperty);
-
     if (string.IsNullOrWhiteSpace(descFieldName))
     {
         descFieldName = TprPropertyAliases.SectionCardDescriptionPropertyDefault;
     }
-    
+
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-    <tpr-section-cards class="@cssClasses" new-tab-text="@Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)">
-    
+
+    string headingLevelProperty = Model.Settings?.Value<string>(TprPropertyAliases.SectionCardsTitleHeadingLevel) ?? string.Empty;
+    var headingLevel = headingLevelProperty.Replace("heading", "", System.StringComparison.OrdinalIgnoreCase);
+
+    if (!int.TryParse(headingLevel, out int numericHeadingLevel))
+    {
+        numericHeadingLevel = 2;
+    }
+
+    <tpr-section-cards class="@cssClasses" new-tab-text="@Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)" card-titles-heading-level="@numericHeadingLevel">
         @foreach (var card in cards)
         {           
             var type = card.Content.ContentType.Alias;
@@ -79,6 +87,5 @@
                     break;
             }
         }
-
     </tpr-section-cards>   
 }

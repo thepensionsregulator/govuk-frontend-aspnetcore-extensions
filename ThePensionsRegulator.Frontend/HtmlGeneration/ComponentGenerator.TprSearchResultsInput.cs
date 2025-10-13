@@ -9,7 +9,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public const int SearchResultsMinHeadingLevel = 2;
         public const int SearchResultsMaxHeadingLevel = 6;
 
-        //public const string[] 
         public static string[] AllHeadingClasses = ["govuk-heading-xl", "govuk-heading-l", "govuk-heading-m", "govuk-heading-s"];
 
         public TagBuilder GenerateTprSearchResultsInput(int headingLevel, string headingClass, string? searchLabel = null)

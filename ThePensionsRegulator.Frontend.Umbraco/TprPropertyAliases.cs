@@ -24,6 +24,7 @@
         public const string SearchResultsHeadingClass = "headingClass";
         public const string SearchResultsHeadingLevel = "headingLevel";
         public const string SectionCards = "cards";
+        public const string SectionCardsTitleHeadingLevel = "cardTitlesHeadingLevel";
         public const string SectionCardLink = "link";
         public const string SectionCardNameProperty = "titleFieldName";
         public const string SectionCardDescriptionProperty = "descriptionFieldName";

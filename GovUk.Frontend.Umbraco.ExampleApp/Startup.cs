@@ -1,3 +1,4 @@
+using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
 using GovUk.Frontend.Umbraco.ExampleApp.Services;
 using GovUk.Frontend.Umbraco.Services;
@@ -66,6 +67,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
 
             services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServiceForExampleApp>();
             services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
+            services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();
         }
 
         /// <summary>

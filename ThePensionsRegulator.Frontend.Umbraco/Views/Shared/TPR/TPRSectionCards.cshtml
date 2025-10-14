@@ -40,7 +40,9 @@
         numericHeadingLevel = 2;
     }
 
-    <tpr-section-cards class="@cssClasses" new-tab-text="@Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)" card-titles-heading-level="@numericHeadingLevel" card-titles-heading-class="@headingClass">
+    string navigationAriaLabel = Model.Settings?.Value<string>(TprPropertyAliases.SectionCardsNavigationAriaLabel) ?? string.Empty;
+
+    <tpr-section-cards class="@cssClasses" new-tab-text="@Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)" card-titles-heading-level="@numericHeadingLevel" card-titles-heading-class="@headingClass" navigation-aria-label="@navigationAriaLabel">
         @foreach (var card in cards)
         {           
             var type = card.Content.ContentType.Alias;

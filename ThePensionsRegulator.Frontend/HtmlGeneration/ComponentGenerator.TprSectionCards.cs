@@ -1,5 +1,4 @@
 ﻿using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions.Typography;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Globalization;
 
@@ -13,8 +12,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public virtual TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards)
         {
             var nav = new TagBuilder("nav");
+
             if (tprSectionCards.Attributes != null) { nav.MergeAttributes(tprSectionCards.Attributes); }
             nav.MergeCssClass("tpr-section-cards");
+
+            if (tprSectionCards.NavigationAriaLabel is not null && !string.IsNullOrWhiteSpace(tprSectionCards.NavigationAriaLabel))
+            {
+                nav.Attributes.Add("aria-label", tprSectionCards.NavigationAriaLabel);
+            }
 
             var ulTag = new TagBuilder("ul");
             nav.InnerHtml.AppendHtml(ulTag);
@@ -32,9 +37,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                 if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToHtmlString()))
                 {
-                    var tprSectionCardTitle = new TagBuilder($"h{tprSectionCards.sectionCardsTitleHeadingLevel}");
+                    var tprSectionCardTitle = new TagBuilder($"h{tprSectionCards.SectionCardsTitleHeadingLevel}");
                     if (card.TitleAttributes != null) { tprSectionCardTitle.MergeAttributes(card.TitleAttributes); }
-                    tprSectionCardTitle.MergeCssClass(tprSectionCards.sectionCardsTitleHeadingClass);
+                    tprSectionCardTitle.MergeCssClass(tprSectionCards.SectionCardsTitleHeadingClass);
                     tprSectionCardTitle.MergeCssClass("tpr-section-card__title");
 
                     if (!string.IsNullOrEmpty(card.TitleUrl))

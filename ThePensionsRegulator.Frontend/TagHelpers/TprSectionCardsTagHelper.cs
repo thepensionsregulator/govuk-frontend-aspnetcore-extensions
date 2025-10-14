@@ -79,6 +79,20 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             }
         }
 
+        /// <summary>
+        /// The aria label to apply to the navigation element.
+        /// </summary>
+        /// <remarks>
+        /// If left empty, no aria-label attribute will be rendered.
+        /// </remarks>
+        private string _navigationAriaLabel = string.Empty;
+        [HtmlAttributeName("navigation-aria-label")]
+        public string NavigationAriaLabel
+        {
+            get => _navigationAriaLabel;
+            set => _navigationAriaLabel = value;
+        }
+
         public TprSectionCardsTagHelper()
           : this(htmlGenerator: null)
         {
@@ -114,8 +128,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     ContentAllowHtml = c.ContentAllowHtml,
                 }).ToList(),
                 NewTabText = NewTabText,
-                sectionCardsTitleHeadingLevel = _sectionCardsTitleHeadingLevel,
-                sectionCardsTitleHeadingClass = _sectionCardsTitleHeadingClass
+                SectionCardsTitleHeadingLevel = _sectionCardsTitleHeadingLevel,
+                SectionCardsTitleHeadingClass = _sectionCardsTitleHeadingClass,
+                NavigationAriaLabel = _navigationAriaLabel
             };
 
             var tagBuilder = _htmlGenerator.GenerateTprSectionCards(sectionCards);

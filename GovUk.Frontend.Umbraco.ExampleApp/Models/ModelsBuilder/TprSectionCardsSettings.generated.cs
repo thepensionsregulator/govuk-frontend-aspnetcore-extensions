@@ -74,6 +74,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string DescriptionFieldName => this.Value<string>(_publishedValueFallback, "descriptionFieldName");
 
 		///<summary>
+		/// Navigation aria-label: Set the aria-label for the navigation for accessibility. If left empty, no aria-label attribute will be rendered.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("navigationAriaLabel")]
+		public virtual string NavigationAriaLabel => this.Value<string>(_publishedValueFallback, "navigationAriaLabel");
+
+		///<summary>
 		/// Title property alias: Sets the property to get the card title from. Defaults to the page name if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]

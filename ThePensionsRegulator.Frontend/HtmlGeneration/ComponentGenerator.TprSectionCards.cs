@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions.Typography;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Globalization;
 
@@ -6,10 +7,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
     public partial class ComponentGenerator
     {
-        public const int SectionCardTitlesMinHeadingLevel = 1;
-        public const int SectionCardTitlesMaxHeadingLevel = 6;
+        public const int SectionCardTitlesMinHeadingLevel = 2;
+        public const int SectionCardTitlesMaxHeadingLevel = 5;
 
-        public virtual TagBuilder GenerateTprSectionCards(int sectionCardsTitleHeadingLevel, TprSectionCards tprSectionCards)
+        public virtual TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards)
         {
             var nav = new TagBuilder("nav");
             if (tprSectionCards.Attributes != null) { nav.MergeAttributes(tprSectionCards.Attributes); }
@@ -31,8 +32,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                 if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToHtmlString()))
                 {
-                    var tprSectionCardTitle = new TagBuilder($"h{sectionCardsTitleHeadingLevel}");
+                    var tprSectionCardTitle = new TagBuilder($"h{tprSectionCards.sectionCardsTitleHeadingLevel}");
                     if (card.TitleAttributes != null) { tprSectionCardTitle.MergeAttributes(card.TitleAttributes); }
+                    tprSectionCardTitle.MergeCssClass(tprSectionCards.sectionCardsTitleHeadingClass);
                     tprSectionCardTitle.MergeCssClass("tpr-section-card__title");
 
                     if (!string.IsNullOrEmpty(card.TitleUrl))

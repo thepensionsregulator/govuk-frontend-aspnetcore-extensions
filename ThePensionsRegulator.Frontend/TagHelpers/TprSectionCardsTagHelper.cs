@@ -35,7 +35,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         /// The heading level for each card title.
         /// </summary>
         /// <remarks>
-        /// Must be between <c>1</c> and <c>6</c> (inclusive). The default is <c>2</c>.
+        /// Must be between <c>2</c> and <c>5</c> (inclusive). The default is <c>2</c>.
         /// </remarks>
         [HtmlAttributeName("card-titles-heading-level")]
         public int HeadingLevel
@@ -52,6 +52,30 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 }
 
                 _sectionCardsTitleHeadingLevel = value;
+            }
+        }
+
+        /// <summary>
+        /// The govuk heading class to apply to each title. Default is <c>govuk-heading-m</c>.
+        /// </summary>
+        /// <remarks>
+        /// Must be one of <c>govuk-heading-xl</c>, <c>govuk-heading-l</c>, <c>govuk-heading-m</c> or <c>govuk-heading-s</c>.
+        /// </remarks>
+        private string _sectionCardsTitleHeadingClass = "govuk-heading-m";
+        [HtmlAttributeName("card-titles-heading-class")]
+        public string HeadingClass
+        {
+            get => _sectionCardsTitleHeadingClass;
+            set
+            {
+                if (!ComponentGenerator.AllHeadingClasses.Contains(value))
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(value),
+                        $"{nameof(HeadingClass)} must be one of govuk-heading-xl, govuk-heading-l, govuk-heading-m or govuk-heading-s");
+                }
+
+                _sectionCardsTitleHeadingClass = value;
             }
         }
 
@@ -89,10 +113,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     Content = c.Content,
                     ContentAllowHtml = c.ContentAllowHtml,
                 }).ToList(),
-                NewTabText = NewTabText
+                NewTabText = NewTabText,
+                sectionCardsTitleHeadingLevel = _sectionCardsTitleHeadingLevel,
+                sectionCardsTitleHeadingClass = _sectionCardsTitleHeadingClass
             };
 
-            var tagBuilder = _htmlGenerator.GenerateTprSectionCards(_sectionCardsTitleHeadingLevel, sectionCards);
+            var tagBuilder = _htmlGenerator.GenerateTprSectionCards(sectionCards);
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

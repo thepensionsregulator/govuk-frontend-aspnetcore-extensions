@@ -27,15 +27,20 @@
 
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
 
-    string headingLevelProperty = Model.Settings?.Value<string>(TprPropertyAliases.SectionCardsTitleHeadingLevel) ?? string.Empty;
-    var headingLevel = headingLevelProperty.Replace("heading", "", System.StringComparison.OrdinalIgnoreCase);
+    var headingClass = Model.Settings.Value<string?>(TprPropertyAliases.SectionCardsTitleHeadingClass);
+    if (string.IsNullOrEmpty(headingClass))
+    {
+        headingClass = "govuk-heading-m";
+    }
 
+    string headingLevelProperty = Model.Settings?.Value<string>(TprPropertyAliases.SectionCardsTitleHeadingLevel) ?? string.Empty;
+    var headingLevel = headingLevelProperty.Replace("heading ", string.Empty, System.StringComparison.OrdinalIgnoreCase)?.Trim();
     if (!int.TryParse(headingLevel, out int numericHeadingLevel))
     {
         numericHeadingLevel = 2;
     }
 
-    <tpr-section-cards class="@cssClasses" new-tab-text="@Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)" card-titles-heading-level="@numericHeadingLevel">
+    <tpr-section-cards class="@cssClasses" new-tab-text="@Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)" card-titles-heading-level="@numericHeadingLevel" card-titles-heading-class="@headingClass">
         @foreach (var card in cards)
         {           
             var type = card.Content.ContentType.Alias;

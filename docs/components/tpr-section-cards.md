@@ -23,6 +23,7 @@ In TPR pages you can add cards that can display a linked heading and description
 | ------------ | -------- | ---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `new-tab-text`        | `string` | `True` | For title links that open in a new tab, this text will be appended to the end of title link to inform users that a new tab will open when the link is clicked. e.g. '(opens in a new tab)'                                                                                                                                                  |
 | `card-titles-heading-level` | `string` | `False`   | Sets the heading level for all the card titles. Default is `2`.
+| `card-titles-heading-class` | `string` | `False`   | Sets the heading class for all the card titles. Default is `govuk-heading-m`.
 
 ### `<tpr-section-card>`
 

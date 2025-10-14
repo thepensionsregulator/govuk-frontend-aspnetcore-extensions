@@ -50,6 +50,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Card titles heading class: Sets all the card title heading classes. Defaults to 'govuk-heading-m' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cardTitlesHeadingClass")]
+		public virtual string CardTitlesHeadingClass => this.Value<string>(_publishedValueFallback, "cardTitlesHeadingClass");
+
+		///<summary>
 		/// Card titles heading level: Sets all the card title headings. Defaults to 'Heading 2' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]

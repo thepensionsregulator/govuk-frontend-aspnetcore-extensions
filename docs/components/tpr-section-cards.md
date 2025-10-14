@@ -7,7 +7,7 @@ In TPR pages you can add cards that can display a linked heading and description
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
 
-<tpr-section-cards new-tab-text="(opens in a new tab)" card-titles-heading-level="3" class="custom-class">
+<tpr-section-cards new-tab-text="(opens in a new tab)" card-titles-heading-level="3" class="custom-class" card-titles-heading-class="govuk-heading-s">
     <tpr-section-card>
             <tpr-section-card-title href="/example" target="_self">Title of card</tpr-section-card-title>
             <tpr-section-card-content>Description of card</tpr-section-card-content>

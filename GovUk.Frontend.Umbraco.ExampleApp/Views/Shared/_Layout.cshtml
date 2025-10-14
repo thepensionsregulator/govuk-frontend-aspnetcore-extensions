@@ -16,9 +16,22 @@
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
     var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
-    var currentPage = @Model as IPublishedContent;
-    if (currentPage == null) { currentPage = Umbraco.AssignedContentItem; }
+    IPublishedContent? currentPage = null;
+
+    switch (Model)
+    {
+        case IPublishedContent:
+            currentPage = Model as IPublishedContent;
+            break;
+        case ContentModel:
+            currentPage = Model.Content as IPublishedContent;
+            break;
+        case null:
+            currentPage = Umbraco.AssignedContentItem;
+            break;
+    }
 }
+
 <!DOCTYPE html>
 <html lang="@twoLetterCode">
 
@@ -52,7 +65,7 @@
                 </div>
             }
         }
-        @if (currentPage.ContentType.Alias == "sideNavigation")
+        @if (currentPage?.ContentType.Alias == "sideNavigation")
         {
             <div class="govuk-width-container">
                 <div class="govuk-grid-row">

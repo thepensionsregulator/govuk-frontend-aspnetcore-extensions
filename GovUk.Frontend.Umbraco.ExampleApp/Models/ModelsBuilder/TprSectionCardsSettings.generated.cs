@@ -50,12 +50,36 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Card titles heading class: Sets all the card title heading classes. Defaults to 'govuk-heading-m' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cardTitlesHeadingClass")]
+		public virtual string CardTitlesHeadingClass => this.Value<string>(_publishedValueFallback, "cardTitlesHeadingClass");
+
+		///<summary>
+		/// Card titles heading level: Sets all the card title headings. Defaults to 'Heading 2' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cardTitlesHeadingLevel")]
+		public virtual string CardTitlesHeadingLevel => this.Value<string>(_publishedValueFallback, "cardTitlesHeadingLevel");
+
+		///<summary>
 		/// Description property alias: Sets the property to get the card description from. Defaults to 'description' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("descriptionFieldName")]
 		public virtual string DescriptionFieldName => this.Value<string>(_publishedValueFallback, "descriptionFieldName");
+
+		///<summary>
+		/// Navigation aria-label: Set the aria-label for the navigation for accessibility. If left empty, no aria-label attribute will be rendered.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("navigationAriaLabel")]
+		public virtual string NavigationAriaLabel => this.Value<string>(_publishedValueFallback, "navigationAriaLabel");
 
 		///<summary>
 		/// Title property alias: Sets the property to get the card title from. Defaults to the page name if left blank.

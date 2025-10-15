@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections.Generic;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
-using ThePensionsRegulator.Frontend.TagHelpers;
 
 namespace ThePensionsRegulator.Frontend
 {

@@ -61,7 +61,7 @@
         public const string GridRowBlocks = "blocks";
         public const string HeadingLevel = "headingLevel";
         public const string Hint = "hint";
-        public const string Horizontal = "horizontal";
+        public const string FeaturedImageHorizontalLayout = "horizontal";
         public const string InsetText = "text";
         public const string LabelIsPageHeading = "labelIsPageHeading";
         public const string Legend = "legend";

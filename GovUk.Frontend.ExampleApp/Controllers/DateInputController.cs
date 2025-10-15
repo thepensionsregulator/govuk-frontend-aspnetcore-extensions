@@ -17,8 +17,8 @@ namespace GovUk.Frontend.ExampleApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                Response.StatusCode = 303;
                 Response.GetTypedHeaders().Location = new Uri("/panel", UriKind.Relative);
+                return new StatusCodeResult(303);
             }
 
             return View("Index", viewModel);

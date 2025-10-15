@@ -2,11 +2,11 @@
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common;
+using CopiedInternalClasses = GovUk.Frontend.Umbraco.ModelBinding;
 
 namespace GovUk.Frontend.Umbraco.ModelBinding
 {
@@ -15,7 +15,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
     /// </summary>
     public class UmbracoDateInputModelBinderProvider : IModelBinderProvider
     {
-        private readonly DateInputModelConverter[] _dateInputModelConverters;
+        private readonly Dictionary<Type, DateInputModelConverter> _dateInputModelConverters;
         private readonly bool _acceptMonthNamesInDateInputs;
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
         private readonly ICultureDictionary _cultureDictionary;
@@ -23,7 +23,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
 
         public UmbracoDateInputModelBinderProvider(
-            GovUkFrontendAspNetCoreOptions options,
+            GovUkFrontendOptions options,
             IUmbracoContextAccessor umbracoContextAccessor,
             ICultureDictionary cultureDictionary,
             IPublishedValueFallback? publishedValueFallback,
@@ -31,7 +31,11 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         {
             Guard.ArgumentNotNull(nameof(options), options);
 
-            _dateInputModelConverters = options.DateInputModelConverters.ToArray();
+            _dateInputModelConverters = new Dictionary<Type, DateInputModelConverter>
+            {
+                { CopiedInternalClasses.DateTimeDateInputModelConverter.ModelType, new CopiedInternalClasses.DateTimeDateInputModelConverter() },
+                { CopiedInternalClasses.DateOnlyDateInputModelConverter.ModelType, new CopiedInternalClasses.DateOnlyDateInputModelConverter() }
+            };
             _acceptMonthNamesInDateInputs = options.AcceptMonthNamesInDateInputs;
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
             _cultureDictionary = cultureDictionary ?? throw new ArgumentNullException(nameof(cultureDictionary));
@@ -45,11 +49,11 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
 
             var modelType = context.Metadata.UnderlyingOrModelType;
 
-            foreach (var converter in _dateInputModelConverters)
+            foreach (var convertableType in _dateInputModelConverters.Keys)
             {
-                if (converter.CanConvertModelType(modelType))
+                if (convertableType == modelType)
                 {
-                    return new UmbracoDateInputModelBinder(converter, _umbracoContextAccessor, _cultureDictionary, _publishedValueFallback, _acceptMonthNamesInDateInputs, _umbracoHelperAccessor);
+                    return new UmbracoDateInputModelBinder(_dateInputModelConverters[convertableType], _umbracoContextAccessor, _cultureDictionary, _publishedValueFallback, _acceptMonthNamesInDateInputs, _umbracoHelperAccessor);
                 }
             }
 

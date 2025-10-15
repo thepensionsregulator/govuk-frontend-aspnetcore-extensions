@@ -1,7 +1,8 @@
-﻿@using GovUk.Frontend.ExampleApp.Models
+﻿@using GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.ExampleApp.Models
 @model FileUploadViewModel
 @{
-    ViewData["Title"] = "File Uploads";
+    ViewData["Title"] = "File upload";
 }
 @section language {
 <partial name="_LanguageSwitcher" />
@@ -12,19 +13,44 @@
     <div class="govuk-grid-row govuk-grid-row--tpr-divider govuk-grid-row--tpr-divider-for-fieldset">
         <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
             <govuk-fieldset>
-                    <govuk-fieldset-legend is-page-heading="true"  class="govuk-fieldset__legend--l">
-                    File Upload
-                </govuk-fieldset-legend>
+                    <govuk-fieldset-legend is-page-heading="true"  class="govuk-fieldset__legend--l">File upload</govuk-fieldset-legend>
+                <p class="govuk-body">You should only ask users to upload something if it's critical to the delivery of your service.</p>
                 <govuk-client-side-validation>
-                    <govuk-file-upload asp-for="File" input-accept=".csv">
-                        <govuk-file-upload-label>Select a .csv file:</govuk-file-upload-label>
-                        <govuk-file-upload-hint>(Only .csv files are allowed for file upload)</govuk-file-upload-hint>
+                    <govuk-file-upload for="ImageFile" input-accept="image/*" javascript-enhancements="true">
+                        <govuk-file-upload-label>Upload an image</govuk-file-upload-label>
+                        <govuk-file-upload-hint>The choose file dialog will only allow selection of an image based on its media types, but any file can be uploaded using drag and drop.</govuk-file-upload-hint>
                     </govuk-file-upload>
+
+                    <govuk-file-upload for="FileWithMaximumSize" javascript-enhancements="true">
+                        <govuk-file-upload-label>Limit file size</govuk-file-upload-label>
+                        <govuk-file-upload-hint>The validation will fail if the file is above 5MB.</govuk-file-upload-hint>
+                    </govuk-file-upload>
+
+                    <govuk-file-upload for="CsvFile" input-accept=".csv" javascript-enhancements="true">
+                        <govuk-file-upload-label>Upload a CSV spreadsheet</govuk-file-upload-label>
+                        <govuk-file-upload-hint>The validation will fail if no file is provided. The choose file dialog will only allow selection of a CSV file based on its file extension, but any file can be uploaded using drag and drop.</govuk-file-upload-hint>
+                    </govuk-file-upload>
+
+                    <govuk-file-upload for="ExcelFile" input-accept=".xlsx" javascript-enhancements="true">
+                        <govuk-file-upload-label>Upload an Excel file</govuk-file-upload-label>
+                        <govuk-file-upload-hint>The validation should fail if the file is not an Excel file. The validation will look at the binary file header to determine whether the file is an Excel file.</govuk-file-upload-hint>
+                    </govuk-file-upload>
+
+                    <govuk-file-upload for="PdfFile" input-accept=".pdf" javascript-enhancements="true">
+                        <govuk-file-upload-label>Upload a PDF file</govuk-file-upload-label>
+                        <govuk-file-upload-hint>The validation should fail if the file is not a PDF file. The validation will look at the binary file header to determine whether the file is a PDF file.</govuk-file-upload-hint>
+                    </govuk-file-upload>
+
+                    <govuk-file-upload for="MultipleFiles" javascript-enhancements="true" multiple="true">
+                        <govuk-file-upload-label>Multiple files</govuk-file-upload-label>
+                        <govuk-file-upload-hint>Upload multiple files of any type.</govuk-file-upload-hint>
+                    </govuk-file-upload>
+
                 </govuk-client-side-validation>
             </govuk-fieldset>
         </div>
     </div>
-
+    
     <govuk-button type="submit">Upload your file</govuk-button>
 
 </form>

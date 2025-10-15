@@ -9,6 +9,11 @@ When you update either you must:
 - update the version of GOV.UK Frontend in [README.md](README.md)
 - update the GOV.UK Frontend submodule (see below)
 - update the GOV.UK Frontend npm package (see below)
+- update the version of GOV.UK Frontend in [BodyClosing.cshtml](../../GovUk.Frontend.AspNetCore.Extensions/Views/Shared/GOVUK/BodyClosing.cshtml)
+- update the version of GOV.UK Frontend in [govuk-js-init.js](../../GovUk.Frontend.AspNetCore.Extensions/wwwroot/govuk/govuk-js-init.js)
+- update the version of GOV.UK Frontend in [ApplicationBuilderExtensions.cs](../../GovUk.Frontend.Umbraco/ApplicationBuilderExtensions.cs)
+- update the version of GOV.UK Frontend in [BodyClosing.cshtml](../../ThePensionsRegulator.Frontend/Views/Shared/TPR/BodyClosing.cshtml)
+- update the version of GOV.UK Frontend in [tpr-search-results.js](../../ThePensionsRegulator.Frontend/wwwroot/tpr/tpr-search-results.js)
 
 This project references GOV.UK Frontend as a submodule, so that we can import and use the SASS code. This reference **must** be kept aligned with the version referenced by `govuk-frontend-aspnetcore`, therefore any time you update the `govuk-frontend-aspnetcore` NuGet package you should check the release notes to see whether you need to update GOV.UK Frontend.
 

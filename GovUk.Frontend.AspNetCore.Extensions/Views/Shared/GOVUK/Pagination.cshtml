@@ -62,7 +62,7 @@
                     <govuk-pagination-item visually-hidden-text="@(Model.PageVisuallyHiddenText.Replace("{{page}}", previousPage.ToString(CultureInfo.InvariantCulture)))" href="@Html.Raw(previousHref)">@previousPage</govuk-pagination-item>
                 }
             }
-            <govuk-pagination-item is-current="true" href="@(Model.Path + Model.QueryString)">@Model.PageNumber</govuk-pagination-item>
+            <govuk-pagination-item current="true" href="@(Model.Path + Model.QueryString)">@Model.PageNumber</govuk-pagination-item>
             @if (Model.PageNumber * Model.PageSize < Model.TotalItems)
             {
                 <govuk-pagination-item visually-hidden-text="@(Model.PageVisuallyHiddenText.Replace("{{page}}", nextPage.ToString(CultureInfo.InvariantCulture)))" href="@Html.Raw(nextHref)">@nextPage</govuk-pagination-item>

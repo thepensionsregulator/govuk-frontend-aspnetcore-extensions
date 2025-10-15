@@ -1,6 +1,7 @@
-﻿using System.Globalization;
-using GovUk.Frontend.AspNetCore;
+﻿using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Globalization;
+using System.Text.Encodings.Web;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -26,7 +27,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 var tprSectionCardBody = new TagBuilder("div");
                 tprSectionCardBody.MergeCssClass("tpr-section-card__body");
 
-                if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToHtmlString()))
+                if (card.Title is not null && !string.IsNullOrWhiteSpace(card.Title.ToHtmlString(HtmlEncoder.Default)))
                 {
                     var tprSectionCardTitle = new TagBuilder("h2");
                     if (card.TitleAttributes != null) { tprSectionCardTitle.MergeAttributes(card.TitleAttributes); }
@@ -44,7 +45,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         }
                         else
                         {
-                            anchorElement.InnerHtml.Append(card.Title.ToHtmlString());
+                            anchorElement.InnerHtml.Append(card.Title.ToHtmlString(HtmlEncoder.Default));
                         }
 
                         if (!string.IsNullOrWhiteSpace(card.TitleTarget) && card.TitleTarget.ToLower() == "_blank" && !string.IsNullOrWhiteSpace(tprSectionCards.NewTabText))
@@ -66,14 +67,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         }
                         else
                         {
-                            tprSectionCardTitle.InnerHtml.Append(card.Title.ToHtmlString());
+                            tprSectionCardTitle.InnerHtml.Append(card.Title.ToHtmlString(HtmlEncoder.Default));
                         }
                     }
 
                     tprSectionCardBody.InnerHtml.AppendHtml(tprSectionCardTitle);
                 }
 
-                if (card.Content is not null && !string.IsNullOrWhiteSpace(card.Content.ToHtmlString()))
+                if (card.Content is not null && !string.IsNullOrWhiteSpace(card.Content.ToHtmlString(HtmlEncoder.Default)))
                 {
                     var tprSectionCardContent = new TagBuilder("div");
                     tprSectionCardContent.MergeCssClass("tpr-section-card__content");
@@ -87,7 +88,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     {
                         var tprSectionCardPara = new TagBuilder("p");
                         tprSectionCardPara.MergeCssClass("govuk-body");
-                        tprSectionCardPara.InnerHtml.Append(card.Content.ToHtmlString());
+                        tprSectionCardPara.InnerHtml.Append(card.Content.ToHtmlString(HtmlEncoder.Default));
                         tprSectionCardContent.InnerHtml.AppendHtml(tprSectionCardPara);
                     }
 

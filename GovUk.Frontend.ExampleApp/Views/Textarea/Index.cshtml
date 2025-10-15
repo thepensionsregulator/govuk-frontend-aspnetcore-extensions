@@ -16,19 +16,19 @@
     <div class="govuk-grid-row govuk-grid-row--tpr-divider">
         <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
             <govuk-client-side-validation>
-                <govuk-textarea asp-for="Field1">
+                <govuk-textarea for="Field1">
                     <govuk-textarea-label>Field label</govuk-textarea-label>
                     <govuk-textarea-hint>This field must be full of numbers</govuk-textarea-hint>
                     <govuk-textarea-error-message />
                 </govuk-textarea>
 
-                <govuk-character-count asp-for="Field2" max-length="100">
+                <govuk-character-count for="Field2" max-length="100">
                     <govuk-character-count-label>Character count</govuk-character-count-label>
                     <govuk-character-count-hint>This has a 100 character limit</govuk-character-count-hint>
                     <govuk-character-count-error-message />
                 </govuk-character-count>
 
-                <govuk-textarea asp-for="Field3" textarea-readonly="readonly">
+                <govuk-textarea for="Field3" textarea-readonly="readonly">
                     <govuk-textarea-label>This textarea is read-only</govuk-textarea-label>
                     <govuk-textarea-hint>No validation is applied to this example.</govuk-textarea-hint>
                     <govuk-textarea-error-message />

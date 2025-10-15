@@ -15,7 +15,7 @@ namespace ThePensionsRegulator.Frontend
 
         public static IServiceCollection AddTprFrontend(
             this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions) => AddTprFrontend(services, configureGovUkOptions, options => { });
+            Action<GovUkFrontendOptions> configureGovUkOptions) => AddTprFrontend(services, configureGovUkOptions, options => { });
 
         public static IServiceCollection AddTprFrontend(
             this IServiceCollection services,
@@ -23,7 +23,7 @@ namespace ThePensionsRegulator.Frontend
 
         public static IServiceCollection AddTprFrontend(
             this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions,
+            Action<GovUkFrontendOptions> configureGovUkOptions,
             Action<TprFrontendOptions> configureTprOptions)
         {
             if (services == null)

@@ -1,0 +1,21 @@
+using GovUk.Frontend.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+
+namespace ThePensionsRegulator.Frontend;
+
+/// <summary>
+/// Utility extensions for <see cref="TagHelperContent"/>, copied from GovUk.Frontend.AspNetCore.
+/// </summary>
+internal static class TagHelperContentExtensions
+{
+    /// <summary>
+    /// Creates a snapshot of the content in a specified <see cref="TagHelperContent"/>.
+    /// </summary>
+    internal static IHtmlContent Snapshot(this TagHelperContent content)
+    {
+        Guard.ArgumentNotNull(nameof(content), content);
+
+        return new HtmlString(content.GetContent());
+    }
+}

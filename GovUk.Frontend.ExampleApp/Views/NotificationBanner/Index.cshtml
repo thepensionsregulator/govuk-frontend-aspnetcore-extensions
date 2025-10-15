@@ -1,4 +1,5 @@
-﻿@model RadiosViewModel
+﻿@using GovUk.Frontend.AspNetCore
+@model RadiosViewModel
 @{
     ViewData["Title"] = "Notification banner";
 }
@@ -11,7 +12,7 @@
     <govuk-button class="govuk-button" type="button">Button</govuk-button>
 </govuk-notification-banner>
 
-<govuk-notification-banner type="Success">
+<govuk-notification-banner type="NotificationBannerType.Success">
     <h3 class="govuk-notification-banner__heading">
         Use the green version of the notification banner to confirm that something they’re expecting to happen has happened.
     </h3>

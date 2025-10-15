@@ -55,6 +55,7 @@
         public const string FieldsetErrorsEnabled = "fieldsetErrors";
         public const string FileUploadFileTypes = "fileTypes";
         public const string FileUploadLabel = "label";
+        public const string FileUploadAllowMultiple = "allowMultipleFiles";
         public const string GridColumnBlocks = "blocks";
         public const string GridColumnRenderRowsAndColumns = "renderRowsAndColumnsForChildBlocks";
         public const string GridRowBlocks = "blocks";

@@ -13,6 +13,7 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprHeaderBar(TprHeaderBar tprHeaderBar);
         TagBuilder GenerateTprFooterBar(TprFooterBar tprFooterBar);
         TagBuilder GenerateTprContextBar(TprContextBar tprContextBar);
+        TagBuilder GenerateTprFeaturedImage(AttributeDictionary? attributes, string? imageUrl, string? imageAlt, IHtmlContent? htmlContent, bool horizontal, bool decorativeImage);
         TagBuilder GenerateTprRelatedLinks(TprRelatedLinks tprRelatedLinks);
         TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards);
         TagBuilder GenerateTprAblePlayer(TprYouTubeVideo video);

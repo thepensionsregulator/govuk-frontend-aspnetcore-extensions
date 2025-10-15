@@ -1,0 +1,91 @@
+﻿@{
+    ViewData["Title"] = "Featured image";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-one-third">
+        @* <partial name="FeaturedImageCode" /> *@
+        <tpr-featured-image imageUrl="/img/workie-large.jpg" imageAlt="">
+            <h2 class="govuk-heading-m">First item</h2>
+            <p class="govuk-body">Automatic enrolment is a continuous responsibility. Employers must monitor
+                the
+                ages and earnings of staff and carry out re-enrolment duties every three years.</p>
+
+
+            <a class="govuk-button " data-module="govuk-button" draggable="false"
+                href="/en/employers/new-employers/im-an-employer-who-has-to-provide-a-pension/declare-your-compliance/ongoing-duties-for-employers"
+                id="021a6ca0-5dce-4019-b3cb-846477f53930" role="button" data-govuk-button-init="">
+                Check your duties now
+            </a>
+        </tpr-featured-image>
+    </div>
+    <div class="govuk-grid-column govuk-grid-column-one-third">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-full">
+
+        @* <partial name="FeaturedImageCode" /> *@
+        <tpr-featured-image imageUrl="/img/workie-large.jpg" imageAlt="Some alt text" decorativeImage="true">
+            <h2 class="govuk-heading-m">Second item</h2>
+            <p class="govuk-body">Automatic enrolment is a continuous responsibility. Employers must monitor
+                the
+                ages and earnings of staff and carry out re-enrolment duties every three years.</p>
+
+
+            <a class="govuk-button " data-module="govuk-button" draggable="false"
+                href="/en/employers/new-employers/im-an-employer-who-has-to-provide-a-pension/declare-your-compliance/ongoing-duties-for-employers"
+                id="021a6ca0-5dce-4019-b3cb-846477f53930" role="button" data-govuk-button-init="">
+                Check your duties now
+            </a>
+        </tpr-featured-image>
+            </div>
+        </div>
+
+    </div>
+    <div class="govuk-grid-column govuk-grid-column-one-third">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-full">
+
+        @* <partial name="FeaturedImageCode" /> *@
+        <tpr-featured-image imageUrl="/img/workie-large.jpg" imageAlt="Some alt text">
+            <h2 class="govuk-heading-m">Third item</h2>
+            <p class="govuk-body">Automatic enrolment is a continuous responsibility. Employers must monitor
+                the
+                ages and earnings of staff and carry out re-enrolment duties every three years.</p>
+
+
+            <a class="govuk-button " data-module="govuk-button" draggable="false"
+                href="/en/employers/new-employers/im-an-employer-who-has-to-provide-a-pension/declare-your-compliance/ongoing-duties-for-employers"
+                id="021a6ca0-5dce-4019-b3cb-846477f53930" role="button" data-govuk-button-init="">
+                Check your duties now
+            </a>
+        </tpr-featured-image>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+
+        @* @Html.Partial("FeaturedImageCode", new ViewDataDictionary(ViewData) { { "Size", "large" } }) *@
+        <tpr-featured-image imageUrl="/img/workie-large.jpg" imageAlt="Some alt text" horizontal="true">
+            <h2 class="govuk-heading-m">Horizontal item</h2>
+            <p class="govuk-body">Automatic enrolment is a continuous responsibility. Employers must monitor
+                the
+                ages and earnings of staff and carry out re-enrolment duties every three years.</p>
+
+
+            <a class="govuk-button " data-module="govuk-button" draggable="false"
+                href="/en/employers/new-employers/im-an-employer-who-has-to-provide-a-pension/declare-your-compliance/ongoing-duties-for-employers"
+                id="021a6ca0-5dce-4019-b3cb-846477f53930" role="button" data-govuk-button-init="">
+                Check your duties now
+            </a>
+        </tpr-featured-image>
+    </div>
+</div>

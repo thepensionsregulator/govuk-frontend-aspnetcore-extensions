@@ -30,6 +30,7 @@
         public const string DateInputShowDay = "showDay";
         public const string DateInputFieldsetBlocks = "fieldsetBlocks";
         public const string DetailsSummary = "summary";
+        public const string DecorativeImage = "decorativeImage";
         public const string DetailsText = "text";
         public const string DisplayName = "displayName";
         public const string ErrorMessageCustom1 = "customError1";
@@ -60,6 +61,7 @@
         public const string GridRowBlocks = "blocks";
         public const string HeadingLevel = "headingLevel";
         public const string Hint = "hint";
+        public const string Horizontal = "horizontal";
         public const string InsetText = "text";
         public const string LabelIsPageHeading = "labelIsPageHeading";
         public const string Legend = "legend";

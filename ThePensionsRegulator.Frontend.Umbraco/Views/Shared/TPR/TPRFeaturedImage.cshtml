@@ -1,0 +1,37 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>;
+@addTagHelper *, ThePensionsRegulator.Frontend
+@using GovUk.Frontend.Umbraco.Blocks
+@using Microsoft.AspNetCore.Html
+@using ThePensionsRegulator.Frontend.TagHelpers
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
+@using System.Web;
+@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
+@{
+    var typedMediaPickerSingle = Model.Content.Value<Umbraco.Cms.Core.Models.MediaWithCrops>(TprPropertyAliases.Image);
+    if (typedMediaPickerSingle is not null)
+    {
+        var altText = typedMediaPickerSingle.Value<string>(TprPropertyAliases.ImageAltText);
+        if (string.IsNullOrEmpty(altText))
+        {
+            altText = typedMediaPickerSingle.Name;
+        }
+
+        var grid = Model.Content.Value<OverridableBlockGridModel>(PropertyAliases.GridColumnBlocks)!;
+        var childBlocks = new BlockGridViewModel(grid)
+        {
+            ChildColumnsDefaultToFullWidth = true,
+            RenderWidthContainer = false        
+        };
+        var horizontal = Model.Settings.Value<bool>(GovUkPropertyAliases.Horizontal);
+        var decorativeImage = Model.Settings.Value<bool>(GovUkPropertyAliases.DecorativeImage);
+        <tpr-featured-image imageUrl="@typedMediaPickerSingle.MediaUrl()" imageAlt="@altText" horizontal="@horizontal" decorativeImage="@decorativeImage">
+            @await Html.PartialAsync("GOVUK/BlockGrid", childBlocks)
+        </tpr-featured-image>
+    }
+}

@@ -2,6 +2,7 @@
 using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
@@ -28,6 +29,70 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             get => _newTabText;
             set => _newTabText = value;
         }
+
+        private int _sectionCardsTitleHeadingLevel = 2;
+        /// <summary>
+        /// The heading level for each card title.
+        /// </summary>
+        /// <remarks>
+        /// Must be between <c>2</c> and <c>5</c> (inclusive). The default is <c>2</c>.
+        /// </remarks>
+        [HtmlAttributeName("card-titles-heading-level")]
+        public int HeadingLevel
+        {
+            get => _sectionCardsTitleHeadingLevel;
+            set
+            {
+                if (value < ComponentGenerator.SectionCardTitlesMinHeadingLevel ||
+                    value > ComponentGenerator.SectionCardTitlesMaxHeadingLevel)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(value),
+                        $"{nameof(HeadingLevel)} must be between {ComponentGenerator.SectionCardTitlesMinHeadingLevel} and {ComponentGenerator.SectionCardTitlesMaxHeadingLevel}.");
+                }
+
+                _sectionCardsTitleHeadingLevel = value;
+            }
+        }
+
+        /// <summary>
+        /// The govuk heading class to apply to each title. Default is <c>govuk-heading-m</c>.
+        /// </summary>
+        /// <remarks>
+        /// Must be one of <c>govuk-heading-xl</c>, <c>govuk-heading-l</c>, <c>govuk-heading-m</c> or <c>govuk-heading-s</c>.
+        /// </remarks>
+        private string _sectionCardsTitleHeadingClass = "govuk-heading-m";
+        [HtmlAttributeName("card-titles-heading-class")]
+        public string HeadingClass
+        {
+            get => _sectionCardsTitleHeadingClass;
+            set
+            {
+                if (!ComponentGenerator.AllHeadingClasses.Contains(value))
+                {
+                    throw new ArgumentOutOfRangeException(
+                        nameof(value),
+                        $"{nameof(HeadingClass)} must be one of govuk-heading-xl, govuk-heading-l, govuk-heading-m or govuk-heading-s");
+                }
+
+                _sectionCardsTitleHeadingClass = value;
+            }
+        }
+
+        /// <summary>
+        /// The aria label to apply to the navigation element.
+        /// </summary>
+        /// <remarks>
+        /// If left empty, no aria-label attribute will be rendered.
+        /// </remarks>
+        private string _navigationAriaLabel = string.Empty;
+        [HtmlAttributeName("navigation-aria-label")]
+        public string NavigationAriaLabel
+        {
+            get => _navigationAriaLabel;
+            set => _navigationAriaLabel = value;
+        }
+
         public TprSectionCardsTagHelper()
           : this(htmlGenerator: null)
         {
@@ -37,6 +102,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         {
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var cardsContext = new TprSectionCardsContext();
@@ -61,7 +127,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     Content = c.Content,
                     ContentAllowHtml = c.ContentAllowHtml,
                 }).ToList(),
-                NewTabText = NewTabText
+                NewTabText = NewTabText,
+                SectionCardsTitleHeadingLevel = _sectionCardsTitleHeadingLevel,
+                SectionCardsTitleHeadingClass = _sectionCardsTitleHeadingClass,
+                NavigationAriaLabel = _navigationAriaLabel
             };
 
             var tagBuilder = _htmlGenerator.GenerateTprSectionCards(sectionCards);

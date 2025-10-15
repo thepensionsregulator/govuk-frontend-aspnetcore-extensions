@@ -7,7 +7,7 @@ In TPR pages you can add cards that can display a linked heading and description
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
 
-<tpr-section-cards new-tab-text="(opens in a new tab)">
+<tpr-section-cards new-tab-text="(opens in a new tab)" card-titles-heading-level="3" class="custom-class" card-titles-heading-class="govuk-heading-s" navigation-aria-label="Section cards example">
     <tpr-section-card>
             <tpr-section-card-title href="/example" target="_self">Title of card</tpr-section-card-title>
             <tpr-section-card-content>Description of card</tpr-section-card-content>
@@ -19,11 +19,12 @@ In TPR pages you can add cards that can display a linked heading and description
 
 ### `<tpr-section-cards>`
 
-_Required_
-
-| Attribute    | Type     | Description                                                                                                                                                                       |
-| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `new-tab-text`       | `string` | For title links that open in a new tab, this text will be appended to the end of title link to inform users that a new tab will open when the link is clicked. e.g. '(opens in a new tab)'                                                                                                                                                  |
+| Attribute    | Type     | Required | Description                                                                                                                                                           |
+| ------------ | -------- | ---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `new-tab-text`        | `string` | `True` | For title links that open in a new tab, this text will be appended to the end of title link to inform users that a new tab will open when the link is clicked. e.g. '(opens in a new tab)'                                                                                                                                                  |
+| `card-titles-heading-level` | `string` | `False`   | Sets the heading level for all the card titles. Default is `2`.
+| `card-titles-heading-class` | `string` | `False`   | Sets the heading class for all the card titles. Default is `govuk-heading-m`.
+| `navigation-aria-label`     | `string` | `False`   | Sets the `aria-label` attribute on the outermost `nav` element. If left empty, no aria-label attribute will be rendered.                                                                 |
 
 ### `<tpr-section-card>`
 
@@ -78,6 +79,7 @@ The section cards block has the following properties for configuration:
 
 - **Title field name** - is the alias of the property that contains the title for child items. This defaults to the node name.
 - **Description field name** - is the alias of the property that contains the description for child items. This defaults to `description`.
+- **Card titles heading level** - Sets the heading level for all the card titles. Default is `2`.
 - **CSS classes** - Classes to add to the outermost `nav` element.
 
 ![Click the cog icon to get to the settings of the Section cards block](/docs/images/tpr-section-cards-settings-cog.png)

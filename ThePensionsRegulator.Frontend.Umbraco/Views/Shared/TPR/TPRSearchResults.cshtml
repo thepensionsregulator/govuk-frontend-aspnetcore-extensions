@@ -15,17 +15,17 @@
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
     var headingClass = Model.Settings.Value<string?>(TprPropertyAliases.SearchResultsHeadingClass);
 
+    if (string.IsNullOrEmpty(headingClass))
+    {
+        headingClass = "govuk-heading-m";
+    }
+
     string headingLevelProperty = Model.Settings?.Value<string>(TprPropertyAliases.SearchResultsHeadingLevel) ?? string.Empty;
-    var headingLevel = headingLevelProperty.Replace("h", string.Empty).Replace("H", string.Empty);
+    var headingLevel = headingLevelProperty.Replace("heading ", string.Empty, System.StringComparison.OrdinalIgnoreCase)?.Trim();
 
     if (!int.TryParse(headingLevel, out int numericHeadingLevel))
     {
         numericHeadingLevel = 2;
-    }
-
-    if (string.IsNullOrEmpty(headingClass))
-    {
-        headingClass = "govuk-heading-m";
     }
 }
 

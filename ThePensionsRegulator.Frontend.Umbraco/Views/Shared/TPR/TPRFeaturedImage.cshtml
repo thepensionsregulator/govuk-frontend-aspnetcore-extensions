@@ -28,7 +28,7 @@
             ChildColumnsDefaultToFullWidth = true,
             RenderWidthContainer = false        
         };
-        var horizontal = Model.Settings.Value<bool>(GovUkPropertyAliases.Horizontal);
+        var horizontal = Model.Settings.Value<bool>(GovUkPropertyAliases.FeaturedImageHorizontalLayout);
         var decorativeImage = Model.Settings.Value<bool>(GovUkPropertyAliases.DecorativeImage);
         <tpr-featured-image imageUrl="@typedMediaPickerSingle.MediaUrl()" imageAlt="@altText" horizontal="@horizontal" decorativeImage="@decorativeImage">
             @await Html.PartialAsync("GOVUK/BlockGrid", childBlocks)

@@ -30,3 +30,8 @@ p.custom-class::after {
 .govuk-panel__body > p.custom-class::after {
     color: goldenrod;
 }
+
+.dark-background {
+    background: gray;
+    padding: 1rem 1rem 0;
+}

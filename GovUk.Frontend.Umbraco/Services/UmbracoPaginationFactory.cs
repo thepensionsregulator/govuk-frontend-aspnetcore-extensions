@@ -1,6 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Models;
 using Microsoft.AspNetCore.Http;
-using Umbraco.Cms.Core.Models.Blocks;
 using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 
@@ -34,6 +33,11 @@ namespace GovUk.Frontend.Umbraco.Services
             pagination.TotalItems = FromUmbracoSettingsOrDefault(block, "totalItems", 0);
 
             pagination.CssClasses = FromUmbracoSettingsOrDefault(block, PropertyAliases.CssClasses, string.Empty);
+            if (pagination.CssClasses is not null)
+            {
+                // Workaround for https://github.com/x-govuk/govuk-frontend-aspnetcore/issues/345
+                pagination.CssClasses = $"{pagination.CssClasses} govuk-pagination govuk-pagination--block".TrimStart();
+            }
             pagination.LandmarkLabel = FromUmbracoSettingsOrDefault(block, "landmarkLabel", pagination.LandmarkLabel);
             pagination.PreviousPageLabel = FromUmbracoSettingsOrDefault(block, "previousPageLabel", pagination.PreviousPageLabel);
             pagination.NextPageLabel = FromUmbracoSettingsOrDefault(block, "nextPageLabel", pagination.NextPageLabel);

@@ -33,8 +33,6 @@
             currentPage = Umbraco.AssignedContentItem;
             break;
     }
-    var currentPage = @Model as IPublishedContent;
-    if (currentPage == null) { currentPage = Umbraco.AssignedContentItem; }
     var headerViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
 
     var menuItems = navigationSerivce.GetMenuItems(settings, headerViewModel);

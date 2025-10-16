@@ -19,6 +19,20 @@
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
     var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
+    IPublishedContent? currentPage = null;
+
+    switch (Model)
+    {
+        case IPublishedContent:
+            currentPage = Model as IPublishedContent;
+            break;
+        case ContentModel:
+            currentPage = Model.Content as IPublishedContent;
+            break;
+        case null:
+            currentPage = Umbraco.AssignedContentItem;
+            break;
+    }
     var currentPage = @Model as IPublishedContent;
     if (currentPage == null) { currentPage = Umbraco.AssignedContentItem; }
     var headerViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
@@ -26,6 +40,7 @@
     var menuItems = navigationSerivce.GetMenuItems(settings, headerViewModel);
     headerLockup.HeaderMenuItems = menuItems;
 }
+
 <!DOCTYPE html>
 <html lang="@twoLetterCode">
 
@@ -60,7 +75,7 @@
                 </div>
             }
         }
-        @if (currentPage.ContentType.Alias == "sideNavigation")
+        @if (currentPage?.ContentType.Alias == "sideNavigation")
         {
             <div class="govuk-width-container">
                 <div class="govuk-grid-row">

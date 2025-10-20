@@ -45,6 +45,7 @@ We add support for:
   - [TPR box](/docs/components/tpr-box.md)
   - [TPR context bar](/docs/components/tpr-context-bar.md)
   - [TPR documents](/docs/components/tpr-documents.md)
+  - [TPR featured image](/docs/components/tpr-featured-image.md)
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
   - [TPR related links](/docs/components/tpr-related-links.md)

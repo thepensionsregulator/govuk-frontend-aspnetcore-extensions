@@ -30,7 +30,7 @@
         };
         var horizontal = Model.Settings.Value<bool>(GovUkPropertyAliases.FeaturedImageHorizontalLayout);
         var decorativeImage = Model.Settings.Value<bool>(GovUkPropertyAliases.DecorativeImage);
-        <tpr-featured-image imageUrl="@typedMediaPickerSingle.MediaUrl()" imageAlt="@altText" horizontal="@horizontal" decorativeImage="@decorativeImage">
+        <tpr-featured-image image-url="@typedMediaPickerSingle.MediaUrl()" image-alt="@altText" horizontal="@horizontal" decorative-image="@decorativeImage">
             @await Html.PartialAsync("GOVUK/BlockGrid", childBlocks)
         </tpr-featured-image>
     }

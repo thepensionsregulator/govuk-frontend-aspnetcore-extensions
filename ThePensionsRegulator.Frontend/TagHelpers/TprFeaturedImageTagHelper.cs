@@ -17,16 +17,16 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-featured-image";
 
-        [HtmlAttributeName("imageUrl")]
+        [HtmlAttributeName("image-url")]
         public string? ImageUrl { get; set; } = string.Empty; 
 
-        [HtmlAttributeName("imageAlt")]
+        [HtmlAttributeName("image-alt")]
         public string? ImageAlt { get; set; } = string.Empty; 
 
         [HtmlAttributeName("horizontal")]
         public bool? Horizontal { get; set; } = false; 
 
-        [HtmlAttributeName("decorativeImage")]
+        [HtmlAttributeName("decorative-image")]
         public bool? DecorativeImage { get; set; } = false; 
 
         private readonly ITprHtmlGenerator _htmlGenerator;

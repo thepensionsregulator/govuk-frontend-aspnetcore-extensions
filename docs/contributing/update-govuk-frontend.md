@@ -4,8 +4,8 @@ This project builds on [govuk-frontend-aspnetcore](https://github.com/gunndabad/
 
 When you update either you must:
 
-- update `govuk-frontend-aspnetcore` in both the `GovUk.Frontend.AspNetCore.Extensions` and `ThePensionsRegulator.Frontend` packages.
 - check the release notes for both projects for changes that we may need to implement
+- update `govuk-frontend-aspnetcore` in both the `GovUk.Frontend.AspNetCore.Extensions` and `ThePensionsRegulator.Frontend` packages.
 - update the GOV.UK Frontend submodule (see below)
 - update the GOV.UK Frontend npm package (see below)
 - update the version of GOV.UK Frontend in the following files:

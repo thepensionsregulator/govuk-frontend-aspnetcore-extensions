@@ -1,4 +1,4 @@
-﻿import { Accordion } from '/govuk-frontend-5.9.0.min.js';
+﻿import { Accordion } from '/govuk-frontend-5.10.2.min.js';
 
 let searchResults = [];
 

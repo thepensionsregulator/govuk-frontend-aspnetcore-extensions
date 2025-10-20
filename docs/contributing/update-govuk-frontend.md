@@ -16,6 +16,7 @@ When you update either you must:
   - [the GOV.UK version of ApplicationBuilderExtensions.cs](../../GovUk.Frontend.Umbraco/ApplicationBuilderExtensions.cs)
   - [the TPR version of ApplicationBuilderExtensions.cs](../../ThePensionsRegulator.Frontend.Umbraco/ApplicationBuilderExtensions.cs)
   - [tpr-search-results.js](../../ThePensionsRegulator.Frontend/wwwroot/tpr/tpr-search-results.js)
+  - [package.json](../../package.json)
 
 This project references GOV.UK Frontend as a submodule, so that we can import and use the SASS code. This reference **must** be kept aligned with the version referenced by `govuk-frontend-aspnetcore`, therefore any time you update the `govuk-frontend-aspnetcore` NuGet package you should check the release notes to see whether you need to update GOV.UK Frontend.
 

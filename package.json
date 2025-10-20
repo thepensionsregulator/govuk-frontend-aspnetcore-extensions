@@ -25,7 +25,7 @@
     ],
     "transform": {},
     "moduleNameMapper": {
-      "/govuk/all.min.js$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js"
+      "/govuk-frontend-5.9.0.min.js$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js"
     }
   },
   "type": "module",

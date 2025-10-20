@@ -30,7 +30,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
-		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="3.3.0" />
+		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="3.4.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.11.59" />
 		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
 	</ItemGroup>

@@ -49,8 +49,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
             Assert.AreEqual(defaults.PageNumber, pagination.PageNumber);
             Assert.AreEqual(defaults.PageSize, pagination.PageSize);
             Assert.AreEqual(defaults.TotalItems, pagination.TotalItems);
-            // Assert.AreEqual(string.IsNullOrEmpty(defaults.CssClasses), string.IsNullOrEmpty(pagination.CssClasses)); 
-            Assert.AreEqual("govuk-pagination govuk-pagination--block", pagination.CssClasses); // Workaround for https://github.com/x-govuk/govuk-frontend-aspnetcore/issues/345
+            Assert.AreEqual(string.IsNullOrEmpty(defaults.CssClasses), string.IsNullOrEmpty(pagination.CssClasses));
             Assert.AreEqual(defaults.LandmarkLabel, pagination.LandmarkLabel);
             Assert.AreEqual(defaults.PreviousPageLabel, pagination.PreviousPageLabel);
             Assert.AreEqual(defaults.NextPageLabel, pagination.NextPageLabel);
@@ -92,7 +91,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
 
             Assert.AreEqual(pageSize, pagination.PageSize);
             Assert.AreEqual(totalItems, pagination.TotalItems);
-            Assert.AreEqual(cssClasses + " govuk-pagination govuk-pagination--block", pagination.CssClasses); // Workaround for https://github.com/x-govuk/govuk-frontend-aspnetcore/issues/345
+            Assert.AreEqual(cssClasses, pagination.CssClasses);
             Assert.AreEqual(landmarkLabel, pagination.LandmarkLabel);
             Assert.AreEqual(previousPageLabel, pagination.PreviousPageLabel);
             Assert.AreEqual(nextPageLabel, pagination.NextPageLabel);

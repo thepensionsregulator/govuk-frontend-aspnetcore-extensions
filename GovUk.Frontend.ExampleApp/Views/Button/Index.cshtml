@@ -1,4 +1,5 @@
-﻿@{
+﻿@using GovUk.Frontend.AspNetCore
+@{
     ViewData["Title"] = "Button";
 }
 @section OpenWidthContainer {
@@ -46,16 +47,6 @@
             <govuk-button class="govuk-button--inverse" type="button">Reversed button</govuk-button>
         </div>
     </div>
-
-    <govuk-notification-banner>
-        <p class="govuk-body">Reversed buttons should be used inside a notification banner.</p>
-        <govuk-button class="govuk-button--inverse" type="button">Reversed button</govuk-button>
-    </govuk-notification-banner>
-
-    <govuk-notification-banner type="Success">
-        <p class="govuk-body">Reversed buttons should be used inside a notification banner.</p>
-        <govuk-button class="govuk-button--inverse" type="button">Reversed button</govuk-button>
-    </govuk-notification-banner>
 
     <h2 class="govuk-heading-m">Button in a box</h2>
     <p class="govuk-body">Using TPR styles when you put a button as the last child within a box,

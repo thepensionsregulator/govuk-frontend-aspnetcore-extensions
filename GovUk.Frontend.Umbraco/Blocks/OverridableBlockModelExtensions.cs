@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ThePensionsRegulator.Umbraco;
+﻿using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
@@ -51,10 +50,10 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="propertyName">The name of the property on the view model (use <c>nameof(model.MyProperty)</c>).</param>
         /// <param name="publishedValueFallback">The published value fallback strategy.</param>
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched.</returns>
-        public static OverridableBlockListItem? FindBlockByBoundProperty(
+        public static IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>? FindBlockByBoundProperty(
             this IEnumerable<IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>> blockModels, string propertyName, IPublishedValueFallback? publishedValueFallback)
         {
-            return (OverridableBlockListItem?)blockModels.FindBlock(x => x.Settings?.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == propertyName, publishedValueFallback);
+            return blockModels.FindBlock(x => x.Settings?.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString() == propertyName, publishedValueFallback);
         }
 
         /// <summary>
@@ -63,7 +62,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="blockModels">The block models to search.</param>
         /// <param name="propertyName">The name of the property on the view model (use <c>nameof(model.MyProperty)</c>).</param>
         /// <returns>The first matching block, or <c>null</c> if no blocks are matched.</returns>
-        public static OverridableBlockListItem? FindBlockByBoundProperty(
+        public static IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>? FindBlockByBoundProperty(
             this IEnumerable<IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>> blockModels, string propertyName)
         {
             return blockModels.FindBlockByBoundProperty(propertyName, null);

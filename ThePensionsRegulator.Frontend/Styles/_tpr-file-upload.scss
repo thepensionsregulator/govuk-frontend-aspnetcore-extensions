@@ -1,5 +1,6 @@
-﻿
-@import 'govuk/base';
+﻿@import 'govuk/base';
+
+/* .govuk-file-upload is the no-JS version, .govuk-file-upload-button is the JS version */
 $button-shadow-size: $govuk-border-width-form-element;
 
 .govuk-file-upload {
@@ -23,7 +24,8 @@ $button-shadow-size: $govuk-border-width-form-element;
 }
 
 .govuk-file-upload:focus-within::file-selector-button,
-.govuk-file-upload:focus::file-selector-button {
+.govuk-file-upload:focus::file-selector-button,
+.govuk-file-upload-button:focus .govuk-file-upload-button__pseudo-button {
     background-color: $tpr-colour-tangerine-yellow;
     color: $tpr-colour-black;
     border-left-color: transparent;
@@ -37,7 +39,8 @@ $button-shadow-size: $govuk-border-width-form-element;
     box-shadow: inset 0 0 0 govuk-px-to-rem(2) $govuk-focus-text-colour;
 }
 
-.govuk-file-upload::file-selector-button:hover {
+.govuk-file-upload::file-selector-button:hover,
+.govuk-file-upload-button:hover .govuk-file-upload-button__pseudo-button {
     color: $govuk-button-text-colour;
     background-color: $tpr-colour-royal-blue;
 }

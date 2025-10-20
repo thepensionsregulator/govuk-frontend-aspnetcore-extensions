@@ -17,11 +17,11 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
         private readonly ICultureDictionary _cultureDictionary;
         private readonly IPublishedValueFallback? _publishedValueFallback;
-        private readonly GovUkFrontendAspNetCoreOptions _options;
+        private readonly GovUkFrontendOptions _options;
         private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
 
         public ModelBindingMvcConfiguration(
-            GovUkFrontendAspNetCoreOptionsProvider optionsProvider,
+            GovUkFrontendOptionsProvider optionsProvider,
             IUmbracoContextAccessor umbracoContextAccessor,
             ICultureDictionary cultureDictionary,
             IPublishedValueFallback? publishedValueFallback,

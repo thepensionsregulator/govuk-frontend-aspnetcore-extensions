@@ -1,12 +1,10 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions;
+﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.ModelBinding;
 using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Dictionary;
@@ -25,6 +23,12 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         private const string DayComponentName = "Day";
         private const string MonthComponentName = "Month";
         private const string YearComponentName = "Year";
+
+        internal static DateInputItemTypes[] SupportedItemTypes { get; } =
+        [
+            DateInputItemTypes.DayMonthAndYear,
+            DateInputItemTypes.MonthAndYear
+        ];
 
         private readonly DateInputModelConverter _dateInputModelConverter;
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
@@ -48,10 +52,6 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             Guard.ArgumentNotNull(nameof(bindingContext), bindingContext);
 
             var modelType = bindingContext.ModelMetadata.UnderlyingOrModelType;
-            if (!_dateInputModelConverter.CanConvertModelType(modelType))
-            {
-                throw new InvalidOperationException($"Cannot bind {modelType.Name}.");
-            }
 
             if (_umbracoContextAccessor.TryGetUmbracoContext(out var umbracoContext))
             {
@@ -81,6 +81,14 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 return Task.CompletedTask;
             }
 
+            var itemTypes = dayEnabled ? DateInputItemTypes.DayMonthAndYear : DateInputItemTypes.MonthAndYear;
+
+            if (!SupportedItemTypes.Contains(itemTypes))
+            {
+                // Weird combination of fields submitted; we're done
+                return Task.CompletedTask;
+            }
+
             // If some validation exists where a fully-parsable date is an invalid value, using SetInitialValue here allows the date to repopulate
             // without affecting validation. If SetModelValue is used then the date repopulates, but can never pass validation.
             bindingContext.ModelState.SetInitialValue(dayModelName, dayValueProviderResult.FirstValue!);
@@ -88,41 +96,51 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             bindingContext.ModelState.SetInitialValue(yearModelName, yearValueProviderResult.FirstValue!);
 
             var parseErrors = Parse(
-                dayEnabled,
+                itemTypes,
                 dayValueProviderResult.FirstValue,
                 monthValueProviderResult.FirstValue,
                 yearValueProviderResult.FirstValue,
                 _acceptMonthNamesInDateInputs,
-                out var date);
+                out var dateParts);
 
             if (parseErrors == DateInputParseErrors.None)
             {
-                Debug.Assert(date.HasValue);
-                var model = _dateInputModelConverter.CreateModelFromDate(modelType, date!.Value);
-                bindingContext.ModelState.SetInitialValue(bindingContext.ModelName, date!.Value.ToString("yyyy-MM-dd"));
+                var createModelContext = new DateInputConvertToModelContext(modelType, itemTypes, dateParts);
+                var model = _dateInputModelConverter.ConvertToModel(createModelContext);
+                bindingContext.ModelState.SetInitialValue(bindingContext.ModelName, new DateOnly(dateParts.Year!.Value, dateParts.Month!.Value, dateParts.Day!.Value).ToString("yyyy-MM-dd"));
                 bindingContext.Result = ModelBindingResult.Success(model);
             }
             else
             {
-                var parseErrorsProvider = bindingContext.HttpContext.RequestServices.GetRequiredService<DateInputParseErrorsProvider>();
-                parseErrorsProvider.SetErrorsForModel(bindingContext.ModelName, parseErrors);
-
-                if (_dateInputModelConverter.TryCreateModelFromErrors(modelType, parseErrors, out var model))
+                if (!_umbracoHelperAccessor.TryGetUmbracoHelper(out var umbracoHelper))
                 {
-                    bindingContext.Result = ModelBindingResult.Success(model);
+                    throw new InvalidOperationException("Unable to access Umbraco helper");
                 }
-                else
+
+                var overallAttemptedValueParts = new List<ValueProviderResult>();
+
+                if (itemTypes.HasFlag(DateInputItemTypes.Day))
                 {
-                    if (!_umbracoHelperAccessor.TryGetUmbracoHelper(out var umbracoHelper))
-                    {
-                        throw new InvalidOperationException("Unable to access Umbraco helper");
-                    }
-
-                    var errorMessage = GetModelStateErrorMessage(blockSettings, _cultureDictionary, parseErrors, bindingContext.ModelMetadata, umbracoHelper);
-                    bindingContext.ModelState.AddModelError(bindingContext.ModelName, errorMessage);
-
-                    bindingContext.Result = ModelBindingResult.Failed();
+                    overallAttemptedValueParts.Add(dayValueProviderResult);
                 }
+
+                if (itemTypes.HasFlag(DateInputItemTypes.Month))
+                {
+                    overallAttemptedValueParts.Add(monthValueProviderResult);
+                }
+
+                if (itemTypes.HasFlag(DateInputItemTypes.Year))
+                {
+                    overallAttemptedValueParts.Add(yearValueProviderResult);
+                }
+
+                var overallAttemptedValue = string.Join(",", overallAttemptedValueParts.Select(vpr => vpr.FirstValue ?? ""));
+
+                var errorMessage = GetModelStateErrorMessage(blockSettings, _cultureDictionary, parseErrors, bindingContext.ModelMetadata, umbracoHelper);
+                bindingContext.ModelState.SetModelValue(bindingContext.ModelName, rawValue: null, attemptedValue: overallAttemptedValue);
+                bindingContext.ModelState.AddModelError(bindingContext.ModelName, errorMessage);
+
+                bindingContext.Result = ModelBindingResult.Failed();
             }
 
             return Task.CompletedTask;
@@ -174,7 +192,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         }
 
         // internal for testing
-        internal static DateInputParseErrors Parse(bool dayEnabled, string? day, string? month, string? year, bool acceptMonthNames, out DateOnly? date)
+        internal static DateInputParseErrors Parse(DateInputItemTypes itemTypes, string? day, string? month, string? year, bool acceptMonthNames, out DateInputItemValues dateParts)
         {
             day ??= string.Empty;
             month ??= string.Empty;
@@ -182,47 +200,65 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
 
             var errors = DateInputParseErrors.None;
             int parsedYear = 0, parsedMonth = 0, parsedDay = 0;
+            int? maxDaysInMonth = null;
 
-            if (string.IsNullOrEmpty(year))
-            {
-                errors |= DateInputParseErrors.MissingYear;
-            }
-            else if (year.Length != 4)
-            {
-                errors |= DateInputParseErrors.InvalidYear;
-            }
-            else if (!TryParseYear(year, out parsedYear))
-            {
-                errors |= DateInputParseErrors.InvalidYear;
-            }
+            var expectYear = (itemTypes & DateInputItemTypes.Year) != 0;
+            Debug.Assert((itemTypes & DateInputItemTypes.Month) != 0);
+            var expectMonth = true;
+            var expectDay = (itemTypes & DateInputItemTypes.Day) != 0;
 
-            if (string.IsNullOrEmpty(month))
+            if (expectYear)
             {
-                errors |= DateInputParseErrors.MissingMonth;
-            }
-            else if (!TryParseMonth(month, out parsedMonth) || parsedMonth < 1 || parsedMonth > 12)
-            {
-                errors |= DateInputParseErrors.InvalidMonth;
+                if (string.IsNullOrEmpty(year))
+                {
+                    errors |= DateInputParseErrors.MissingYear;
+                }
+                else if (!TryParseYear(year, out parsedYear) || parsedYear < 1 || parsedYear > 9999 || year.Length != 4)
+                {
+                    errors |= DateInputParseErrors.InvalidYear;
+                }
             }
 
-            if (dayEnabled)
+            var yearIsValid = (errors & (DateInputParseErrors.InvalidYear | DateInputParseErrors.MissingYear)) == 0;
+
+            if (expectMonth)
             {
+                if (string.IsNullOrEmpty(month))
+                {
+                    errors |= DateInputParseErrors.MissingMonth;
+                }
+                else if (!TryParseMonth(month, out parsedMonth) || parsedMonth < 1 || parsedMonth > 12)
+                {
+                    errors |= DateInputParseErrors.InvalidMonth;
+                }
+            }
+
+            var monthIsValid = (errors & (DateInputParseErrors.InvalidMonth | DateInputParseErrors.MissingMonth)) == 0;
+
+            if (expectDay)
+            {
+                // If we know the year and month we can figure out the days in the month.
+                // If we only have the month and not a year, we should assume the year could be a leap year.
+                if (monthIsValid)
+                {
+                    var y = yearIsValid ? parsedYear : 2000;  // 2000 is a leap year
+                    maxDaysInMonth = DateTime.DaysInMonth(y, parsedMonth);
+                }
+
                 if (string.IsNullOrEmpty(day))
                 {
                     errors |= DateInputParseErrors.MissingDay;
                 }
-                else if (!TryParseDay(day, out parsedDay) || parsedDay < 1 || parsedDay > 31 ||
-                    errors == DateInputParseErrors.None && parsedDay > DateTime.DaysInMonth(parsedYear, parsedMonth))
+                else if (!TryParseDay(day, out parsedDay) || parsedDay < 1 || parsedDay > 31 || parsedDay > maxDaysInMonth)
                 {
                     errors |= DateInputParseErrors.InvalidDay;
                 }
             }
-            else
-            {
-                parsedDay = 1;
-            }
 
-            date = errors == DateInputParseErrors.None ? new(parsedYear, parsedMonth, parsedDay) : default;
+            dateParts = errors == DateInputParseErrors.None ? new(
+                expectDay ? parsedDay : 1,
+                expectMonth ? parsedMonth : null,
+                expectYear ? parsedYear : null) : default;
             return errors;
 
             bool TryParseDay(string value, out int result) => int.TryParse(value, out result);
@@ -237,7 +273,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
 
                 if (!int.TryParse(value, out result) && acceptMonthNames)
                 {
-                    result = value.ToLower() switch
+                    result = value.ToLowerInvariant() switch
                     {
                         "jan" => 1,
                         "january" => 1,
@@ -266,7 +302,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                     };
                 }
 
-                return result != 0;
+                return result is not 0;
             }
 
             bool TryParseYear(string value, out int result) => int.TryParse(value, out result);

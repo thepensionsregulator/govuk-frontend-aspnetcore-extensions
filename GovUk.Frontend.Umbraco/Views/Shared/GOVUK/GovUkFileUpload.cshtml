@@ -27,11 +27,12 @@
     var fileTypes = Model.Settings.Value<string>(PropertyAliases.FileUploadFileTypes);
     var errorMessagePrefix = Model.Settings.Value<string>(PropertyAliases.ErrorMessagePrefix);
     if (string.IsNullOrEmpty(errorMessagePrefix)) { errorMessagePrefix = "Error"; }
+    var allowMultiple = Model.Settings.Value<bool>(PropertyAliases.FileUploadAllowMultiple);
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
 
-    <govuk-file-upload name="@modelPropertyName" class="@cssClass" input-accept="@fileTypes">
+    <govuk-file-upload name="@modelPropertyName" class="@cssClass" input-accept="@fileTypes" javascript-enhancements="true" multiple="@allowMultiple">
         <govuk-file-upload-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-file-upload-label>
         @if (!string.IsNullOrWhiteSpace(hint?.ToHtmlString()))
         {

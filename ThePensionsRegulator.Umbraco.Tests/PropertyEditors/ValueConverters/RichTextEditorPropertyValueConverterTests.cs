@@ -21,10 +21,10 @@ using Umbraco.Cms.Core.Templates;
 
 namespace ThePensionsRegulator.Umbraco.Tests.PropertyEditors.ValueConverters
 {
-    [TestFixture]
+    
     public class RichTextEditorPropertyValueConverterTests
     {
-        [Test]
+        [Fact]
         public void Applies_PropertyValueFormatters()
         {
             // Arrange
@@ -67,7 +67,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.PropertyEditors.ValueConverters
                 propertyType, PropertyCacheLevel.Snapshot, new FakeRichTextIntermediateValue { Markup = INITIAL_VALUE }, false);
 
             // Assert
-            Assert.That(((IHtmlEncodedString?)result)?.ToHtmlString(), Is.EqualTo(EXPECTED_VALUE));
+            Assert.Equal(EXPECTED_VALUE, ((IHtmlEncodedString?)result)?.ToHtmlString());
         }
 
         private class FakeRichTextIntermediateValue : IRichTextEditorIntermediateValue

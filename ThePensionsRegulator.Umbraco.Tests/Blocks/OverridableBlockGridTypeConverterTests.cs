@@ -6,7 +6,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 {
     public class OverridableBlockGridTypeConverterTests
     {
-        [Test]
+        [Fact]
         public void Can_convert()
         {
             // Arrange
@@ -26,8 +26,8 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             }
 
             // Assert
-            Assert.That(converted, Is.Not.Null);
-            Assert.That(converted.Count, Is.EqualTo(blockGrid.Count()));
+            Assert.NotNull(converted);
+            Assert.Equal(blockGrid.Count(), converted.Count);
         }
     }
 }

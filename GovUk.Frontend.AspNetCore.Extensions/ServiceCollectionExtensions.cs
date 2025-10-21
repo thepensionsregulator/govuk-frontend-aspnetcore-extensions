@@ -26,6 +26,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
             Action<GovUkFrontendOptions> configureOptionsWithDefaults = opt =>
             {
                 opt.ErrorSummaryGeneration = ErrorSummaryGenerationOptions.None;
+                opt.DefaultFileUploadJavaScriptEnhancements = true;
                 configureOptions(opt);
             };
 

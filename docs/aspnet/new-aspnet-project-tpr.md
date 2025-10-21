@@ -8,7 +8,7 @@
 
 4. Download the `Tools-TPRGitHooks` repository to a sibling folder of your new solution. Copy `Install-TPRGitHooks.ps1` to your repository and run it. This requires [PowerShell Core](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows).
 
-5. In `Startup.cs` add the following to the `ConfigureServices` method:
+5. In `Startup.cs` add the following:
 
    ```csharp
    using GovUk.Frontend.AspNetCore.Extensions;
@@ -18,6 +18,14 @@
        // Other code here
 
        services.AddTprFrontend();
+   }
+
+
+   public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+   {
+      // Other code here
+
+      app.UseTprFrontend();
    }
    ```
 

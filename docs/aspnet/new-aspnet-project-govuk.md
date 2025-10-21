@@ -4,7 +4,7 @@
 
 2. Add the `ThePensionsRegulator.GovUk.Frontend` NuGet package to your project.
 
-3. In `Startup.cs` add the following to the `ConfigureServices` method:
+3. In `Startup.cs` add the following:
 
    ```csharp
    using GovUk.Frontend.AspNetCore.Extensions;
@@ -14,6 +14,13 @@
        // Other code here
 
        services.AddGovUkFrontendExtensions();
+   }
+
+   public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+   {
+      // Other code here
+
+      app.UseGovUkFrontendExtensions();
    }
    ```
 

@@ -1,18 +1,16 @@
 ﻿using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
-using NUnit.Framework;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
-{
-    [TestFixture]
-    public class GovUkTypographyPropertyValueFormatterTests
+{    public class GovUkTypographyPropertyValueFormatterTests
     {
-        [TestCase(Constants.PropertyEditors.Aliases.TinyMce, true)]
-        [TestCase(PropertyEditorAliases.GovUkInlineRichText, false)]
-        [TestCase(PropertyEditorAliases.GovUkInlineInverseRichText, false)]
+        [Theory]
+        [InlineData(Constants.PropertyEditors.Aliases.TinyMce, true)]
+        [InlineData(PropertyEditorAliases.GovUkInlineRichText, false)]
+        [InlineData(PropertyEditorAliases.GovUkInlineInverseRichText, false)]
         public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)
         {
             // Arrange
@@ -23,10 +21,10 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var result = formatter.IsFormatter(propertyType);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void Accepts_string_or_HtmlEncodedString_as_input()
         {
             // Arrange
@@ -39,57 +37,60 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var resultOfHtmlEncodedString = formatter.FormatValue(new HtmlEncodedString(INPUT));
 
             // Assert
-            Assert.That(((HtmlEncodedString)resultOfString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
-            Assert.That(((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString(), Is.EqualTo(EXPECTED));
+            Assert.Equal(EXPECTED, ((HtmlEncodedString)resultOfString)?.ToHtmlString());
+            Assert.Equal(EXPECTED, ((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString());
         }
 
-        [Test]
+        [Fact]
         public void Style_attribute_is_removed_from_ordered_lists()
         {
             TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromOrderedLists(
                 new GovUkTypographyPropertyValueFormatter());
         }
 
-        [TestCase("lower-alpha")]
-        [TestCase("lower-greek")]
-        [TestCase("lower-roman")]
-        [TestCase("upper-alpha")]
-        [TestCase("upper-roman")]
+        [Theory]
+        [InlineData("lower-alpha")]
+        [InlineData("lower-greek")]
+        [InlineData("lower-roman")]
+        [InlineData("upper-alpha")]
+        [InlineData("upper-roman")]
         public void Permitted_style_attribute_is_converted_to_class_from_ordered_lists(string listStyleType)
         {
             TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnOrderedLists(
                 new GovUkTypographyPropertyValueFormatter(), listStyleType);
         }
 
-        [Test]
+        [Fact]
         public void Style_attribute_is_removed_from_unordered_lists()
         {
             TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromUnorderedLists(
                 new GovUkTypographyPropertyValueFormatter());
         }
 
-        [TestCase("circle")]
-        [TestCase("square")]
+        [Theory]
+        [InlineData("circle")]
+        [InlineData("square")]
         public void Permitted_style_attribute_is_converted_to_class_on_unordered_lists(string listStyleType)
         {
             TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnUnorderedLists(
                 new GovUkTypographyPropertyValueFormatter(), listStyleType);
         }
 
-        [Test]
+        [Fact]
         public void Style_attribute_is_removed_from_paragraphs()
         {
             TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromParagraphs(
                 new GovUkTypographyPropertyValueFormatter());
         }
 
-        [TestCase("text-align: center", "govuk-!-text-align-centre")]
-        [TestCase("text-align: right", "govuk-!-text-align-right")]
-        [TestCase("padding-left: 40px", "govuk-!-padding-left-7")]
-        [TestCase("padding-left: 80px", "govuk-!-padding-left-14")]
-        [TestCase("padding-left: 120px", "govuk-!-padding-left-21")]
-        [TestCase("padding-left: 160px", "govuk-!-padding-left-28")]
-        [TestCase("padding-left: 200px", "govuk-!-padding-left-35")]
+        [Theory]
+        [InlineData("text-align: center", "govuk-!-text-align-centre")]
+        [InlineData("text-align: right", "govuk-!-text-align-right")]
+        [InlineData("padding-left: 40px", "govuk-!-padding-left-7")]
+        [InlineData("padding-left: 80px", "govuk-!-padding-left-14")]
+        [InlineData("padding-left: 120px", "govuk-!-padding-left-21")]
+        [InlineData("padding-left: 160px", "govuk-!-padding-left-28")]
+        [InlineData("padding-left: 200px", "govuk-!-padding-left-35")]
         public void Permitted_style_attribute_is_converted_to_class_on_paragraphs(string styleAttribute, string expectedClass)
         {
             TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(

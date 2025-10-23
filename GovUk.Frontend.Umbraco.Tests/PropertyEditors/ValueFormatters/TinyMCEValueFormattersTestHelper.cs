@@ -1,5 +1,4 @@
 ﻿using HtmlAgilityPack;
-using NUnit.Framework;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core.Strings;
 
@@ -13,7 +12,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
-            Assert.AreEqual("Some content", result.ToHtmlString());
+            Assert.Equal("Some content", result.ToHtmlString());
         }
 
         internal static void SingleWrappingParagraphWithClassIsLeftAlone(IPropertyValueFormatter formatter)
@@ -22,7 +21,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
-            Assert.AreEqual("<p class=\"some-class govuk-body\">Some content</p>", result.ToHtmlString());
+            Assert.Equal("<p class=\"some-class govuk-body\">Some content</p>", result.ToHtmlString());
         }
 
         internal static void MultipleWrappingParagraphsAreLeftAlone(IPropertyValueFormatter formatter)
@@ -33,7 +32,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result.ToHtmlString());
-            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//p").Count);
         }
 
         internal static void TestStyleAttributeIsRemovedFromOrderedLists(IPropertyValueFormatter formatter)
@@ -44,7 +43,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result.ToHtmlString());
-            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//ol").Count);
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//ol").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
         }
 
@@ -56,8 +55,8 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result.ToHtmlString());
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//ol").Count);
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//ol[contains(@class,'govuk-list--{listStyleType}')]").Count);
+            Assert.Equal(1, doc.DocumentNode.SelectNodes("//ol").Count);
+            Assert.Equal(1, doc.DocumentNode.SelectNodes($"//ol[contains(@class,'govuk-list--{listStyleType}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
         }
 
@@ -69,7 +68,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result.ToHtmlString());
-            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//ul").Count);
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//ul").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ul[@style]"));
         }
 
@@ -81,8 +80,8 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result.ToHtmlString());
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//ul").Count);
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//ul[contains(@class,'govuk-list--{listStyleType}')]").Count);
+            Assert.Equal(1, doc.DocumentNode.SelectNodes("//ul").Count);
+            Assert.Equal(1, doc.DocumentNode.SelectNodes($"//ul[contains(@class,'govuk-list--{listStyleType}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ul[@style]"));
         }
 
@@ -94,7 +93,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result.ToHtmlString());
-            Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//p").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
         }
 
@@ -106,8 +105,8 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result.ToHtmlString());
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//p").Count);
-            Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//p[contains(@class,'{expectedClass}')]").Count);
+            Assert.Equal(1, doc.DocumentNode.SelectNodes("//p").Count);
+            Assert.Equal(1, doc.DocumentNode.SelectNodes($"//p[contains(@class,'{expectedClass}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
         }
     }

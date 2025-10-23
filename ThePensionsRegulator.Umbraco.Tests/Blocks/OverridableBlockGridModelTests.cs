@@ -260,8 +260,8 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = new OverridableBlockGridModel(blockGrid);
 
             // Assert
-            Assert.Equal(1, result[0].Areas.Count());
-            Assert.Equal(1, result[0].Areas.First().Count());
+            Assert.Single(result[0].Areas);
+            Assert.Single(result[0].Areas.First());
             Assert.Equal(AREA_ALIAS, result[0].Areas.First().Alias);
             Assert.Equal(AREA_ROWSPAN, result[0].Areas.First().RowSpan);
             Assert.Equal(AREA_COLSPAN, result[0].Areas.First().ColumnSpan);

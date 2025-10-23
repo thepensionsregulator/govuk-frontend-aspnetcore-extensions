@@ -31,10 +31,10 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             Assert.Contains(blockList2, results);
             Assert.Contains(blockGrid1, results);
             Assert.Contains(blockGrid2, results);
-            Assert.Equal(1, results[0].Count());
-            Assert.Equal(1, results[1].Count());
-            Assert.Equal(1, results[2].Count());
-            Assert.Equal(1, results[3].Count());
+            Assert.Single(results[0]);
+            Assert.Single(results[1]);
+            Assert.Single(results[2]);
+            Assert.Single(results[3]);
         }
     }
 }

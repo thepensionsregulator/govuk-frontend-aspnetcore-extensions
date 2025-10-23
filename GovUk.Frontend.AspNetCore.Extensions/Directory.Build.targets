@@ -4,33 +4,4 @@
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
 		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
 		 -->
-	<Target Name="GovUkFrontend_BuildSass" BeforeTargets="BeforeBuild">
-		<PropertyGroup>
-			<UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>
-			<UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
-		</PropertyGroup>
-		<PropertyGroup>
-			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
-		</PropertyGroup>
-		<Exec Command="git describe --tags" Condition="Exists('$(GovUkFrontEndFolder)')" WorkingDirectory="$(GovUkFrontEndFolder)" ConsoleToMsBuild="true">
-			<Output TaskParameter="ConsoleOutput" PropertyName="GovUkFrontEndVersion" />
-		</Exec>
-		<Message Text="You are using GOV.UK Frontend $(GovUkFrontEndVersion). You can run 'git submodule update' to check for updates." Condition="Exists('$(GovUkFrontEndFolder)')" />
-		<Message Text="Installing GOV.UK Frontend submodule" Condition="!Exists('$(GovUkFrontEndFolder)')" />
-		<Exec Command="git submodule update --init" Condition="!Exists('$(GovUkFrontEndFolder)')" />
-
-		<Message Text="Run SassCompiler $(MSBuildProjectFullPath)" Importance="high"/>
-		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
-			<Output TaskParameter="Result" ItemName="SassCompilerVersion" />
-		</XmlPeek>
-		<PropertyGroup>
-			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
-			<SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
-			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
-			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\</TargetFolder>
-		</PropertyGroup>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-frontend.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(SourceFolder) $(TargetFolder)govuk\govuk-frontend.css"/>
-		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
-	</Target>
-
 </Project>

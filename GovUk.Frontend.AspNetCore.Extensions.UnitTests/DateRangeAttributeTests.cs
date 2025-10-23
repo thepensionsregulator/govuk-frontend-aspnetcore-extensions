@@ -1,6 +1,5 @@
 ﻿using FakeTimeZone;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -33,6 +32,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
         // Values specified as a floating date/time (no time zone) as the user is not able to submit a time zone with the 'Date input' component
+        [Theory]
         [InlineData("2022-12-31T23:59:00", false)]
         [InlineData("2022-12-31", false)]
         [InlineData("2023-01-01T00:00:00", true)]
@@ -52,6 +52,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
         // Values specified as a floating date/time (no time zone) as the user is not able to submit a time zone with the 'Date input' component
+        [Theory]
         [InlineData("2022-12-31T23:59:00", false)]
         [InlineData("2022-12-31", false)]
         [InlineData("2023-01-01T00:00:00", true)]
@@ -71,6 +72,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
         // Values specified as a floating date/time (no time zone) as the user is not able to submit a time zone with the 'Date input' component
+        [Theory]
         [InlineData("2023-05-31T23:59:00", false)]
         [InlineData("2023-05-31", false)]
         [InlineData("2023-06-01T00:00:00", true)]
@@ -91,6 +93,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
         // Values specified as a floating date/time (no time zone) as the user is not able to submit a time zone with the 'Date input' component
+        [Theory]
         [InlineData("2023-05-31T23:59:00", false)]
         [InlineData("2023-05-31", false)]
         [InlineData("2023-06-01T00:00:00", true)]
@@ -156,6 +159,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
         // Values specified as a floating date (no time zone) as the user is not able to submit a time zone with the 'Date input' component
+        [Theory]
         [InlineData("2022-12-31", false)]
         [InlineData("2023-01-01", true)]
         [InlineData("2023-06-01", true)]
@@ -170,6 +174,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
         // Values specified as a floating date (no time zone) as the user is not able to submit a time zone with the 'Date input' component
+        [Theory]
         [InlineData("2022-12-31", false)]
         [InlineData("2023-01-01", true)]
         [InlineData("2023-06-01", true)]
@@ -184,6 +189,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
         // Values specified as a floating date (no time zone) as the user is not able to submit a time zone with the 'Date input' component
+        [Theory]
         [InlineData("2023-05-31", false)]
         [InlineData("2023-06-01", true)]
         [InlineData("2023-12-31", true)]
@@ -199,6 +205,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
         // Values specified as a floating date (no time zone) as the user is not able to submit a time zone with the 'Date input' component
+        [Theory]
         [InlineData("2023-05-31", false)]
         [InlineData("2023-06-01", true)]
         [InlineData("2023-12-31", true)]

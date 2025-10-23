@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
-    
+
     public class UkPostcodeModelBinderTests
     {
         [Theory]
-        [InlineData(null, "")]
+        [InlineData(null!, "")]
         [InlineData("", "")]
         [InlineData("ab01aa", "AB0 1AA")]
         [InlineData("aa2 3aa", "AA2 3AA")]

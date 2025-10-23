@@ -4,9 +4,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     public class GovUkTypographyTests
     {
+        [Theory]
         [InlineData("")]
         [InlineData("  ")]
-        [Theory]
         [InlineData(null)]
         public void Null_or_whitespace_returns_empty_string(string? html)
         {
@@ -106,8 +106,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes($"//{headingLevel}[@class='govuk-heading-s']").Count);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes($"//{headingLevel}[@class='govuk-heading-m']").Count);
+            Assert.Single(doc.DocumentNode.SelectNodes($"//{headingLevel}[@class='govuk-heading-s']"));
+            Assert.Single(doc.DocumentNode.SelectNodes($"//{headingLevel}[@class='govuk-heading-m']"));
         }
 
         [Fact]
@@ -232,12 +232,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             var doc = new HtmlDocument();
             doc.LoadHtml(result);
 
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//table[contains(@class,'govuk-table')]").Count);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//caption[contains(@class,'govuk-table__caption')]").Count);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//thead[contains(@class,'govuk-table__head')]").Count);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//thead/tr[contains(@class,'govuk-table__row')]").Count);
+            Assert.Single(doc.DocumentNode.SelectNodes("//table[contains(@class,'govuk-table')]"));
+            Assert.Single(doc.DocumentNode.SelectNodes("//caption[contains(@class,'govuk-table__caption')]"));
+            Assert.Single(doc.DocumentNode.SelectNodes("//thead[contains(@class,'govuk-table__head')]"));
+            Assert.Single(doc.DocumentNode.SelectNodes("//thead/tr[contains(@class,'govuk-table__row')]"));
             Assert.Equal(2, doc.DocumentNode.SelectNodes("//thead//th[contains(@class,'govuk-table__header')]").Count);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//tbody[contains(@class,'govuk-table__body')]").Count);
+            Assert.Single(doc.DocumentNode.SelectNodes("//tbody[contains(@class,'govuk-table__body')]"));
             Assert.Equal(3, doc.DocumentNode.SelectNodes("//tbody/tr[contains(@class,'govuk-table__row')]").Count);
             Assert.Equal(3, doc.DocumentNode.SelectNodes("//tbody/tr/th[contains(@class,'govuk-table__header')]").Count);
             Assert.Equal(3, doc.DocumentNode.SelectNodes("//tbody/tr/td[contains(@class,'govuk-table__cell')]").Count);
@@ -260,12 +260,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.Equal("govuk-heading-s", result.Heading6);
         }
 
+        [Theory]
         [InlineData("govuk-heading-l")]
         [InlineData("govuk-heading-m")]
         [InlineData("govuk-heading-s")]
         [InlineData("something-else")]
         [InlineData("")]
-        [Theory]
         [InlineData(null)]
         public void HeadingLevels_scales_down_from_l_when_any_other_value_passed(string? value)
         {

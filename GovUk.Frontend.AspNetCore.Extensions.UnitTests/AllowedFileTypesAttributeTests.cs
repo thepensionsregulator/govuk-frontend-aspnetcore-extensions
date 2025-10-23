@@ -109,7 +109,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             var testValue = new ValidFileFormatDataProvider().GetExcelFile("abc.txt");
             var result = sut.IsValid(testValue);
 
-            Assert.Equal(false, result);
+            Assert.False(result);
         }
 
         #endregion returnsfalse

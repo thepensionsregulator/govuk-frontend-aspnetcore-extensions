@@ -4,7 +4,6 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Tests
 {
-	[TestFixture]
 	public class TokenListTests
 	{
 		private const string PROPERTY_ALIAS = "alias";
@@ -23,38 +22,40 @@ namespace ThePensionsRegulator.Umbraco.Tests
 			return (new TokenList(publishedElement.Object, PROPERTY_ALIAS), publishedElement);
 		}
 
-		[Test]
+		[Fact]
 		public void Null_publishedElement_returns_empty_TokenList()
 		{
 			var list = new TokenList(null, PROPERTY_ALIAS);
 
-			Assert.That(list.Count, Is.EqualTo(0));
-			Assert.That(list.ToString(), Is.EqualTo(string.Empty));
+			Assert.Empty(list);
+			Assert.Equal(string.Empty, list.ToString());
 		}
 
-		[Test]
+		[Fact]
 		public void Class_list_is_tokenised()
 		{
 			var tokenList = CreateOverridableTokenList();
 
-			Assert.That(tokenList.TokenList.Count, Is.EqualTo(3));
-			Assert.That(tokenList.TokenList[0], Is.EqualTo("example-a"));
-			Assert.That(tokenList.TokenList[1], Is.EqualTo("example-b"));
-			Assert.That(tokenList.TokenList[2], Is.EqualTo("example-c"));
+			Assert.Equal(3, tokenList.TokenList.Count);
+			Assert.Equal("example-a", tokenList.TokenList[0]);
+			Assert.Equal("example-b", tokenList.TokenList[1]);
+			Assert.Equal("example-c", tokenList.TokenList[2]);
 		}
 
-		[TestCase("example-b", true)]
-		[TestCase("example-d", false)]
-		[TestCase("example", false)]
+		[Theory]
+		[InlineData("example-b", true)]
+		[InlineData("example-d", false)]
+		[InlineData("example", false)]
 		public void Contains_checks_whole_tokens_only(string checkFor, bool expected)
 		{
 			var tokenList = CreateOverridableTokenList();
 
 			var result = tokenList.TokenList.Contains(checkFor);
 
-			Assert.That(result, Is.EqualTo(expected));
+			Assert.Equal(expected, result);
 		}
 
+		[Fact]
 		public void Can_copy_to_array()
 		{
 			var tokenList = CreateOverridableTokenList();
@@ -62,22 +63,22 @@ namespace ThePensionsRegulator.Umbraco.Tests
 			var result = new string[tokenList.TokenList.Count];
 			tokenList.TokenList.CopyTo(result, 0);
 
-			Assert.That(result[0], Is.EqualTo("example-a"));
-			Assert.That(result[1], Is.EqualTo("example-b"));
-			Assert.That(result[2], Is.EqualTo("example-c"));
+			Assert.Equal("example-a", result[0]);
+			Assert.Equal("example-b", result[1]);
+			Assert.Equal("example-c", result[2]);
 		}
 
-		[Test]
+		[Fact]
 		public void Can_find_index_of_token()
 		{
 			var tokenList = CreateOverridableTokenList();
 
 			var result = tokenList.TokenList.IndexOf("example-b");
 
-			Assert.That(result, Is.EqualTo(1));
+			Assert.Equal(1, result);
 		}
 
-		[Test]
+		[Fact]
 		public void Can_add_token()
 		{
 			var tokenList = CreateOverridableTokenList();
@@ -87,18 +88,18 @@ namespace ThePensionsRegulator.Umbraco.Tests
 			tokenList.Settings.Verify(x => x.OverrideValue(PROPERTY_ALIAS, "example-a example-b example-c example-d"), Times.Once);
 		}
 
-		[Test]
+		[Fact]
 		public void Add_token_throws_if_read_only()
 		{
 			var tokenList = CreateReadOnlyTokenList();
 
-			Assert.Throws<NotSupportedException>(delegate
+			Assert.Throws<NotSupportedException>(() =>
 			{
 				tokenList.TokenList.Add("example-d");
 			});
 		}
 
-		[Test]
+		[Fact]
 		public void Can_insert_at_index()
 		{
 			var tokenList = CreateOverridableTokenList();
@@ -108,18 +109,18 @@ namespace ThePensionsRegulator.Umbraco.Tests
 			tokenList.Settings.Verify(x => x.OverrideValue(PROPERTY_ALIAS, "example-a example-d example-b example-c"), Times.Once);
 		}
 
-		[Test]
+		[Fact]
 		public void Insert_at_index_throws_if_read_only()
 		{
 			var tokenList = CreateReadOnlyTokenList();
 
-			Assert.Throws<NotSupportedException>(delegate
+			Assert.Throws<NotSupportedException>(() =>
 			{
 				tokenList.TokenList.Insert(1, "example-d");
 			});
 		}
 
-		[Test]
+		[Fact]
 		public void Can_remove_token()
 		{
 			var tokenList = CreateOverridableTokenList();
@@ -129,19 +130,19 @@ namespace ThePensionsRegulator.Umbraco.Tests
 			tokenList.Settings.Verify(x => x.OverrideValue(PROPERTY_ALIAS, "example-a example-c"), Times.Once);
 		}
 
-		[Test]
+		[Fact]
 		public void Remove_token_throws_if_read_only()
 		{
 			var tokenList = CreateReadOnlyTokenList();
 
-			Assert.Throws<NotSupportedException>(delegate
+			Assert.Throws<NotSupportedException>(() =>
 			{
 				tokenList.TokenList.Remove("example-b");
 			});
 		}
 
 
-		[Test]
+		[Fact]
 		public void Can_remove_at_index()
 		{
 			var tokenList = CreateOverridableTokenList();
@@ -151,18 +152,18 @@ namespace ThePensionsRegulator.Umbraco.Tests
 			tokenList.Settings.Verify(x => x.OverrideValue(PROPERTY_ALIAS, "example-a example-c"), Times.Once);
 		}
 
-		[Test]
+		[Fact]
 		public void Remove_at_index_throws_if_read_only()
 		{
 			var tokenList = CreateReadOnlyTokenList();
 
-			Assert.Throws<NotSupportedException>(delegate
+			Assert.Throws<NotSupportedException>(() =>
 			{
 				tokenList.TokenList.RemoveAt(1);
 			});
 		}
 
-		[Test]
+		[Fact]
 		public void Can_clear_tokens()
 		{
 			var tokenList = CreateOverridableTokenList();
@@ -172,25 +173,25 @@ namespace ThePensionsRegulator.Umbraco.Tests
 			tokenList.Settings.Verify(x => x.OverrideValue(PROPERTY_ALIAS, string.Empty), Times.Once);
 		}
 
-		[Test]
+		[Fact]
 		public void Clear_tokens_throws_if_read_only()
 		{
 			var tokenList = CreateReadOnlyTokenList();
 
-			Assert.Throws<NotSupportedException>(delegate
+			Assert.Throws<NotSupportedException>(() =>
 			{
 				tokenList.TokenList.Clear();
 			});
 		}
 
-		[Test]
+		[Fact]
 		public void ToString_returns_tokens()
 		{
 			var tokenList = CreateOverridableTokenList();
 
 			var result = tokenList.TokenList.ToString();
 
-			Assert.That(result, Is.EqualTo("example-a example-b example-c"));
+			Assert.Equal("example-a example-b example-c", result);
 		}
 	}
 }

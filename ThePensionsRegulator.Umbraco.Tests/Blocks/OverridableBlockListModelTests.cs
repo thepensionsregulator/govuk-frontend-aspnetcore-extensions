@@ -13,8 +13,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         private const string DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS = "docTypeChildBlocks";
         private const string PROPERTY_ALIAS_CHILD_BLOCKS = "childBlocks";
 
-        [SetUp]
-        public void Setup()
+        public OverridableBlockListModelTests()
         {
             _ = new UmbracoTestContext(); // Sets up Umbraco dependency injection
         }
@@ -42,7 +41,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             return (parentBlockList, childBlockList, grandChildBlockList);
         }
 
-        [Test]
+        [Fact]
         public void BlockListModels_are_converted_to_OverridableBlockListModels_including_nested_block_lists()
         {
             // Arrange
@@ -100,12 +99,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             _ = new OverridableBlockListModel(parentBlockList, null, factory);
 
             // Assert
-            Assert.IsNotNull(convertedChildBlockList);
-            Assert.IsNotNull(convertedGrandChildBlockList);
+            Assert.NotNull(convertedChildBlockList);
+            Assert.NotNull(convertedGrandChildBlockList);
 
         }
 
-        [Test]
+        [Fact]
 
         public void BlockListModels_are_converted_to_OverridableBlockListModels_including_overridden_nested_block_lists()
         {
@@ -140,12 +139,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Assert
             var overriddenBlock = model.FindBlockByContentTypeAlias(OVERRIDDEN_BLOCK_TYPE_ALIAS);
-            Assert.That(overriddenBlock, Is.Not.Null);
-            Assert.That(overriddenBlock.Content.Value<string>(OVERRIDDEN_TEXT_PROPERTY), Is.EqualTo(OVERRIDDEN_TEXT_VALUE));
+            Assert.NotNull(overriddenBlock);
+            Assert.Equal(OVERRIDDEN_TEXT_VALUE, overriddenBlock.Content.Value<string>(OVERRIDDEN_TEXT_PROPERTY));
         }
 
 
-        [Test]
+        [Fact]
         public void Filter_is_passed_down_from_constructor()
         {
             // Arrange
@@ -157,16 +156,16 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = new OverridableBlockListModel(blockLists.ParentBlockList, filter);
 
             // Assert
-            Assert.That(model.Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, model.Filter);
 
             var childBlockList = model[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-            Assert.That(childBlockList!.Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, childBlockList!.Filter);
 
             var grandchildBlockList = childBlockList[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-            Assert.That(grandchildBlockList!.Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, grandchildBlockList!.Filter);
         }
 
-        [Test]
+        [Fact]
         public void Filter_is_passed_down_from_setter()
         {
             // Arrange
@@ -179,16 +178,16 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             model.Filter = filter;
 
             // Assert
-            Assert.That(model.Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, model.Filter);
 
             var childBlockList = model[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-            Assert.That(childBlockList!.Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, childBlockList!.Filter);
 
             var grandchildBlockList = childBlockList[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-            Assert.That(grandchildBlockList!.Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, grandchildBlockList!.Filter);
         }
 
-        [Test]
+        [Fact]
         public void Indexer_acts_on_unfiltered_blocks()
         {
             // Arrange
@@ -201,10 +200,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             blockList.Filter = block => false;
 
             // Act + Assert
-            Assert.That(() => blockList[0], Throws.Nothing);
+            var exception = Record.Exception(() => blockList[0]);
+            Assert.Null(exception);
         }
 
-        [Test]
+        [Fact]
         public void PropertyValueFormatters_are_passed_down_to_items()
         {
             // Arrange
@@ -219,11 +219,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             blockList.PropertyValueFormatters = new List<IPropertyValueFormatter> { formatter };
 
             // Assert
-            Assert.That(((OverridablePublishedElement)blockList[0].Content).PropertyValueFormatters?.Count(), Is.EqualTo(1));
-            Assert.That(((OverridablePublishedElement)blockList[0].Settings).PropertyValueFormatters?.Count(), Is.EqualTo(1));
+            Assert.Equal(1, ((OverridablePublishedElement)blockList[0].Content).PropertyValueFormatters?.Count());
+            Assert.Equal(1, ((OverridablePublishedElement)blockList[0].Settings).PropertyValueFormatters?.Count());
         }
 
-        [Test]
+        [Fact]
         public void PropertyValueFormatters_are_applied_when_an_OverridableBlockListModel_property_is_overridden()
         {
             // Arrange - original block list with PropertyValueFormatters, has a block with a child block list
@@ -265,7 +265,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         }
 
 
-        [Test]
+        [Fact]
         public void Can_cast_to_BlockListModel()
         {
             // Arrange
@@ -279,19 +279,19 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (BlockListModel)blockList;
 
             // Assert
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(blockList.Count(), model.Count);
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_to_BlockListModel()
         {
             var converter = TypeDescriptor.GetConverter(new OverridableBlockListModel());
 
-            Assert.That(converter.GetType(), Is.EqualTo(typeof(OverridableBlockListTypeConverter)));
+            Assert.Equal(typeof(OverridableBlockListTypeConverter), converter.GetType());
         }
 
-        [Test]
+        [Fact]
         public void Can_cast_to_IEnumerable_of_OverridableBlockListItem()
         {
             // Arrange
@@ -305,11 +305,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (IEnumerable<OverridableBlockListItem>)blockList;
 
             // Assert
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(blockList.Count(), model.Count());
         }
 
-        [Test]
+        [Fact]
         public void Can_cast_to_IEnumerable_of_BlockListItem()
         {
             // Arrange
@@ -323,11 +323,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (IEnumerable<BlockListItem>)blockList;
 
             // Assert
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(blockList.Count(), model.Count());
         }
 
-        [Test]
+        [Fact]
         public void Can_cast_to_IEnumerable_of_IOverridableBlockReference()
         {
             // Arrange
@@ -341,12 +341,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>)blockList;
 
             // Assert
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(blockList.Count(), model.Count());
         }
 
 
-        [Test]
+        [Fact]
         public void Can_cast_to_IEnumerable_of_IBlockReference()
         {
             // Arrange
@@ -360,8 +360,8 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (IEnumerable<IBlockReference<IPublishedElement, IPublishedElement>>)blockList;
 
             // Assert
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockList.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(blockList.Count(), model.Count());
         }
     }
 }

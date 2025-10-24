@@ -13,8 +13,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         private const string DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS = "docTypeChildBlocks";
         private const string PROPERTY_ALIAS_CHILD_BLOCKS = "childBlocks";
 
-        [SetUp]
-        public void Setup()
+        public OverridableBlockGridModelTests()
         {
             _ = new UmbracoTestContext(); // Sets up Umbraco dependency injection
         }
@@ -72,7 +71,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             return (parentBlock, childBlockList, grandChildBlockList);
         }
 
-        [Test]
+        [Fact]
         public void BlockGridModels_are_converted_to_OverridableBlockGridModels_including_nested_block_grids()
         {
             // Arrange
@@ -134,7 +133,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             Assert.NotNull(convertedGrandChildBlockGrid);
         }
 
-        [Test]
+        [Fact]
         public void BlockListModels_are_converted_to_OverridableBlockListModels_including_nested_block_lists()
         {
             // Arrange
@@ -196,7 +195,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             Assert.NotNull(convertedGrandChildBlockList);
         }
 
-        [Test]
+        [Fact]
 
         public void BlockListModels_are_converted_to_OverridableBlockListModels_including_overridden_nested_block_lists()
         {
@@ -231,11 +230,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Assert
             var overriddenBlock = model.FindBlockByContentTypeAlias(OVERRIDDEN_BLOCK_TYPE_ALIAS);
-            Assert.That(overriddenBlock, Is.Not.Null);
-            Assert.That(overriddenBlock.Content.Value<string>(OVERRIDDEN_TEXT_PROPERTY), Is.EqualTo(OVERRIDDEN_TEXT_VALUE));
+            Assert.NotNull(overriddenBlock);
+            Assert.Equal(OVERRIDDEN_TEXT_VALUE, overriddenBlock.Content.Value<string>(OVERRIDDEN_TEXT_PROPERTY));
         }
 
-        [Test]
+        [Fact]
         public void BlockGridAreas_are_converted_to_OverridableBlockGridAreas()
         {
             // Arrange
@@ -261,18 +260,15 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = new OverridableBlockGridModel(blockGrid);
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(result[0].Areas.Count(), Is.EqualTo(1));
-                Assert.That(result[0].Areas.First().Count(), Is.EqualTo(1));
-                Assert.That(result[0].Areas.First().Alias, Is.EqualTo(AREA_ALIAS));
-                Assert.That(result[0].Areas.First().RowSpan, Is.EqualTo(AREA_ROWSPAN));
-                Assert.That(result[0].Areas.First().ColumnSpan, Is.EqualTo(AREA_COLSPAN));
-                Assert.That(result[0].Areas.First().First().Content.ContentType.Alias, Is.EqualTo("inArea"));
-            });
+            Assert.Single(result[0].Areas);
+            Assert.Single(result[0].Areas.First());
+            Assert.Equal(AREA_ALIAS, result[0].Areas.First().Alias);
+            Assert.Equal(AREA_ROWSPAN, result[0].Areas.First().RowSpan);
+            Assert.Equal(AREA_COLSPAN, result[0].Areas.First().ColumnSpan);
+            Assert.Equal("inArea", result[0].Areas.First().First().Content.ContentType.Alias);
         }
 
-        [Test]
+        [Fact]
         public void Filter_is_passed_down_from_constructor_to_child_models_and_areas()
         {
             // Arrange
@@ -288,27 +284,24 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = new OverridableBlockGridModel(blockGrids.ParentBlockGrid, filter);
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(model.Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, model.Filter);
 
-                var childBlockList = model[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-                Assert.That(childBlockList!.Filter, Is.EqualTo(filter));
+            var childBlockList = model[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
+            Assert.Equal(filter, childBlockList!.Filter);
 
-                var grandchildBlockList = childBlockList[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-                Assert.That(grandchildBlockList!.Filter, Is.EqualTo(filter));
+            var grandchildBlockList = childBlockList[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
+            Assert.Equal(filter, grandchildBlockList!.Filter);
 
-                Assert.That(model[0].Areas[0].Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, model[0].Areas[0].Filter);
 
-                var areaChildBlockList = model[0].Areas[0][0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-                Assert.That(areaChildBlockList!.Filter, Is.EqualTo(filter));
+            var areaChildBlockList = model[0].Areas[0][0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
+            Assert.Equal(filter, areaChildBlockList!.Filter);
 
-                var areaGrandchildBlockList = areaChildBlockList[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-                Assert.That(areaGrandchildBlockList!.Filter, Is.EqualTo(filter));
-            });
+            var areaGrandchildBlockList = areaChildBlockList[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
+            Assert.Equal(filter, areaGrandchildBlockList!.Filter);
         }
 
-        [Test]
+        [Fact]
         public void Filter_is_passed_down_from_setter_to_child_models_and_areas()
         {
             // Arrange
@@ -325,24 +318,21 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             model.Filter = filter;
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(model.Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, model.Filter);
 
-                var childBlockList = model[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-                Assert.That(childBlockList!.Filter, Is.EqualTo(filter));
+            var childBlockList = model[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
+            Assert.Equal(filter, childBlockList!.Filter);
 
-                Assert.That(model[0].Areas[0].Filter, Is.EqualTo(filter));
+            Assert.Equal(filter, model[0].Areas[0].Filter);
 
-                var areaChildBlockList = model[0].Areas[0][0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-                Assert.That(areaChildBlockList!.Filter, Is.EqualTo(filter));
+            var areaChildBlockList = model[0].Areas[0][0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
+            Assert.Equal(filter, areaChildBlockList!.Filter);
 
-                var areaGrandchildBlockList = areaChildBlockList[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
-                Assert.That(areaGrandchildBlockList!.Filter, Is.EqualTo(filter));
-            });
+            var areaGrandchildBlockList = areaChildBlockList[0].Content.Value<OverridableBlockListModel>(PROPERTY_ALIAS_CHILD_BLOCKS);
+            Assert.Equal(filter, areaGrandchildBlockList!.Filter);
         }
 
-        [Test]
+        [Fact]
         public void Indexer_acts_on_unfiltered_blocks()
         {
             // Arrange
@@ -355,10 +345,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             blockGrid.Filter = block => false;
 
             // Act + Assert
-            Assert.That(() => blockGrid[0], Throws.Nothing);
+            var exception = Record.Exception(() => blockGrid[0]);
+            Assert.Null(exception);
         }
 
-        [Test]
+        [Fact]
         public void PropertyValueFormatters_are_passed_down_to_direct_child_items()
         {
             // Arrange
@@ -373,11 +364,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             blockGrid.PropertyValueFormatters = new List<IPropertyValueFormatter> { formatter };
 
             // Assert
-            Assert.That(((OverridablePublishedElement)blockGrid[0].Content).PropertyValueFormatters?.Count(), Is.EqualTo(1));
-            Assert.That(((OverridablePublishedElement)blockGrid[0].Settings).PropertyValueFormatters?.Count(), Is.EqualTo(1));
+            Assert.Equal(1, ((OverridablePublishedElement)blockGrid[0].Content).PropertyValueFormatters?.Count());
+            Assert.Equal(1, ((OverridablePublishedElement)blockGrid[0].Settings).PropertyValueFormatters?.Count());
         }
 
-        [Test]
+        [Fact]
         public void PropertyValueFormatters_are_passed_down_to_child_items_of_areas()
         {
             // Arrange
@@ -403,13 +394,13 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Assert
             var blockWithinArea = blockGrid[0].Areas.First()[0];
-            Assert.That(((OverridablePublishedElement)blockWithinArea.Content).PropertyValueFormatters?.Count(), Is.EqualTo(1));
-            Assert.That(((OverridablePublishedElement)blockWithinArea.Settings).PropertyValueFormatters?.Count(), Is.EqualTo(1));
+            Assert.Equal(1, ((OverridablePublishedElement)blockWithinArea.Content).PropertyValueFormatters?.Count());
+            Assert.Equal(1, ((OverridablePublishedElement)blockWithinArea.Settings).PropertyValueFormatters?.Count());
         }
 
 
 
-        [Test]
+        [Fact]
         public void PropertyValueFormatters_are_applied_when_an_OverridableBlockListModel_property_is_overridden()
         {
             // Arrange - original block grid with PropertyValueFormatters, has a block with a child block list
@@ -450,7 +441,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             formatter.Verify(x => x.FormatValue(SETTINGS_PROPERTY_VALUE), Times.Once);
         }
 
-        [Test]
+        [Fact]
         public void Can_cast_to_BlockGridModel()
         {
             // Arrange
@@ -463,19 +454,19 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             // Act
             var model = (BlockGridModel)blockGrid;
 
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockGrid.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(model.Count(), blockGrid.Count());
         }
 
-        [Test]
+        [Fact]
         public void Can_convert_to_BlockGridModel()
         {
             var converter = TypeDescriptor.GetConverter(new OverridableBlockGridModel());
 
-            Assert.That(converter.GetType(), Is.EqualTo(typeof(OverridableBlockGridTypeConverter)));
+            Assert.Equal(typeof(OverridableBlockGridTypeConverter), converter.GetType());
         }
 
-        [Test]
+        [Fact]
         public void Can_cast_to_IEnumerable_of_OverridableBlockGridItem()
         {
             // Arrange
@@ -489,11 +480,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (IEnumerable<OverridableBlockGridItem>)blockGrid;
 
             // Assert
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockGrid.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(model.Count(), blockGrid.Count());
         }
 
-        [Test]
+        [Fact]
         public void Can_cast_to_IEnumerable_of_BlockGridItem()
         {
             // Arrange
@@ -507,12 +498,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (IEnumerable<BlockGridItem>)blockGrid;
 
             // Assert
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockGrid.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(model.Count(), blockGrid.Count());
         }
 
 
-        [Test]
+        [Fact]
         public void Can_cast_to_IEnumerable_of_IOverridableBlockReference()
         {
             // Arrange
@@ -526,12 +517,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (IEnumerable<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>)blockGrid;
 
             // Assert
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockGrid.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(model.Count(), blockGrid.Count());
         }
 
 
-        [Test]
+        [Fact]
         public void Can_cast_to_IEnumerable_of_IBlockReference()
         {
             // Arrange
@@ -545,8 +536,8 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (IEnumerable<IBlockReference<IPublishedElement, IPublishedElement>>)blockGrid;
 
             // Assert
-            Assert.That(model, Is.Not.Null);
-            Assert.That(model.Count, Is.EqualTo(blockGrid.Count()));
+            Assert.NotNull(model);
+            Assert.Equal(model.Count(), blockGrid.Count());
         }
     }
 }

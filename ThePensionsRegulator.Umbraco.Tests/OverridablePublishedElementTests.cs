@@ -4,7 +4,6 @@ using Umbraco.Cms.Core.Strings;
 
 namespace ThePensionsRegulator.Umbraco.Tests
 {
-    [TestFixture]
     public class OverridablePublishedElementTests
     {
         private const string PROPERTY_ALIAS = "property";
@@ -16,7 +15,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
                 .SetupContentType(ELEMENT_TYPE_ALIAS);
         }
 
-        [Test]
+        [Fact]
         public void OverrideValue_works_for_HtmlEncodedString()
         {
             // Arrange
@@ -32,10 +31,10 @@ namespace ThePensionsRegulator.Umbraco.Tests
 
             // Assert
             var updatedValue = content.Value<IHtmlEncodedString>(PROPERTY_ALIAS);
-            Assert.That(updatedValue?.ToString(), Is.EqualTo(textAfter.ToString()));
+            Assert.Equal(textAfter.ToString(), updatedValue?.ToString());
         }
 
-        [Test]
+        [Fact]
         public void OverrideValue_works_for_string()
         {
             // Arrange
@@ -51,7 +50,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
 
             // Assert
             var updatedValue = content.Value<string>(PROPERTY_ALIAS);
-            Assert.That(updatedValue, Is.EqualTo(textAfter));
+            Assert.Equal(textAfter, updatedValue);
         }
     }
 }

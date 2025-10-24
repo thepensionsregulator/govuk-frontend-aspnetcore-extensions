@@ -160,7 +160,6 @@
 		<Delete Files="$(ProjectDir)uSync\v9\DataTypes\YoutubeVideoSettingsPreloadDropdown.config" Condition="Exists('$(ProjectDir)uSync\v9\DataTypes\YoutubeVideoSettingsPreloadDropdown.config')" />
 		<Delete Files="$(ProjectDir)uSync\v9\ContentTypes\tprsectioncardscard.config" Condition="Exists('$(ProjectDir)uSync\v9\ContentTypes\tprsectioncardscard.config')" />
 
-
 		<!-- Generate .gitignore files so that files from the ThePensionsRegulator.Frontend.Umbraco package are not committed to the consuming project's source control. 
 			 There's no need to generate one for wwwroot\css because this package depends on ThePensionsRegulator.GovUk.Frontend.Umbraco, which already did that.
 		-->

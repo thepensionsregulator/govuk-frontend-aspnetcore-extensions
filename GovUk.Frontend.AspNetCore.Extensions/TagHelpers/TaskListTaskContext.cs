@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+using TaskStatus = GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration.TaskStatus;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {

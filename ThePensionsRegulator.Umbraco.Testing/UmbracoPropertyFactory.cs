@@ -60,7 +60,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             var propertyValueConverters = new PropertyValueConverterCollection(() => new IPropertyValueConverter[] { converter.Object });
 
             var contentTypeFactory = new Mock<IPublishedContentTypeFactory>();
-            contentTypeFactory.Setup(x => x.GetDataType(dataTypeId)).Returns(new PublishedDataType(dataTypeId, propertyEditorAlias, new Lazy<object?>(configuration)));
+            contentTypeFactory.Setup(x => x.GetDataType(dataTypeId)).Returns(new PublishedDataType(dataTypeId, propertyEditorAlias, "TODO", new Lazy<object?>(configuration)));
             var publishedPropertyType = new PublishedPropertyType(Mock.Of<IPublishedContentType>(), propertyType.Object, propertyValueConverters, Mock.Of<IPublishedModelFactory>(), contentTypeFactory.Object);
 
             converter.Setup(x => x.IsConverter(publishedPropertyType)).Returns(true);
@@ -75,7 +75,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateRichTextProperty(string propertyAlias, IHtmlEncodedString? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(RICH_TEXT_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.TinyMce, new RichTextConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(RICH_TEXT_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.RichText, new RichTextConfiguration()), value);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateBooleanProperty(string propertyAlias, bool? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.Boolean, new TrueFalseConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.Boolean, null), value);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateBooleanProperty(string propertyAlias, bool value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.Boolean, new TrueFalseConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.Boolean, null), value);
         }
 
         /// <summary>

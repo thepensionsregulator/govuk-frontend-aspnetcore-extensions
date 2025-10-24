@@ -10,7 +10,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
     [TestFixture]
     public class NoParagraphInversePropertyValueFormatterTests
     {
-        [TestCase(Constants.PropertyEditors.Aliases.TinyMce, false)]
+        [TestCase(Constants.PropertyEditors.Aliases.RichText, false)]
         [TestCase(PropertyEditorAliases.GovUkInlineRichText, false)]
         [TestCase(PropertyEditorAliases.GovUkInlineInverseRichText, true)]
         public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)

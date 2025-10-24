@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -55,7 +55,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.11.0" />
+		<PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="17.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>

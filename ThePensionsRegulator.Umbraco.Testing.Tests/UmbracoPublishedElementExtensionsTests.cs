@@ -99,7 +99,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             TestSetupUmbracoTypedPropertyValue(
                 () => new HtmlEncodedString("<p>Some value</p>"),
                 (target, alias, value) => target.SetupUmbracoRichTextPropertyValue(alias, value),
-                Constants.PropertyEditors.Aliases.TinyMce
+                Constants.PropertyEditors.Aliases.RichText
             );
         }
 

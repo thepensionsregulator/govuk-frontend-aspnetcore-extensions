@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Security.Principal;
+using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Testing.Tests
 {
@@ -24,7 +25,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             Assert.NotEqual(default(Guid).ToString(), contentType.Key.ToString());
             Assert.Equal(contentTypeAlias, contentType.Alias);
 
-            Assert.Equal(contentType, testContext.PublishedContentCache.Object.GetContentType(contentTypeAlias));
+            Assert.Equal(contentType, testContext.PublishedContentTypeCache.Object.Get(PublishedItemType.Content, contentTypeAlias));
         }
 
         [Fact]

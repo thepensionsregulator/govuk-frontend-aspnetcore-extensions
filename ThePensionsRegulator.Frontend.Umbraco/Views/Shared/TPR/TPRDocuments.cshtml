@@ -28,12 +28,15 @@
 
             if (docLinkType == LinkType.Media)
             {
-                var docKB = documentLink.Content.UmbracoBytes / 1024;
+                // TODO: Get size from media cache
+                var docKB = 0; // documentLink.Content.UmbracoBytes / 1024; 
                 var docTitle = "";
 
-                var mediaLinkDocName = documentLink.Content.Name;
+                // TODO: Get media library item name from media cache
+                var mediaLinkDocName = "Media library item"; // documentLink.Content.Name;
                 var mediaLinkTitle = documentLink.Name;
-                var mediaType = documentLink.Content?.ContentType?.Alias;
+                // TODO: Get media type alias from media cache
+                var mediaType = "File"; //documentLink.Content?.ContentType?.Alias;
 
                 if (!string.Equals(mediaLinkDocName, mediaLinkTitle, StringComparison.OrdinalIgnoreCase))
                 {
@@ -41,9 +44,11 @@
                 }
                 else
                 {
-                    docTitle = (mediaType == "File" && !string.IsNullOrEmpty(documentLink.Content?.DocumentTitle))
+                    // TODO: Get DocumentTitle from media cache
+                    docTitle = mediaLinkDocName;
+                    @* docTitle = (mediaType == "File" && !string.IsNullOrEmpty(documentLink.Content?.DocumentTitle))
                         ? documentLink.Content.DocumentTitle
-                        : mediaLinkDocName;
+                        : mediaLinkDocName; *@
                 }
 
                 <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">

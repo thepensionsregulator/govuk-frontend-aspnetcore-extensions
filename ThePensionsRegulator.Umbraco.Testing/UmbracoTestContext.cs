@@ -68,14 +68,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IUmbracoContextAccessor> UmbracoContextAccessor { get; private init; } = new();
 
         /// <summary>
-        /// Provides access to a TryGetPublishedSnapshot bool method that will return true if the "current" <see cref="IPublishedSnapshot" /> is not null.
+        /// TODO
         /// </summary>
-        public Mock<IPublishedSnapshotAccessor> PublishedSnapshotAccessor { get; private init; } = new();
-
-        /// <summary>
-        /// A published snapshot is a point-in-time capture of the current state of everything that is "published".
-        /// </summary>
-        public Mock<IPublishedSnapshot> PublishedSnapshot { get; private init; } = new();
+        public Mock<IPublishedContentTypeCache> PublishedContentTypeCache { get; private init; } = new();
 
         /// <summary>
         /// Provides access to the current <see cref="IVariationContextAccessor.VariationContext"/>
@@ -241,11 +236,6 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<ILocalizedTextService> LocalizedTextService { get; private init; } = new();
 
         /// <summary>
-        /// Provides easy access to operations involving <see cref="IMacro" />.
-        /// </summary>
-        public Mock<IMacroService> MacroService { get; private init; } = new();
-
-        /// <summary>
         /// Provides easy access to operations involving <see cref="IMedia" />.
         /// </summary>
         public Mock<IMediaService> MediaService { get; private init; } = new();
@@ -372,7 +362,6 @@ namespace ThePensionsRegulator.Umbraco.Testing
                 LocalizedTextService.Object,
                 AuditService.Object,
                 DomainService.Object,
-                MacroService.Object,
                 PublicAccessService.Object,
                 ExternalLoginWithKeyService.Object,
                 ServerRegistrationService.Object,
@@ -382,14 +371,6 @@ namespace ThePensionsRegulator.Umbraco.Testing
                 ContentTypeBaseServiceProvider.Object,
                 WebhookService.Object
             );
-
-            PublishedSnapshot.Setup(x => x.Content).Returns(PublishedContentCache.Object);
-            PublishedSnapshotAccessor.Setup(x => x.TryGetPublishedSnapshot(out It.Ref<IPublishedSnapshot>.IsAny!))
-                .Callback(new TryGetPublishedSnapshotCallback((out IPublishedSnapshot snapshot) =>
-                {
-                    snapshot = PublishedSnapshot.Object;
-                }))
-                .Returns(true);
 
             CurrentIdentity.SetupGet(x => x.IsAuthenticated).Returns(false);
             CurrentPrincipal = new GenericPrincipal(CurrentIdentity.Object, Array.Empty<string>());
@@ -419,7 +400,6 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(KeyValueService.Object);
             SetupService(LocalizationService.Object);
             SetupService(LocalizedTextService.Object);
-            SetupService(MacroService.Object);
             SetupService(MediaService.Object);
             SetupService(MediaTypeService.Object);
             SetupService(MemberService.Object);
@@ -430,7 +410,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(PublicAccessService.Object);
             SetupService(PublishedContentCache.Object);
             SetupService(PublishedModelFactory.Object);
-            SetupService(PublishedSnapshotAccessor.Object);
+            SetupService(PublishedContentTypeCache.Object);
             SetupService(PublishedUrlProvider.Object);
             SetupService(PublishedValueFallback.Object);
             SetupService(RedirectUrlService.Object);
@@ -450,7 +430,6 @@ namespace ThePensionsRegulator.Umbraco.Testing
             ServiceProvider.Setup(x => x.GetService(typeof(T))).Returns(implementation);
         }
 
-        delegate void TryGetPublishedSnapshotCallback(out IPublishedSnapshot snapshot);
         delegate void SessionTryGetValueCallback(string key, out byte[]? value);
         delegate bool SessionTryGetValueReturns(string key, out byte[]? value);
 
@@ -499,7 +478,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             _contentTypes.Add(contentTypeAlias, contentType);
             ContentTypes = new ReadOnlyDictionary<string, Mock<IPublishedContentType>>(_contentTypes);
 
-            PublishedContentCache.Setup(x => x.GetContentType(contentTypeAlias)).Returns<string>(alias => ContentTypes[alias].Object);
+            PublishedContentTypeCache.Setup(x => x.Get(PublishedItemType.Content, contentTypeAlias)).Returns<string>(alias => ContentTypes[alias].Object);
 
             return this;
         }

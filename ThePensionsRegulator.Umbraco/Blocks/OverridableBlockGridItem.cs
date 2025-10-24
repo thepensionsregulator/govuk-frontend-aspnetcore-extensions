@@ -14,7 +14,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
 
         public OverridableBlockGridItem(BlockGridItem item, Func<IPublishedElement?, IOverridablePublishedElement?> publishedElementFactory) :
 #nullable disable
-            base(item.ContentUdi, publishedElementFactory(item.Content), item.SettingsUdi, publishedElementFactory(item.Settings))
+            base(item.ContentKey, publishedElementFactory(item.Content), item.SettingsKey, publishedElementFactory(item.Settings))
 #nullable enable
         {
             Areas = item.Areas.Select(area => new OverridableBlockGridArea(area, area.Alias, area.RowSpan, area.ColumnSpan)).ToList();

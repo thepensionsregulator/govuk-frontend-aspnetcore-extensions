@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
@@ -45,7 +45,7 @@
 		<Message Text="Batch for .nupkg: ReferenceCopyLocalPaths = @(_ReferenceCopyLocalPaths), ReferenceCopyLocalPaths.DestinationSubDirectory = %(_ReferenceCopyLocalPaths.DestinationSubDirectory) Filename = %(_ReferenceCopyLocalPaths.Filename) Extension = %(_ReferenceCopyLocalPaths.Extension)" Importance="High" Condition="'@(_ReferenceCopyLocalPaths)' != ''" />
 
 		<ItemGroup>
-			<!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
+			<!-- Add file to package with consideration of sub folder. If empty, the root folder is	chosen. -->
 			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
 		</ItemGroup>
 	</Target>
@@ -57,11 +57,11 @@
 	<ItemGroup>
 		<UpToDateCheckInput Remove="Styles\tpr.scss" />
 		<None Update="NuGetReadme.md">
-		  <Pack>True</Pack>
-		  <PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
 		</None>
 		<None Update="Styles\_tpr-image.scss">
-		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 		</None>
 	</ItemGroup>
 
@@ -79,8 +79,8 @@
 
 	<ItemGroup>
 		<None Include="..\tpr-nuget.png">
-		  <Pack>True</Pack>
-		  <PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
 		</None>
 		<Content Include="ThePensionsRegulator.Frontend.props">
 			<Pack>true</Pack>
@@ -98,228 +98,228 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-header.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-header.scss" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-footer.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-footer.scss" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-page.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-page.scss" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-task-list.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-task-list.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <Content Update="sasscompiler.json" Pack="false">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\build\ableplayer.dist.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\build\ableplayer.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\build\ableplayer.min.css">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\build\ableplayer.min.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\styles\ableplayer.css">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\ca.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\cs.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\da.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\de.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\en.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\es.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\fr.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\he.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\id.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\it.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\ja.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\nb.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\nl.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\pt-br.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\pt.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\sv.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\tr.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
-	  <Content Update="wwwroot\lib\ableplayer\translations\zh-tw.js">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-	  </Content>
+		<Content Update="sasscompiler.json" Pack="false">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\build\ableplayer.dist.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\build\ableplayer.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\build\ableplayer.min.css">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\build\ableplayer.min.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\styles\ableplayer.css">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\ca.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\cs.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\da.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\de.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\en.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\es.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\fr.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\he.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\id.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\it.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\ja.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\nb.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\nl.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\pt-br.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\pt.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\sv.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\tr.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\ableplayer\translations\zh-tw.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-summary-card.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-summary-card.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-back.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-back.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-button.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-button.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-caption.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-caption.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-date-input.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-date-input.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-details.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-details.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-character-count.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-character-count.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-fieldset.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-fieldset.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-input.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-input.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-label.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-label.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-link.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-link.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-phase-banner.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-phase-banner.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-radios-checkboxes.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-radios-checkboxes.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-panel.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-panel.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-inset-text.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-inset-text.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-summary-list.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-summary-list.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-table.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-table.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-variables.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-variables.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-button-group.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-button-group.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 	  <ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Views\Partials\**" />
+		<UpToDateCheckInput Remove="Views\Partials\**" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <None Remove="Styles\_tpr-phase-banner.scss" />
+		<None Remove="Styles\_tpr-phase-banner.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-textarea.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-textarea.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-select.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-select.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-select.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-select.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-tag.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-tag.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\_tpr-file-upload.scss" />
+		<UpToDateCheckInput Remove="Styles\_tpr-file-upload.scss" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="styles\_tpr-section-cards.scss" />
+		<UpToDateCheckInput Remove="styles\_tpr-section-cards.scss" />
 	</ItemGroup>
 </Project>

@@ -1,22 +1,18 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using ThePensionsRegulator.Umbraco.Blocks;
+using Umbraco.Cms.Api.Management.Controllers;
+using Umbraco.Cms.Api.Management.Routing;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Web.BackOffice.Controllers;
-using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.Validation
 {
-    [PluginController("GOVUK")]
-    public class ModelPropertyController : UmbracoAuthorizedApiController
+    [VersionedApiBackOfficeRoute("model-property")]
+    [ApiExplorerSettings(GroupName = "GOV.UK API")]
+    public class ModelPropertyController : ManagementApiControllerBase
     {
         [HttpGet]
         public IEnumerable<string> ForDocumentType(string alias)

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Moq;
-using NUnit.Framework;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -84,7 +83,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
 
-        [Test]
+        [Fact]
         public void Validation_attributes_added_to_error_message_placeholder()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -112,7 +111,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//p[@id='{nameof(ExampleClass.RequiredField)}-error']") != null);
         }
 
-        [Test]
+        [Fact]
         public void If_error_message_is_empty_error_classes_are_removed()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -144,7 +143,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//*[contains(@class,'govuk-select--error')]") == null);
         }
 
-        [Test]
+        [Fact]
         public void If_error_message_is_rendered_error_classes_remain()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -176,7 +175,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//*[contains(@class,'govuk-select--error')]") != null);
         }
 
-        [Test]
+        [Fact]
         public void Input_is_unchanged_if_validation_disabled()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = false };
@@ -197,10 +196,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
                 errorMessageRange,
                 errorMessageCompare);
 
-            Assert.AreEqual($"<input name=\"{nameof(ExampleClass.RequiredField)}\">", result);
+            Assert.Equal($"<input name=\"{nameof(ExampleClass.RequiredField)}\">", result);
         }
 
-        [Test]
+        [Fact]
         public void Input_is_unchanged_if_property_has_no_validators()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -222,10 +221,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
                 errorMessageRange,
                 errorMessageCompare);
 
-            Assert.AreEqual($"<input name=\"{nameof(ExampleClass.UnvalidatedField)}\">", result);
+            Assert.Equal($"<input name=\"{nameof(ExampleClass.UnvalidatedField)}\">", result);
         }
 
-        [Test]
+        [Fact]
         public void Required_validator_adds_required_attributes_to_multiple_inputs()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -257,7 +256,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectNodes($"//input[@data-val-required='{errorMessageRequired}']")?.Count == 2);
         }
 
-        [Test]
+        [Fact]
         public void Custom_validator_adds_custom_attributes_to_inputs()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -303,7 +302,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectNodes($"//input[@data-val-custom='{errorMessageRequiredCustom}']")?.Count == 1);
         }
 
-        [Test]
+        [Fact]
         public void Required_validator_adds_required_attributes_to_select()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -334,7 +333,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
 
-        [Test]
+        [Fact]
         public void Required_validator_adds_required_attributes_to_textarea()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -364,7 +363,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//textarea[@data-val-required='{errorMessageRequired}']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Regex_validator_adds_regex_attributes()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -397,7 +396,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-regex='{errorMessageRegex}']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Email_validator_adds_email_attributes()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -428,7 +427,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-email='{errorMessageEmail}']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Phone_validator_adds_phone_attributes()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -459,7 +458,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-phone='{errorMessagePhone}']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Length_validator_adds_length_attributes()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -494,7 +493,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@maxlength='{maxLength}']") != null);
         }
 
-        [Test]
+        [Fact]
         public void MinLength_validator_adds_length_attributes()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -527,7 +526,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
 
-        [Test]
+        [Fact]
         public void MaxLength_validator_adds_length_attributes()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -560,7 +559,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@maxlength='{maxLength}']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Numeric_range_validator_adds_range_attributes()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -597,7 +596,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='[0-9]*']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Date_range_validator_adds_range_attributes()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -632,8 +631,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@type='number']") == null); // different to the numeric version of this test
         }
 
-        [TestCase(nameof(ExampleClass.IntegerField), "[0-9]*")]
-        [TestCase(nameof(ExampleClass.DoubleField), "[0-9.]*")]
+        [Theory]
+        [InlineData(nameof(ExampleClass.IntegerField), "[0-9]*")]
+        [InlineData(nameof(ExampleClass.DoubleField), "[0-9.]*")]
         public void Numeric_fields_without_range_have_text_input_type_numeric_input_mode(string propertyName, string expectedRegex)
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -665,7 +665,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         }
 
 
-        [Test]
+        [Fact]
         public void Regex_validator_has_higher_priority_than_regex_for_numeric_fields()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -694,7 +694,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@pattern='[0-9.,]+']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Compare_validator_adds_compare_attributes()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -726,7 +726,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-equalto-other='{other}']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Error_message_comes_from_parameters_first()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -760,7 +760,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode("//input[@data-val-required='Error from parameters']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Error_message_comes_from_localiser_if_no_parameter()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -806,7 +806,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode("//input[@data-val-required='Error from localiser']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Error_message_comes_from_original_attribute_if_no_parameter_or_localiser()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -836,7 +836,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.True(document.DocumentNode.SelectSingleNode($"//input[@data-val-required='{errorMessageRequired}']") != null);
         }
 
-        [Test]
+        [Fact]
         public void Child_Properties_are_validated()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
@@ -867,7 +867,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
         }
 
-        [Test]
+        [Fact]
         public void Error_message_for_custom_attributes_comes_from_localiser()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };

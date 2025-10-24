@@ -1,83 +1,84 @@
-﻿using FileSignatures.Formats;
+using FileSignatures.Formats;
 using GovUk.Frontend.AspNetCore.Extensions.UnitTests.BinaryFileValidators;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Http;
-using NUnit.Framework;
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     public class AllowedFileTypesAttributeTests
     {
-        private class ValidFileFormatDataProvider : IEnumerable
+        public class ValidFileFormatTestData : TheoryData<Func<IFormFile>, Type[], bool>
         {
-            private string _emptyExcelFile => TestFileLocator.EmptyExcelFile;
-            private string _emptyPdf => TestFileLocator.WordSavedAsPdf;
-
-            public IFormFile CreateFormFile(byte[] bytes, string filename)
+            public ValidFileFormatTestData()
             {
-                var memoryStream = new MemoryStream(bytes);
-                var formFile = new FormFile(memoryStream, 0, memoryStream.Length, null!, filename);
-                return formFile;
-            }
+                // Excel file test
+                Add(() =>
+                {
+                    var bytes = File.ReadAllBytes(TestFileLocator.EmptyExcelFile);
+                    var memoryStream = new MemoryStream(bytes);
+                    return new FormFile(memoryStream, 0, memoryStream.Length, null!, "myExcel.xlsx");
+                }, new Type[1] { typeof(Excel) }, true);
 
-            public IFormFile GetExcelFile(string filename)
-            {
-                var bytes = File.ReadAllBytes(_emptyExcelFile);
-                return CreateFormFile(bytes, filename);
-            }
+                // PDF file test
+                Add(() =>
+                {
+                    var bytes = File.ReadAllBytes(TestFileLocator.WordSavedAsPdf);
+                    var memoryStream = new MemoryStream(bytes);
+                    return new FormFile(memoryStream, 0, memoryStream.Length, null!, "myPdf.pdf");
+                }, new Type[1] { typeof(Pdf) }, true);
 
-            private IFormFile GetPdf(string filename)
-            {
-                var bytes = File.ReadAllBytes(_emptyPdf);
-                return CreateFormFile(bytes, filename);
-            }
-
-            public IEnumerator GetEnumerator()
-            {
-                yield return new object[] { GetExcelFile("myExcel.xlsx"), new Type[1] { typeof(Excel) }, true };
-                yield return new object[] { GetPdf("myPdf.pdf"), new Type[1] { typeof(Pdf) }, true };
-                // It is important that typeof(pdf) is before typeof(Excel) for the below test. We are testing that it breaks as soon as it finds a matching extension
-                yield return new object[] { GetPdf("myPdf.pdf"), new Type[2] { typeof(Pdf), typeof(Excel) }, true };
+                // PDF file with multiple types test (it is important that typeof(Pdf) is before typeof(Excel) for the below test. We are testing that it breaks as soon as it finds a matching extension)
+                Add(() =>
+                {
+                    var bytes = File.ReadAllBytes(TestFileLocator.WordSavedAsPdf);
+                    var memoryStream = new MemoryStream(bytes);
+                    return new FormFile(memoryStream, 0, memoryStream.Length, null!, "myPdf.pdf");
+                }, new Type[2] { typeof(Pdf), typeof(Excel) }, true);
             }
         }
 
         #region returnstrue
 
-        [TestCaseSource(typeof(ValidFileFormatDataProvider))]
-        public void Return_true_when_file_matches_file_types_specified(IFormFile file, Type[] allowedFileTypes, bool expected)
+        [Theory]
+        [ClassData(typeof(ValidFileFormatTestData))]
+        public void Return_true_when_file_matches_file_types_specified(Func<IFormFile> fileFactory, Type[] allowedFileTypes, bool expected)
         {
+            var file = fileFactory();
             var sut = new AllowedFileTypesAttribute(allowedFileTypes);
             var result = sut.IsValid(file);
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void Return_true_if_value_is_null()
         {
             var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
             var result = sut.IsValid(null!);
 
-            Assert.That(result, Is.True);
+            Assert.True(result);
         }
 
-        [Test]
+        [Fact]
         public void Return_true_if_no_file_validation_types_have_been_supplied()
         {
+            var bytes = File.ReadAllBytes(TestFileLocator.EmptyExcelFile);
+            var memoryStream = new MemoryStream(bytes);
+            var testValue = new FormFile(memoryStream, 0, memoryStream.Length, null!, "abc.xlsx");
+            
             var sut = new AllowedFileTypesAttribute([]);
-            var testValue = new ValidFileFormatDataProvider().GetExcelFile("abc.xlsx");
             var result = sut.IsValid(testValue);
 
-            Assert.That(result, Is.True);
+            Assert.True(result);
         }
 
         #endregion returnstrue
 
         #region returnsfalse
 
-        [Test]
+        [Fact]
         public void Return_false_if_file_signature_does_not_match()
         {
             Random rnd = new Random();
@@ -90,24 +91,27 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
             var result = sut.IsValid(file);
 
-            Assert.That(result, Is.False);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void Return_false_if_file_extension_is_wrong()
         {
+            var bytes = File.ReadAllBytes(TestFileLocator.EmptyExcelFile);
+            var memoryStream = new MemoryStream(bytes);
+            var testValue = new FormFile(memoryStream, 0, memoryStream.Length, null!, "abc.txt");
+            
             var sut = new AllowedFileTypesAttribute([typeof(Excel)]);
-            var testValue = new ValidFileFormatDataProvider().GetExcelFile("abc.txt");
             var result = sut.IsValid(testValue);
 
-            Assert.That(result, Is.EqualTo(false));
+            Assert.False(result);
         }
 
         #endregion returnsfalse
 
         #region exceptions
 
-        [Test]
+        [Fact]
         public void Throw_Exception_if_value_is_not_IFormFile()
         {
             var testValue = "Some test string property value";
@@ -116,16 +120,16 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             {
                 sut.IsValid(testValue);
             };
-            Assert.That(fn, Throws.InstanceOf<InvalidOperationException>());
+            Assert.Throws<InvalidOperationException>(fn);
         }
 
-        [Test]
+        [Fact]
         public void Throw_exception_if_supplied_validation_type_has_not_been_implemented()
         {
             var typeWeWillNeverImplementAFileValidatorFor = typeof(Exception);
             var fn = () => { var sut = new AllowedFileTypesAttribute([typeWeWillNeverImplementAFileValidatorFor]); };
 
-            Assert.That(fn, Throws.InstanceOf<ArgumentException>());
+            Assert.Throws<ArgumentException>(fn);
         }
 
         #endregion exceptions

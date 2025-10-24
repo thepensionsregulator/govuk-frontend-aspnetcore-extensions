@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
@@ -80,7 +79,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             public string? Level5Field { get; set; }
         }
 
-        [Test]
+        [Fact]
         public void No_model_type_throws_InvalidOperationException()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
@@ -98,7 +97,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.Throws<InvalidOperationException>(() => modelPropertyResolver.ResolveModelType(viewContext));
         }
 
-        [Test]
+        [Fact]
         public void Invalid_property_name_throws_InvalidOperationException()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
@@ -106,7 +105,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             Assert.Throws<InvalidOperationException>(() => modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), "InvalidProperty"));
         }
 
-        [Test]
+        [Fact]
         public void Model_type_is_resolved_from_default_model()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
@@ -119,7 +118,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var modelType = modelPropertyResolver.ResolveModelType(viewContext);
 
-            Assert.AreEqual(modelType, typeof(DefaultModel));
+            Assert.Equal(modelType, typeof(DefaultModel));
         }
 
         private static ViewDataDictionary CreateViewData()
@@ -128,7 +127,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             return new ViewDataDictionary(metadataProvider, new ModelStateDictionary());
         }
 
-        [Test]
+        [Fact]
         public void Model_type_is_resolved_using_ModelType_attribute_before_default_model()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
@@ -141,23 +140,23 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var modelType = modelPropertyResolver.ResolveModelType(viewContext);
 
-            Assert.AreEqual(modelType, typeof(ModelFromModelType));
+            Assert.Equal(modelType, typeof(ModelFromModelType));
 
         }
 
-        [Test]
+        [Fact]
         public void Property_is_resolved_from_model_type()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var property = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DefaultModelProperty));
 
-            Assert.AreEqual(property.DeclaringType, typeof(DefaultModel));
-            Assert.AreEqual(property.Name, nameof(DefaultModel.DefaultModelProperty));
+            Assert.Equal(property.DeclaringType, typeof(DefaultModel));
+            Assert.Equal(property.Name, nameof(DefaultModel.DefaultModelProperty));
         }
 
 
-        [Test]
+        [Fact]
         public void Date_property_is_resolved_from_date_internal_fields()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
@@ -166,78 +165,79 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             var propertyFromMonthField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty.Month));
             var propertyFromYearField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty.Year));
 
-            Assert.AreEqual(propertyFromDayField.DeclaringType, typeof(DateTime));
-            Assert.AreEqual(propertyFromDayField.Name, nameof(DefaultModel.DateTimeProperty.Day));
-            Assert.AreEqual(propertyFromMonthField.DeclaringType, typeof(DateTime));
-            Assert.AreEqual(propertyFromMonthField.Name, nameof(DefaultModel.DateTimeProperty.Month));
-            Assert.AreEqual(propertyFromYearField.DeclaringType, typeof(DateTime));
-            Assert.AreEqual(propertyFromYearField.Name, nameof(DefaultModel.DateTimeProperty.Year));
+            Assert.Equal(propertyFromDayField.DeclaringType, typeof(DateTime));
+            Assert.Equal(propertyFromDayField.Name, nameof(DefaultModel.DateTimeProperty.Day));
+            Assert.Equal(propertyFromMonthField.DeclaringType, typeof(DateTime));
+            Assert.Equal(propertyFromMonthField.Name, nameof(DefaultModel.DateTimeProperty.Month));
+            Assert.Equal(propertyFromYearField.DeclaringType, typeof(DateTime));
+            Assert.Equal(propertyFromYearField.Name, nameof(DefaultModel.DateTimeProperty.Year));
         }
 
-        [Test]
+        [Fact]
         public void ChildProperty_is_resolved_from_Parent_Model()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(ParentModel), nameof(ParentModel.Child.ChildModelProperty));
-            Assert.AreEqual(childProperty.DeclaringType, typeof(ChildModel));
-            Assert.AreEqual(childProperty.Name, nameof(ParentModel.Child.ChildModelProperty));
+            Assert.Equal(childProperty.DeclaringType, typeof(ChildModel));
+            Assert.Equal(childProperty.Name, nameof(ParentModel.Child.ChildModelProperty));
 
 
         }
 
 
-        [Test]
+        [Fact]
         public void ChildProperty_String_is_resolved_from_Parent_Model()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(ParentModel), "Child.ChildModelProperty");
-            Assert.AreEqual(childProperty.DeclaringType, typeof(ChildModel));
-            Assert.AreEqual(childProperty.Name, nameof(ParentModel.Child.ChildModelProperty));
+            Assert.Equal(childProperty.DeclaringType, typeof(ChildModel));
+            Assert.Equal(childProperty.Name, nameof(ParentModel.Child.ChildModelProperty));
         }
 
-        [Test]
+        [Fact]
         public void ChildProperty_is_resolved_from_Iterative_Model()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(IterativeModel), "List[0].ChildModelProperty");
-            Assert.AreEqual(childProperty.DeclaringType, typeof(ChildModel));
+            Assert.Equal(childProperty.DeclaringType, typeof(ChildModel));
 
             var childType = typeof(IterativeModel).GetProperty("List")!.PropertyType.GenericTypeArguments[0];
-            Assert.AreEqual(typeof(ChildModel), childType);
-            Assert.AreEqual(childProperty.Name, nameof(ChildModel.ChildModelProperty));
+            Assert.Equal(typeof(ChildModel), childType);
+            Assert.Equal(childProperty.Name, nameof(ChildModel.ChildModelProperty));
         }
 
-        [Test]
+        [Fact]
         public void ArrayProperty_is_resolved_from_Iterative_Model()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(IterativeModel), "Array[0]");
-            Assert.AreEqual(childProperty.PropertyType, typeof(IterativeModel).GetProperty("Array")!.PropertyType);
-            Assert.AreEqual(childProperty.Name, nameof(IterativeModel.Array));
+            Assert.Equal(childProperty.PropertyType, typeof(IterativeModel).GetProperty("Array")!.PropertyType);
+            Assert.Equal(childProperty.Name, nameof(IterativeModel.Array));
         }
 
-        [Test]
+        [Fact]
         public void Nested_property_throws_InvalidOperationException_when_nested_5_levels()
         {
             var modelPropertyResolver = new ModelPropertyResolver();
             Assert.Throws<InvalidOperationException>(() => modelPropertyResolver.ResolveModelProperty(typeof(NestedModelLevel1), nameof(Level5.Level5Field)));
         }
 
-        [TestCase(typeof(NestedModelLevel1), nameof(NestedModelLevel1.Field))]
-        [TestCase(typeof(Level2), nameof(Level2.Level2Field))]
-        [TestCase(typeof(Level3), nameof(Level3.Level3Field))]
-        [TestCase(typeof(Level4), nameof(Level4.Level4Field))]
+        [Theory]
+        [InlineData(typeof(NestedModelLevel1), nameof(NestedModelLevel1.Field))]
+        [InlineData(typeof(Level2), nameof(Level2.Level2Field))]
+        [InlineData(typeof(Level3), nameof(Level3.Level3Field))]
+        [InlineData(typeof(Level4), nameof(Level4.Level4Field))]
         public void Nested_property_is_resolved_when_nested_less_than_5_levels(Type t, string field)
         {
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(NestedModelLevel1), field);
-            Assert.AreEqual(childProperty.DeclaringType, t);
-            Assert.AreEqual(childProperty.Name, field);
+            Assert.Equal(childProperty.DeclaringType, t);
+            Assert.Equal(childProperty.Name, field);
 
         }
     }

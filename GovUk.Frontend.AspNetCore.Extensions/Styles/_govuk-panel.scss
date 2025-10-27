@@ -1,0 +1,11 @@
+﻿/* 
+    If there is a fieldset level error we do not want to display an error message for the field, 
+    but without an error message the .govuk-select--error class will not be applied.
+*/
+.govuk-select[aria-invalid=true] {
+    @extend .govuk-select--error;
+}
+
+.govuk-panel__body > :last-child {
+    margin-bottom: 0;
+}

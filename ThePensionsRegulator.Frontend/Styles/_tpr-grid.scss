@@ -71,14 +71,14 @@
 
 // .govuk-grid-row--tpr-divider and .tpr-box both apply padding-bottom, so remove any bottom padding or
 //  margin from the last element inside either one so that we get one spacer, not the combination of both.
-.govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-.govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-.tpr-box > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button), 
-.tpr-box > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .tpr-section-cards),
-.tpr-box.govuk-grid-row > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button), 
-.tpr-box.govuk-grid-row > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-.tpr-box > .govuk-grid-row > .govuk-grid-column:last-child > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-.tpr-box--full-width > .govuk-width-container > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.govuk-button) {
+.govuk-grid-row--tpr-divider > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+.govuk-grid-row--tpr-divider > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+.tpr-box > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel), 
+.tpr-box > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .tpr-section-cards, .govuk-panel),
+.tpr-box.govuk-grid-row > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel), 
+.tpr-box.govuk-grid-row > .govuk-grid-column > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+.tpr-box > .govuk-grid-row > .govuk-grid-column:last-child > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+.tpr-box--full-width > .govuk-width-container > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.govuk-button, .govuk-panel) {
     padding-bottom: 0;
     margin-bottom: 0;
 }
@@ -104,12 +104,12 @@
 }
 
 @include govuk-media-query($from: tablet) {
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-quarter > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-third > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-half > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-two-thirds > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-three-quarters > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-full > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button) {
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-quarter > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-third > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-half > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-two-thirds > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-three-quarters > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-full > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel) {
         padding-bottom: 0;
         margin-bottom: 0;
     }
@@ -134,12 +134,12 @@
 }
 
 @include govuk-media-query($from: desktop) {
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-quarter-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-third-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-half-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-two-thirds-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-three-quarters-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button),
-    .tpr-box > .govuk-grid-row > .govuk-grid-column-full-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button) {
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-quarter-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-third-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-one-half-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-two-thirds-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-three-quarters-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel),
+    .tpr-box > .govuk-grid-row > .govuk-grid-column-full-from-desktop > .govuk-grid-row:last-child > .govuk-grid-column > :last-child:not(.tpr-box, .tpr-box > .govuk-grid-column, .govuk-button, .govuk-panel) {
         padding-bottom: 0;
         margin-bottom: 0;
     }

@@ -1,0 +1,7 @@
+﻿/* This allows a long unbreakable word (such as a filename without spaces) to wrap,
+   which is important for this component as the text is white and typically overflows 
+   onto a white background if it doesn't wrap.
+*/
+.govuk-panel {
+    word-break: break-all;
+}

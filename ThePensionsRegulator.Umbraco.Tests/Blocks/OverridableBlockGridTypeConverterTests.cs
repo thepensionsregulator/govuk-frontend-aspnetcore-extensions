@@ -27,7 +27,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Assert
             Assert.NotNull(converted);
-            Assert.Equal(converted.Count, blockGrid.Count());
+            Assert.Equal(blockGrid.Count(), converted.Count);
         }
     }
 }

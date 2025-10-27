@@ -4,7 +4,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 {
-    
+
     public class PublishedElementExtensionsTests
     {
         [Fact]

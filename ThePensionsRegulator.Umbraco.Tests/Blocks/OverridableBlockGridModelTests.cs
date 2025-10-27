@@ -345,8 +345,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             blockGrid.Filter = block => false;
 
             // Act + Assert
-            var exception = Record.Exception(() => blockGrid[0]);
-            Assert.Null(exception);
+            _ = blockGrid[0]; // Just accessing it should not throw
         }
 
         [Fact]
@@ -455,7 +454,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var model = (BlockGridModel)blockGrid;
 
             Assert.NotNull(model);
-            Assert.Equal(model.Count(), blockGrid.Count());
+            Assert.Equal(blockGrid.Count(), model.Count());
         }
 
         [Fact]
@@ -481,7 +480,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Assert
             Assert.NotNull(model);
-            Assert.Equal(model.Count(), blockGrid.Count());
+            Assert.Equal(blockGrid.Count(), model.Count());
         }
 
         [Fact]
@@ -499,7 +498,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Assert
             Assert.NotNull(model);
-            Assert.Equal(model.Count(), blockGrid.Count());
+            Assert.Equal(blockGrid.Count(), model.Count());
         }
 
 
@@ -518,7 +517,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Assert
             Assert.NotNull(model);
-            Assert.Equal(model.Count(), blockGrid.Count());
+            Assert.Equal(blockGrid.Count(), model.Count());
         }
 
 
@@ -537,7 +536,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Assert
             Assert.NotNull(model);
-            Assert.Equal(model.Count(), blockGrid.Count());
+            Assert.Equal(blockGrid.Count(), model.Count());
         }
     }
 }

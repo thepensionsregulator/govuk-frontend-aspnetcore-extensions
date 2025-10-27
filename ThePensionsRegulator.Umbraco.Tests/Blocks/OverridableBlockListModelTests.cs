@@ -200,8 +200,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             blockList.Filter = block => false;
 
             // Act + Assert
-            var exception = Record.Exception(() => blockList[0]);
-            Assert.Null(exception);
+            _ = blockList[0]; // Just accessing it should not throw
         }
 
         [Fact]

@@ -1,43 +1,44 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using NUnit.Framework;
+
 
 namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
     public class RegisteredCharityNumberAttributeTest
     {
-        [Test]
-        [TestCase("123456")]
-        [TestCase("1234567")]
-        [TestCase("SC123456")]
-        [TestCase("sc123456")]
-        [TestCase("Sc123456")]
-        [TestCase("sC123456")]
+        [Theory]
+        [InlineData("123456")]
+        [InlineData("1234567")]
+        [InlineData("SC123456")]
+        [InlineData("sc123456")]
+        [InlineData("Sc123456")]
+        [InlineData("sC123456")]
         public void Valid_numbers(string input)
         {
             TestNumber(input, expected: true);
         }
 
-        [TestCase("AB123456")]
-        [TestCase("ab123456")]
-        [TestCase("Ab123456")]
-        [TestCase("aB123456")]
-        [TestCase("Sb123456")]
-        [TestCase("sb123456")]
-        [TestCase("SB123456")]
-        [TestCase("BC123456")]
-        [TestCase("bC123456")]
-        [TestCase("Bc123456")]
-        [TestCase("bc123456")]
+        [Theory]
+        [InlineData("AB123456")]
+        [InlineData("ab123456")]
+        [InlineData("Ab123456")]
+        [InlineData("aB123456")]
+        [InlineData("Sb123456")]
+        [InlineData("sb123456")]
+        [InlineData("SB123456")]
+        [InlineData("BC123456")]
+        [InlineData("bC123456")]
+        [InlineData("Bc123456")]
+        [InlineData("bc123456")]
         public void Incorrect_prefix(string input)
         {
             TestNumber(input, expected: false);
         }
 
-        [Test]
-        [TestCase("12345")]
-        [TestCase("12345678")]
-        [TestCase("sc12345")]
-        [TestCase("sc12345678")]
+        [Theory]
+        [InlineData("12345")]
+        [InlineData("12345678")]
+        [InlineData("sc12345")]
+        [InlineData("sc12345678")]
         public void Numbers_incorrect_length(string? input)
         {
             TestNumber(input, expected: false);
@@ -52,7 +53,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             var result = attribute.IsValid(input);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
     }
 }

@@ -110,5 +110,18 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//p[contains(@class,'{expectedClass}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
         }
+
+        internal static void TestStyleAttributeIsRemovedFromOtherElements(IPropertyValueFormatter formatter)
+        {
+            var html = "<h2 style=\"text-align: center;\">Example text</h2><ul><li style=\"color: red;\">Example text</li></ul>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString());
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//h2").Count);
+            Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//li").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//*[@style]"));
+        }
     }
 }

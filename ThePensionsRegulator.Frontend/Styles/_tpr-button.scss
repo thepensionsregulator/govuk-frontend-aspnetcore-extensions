@@ -23,17 +23,6 @@ govuk-button:focus:not(:active):not(:hover) {
     color: $tpr-colour-eclipse;
 }
 
-.govuk-file-upload::file-selector-button {
-    color: $govuk-button-text-colour;
-    border-width: 1px;
-    border-color: transparent;
-    border-radius: 8px;
-    box-shadow: none;
-    background: $govuk-button-background-colour right center no-repeat;
-    padding-left: $tpr-button-padding;
-    padding-right: $tpr-button-padding;
-}
-
 govuk-button:focus:not(:active):not(:hover) {
     color: $tpr-colour-eclipse;
 }

@@ -9,14 +9,14 @@
     @include govuk-responsive-margin(6, "bottom");
     
     background: $tpr-colour-whisper; 
-    padding: $govuk-gutter;
+    padding: $govuk-gutter-half;
 
     container-type: inline-size;
 
     > ul {
         display: flex;
         flex-wrap: wrap;
-        gap: $govuk-gutter;
+        gap: $govuk-gutter-half;
         margin: 0;
         padding: 0;
     }
@@ -42,6 +42,16 @@
 
     }
 }
+@include govuk-media-query($from: tablet) {
+    .tpr-section-cards {
+        padding: $govuk-gutter;
+    }
+
+    .tpr-section-cards > ul {
+        gap: $govuk-gutter;
+    }
+}
+
 
 /* If .tpr-section-cards is added within .tpr-box, let .tpr-box handle the background and padding. */
 .tpr-box:not(.tpr-box--bordered) .tpr-section-cards {
@@ -49,10 +59,33 @@
     background: none; 
 }
 
-.tpr-box .tpr-section-cards:last-child {
+.tpr-box:not(.tpr-box--full-width) .tpr-section-cards:last-child {
     margin: 0;
 }
 
+@include govuk-media-query($until: tablet) {
+    .tpr-box--full-width .tpr-section-cards {
+        margin-left: -$govuk-gutter-half;
+        margin-right: -$govuk-gutter-half;
+    }
+}
+
+$tablet-breakpoint-2: govuk-from-breakpoint("tablet", $govuk-breakpoints);
+$max-width: "1021px";
+
+@media (max-width: $max-width) {
+    .tpr-box--full-width .tpr-section-cards:last-child {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+@media ($tablet-breakpoint-2) and (max-width: $max-width) {
+    .tpr-box--full-width .tpr-section-cards {
+        margin-left: -$govuk-gutter;
+        margin-right: -$govuk-gutter;
+    }
+}
 
 .tpr-section-card__body {
     background-color: $tpr-colour-white;

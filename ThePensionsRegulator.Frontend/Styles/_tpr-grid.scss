@@ -34,16 +34,30 @@
 // Add a background box to highlight a section of content.
 .tpr-box,
 .tpr-box.govuk-grid-row > .govuk-grid-column {
-    padding: $govuk-gutter;
+    padding: $govuk-gutter-half;
     background: $tpr-colour-whisper;
     @include govuk-responsive-margin(6, "bottom");
 }
+
+
 
 .tpr-box--bordered,
 .tpr-box--bordered.govuk-grid-row > .govuk-grid-column {
     background: $tpr-colour-white;
     border: govuk-px-to-rem($govuk-border-width) solid $tpr-colour-whisper;
-    padding: govuk-px-to-rem($govuk-gutter - $govuk-border-width)
+    padding: govuk-px-to-rem($govuk-gutter-half - $govuk-border-width)
+}
+
+@include govuk-media-query($from: tablet) {
+    .tpr-box,
+    .tpr-box.govuk-grid-row > .govuk-grid-column {
+        padding: $govuk-gutter;
+    }
+
+    .tpr-box--bordered,
+    .tpr-box--bordered.govuk-grid-row > .govuk-grid-column {
+        padding: govuk-px-to-rem($govuk-gutter - $govuk-border-width)
+    }
 }
 
 .tpr-box--blue {

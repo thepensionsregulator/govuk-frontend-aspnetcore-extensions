@@ -50,6 +50,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Allow multiple files
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[ImplementPropertyType("allowMultipleFiles")]
+		public virtual bool AllowMultipleFiles => this.Value<bool>(_publishedValueFallback, "allowMultipleFiles");
+
+		///<summary>
 		/// File types: Sets the message displayed if an uploaded file is not an allowed file type.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

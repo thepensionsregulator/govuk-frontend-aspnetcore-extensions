@@ -27,13 +27,13 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             act(targetElement.Object, PROPERTY_ALIAS, propertyValue);
 
             // Assert
-            Assert.That(targetElement.Object.Value<T>(PROPERTY_ALIAS), Is.EqualTo(propertyValue));
-            Assert.That(targetElement.Object.Properties.SingleOrDefault(x => x.Alias == PROPERTY_ALIAS), Is.Not.Null); // returns PublishedElementPropertyBase
-            Assert.That(targetElement.Object.GetProperty(PROPERTY_ALIAS)?.GetValue(), Is.EqualTo(propertyValue));
-            Assert.That(targetElement.Object.GetProperty(PROPERTY_ALIAS)?.PropertyType?.EditorAlias, Is.EqualTo(expectedPropertyEditorAlias));
+            Assert.Equal(propertyValue, targetElement.Object.Value<T>(PROPERTY_ALIAS));
+            Assert.NotNull(targetElement.Object.Properties.SingleOrDefault(x => x.Alias == PROPERTY_ALIAS)); // returns PublishedElementPropertyBase
+            Assert.Equal(propertyValue, targetElement.Object.GetProperty(PROPERTY_ALIAS)?.GetValue());
+            Assert.Equal(expectedPropertyEditorAlias, targetElement.Object.GetProperty(PROPERTY_ALIAS)?.PropertyType?.EditorAlias);
         }
 
-        [Test]
+        [Fact]
         public void SetupUmbracoBlockGridPropertyValue_works()
         {
             TestSetupUmbracoTypedPropertyValue(
@@ -43,7 +43,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void SetupUmbracoBlockListPropertyValue_works()
         {
             TestSetupUmbracoTypedPropertyValue(
@@ -53,7 +53,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void SetupUmbracoBooleanPropertyValue_works()
         {
             TestSetupUmbracoTypedPropertyValue(
@@ -63,7 +63,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void SetupUmbracoContentPickerPropertyValue_works()
         {
             TestSetupUmbracoTypedPropertyValue(
@@ -73,7 +73,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void SetupUmbracoIntegerPropertyValue_works()
         {
             TestSetupUmbracoTypedPropertyValue(
@@ -83,7 +83,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void SetupUmbracoMultiUrlPickerPropertyValue_works()
         {
             TestSetupUmbracoTypedPropertyValue(
@@ -93,7 +93,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             );
         }
 
-        [Test]
+        [Fact]
         public void SetupUmbracoRichTextPropertyValue_works_with_HtmlEncodedString()
         {
             TestSetupUmbracoTypedPropertyValue(
@@ -106,7 +106,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
         /// <summary>
         /// Native format of rich text values is HtmlEncodedString which is covered by another test, but you can also use .Value<string>().
         /// </summary>
-        [Test]
+        [Fact]
         public void SetupUmbracoRichTextPropertyValue_works_with_string()
         {
             // Arrange
@@ -117,10 +117,10 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             targetElement.Object.SetupUmbracoRichTextPropertyValue(PROPERTY_ALIAS, propertyValue);
 
             // Assert
-            Assert.That(targetElement.Object.Value<string>(PROPERTY_ALIAS), Is.EqualTo(propertyValue));
+            Assert.Equal(propertyValue, targetElement.Object.Value<string>(PROPERTY_ALIAS));
         }
 
-        [Test]
+        [Fact]
         public void SetupUmbracoTextboxPropertyValue_works()
         {
             TestSetupUmbracoTypedPropertyValue(

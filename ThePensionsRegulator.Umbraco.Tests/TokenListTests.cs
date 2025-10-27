@@ -27,7 +27,7 @@ namespace ThePensionsRegulator.Umbraco.Tests
 		{
 			var list = new TokenList(null, PROPERTY_ALIAS);
 
-			Assert.Equal(0, list.Count);
+			Assert.Empty(list);
 			Assert.Equal(string.Empty, list.ToString());
 		}
 

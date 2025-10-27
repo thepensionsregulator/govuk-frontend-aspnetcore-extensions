@@ -95,5 +95,12 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             TinyMCEValueFormattersTestHelper.TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(
                 new GovUkTypographyPropertyValueFormatter(), styleAttribute, expectedClass);
         }
+
+        [Test]
+        public void Style_attribute_is_removed_from_other_elements()
+        {
+            TinyMCEValueFormattersTestHelper.TestStyleAttributeIsRemovedFromOtherElements(
+                new GovUkTypographyPropertyValueFormatter());
+        }
     }
 }

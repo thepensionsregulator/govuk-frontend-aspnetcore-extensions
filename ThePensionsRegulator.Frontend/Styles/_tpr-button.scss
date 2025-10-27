@@ -11,6 +11,7 @@ $tpr-button-padding: 20px;
 .govuk-button, .govuk-file-upload::file-selector-button {
     color: $govuk-button-text-colour;
     border-width: 1px;
+    border-style: solid;
     border-color: transparent;
     line-height: govuk-px-to-rem(33);
     border-radius: 8px;

@@ -4,20 +4,12 @@
 $button-shadow-size: $govuk-border-width-form-element;
 
 .govuk-file-upload {
-    @include govuk-font-size($size: 19, $line-height: 1);
-    outline: $govuk-focus-width solid transparent;
-    border-color: transparent;
-    box-shadow: inset 0 0 0 govuk-px-to-rem(2) transparent;
     padding: govuk-px-to-rem(3) govuk-px-to-rem(3) govuk-px-to-rem(1) govuk-px-to-rem(3);
-    font-family: $govuk-font-family;
-    color: $govuk-text-colour
 }
 
 .govuk-file-upload::file-selector-button {
     padding-top: (govuk-spacing(2) - $govuk-border-width-form-element);
     padding-bottom: (govuk-spacing(2) - $govuk-border-width-form-element - ($button-shadow-size / 2));
-    font-family: $govuk-font-family;
-    border-color: $tpr-colour-royal-blue;
     margin-right: govuk-px-to-rem(16);
 }
 

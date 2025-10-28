@@ -1,11 +1,13 @@
-﻿/* 
-    If there is a fieldset level error we do not want to display an error message for the field, 
-    but without an error message the .govuk-select--error class will not be applied.
+﻿/* Prevent long unbreakable words like URLs and filenames from overflowing,
+   which would typically be white text on a white background.
 */
-.govuk-select[aria-invalid=true] {
-    @extend .govuk-select--error;
+.govuk-panel {
+    overflow-wrap: break-word;
 }
 
+/* Remove the bottom margin on the last content block element (eg a paragraph),
+   so that the padding of .govuk-panel creates even space all around.
+*/
 .govuk-panel__body > :last-child {
     margin-bottom: 0;
 }

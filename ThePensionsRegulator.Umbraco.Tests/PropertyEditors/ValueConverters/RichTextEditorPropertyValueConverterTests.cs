@@ -42,7 +42,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.PropertyEditors.ValueConverters
             var contentSettings = new Mock<IOptionsMonitor<ContentSettings>>();
             contentSettings.Setup(x => x.CurrentValue).Returns(new ContentSettings { ResolveUrlsFromTextString = false });
 
-            var blockEditorVarianceHandler = Mock.Of<BlockEditorVarianceHandler>();
+            var blockEditorVarianceHandler =  new BlockEditorVarianceHandler(testContext.LanguageService.Object, testContext.ContentTypeService.Object);
 
             var valueConverter = new RichTextEditorPropertyValueConverter(
                 new HtmlLocalLinkParser(urlProvider),

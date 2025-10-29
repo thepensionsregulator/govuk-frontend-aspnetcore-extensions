@@ -25,7 +25,7 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             Assert.NotEqual(default(Guid).ToString(), contentType.Key.ToString());
             Assert.Equal(contentTypeAlias, contentType.Alias);
 
-            Assert.Equal(contentType, testContext.PublishedContentTypeCache.Object.Get(PublishedItemType.Content, contentTypeAlias));
+            Assert.Equal(contentType, testContext.PublishedContentTypeCache.Object.Get(PublishedItemType.Element, contentTypeAlias));
         }
 
         [Fact]

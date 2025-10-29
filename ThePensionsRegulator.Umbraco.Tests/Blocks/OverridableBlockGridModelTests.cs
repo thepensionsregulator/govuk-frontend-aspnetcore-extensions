@@ -364,7 +364,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
             // Assert
             Assert.Equal(1, ((OverridablePublishedElement)blockGrid[0].Content).PropertyValueFormatters?.Count());
-            Assert.Equal(1, ((OverridablePublishedElement)blockGrid[0].Settings).PropertyValueFormatters?.Count());
+            Assert.Equal(1, ((OverridablePublishedElement?)blockGrid[0].Settings)?.PropertyValueFormatters?.Count());
         }
 
         [Fact]
@@ -394,7 +394,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             // Assert
             var blockWithinArea = blockGrid[0].Areas.First()[0];
             Assert.Equal(1, ((OverridablePublishedElement)blockWithinArea.Content).PropertyValueFormatters?.Count());
-            Assert.Equal(1, ((OverridablePublishedElement)blockWithinArea.Settings).PropertyValueFormatters?.Count());
+            Assert.Equal(1, ((OverridablePublishedElement?)blockWithinArea.Settings)?.PropertyValueFormatters?.Count());
         }
 
 
@@ -430,7 +430,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
                     .Object)
                 );
             replacementChildBlock.Content.OverrideValue(CONTENT_PROPERTY_ALIAS_TO_OVERRIDE, CONTENT_PROPERTY_VALUE);
-            replacementChildBlock.Settings.OverrideValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, SETTINGS_PROPERTY_VALUE);
+            replacementChildBlock.Settings?.OverrideValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, SETTINGS_PROPERTY_VALUE);
 
             var replacementChildBlockList = new OverridableBlockListModel(new[] { replacementChildBlock });
             parentBlockGrid[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, replacementChildBlockList);

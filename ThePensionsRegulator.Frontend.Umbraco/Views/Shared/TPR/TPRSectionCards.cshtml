@@ -68,7 +68,7 @@
                     break;
                 case TprElementTypeAliases.SectionCardsForChildPages:
                     var page = Umbraco.AssignedContentItem;
-                    foreach (var child in page.Children)
+                    foreach (var child in page.Children())
                     {
                         if (!child.IsVisible())
                         {

@@ -148,6 +148,11 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public Mock<IPublishedContentCache> PublishedContentCache { get; private init; } = new();
 
+        /// <summary>
+        /// Provides access to Umbraco's cache of current published media.
+        /// </summary>
+        public Mock<IPublishedMediaCache> PublishedMediaCache { get; private init; } = new();
+
         private readonly Dictionary<string, Mock<IPublishedContentType>> _contentTypes = new();
 
         /// <summary>
@@ -486,6 +491,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(PackagingService.Object);
             SetupService(PublicAccessService.Object);
             SetupService(PublishedContentCache.Object);
+            SetupService(PublishedMediaCache.Object);
             SetupService(PublishedModelFactory.Object);
             SetupService(PublishedContentQuery.Object);
             SetupService(PublishedContentTypeCache.Object);

@@ -66,7 +66,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.PropertyEditors.ValueConverters
             // Act
             var result = valueConverter.ConvertIntermediateToObject(
                 UmbracoContentFactory.CreateContent<IPublishedElement>().Object,
-                propertyType, PropertyCacheLevel.Snapshot, new FakeRichTextIntermediateValue { Markup = INITIAL_VALUE }, false);
+                propertyType, PropertyCacheLevel.Element, new FakeRichTextIntermediateValue { Markup = INITIAL_VALUE }, false);
 
             // Assert
             Assert.Equal(EXPECTED_VALUE, ((IHtmlEncodedString?)result)?.ToHtmlString());

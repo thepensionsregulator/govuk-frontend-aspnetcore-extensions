@@ -19,7 +19,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Checkboxes component.</param>
         /// <param name="items">The checkboxes.</param>
-        /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
         public static void OverrideCheckboxes(
@@ -36,7 +36,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Checkboxes component.</param>
         /// <param name="items">The checkboxes.</param>
-        /// <param name="publishedContentTypeCache">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
@@ -88,7 +88,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Radios component.</param>
         /// <param name="items">The radio buttons.</param>
-        /// <param name="publishedContentTypeCache">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
         public static void OverrideRadioButtons(
@@ -105,7 +105,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Radios component.</param>
         /// <param name="items">The radio buttons.</param>
-        /// <param name="publishedContentTypeCache">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
@@ -156,7 +156,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Select component.</param>
         /// <param name="items">The select options.</param>
-        /// <param name="publishedContentTypeCache">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
         public static void OverrideSelectOptions(
@@ -173,7 +173,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Select component.</param>
         /// <param name="items">The select options.</param>
-        /// <param name="publishedContentTypeCache">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
@@ -205,7 +205,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Summary card component.</param>
         /// <param name="items">The summary card actions.</param>
-        /// <param name="publishedContentTypeCache">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
         public static void OverrideSummaryCardActions(
@@ -222,7 +222,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Summary card component.</param>
         /// <param name="items">The summary card actions.</param>
-        /// <param name="publishedContentTypeCache">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
@@ -243,7 +243,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Summary list component.</param>
         /// <param name="items">The summary list items.</param>
-        /// <param name="publishedContentTypeCache">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
         public static void OverrideSummaryListItems(
@@ -260,7 +260,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// </summary>
         /// <param name="blockContent">The content of a block list item based on the GOV.UK Summary list component.</param>
         /// <param name="items">The summary list items.</param>
-        /// <param name="publishedContentTypeCache">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
+        /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
@@ -327,8 +327,8 @@ namespace GovUk.Frontend.Umbraco.Blocks
             Dictionary<string, object?>? originalSettings = hasSettings ? new(settingsProperties!.Select(x => new KeyValuePair<string, object?>(x.Key, null))) : null;
             if (variationContextAccessor.VariationContext is null) { throw new InvalidOperationException("No variation context was found"); }
 
-            var content = new PublishedElement(PublishedModelUtility.GetModelContentType(publishedContentTypeCache, PublishedItemType.Content, contentTypeAlias)!, Guid.NewGuid(), originalContent, false, variationContextAccessor.VariationContext);
-            var settings = hasSettings ? new PublishedElement(PublishedModelUtility.GetModelContentType(publishedContentTypeCache, PublishedItemType.Content, settingsTypeAlias!)!, Guid.NewGuid(), originalSettings!, false, variationContextAccessor.VariationContext) : null;
+            var content = new PublishedElement(PublishedModelUtility.GetModelContentType(publishedContentTypeCache, PublishedItemType.Element, contentTypeAlias)!, Guid.NewGuid(), originalContent, false, variationContextAccessor.VariationContext);
+            var settings = hasSettings ? new PublishedElement(PublishedModelUtility.GetModelContentType(publishedContentTypeCache, PublishedItemType.Element, settingsTypeAlias!)!, Guid.NewGuid(), originalSettings!, false, variationContextAccessor.VariationContext) : null;
 
             var blockListItem = new BlockListItem(
                                 Guid.NewGuid(),

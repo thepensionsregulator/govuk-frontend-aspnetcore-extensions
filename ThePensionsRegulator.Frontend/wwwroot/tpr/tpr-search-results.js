@@ -9,9 +9,15 @@ let getContentByIdApiUrl = "";
 let showMoreQuestions = false;
 let newHeadingLevel = 3;
 
-const searchInput = document.getElementById("tpr-search-results-ask-input");
-const showMoreButton = document.getElementById("tpr-search-results-show-more-questions");
 const INITIAL_VISIBLE_RESULTS = 2;
+
+function getSearchInput() {
+    return document.getElementById("tpr-search-results-ask-input");
+}
+
+function getShowMoreButton() {
+    return document.getElementById("tpr-search-results-show-more-questions");
+}
 
 async function fetchJson(url) {
     const response = await fetch(url, { headers: { 'Content-Type': 'application/json' } });
@@ -105,8 +111,9 @@ async function fetchContentById(contentId) {
 async function toggleErrorTextVisibility(showErrorText) {
     const errorText = document.getElementById("tpr-search-results-error-text");
     const formGroup = document.querySelector('.tpr-search-results__form .govuk-form-group');
+    const searchInput = getSearchInput();
 
-    if (errorText != null) {
+    if (errorText != null && searchInput != null && formGroup != null) {
 
         if (showErrorText) {
             errorText.classList.remove("govuk-visually-hidden");
@@ -124,7 +131,12 @@ async function toggleErrorTextVisibility(showErrorText) {
 async function searchButtonOnClick(event) {
     event.preventDefault();
 
-    const searchValue = searchInput.value
+    const searchInput = getSearchInput();
+    if (searchInput == null) {
+        return;
+    }
+
+    const searchValue = searchInput.value;
 
     toggleErrorTextVisibility(false);
 
@@ -146,7 +158,7 @@ async function searchButtonOnClick(event) {
         console.error("Failed to search content:", error);
     }
 
-    const results = jsonResults.results;
+    const results = jsonResults.results || [];
 
     removeAccordion("search-results-accordion");
 
@@ -156,8 +168,6 @@ async function searchButtonOnClick(event) {
         removeNoResultsFound();
 
         resetShowMoreAnswersButton();
-
-        searchResults = [];
 
         searchResults = await Promise.all(
             results.map(async (result) => {
@@ -175,12 +185,15 @@ async function searchButtonOnClick(event) {
 
         createAccordion(accordionSections);
 
-        toggleShowMoreButton(accordionSections.length == searchResults.length);
+        toggleShowMoreButton(accordionSections.length === searchResults.length);
     }
 }
 
 async function resetSearchButtonOnClick() {
-    searchInput.value = '';
+    const searchInput = getSearchInput();
+    if (searchInput != null) {
+        searchInput.value = '';
+    }
     toggleErrorTextVisibility(false);
     removeAccordion("search-results-accordion");
     initialiseAccordion();
@@ -191,7 +204,10 @@ async function resetSearchButtonOnClick() {
 async function resetShowMoreAnswersButton() {
     showMoreQuestions = false;
     toggleShowMoreButton(false);
-    showMoreButton.textContent = 'Show more questions';
+    const showMoreButton = getShowMoreButton();
+    if (showMoreButton != null) {
+        showMoreButton.textContent = 'Show more questions';
+    }
 }
 
 async function showMoreAnswersOnClick() {
@@ -200,15 +216,17 @@ async function showMoreAnswersOnClick() {
     const accordionSections = [];
     let results = [];
 
+    const showMoreButton = getShowMoreButton();
+
     if (showMoreQuestions === false) {
         showMoreQuestions = true;
         results = searchResults;
-        showMoreButton.textContent = 'Show fewer questions';
+        if (showMoreButton) showMoreButton.textContent = 'Show fewer questions';
     }
     else {
         showMoreQuestions = false;
         results = searchResults.slice(0, INITIAL_VISIBLE_RESULTS);
-        showMoreButton.textContent = 'Show more questions';
+        if (showMoreButton) showMoreButton.textContent = 'Show more questions';
     }
 
     results.forEach(result => {
@@ -240,6 +258,7 @@ function createNoResultsFoundHeading() {
 }
 
 function toggleShowMoreButton(hideButton) {
+    const showMoreButton = getShowMoreButton();
     if (showMoreButton != null) {
         if (hideButton) {
             showMoreButton.classList.add('govuk-visually-hidden');
@@ -267,6 +286,7 @@ function navigateToSearchButtonOnClick(event) {
 }
 
 function navigateToSearchInput(scrollIntoView) {
+    const searchInput = getSearchInput();
     if (searchInput != null) {
         if (scrollIntoView === true) {
             searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -278,6 +298,7 @@ function navigateToSearchInput(scrollIntoView) {
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("tpr-search-results-ask-button");
     const resetButton = document.getElementById("tpr-search-results-reset-button");
+    const showMoreButton = getShowMoreButton();
 
     if (searchButton == null || showMoreButton == null) {
         return;

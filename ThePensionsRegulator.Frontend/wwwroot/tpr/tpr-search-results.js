@@ -6,12 +6,14 @@ let popularContentApiUrl = "";
 let searchContentApiUrl = "";
 let getContentByIdApiUrl = "";
 
+let showMoreQuestions = false;
 let newHeadingLevel = 3;
 
 async function initaliseAccordion() {
     const response = await fetch(`${popularContentApiUrl}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-
     const results = (await response.json());
+
+    showMoreQuestions = false;
 
     if (results.length === 0) {
         createNoResultsFoundHeading();
@@ -20,13 +22,13 @@ async function initaliseAccordion() {
 
         searchResults = results;
 
-        const showNow = searchResults.slice(0, 2);
-
-        showNow.forEach(result => {
+        searchResults.slice(0, 2).forEach(result => {
             accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key));
         });
 
         createAccordion(accordionSections);
+
+        toggleShowMoreButton(results.length <= 2);
     }
 }
 
@@ -82,14 +84,29 @@ async function fetchContentById(contentId) {
     return await response.json();
 }
 
+async function toggleErrorTextVisibility(displayText) {
+    const errorText = document.getElementById("tpr-search-results-error-text");
+    if (errorText != null) {
+        if (displayText && errorText.classList.contains("govuk-visually-hidden")) {
+            errorText.classList.remove("govuk-visually-hidden");
+        } else {
+            errorText.classList.add("govuk-visually-hidden");
+        }
+    }
+}
+
 async function buttonOnClick(event) {
     event.preventDefault();
 
     const searchInput = document.getElementById("tpr-search-results-ask-input");
     const searchValue = searchInput.value
 
+    toggleErrorTextVisibility(false);
+
     if (!searchValue || searchValue.trim() === '') {
+        searchInput.value = '';
         navigateToSearchInput(false);
+        toggleErrorTextVisibility(true);
         return;
     }
 
@@ -108,6 +125,9 @@ async function buttonOnClick(event) {
         createNoResultsFoundHeading();
     } else {
         removeNoResultsFound();
+
+        resetShowMoreAnswersLink();
+        
 
         searchResults = [];
 
@@ -131,18 +151,45 @@ async function buttonOnClick(event) {
     }
 }
 
+async function resetSearchButtonOnClick() {
+    const searchInput = document.getElementById("tpr-search-results-ask-input").value = '';
+    toggleErrorTextVisibility(false);
+    removeAccordion("search-results-accordion");
+    initaliseAccordion();
+    resetShowMoreAnswersLink();
+    navigateToSearchInput(false);
+}
+
+async function resetShowMoreAnswersLink() {
+    const showMoreLink = document.getElementById('tpr-search-results-show-more-questions');
+    showMoreQuestions = false;
+    toggleShowMoreButton(false);
+    showMoreLink.textContent = 'Show more questions';
+}
+
 async function showMoreAnswersOnClick() {
     removeAccordion("search-results-accordion");
 
+    const showMoreLink = document.getElementById('tpr-search-results-show-more-questions');
     const accordionSections = [];
+    let showNow = [];
 
-    searchResults.forEach(result => {
-        accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key));
+    if (showMoreQuestions === false) {
+        showMoreQuestions = true;
+        showNow = searchResults;
+        showMoreLink.textContent = 'Show fewer questions';
+    }
+    else {
+        showMoreQuestions = false;
+        showNow = searchResults.slice(0, 2);
+        showMoreLink.textContent = 'Show more questions';
+    }
+
+    showNow.forEach(result => {
+        accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
     });
 
     createAccordion(accordionSections);
-
-    toggleShowMoreButton(accordionSections.length == searchResults.length);
 }
 
 function createElementWithClassName(elementName, className) {
@@ -206,6 +253,7 @@ function navigateToSearchInput(scrollIntoView) {
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("tpr-search-results-ask-button");
+    const resetButton = document.getElementById("tpr-search-results-reset-button");
     const showMoreButton = document.getElementById("tpr-search-results-show-more-questions");
 
     if (searchButton == null || showMoreButton == null) {
@@ -213,6 +261,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     searchButton.addEventListener("click", buttonOnClick);
+    resetButton.addEventListener("click", resetSearchButtonOnClick);
     showMoreButton.addEventListener("click", showMoreAnswersOnClick);
 
     const searchAside = document.getElementsByClassName("tpr-search-results")[0];
@@ -232,7 +281,7 @@ document.addEventListener("DOMContentLoaded", function () {
         newHeadingLevel = headingLevelNumber + 1;
     }
 
-    initaliseAccordion(popularContentApiUrl);
+    initaliseAccordion();
 
     const navigateToSearchButton = document.getElementsByClassName("tpr-search-results__nav-button")[0];
     if (navigateToSearchButton != null) {
@@ -249,4 +298,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-export { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound }
+export { initaliseAccordion, buttonOnClick, resetSearchButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound }

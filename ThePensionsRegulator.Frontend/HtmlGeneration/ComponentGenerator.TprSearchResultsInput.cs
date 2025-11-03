@@ -36,7 +36,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             errorTextParagraph.AddCssClass("govuk-error-message field-validation-error govuk-visually-hidden");
             errorTextParagraph.Attributes.Add("id", "tpr-search-results-error-text");
             errorTextParagraph.InnerHtml.AppendHtml(errorTextSpan);
-            errorTextParagraph.InnerHtml.Append("Enter a search term to find questions and answers.");
+            errorTextParagraph.InnerHtml.Append("Enter a search term to find questions and answers");
 
             var input = new TagBuilder("input");
             input.Attributes.Add("type", "text");

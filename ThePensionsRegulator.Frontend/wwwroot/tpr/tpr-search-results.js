@@ -102,13 +102,21 @@ async function fetchContentById(contentId) {
     }
 }
 
-async function toggleErrorTextVisibility(displayText) {
+async function toggleErrorTextVisibility(showErrorText) {
     const errorText = document.getElementById("tpr-search-results-error-text");
+    const formGroup = document.querySelector('.tpr-search-results__form .govuk-form-group');
+
     if (errorText != null) {
-        if (displayText && errorText.classList.contains("govuk-visually-hidden")) {
+
+        if (showErrorText) {
             errorText.classList.remove("govuk-visually-hidden");
+            searchInput.classList.add("govuk-input--error");
+            formGroup.classList.add("govuk-form-group--error");
+
         } else {
             errorText.classList.add("govuk-visually-hidden");
+            searchInput.classList.remove("govuk-input--error");
+            formGroup.classList.remove("govuk-form-group--error");
         }
     }
 }

@@ -9,9 +9,23 @@ let getContentByIdApiUrl = "";
 let showMoreQuestions = false;
 let newHeadingLevel = 3;
 
-async function initaliseAccordion() {
-    const response = await fetch(`${popularContentApiUrl}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-    const results = (await response.json());
+const searchInput = document.getElementById("tpr-search-results-ask-input");
+const showMoreButton = document.getElementById("tpr-search-results-show-more-questions");
+const INITIAL_VISIBLE_RESULTS = 2;
+
+async function fetchJson(url) {
+    const response = await fetch(url, { headers: { 'Content-Type': 'application/json' } });
+    return response.json();
+}
+
+async function initialiseAccordion() {
+    let results = [];
+
+    try {
+        results = await fetchJson(`${popularContentApiUrl}`);
+    } catch (error) {
+        console.error("Failed to fetch most popular content:", error);
+    }
 
     showMoreQuestions = false;
 
@@ -22,13 +36,13 @@ async function initaliseAccordion() {
 
         searchResults = results;
 
-        searchResults.slice(0, 2).forEach(result => {
+        searchResults.slice(0, INITIAL_VISIBLE_RESULTS).forEach(result => {
             accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key));
         });
 
         createAccordion(accordionSections);
 
-        toggleShowMoreButton(results.length <= 2);
+        toggleShowMoreButton(results.length <= INITIAL_VISIBLE_RESULTS);
     }
 }
 
@@ -57,13 +71,12 @@ function createAccordionSection(heading, content, index) {
     const accordionSection = createElementWithClassName("div", "govuk-accordion__section");
 
     const accordionHeader = createElementWithClassName("div", "govuk-accordion__section-header");
-
     const accordionHeadingElement = createElementWithClassName(`h${newHeadingLevel}`, "govuk-accordion__section-heading");
 
     const accordionHeadingElementText = document.createTextNode(heading);
 
     const accordionHeadingButtonElement = createElementWithClassName("span", "govuk-accordion__section-button");
-    accordionHeadingButtonElement.setAttribute("id", `accordion1-heading-${index}`);
+    accordionHeadingButtonElement.setAttribute("id", `accordion-heading-${index}`);
     accordionHeadingButtonElement.appendChild(accordionHeadingElementText);
 
     accordionHeadingElement.appendChild(accordionHeadingButtonElement);
@@ -80,8 +93,13 @@ function createAccordionSection(heading, content, index) {
 }
 
 async function fetchContentById(contentId) {
-    const response = await fetch(`${getContentByIdApiUrl}/${contentId}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-    return await response.json();
+    try {
+        const url = `${getContentByIdApiUrl}/${contentId}`;
+        return await fetchJson(url);
+    } catch (error) {
+        console.error("Failed to fetch content by ID:", error);
+        return null;
+    }
 }
 
 async function toggleErrorTextVisibility(displayText) {
@@ -95,10 +113,9 @@ async function toggleErrorTextVisibility(displayText) {
     }
 }
 
-async function buttonOnClick(event) {
+async function searchButtonOnClick(event) {
     event.preventDefault();
 
-    const searchInput = document.getElementById("tpr-search-results-ask-input");
     const searchValue = searchInput.value
 
     toggleErrorTextVisibility(false);
@@ -113,9 +130,13 @@ async function buttonOnClick(event) {
     let searchUrl = new URL(searchContentApiUrl, window.location.origin);
     searchUrl.searchParams.set('searchTerm', searchValue);
 
-    const response = await fetch(searchUrl.toString(), { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+    let jsonResults = [];
 
-    const jsonResults = await response.json();
+    try {
+        jsonResults = await fetchJson(searchUrl.toString());
+    } catch (error) {
+        console.error("Failed to search content:", error);
+    }
 
     const results = jsonResults.results;
 
@@ -126,8 +147,7 @@ async function buttonOnClick(event) {
     } else {
         removeNoResultsFound();
 
-        resetShowMoreAnswersLink();
-        
+        resetShowMoreAnswersButton();
 
         searchResults = [];
 
@@ -139,7 +159,7 @@ async function buttonOnClick(event) {
 
         const accordionSections = [];
 
-        const showNow = searchResults.slice(0, 2);
+        const showNow = searchResults.slice(0, INITIAL_VISIBLE_RESULTS);
 
         showNow.forEach(result => {
             accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
@@ -152,40 +172,38 @@ async function buttonOnClick(event) {
 }
 
 async function resetSearchButtonOnClick() {
-    const searchInput = document.getElementById("tpr-search-results-ask-input").value = '';
+    searchInput.value = '';
     toggleErrorTextVisibility(false);
     removeAccordion("search-results-accordion");
-    initaliseAccordion();
-    resetShowMoreAnswersLink();
+    initialiseAccordion();
+    resetShowMoreAnswersButton();
     navigateToSearchInput(false);
 }
 
-async function resetShowMoreAnswersLink() {
-    const showMoreLink = document.getElementById('tpr-search-results-show-more-questions');
+async function resetShowMoreAnswersButton() {
     showMoreQuestions = false;
     toggleShowMoreButton(false);
-    showMoreLink.textContent = 'Show more questions';
+    showMoreButton.textContent = 'Show more questions';
 }
 
 async function showMoreAnswersOnClick() {
     removeAccordion("search-results-accordion");
 
-    const showMoreLink = document.getElementById('tpr-search-results-show-more-questions');
     const accordionSections = [];
-    let showNow = [];
+    let results = [];
 
     if (showMoreQuestions === false) {
         showMoreQuestions = true;
-        showNow = searchResults;
-        showMoreLink.textContent = 'Show fewer questions';
+        results = searchResults;
+        showMoreButton.textContent = 'Show fewer questions';
     }
     else {
         showMoreQuestions = false;
-        showNow = searchResults.slice(0, 2);
-        showMoreLink.textContent = 'Show more questions';
+        results = searchResults.slice(0, INITIAL_VISIBLE_RESULTS);
+        showMoreButton.textContent = 'Show more questions';
     }
 
-    showNow.forEach(result => {
+    results.forEach(result => {
         accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
     });
 
@@ -214,7 +232,6 @@ function createNoResultsFoundHeading() {
 }
 
 function toggleShowMoreButton(hideButton) {
-    const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
     if (showMoreButton != null) {
         if (hideButton) {
             showMoreButton.classList.add('govuk-visually-hidden');
@@ -242,25 +259,23 @@ function navigateToSearchButtonOnClick(event) {
 }
 
 function navigateToSearchInput(scrollIntoView) {
-    const searchResultsAside = document.getElementById("tpr-search-results-ask-input");
-    if (searchResultsAside != null) {
+    if (searchInput != null) {
         if (scrollIntoView === true) {
-            searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-        searchResultsAside.focus({ preventScroll: true });
+        searchInput.focus({ preventScroll: true });
     }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("tpr-search-results-ask-button");
     const resetButton = document.getElementById("tpr-search-results-reset-button");
-    const showMoreButton = document.getElementById("tpr-search-results-show-more-questions");
 
     if (searchButton == null || showMoreButton == null) {
         return;
     }
 
-    searchButton.addEventListener("click", buttonOnClick);
+    searchButton.addEventListener("click", searchButtonOnClick);
     resetButton.addEventListener("click", resetSearchButtonOnClick);
     showMoreButton.addEventListener("click", showMoreAnswersOnClick);
 
@@ -281,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function () {
         newHeadingLevel = headingLevelNumber + 1;
     }
 
-    initaliseAccordion();
+    initialiseAccordion();
 
     const navigateToSearchButton = document.getElementsByClassName("tpr-search-results__nav-button")[0];
     if (navigateToSearchButton != null) {
@@ -298,4 +313,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-export { initaliseAccordion, buttonOnClick, resetSearchButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound }
+export { initialiseAccordion, searchButtonOnClick, resetSearchButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound }

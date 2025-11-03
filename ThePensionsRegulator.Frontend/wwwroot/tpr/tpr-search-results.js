@@ -47,7 +47,7 @@ function createAccordion(accordionSections) {
 
     new Accordion(newAccordion);
 
-    const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
+    const searchBlock = document.getElementsByClassName("tpr-search-results__form")[0];
     searchBlock.after(newAccordion);
 }
 
@@ -159,7 +159,7 @@ function createNoResultsFoundHeading() {
         noResultsHeading.className = "govuk-heading-m tpr-search-results__no-results-found";
         noResultsHeading.textContent = "No results found";
 
-        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
+        const searchBlock = document.getElementsByClassName("tpr-search-results__form")[0];
         searchBlock.after(noResultsHeading);
     }
 

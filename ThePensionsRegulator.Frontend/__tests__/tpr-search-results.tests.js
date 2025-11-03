@@ -8,7 +8,7 @@ const setupBlankComponent = () => {
         <aside class="tpr-search-results" data-content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
             <div>
                 <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
-                <div class="tpr-search-results__input">
+                <div class="tpr-search-results__form">
                     <div class="govuk-form-group">
                         <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
                         <input class="govuk-input" id="tpr-search-results-ask-input" type="text">
@@ -23,7 +23,7 @@ const setupComponentWithAccordion = () => {
     document.body.innerHTML = `
         <aside class="tpr-search-results" data-content-by-id-url="/SearchResultsData" data-popular-content-url="/SearchResultsData/popularContentExample.json" data-search-content-url="/SearchResultsData/searchResults.json">
             <h2 class="govuk-heading-m tpr-search-results__heading">Search Q&amp;As</h2>
-            <div class="tpr-search-results__input">
+            <div class="tpr-search-results__form">
                 <div class="govuk-form-group">
                     <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
                     <input class="govuk-input" id="tpr-search-results-ask-input" type="text">

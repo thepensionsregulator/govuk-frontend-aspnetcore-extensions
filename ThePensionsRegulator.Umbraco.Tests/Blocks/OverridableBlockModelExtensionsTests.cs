@@ -27,7 +27,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         private const string OVERRIDDEN_VALUE = "overridden";
 
         #region FindBlock
-        [Test]
+        [Fact]
         public void Block_is_matched_in_root_OverridableBlockListModel()
         {
             var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -42,10 +42,10 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = blockList.FindBlock(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
 
             // Assert
-            Assert.That(result, Is.EqualTo(blockList.First()));
+            Assert.Equal(blockList.First(), result);
         }
 
-        [Test]
+        [Fact]
         public void Block_is_matched_in_root_OverridableBlockGridModel()
         {
             var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
@@ -60,10 +60,10 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = blockGrid.FindBlock(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
 
             // Assert
-            Assert.That(result, Is.EqualTo(blockGrid.First()));
+            Assert.Equal(blockGrid.First(), result);
         }
 
-        [Test]
+        [Fact]
         public void Block_is_matched_in_block_list_descendant_of_OverridableBlockListModel()
         {
             var grandChildBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -94,10 +94,10 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = parentBlockList.FindBlock(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
 
             // Assert
-            Assert.That(result, Is.EqualTo(grandChildBlockList.First()));
+            Assert.Equal(grandChildBlockList.First(), result);
         }
 
-        [Test]
+        [Fact]
         public void Block_is_matched_in_block_list_descendant_of_OverridableBlockGridModel()
         {
             var grandChildBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -128,10 +128,10 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = parentBlockGrid.FindBlock(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
 
             // Assert
-            Assert.That(result, Is.EqualTo(grandChildBlockList.First()));
+            Assert.Equal(grandChildBlockList.First(), result);
         }
 
-        [Test]
+        [Fact]
         public void Block_is_matched_in_area_of_OverridableBlockGridModel()
         {
             // Arrange
@@ -156,11 +156,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = blockGrid.FindBlock(block => block.Content.ContentType.Alias == BLOCK_ALIAS);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Content.ContentType.Alias, Is.EqualTo(BLOCK_ALIAS));
+            Assert.NotNull(result);
+            Assert.Equal(BLOCK_ALIAS, result.Content.ContentType.Alias);
         }
 
-        [Test]
+        [Fact]
         public void Block_is_matched_in_descendant_block_list_in_area_of_OverridableBlockGridModel()
         {
             // Arrange
@@ -194,11 +194,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = blockGrid.FindBlock(block => block.Content.ContentType.Alias == BLOCK_ALIAS);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Content.ContentType.Alias, Is.EqualTo(BLOCK_ALIAS));
+            Assert.NotNull(result);
+            Assert.Equal(BLOCK_ALIAS, result.Content.ContentType.Alias);
         }
 
-        [Test]
+        [Fact]
         public void Block_is_matched_in_multiple_OverridableBlockListModels()
         {
             var blockList1 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks();
@@ -208,10 +208,10 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = (new[] { blockList1.BlockList, blockList2.BlockList }).FindBlock(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
 
             // Assert
-            Assert.That(result, Is.EqualTo(blockList1.BlocksToMatch[0]));
+            Assert.Equal(blockList1.BlocksToMatch[0], result);
         }
 
-        [Test]
+        [Fact]
         public void FindBlock_on_OverridableBlockListModel_returns_overridden_value_without_casting()
         {
             var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -229,11 +229,11 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = blockList.FindBlock(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Content.Value<string>(EXAMPLE_TEXTBOX_PROPERTY_ALIAS), Is.EqualTo(OVERRIDDEN_VALUE));
+            Assert.NotNull(result);
+            Assert.Equal(OVERRIDDEN_VALUE, result.Content.Value<string>(EXAMPLE_TEXTBOX_PROPERTY_ALIAS));
         }
 
-        [Test]
+        [Fact]
         public void FindBlock_on_OverridableBlockListModel_matches_on_overridden_value()
         {
             var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -251,14 +251,14 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = blockList.FindBlock(x => x.Content.Value<string>(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) == OVERRIDDEN_VALUE);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
         }
 
         #endregion
 
         #region FindBlocks
 
-        [Test]
+        [Fact]
         public void Multiple_matching_blocks_are_matched_in_block_list_descendant_of_OverridableBlockGridModel()
         {
             var blockGrid = CreateOverridableBlockGridHierarchyWithMultipleMatchingBlocks();
@@ -267,12 +267,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var results = blockGrid.BlockGrid.FindBlocks(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null).ToList();
 
             // Assert
-            Assert.That(results.Count(), Is.EqualTo(2));
+            Assert.Equal(2, results.Count());
             Assert.Contains(blockGrid.BlocksToMatch[0], results);
             Assert.Contains(blockGrid.BlocksToMatch[1], results);
         }
 
-        [Test]
+        [Fact]
         public void Multiple_matching_blocks_are_matched_in_block_list_descendant_of_OverridableBlockListModel()
         {
             var blockList = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks();
@@ -281,12 +281,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var results = blockList.BlockList.FindBlocks(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null).ToList();
 
             // Assert
-            Assert.That(results.Count(), Is.EqualTo(2));
+            Assert.Equal(2, results.Count());
             Assert.Contains(blockList.BlocksToMatch[0], results);
             Assert.Contains(blockList.BlocksToMatch[1], results);
         }
 
-        [Test]
+        [Fact]
         public void Multiple_matching_blocks_are_matched_in_multiple_OverridableBlockListModels()
         {
             var blockList1 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks();
@@ -296,7 +296,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var results = (new[] { blockList1.BlockList, blockList2.BlockList }).FindBlocks(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null).ToList();
 
             // Assert
-            Assert.That(results.Count(), Is.EqualTo(4));
+            Assert.Equal(4, results.Count());
             Assert.Contains(blockList1.BlocksToMatch[0], results);
             Assert.Contains(blockList1.BlocksToMatch[1], results);
             Assert.Contains(blockList2.BlocksToMatch[0], results);
@@ -306,7 +306,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         #endregion
 
         #region FindBlockByContentTypeAlias
-        [Test]
+        [Fact]
         public void Block_is_matched_by_content_type_alias_in_OverridableBlockListModel()
         {
             var contentType = new Mock<IPublishedContentType>();
@@ -322,7 +322,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var result = blockList.FindBlockByContentTypeAlias("myAlias");
 
             // Assert
-            Assert.That(result, Is.EqualTo(blockList.First()));
+            Assert.Equal(blockList.First(), result);
         }
         #endregion
 

@@ -28,7 +28,16 @@
             var link = action.Content.Value<Link>(PropertyAliases.SummaryCardActionLink);
             if (!string.IsNullOrEmpty(link?.Url))
             {
-                <govuk-summary-card-action href="@(link.Url)" visually-hidden-text="@cardTitle">@(action.Content.Value<string>(PropertyAliases.SummaryCardActionLinkText))</govuk-summary-card-action>
+                var openInNewTab = link.Target?.Equals("_blank") ?? false;
+                if (openInNewTab)
+                {
+                    var visuallyHidden = $"{Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)}";
+                    <govuk-summary-card-action href="@(link.Url)" visually-hidden-text="@visuallyHidden" target="_blank" rel="noreferrer noopener">@(action.Content.Value<string>(PropertyAliases.SummaryCardActionLinkText))</govuk-summary-card-action>
+                }
+                else
+                {
+                    <govuk-summary-card-action href="@(link.Url)">@(action.Content.Value<string>(PropertyAliases.SummaryCardActionLinkText))</govuk-summary-card-action>
+                }
             }
         }
         </govuk-summary-card-actions>
@@ -50,7 +59,17 @@
                                 var link = action.Content.Value<Link>(PropertyAliases.SummaryListActionLink);
                                 if (!string.IsNullOrEmpty(link?.Url))
                                 {
-                                    <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))">@(action.Content.Value<string>(PropertyAliases.SummaryListActionLinkText))</govuk-summary-list-row-action>
+                                    var openInNewTab = link.Target?.Equals("_blank") ?? false;
+                                    if (openInNewTab)
+                                    {
+                                        var visuallyHidden = $"{listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey)} {Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)}";
+                                        <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@visuallyHidden" target="_blank" rel="noreferrer noopener">@(action.Content.Value<string>(PropertyAliases.SummaryListActionLinkText))</govuk-summary-list-row-action>
+                                    }
+                                    else
+                                    {
+                                        var visuallyHidden = listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey);
+                                        <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@visuallyHidden">@(action.Content.Value<string>(PropertyAliases.SummaryListActionLinkText))</govuk-summary-list-row-action>
+                                    }
                                 }
                             }
                         </govuk-summary-list-row-actions>

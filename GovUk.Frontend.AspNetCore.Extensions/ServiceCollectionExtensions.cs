@@ -16,14 +16,21 @@ namespace GovUk.Frontend.AspNetCore.Extensions
 
         public static IServiceCollection AddGovUkFrontendExtensions(
             this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureOptions)
+            Action<GovUkFrontendOptions> configureOptions)
         {
             if (services == null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddGovUkFrontend(configureOptions);
+            Action<GovUkFrontendOptions> configureOptionsWithDefaults = opt =>
+            {
+                opt.ErrorSummaryGeneration = ErrorSummaryGenerationOptions.None;
+                opt.DefaultFileUploadJavaScriptEnhancements = true;
+                configureOptions(opt);
+            };
+
+            services.AddGovUkFrontend(configureOptionsWithDefaults);
             services.AddTransient<IClientSideValidationHtmlEnhancer, ClientSideValidationHtmlEnhancer>();
             services.AddTransient<IModelPropertyResolver, ModelPropertyResolver>();
             services.AddScoped<INonceProvider, NonceProvider>();
@@ -32,7 +39,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
                 options.ModelBinderProviders.Insert(0, new NormalisedStringModelBinderProvider());
                 options.ModelBinderProviders.Insert(0, new UkPostcodeModelBinderProvider());
             });
-            services.AddSingleton(new GovUkFrontendAspNetCoreOptionsProvider(configureOptions));
+            services.AddSingleton(new GovUkFrontendOptionsProvider(configureOptionsWithDefaults));
 
             return services;
         }

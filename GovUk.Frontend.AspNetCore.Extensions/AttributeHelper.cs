@@ -1,18 +1,45 @@
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
 using System.Collections.Generic;
+using System.Web;
 
 namespace GovUk.Frontend.AspNetCore.Extensions
 {
     /// <summary>
     /// Copied from GovUk.Frontend.AspNetCore
     /// </summary>
-    internal static class AttributeHelper
+    public static class AttributeHelper
     {
+        /// <summary>
+        /// Creates an <see cref="AttributeDictionary"/> from a <see cref="TagHelperAttributeList"/>.
+        /// </summary>
+        /// <param name="list">The <see cref="TagHelperAttributeList"/> to retrieve attributes from.</param>
+        public static AttributeDictionary ToAttributeDictionary(this TagHelperAttributeList? list)
+        {
+            var attributeDictionary = new AttributeDictionary();
+
+            if (list != null)
+            {
+                foreach (var attribute in list)
+                {
+                    attributeDictionary.Add(
+                        attribute.Name,
+                        attribute.ValueStyle == HtmlAttributeValueStyle.Minimized ?
+                            string.Empty :
+                            attribute.Value is HtmlString htmlString ? HttpUtility.HtmlDecode(htmlString.Value) :
+                            (attribute.Value ?? string.Empty).ToString());
+                }
+            }
+
+            return attributeDictionary;
+        }
+
         internal static AttributeDictionary MergeAttribute(
-            this AttributeDictionary attributes,
-            string key,
-            object value)
+        this AttributeDictionary attributes,
+        string key,
+        object value)
         {
             if (value == null)
             {

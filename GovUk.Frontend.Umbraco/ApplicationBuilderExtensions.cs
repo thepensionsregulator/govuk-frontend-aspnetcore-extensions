@@ -1,11 +1,10 @@
+using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Smidge;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
@@ -20,6 +19,8 @@ namespace GovUk.Frontend.Umbraco
             {
                 throw new ArgumentNullException(nameof(app));
             }
+
+            app.UseGovUkFrontendExtensions();
 
             mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockValidationMetadataProvider(umbracoContextAccessor,
                 publishedValueFallback,
@@ -44,7 +45,7 @@ namespace GovUk.Frontend.Umbraco
                 bundles.CreateCss("govuk-frontend-css",
                     "/_content/ThePensionsRegulator.GovUk.Frontend.Umbraco/govuk/govuk-frontend.css");
 
-                bundles.CreateJs("govuk-frontend-js", "~/govuk/all.min.js",
+                bundles.CreateJs("govuk-frontend-js", "~/govuk-frontend.min.js?v=5.13.0",
                   "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-js-init.js");
 
                 bundles.CreateJs("govuk-frontend-validation", "/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery/dist/jquery.min.js",

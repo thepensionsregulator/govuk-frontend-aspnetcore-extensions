@@ -89,7 +89,6 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
                 );
 
 
-            //Assert.AreEqual(defaults.PageNumber, pagination.PageNumber);
             Assert.AreEqual(pageSize, pagination.PageSize);
             Assert.AreEqual(totalItems, pagination.TotalItems);
             Assert.AreEqual(cssClasses, pagination.CssClasses);

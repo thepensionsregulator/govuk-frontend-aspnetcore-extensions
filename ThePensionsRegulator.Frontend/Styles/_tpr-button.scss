@@ -11,6 +11,7 @@ $tpr-button-padding: 20px;
 .govuk-button, .govuk-file-upload::file-selector-button {
     color: $govuk-button-text-colour;
     border-width: 1px;
+    border-style: solid;
     border-color: transparent;
     line-height: govuk-px-to-rem(33);
     border-radius: 8px;
@@ -21,17 +22,6 @@ $tpr-button-padding: 20px;
 
 govuk-button:focus:not(:active):not(:hover) {
     color: $tpr-colour-eclipse;
-}
-
-.govuk-file-upload::file-selector-button {
-    color: $govuk-button-text-colour;
-    border-width: 1px;
-    border-color: transparent;
-    border-radius: 8px;
-    box-shadow: none;
-    background: $govuk-button-background-colour right center no-repeat;
-    padding-left: $tpr-button-padding;
-    padding-right: $tpr-button-padding;
 }
 
 govuk-button:focus:not(:active):not(:hover) {
@@ -73,7 +63,6 @@ a.govuk-button--secondary:hover {
 
 .govuk-button--warning {
     background-color: $tpr-colour-fire-brick;
-    padding-right: $tpr-button-padding*2;
 }
 
 .govuk-button--warning:hover, .govuk-button--warning:focus, .govuk-button--warning:active {

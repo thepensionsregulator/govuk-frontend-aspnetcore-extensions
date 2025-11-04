@@ -1,3 +1,4 @@
+using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.ModelBinding;
 using GovUk.Frontend.Umbraco.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNetCore.Routing;
 using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -34,8 +36,6 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         public void SetUp()
         {
             _testContext = new();
-            _testContext.ServiceProvider.Setup(mock => mock.GetService(typeof(DateInputParseErrorsProvider))).Returns(new DateInputParseErrorsProvider());
-
             _cultureDictionary = new Mock<ICultureDictionary>();
 
             var cultureDictionaryFactory = new Mock<ICultureDictionaryFactory>();
@@ -47,9 +47,9 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             _umbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out _umbracoHelper)).Returns(true);
         }
 
-        private UmbracoDateInputModelBinder CreateModelBinder(Mock<DateInputModelConverter> converterMock)
+        private UmbracoDateInputModelBinder CreateModelBinder(DateInputModelConverter converter)
             => new UmbracoDateInputModelBinder(
-                    converterMock.Object,
+                    converter,
                     _testContext.UmbracoContextAccessor.Object,
                     Mock.Of<ICultureDictionary>(),
                     _testContext.PublishedValueFallback.Object,
@@ -78,9 +78,8 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             };
 
             var converterMock = new Mock<DateInputModelConverter>();
-            converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
 
-            var modelBinder = CreateModelBinder(converterMock);
+            var modelBinder = CreateModelBinder(converterMock.Object);
 
             _testContext.UmbracoContext.Setup(x => x.PublishedRequest).Returns<IPublishedRequest?>(null);
 
@@ -107,9 +106,8 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             };
 
             var converterMock = new Mock<DateInputModelConverter>();
-            converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
 
-            var modelBinder = CreateModelBinder(converterMock);
+            var modelBinder = CreateModelBinder(converterMock.Object);
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -119,34 +117,34 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         }
 
         [Test]
-        public async Task BindModelAsync_AllComponentsProvided_PassesValuesToConverterAndBindsResult()
+        public async Task BindModelAsync_CompleteDate_AllComponentsProvided_PassesValuesToConverterAndBindsResult()
         {
             // Arrange
-            var modelType = typeof(DateOnly);
+            var modelType = typeof(ExampleModel);
 
             ModelBindingContext bindingContext = new DefaultModelBindingContext()
             {
                 ActionContext = CreateActionContext(),
-                ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForType(modelType),
-                ModelName = "TheModelName",
+                ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForProperty(modelType, nameof(ExampleModel.DateProperty)),
+                ModelName = nameof(ExampleModel.DateProperty),
                 ModelState = new ModelStateDictionary(),
                 ValueProvider = new SimpleValueProvider()
                 {
-                    { "TheModelName.Day", "1" },
-                    { "TheModelName.Month", "4" },
-                    { "TheModelName.Year", "2020" }
+                    { $"{nameof(ExampleModel.DateProperty)}.Day", "1" },
+                    { $"{nameof(ExampleModel.DateProperty)}.Month", "4" },
+                    { $"{nameof(ExampleModel.DateProperty)}.Year", "2020" }
                 }
             };
 
             var converterMock = new Mock<DateInputModelConverter>();
-            converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
 
             converterMock
-                .Setup(mock => mock.CreateModelFromDate(modelType, new DateOnly(2020, 4, 1)))
+                .Protected()
+                .Setup<object>("ConvertToModelCore", ItExpr.IsAny<DateInputConvertToModelContext>())
                 .Returns(new DateOnly(2020, 4, 1))
                 .Verifiable();
 
-            var modelBinder = CreateModelBinder(converterMock);
+            var modelBinder = CreateModelBinder(converterMock.Object);
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -162,9 +160,70 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             Assert.AreEqual(4, date.Month);
             Assert.AreEqual(1, date.Day);
 
-            Assert.AreEqual("2020", bindingContext.ModelState["TheModelName.Year"]?.AttemptedValue);
-            Assert.AreEqual("4", bindingContext.ModelState["TheModelName.Month"]?.AttemptedValue);
-            Assert.AreEqual("1", bindingContext.ModelState["TheModelName.Day"]?.AttemptedValue);
+            Assert.AreEqual("2020", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
+            Assert.AreEqual("4", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
+            Assert.AreEqual("1", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
+
+            Assert.AreEqual(0, bindingContext.ModelState.ErrorCount);
+        }
+
+        [Test]
+        public async Task BindModelAsync_MonthAndYear_AllComponentsProvided_PassesValuesToConverterAndBindsResult()
+        {
+            // Arrange
+            var modelType = typeof(ExampleModel);
+
+            var block = UmbracoBlockGridFactory.CreateOverridableBlock(
+                UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.ModelProperty, nameof(ExampleModel.DateProperty))
+                    .SetupUmbracoBooleanPropertyValue(PropertyAliases.DateInputShowDay, false)
+                    .Object
+            );
+            var grid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
+            _testContext.CurrentPage.SetupUmbracoBlockGridPropertyValue("blocks", grid);
+
+
+            ModelBindingContext bindingContext = new DefaultModelBindingContext()
+            {
+                ActionContext = CreateActionContext(),
+                ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForProperty(modelType, nameof(ExampleModel.DateProperty)),
+                ModelName = nameof(ExampleModel.DateProperty),
+                ModelState = new ModelStateDictionary(),
+                ValueProvider = new SimpleValueProvider()
+                {
+                    { $"{nameof(ExampleModel.DateProperty)}.Month", "4" },
+                    { $"{nameof(ExampleModel.DateProperty)}.Year", "2020" }
+                }
+            };
+
+            var converterMock = new Mock<DateInputModelConverter>();
+
+            converterMock
+                .Protected()
+                .Setup<object>("ConvertToModelCore", ItExpr.IsAny<DateInputConvertToModelContext>())
+                .Returns(new DateOnly(2020, 4, 1))
+                .Verifiable();
+
+            var modelBinder = CreateModelBinder(converterMock.Object);
+
+            // Act
+            await modelBinder.BindModelAsync(bindingContext);
+
+            // Assert
+            converterMock.Verify();
+
+            Assert.True(bindingContext.Result.IsModelSet);
+
+            Assert.IsInstanceOf<DateOnly>(bindingContext.Result.Model);
+            var date = (DateOnly)bindingContext.Result.Model!;
+            Assert.AreEqual(2020, date.Year);
+            Assert.AreEqual(4, date.Month);
+            Assert.AreEqual(1, date.Day);
+
+            Assert.AreEqual("2020", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
+            Assert.AreEqual("4", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
+            Assert.AreEqual(null, bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
 
             Assert.AreEqual(0, bindingContext.ModelState.ErrorCount);
         }
@@ -214,9 +273,8 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             };
 
             var converterMock = new Mock<DateInputModelConverter>();
-            converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
 
-            var modelBinder = CreateModelBinder(converterMock);
+            var modelBinder = CreateModelBinder(converterMock.Object);
 
             // Act
             await modelBinder.BindModelAsync(bindingContext);
@@ -227,60 +285,6 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             Assert.AreEqual(day, bindingContext.ModelState["TheModelName.Day"]?.AttemptedValue);
             Assert.AreEqual(month, bindingContext.ModelState["TheModelName.Month"]?.AttemptedValue);
             Assert.AreEqual(year, bindingContext.ModelState["TheModelName.Year"]?.AttemptedValue);
-        }
-
-        [Test]
-        public async Task BindModelAsync_MissingOrInvalidComponentsAndConverterCanCreateModelFromErrors_PassesValuesToConverterAndBindsResult()
-        {
-            // Arrange
-            var modelType = typeof(CustomDateType);
-
-            var day = "1";
-            var month = "4";
-            var year = "-1";
-
-            ModelBindingContext bindingContext = new DefaultModelBindingContext()
-            {
-                ActionContext = CreateActionContext(),
-                ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForType(modelType),
-                ModelName = "TheModelName",
-                ModelState = new ModelStateDictionary(),
-                ValueProvider = new SimpleValueProvider()
-                {
-                    { "TheModelName.Day", day },
-                    { "TheModelName.Month", month },
-                    { "TheModelName.Year", year }
-                }
-            };
-
-            var parseErrors = DateInputParseErrors.InvalidYear;
-            object? modelFromErrors = new CustomDateType() { ParseErrors = parseErrors };
-
-            var converterMock = new Mock<DateInputModelConverter>();
-            converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
-
-            converterMock
-                .Setup(mock => mock.TryCreateModelFromErrors(modelType, parseErrors, out modelFromErrors))
-                .Returns(true)
-                .Verifiable();
-
-            var modelBinder = CreateModelBinder(converterMock);
-
-            // Act
-            await modelBinder.BindModelAsync(bindingContext);
-
-            // Assert
-            converterMock.Verify();
-
-            Assert.True(bindingContext.Result.IsModelSet);
-
-            Assert.AreSame(modelFromErrors, bindingContext.Result.Model);
-
-            Assert.AreEqual(day, bindingContext.ModelState["TheModelName.Day"]?.AttemptedValue);
-            Assert.AreEqual(month, bindingContext.ModelState["TheModelName.Month"]?.AttemptedValue);
-            Assert.AreEqual(year, bindingContext.ModelState["TheModelName.Year"]?.AttemptedValue);
-
-            Assert.AreEqual(0, bindingContext.ModelState.ErrorCount);
         }
 
         [Test]
@@ -304,14 +308,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             };
 
             var converterMock = new Mock<DateInputModelConverter>();
-            converterMock.Setup(mock => mock.CanConvertModelType(modelType)).Returns(true);
-
-            converterMock
-                .Setup(mock => mock.CreateModelFromDate(modelType, new DateOnly(2020, 4, 1)))
-                .Returns(new DateOnly(2020, 4, 1))
-                .Verifiable();
-
-            var modelBinder = CreateModelBinder(converterMock);
+            var modelBinder = CreateModelBinder(converterMock.Object);
 
             UmbracoHelper? nullUmbracoHelper = null;
             _umbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out nullUmbracoHelper)).Returns(false);
@@ -376,25 +373,28 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             Assert.AreEqual(expectedMessage, result);
         }
 
-        [TestCase(false, null, "3", 3, "2020")]
-        [TestCase(true, "1", "1", 1, "2020")]
-        [TestCase(true, "29", "2", 2, "2020")]
-        [TestCase(true, "31", "12", 12, "2020")]
-        [TestCase(true, "31", "dec", 12, "2020")]
-        [TestCase(true, "31", "January", 1, "2020")]
-        [TestCase(true, "29", "February", 2, "2024")]
-        public void Parse_ValidDate_Returns_Date(bool dayEnabled, string? day, string month, int expectedMonth, string year)
+        [TestCase(DateInputItemTypes.MonthAndYear, null, "3", 3, "2020")]
+        [TestCase(DateInputItemTypes.DayMonthAndYear, "1", "1", 1, "2020")]
+        [TestCase(DateInputItemTypes.DayMonthAndYear, "29", "2", 2, "2020")]
+        [TestCase(DateInputItemTypes.DayMonthAndYear, "31", "12", 12, "2020")]
+        [TestCase(DateInputItemTypes.DayMonthAndYear, "31", "dec", 12, "2020")]
+        [TestCase(DateInputItemTypes.DayMonthAndYear, "31", "January", 1, "2020")]
+        [TestCase(DateInputItemTypes.DayMonthAndYear, "29", "February", 2, "2024")]
+        public void Parse_ValidDate_Returns_Date(DateInputItemTypes itemTypes, string? day, string month, int expectedMonth, string year)
         {
             // Arrange
 
             // Act
-            var result = UmbracoDateInputModelBinder.Parse(dayEnabled, day, month, year, true, out var parsed);
+            var result = UmbracoDateInputModelBinder.Parse(itemTypes, day, month, year, true, out var parsed);
 
             // Assert
             Assert.That(result, Is.EqualTo(DateInputParseErrors.None));
 
-            var expectedDay = dayEnabled ? int.Parse(day!) : 1;
-            Assert.That(new DateOnly(int.Parse(year), expectedMonth, expectedDay), Is.EqualTo(parsed));
+            var expectedDay = (itemTypes & DateInputItemTypes.Day) != 0 ? int.Parse(day!) : 1;
+            var expectedYear = int.Parse(year);
+            Assert.That(expectedDay, Is.EqualTo(parsed.Day));
+            Assert.That(expectedMonth, Is.EqualTo(parsed.Month));
+            Assert.That(expectedYear, Is.EqualTo(parsed.Year));
         }
 
         [TestCase("", "4", "2020", false, DateInputParseErrors.MissingDay)]
@@ -426,10 +426,12 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             // Arrange
 
             // Act
-            var result = UmbracoDateInputModelBinder.Parse(true, day, month, year, acceptMonthNames, out var dateComponents);
+            var result = UmbracoDateInputModelBinder.Parse(DateInputItemTypes.DayMonthAndYear, day, month, year, acceptMonthNames, out var dateComponents);
 
             // Assert
-            Assert.AreEqual(default, dateComponents);
+            Assert.AreEqual(null, dateComponents.Day);
+            Assert.AreEqual(null, dateComponents.Month);
+            Assert.AreEqual(null, dateComponents.Year);
             Assert.AreEqual(expectedParseErrors, result);
         }
 
@@ -518,11 +520,6 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             public override Func<object, object> PropertyGetter => throw new NotImplementedException();
 
             public override Action<object, object?> PropertySetter => throw new NotImplementedException();
-        }
-
-        private class CustomDateType
-        {
-            public DateInputParseErrors ParseErrors { get; set; }
         }
     }
 }

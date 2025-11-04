@@ -1,6 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Typography;
 using HtmlAgilityPack;
-using System.Collections.Generic;
 using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
@@ -22,6 +21,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
                 document = ApplyPermittedStylesToParagraphs(document);
                 document = ApplyPermittedStylesToUnorderedLists(document);
                 document = ApplyPermittedStylesToOrderedLists(document);
+                document = RemoveRemainingStyleAttributes(document);
 
                 govukHtml = document.DocumentNode.OuterHtml;
             }
@@ -133,6 +133,19 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
                 }
             }
 
+            return document;
+        }
+
+        private static HtmlDocument RemoveRemainingStyleAttributes(HtmlDocument document)
+        {
+            var nodes = document.DocumentNode.SelectNodes("//*[@style]");
+            if (nodes != null)
+            {
+                foreach (var node in nodes)
+                {
+                    node.Attributes.Remove("style");
+                }
+            }
             return document;
         }
     }

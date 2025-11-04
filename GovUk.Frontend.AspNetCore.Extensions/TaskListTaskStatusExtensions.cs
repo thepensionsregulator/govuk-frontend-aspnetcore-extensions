@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 
 namespace GovUk.Frontend.AspNetCore.Extensions
@@ -9,9 +10,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions
 
         public static string AsText(this TaskListTaskStatus? status, IHtmlContent? customStatus = null)
         {
-            if (!string.IsNullOrEmpty(customStatus?.ToHtmlString()))
+            if (!string.IsNullOrEmpty(customStatus?.ToHtmlString(HtmlEncoder.Default)))
             {
-                return customStatus.ToHtmlString();
+                return customStatus.ToHtmlString(HtmlEncoder.Default);
             }
             else if (status.HasValue)
             {

@@ -94,6 +94,8 @@ namespace GovUk.Frontend.ExampleApp
 
             app.UseRouting();
 
+            app.UseTprFrontend();
+
             // Localization.
             var supportedCultures = new[] {
                 new CultureInfo("en"),

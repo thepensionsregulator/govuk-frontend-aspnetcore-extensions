@@ -45,6 +45,7 @@ We add support for:
   - [TPR box](/docs/components/tpr-box.md)
   - [TPR context bar](/docs/components/tpr-context-bar.md)
   - [TPR documents](/docs/components/tpr-documents.md)
+  - [TPR featured image](/docs/components/tpr-featured-image.md)
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
   - [TPR related links](/docs/components/tpr-related-links.md)
@@ -58,7 +59,7 @@ We add support for:
   - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
   - [Breadcrumbs](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/breadcrumbs.md)
 
-We target [GOV.UK Frontend v5.8.0](https://github.com/alphagov/govuk-frontend/releases/tag/v5.8.0) in line with James Gunn's base project.
+We target [GOV.UK Frontend v5.13.0](https://github.com/alphagov/govuk-frontend/releases/tag/v5.13.0) in line with James Gunn's base project.
 
 ## ASP.NET projects without Umbraco
 

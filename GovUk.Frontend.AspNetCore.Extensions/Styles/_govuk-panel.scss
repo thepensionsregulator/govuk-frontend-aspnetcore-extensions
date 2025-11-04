@@ -1,0 +1,13 @@
+﻿/* Prevent long unbreakable words like URLs and filenames from overflowing,
+   which would typically be white text on a white background.
+*/
+.govuk-panel {
+    overflow-wrap: break-word;
+}
+
+/* Remove the bottom margin on the last content block element (eg a paragraph),
+   so that the padding of .govuk-panel creates even space all around.
+*/
+.govuk-panel__body > :last-child {
+    margin-bottom: 0;
+}

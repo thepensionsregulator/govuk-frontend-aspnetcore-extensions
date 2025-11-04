@@ -4,10 +4,10 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 {
-    [TestFixture]
+
     public class PublishedElementExtensionsTests
     {
-        [Test]
+        [Fact]
         public void Finds_multiple_mixed_block_lists_and_grids()
         {
             // Arrange
@@ -26,18 +26,15 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             var results = content.Object.FindOverridableBlockModels(null).ToList();
 
             // Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(results.Count, Is.EqualTo(4));
-                Assert.Contains(blockList1, results);
-                Assert.Contains(blockList2, results);
-                Assert.Contains(blockGrid1, results);
-                Assert.Contains(blockGrid2, results);
-                Assert.That(results[0].Count, Is.EqualTo(1));
-                Assert.That(results[1].Count, Is.EqualTo(1));
-                Assert.That(results[2].Count, Is.EqualTo(1));
-                Assert.That(results[3].Count, Is.EqualTo(1));
-            });
+            Assert.Equal(4, results.Count);
+            Assert.Contains(blockList1, results);
+            Assert.Contains(blockList2, results);
+            Assert.Contains(blockGrid1, results);
+            Assert.Contains(blockGrid2, results);
+            Assert.Single(results[0]);
+            Assert.Single(results[1]);
+            Assert.Single(results[2]);
+            Assert.Single(results[3]);
         }
     }
 }

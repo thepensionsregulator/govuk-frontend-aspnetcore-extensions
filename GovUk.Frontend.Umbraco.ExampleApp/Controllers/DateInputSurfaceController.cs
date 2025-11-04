@@ -39,8 +39,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             {
                 if (viewModel.Page?.NextPage != null)
                 {
-                    Response.StatusCode = 303;
                     Response.GetTypedHeaders().Location = new Uri(viewModel.Page.NextPage.Url(), UriKind.RelativeOrAbsolute);
+                    return new StatusCodeResult(303);
                 }
             }
 

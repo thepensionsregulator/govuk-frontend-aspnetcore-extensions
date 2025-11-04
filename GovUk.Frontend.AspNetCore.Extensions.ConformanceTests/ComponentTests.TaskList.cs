@@ -1,6 +1,7 @@
 using AngleSharp.Diffing.Extensions;
 using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Text.Encodings.Web;
 using TaskStatus = GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration.TaskStatus;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
@@ -50,7 +51,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
                     if (!string.IsNullOrEmpty(options.Classes)) { taskListAttributes.MergeAttribute("class", options.Classes); }
                     if (!string.IsNullOrEmpty(options.IdPrefix)) { taskListAttributes.Add("id", options.IdPrefix); }
 
-                    return generator.GenerateTaskList(taskListAttributes, tasks).ToHtmlString();
+                    return generator.GenerateTaskList(taskListAttributes, tasks).ToHtmlString(HtmlEncoder.Default);
                 });
 
         private static TaskStatus BuildStatus(OptionsJson.TaskListTask item)
@@ -79,7 +80,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
                 status.Content = TextOrHtmlHelper.GetHtmlContent(item.Status.Text, item.Status.Html);
             }
 
-            if (Enum.TryParse(typeof(TaskListTaskStatus), status.Content?.ToHtmlString(), out var parsedStatus))
+            if (Enum.TryParse(typeof(TaskListTaskStatus), status.Content?.ToHtmlString(HtmlEncoder.Default), out var parsedStatus))
             {
                 status.Status = (TaskListTaskStatus)parsedStatus;
             }

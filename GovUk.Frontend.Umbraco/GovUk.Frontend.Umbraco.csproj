@@ -21,6 +21,7 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageId>ThePensionsRegulator.$(AssemblyName)</PackageId>
 		<Product>ThePensionsRegulator.$(AssemblyName)</Product>
+		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -91,7 +92,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.9.2" />
+		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.11.0" />
 	</ItemGroup>
 
 	<ItemGroup>

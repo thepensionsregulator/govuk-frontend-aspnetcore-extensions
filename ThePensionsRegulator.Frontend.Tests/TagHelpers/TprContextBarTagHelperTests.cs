@@ -56,7 +56,7 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             await tagHelper.ProcessAsync(tagHelperContext, output);
 
             // Assert
-            htmlGenerator.Verify(x => x.GenerateTprContextBar(It.Is<TprContextBar>(bar => bar.Context1Content != null && bar.Context1Content.ToHtmlString() == CONTEXT_1_CONTENT)), Times.Once);
+            htmlGenerator.Verify(x => x.GenerateTprContextBar(It.Is<TprContextBar>(bar => bar.Context1Content != null && bar.Context1Content.ToHtmlString(HtmlEncoder.Default) == CONTEXT_1_CONTENT)), Times.Once);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             await tagHelper.ProcessAsync(tagHelperContext, output);
 
             // Assert
-            htmlGenerator.Verify(x => x.GenerateTprContextBar(It.Is<TprContextBar>(bar => bar.Context2Content != null && bar.Context2Content.ToHtmlString() == CONTEXT_2_CONTENT)), Times.Once);
+            htmlGenerator.Verify(x => x.GenerateTprContextBar(It.Is<TprContextBar>(bar => bar.Context2Content != null && bar.Context2Content.ToHtmlString(HtmlEncoder.Default) == CONTEXT_2_CONTENT)), Times.Once);
         }
 
         [Fact]
@@ -108,7 +108,7 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             await tagHelper.ProcessAsync(tagHelperContext, output);
 
             // Assert
-            htmlGenerator.Verify(x => x.GenerateTprContextBar(It.Is<TprContextBar>(bar => bar.Context3Content != null && bar.Context3Content.ToHtmlString() == CONTEXT_3_CONTENT)), Times.Once);
+            htmlGenerator.Verify(x => x.GenerateTprContextBar(It.Is<TprContextBar>(bar => bar.Context3Content != null && bar.Context3Content.ToHtmlString(HtmlEncoder.Default) == CONTEXT_3_CONTENT)), Times.Once);
         }
     }
 }

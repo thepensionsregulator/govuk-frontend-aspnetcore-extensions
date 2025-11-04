@@ -23,7 +23,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         }
 
         public static IServiceCollection AddTprFrontendUmbraco(this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions)
+            Action<GovUkFrontendOptions> configureGovUkOptions)
         {
             return services.AddTprFrontendUmbraco(configureGovUkOptions, options => { }, options => { });
         }
@@ -42,7 +42,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
 
         public static IServiceCollection AddTprFrontendUmbraco(
            this IServiceCollection services,
-           Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions,
+           Action<GovUkFrontendOptions> configureGovUkOptions,
            Action<GovUkFrontendUmbracoOptions> configureGovUkUmbracoOptions)
         {
             return services.AddTprFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions, options => { });
@@ -50,7 +50,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
 
         public static IServiceCollection AddTprFrontendUmbraco(
             this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions,
+            Action<GovUkFrontendOptions> configureGovUkOptions,
             Action<TprFrontendOptions> configureTprOptions)
         {
             return services.AddTprFrontendUmbraco(configureGovUkOptions, options => { }, configureTprOptions);
@@ -66,7 +66,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
 
         public static IServiceCollection AddTprFrontendUmbraco(
             this IServiceCollection services,
-            Action<GovUkFrontendAspNetCoreOptions> configureGovUkOptions,
+            Action<GovUkFrontendOptions> configureGovUkOptions,
             Action<GovUkFrontendUmbracoOptions> configureGovUkUmbracoOptions,
             Action<TprFrontendOptions> configureTprOptions)
         {

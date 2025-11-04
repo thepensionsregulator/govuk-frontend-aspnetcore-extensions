@@ -37,7 +37,7 @@
                         {
                             @foreach (var item in Model.HeaderMenuItems.OfType<TprHeaderMenuItem>())
                             {
-                                <tpr-header-menu-parent-item href="@item?.LinkUrl" link-text="@item?.LinkText">
+                                <tpr-header-menu-item href="@item?.LinkUrl" link-text="@item?.LinkText">
 
                                     @if (item?.HeaderMenuChildItems != null)
                                     {
@@ -47,7 +47,7 @@
                                         }
                                     }
 
-                                </tpr-header-menu-parent-item>
+                                </tpr-header-menu-item>
                             }
                         }
                     </tpr-header-menu>

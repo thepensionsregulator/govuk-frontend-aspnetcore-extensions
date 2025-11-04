@@ -20,7 +20,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
             foreach (var item in headerMenuBlockList)
             {
-                var linkText = item?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
+                var linkText = item?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias.ToFirstUpper());
                 var linkUrl = item?.Content.Value<Link>(tprHeaderMenuViewModel.LinkUrlAlias);
 
                 IList<TprHeaderMenuChildItem>? childMenuItems = [];

@@ -196,7 +196,7 @@ async function resetSearchButtonOnClick() {
     }
     toggleErrorTextVisibility(false);
     removeAccordion("search-results-accordion");
-    initialiseAccordion();
+    await initialiseAccordion();
     resetShowMoreAnswersButton();
     navigateToSearchInput(false);
 }

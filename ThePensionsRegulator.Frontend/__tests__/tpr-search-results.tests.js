@@ -232,53 +232,40 @@ describe('removeNoResultsFound', () => {
 });
 
 describe('resetSearchButtonOnClick', () => {
-    it('clears input, removes errors, recreates accordion and resets show more state', async () => {
+    beforeEach(() => {
+        // Ensure a clean fetch mock for each test
+        global.fetch = undefined;
+        setupBlankComponent();
+    });
+
+    it('clears input, recreates accordion and resets show more state', async () => {
         const initialPopular = [
             { name: 'Initial 1', pageContent: 'Initial content 1', key: 1 },
             { name: 'Initial 2', pageContent: 'Initial content 2', key: 2 }
         ];
 
         const refreshedPopular = [
-            { name: 'After 1', pageContent: 'After content 1', key: 11 },
-            { name: 'After 2', pageContent: 'After content 2', key: 22 },
-            { name: 'After 3', pageContent: 'After content 3', key: 33 }
+            { name: 'After 1', pageContent: 'After content 1', key: 11 }
         ];
 
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            json: async () => initialPopular
-        });
-
-        setupBlankComponent();
+        global.fetch = jest.fn()
+            .mockResolvedValueOnce({ json: async () => initialPopular })
+            .mockResolvedValueOnce({ json: async () => refreshedPopular });
 
         await initialiseAccordion();
 
-        // Simulate user state
         const input = document.getElementById('tpr-search-results-ask-input');
         input.value = 'Some previous search';
 
-        // Ensure existing accordion present
-        expect(document.getElementById('search-results-accordion')).not.toBeNull();
-
-        const initialPopularSections = document.querySelectorAll('.govuk-accordion__section');
-        expect(initialPopularSections.length).toBe(initialPopular.length);
-
-        global.fetch = jest.fn().mockResolvedValueOnce({
-            json: async () => refreshedPopular
-        });
-
-        //await initialiseAccordion();
+        expect(document.querySelectorAll('.govuk-accordion__section').length).toBe(initialPopular.length);
 
         await resetSearchButtonOnClick();
 
-        // Input cleared
         expect(input.value).toBe('');
 
-        // Old accordion removed and new one created with refreshed content
-        expect(document.getElementById('search-results-accordion')).not.toBeNull();
-        const refreshedPopularSections = document.querySelectorAll('.govuk-accordion__section');
-        expect(refreshedPopularSections.length).toBe(refreshedPopular.length);
+        const refreshedSections = document.querySelectorAll('.govuk-accordion__section');
+        expect(refreshedSections.length).toBe(refreshedPopular.length);
 
-        // Show more button reset
         const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
         expect(showMoreButton).toHaveTextContent('Show more questions');
         expect(showMoreButton).not.toHaveClass('govuk-visually-hidden');

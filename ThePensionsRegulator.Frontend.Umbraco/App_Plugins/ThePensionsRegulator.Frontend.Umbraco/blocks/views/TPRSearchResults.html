@@ -1,5 +1,5 @@
-﻿<div class="js-enabled">
-    <aside class="backoffice-block-view {{block.settingsData.cssClasses}}">
+﻿<div class="js-enabled" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit component">
+    <aside class="backoffice-block-view tpr-search-results {{block.settingsData.cssClasses}}">
         <ng-content ng-switch="block.settingsData.headingLevel[0]">
             <h3 ng-switch-when="Heading 3" class="{{block.settingsData.headingClass[0]}} tpr-search-results__heading">
                 {{ block.data.heading || 'Search Q&As' }}
@@ -22,13 +22,18 @@
             </h2>
         </ng-content>
 
-        <div class="tpr-search-results__form">
+        <form class="tpr-search-results__form">
             <div class="govuk-form-group">
-                <label class=govuk-label govuk-visually-hidden>{{block.data.heading}}</label>
-                <input class="govuk-input" />
+                <label class="govuk-label govuk-visually-hidden">{{block.data.heading}}</label>
+                <div class="tpr-search-results__input-group">
+                    <input class="govuk-input" type="text">
+                    <div class="govuk-button-group">
+                        <button class="govuk-button" type="submit">Ask</button>
+                        <button class="govuk-button govuk-button--secondary" type="button">Reset</button>
+                    </div>
+                </div>
             </div>
-            <button class="govuk-button">Ask</button>
-        </div>
+        </form>
 
         <footer class="tpr-search-results__footer">
             <ul class="govuk-list tpr-search-results__links">

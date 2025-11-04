@@ -6,37 +6,38 @@
     @include govuk-responsive-padding(4);
 }
 
-.tpr-search-results__input {
+.tpr-search-results__input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.tpr-search-results__input-group input {
+    flex: 1 1 100%;
+}
+
+.govuk-button-group {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
+    flex: 1 1 100%;
+}
 
-    .govuk-form-group {
-        flex-grow: 1;
-        width: 100%;
+@media (min-width: 600px) {
+    .tpr-search-results__input-group {
+        flex-wrap: nowrap;
     }
 
-    button {
-        width: 100%;
-        margin-top: 0;
-        margin-left: 0;
-    }
-
-    @include govuk-media-query($from: tablet) {
+    .govuk-button-group {
         flex-direction: row;
-        justify-content: space-between;
+        gap: 0.5rem;
+        flex: 0 0 auto;
         align-items: center;
+        margin: 0;
+    }
 
-        .govuk-form-group {
-            flex-grow: 2;
-            width: auto;
-        }
-
-        button {
-            width: auto;
-            @include govuk-responsive-margin(2, "left");
-        }
+    .govuk-button-group .govuk-button {
+        margin: 0;
     }
 }
 
@@ -67,8 +68,8 @@
     }
 }
 
-.js-enabled{
-    .tpr-search-results{
+.js-enabled {
+    .tpr-search-results {
         display: block;
     }
 }

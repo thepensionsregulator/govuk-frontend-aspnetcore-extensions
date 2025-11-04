@@ -1,4 +1,4 @@
-﻿<dl class="tpr-documents backoffice-block-view govuk-list {{block.settingsData.cssClasses}}">
+﻿<dl class="tpr-documents backoffice-block-view govuk-list {{block.settingsData.cssClasses}}" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit component">
     <ng-content ng-repeat="doc in block.data.documents.contentData">
         <ng-content ng-init="
             ext = doc.document[0].url.split('.').pop().toLowerCase();

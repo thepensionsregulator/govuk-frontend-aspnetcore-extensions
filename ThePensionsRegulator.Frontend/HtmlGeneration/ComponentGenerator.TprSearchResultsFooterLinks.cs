@@ -8,6 +8,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public partial class ComponentGenerator
     {
         internal const string DefaultShowMoreQuestionsContent = "Show more questions";
+
         public virtual TagBuilder GenerateTprSearchResultsFooterLinks(TprSearchFooterLinks footerLinks)
         {
             var outer = new TagBuilder("footer");
@@ -39,7 +40,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             return outer;
         }
-
 
         private TagBuilder CreateLink(AttributeDictionary dictionary, IHtmlContent content)
         {

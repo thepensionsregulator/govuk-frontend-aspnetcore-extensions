@@ -55,7 +55,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             resetButton.AddCssClass("govuk-button govuk-button--secondary");
             resetButton.Attributes.Add("id", "tpr-search-results-reset-button");
             resetButton.Attributes.Add("type", "button");
-            resetButton.InnerHtml.Append("Reset");
+            resetButton.InnerHtml.Append("Clear");
 
             var buttonGroup = new TagBuilder("div");
             buttonGroup.AddCssClass("govuk-button-group");

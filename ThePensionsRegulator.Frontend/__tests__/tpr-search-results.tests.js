@@ -17,7 +17,7 @@ const setupBlankComponent = () => {
 				        <input aria-describedby="tpr-search-results-error-text" class="govuk-input" id="tpr-search-results-ask-input" required="" type="text">
 				        <div class="govuk-button-group">
 					        <button class="govuk-button" id="tpr-search-results-ask-button" type="submit">Ask</button>
-					        <button class="govuk-button govuk-button--secondary" id="tpr-search-results-reset-button" type="button">Reset</button>
+					        <button class="govuk-button govuk-button--secondary" id="tpr-search-results-reset-button" type="button">Clear</button>
 				        </div>
 			        </div>
 		        </div>

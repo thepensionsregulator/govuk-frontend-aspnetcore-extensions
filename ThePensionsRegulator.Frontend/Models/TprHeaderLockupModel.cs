@@ -35,7 +35,10 @@ namespace ThePensionsRegulator.Frontend.Models
         public virtual string? HeaderSearchInputName { get; set; }
         public virtual bool ShowHeaderMenu { get; init; }
         public virtual string? HeaderMenuAriaLabel { get; set; }
+        public virtual string? HeaderMenuItemAriaLabel { get; set; }
         public virtual string? HeaderMenuNoJSNavPage { get; set; }
+        public virtual string? HeaderMenuToggleOpen { get; set; }
+        public virtual string? HeaderMenuToggleClosed { get; set; }
         public virtual IList<TprHeaderMenuItem>? HeaderMenuItems { get; set; }
     }
 }

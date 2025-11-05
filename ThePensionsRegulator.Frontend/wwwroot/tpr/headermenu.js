@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
             mobileKeyboardNavigation();
             toggleMobileMenu();
             expandMobileMenuSubMenu();
+            removeOverlay();
         } else {
             desktopKeyboardNavigation();
         }
@@ -119,37 +120,43 @@ function desktopKeyboardNavigation() {
     });
 }
 
+function closeMenu(e) {
+    e.addEventListener("click", function () {
+        const toggle = document.querySelector(".tpr-mobile-menu__toggle");
+        toggle.classList.toggle("tpr-mobile-menu__toggle--open");
+
+        const svg = document.querySelector(".tpr-mobile-menu__svg");
+        svg?.classList.toggle("tpr-mobile-menu__svg--hide");
+
+        const button = document.querySelector(".tpr-header-menu__button");
+        if (button) {
+            const closeButtonText = button.getAttribute("data-close-label");
+            const openButtonText = button.getAttribute("data-open-label")
+            const isMenu = button.textContent === closeButtonText;
+            button.textContent = isMenu ? openButtonText : closeButtonText;
+            button.classList.toggle("tpr-header-menu__button--opened")
+
+            const expanded = button.getAttribute("aria-expanded") === "true";
+            button.setAttribute("aria-expanded", !expanded);
+        }
+
+        document.querySelectorAll(".tpr-header-menu__nav-container").forEach((nav) => {
+            nav.classList.toggle("tpr-header-menu__nav-container--active");
+        });
+    });
+}
+
+function removeOverlay() {
+    const overlay = document.querySelector(".tpr-header-menu__nav-overlay")
+    closeMenu(overlay);
+}
+
 function toggleMobileMenu() {
     const mobileMenus = document.querySelectorAll(".tpr-mobile-menu__toggle");
 
     mobileMenus.forEach((menu) => {
         menu.removeAttribute("href");
-
-        menu.addEventListener("click", function () {
-            menu.classList.toggle("tpr-mobile-menu__toggle--open");
-
-            const svg = document.querySelector(".tpr-mobile-menu__svg");
-            svg?.classList.toggle("tpr-mobile-menu__svg--hide");
-
-            const button = document.querySelector(".tpr-header-menu__button");
-            if (button) {
-                const closeButtonText = button.getAttribute("data-close-label");
-                const openButtonText = button.getAttribute("data-open-label")
-                const isMenu = button.textContent === closeButtonText;
-                button.textContent = isMenu ? openButtonText : closeButtonText;
-                button.classList.toggle("tpr-header-menu__button--opened")
-
-                const expanded = button.getAttribute("aria-expanded") === "true";
-                button.setAttribute("aria-expanded", !expanded);
-            }
-          
-            
-
-            document.querySelectorAll(".tpr-header-menu__nav-container").forEach((nav) => {
-                nav.classList.toggle("tpr-header-menu__nav-container--active");
-            });
-        });
-
+        closeMenu(menu);
     });
 }
 function expandMobileMenuSubMenu() {

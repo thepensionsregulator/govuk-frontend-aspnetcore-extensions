@@ -31,6 +31,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public bool DisplayHeaderMenu => _headerMenuContext != null;
         public TprHeaderMenuContext? TprMobileMenuContext => _headerMenuContext;
         public string? HeaderMenuAriaLabel => _headerMenuContext?.HeaderMenuAriaLabel;
+        public string? HeaderMenuItemAriaLabel => _headerMenuContext?.HeaderMenuItemAriaLabel;
         public string? MobileMenuNoJsNavPage => _headerMenuContext?.MobileMenuNoJsNavPage;
         public string? HeaderMenuToggleClosed => _headerMenuContext?.HeaderMenuToggleClosed;
         public string? HeaderMenuToggleOpen => _headerMenuContext?.HeaderMenuToggleOpen;

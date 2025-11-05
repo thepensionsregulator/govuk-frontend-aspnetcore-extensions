@@ -88,6 +88,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 HeaderMenuAttributes = headerMenuAttributes,
                 HeaderMenuItems = headerMenuItems,
                 HeaderMenuAriaLabel = barContext?.HeaderMenuAriaLabel,
+                HeaderMenuItemAriaLabel = barContext?.HeaderMenuItemAriaLabel,
                 MobileMenuNoJsNavPage = barContext?.MobileMenuNoJsNavPage,
                 HeaderMenuToggleClosed = barContext?.HeaderMenuToggleClosed,
                 HeaderMenuToggleOpen = barContext?.HeaderMenuToggleOpen

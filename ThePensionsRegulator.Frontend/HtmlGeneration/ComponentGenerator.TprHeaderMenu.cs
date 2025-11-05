@@ -143,7 +143,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                     var arrow = new TagBuilder("i");
                     arrow.AddCssClass("tpr-mobile-menu__arrow tpr-mobile-menu__arrow-right");
-
+                    arrow.Attributes.Add("aria-label", tprHeaderBar.HeaderMenuItemAriaLabel);
+                    arrow.Attributes.Add("role", "button");
                     arrowContainer.InnerHtml.AppendHtml(arrow);
 
                     mobileMenuItem.InnerHtml.AppendHtml(arrowContainer);

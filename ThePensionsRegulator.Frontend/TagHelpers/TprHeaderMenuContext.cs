@@ -10,6 +10,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private readonly List<TprHeaderMenuItemsContext> _headerMenuParentItems = new();
         public IReadOnlyList<TprHeaderMenuItemsContext> HeaderMenuParentItems => _headerMenuParentItems;
         public string? HeaderMenuAriaLabel {  get; set; }
+        public string? HeaderMenuItemAriaLabel { get; set; }
         public string? MobileMenuNoJsNavPage {  get; set; }
         public string? HeaderMenuToggleOpen {  get; set; }
         public string? HeaderMenuToggleClosed {  get; set; }

@@ -16,7 +16,7 @@
 @if (Model.ShowSkipLink)
 {
     <govuk-skip-link href="@Model.SkipLinkHref" class="@Model.SkipLinkClass">@skipLink</govuk-skip-link>
-}
+}       
 @if (showPhaseBanner || Model.ShowHeader)
 {
     <header role="banner">
@@ -32,7 +32,7 @@
                 }
                 @if (Model.HeaderBarContent == null && Model.ShowHeaderMenu)
                 {
-                    <tpr-header-menu>
+                    <tpr-header-menu aria-label="@Model.HeaderMenuAriaLabel" menu-item-aria-label="@Model.HeaderMenuItemAriaLabel" open-label="@Model.HeaderMenuToggleOpen" close-label="@Model.HeaderMenuToggleClosed">
                         @if (Model.HeaderMenuItems != null)
                         {
                             @foreach (var item in Model.HeaderMenuItems.OfType<TprHeaderMenuItem>())

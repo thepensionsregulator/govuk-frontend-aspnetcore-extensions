@@ -52,7 +52,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string TprHeaderSearchPlaceholderText { get; }
 
-		/// <summary>ShowSearch</summary>
+		/// <summary>Show search</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		bool TprHeaderShowSearch { get; }
 	}
@@ -173,8 +173,8 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[ImplementPropertyType("tprHeaderShowSearch")]
 		public virtual bool TprHeaderShowSearch => GetTprHeaderShowSearch(this, _publishedValueFallback);
 
-		/// <summary>Static getter for ShowSearch</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "13.9.2+b414456")]
+		/// <summary>Static getter for Show search</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		public static bool GetTprHeaderShowSearch(ITprHeader that, IPublishedValueFallback publishedValueFallback) => that.Value<bool>(publishedValueFallback, "tprHeaderShowSearch");
 	}
 }

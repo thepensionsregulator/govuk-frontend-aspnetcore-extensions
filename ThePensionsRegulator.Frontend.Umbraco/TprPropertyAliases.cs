@@ -16,11 +16,12 @@
         public const string DocumentTitle = "documentTitle";
         public const string DocumentsBlockList = "documents";
         public const string HeaderMenuAriaLabel = "tprHeaderMenuAriaLabel";
+        public const string HeaderMenuItemAriaLabel = "tprHeaderMenuItemAriaLabel";
         public const string HeaderMenuLinkText = "linkText";
         public const string HeaderMenuLinkUrl = "linkUrl";
         public const string HeaderMenuNoJsNavPage = "noJSNavPage";
-        public const string HeaderMenuToggleClosedText = "headerMenuToggleClosedText";
-        public const string HeaderMenuToggleOpenText = "headerMenuToggleOpenText";
+        public const string HeaderMenuToggleClosedText = "tprHeaderMenuToggleClosedText";
+        public const string HeaderMenuToggleOpenText = "tprHeaderMenuToggleOpenText";
         public const string HeaderSearchAriaLabel = "tprHeaderAriaLabelText";
         public const string HeaderSearchPlaceholderText = "tprHeaderSearchPlaceholderText";     
         public const string ImageAltText = "altText";

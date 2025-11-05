@@ -10,13 +10,17 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         internal const string TagName = "tpr-header-menu";
        
-        private const string AriaLabelName = "aria-label";
+        private const string MenuAriaLabelName = "aria-label";
+        private const string MenuItemAriaLabelName = "menu-item-aria-label";
         private const string NoJsNavPageName = "no-js-destination";
         private const string ToggleClosedName = "close-label";
         private const string ToggleOpenName = "open-label";
 
-        [HtmlAttributeName(AriaLabelName)]
-        public string? AriaLabel { get; set; }
+        [HtmlAttributeName(MenuAriaLabelName)]
+        public string? MenuAriaLabel { get; set; }
+
+        [HtmlAttributeName(MenuItemAriaLabelName)]
+        public string? MenuItemAriaLabel { get;set; }
 
         [HtmlAttributeName(NoJsNavPageName)]
         public string? NoJsNavPage { get; set; }
@@ -30,7 +34,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var headerMenuContext = new TprHeaderMenuContext();
-            headerMenuContext.HeaderMenuAriaLabel = AriaLabel;
+            headerMenuContext.HeaderMenuAriaLabel = MenuAriaLabel;
+            headerMenuContext.HeaderMenuItemAriaLabel = MenuItemAriaLabel;
             headerMenuContext.MobileMenuNoJsNavPage = NoJsNavPage;
             headerMenuContext.HeaderMenuToggleClosed = ToggleClosed;
             headerMenuContext.HeaderMenuToggleOpen = ToggleOpen;

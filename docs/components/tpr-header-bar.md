@@ -15,7 +15,7 @@ The Pensions Regulator (TPR) uses the TPR header bar as a consistent part of the
         <a class="govuk-link" href="#">Another link</a>
     </tpr-header-bar-content>
     <tpr-header-search action="en/search-results" autocomplete-url="#" placeholder="search" aria-label="search" input-name="custom query string"></tpr-header-search>
-     <tpr-header-menu aria-label="Example instructions for navigation" no-js-navigation="/example-page">
+     <tpr-header-menu aria-label="Example instructions for navigation" menu-item-aria-label="Click to expand submenu" no-js-navigation="/example-page" open-label="Close" close-label="Menu">
         <tpr-header-menu-parent-item href="#" link-text="Example parent item 1">
             <tpr-header-menu-child-item href="#" link-text="Example child item 1"></tpr-header-menu-child-item>
         </tpr-header-menu-parent-item> 
@@ -90,10 +90,13 @@ Views which require the `<tpr-header-search>` should also include the `TPRHeader
 
 ### `<tpr-header-menu>`
 
-| Attribute         | Type   | Description                                                                                                                                                |
-| ----------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|   `aria-label`    |`string`| Sets aria-label for `<ul>` element within navigation menu.                                                                                                |     
-| `no-js-navigation`|`string`| Set destination for a page that would display all navigation items for the mobile menu when when JavaScript is disabled.                                   |
+|    Attribute              |   Type     |  Description                                                                                                         |
+|---------------------------|------------|----------------------------------------------------------------------------------------------------------------------|
+| `aria-label`              | `string`   | Sets `aria-label` for `<ul>` element within the navigation menu.                                                     |
+| `menu-item-aria-label`    | `string`   | Sets `aria-label` for `<i>` elements (arrows) when the menu is in mobile view.                                       |
+| `no-js-navigation`        | `string`   | Sets destination for a page that displays all navigation items in the mobile menu when JavaScript is disabled.       |
+| `open-label`              | `string`   | Sets value for the mobile menu toggle label when the menu is expanded.                                               |
+| `close-label`             | `string`   | Sets value for the mobile menu toggle label when the menu is collapsed.                                              |
 
 Using the `<tpr-header-menu>` tag will generate the toggle as part of the header bar and the associated nav which will dispay underneath the header.
 Adding  `<tpr-header-menu-parent-item>` will create items to populate the the menu and `<tpr-mobile-menu-child-item>` can be nested inside these parent items to populate each sub menu.

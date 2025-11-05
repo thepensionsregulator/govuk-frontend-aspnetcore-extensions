@@ -30,6 +30,9 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Models
         public override string? HeaderSearchAriaLabel => _settings.Value<string>("tprHeaderSearchAriaLabel");
         public override bool ShowHeaderMenu => _settings.Value<bool>("showHeaderMenu");
         public override string? HeaderMenuAriaLabel => _settings.Value<string>("tprHeaderAriaLabelText");
+        public override string? HeaderMenuItemAriaLabel => _settings.Value<string>("tprHeaderMenuAriaLabel");
+        public override string? HeaderMenuToggleOpen => _settings.Value<string>("tprHeaderMenuToggleOpenText");
+        public override string? HeaderMenuToggleClosed => _settings.Value<string>("tprHeaderMenuToggleClosedText");
         public override string? HeaderMenuNoJSNavPage => _settings.Value<string>("noJSNavPage");
     }
 }

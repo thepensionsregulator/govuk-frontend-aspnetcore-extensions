@@ -11,7 +11,7 @@ const setupBlankComponent = () => {
 		        <div class="govuk-form-group">
 			        <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
 			        <p class="govuk-error-message field-validation-error govuk-visually-hidden" id="tpr-search-results-error-text">
-				        <span class="govuk-visually-hidden">Error:</span>Enter a search term to find questions and answers
+				        <span class="govuk-visually-hidden">Error:</span>
 			        </p>
 			        <div class="tpr-search-results__input-group">
 				        <input aria-describedby="tpr-search-results-error-text" class="govuk-input" id="tpr-search-results-ask-input" required="" type="text">
@@ -101,11 +101,34 @@ describe('initialise accordion', () => {
         expect(mockEvent.preventDefault).toHaveBeenCalled();
         expect(document.querySelector('.govuk-form-group')).toHaveClass('govuk-form-group--error');
         expect(document.getElementById('tpr-search-results-error-text')).not.toHaveClass('govuk-visually-hidden');
+        expect(document.getElementById('tpr-search-results-error-text')).toHaveTextContent('Please enter a question or phrase.');
         expect(searchInput.value).toBe('');
         expect(searchInput).toHaveClass('govuk-input--error');
     });
 
-    it('should show "No results found" if search returns no results', async () => {
+    it('should show error state if search terms characters are 2 or less', async () => {
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            json: async () => {
+                return { results: [] };
+            }
+        });
+
+        setupBlankComponent();
+
+        const searchInput = document.getElementById("tpr-search-results-ask-input");
+        searchInput.value = "hi";
+
+        const mockEvent = { preventDefault: jest.fn() };
+        await searchButtonOnClick(mockEvent);
+
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
+        expect(document.querySelector('.govuk-form-group')).toHaveClass('govuk-form-group--error');
+        expect(document.getElementById('tpr-search-results-error-text')).not.toHaveClass('govuk-visually-hidden');
+        expect(document.getElementById('tpr-search-results-error-text')).toHaveTextContent('Your question must be 2 characters or more.');
+        expect(searchInput).toHaveClass('govuk-input--error');
+    });
+
+    it('should show error message if search returns no results', async () => {
         global.fetch = jest.fn().mockResolvedValueOnce({
             json: async () => {
                 return { results: [] };
@@ -120,9 +143,11 @@ describe('initialise accordion', () => {
         const mockEvent = { preventDefault: jest.fn() };
         await searchButtonOnClick(mockEvent);
 
-        var result = document.body.querySelector('.tpr-search-results__no-results-found');
+        expect(document.querySelector('.govuk-form-group')).toHaveClass('govuk-form-group--error');
+        expect(document.getElementById('tpr-search-results-error-text')).not.toHaveClass('govuk-visually-hidden');
+        expect(document.getElementById('tpr-search-results-error-text')).toHaveTextContent('Your question returned no results, please try again.');
+        expect(document.getElementById('tpr-search-results-ask-input')).toHaveClass('govuk-input--error');
 
-        expect(result).toHaveTextContent('No results found');
         expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
 
@@ -268,7 +293,6 @@ describe('resetButtonOnClick', () => {
 
         const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
         expect(showMoreButton).toHaveTextContent('Show more questions');
-        expect(showMoreButton).not.toHaveClass('govuk-visually-hidden');
     });
 
     it('handles missing input element without throwing', async () => {

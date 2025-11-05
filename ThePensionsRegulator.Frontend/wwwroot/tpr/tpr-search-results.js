@@ -27,13 +27,15 @@ async function fetchJson(url) {
 async function initialiseAccordion() {
     let results = [];
 
+    toggleErrorTextVisibility(false);
+
     try {
         results = await fetchJson(`${popularContentApiUrl}`);
     } catch (error) {
         console.error("Failed to fetch most popular content:", error);
     }
 
-    showMoreQuestions = false;
+    results = results || [];
 
     if (results.length === 0) {
         createNoResultsFoundHeading();
@@ -47,7 +49,7 @@ async function initialiseAccordion() {
         });
 
         createAccordion(accordionSections);
-
+        resetShowMoreAnswersButton();
         toggleShowMoreButton(results.length <= INITIAL_VISIBLE_RESULTS);
     }
 }
@@ -108,7 +110,7 @@ async function fetchContentById(contentId) {
     }
 }
 
-async function toggleErrorTextVisibility(showErrorText) {
+async function toggleErrorTextVisibility(showErrorText, errorTextContent = '') {
     const errorText = document.getElementById("tpr-search-results-error-text");
     const formGroup = document.querySelector('.tpr-search-results__form .govuk-form-group');
     const searchInput = getSearchInput();
@@ -116,15 +118,22 @@ async function toggleErrorTextVisibility(showErrorText) {
     if (errorText != null && searchInput != null && formGroup != null) {
         if (showErrorText) {
             errorText.classList.remove("govuk-visually-hidden");
+            errorText.textContent = errorTextContent;
             searchInput.classList.add("govuk-input--error");
             formGroup.classList.add("govuk-form-group--error");
-
         } else {
             errorText.classList.add("govuk-visually-hidden");
             searchInput.classList.remove("govuk-input--error");
             formGroup.classList.remove("govuk-form-group--error");
         }
     }
+}
+
+function setErrorText(errorMessage, value = '') {
+    const searchInput = getSearchInput();
+    searchInput.value = value;
+    navigateToSearchInput(false);
+    toggleErrorTextVisibility(true, errorMessage);
 }
 
 async function searchButtonOnClick(event) {
@@ -135,16 +144,18 @@ async function searchButtonOnClick(event) {
         return;
     }
 
-    const searchValue = searchInput.value;
-
-    toggleErrorTextVisibility(false);
-
-    if (!searchValue || searchValue.trim() === '') {
-        searchInput.value = '';
-        navigateToSearchInput(false);
-        toggleErrorTextVisibility(true);
+    const searchValue = searchInput.value?.trim() || '';
+    if (!searchValue) {
+        setErrorText('Please enter a question or phrase.');
         return;
     }
+
+    if (searchValue.length < 3) {
+        setErrorText('Your question must be 2 characters or more.', searchValue);
+        return;
+    }
+
+    toggleErrorTextVisibility(false);
 
     let searchUrl = new URL(searchContentApiUrl, window.location.origin);
     searchUrl.searchParams.set('searchTerm', searchValue);
@@ -162,7 +173,8 @@ async function searchButtonOnClick(event) {
     removeAccordion("search-results-accordion");
 
     if (results.length === 0) {
-        createNoResultsFoundHeading();
+        setErrorText('Your question returned no results, please try again.', searchValue);
+        toggleShowMoreButton(true);
     } else {
         removeNoResultsFound();
 
@@ -196,9 +208,6 @@ async function resetButtonOnClick() {
 
     removeAccordion("search-results-accordion");
     await initialiseAccordion();
-    resetShowMoreAnswersButton();
-    removeNoResultsFound();
-    toggleErrorTextVisibility(false);
     navigateToSearchInput(false);
 }
 
@@ -254,6 +263,8 @@ function createNoResultsFoundHeading() {
         const searchBlock = document.getElementsByClassName("tpr-search-results__form")[0];
         searchBlock.after(noResultsHeading);
     }
+
+    showMoreQuestions = false;
 
     toggleShowMoreButton(true);
 }

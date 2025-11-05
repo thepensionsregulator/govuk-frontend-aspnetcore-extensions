@@ -114,7 +114,6 @@ async function toggleErrorTextVisibility(showErrorText) {
     const searchInput = getSearchInput();
 
     if (errorText != null && searchInput != null && formGroup != null) {
-
         if (showErrorText) {
             errorText.classList.remove("govuk-visually-hidden");
             searchInput.classList.add("govuk-input--error");
@@ -189,15 +188,17 @@ async function searchButtonOnClick(event) {
     }
 }
 
-async function resetSearchButtonOnClick() {
+async function resetButtonOnClick() {
     const searchInput = getSearchInput();
     if (searchInput != null) {
         searchInput.value = '';
     }
-    toggleErrorTextVisibility(false);
+
     removeAccordion("search-results-accordion");
     await initialiseAccordion();
     resetShowMoreAnswersButton();
+    removeNoResultsFound();
+    toggleErrorTextVisibility(false);
     navigateToSearchInput(false);
 }
 
@@ -305,7 +306,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     searchButton.addEventListener("click", searchButtonOnClick);
-    resetButton.addEventListener("click", resetSearchButtonOnClick);
+    resetButton.addEventListener("click", resetButtonOnClick);
     showMoreButton.addEventListener("click", showMoreAnswersOnClick);
 
     const searchAside = document.getElementsByClassName("tpr-search-results")[0];
@@ -342,4 +343,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-export { initialiseAccordion, searchButtonOnClick, resetSearchButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound }
+export { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility }

@@ -1,7 +1,7 @@
 ﻿import '@testing-library/jest-dom';
 
 import { jest } from '@jest/globals';
-import { initialiseAccordion, searchButtonOnClick, resetSearchButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound } from '../wwwroot/tpr/tpr-search-results';
+import { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility } from '../wwwroot/tpr/tpr-search-results';
 
 const setupBlankComponent = () => {
     document.body.innerHTML =
@@ -231,7 +231,7 @@ describe('removeNoResultsFound', () => {
     });
 });
 
-describe('resetSearchButtonOnClick', () => {
+describe('resetButtonOnClick', () => {
     beforeEach(() => {
         // Ensure a clean fetch mock for each test
         global.fetch = undefined;
@@ -259,7 +259,7 @@ describe('resetSearchButtonOnClick', () => {
 
         expect(document.querySelectorAll('.govuk-accordion__section').length).toBe(initialPopular.length);
 
-        await resetSearchButtonOnClick();
+        await resetButtonOnClick();
 
         expect(input.value).toBe('');
 
@@ -276,14 +276,43 @@ describe('resetSearchButtonOnClick', () => {
 
         // DOM without input
         document.body.innerHTML = `
-            <aside class="tpr-search-results">
-                <form class="tpr-search-results__form">
-                    <div class="govuk-form-group"></div>
-                </form>
-                <a id="tpr-search-results-show-more-questions" class="govuk-link">Show more questions</a>
-            </aside>
-        `;
+        <aside class="tpr-search-results">
+            <form class="tpr-search-results__form">
+                <div class="govuk-form-group"></div>
+            </form>
+            <a id="tpr-search-results-show-more-questions" class="govuk-link">Show more questions</a>
+        </aside>`;
 
-        await expect(resetSearchButtonOnClick()).resolves.not.toThrow();
+        await expect(resetButtonOnClick()).resolves.not.toThrow();
+    });
+
+    it('resets show more answers view', async () => {
+        setupBlankComponent();
+
+        resetShowMoreAnswersButton();
+
+        const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
+        expect(showMoreButton).toHaveTextContent('Show more questions');
+        expect(showMoreButton).not.toHaveClass('govuk-visually-hidden');
+    });
+
+    it('resets the form to remove error text and error classes on elements', async () => {
+        document.body.innerHTML = `
+	    <form class="tpr-search-results__form">
+		    <div class="govuk-form-group govuk-form-group--error">
+			    <label class="govuk-label govuk-visually-hidden" for="tpr-search-results-ask-input">Search Q&amp;As</label>
+			    <p class="govuk-error-message field-validation-error" id="tpr-search-results-error-text">
+				    <span class="govuk-visually-hidden">Error:</span>Enter a search term to find questions and answers</p>
+			    <div class="tpr-search-results__input-group">
+				    <input aria-describedby="tpr-search-results-error-text" class="govuk-input govuk-input--error" id="tpr-search-results-ask-input" required="" type="text">
+				</div>
+			</div>
+		</form>`;
+
+        toggleErrorTextVisibility();
+
+        expect(document.querySelector('.govuk-form-group')).not.toHaveClass('govuk-form-group--error');
+        expect(document.getElementById('tpr-search-results-error-text')).toHaveClass('govuk-visually-hidden');
+        expect(document.getElementById('tpr-search-results-ask-input')).not.toHaveClass('govuk-input--error');
     });
 });

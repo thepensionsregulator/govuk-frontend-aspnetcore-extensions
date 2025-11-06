@@ -1,5 +1,5 @@
 ﻿
-<div class="tpr-related-links {{block.settingsData.cssClasses}}">
+<div class="tpr-related-links {{block.settingsData.cssClasses}}" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit component">
     <h2 class="govuk-heading-m" ng-bind="block.data.heading" ng-if="block.data.heading"></h2>
     <h2 class="govuk-heading-m" ng-if="!block.data.heading">Related</h2>
     <ul class="govuk-list">

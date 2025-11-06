@@ -6,12 +6,36 @@ let popularContentApiUrl = "";
 let searchContentApiUrl = "";
 let getContentByIdApiUrl = "";
 
+let showMoreQuestions = false;
 let newHeadingLevel = 3;
 
-async function initaliseAccordion() {
-    const response = await fetch(`${popularContentApiUrl}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+const INITIAL_VISIBLE_RESULTS = 2;
 
-    const results = (await response.json());
+function getSearchInput() {
+    return document.getElementById("tpr-search-results-ask-input");
+}
+
+function getShowMoreButton() {
+    return document.getElementById("tpr-search-results-show-more-questions");
+}
+
+async function fetchJson(url) {
+    const response = await fetch(url, { headers: { 'Content-Type': 'application/json' } });
+    return response.json();
+}
+
+async function initialiseAccordion() {
+    let results = [];
+
+    toggleErrorTextVisibility(false);
+
+    try {
+        results = await fetchJson(`${popularContentApiUrl}`);
+    } catch (error) {
+        console.error("Failed to fetch most popular content:", error);
+    }
+
+    results = results || [];
 
     if (results.length === 0) {
         createNoResultsFoundHeading();
@@ -20,13 +44,13 @@ async function initaliseAccordion() {
 
         searchResults = results;
 
-        const showNow = searchResults.slice(0, 2);
-
-        showNow.forEach(result => {
+        searchResults.slice(0, INITIAL_VISIBLE_RESULTS).forEach(result => {
             accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key));
         });
 
         createAccordion(accordionSections);
+        resetShowMoreAnswersButton();
+        toggleShowMoreButton(results.length <= INITIAL_VISIBLE_RESULTS);
     }
 }
 
@@ -47,7 +71,7 @@ function createAccordion(accordionSections) {
 
     new Accordion(newAccordion);
 
-    const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
+    const searchBlock = document.getElementsByClassName("tpr-search-results__form")[0];
     searchBlock.after(newAccordion);
 }
 
@@ -55,13 +79,12 @@ function createAccordionSection(heading, content, index) {
     const accordionSection = createElementWithClassName("div", "govuk-accordion__section");
 
     const accordionHeader = createElementWithClassName("div", "govuk-accordion__section-header");
-
     const accordionHeadingElement = createElementWithClassName(`h${newHeadingLevel}`, "govuk-accordion__section-heading");
 
     const accordionHeadingElementText = document.createTextNode(heading);
 
     const accordionHeadingButtonElement = createElementWithClassName("span", "govuk-accordion__section-button");
-    accordionHeadingButtonElement.setAttribute("id", `accordion1-heading-${index}`);
+    accordionHeadingButtonElement.setAttribute("id", `accordion-heading-${index}`);
     accordionHeadingButtonElement.appendChild(accordionHeadingElementText);
 
     accordionHeadingElement.appendChild(accordionHeadingButtonElement);
@@ -78,38 +101,84 @@ function createAccordionSection(heading, content, index) {
 }
 
 async function fetchContentById(contentId) {
-    const response = await fetch(`${getContentByIdApiUrl}/${contentId}`, { method: 'GET', headers: { 'Content-Type': 'application/json' } });
-    return await response.json();
+    try {
+        const url = `${getContentByIdApiUrl}/${contentId}`;
+        return await fetchJson(url);
+    } catch (error) {
+        console.error("Failed to fetch content by ID:", error);
+        return null;
+    }
 }
 
-async function buttonOnClick(event) {
+async function toggleErrorTextVisibility(showErrorText, errorTextContent = '') {
+    const errorText = document.getElementById("tpr-search-results-error-text");
+    const formGroup = document.querySelector('.tpr-search-results__form .govuk-form-group');
+    const searchInput = getSearchInput();
+
+    if (errorText != null && searchInput != null && formGroup != null) {
+        if (showErrorText) {
+            errorText.classList.remove("govuk-visually-hidden");
+            errorText.textContent = errorTextContent;
+            searchInput.classList.add("govuk-input--error");
+            formGroup.classList.add("govuk-form-group--error");
+        } else {
+            errorText.classList.add("govuk-visually-hidden");
+            searchInput.classList.remove("govuk-input--error");
+            formGroup.classList.remove("govuk-form-group--error");
+        }
+    }
+}
+
+function setErrorText(errorMessage, value = '') {
+    const searchInput = getSearchInput();
+    searchInput.value = value;
+    navigateToSearchInput(false);
+    toggleErrorTextVisibility(true, errorMessage);
+}
+
+async function searchButtonOnClick(event) {
     event.preventDefault();
 
-    const searchInput = document.getElementById("tpr-search-results-ask-input");
-    const searchValue = searchInput.value
-
-    if (!searchValue || searchValue.trim() === '') {
-        navigateToSearchInput(false);
+    const searchInput = getSearchInput();
+    if (searchInput == null) {
         return;
     }
+
+    const searchValue = searchInput.value?.trim() || '';
+    if (!searchValue) {
+        setErrorText('Please enter a question or phrase.');
+        return;
+    }
+
+    if (searchValue.length < 3) {
+        setErrorText('Your question must be 2 characters or more.', searchValue);
+        return;
+    }
+
+    toggleErrorTextVisibility(false);
 
     let searchUrl = new URL(searchContentApiUrl, window.location.origin);
     searchUrl.searchParams.set('searchTerm', searchValue);
 
-    const response = await fetch(searchUrl.toString(), { method: 'GET', headers: { 'Content-Type': 'application/json' } });
+    let jsonResults = [];
 
-    const jsonResults = await response.json();
+    try {
+        jsonResults = await fetchJson(searchUrl.toString());
+    } catch (error) {
+        console.error("Failed to search content:", error);
+    }
 
-    const results = jsonResults.results;
+    const results = jsonResults.results || [];
 
     removeAccordion("search-results-accordion");
 
     if (results.length === 0) {
-        createNoResultsFoundHeading();
+        setErrorText('Your question returned no results, please try again.', searchValue);
+        toggleShowMoreButton(true);
     } else {
         removeNoResultsFound();
 
-        searchResults = [];
+        resetShowMoreAnswersButton();
 
         searchResults = await Promise.all(
             results.map(async (result) => {
@@ -119,7 +188,7 @@ async function buttonOnClick(event) {
 
         const accordionSections = [];
 
-        const showNow = searchResults.slice(0, 2);
+        const showNow = searchResults.slice(0, INITIAL_VISIBLE_RESULTS);
 
         showNow.forEach(result => {
             accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
@@ -127,7 +196,27 @@ async function buttonOnClick(event) {
 
         createAccordion(accordionSections);
 
-        toggleShowMoreButton(accordionSections.length == searchResults.length);
+        toggleShowMoreButton(accordionSections.length === searchResults.length);
+    }
+}
+
+async function resetButtonOnClick() {
+    const searchInput = getSearchInput();
+    if (searchInput != null) {
+        searchInput.value = '';
+    }
+
+    removeAccordion("search-results-accordion");
+    await initialiseAccordion();
+    navigateToSearchInput(false);
+}
+
+async function resetShowMoreAnswersButton() {
+    showMoreQuestions = false;
+    toggleShowMoreButton(false);
+    const showMoreButton = getShowMoreButton();
+    if (showMoreButton != null) {
+        showMoreButton.textContent = 'Show more questions';
     }
 }
 
@@ -135,14 +224,26 @@ async function showMoreAnswersOnClick() {
     removeAccordion("search-results-accordion");
 
     const accordionSections = [];
+    let results = [];
 
-    searchResults.forEach(result => {
-        accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key));
+    const showMoreButton = getShowMoreButton();
+
+    if (showMoreQuestions === false) {
+        showMoreQuestions = true;
+        results = searchResults;
+        if (showMoreButton) showMoreButton.textContent = 'Show fewer questions';
+    }
+    else {
+        showMoreQuestions = false;
+        results = searchResults.slice(0, INITIAL_VISIBLE_RESULTS);
+        if (showMoreButton) showMoreButton.textContent = 'Show more questions';
+    }
+
+    results.forEach(result => {
+        accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
     });
 
     createAccordion(accordionSections);
-
-    toggleShowMoreButton(accordionSections.length == searchResults.length);
 }
 
 function createElementWithClassName(elementName, className) {
@@ -159,15 +260,17 @@ function createNoResultsFoundHeading() {
         noResultsHeading.className = "govuk-heading-m tpr-search-results__no-results-found";
         noResultsHeading.textContent = "No results found";
 
-        const searchBlock = document.getElementsByClassName("tpr-search-results__input")[0];
+        const searchBlock = document.getElementsByClassName("tpr-search-results__form")[0];
         searchBlock.after(noResultsHeading);
     }
+
+    showMoreQuestions = false;
 
     toggleShowMoreButton(true);
 }
 
 function toggleShowMoreButton(hideButton) {
-    const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
+    const showMoreButton = getShowMoreButton();
     if (showMoreButton != null) {
         if (hideButton) {
             showMoreButton.classList.add('govuk-visually-hidden');
@@ -195,24 +298,26 @@ function navigateToSearchButtonOnClick(event) {
 }
 
 function navigateToSearchInput(scrollIntoView) {
-    const searchResultsAside = document.getElementById("tpr-search-results-ask-input");
-    if (searchResultsAside != null) {
+    const searchInput = getSearchInput();
+    if (searchInput != null) {
         if (scrollIntoView === true) {
-            searchResultsAside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-        searchResultsAside.focus({ preventScroll: true });
+        searchInput.focus({ preventScroll: true });
     }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("tpr-search-results-ask-button");
-    const showMoreButton = document.getElementById("tpr-search-results-show-more-questions");
+    const resetButton = document.getElementById("tpr-search-results-reset-button");
+    const showMoreButton = getShowMoreButton();
 
     if (searchButton == null || showMoreButton == null) {
         return;
     }
 
-    searchButton.addEventListener("click", buttonOnClick);
+    searchButton.addEventListener("click", searchButtonOnClick);
+    resetButton.addEventListener("click", resetButtonOnClick);
     showMoreButton.addEventListener("click", showMoreAnswersOnClick);
 
     const searchAside = document.getElementsByClassName("tpr-search-results")[0];
@@ -232,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function () {
         newHeadingLevel = headingLevelNumber + 1;
     }
 
-    initaliseAccordion(popularContentApiUrl);
+    initialiseAccordion();
 
     const navigateToSearchButton = document.getElementsByClassName("tpr-search-results__nav-button")[0];
     if (navigateToSearchButton != null) {
@@ -249,4 +354,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-export { initaliseAccordion, buttonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound }
+export { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility }

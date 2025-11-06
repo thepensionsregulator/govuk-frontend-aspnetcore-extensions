@@ -22,10 +22,17 @@
 		<PackageId>ThePensionsRegulator.$(AssemblyName)</PackageId>
 		<Product>ThePensionsRegulator.$(AssemblyName)</Product>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Content Remove="sasscompiler.json" />
+
+		<!-- Dont include the Backoffice folder as part of packaging nuget build -->
+		<Content Remove="Backoffice\**" />
+
+		<!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
+		<None Include="Backoffice\public\umbraco-package.json" Pack="false" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -38,4 +38,9 @@
 			DestinationFiles="$(ProjectDir)uSync\v17\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 
+	<!-- Restore npm packages for backoffice development. -->
+	<Target Name="GovUkFrontendUmbraco_NpmInstall" BeforeTargets="BeforeBuild">
+		<Message Text="Restoring Backoffice npm packages" Importance="high" />
+		<Exec Command="npm install" WorkingDirectory="Backoffice" />
+	</Target>
 </Project>

@@ -148,3 +148,22 @@ These are configured via the `appsettings.json` under a section named  `Search
     "PopularContentUrl": "/SearchResultsData/popularContentExample.json"
 }
 ```
+#### Search results relevance and popular results
+A new setting has been introduced for this component to boost search results under a particular content section.
+
+This can be controlled using the endpoint urls exposed in appsettings.json by implementing the ITprSearchResultsEndpointUrlProvider interface.
+```csharp 
+public interface ITprSearchResultsEndpointUrlProvider
+{
+    TprSearchResultEndpoints GetSearchResultsEndpoints(Guid? searchBoostingCategory);
+}
+```
+
+As part of this project a concrete implementation based on query string values is provided to append the search category page identifier to the popular content and search content api endpoints.
+
+The provider ensures the category identifier is appended at the end of the relevant endpoints as illustrated below:
+```html
+<aside class=" tpr-search-results" data-content-by-id-url="/SearchResultsData/" data-popular-content-url="/SearchResultsData/popularContentExample.json?searchBoostingCategory=5e682cbe-b867-491a-955f-3382446d5663" data-search-content-url="/SearchResultsData/searchResults.json?searchBoostingCategory=5e682cbe-b867-491a-955f-3382446d5663">
+.....
+</aside>  
+```

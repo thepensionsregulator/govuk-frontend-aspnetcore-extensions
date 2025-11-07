@@ -40,7 +40,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
 	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 	  <None Remove="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
 	</ItemGroup>
@@ -55,7 +54,6 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelectPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextAreaPreview.html" />
@@ -105,6 +103,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Backoffice\src\blocks\helpers\accordion-helper.ts">
+	    <SubType>Code</SubType>
+	  </None>
 	  <None Update="NuGetReadme.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>

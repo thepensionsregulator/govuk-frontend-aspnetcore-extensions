@@ -1,6 +1,20 @@
 export const manifests: Array<UmbExtensionManifest> = [
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukAccordion',
+        name: "Block editor custom view for 'Accordion' blocks",
+        element: () => import('./blocks/views/govuk-accordion'),
+        forContentTypeAlias: ['govukAccordion','tprAccordion']
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukAccordionSection',
+        name: "Block editor custom view for 'Accordion section' blocks",
+        element: () => import('./blocks/views/govuk-accordion-section'),
+        forContentTypeAlias: ['govukAccordionSection','tprAccordionSection']
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukButton',
         name: "Block editor custom view for 'Button' blocks",
         element: () => import('./blocks/views/govuk-button'),

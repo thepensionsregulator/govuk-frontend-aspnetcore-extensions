@@ -11,7 +11,7 @@
     margin-top: 0;
 }
 
-.backoffice-block-view.govuk-accordion,
+.backoffice-block-view > .govuk-accordion,
 .backoffice-block-view.govuk-caption-l,
 .backoffice-block-view.govuk-error-message,
 .backoffice-block-view:has(> .govuk-link)
@@ -29,7 +29,7 @@
 .backoffice-block-view.govuk-panel {
     padding-top: 20px;
 }
-.backoffice-block-view.govuk-accordion,
+.backoffice-block-view > .govuk-accordion,
 .backoffice-block-view.govuk-details > summary,
 .backoffice-block-view.govuk-error-message,
 .backoffice-block-view > .govuk-error-summary,

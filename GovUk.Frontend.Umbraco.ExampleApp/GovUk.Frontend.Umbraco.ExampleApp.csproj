@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
     <Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
     <Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
   </ItemGroup>

@@ -3,11 +3,11 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UMB_CONTENT_WORKSPACE_CONTEXT } from '@umbraco-cms/backoffice/content';
-interface IMyBlockContent extends UmbBlockDataType {
+interface IGovUkPageHeadingContent extends UmbBlockDataType {
     text: string;
 }
 
-interface IMyBlockSettings extends UmbBlockDataType {
+interface IGovUkPageHeadingSettings extends UmbBlockDataType {
     cssClasses: boolean;
 }
 
@@ -16,10 +16,10 @@ interface IMyBlockSettings extends UmbBlockDataType {
 export class GovUkPageHeadingView extends UmbElementMixin(LitElement) implements UmbBlockEditorCustomViewElement {
 
     @property({ attribute: false })
-    content?: IMyBlockContent;
+    content?: IGovUkPageHeadingContent;
 
     @property({ attribute: false })
-    settings?: IMyBlockSettings;
+    settings?: IGovUkPageHeadingSettings;
 
     @state()
     _nodeName?: string;
@@ -40,7 +40,7 @@ export class GovUkPageHeadingView extends UmbElementMixin(LitElement) implements
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <h1 class="govuk-heading-l backoffice-block-view" aria-label="Edit page heading component">${this.content?.text ? this.content.text : this._nodeName }</h1>
+        <h1 class="govuk-heading-l backoffice-block-view ${ this.settings?.cssClasses }" aria-label="Edit page heading component">${this.content?.text ? this.content.text : this._nodeName }</h1>
         `;
     }
 }

@@ -21,7 +21,6 @@
     <None Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkCaption.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
@@ -31,7 +30,6 @@
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkInsetTextPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBannerPreview.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkPageHeading.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />

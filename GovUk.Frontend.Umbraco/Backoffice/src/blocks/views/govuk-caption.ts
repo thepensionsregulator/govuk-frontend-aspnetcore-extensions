@@ -1,0 +1,35 @@
+import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
+import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
+import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+interface IGovUkCaptionContent extends UmbBlockDataType {
+    caption: string;
+}
+
+interface IGovUkCaptionSettings extends UmbBlockDataType {
+    cssClasses: boolean;
+}
+
+
+@customElement('govuk-caption')
+export class GovUkCaptionView extends UmbElementMixin(LitElement) implements UmbBlockEditorCustomViewElement {
+
+    @property({ attribute: false })
+    content?: IGovUkCaptionContent;
+
+    @property({ attribute: false })
+    settings?: IGovUkCaptionSettings;
+
+    constructor() {
+        super();
+    }
+
+    override render() {
+        return html`
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <div class="govuk-caption-l backoffice-block-view ${ this.settings?.cssClasses }" aria-label="Edit caption component">${ this.content?.caption }</div>
+        `;
+    }
+}
+
+export default GovUkCaptionView;

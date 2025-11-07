@@ -27,9 +27,13 @@
 
 	<ItemGroup>
 		<Content Remove="sasscompiler.json" />
+		<Compile Remove="App_Plugins\GOVUK\blocks\controllers\**" />
+		<Content Remove="App_Plugins\GOVUK\blocks\controllers\**" />
 
 		<!-- Dont include the Backoffice folder as part of packaging nuget build -->
 		<Content Remove="Backoffice\**" />
+		<EmbeddedResource Remove="App_Plugins\GOVUK\blocks\controllers\**" />
+		<None Remove="App_Plugins\GOVUK\blocks\controllers\**" />
 
 		<!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
 		<None Include="Backoffice\public\umbraco-package.json" Pack="false" />
@@ -42,10 +46,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="App_Plugins\GOVUK\blocks\controllers\govukPageHeading.controller.js" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCaption.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
@@ -57,7 +59,6 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkInsetTextPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBannerPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPageHeading.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
@@ -147,5 +148,9 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_backoffice-rich-text-formats.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="App_Plugins\GOVUK\blocks\controllers\**" />
 	</ItemGroup>
 </Project>

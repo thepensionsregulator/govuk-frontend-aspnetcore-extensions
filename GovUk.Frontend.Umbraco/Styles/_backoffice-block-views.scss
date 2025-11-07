@@ -12,13 +12,14 @@
 }
 
 .backoffice-block-view.govuk-accordion,
-.backoffice-block-view.govuk-caption-l {
+.backoffice-block-view.govuk-caption-l,
+.backoffice-block-view.govuk-error-message
+{
     padding-bottom: 20px;
 }
 
 .backoffice-block-view.govuk-caption-l,
 .backoffice-block-view.govuk-details,
-.backoffice-block-view.govuk-error-message,
 .backoffice-block-view > .govuk-error-summary,
 .backoffice-block-view.govuk-fieldset,
 .backoffice-block-view.govuk-form-group:not(.backoffice-block-view-textarea),
@@ -29,6 +30,8 @@
 }
 .backoffice-block-view.govuk-accordion,
 .backoffice-block-view.govuk-details > summary,
+.backoffice-block-view.govuk-error-message,
+.backoffice-block-view > .govuk-error-summary,
 .backoffice-block-view.govuk-panel,
 .backoffice-block-view.govuk-summary-list,
 .backoffice-block-view > .govuk-date-input__fieldset {

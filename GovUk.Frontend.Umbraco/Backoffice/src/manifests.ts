@@ -29,6 +29,20 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukErrorMessage',
+        name: "Block editor custom view for 'Error message' blocks",
+        element: () => import('./blocks/views/govuk-error-message'),
+        forContentTypeAlias: 'govukErrorMessage'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukErrorSummary',
+        name: "Block editor custom view for 'Error summary' blocks",
+        element: () => import('./blocks/views/govuk-error-summary'),
+        forContentTypeAlias: 'govukErrorSummary'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukInsetText',
         name: "Block editor custom view for 'Inset text' blocks",
         element: () => import('./blocks/views/govuk-inset-text'),

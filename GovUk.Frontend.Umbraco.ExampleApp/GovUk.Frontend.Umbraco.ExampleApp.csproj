@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <Content Include="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
-    <Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorSummary.html" />
     <Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
     <Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
     <Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypographyPreview.html" />
@@ -25,7 +24,6 @@
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkDetails.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkErrorMessage.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkInsetTextPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />

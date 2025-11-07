@@ -69,7 +69,6 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextAreaPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextInputPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypographyPreview.html" />
 		<Content Include="App_Plugins\GOVUK\govuk.controller.js" />
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />

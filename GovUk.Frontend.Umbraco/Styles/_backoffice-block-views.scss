@@ -34,7 +34,7 @@
 .backoffice-block-view.govuk-error-message,
 .backoffice-block-view > .govuk-error-summary,
 .backoffice-block-view.govuk-panel,
-.backoffice-block-view.govuk-summary-list,
+.backoffice-block-view > .govuk-summary-list,
 .backoffice-block-view > .govuk-date-input__fieldset {
     margin-bottom: 20px;
 }
@@ -69,13 +69,17 @@
     padding-right: 40px;
 }
 
-.backoffice-block-view.govuk-summary-card .govuk-summary-list__row:not(.govuk-summary-list__row--no-actions) > :last-child {
+.backoffice-block-view > .govuk-summary-card .govuk-summary-list__row:not(.govuk-summary-list__row--no-actions) > :last-child {
     padding-right: 0;
 }
 
 .backoffice-block-view .govuk-summary-card__content {
     padding-bottom: 0;
     margin-bottom: 20px;
+}
+.backoffice-block-view .govuk-summary-card > .backoffice-additional-blocks {
+    margin-top: 20px;
+    margin-bottom: 0;
 }
 .backoffice-block-view .govuk-task-list__link {
     color: $govuk-link-colour;

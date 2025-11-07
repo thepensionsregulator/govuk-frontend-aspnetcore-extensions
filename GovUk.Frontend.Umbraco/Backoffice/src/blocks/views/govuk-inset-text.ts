@@ -3,7 +3,7 @@ import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IRichTextProperty } from './IRichTextProperty';
+import { IRichTextProperty } from '../interfaces/IRichTextProperty';
 
 interface IGovUkInsetTextContent extends UmbBlockDataType {
     text: IRichTextProperty;

@@ -78,6 +78,20 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukSummaryList',
+        name: "Block editor custom view for 'Summary list' blocks",
+        element: () => import('./blocks/views/govuk-summary-list'),
+        forContentTypeAlias: 'govukSummaryList'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukSummaryCard',
+        name: "Block editor custom view for 'Summary card' blocks",
+        element: () => import('./blocks/views/govuk-summary-card'),
+        forContentTypeAlias: 'govukSummaryCard'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTypography',
         name: "Block editor custom view for 'Text' blocks",
         element: () => import('./blocks/views/govuk-typography'),

@@ -2,7 +2,7 @@ import { html, customElement, LitElement, property } from '@umbraco-cms/backoffi
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IBlockListProperty } from './IBlockListProperty';
+import { IBlockListProperty } from '../interfaces/IBlockListProperty';
 
 interface IGovUkButtonGroupContent extends UmbBlockDataType {
     buttons: IBlockListProperty | null;

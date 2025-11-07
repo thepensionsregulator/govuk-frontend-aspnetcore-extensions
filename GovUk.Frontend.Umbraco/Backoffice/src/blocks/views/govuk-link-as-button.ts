@@ -39,7 +39,7 @@ export class GovUkLinkAsButtonView extends UmbElementMixin(LitElement) implement
         if (this.settings?.isStartButton) {
             return html`
             <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-            <div class="backoffice-block-view" aria-label="Edit link styled as button component">
+            <div class="backoffice-block-view">
                 <div class="${ blockViewClass }">
                     <a href="javascript:return false" role="button" draggable="false" class="govuk-button govuk-button--start ${buttonClass} ${this.settings?.cssClasses}">
                       ${this.content?.text }
@@ -53,9 +53,9 @@ export class GovUkLinkAsButtonView extends UmbElementMixin(LitElement) implement
         else {
             return html`
             <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-            <div class="backoffice-block-view" aria-label="Edit link styled as button component">
+            <div class="backoffice-block-view">
                 <div class="${ blockViewClass }">
-                    <a href="javascript:return false" class="govuk-button ${buttonClass} ${this.settings?.cssClasses}" role="button" aria-hidden="true">${this.content?.text}</a>
+                    <a href="javascript:return false" class="govuk-button ${buttonClass} ${this.settings?.cssClasses}" role="button">${this.content?.text}</a>
                 </div>
             </div>`;
         }

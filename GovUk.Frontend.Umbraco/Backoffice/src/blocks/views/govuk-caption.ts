@@ -27,7 +27,7 @@ export class GovUkCaptionView extends UmbElementMixin(LitElement) implements Umb
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-caption-l backoffice-block-view ${ this.settings?.cssClasses }" aria-label="Edit caption component">${ this.content?.caption }</div>
+        <div class="govuk-caption-l backoffice-block-view ${ this.settings?.cssClasses }">${ this.content?.caption }</div>
         `;
     }
 }

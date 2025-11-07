@@ -40,7 +40,7 @@ export class GovUkPageHeadingView extends UmbElementMixin(LitElement) implements
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <h1 class="govuk-heading-l backoffice-block-view ${ this.settings?.cssClasses }" aria-label="Edit page heading component">${this.content?.text ? this.content.text : this._nodeName }</h1>
+        <h1 class="govuk-heading-l backoffice-block-view ${ this.settings?.cssClasses }">${this.content?.text ? this.content.text : this._nodeName }</h1>
         `;
     }
 }

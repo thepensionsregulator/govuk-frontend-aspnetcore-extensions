@@ -37,9 +37,9 @@ export class GovUkButtonView extends UmbElementMixin(LitElement) implements UmbB
 
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="backoffice-block-view" aria-label="Edit button component">
+        <div class="backoffice-block-view">
             <div class="${ blockViewClass }">
-                <button class="govuk-button ${ buttonClass} ${this.settings?.cssClasses}" type="button" aria-hidden="true">${this.content?.text }</button>
+                <button class="govuk-button ${ buttonClass} ${this.settings?.cssClasses}" type="button">${this.content?.text }</button>
             </div>
         </div>
         `;

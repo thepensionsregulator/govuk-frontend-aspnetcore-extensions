@@ -28,7 +28,7 @@ export class GovUkErrorSummaryView extends UmbElementMixin(LitElement) implement
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
         <div class="backoffice-block-view">
-            <div class="govuk-error-summary" aria-label="Edit error summary component">
+            <div class="govuk-error-summary">
                 <h2 class="govuk-error-summary__title">${ this.content?.title || "There is a problem" }</h2>
                 <div class="govuk-error-summary__body">
                     <ul class="govuk-error-summary__list govuk-list"><li><a href="javascript:return false">Example error message</a></li></ul>

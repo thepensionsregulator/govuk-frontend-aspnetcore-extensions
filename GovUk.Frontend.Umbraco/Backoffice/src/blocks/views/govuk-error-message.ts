@@ -27,7 +27,7 @@ export class GovUkErrorMessageView extends UmbElementMixin(LitElement) implement
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <p class="govuk-error-message backoffice-block-view ${ this.settings?.cssClasses }" aria-label="Edit error message component">${ this.content?.error }</p>
+        <p class="govuk-error-message backoffice-block-view ${ this.settings?.cssClasses }">${ this.content?.error }</p>
         `;
     }
 }

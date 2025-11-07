@@ -27,7 +27,7 @@ export class GovUkLinkView extends UmbElementMixin(LitElement) implements UmbBlo
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="backoffice-block-view" aria-label="Edit link component">
+        <div class="backoffice-block-view">
             <a href="javascript:return false" class="govuk-link ${this.settings?.cssClasses}">${this.content?.text}</a>
         </div>`;
     }

@@ -31,8 +31,8 @@ export class GovUkDetailsView extends UmbElementMixin(LitElement) implements Umb
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <details class="govuk-details backoffice-block-view ${ this.settings?.cssClasses}" aria-label="Edit details component">
-            <summary class="govuk-details__summary"><span class="govuk-details__summary-text" aria-hidden="true">${ this.content?.summary }</span></summary>
+        <details class="govuk-details backoffice-block-view ${ this.settings?.cssClasses}">
+            <summary class="govuk-details__summary"><span class="govuk-details__summary-text">${ this.content?.summary }</span></summary>
             ${ unsafeHTML(this.content?.text.markup) }
         </details>
         `;

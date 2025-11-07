@@ -30,7 +30,7 @@ export class GovUkInsetTextView extends UmbElementMixin(LitElement) implements U
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-inset-text backoffice-block-view ${ this.settings?.cssClasses}" aria-label="Edit inset text component">${unsafeHTML(this.content?.text.markup) }</div>
+        <div class="govuk-inset-text backoffice-block-view ${ this.settings?.cssClasses}">${unsafeHTML(this.content?.text.markup) }</div>
         `;
     }
 }

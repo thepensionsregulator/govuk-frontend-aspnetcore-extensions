@@ -64,6 +64,13 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukNotificationBanner',
+        name: "Block editor custom view for 'Notification banner' blocks",
+        element: () => import('./blocks/views/govuk-notification-banner'),
+        forContentTypeAlias: 'govukNotificationBanner'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukPageHeading',
         name: "Block editor custom view for 'Page heading' blocks",
         element: () => import('./blocks/views/govuk-page-heading'),

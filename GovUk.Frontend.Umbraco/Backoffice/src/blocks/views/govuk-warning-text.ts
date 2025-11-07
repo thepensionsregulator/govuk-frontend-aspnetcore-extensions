@@ -31,7 +31,7 @@ export class GovUkWarningTextView extends UmbElementMixin(LitElement) implements
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-warning-text backoffice-block-view ${ this.settings?.cssClasses}" aria-label="Edit warning text component">
+        <div class="govuk-warning-text backoffice-block-view ${ this.settings?.cssClasses}">
             <span aria-hidden="true" class="govuk-warning-text__icon">!</span>
             <strong class="govuk-warning-text__text" aria-hidden="true">
                 <span class="govuk-visually-hidden">${ this.content?.iconFallbackText || "Warning" }</span>

@@ -1,19 +1,22 @@
 ﻿@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco.Services
 @using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Web.Common
 @using Microsoft.Extensions.Configuration
 @using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
-@inject IConfiguration configuration
+@inject ITprSearchResultsEndpointUrlProvider endpointUrlsProvider
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
-    var searchResultsSection = configuration.GetSection("SearchResultsApiEndpoints");
 
     var heading = Model.Content.Value<string>(TprPropertyAliases.SearchResultsHeading);
     var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.SearchResultsFooterLinks);
 
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
     var headingClass = Model.Settings.Value<string?>(TprPropertyAliases.SearchResultsHeadingClass);
+    var searchBoostingCategory = Model.Settings.Value<IPublishedContent>(TprPropertyAliases.SearchBoostingCategory);
+    var endpoints = endpointUrlsProvider.GetSearchResultsEndpoints(searchBoostingCategory?.Key);
 
     if (string.IsNullOrEmpty(headingClass))
     {
@@ -29,7 +32,7 @@
     }
 }
 
-<tpr-search-results class="@cssClasses" content-by-id-url=@searchResultsSection["ContentByIdUrl"] search-content-url=@searchResultsSection["SearchContentUrl"] popular-content-url=@searchResultsSection["PopularContentUrl"]>
+<tpr-search-results class="@cssClasses" content-by-id-url=@endpoints.ContentByIdApiUrl search-content-url=@endpoints.ContentSearchApiUrl popular-content-url=@endpoints.PopularContentApiUrl>
     <tpr-search-results-input heading-level=@numericHeadingLevel govuk-heading-class=@headingClass>@heading</tpr-search-results-input>
     <tpr-search-results-footer-links>
         @foreach(var link in links)

@@ -51,12 +51,10 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDetails.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorMessage.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorSummary.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkInsetTextPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBannerPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
@@ -72,7 +70,6 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextAreaPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextInputPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypographyPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkWarningTextPreview.html" />
 		<Content Include="App_Plugins\GOVUK\govuk.controller.js" />
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />

@@ -7,7 +7,7 @@ interface IGovUkCaptionContent extends UmbBlockDataType {
 }
 
 interface IGovUkCaptionSettings extends UmbBlockDataType {
-    cssClasses: boolean;
+    cssClasses: string;
 }
 
 

@@ -46,8 +46,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
@@ -55,7 +53,6 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorSummary.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBannerPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />

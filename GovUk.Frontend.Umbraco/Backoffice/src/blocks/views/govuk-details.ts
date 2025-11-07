@@ -11,7 +11,7 @@ interface IGovUkDetailsContent extends UmbBlockDataType {
 }
 
 interface IGovUkDetailsSettings extends UmbBlockDataType {
-    cssClasses: boolean;
+    cssClasses: string;
 }
 
 

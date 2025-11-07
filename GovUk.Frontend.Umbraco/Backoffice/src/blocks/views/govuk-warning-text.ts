@@ -11,7 +11,7 @@ interface IGovUkWarningTextContent extends UmbBlockDataType {
 }
 
 interface IGovUkWarningTextSettings extends UmbBlockDataType {
-    cssClasses: boolean;
+    cssClasses: string;
 }
 
 

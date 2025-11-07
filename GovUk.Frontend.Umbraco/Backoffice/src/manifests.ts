@@ -1,6 +1,20 @@
 export const manifests: Array<UmbExtensionManifest> = [
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukButton',
+        name: "Block editor custom view for 'Button' blocks",
+        element: () => import('./blocks/views/govuk-button'),
+        forContentTypeAlias: 'govukButton'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukButtonGroup',
+        name: "Block editor custom view for 'Button group' blocks",
+        element: () => import('./blocks/views/govuk-button-group'),
+        forContentTypeAlias: 'govukButtonGroup'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukCaption',
         name: "Block editor custom view for 'Caption' blocks",
         element: () => import('./blocks/views/govuk-caption'),
@@ -19,6 +33,13 @@ export const manifests: Array<UmbExtensionManifest> = [
         name: "Block editor custom view for 'Inset text' blocks",
         element: () => import('./blocks/views/govuk-inset-text'),
         forContentTypeAlias: 'govukInsetText'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukLinkAsButton',
+        name: "Block editor custom view for 'Link, styled as a button' blocks",
+        element: () => import('./blocks/views/govuk-link-as-button'),
+        forContentTypeAlias: 'govukLinkAsButton'
     },
     {
         type: 'blockEditorCustomView',

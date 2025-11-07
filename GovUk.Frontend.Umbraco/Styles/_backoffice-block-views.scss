@@ -85,3 +85,14 @@
 .backoffice-columns {
     padding: 10px;
 }
+
+/* Show an inverse button on a dark background, or else it'll be invisible */
+.backoffice-block-view-inverse {
+    padding: 10px;
+    background: #333;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+.backoffice-block-view-inverse > :last-child {
+    margin-bottom: 0;
+}

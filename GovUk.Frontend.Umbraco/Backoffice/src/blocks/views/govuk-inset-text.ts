@@ -10,7 +10,7 @@ interface IGovUkInsetTextContent extends UmbBlockDataType {
 }
 
 interface IGovUkInsetTextSettings extends UmbBlockDataType {
-    cssClasses: boolean;
+    cssClasses: string;
 }
 
 

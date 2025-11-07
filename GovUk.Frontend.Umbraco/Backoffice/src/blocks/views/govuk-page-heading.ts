@@ -8,7 +8,7 @@ interface IGovUkPageHeadingContent extends UmbBlockDataType {
 }
 
 interface IGovUkPageHeadingSettings extends UmbBlockDataType {
-    cssClasses: boolean;
+    cssClasses: string;
 }
 
 

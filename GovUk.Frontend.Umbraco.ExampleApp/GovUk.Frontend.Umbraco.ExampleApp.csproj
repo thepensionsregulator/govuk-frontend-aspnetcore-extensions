@@ -20,7 +20,6 @@
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />

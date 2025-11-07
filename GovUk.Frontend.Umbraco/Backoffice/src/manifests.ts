@@ -43,6 +43,13 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukFieldset',
+        name: "Block editor custom view for 'Fieldset' blocks",
+        element: () => import('./blocks/views/govuk-fieldset'),
+        forContentTypeAlias: 'govukFieldset'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukInsetText',
         name: "Block editor custom view for 'Inset text' blocks",
         element: () => import('./blocks/views/govuk-inset-text'),

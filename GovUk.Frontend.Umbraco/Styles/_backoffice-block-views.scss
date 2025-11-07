@@ -13,7 +13,8 @@
 
 .backoffice-block-view.govuk-accordion,
 .backoffice-block-view.govuk-caption-l,
-.backoffice-block-view.govuk-error-message
+.backoffice-block-view.govuk-error-message,
+.backoffice-block-view:has(> .govuk-link)
 {
     padding-bottom: 20px;
 }

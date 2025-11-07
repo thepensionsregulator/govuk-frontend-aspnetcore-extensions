@@ -13,20 +13,14 @@
     <Content Include="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
     <Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
     <Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
-    <Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypographyPreview.html" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkDetails.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkInsetTextPreview.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBannerPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />
@@ -38,7 +32,6 @@
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkTextAreaPreview.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkTextInputPreview.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkWarningTextPreview.html" />
     <None Include="wwwroot\media\.gitignore" />
     <None Include="wwwroot\media\grphyhbj\example-powerpoint-file.pptx" />
     <None Include="wwwroot\media\icaposfq\example-pdf-file.pdf" />

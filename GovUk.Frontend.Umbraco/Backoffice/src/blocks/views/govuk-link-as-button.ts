@@ -55,7 +55,7 @@ export class GovUkLinkAsButtonView extends UmbElementMixin(LitElement) implement
             <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
             <div class="backoffice-block-view" aria-label="Edit link styled as button component">
                 <div class="${ blockViewClass }">
-                    <a class="govuk-button ${buttonClass} ${this.settings?.cssClasses}" role="button" aria-hidden="true">${this.content?.text}</a>
+                    <a href="javascript:return false" class="govuk-button ${buttonClass} ${this.settings?.cssClasses}" role="button" aria-hidden="true">${this.content?.text}</a>
                 </div>
             </div>`;
         }

@@ -50,7 +50,6 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelectPreview.html" />

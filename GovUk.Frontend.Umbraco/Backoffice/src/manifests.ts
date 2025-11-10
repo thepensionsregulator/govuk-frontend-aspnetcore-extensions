@@ -155,6 +155,13 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTextInput',
+        name: "Block editor custom view for 'Text input' blocks",
+        element: () => import('./blocks/views/govuk-text-input'),
+        forContentTypeAlias: 'govukTextInput'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTypography',
         name: "Block editor custom view for 'Text' blocks",
         element: () => import('./blocks/views/govuk-typography'),

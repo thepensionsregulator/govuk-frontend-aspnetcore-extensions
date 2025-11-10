@@ -127,6 +127,27 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTask',
+        name: "Block editor custom view for 'Task' blocks",
+        element: () => import('./blocks/views/govuk-task'),
+        forContentTypeAlias: 'govukTask'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTaskList',
+        name: "Block editor custom view for 'Task list' blocks",
+        element: () => import('./blocks/views/govuk-task-list'),
+        forContentTypeAlias: 'govukTaskList'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTaskListSummary',
+        name: "Block editor custom view for 'Task list summary' blocks",
+        element: () => import('./blocks/views/govuk-task-list-summary'),
+        forContentTypeAlias: 'govukTaskListSummary'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTypography',
         name: "Block editor custom view for 'Text' blocks",
         element: () => import('./blocks/views/govuk-typography'),

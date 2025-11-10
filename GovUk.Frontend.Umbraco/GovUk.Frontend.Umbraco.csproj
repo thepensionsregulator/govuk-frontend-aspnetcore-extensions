@@ -52,8 +52,6 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelectPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextAreaPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextInputPreview.html" />
 		<Content Include="App_Plugins\GOVUK\govuk.controller.js" />
@@ -101,6 +99,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Backoffice\src\blocks\helpers\task-list-helper.ts">
+	    <SubType>Code</SubType>
+	  </None>
 	  <None Update="Backoffice\src\blocks\helpers\accordion-helper.ts">
 	    <SubType>Code</SubType>
 	  </None>

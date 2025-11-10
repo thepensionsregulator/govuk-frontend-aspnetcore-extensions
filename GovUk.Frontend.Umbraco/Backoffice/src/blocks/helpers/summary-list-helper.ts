@@ -1,5 +1,4 @@
-﻿import { html, repeat, TemplateResult } from '@umbraco-cms/backoffice/external/lit';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+﻿import { html, repeat, TemplateResult, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { IBlockListItem } from '../interfaces/IBlockListItem';
 
 export function renderSummaryList(listItems: Array<IBlockListItem> | [], cssClasses: string | undefined = undefined): TemplateResult {

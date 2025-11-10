@@ -40,7 +40,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 	  <None Remove="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
 	</ItemGroup>
 
@@ -49,7 +48,6 @@
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 		<Content Include="App_Plugins\GOVUK\govuk.controller.js" />
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />

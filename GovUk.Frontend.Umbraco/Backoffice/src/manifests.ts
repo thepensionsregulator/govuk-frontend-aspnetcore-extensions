@@ -64,6 +64,13 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukFileUpload',
+        name: "Block editor custom view for 'File upload' blocks",
+        element: () => import('./blocks/views/govuk-file-upload'),
+        forContentTypeAlias: 'govukFileUpload'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukInsetText',
         name: "Block editor custom view for 'Inset text' blocks",
         element: () => import('./blocks/views/govuk-inset-text'),

@@ -14,8 +14,8 @@
 .backoffice-block-view > .govuk-accordion,
 .backoffice-block-view.govuk-caption-l,
 .backoffice-block-view.govuk-error-message,
-.backoffice-block-view:has(> .govuk-link)
-{
+.backoffice-block-view:has(> .govuk-link),
+.backoffice-block-view:has(.govuk-textarea) {
     padding-bottom: 20px;
 }
 

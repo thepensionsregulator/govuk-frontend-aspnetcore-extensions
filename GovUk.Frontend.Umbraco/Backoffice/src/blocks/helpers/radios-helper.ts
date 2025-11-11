@@ -8,7 +8,7 @@ export function renderRadiosDivider(text:string | undefined): TemplateResult {
 export function renderRadioButton(
     label: string | undefined,
     value: string | undefined,
-    hint: string | undefined,
+    hintHtml: string | undefined,
     conditionalBlocks: Array<IBlockListItem> | null | undefined = [],
     renderConditionalBlocks: boolean,
 ): TemplateResult {
@@ -20,7 +20,7 @@ export function renderRadioButton(
     return html`<div class="govuk-radios__item">
                     <input class="govuk-radios__input" type="radio" value="${value}">
                     <label class="govuk-radios__label govuk-label">${label}</label>
-                    ${hint ? html`<div class="govuk-radios__hint govuk-hint">${unsafeHTML(hint)}</div>` : null}
+                    ${hintHtml ? html`<div class="govuk-radios__hint govuk-hint">${unsafeHTML(hintHtml)}</div>` : null}
                 </div>
                 ${renderConditionalBlocks ? html`<div class="govuk-radios__conditional">
                     <div class="govuk-form-group">

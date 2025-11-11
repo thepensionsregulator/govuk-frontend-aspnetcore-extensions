@@ -1,10 +1,11 @@
 import { html, customElement, LitElement, property, unsafeHTML, state } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { IRichTextProperty } from '../interfaces/IRichTextProperty';
 import { IBlockListProperty } from "../interfaces/IBlockListProperty";
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
+import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkDateInputContent extends UmbBlockDataType {
     fieldsetBlocks: IBlockListProperty;
@@ -29,6 +30,9 @@ export class GovUkDateInputView extends UmbElementMixin(LitElement) implements U
 
     @property({ attribute: false })
     settings?: IGovUkDateInputSettings;
+
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
 
     @state()
     _nodeName?: string;
@@ -58,12 +62,12 @@ export class GovUkDateInputView extends UmbElementMixin(LitElement) implements U
 
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-form-group backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view">
             <fieldset class="govuk-fieldset govuk-date-input__fieldset ${ this.settings?.cssClasses}">
                 <legend class="govuk-fieldset__legend ${legendClass}">${this.settings?.legendIsPageHeading ? html`<h1 class="govuk-fieldset__heading">${legend}</h1>` : legend }</legend>
                 <p class="backoffice-additional-blocks">${blocksText}</p>
                 <div class="govuk-form-group">
-                    ${this.content?.hint?.markup ? html`<div class="govuk-hint">${unsafeHTML(this.content?.hint?.markup)}</div>` : null}
+                    ${this.content?.hint?.markup ? html`<div class="govuk-hint">${unsafeHTML(disableLinks(this.content?.hint?.markup))}</div>` : null}
                     <div class="govuk-date-input">
                         ${this.settings?.showDay !== false ? html`<div class="govuk-date-input__item">
                             <div class="govuk-form-group">
@@ -92,7 +96,7 @@ export class GovUkDateInputView extends UmbElementMixin(LitElement) implements U
                     </div>
                 </div>
             </fieldset>
-        </div>
+        </a>
         `;
     }
 }

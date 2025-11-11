@@ -1,5 +1,6 @@
 ﻿import { html, repeat, TemplateResult, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { IBlockListItem } from '../interfaces/IBlockListItem';
+import { disableLinks } from '../helpers/html-helper';
 
 export function renderSummaryList(listItems: Array<IBlockListItem> | [], cssClasses: string | undefined = undefined): TemplateResult {
         return html`
@@ -19,7 +20,7 @@ export function renderSummaryListItem(itemKey: string | undefined, itemValueHtml
     return html`
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key">${itemKey}</dt>
-            <dd class="govuk-summary-list__value">${unsafeHTML(itemValueHtml || '')}</dd>
+            <dd class="govuk-summary-list__value">${unsafeHTML(disableLinks(itemValueHtml) || '')}</dd>
             ${actions ? html`
                 <dd class="govuk-summary-list__actions">
                     <ul class="govuk-summary-list__actions-list">
@@ -35,5 +36,5 @@ export function renderSummaryListItem(itemKey: string | undefined, itemValueHtml
 }
 
 export function renderSummaryListAction(text: string | undefined): TemplateResult {
-    return  html`<a class="govuk-link" href="javascript:return false">${text}</a>`;
+    return  html`<span class="govuk-link">${text}</span>`;
 }

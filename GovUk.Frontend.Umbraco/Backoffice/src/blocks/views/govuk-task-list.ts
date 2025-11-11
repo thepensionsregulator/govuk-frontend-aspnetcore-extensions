@@ -1,6 +1,6 @@
 import { html, customElement, LitElement, property, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { IBlockListProperty } from '../interfaces/IBlockListProperty';
 import { renderTask } from '../helpers/task-list-helper';
@@ -23,6 +23,9 @@ export class GovUkTaskListView extends UmbElementMixin(LitElement) implements Um
     @property({ attribute: false })
     settings?: IGovUkTaskListSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -30,8 +33,7 @@ export class GovUkTaskListView extends UmbElementMixin(LitElement) implements Um
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-
-        <div class="backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${ this.content?.tasks?.contentData ? 
                 html`<ul class="govuk-task-list ${this.settings?.cssClasses}">
                     ${ repeat(this.content?.tasks?.contentData,
@@ -49,7 +51,7 @@ export class GovUkTaskListView extends UmbElementMixin(LitElement) implements Um
                     )}
                     </ul>`
                     : html`<p class="backoffice-additional-blocks">Task list with no tasks.</li>` }
-        </div>
+        </a>
         `;
     }
 }

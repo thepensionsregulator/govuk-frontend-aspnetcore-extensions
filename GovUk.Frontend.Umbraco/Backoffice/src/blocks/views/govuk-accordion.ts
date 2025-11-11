@@ -1,6 +1,6 @@
 import { html, customElement, LitElement, property, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { IBlockListProperty } from '../interfaces/IBlockListProperty';
 import { IBlockListItem } from '../interfaces/IBlockListItem';
@@ -24,10 +24,13 @@ export class GovUkAccordionView extends UmbElementMixin(LitElement) implements U
     @property({ attribute: false })
     settings?: IGovUkAccordionSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${ this.content?.sections?.contentData ? html`
                 <div class="govuk-accordion">
                     ${repeat(this.content.sections.contentData,
@@ -42,7 +45,7 @@ export class GovUkAccordionView extends UmbElementMixin(LitElement) implements U
                 </div>` : 
                 html`<p class="backoffice-additional-blocks">Accordion with no sections.</p>`
             }
-        </div>`;
+        </a>`;
     }
 }
 

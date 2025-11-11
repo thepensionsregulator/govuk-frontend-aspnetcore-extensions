@@ -1,11 +1,12 @@
 import { html, customElement, LitElement, property, state, unsafeHTML, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { IRichTextProperty } from '../interfaces/IRichTextProperty';
 import { IBlockListProperty } from "../interfaces/IBlockListProperty";
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 import { renderRadiosDivider, renderRadioButton } from '../helpers/radios-helper';
+import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkRadiosContent extends UmbBlockDataType {
     fieldsetBlocks: IBlockListProperty;
@@ -29,6 +30,9 @@ export class GovUkRadiosView extends UmbElementMixin(LitElement) implements UmbB
 
     @property({ attribute: false })
     settings?: IGovUkRadiosSettings;
+
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
 
     @state()
     _nodeName?: string;
@@ -59,12 +63,12 @@ export class GovUkRadiosView extends UmbElementMixin(LitElement) implements UmbB
 
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-form-group backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view">
             <fieldset class="govuk-fieldset govuk-radios__fieldset ${ this.settings?.cssClasses}">
                 <legend class="govuk-fieldset__legend ${legendClass}">${this.settings?.legendIsPageHeading ? html`<h1 class="govuk-fieldset__heading">${legend}</h1>` : legend }</legend>
                 <p class="backoffice-additional-blocks">${blocksText}</p>
                 <div class="govuk-form-group">
-                    ${this.content?.hint?.markup ? html`<div class="govuk-hint">${unsafeHTML(this.content?.hint?.markup)}</div>` : null}
+                    ${this.content?.hint?.markup ? html`<div class="govuk-hint">${unsafeHTML(disableLinks(this.content?.hint?.markup))}</div>` : null}
                     <div class="govuk-radios ${horizontalLayout ? "govuk-radios--inline" : null}">
                         ${ repeat(this.content?.radioButtons?.contentData || [],
                             (radio) => radio.key,
@@ -85,7 +89,7 @@ export class GovUkRadiosView extends UmbElementMixin(LitElement) implements UmbB
                     </div>
                 </div>
             </fieldset>
-        </div>
+        </a>
         `;
     }
 }

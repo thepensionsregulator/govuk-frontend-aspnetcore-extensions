@@ -1,4 +1,5 @@
 ﻿import { html, TemplateResult, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
+import { disableLinks } from '../helpers/html-helper';
 
 function toKebabCase(str: string): string {
     return "govuk-task-list__status--" + str
@@ -18,7 +19,7 @@ export function renderTask(
     const children = html`
         <div class="govuk-task-list__name-and-hint">
             <span class="govuk-task-list__link govuk-link" href="javascript:return false">${taskName}</span>
-            ${hintHtml ? html`<div class="govuk-task-list__hint">${unsafeHTML(hintHtml)}</div>` : null}
+            ${hintHtml ? html`<div class="govuk-task-list__hint">${unsafeHTML(disableLinks(hintHtml))}</div>` : null}
         </div>
         ${status ? html`<div class="govuk-task-list__status ${toKebabCase(String(status))}">
             <strong class="govuk-tag">${status}</strong>

@@ -1,6 +1,6 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 interface IGovUkCaptionContent extends UmbBlockDataType {
     caption: string;
@@ -20,6 +20,9 @@ export class GovUkCaptionView extends UmbElementMixin(LitElement) implements Umb
     @property({ attribute: false })
     settings?: IGovUkCaptionSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -27,7 +30,9 @@ export class GovUkCaptionView extends UmbElementMixin(LitElement) implements Umb
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-caption-l backoffice-block-view ${ this.settings?.cssClasses }">${ this.content?.caption }</div>
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
+            <div class="govuk-caption-l ${ this.settings?.cssClasses}">${this.content?.caption }</div>
+        </a>
         `;
     }
 }

@@ -1,11 +1,12 @@
 import { html, customElement, LitElement, property, unsafeHTML, state, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { IRichTextProperty } from '../interfaces/IRichTextProperty';
 import { IBlockListProperty } from "../interfaces/IBlockListProperty";
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 import { renderCheckboxesDivider, renderCheckbox } from '../helpers/checkboxes-helper';
+import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkCheckboxesContent extends UmbBlockDataType {
     legend: string;
@@ -27,6 +28,9 @@ export class GovUkCheckboxesView extends UmbElementMixin(LitElement) implements 
 
     @property({ attribute: false })
     settings?: IGovUkCheckboxesSettings;
+
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
 
     @state()
     _nodeName?: string;
@@ -55,12 +59,12 @@ export class GovUkCheckboxesView extends UmbElementMixin(LitElement) implements 
 
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-form-group backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view">
             <fieldset class="govuk-fieldset govuk-checkboxes__fieldset ${ this.settings?.cssClasses}">
                 <legend class="govuk-fieldset__legend ${legendClass}">${this.settings?.legendIsPageHeading ? html`<h1 class="govuk-fieldset__heading">${legend}</h1>` : legend }</legend>
                 <div class="govuk-form-group">
                     <p class="backoffice-additional-blocks">${blocksText}</p>
-                    ${this.content?.hint?.markup ? html`<div class="govuk-hint">${unsafeHTML(this.content?.hint?.markup)}</div>` : null}
+                    ${this.content?.hint?.markup ? html`<div class="govuk-hint">${unsafeHTML(disableLinks(this.content?.hint?.markup))}</div>` : null}
                     <div class="govuk-checkboxes">
                         ${repeat(this.content?.checkboxes?.contentData || [],
                             (checkbox) => checkbox.key,
@@ -81,7 +85,7 @@ export class GovUkCheckboxesView extends UmbElementMixin(LitElement) implements 
                     </div>
                 </div>
             </fieldset>
-        </div>
+        </a>
         `;
     }
 }

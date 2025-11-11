@@ -1,9 +1,10 @@
 import { html, customElement, LitElement, property, repeat, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { IRichTextProperty } from '../interfaces/IRichTextProperty';
 import { IBlockListProperty } from '../interfaces/IBlockListProperty';
+import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkSelectContent extends UmbBlockDataType {
     label: string;
@@ -26,6 +27,9 @@ export class GovUkSelectView extends UmbElementMixin(LitElement) implements UmbB
     @property({ attribute: false })
     settings?: IGovUkSelectSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -33,13 +37,13 @@ export class GovUkSelectView extends UmbElementMixin(LitElement) implements UmbB
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-form-group backoffice-block-view ${ this.settings?.cssClasses }">
+        <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view ${ this.settings?.cssClasses }">
             ${ this.settings?.labelIsPageHeading ?
             html`<h1 class="govuk-label-wrapper">
                     <label class="govuk-label govuk-label--l">${this.content?.label}</label>
                 </h1>` :
             html`<label class="govuk-label">${this.content?.label}</label>` }            
-            ${ this.content?.hint.markup ? html`<div class="govuk-hint">${ unsafeHTML(this.content?.hint.markup)}</div>` : null }
+            ${ this.content?.hint.markup ? html`<div class="govuk-hint">${ unsafeHTML(disableLinks(this.content?.hint.markup))}</div>` : null }
             <select class="govuk-select">
                 ${ this?.content?.options?.contentData ? repeat(this.content?.options?.contentData,
                     (opt) => opt.key,
@@ -51,7 +55,7 @@ export class GovUkSelectView extends UmbElementMixin(LitElement) implements UmbB
                     }
                 ) : null }
             </select>
-        </div>
+        </a>
         `;
     }
 }

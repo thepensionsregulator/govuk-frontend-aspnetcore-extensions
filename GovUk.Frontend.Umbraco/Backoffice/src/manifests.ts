@@ -127,6 +127,27 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukRadio',
+        name: "Block editor custom view for 'Radio button' blocks",
+        element: () => import('./blocks/views/govuk-radio'),
+        forContentTypeAlias: 'govukRadio'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukRadios',
+        name: "Block editor custom view for 'Radio buttons' blocks",
+        element: () => import('./blocks/views/govuk-radios'),
+        forContentTypeAlias: 'govukRadios'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukRadiosDivider',
+        name: "Block editor custom view for 'Radio button divider' blocks",
+        element: () => import('./blocks/views/govuk-radios-divider'),
+        forContentTypeAlias: 'govukRadiosDivider'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukSelect',
         name: "Block editor custom view for 'Select' blocks",
         element: () => import('./blocks/views/govuk-select'),

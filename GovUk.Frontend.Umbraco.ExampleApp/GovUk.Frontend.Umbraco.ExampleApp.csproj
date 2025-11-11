@@ -13,7 +13,6 @@
     <None Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
     <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
-    <None Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
     <None Include="wwwroot\media\.gitignore" />
     <None Include="wwwroot\media\grphyhbj\example-powerpoint-file.pptx" />
     <None Include="wwwroot\media\icaposfq\example-pdf-file.pdf" />

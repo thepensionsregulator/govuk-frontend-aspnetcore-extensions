@@ -13,9 +13,9 @@ export function renderRadioButton(
     renderConditionalBlocks: boolean,
 ): TemplateResult {
 
-    let conditionalBlocksText = "No blocks.";
-    if (conditionalBlocks?.length === 1) { conditionalBlocksText = "1 block." }
-    if ((conditionalBlocks?.length || 0) > 1) { conditionalBlocksText = `${conditionalBlocks?.length} blocks.` }
+    let conditionalBlocksText = "No conditional blocks.";
+    if (conditionalBlocks?.length === 1) { conditionalBlocksText = "1 conditional block." }
+    if ((conditionalBlocks?.length || 0) > 1) { conditionalBlocksText = `${conditionalBlocks?.length} conditional blocks.` }
 
     return html`<div class="govuk-radios__item">
                     <input class="govuk-radios__input" type="radio" value="${value}">

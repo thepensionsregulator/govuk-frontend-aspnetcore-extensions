@@ -36,6 +36,26 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukCheckbox',
+        name: "Block editor custom view for 'Checkbox' blocks",
+        element: () => import('./blocks/views/govuk-checkbox'),
+        forContentTypeAlias: 'govukCheckbox'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukCheckboxes',
+        name: "Block editor custom view for 'Checkboxes' blocks",
+        element: () => import('./blocks/views/govuk-checkboxes'),
+        forContentTypeAlias: 'govukCheckboxes'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukCheckboxesDivider',
+        name: "Block editor custom view for 'Checkboxes divider' blocks",
+        element: () => import('./blocks/views/govuk-checkboxes-divider'),
+        forContentTypeAlias: 'govukCheckboxesDivider'
+    },    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukDateInput',
         name: "Block editor custom view for 'Date input' blocks",
         element: () => import('./blocks/views/govuk-date-input'),

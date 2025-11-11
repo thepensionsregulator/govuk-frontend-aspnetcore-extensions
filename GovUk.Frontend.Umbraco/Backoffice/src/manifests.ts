@@ -36,6 +36,13 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukDateInput',
+        name: "Block editor custom view for 'Date input' blocks",
+        element: () => import('./blocks/views/govuk-date-input'),
+        forContentTypeAlias: 'govukDateInput'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukDetails',
         name: "Block editor custom view for 'Details' blocks",
         element: () => import('./blocks/views/govuk-details'),

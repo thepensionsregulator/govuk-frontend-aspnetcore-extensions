@@ -2,9 +2,11 @@ import { html, customElement, LitElement, property, repeat } from '@umbraco-cms/
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
-import { UmbMediaItemRepository, UMB_MEDIA_ENTITY_TYPE } from '@umbraco-cms/backoffice/media';
-import { UMB_DOCUMENT_ENTITY_TYPE, UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT, UmbDocumentItemRepository } from '@umbraco-cms/backoffice/document';
+import { UmbMediaItemRepository } from '@umbraco-cms/backoffice/media';
+import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT, UmbDocumentItemRepository } from '@umbraco-cms/backoffice/document';
 import { ILinkPickerModel } from '../types/ILinkPickerModel';
+import { updateNodeName, createDocumentBlock, renderDocument } from '../helpers/document-helper';
+import { ITprDocumentBlock } from '../types/ITprDocumentBlock';
 
 interface ITprDocumentsContent extends UmbBlockDataType {
     documents: UmbBlockValueDataPropertiesBaseType;
@@ -12,16 +14,6 @@ interface ITprDocumentsContent extends UmbBlockDataType {
 
 interface ITprDocumentsSettings extends UmbBlockDataType {
     cssClasses: string;
-}
-
-interface ITprDocumentBlock {
-    key: string;
-    docName: string;
-    docLink: ILinkPickerModel;
-    datePublished: Date | null;
-    numberOfPages: number;
-    description: string;
-    ext: string | undefined;
 }
 
 @customElement('tpr-documents')
@@ -47,7 +39,6 @@ export class TprDocumentsView extends UmbElementMixin(LitElement) implements Umb
         this.#mediaItemRepository = new UmbMediaItemRepository(this);
         this.#documentItemRepository = new UmbDocumentItemRepository(this);
 
-
         this.consumeContext(UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT, (context) => {
             if (!context) return;
             this.observe(context.culture, (culture) => {
@@ -67,17 +58,8 @@ export class TprDocumentsView extends UmbElementMixin(LitElement) implements Umb
                 const datePublished = doc?.values.find(props => props.alias == "datePublished")?.value as string;
                 const numberOfPages = (doc?.values.find(props => props.alias == "numberOfPages")?.value as number);
                 const description = (doc?.values.find(props => props.alias == "description")?.value as string);
-                const ext = docLink?.url?.split('.')?.pop()?.toLowerCase();
 
-                return {
-                    key: doc.key,
-                    docName: docLink.name || '',
-                    docLink,
-                    datePublished: datePublished ? new Date(datePublished) : null,
-                    numberOfPages,
-                    description,
-                    ext
-                };
+                return createDocumentBlock(doc.key, docLink, datePublished, numberOfPages, description);
             });
         }
     }
@@ -86,35 +68,19 @@ export class TprDocumentsView extends UmbElementMixin(LitElement) implements Umb
         // Called after render(). Use this lifecycle hook to load media/content node names asynchronously.
         if (changedProperties.has('content')) {
             for (const doc of this.#documents) {
-                if (!doc.docName && doc.docLink.type === UMB_MEDIA_ENTITY_TYPE) {
-                    doc.docName = await this.#getNameForMedia(doc.docLink.unique);
-                }
-                else if (!doc.docName && doc.docLink.type == UMB_DOCUMENT_ENTITY_TYPE) {
-                    doc.docName = await this.#getNameForDocument(doc.docLink.unique);
-                }
+                doc.docName = await updateNodeName(
+                    this.#mediaItemRepository,
+                    this.#documentItemRepository,
+                    doc.docLink?.unique,
+                    doc.docName,
+                    doc.docLink?.type,
+                    this.#currentCulture);
             }
             this.requestUpdate(); // Force re-render after loading names
         }
     }
 
-    async #getNameForMedia(unique: string) {
-        const { data } = await this.#mediaItemRepository.requestItems([unique]);
-        return data?.[0]?.name ?? '';
-    }
-
-    async #getNameForDocument(unique: string) {
-        const { data } = await this.#documentItemRepository.requestItems([unique]);
-
-        const currentCultureVariant = data?.[0]?.variants.find(variant => variant.culture === this.#currentCulture);
-        const invariantCultureVariant = data?.[0]?.variants.find(variant => !variant.culture);
-        const enGBcultureVariant = data?.[0]?.variants.find(variant => variant.culture === 'en-GB');
-        const variant = currentCultureVariant || enGBcultureVariant || invariantCultureVariant;
-
-        return variant?.name ?? '';
-    }
-
     override render() {
-        const known = ['csv', 'doc', 'docx', 'dotx', 'odt', 'pdf', 'pptx', 'rtf', 'xlst', 'xlsx'];
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
@@ -122,33 +88,7 @@ export class TprDocumentsView extends UmbElementMixin(LitElement) implements Umb
                 ${repeat(this.#documents || [],
                     (doc) => doc.key,
                     (doc) => {
-                        const isKnownFileType = doc.ext && known.indexOf(doc.ext) !== -1;
-
-                        return html`
-                        <div class="tpr-document">
-                            <dt>
-                                <span class="govuk-link">
-                                    ${doc.docName}
-                                    ${isKnownFileType ? html`
-                                        <br>
-                                        ${doc.ext == 'csv' ? html`<span class="excel fileicon">CSV</span>` : null}
-                                        ${doc.ext == 'doc' ? html`<span class="doc fileicon">Word</span>` : null}
-                                        ${doc.ext == 'docx' ? html`<span class="doc fileicon">Word</span>` : null}
-                                        ${doc.ext == 'dotx' ? html`<span class="doc fileicon">DOTX</span>` : null}
-                                        ${doc.ext == 'odt' ? html`<span class="misc fileicon">ODT</span>` : null}
-                                        ${doc.ext == 'pdf' ? html`<span class="pdf fileicon">PDF</span>` : null}
-                                        ${doc.ext == 'pptx' ? html`<span class="powerpoint fileicon">PPTX</span>` : null}
-                                        ${doc.ext == 'rtf' ? html`<span class="misc fileicon">RTF</span>` : null}
-                                        ${doc.ext == 'xlst' ? html`<span class="excel fileicon">XLST</span>` : null}
-                                        ${doc.ext == 'xlsx' ? html`<span class="excel fileicon">Excel</span>` : null}
-                                        <span>--KB, </span>
-                                        ${ doc.numberOfPages ? html`${doc.numberOfPages} page(s)` : null}
-                                    ` : null}
-                                </span>
-                            </dt>
-                            ${doc.datePublished ? html`<dd>Published: ${doc.datePublished.toLocaleDateString('en-GB', { year: 'numeric', month: 'long' })}</dd>` : null}
-                            ${doc.description ? html`<dd>${doc.description}</dd>` : null}
-                        </div>`;
+                        return renderDocument(doc, true);
                     }
                 )}
             </dl>

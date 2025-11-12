@@ -8,6 +8,13 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprDocument',
+        name: "Block editor custom view for 'Document' blocks",
+        element: () => import('./blocks/views/tpr-document'),
+        forContentTypeAlias: 'tprDocument'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprDocuments',
         name: "Block editor custom view for 'Documents' blocks",
         element: () => import('./blocks/views/tpr-documents'),

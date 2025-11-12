@@ -2,14 +2,11 @@ import { html, customElement, LitElement, property, repeat } from '@umbraco-cms/
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-
-interface IMultiUrlPickerLink {
-    name: string;
-}
+import { ILinkPickerModel } from '../types/ILinkPickerModel';
 
 interface ITprRelatedLinksContent extends UmbBlockDataType {
     heading: string;
-    links: Array<IMultiUrlPickerLink>;
+    links: Array<ILinkPickerModel>;
 }
 
 interface ITprRelatedLinksSettings extends UmbBlockDataType {

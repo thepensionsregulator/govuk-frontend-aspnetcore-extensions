@@ -24,24 +24,31 @@
     {
         if (ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry))
         {
-            var rawAttemptedDay = modelStateEntry!.GetModelStateForProperty("Day")?.AttemptedValue;
-            if (Int32.TryParse(rawAttemptedDay, out var parsedDay)) { attemptedDay = parsedDay; }
-            if (Int32.TryParse(modelStateEntry!.GetModelStateForProperty("Month")?.AttemptedValue, out var parsedMonth)) { attemptedMonth = parsedMonth; }
-            var rawAttemptedYear = modelStateEntry!.GetModelStateForProperty("Year")?.AttemptedValue;
-            if (Int32.TryParse(rawAttemptedYear, out var parsedYear)) { attemptedYear = parsedYear; }
-
-            // If an invalid integer is entered as a day or year, eg -1, .NET will parse the date successfully using 
-            // 1 for the day and the current year, which would then incorrectly be shown as the entered values, 
-            // so guard against that before parsing the date.
-            if (rawAttemptedDay is not null &&
-                rawAttemptedDay.Length <= 2 && 
-                attemptedDay >= 1 && attemptedDay <= 31 &&
-                rawAttemptedYear is not null && 
-                rawAttemptedYear.Length  == 4 && 
-                attemptedYear >= 1 && attemptedYear <= 9999 && 
-                DateOnly.TryParse(modelStateEntry?.AttemptedValue, out var date))
+            if (DateOnly.TryParse(modelStateEntry?.AttemptedValue, out var wholeDate))
             {
-                dateValue = date;
+                dateValue = wholeDate;
+            }
+            else
+            {
+                var rawAttemptedDay = modelStateEntry!.GetModelStateForProperty("Day")?.AttemptedValue;
+                if (Int32.TryParse(rawAttemptedDay, out var parsedDay)) { attemptedDay = parsedDay; }
+                if (Int32.TryParse(modelStateEntry!.GetModelStateForProperty("Month")?.AttemptedValue, out var parsedMonth)) { attemptedMonth = parsedMonth; }
+                var rawAttemptedYear = modelStateEntry!.GetModelStateForProperty("Year")?.AttemptedValue;
+                if (Int32.TryParse(rawAttemptedYear, out var parsedYear)) { attemptedYear = parsedYear; }
+
+                // If an invalid integer is entered as a day or year, eg -1, .NET will parse the date successfully using 
+                // 1 for the day and the current year, which would then incorrectly be shown as the entered values, 
+                // so guard against that before parsing the date.
+                if (rawAttemptedDay is not null &&
+                    rawAttemptedDay.Length <= 2 &&
+                    attemptedDay >= 1 && attemptedDay <= 31 &&
+                    rawAttemptedYear is not null &&
+                    rawAttemptedYear.Length == 4 &&
+                    attemptedYear >= 1 && attemptedYear <= 9999 &&
+                    DateOnly.TryParse(modelStateEntry?.AttemptedValue, out var dateInParts))
+                {
+                    dateValue = dateInParts;
+                }
             }
 
             if (modelStateEntry!.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR))

@@ -1,18 +1,17 @@
 import { html, customElement, LitElement, property, unsafeHTML, state, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
-import { IBlockListProperty } from "../interfaces/IBlockListProperty";
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 import { renderCheckboxesDivider, renderCheckbox } from '../helpers/checkboxes-helper';
 import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkCheckboxesContent extends UmbBlockDataType {
     legend: string;
-    hint: IRichTextProperty;
-    fieldsetBlocks: IBlockListProperty;
-    checkboxes: IBlockListProperty;
+    hint: UmbPropertyEditorRteValueType;
+    fieldsetBlocks: UmbBlockValueDataPropertiesBaseType;
+    checkboxes: UmbBlockValueDataPropertiesBaseType;
 }
 
 interface IGovUkCheckboxesSettings extends UmbBlockDataType {
@@ -71,13 +70,13 @@ export class GovUkCheckboxesView extends UmbElementMixin(LitElement) implements 
                             (checkbox) => {
                                 const govukCheckboxesDivider = "ee99c671-93dc-4d08-9933-e61e50dc234a";
                                 if (checkbox.contentTypeKey === govukCheckboxesDivider) {
-                                    const text = checkbox?.values.find(props => props.alias == "text")?.value;
+                                    const text = (checkbox?.values.find(props => props.alias == "text")?.value as string);
                                     return renderCheckboxesDivider(text);
                                 } else {
-                                    const label = checkbox?.values.find(props => props.alias == "label")?.value;
-                                    const value = checkbox?.values.find(props => props.alias == "value")?.value;
-                                    const hint = checkbox?.values.find(props => props.alias == "hint")?.value;
-                                    const conditionalBlocks = checkbox?.values.find(props => props.alias == "conditionalBlocks")?.value;
+                                    const label = (checkbox?.values.find(props => props.alias == "label")?.value as string);
+                                    const value = (checkbox?.values.find(props => props.alias == "value")?.value as string);
+                                    const hint = (checkbox?.values.find(props => props.alias == "hint")?.value as UmbPropertyEditorRteValueType);
+                                    const conditionalBlocks = (checkbox?.values.find(props => props.alias == "conditionalBlocks")?.value as UmbBlockValueDataPropertiesBaseType);
                                     return renderCheckbox(label, value, hint?.markup, conditionalBlocks?.contentData)
                                 }
                             }

@@ -1,13 +1,12 @@
 import { html, customElement, LitElement, property, state } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 
 interface IGovUkFieldsetContent extends UmbBlockDataType {
     legend: string;
-    blocks: IBlockListProperty | null;
+    blocks: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkFieldsetSettings extends UmbBlockDataType {

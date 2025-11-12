@@ -1,7 +1,7 @@
 ﻿import { html, TemplateResult } from '@umbraco-cms/backoffice/external/lit';
-import { IBlockListItem } from '../interfaces/IBlockListItem';
+import { UmbBlockDataModel } from '@umbraco-cms/backoffice/block';
 
-export function renderAccordionSection(heading: string | undefined, summary: string | undefined, blocks: Array<IBlockListItem> | null | undefined = []): TemplateResult {
+export function renderAccordionSection(heading: string | undefined, summary: string | undefined, blocks: Array<UmbBlockDataModel> | null | undefined = []): TemplateResult {
         let blocksText = "No blocks.";    
         if (blocks?.length === 1) { blocksText = "1 block." }
         if ((blocks?.length || 0) > 1) { blocksText = `${blocks?.length} blocks.` }

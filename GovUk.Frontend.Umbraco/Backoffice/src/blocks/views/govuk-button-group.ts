@@ -1,11 +1,10 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
 
 interface IGovUkButtonGroupContent extends UmbBlockDataType {
-    buttons: IBlockListProperty | null;
+    buttons: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkButtonGroupSettings extends UmbBlockDataType {

@@ -1,15 +1,14 @@
 import { html, customElement, LitElement, property, repeat, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkSelectContent extends UmbBlockDataType {
     label: string;
-    hint: IRichTextProperty;
-    options: IBlockListProperty | null;
+    hint: UmbPropertyEditorRteValueType;
+    options: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkSelectSettings extends UmbBlockDataType {

@@ -1,12 +1,11 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
 import { renderSummaryList } from '../helpers/summary-list-helper';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
 
 interface IGovUkSummaryListContent extends UmbBlockDataType {
-    items: IBlockListProperty | null;
+    items: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkSummaryListSettings extends UmbBlockDataType {

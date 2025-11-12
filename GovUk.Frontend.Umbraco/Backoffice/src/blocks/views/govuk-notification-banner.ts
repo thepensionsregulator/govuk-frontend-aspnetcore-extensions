@@ -1,15 +1,14 @@
 import { html, customElement, LitElement, property, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkNotificationBannerContent extends UmbBlockDataType {
-    heading: IRichTextProperty;
-    text: IRichTextProperty;
-    blocks: IBlockListProperty | null;
+    heading: UmbPropertyEditorRteValueType;
+    text: UmbPropertyEditorRteValueType;
+    blocks: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkNotificationBannerSettings extends UmbBlockDataType {

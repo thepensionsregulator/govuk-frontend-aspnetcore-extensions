@@ -1,15 +1,14 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
 import { renderSummaryListItem } from '../helpers/summary-list-helper';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 
 interface IGovUkSummaryListItemContent extends UmbBlockDataType {
     itemKey: string;
-    itemValue: IRichTextProperty;
-    actions: IBlockListProperty | null;
+    itemValue: UmbPropertyEditorRteValueType;
+    actions: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkSummaryListItemSettings extends UmbBlockDataType {

@@ -3,11 +3,11 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { renderTask } from '../helpers/task-list-helper';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 
 interface IGovUkTaskContent extends UmbBlockDataType {
     taskName: string;
-    hint: IRichTextProperty | null;
+    hint: UmbPropertyEditorRteValueType | null;
 }
 
 interface IGovUkTaskSettings extends UmbBlockDataType {

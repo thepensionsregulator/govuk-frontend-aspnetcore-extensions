@@ -2,12 +2,12 @@ import { html, customElement, LitElement, property, unsafeHTML } from '@umbraco-
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkWarningTextContent extends UmbBlockDataType {
     iconFallbackText: string;
-    text: IRichTextProperty;
+    text: UmbPropertyEditorRteValueType;
 }
 
 interface IGovUkWarningTextSettings extends UmbBlockDataType {

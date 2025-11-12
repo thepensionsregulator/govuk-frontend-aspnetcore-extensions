@@ -1,14 +1,13 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
 import { renderAccordionSection } from '../helpers/accordion-helper';
 
 interface IGovUkAccordionSectionContent extends UmbBlockDataType {
     heading: string;
     summary: string;
-    blocks: IBlockListProperty | null;
+    blocks: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkAccordionSectionSettings extends UmbBlockDataType {

@@ -1,12 +1,12 @@
 import { html, customElement, LitElement, property, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { renderTask } from '../helpers/task-list-helper';
 
 interface IGovUkTaskListContent extends UmbBlockDataType {
-    tasks: IBlockListProperty | null;
+    tasks: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkTaskListSettings extends UmbBlockDataType {
@@ -39,12 +39,12 @@ export class GovUkTaskListView extends UmbElementMixin(LitElement) implements Um
                     ${ repeat(this.content?.tasks?.contentData,
                         (task) => task.key,
                         (task, index) => {
-                            const taskName= task?.values.find(props => props.alias == "taskName")?.value;
-                            const hint = task?.values.find(props => props.alias == "hint")?.value;
+                            const taskName = (task?.values.find(props => props.alias == "taskName")?.value as string)?.toString();
+                            const hint = (task?.values.find(props => props.alias == "hint")?.value as UmbPropertyEditorRteValueType);
 
                             const settings = this.content?.tasks?.settingsData[index];
-                            const status = settings?.values.find(props => props.alias == "status")?.value;
-                            const cssClasses = settings?.values.find(props => props.alias == "cssClasses")?.value;
+                            const status = (settings?.values.find(props => props.alias == "status")?.value as string)?.toString();
+                            const cssClasses = (settings?.values.find(props => props.alias == "cssClasses")?.value as string)?.toString();
 
                             return renderTask(true, taskName, hint?.markup, status, cssClasses);
                         }

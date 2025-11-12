@@ -1,5 +1,5 @@
 ﻿import { html, TemplateResult, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
-import { IBlockListItem } from "../interfaces/IBlockListItem";
+import { UmbBlockDataModel } from "@umbraco-cms/backoffice/block";
 import { disableLinks } from '../helpers/html-helper';
 
 export function renderRadiosDivider(text:string | undefined): TemplateResult {
@@ -10,7 +10,7 @@ export function renderRadioButton(
     label: string | undefined,
     value: string | undefined,
     hintHtml: string | undefined,
-    conditionalBlocks: Array<IBlockListItem> | null | undefined = [],
+    conditionalBlocks: Array<UmbBlockDataModel> | null | undefined = [],
     renderConditionalBlocks: boolean,
 ): TemplateResult {
 

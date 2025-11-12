@@ -68,7 +68,7 @@ async function initialiseAccordion() {
         searchResults = results;
 
         
-        displayResults();
+        await displayResults();
     }
 }
 
@@ -115,11 +115,11 @@ async function searchWithTerm(searchValue) {
             })
         );
 
-        displayResults();
+        await displayResults();
     }
 }
 
-function displayResults()
+async function displayResults()
 {
     const accordionSections = [];
 
@@ -134,11 +134,12 @@ function displayResults()
     }
 
     showNow.forEach(result => {
-        accordionSections.push(createAccordionSection(result.name, result.pageContent, result.key))
+        let section = createAccordionSection(result.name, result.pageContent, result.key);
+        accordionSections.push(section)
     });
 
-    createAccordion(accordionSections);
-    updateShowMoreButton();
+    await createAccordion(accordionSections);
+    await updateShowMoreButton();
 }
 
 function removeAccordion(id) {
@@ -149,7 +150,7 @@ function removeAccordion(id) {
     }
 }
 
-function createAccordion(accordionSections) {
+async function createAccordion(accordionSections) {
     const newAccordion = createElementWithClassName("div", "govuk-accordion");
     newAccordion.setAttribute("id", "search-results-accordion");
     newAccordion.setAttribute("data-module", "govuk-accordion");
@@ -197,7 +198,7 @@ async function fetchContentById(contentId) {
     }
 }
 
-async function toggleErrorTextVisibility(showErrorText, errorTextContent = '') {
+function toggleErrorTextVisibility(showErrorText, errorTextContent = '') {
     const errorText = document.getElementById("tpr-search-results-error-text");
     const formGroup = document.querySelector('.tpr-search-results__form .govuk-form-group');
     const searchInput = getSearchInput();
@@ -237,7 +238,7 @@ async function searchButtonOnClick(event) {
         return;
     }
 
-    searchWithTerm(searchValue);
+    await searchWithTerm(searchValue);
 }
 
 async function resetButtonOnClick() {
@@ -272,10 +273,10 @@ async function showMoreAnswersOnClick() {
         setSearchTermQueryString(SHOW_MORE_QUERY_PARAM,undefined);
     }
     updateShowMoreButton()
-    displayResults();
+    await displayResults();
 }
 
-function updateShowMoreButton(){
+async function updateShowMoreButton(){
 
     if(searchResults.length <= INITIAL_VISIBLE_RESULTS)
     {
@@ -431,4 +432,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-export { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility }
+export { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility,setSearchTermQueryString, SEARCH_TERM_QUERY_PARAM, SHOW_MORE_QUERY_PARAM };

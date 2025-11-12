@@ -48,3 +48,7 @@ th {
 td, td:last-child {
     @extend .govuk-table__cell;
 }
+
+.backoffice-block-view > .tpr-related-links {
+    margin-bottom: 20px;
+}

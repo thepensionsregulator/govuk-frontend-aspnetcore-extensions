@@ -1,7 +1,7 @@
 ﻿import '@testing-library/jest-dom';
 
 import { jest } from '@jest/globals';
-import { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility } from '../wwwroot/tpr/tpr-search-results';
+import { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility, setSearchTermQueryString, SEARCH_TERM_QUERY_PARAM, SHOW_MORE_QUERY_PARAM} from '../wwwroot/tpr/tpr-search-results';
 
 const setupBlankComponent = () => {
     document.body.innerHTML =
@@ -35,6 +35,12 @@ const setupBlankComponent = () => {
         </aside>`
 };
 
+const initialiseSearchResultsComponent = async () => {
+    setSearchTermQueryString(SEARCH_TERM_QUERY_PARAM, undefined);
+    setSearchTermQueryString(SHOW_MORE_QUERY_PARAM, undefined);
+    await initialiseAccordion();
+}
+
 describe('initialise accordion', () => {
     beforeEach(() => {
         jest.resetModules();
@@ -47,7 +53,7 @@ describe('initialise accordion', () => {
 
         setupBlankComponent();
 
-        await initialiseAccordion();
+        await initialiseSearchResultsComponent();
 
         const result = document.body.querySelector('.tpr-search-results__no-results-found');
         const searchHeading = document.getElementsByClassName('tpr-search-results__heading')[0];
@@ -70,7 +76,7 @@ describe('initialise accordion', () => {
 
         setupBlankComponent();
 
-        await initialiseAccordion();
+        await initialiseSearchResultsComponent();
 
         const results = document.querySelectorAll('.govuk-accordion__section');
         expect(results.length).toBe(sectionContent.length);
@@ -277,7 +283,7 @@ describe('resetButtonOnClick', () => {
             .mockResolvedValueOnce({ json: async () => initialPopular })
             .mockResolvedValueOnce({ json: async () => refreshedPopular });
 
-        await initialiseAccordion();
+        await initialiseSearchResultsComponent();
 
         const input = document.getElementById('tpr-search-results-ask-input');
         input.value = 'Some previous search';

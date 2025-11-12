@@ -32,6 +32,7 @@
         public const string SearchResultsFooterLinks = "footerlinks";
         public const string SearchResultsHeadingClass = "headingClass";
         public const string SearchResultsHeadingLevel = "headingLevel";
+        public const string SearchBoostingCategory = "searchBoostingCategory";
         public const string SectionCards = "cards";
         public const string SectionCardsNavigationAriaLabel = "navigationAriaLabel";
         public const string SectionCardsTitleHeadingLevel = "cardTitlesHeadingLevel";

@@ -10,12 +10,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public AttributeDictionary? Attributes { get; set; }
         public required string LinkText { get; set; }
         public required string LinkUrl { get; set; }
-        public IList<TprHeaderMenuChildItem>? HeaderMenuChildItems { get; set; } = [];
+        public IList<TprHeaderMenuChildItem> HeaderMenuChildItems { get; set; } = [];
 
         public TprHeaderMenuItem() { }
 
         [SetsRequiredMembers]
-        public TprHeaderMenuItem( string linkText, string linkUrl, IList<TprHeaderMenuChildItem>? subMenuItems = null)
+        public TprHeaderMenuItem( string linkText, string linkUrl, IList<TprHeaderMenuChildItem> subMenuItems)
         {
             LinkText = linkText;
             LinkUrl = linkUrl;

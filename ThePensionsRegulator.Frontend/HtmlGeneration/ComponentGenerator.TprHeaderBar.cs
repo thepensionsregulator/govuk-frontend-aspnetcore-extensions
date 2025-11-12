@@ -91,7 +91,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 var headerSearch = GenerateTprHeaderSearch(tprHeaderBar);
                 headerContent.InnerHtml.AppendHtml(headerSearch);
             }
-            if (tprHeaderBar.DisplayHeaderMenu)
+            if (tprHeaderBar?.DisplayHeaderMenu ?? false)
             {
                 var navDiv = new TagBuilder("div");
                 navDiv.AddCssClass("tpr-mobile-menu__container");

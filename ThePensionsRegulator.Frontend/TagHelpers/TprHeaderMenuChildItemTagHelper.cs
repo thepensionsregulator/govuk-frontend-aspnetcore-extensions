@@ -14,26 +14,26 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string LinkTextAttributeName = "link-text";
         
         [HtmlAttributeName(UrlAttributeName)] 
-        public string? Url { get; set; }
+        public required string Url { get; set; }
 
         [HtmlAttributeName(LinkTextAttributeName)]
-        public string? LinkText { get; set; }
+        public required string LinkText { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            var mobileMenuItemContext = context.GetContextItem<TprHeaderMenuItemsContext>();
-            var mobileMenuSubItemContext = new TprHeaderMenuChildItemsContext
+            var headerMenuItemContext = context.GetContextItem<TprHeaderMenuItemContext>();
+            var headerMenuChildItemContext = new TprHeaderMenuChildItemContext
             {
                 Attributes = output.Attributes.ToAttributeDictionary(),              
             };
 
-            using (context.SetScopedContextItem(mobileMenuSubItemContext))
+            using (context.SetScopedContextItem(headerMenuChildItemContext))
             {
                 await output.GetChildContentAsync();
             }
             
-            mobileMenuSubItemContext.SetChildItem(mobileMenuSubItemContext.Attributes, LinkText, Url);
-            mobileMenuItemContext.AddChildItem(mobileMenuSubItemContext);
+            headerMenuChildItemContext.SetChildItem(headerMenuChildItemContext.Attributes, LinkText, Url);
+            headerMenuItemContext.AddChildItem(headerMenuChildItemContext);
             
             output.TagName = TagName;
             output.SuppressOutput();

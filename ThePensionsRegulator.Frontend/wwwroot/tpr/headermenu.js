@@ -102,6 +102,7 @@ function desktopKeyboardNavigation() {
                     if (hasSubMenu) {
                         subMenu.style.display = 'none';
                         a.setAttribute("aria-expanded", !expanded);
+                        menuItems[(currentIndex)].querySelector('a')?.focus();
                     }
                     overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
                     break;
@@ -223,6 +224,6 @@ function removeActiveClass() {
         svg.classList.remove("tpr-mobile-menu__svg--hide")
 
         const button = toggle.querySelector(".tpr-header-menu__button");
-        button.textContent = "Menu";
+        button.textContent = button.getAttribute("data-close-label");
     })
 }

@@ -15,15 +15,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string LinkTextAttributeName = "link-text";
 
         [HtmlAttributeName(UrlAttributeName)]
-        public string? Url {  get; set; }
+        public required string Url {  get; set; }
 
         [HtmlAttributeName(LinkTextAttributeName)]
-        public string? LinkText { get; set; }
+        public required string LinkText { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var headerMenuContext = context.GetContextItem<TprHeaderMenuContext>();
-            var headerMenuItemContext = new TprHeaderMenuItemsContext
+            var headerMenuItemContext = new TprHeaderMenuItemContext
             {
                 Attributes = output.Attributes.ToAttributeDictionary(),               
             };

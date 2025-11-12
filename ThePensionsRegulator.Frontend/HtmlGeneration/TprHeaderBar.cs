@@ -23,7 +23,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public string? SearchPlaceholderText {  get; set; }
         public string? SearchAriaLabel {  get; set; }
         public string? SearchInputName { get; set; }
-        public bool DisplayHeaderMenu { get; set; }
+        public bool? DisplayHeaderMenu { get; set; } 
         public AttributeDictionary? HeaderMenuAttributes { get; set; }
         public List<TprHeaderMenuItem>? HeaderMenuItems { get; set; } = new();
         public string? HeaderMenuAriaLabel { get; set; }

@@ -31,7 +31,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		bool ShowHeaderMenu { get; }
 
-		/// <summary>TPR header menu aria label</summary>
+		/// <summary>TPR header menu ARIA label</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string TprHeaderMenuAriaLabel { get; }
@@ -41,7 +41,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuBlockList { get; }
 
-		/// <summary>TPR header menu item aria label</summary>
+		/// <summary>TPR header menu item ARIA label</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string TprHeaderMenuItemAriaLabel { get; }
@@ -113,14 +113,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public static bool GetShowHeaderMenu(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<bool>(publishedValueFallback, "showHeaderMenu");
 
 		///<summary>
-		/// TPR header menu aria label
+		/// TPR header menu ARIA label
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderMenuAriaLabel")]
 		public virtual string TprHeaderMenuAriaLabel => GetTprHeaderMenuAriaLabel(this, _publishedValueFallback);
 
-		/// <summary>Static getter for TPR header menu aria label</summary>
+		/// <summary>Static getter for TPR header menu ARIA label</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static string GetTprHeaderMenuAriaLabel(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprHeaderMenuAriaLabel");
@@ -139,14 +139,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public static global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel GetTprHeaderMenuBlockList(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(publishedValueFallback, "tprHeaderMenuBlockList");
 
 		///<summary>
-		/// TPR header menu item aria label
+		/// TPR header menu item ARIA label
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderMenuItemAriaLabel")]
 		public virtual string TprHeaderMenuItemAriaLabel => GetTprHeaderMenuItemAriaLabel(this, _publishedValueFallback);
 
-		/// <summary>Static getter for TPR header menu item aria label</summary>
+		/// <summary>Static getter for TPR header menu item ARIA label</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static string GetTprHeaderMenuItemAriaLabel(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprHeaderMenuItemAriaLabel");

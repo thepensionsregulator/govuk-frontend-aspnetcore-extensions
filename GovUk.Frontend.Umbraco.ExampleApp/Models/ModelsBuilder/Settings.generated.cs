@@ -208,7 +208,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool ShowHeaderMenu => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetShowHeaderMenu(this, _publishedValueFallback);
 
 		///<summary>
-		/// TPR header menu aria label
+		/// TPR header menu ARIA label
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -224,7 +224,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuBlockList => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuBlockList(this, _publishedValueFallback);
 
 		///<summary>
-		/// TPR header menu item aria label
+		/// TPR header menu item ARIA label
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

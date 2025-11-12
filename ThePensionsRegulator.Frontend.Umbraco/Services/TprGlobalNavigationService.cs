@@ -20,8 +20,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
 
             foreach (var item in headerMenuBlockList)
             {
-                var linkText = item?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias.ToFirstUpper());
+                
                 var linkUrl = item?.Content.Value<Link>(tprHeaderMenuViewModel.LinkUrlAlias);
+                var linkTextValue = item?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
+                var linkText = string.IsNullOrWhiteSpace(linkTextValue) ? linkUrl?.Name : linkTextValue; 
 
                 IList<TprHeaderMenuChildItem>? childMenuItems = [];
 
@@ -29,9 +31,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                 if (headerMenuChildItems != null)
                 {
                     foreach (var child in headerMenuChildItems)
-                    {
-                        var childLinkText = child?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
+                    {                      
                         var childLinkUrl = child?.Content.Value<Link>(tprHeaderMenuViewModel.LinkUrlAlias);
+                        var childLinkTextValue = child?.Content.Value<string>(tprHeaderMenuViewModel.LinkTextAlias);
+                        var childLinkText = string.IsNullOrWhiteSpace(childLinkTextValue) ? childLinkUrl?.Name : childLinkTextValue;
 
                         if (childLinkText != null && childLinkUrl?.Url != null)
                         {

@@ -28,7 +28,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public string? SearchPlaceholderText => _search?.PlaceholderText;
         public string? SearchAriaLabel => _search?.SearchAriaLabel;
         public string? SearchInputName => _search?.SearchInputName ?? "query";
-        public bool DisplayHeaderMenu => _headerMenuContext != null;
+        public bool? DisplayHeaderMenu => _headerMenuContext != null;
         public TprHeaderMenuContext? TprMobileMenuContext => _headerMenuContext;
         public string? HeaderMenuAriaLabel => _headerMenuContext?.HeaderMenuAriaLabel;
         public string? HeaderMenuItemAriaLabel => _headerMenuContext?.HeaderMenuItemAriaLabel;

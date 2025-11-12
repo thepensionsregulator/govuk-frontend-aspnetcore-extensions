@@ -84,7 +84,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 SearchPlaceholderText = barContext?.SearchPlaceholderText,
                 SearchAriaLabel = barContext?.SearchAriaLabel,
                 SearchInputName = barContext?.SearchInputName,
-                DisplayHeaderMenu = barContext.DisplayHeaderMenu,
+                DisplayHeaderMenu = barContext?.DisplayHeaderMenu,
                 HeaderMenuAttributes = headerMenuAttributes,
                 HeaderMenuItems = headerMenuItems,
                 HeaderMenuAriaLabel = barContext?.HeaderMenuAriaLabel,

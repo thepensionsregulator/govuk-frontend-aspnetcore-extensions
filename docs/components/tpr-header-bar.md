@@ -107,7 +107,7 @@ Views which require the `<tpr-header-menu>` should also include the `TPRHeaderMe
 | Attribute    | Type   | Description                                                       |
 | ------------ | ------ | ----------------------------------------------------------------- |
 | `href`       |`string`| Sets destination for the menu item.                               |     
-| `link-text`  |`string`| Inner HTML value for menu item title.                             | 
+| `link-text`  |`string`| Sets the menu item title.                             | 
 
 Must be used inside the `<tpr-header-menu>` tag
 
@@ -116,7 +116,7 @@ Must be used inside the `<tpr-header-menu>` tag
 | Attribute    | Type   | Description                                                       |
 | ------------ | ------ | ----------------------------------------------------------------- |
 | `href`       |`string`| Sets destination for the menu item.                               |     
-| `link-text`  |`string`| Inner HTML value for menu item title.                             | 
+| `link-text`  |`string`| Sets the menu item title.                             | 
 
 Must be used inside the `<tpr-header-menu-parent-item>` tag
 

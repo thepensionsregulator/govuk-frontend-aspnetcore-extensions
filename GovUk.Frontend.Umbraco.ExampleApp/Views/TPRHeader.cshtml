@@ -230,16 +230,19 @@
                     {
                         @foreach (var item in headerMenuParentItems)
                         {
-                            var linkText = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
+                        
                             var linkUrl = item?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
+                            var linkTextValue = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
+                            var linkText = string.IsNullOrWhiteSpace(linkTextValue) ? linkUrl?.Name : linkTextValue;
                             var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenuChildItems);
                             <tpr-header-menu-item href="@linkUrl?.Url" link-text="@linkText">
                                 @if (headerMenuChildItems != null)
                                 {
                                     @foreach (var child in headerMenuChildItems)
                                     {
-                                        var childLinkText = child?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
                                         var childLinkUrl = child?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
+                                        var childLinkTextValue = child?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
+                                        var childLinkText = string.IsNullOrWhiteSpace(childLinkTextValue) ? childLinkUrl?.Name : childLinkTextValue;
                                         <tpr-header-menu-child-item href="@childLinkUrl?.Url" link-text="@childLinkText"></tpr-header-menu-child-item>                                        
                                     }
                                 }

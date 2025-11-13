@@ -22,6 +22,20 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprFeaturedImage',
+        name: "Block editor custom view for 'Featured image' blocks",
+        element: () => import('./blocks/views/tpr-featured-image'),
+        forContentTypeAlias: 'tprFeaturedImage'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprImage',
+        name: "Block editor custom view for 'Image' blocks",
+        element: () => import('./blocks/views/tpr-image'),
+        forContentTypeAlias: 'tprImage'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprRelatedLinks',
         name: "Block editor custom view for 'Related links' blocks",
         element: () => import('./blocks/views/tpr-related-links'),

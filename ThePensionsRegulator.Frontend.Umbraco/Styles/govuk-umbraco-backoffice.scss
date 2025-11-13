@@ -38,6 +38,44 @@ td, td:last-child {
     margin-bottom: 20px;
 }
 
-.backoffice-block-view > .tpr-video-wrapper-no-cookies {
+// video and image blocks
+.backoffice-block-view > .tpr-video-wrapper-no-cookies, 
+.backoffice-block-view > .tpr-image {
     max-width: 600px;
+}
+
+// Image and featured image blocks
+.backoffice-block-view .backoffice-image-label {
+    font-weight: bold;
+}
+
+.backoffice-block-view .tpr-featured-image:not(.tpr-featured-image--horizontal) .backoffice-image-label {
+    margin: 0 $govuk-gutter-half;
+}
+
+.backoffice-block-view .is-trashed {
+    background: $govuk-error-colour;
+    color: $tpr-colour-white;
+    padding: govuk-spacing(1)
+}
+
+// Featured image block
+.backoffice-block-view > .tpr-featured-image .tpr-box {
+    margin: 0px;
+}
+
+.backoffice-block-view > .tpr-featured-image_thumbnail {
+    flex-basis: 50%;
+}
+
+.backoffice-block-view > .tpr-featured-image_thumbnail img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.backoffice-block-view  .tpr-featured-image_info {
+    flex-basis: 50%;
+    box-sizing: border-box;
+    padding: $govuk-gutter-half;
 }

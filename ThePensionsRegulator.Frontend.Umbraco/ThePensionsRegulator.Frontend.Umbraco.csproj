@@ -39,7 +39,6 @@
 
 	<ItemGroup>
 		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRImage.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
@@ -82,6 +81,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Backoffice\src\blocks\helpers\media-helper.ts">
+	    <SubType>Code</SubType>
+	  </None>
 	  <None Update="NuGetReadme.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>

@@ -29,6 +29,13 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprSearchResults',
+        name: "Block editor custom view for 'Search results' blocks",
+        element: () => import('./blocks/views/tpr-search-results'),
+        forContentTypeAlias: 'tprSearchResults'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprYouTubeVideo',
         name: "Block editor custom view for 'YouTube video' blocks",
         element: () => import('./blocks/views/tpr-youtube-video'),

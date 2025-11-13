@@ -34,8 +34,6 @@ export class TprBoxView extends UmbElementMixin(LitElement) implements UmbBlockE
     }
 
     override render() {
-        console.log(this.blockType) 
-
         const cssClasses = this.settings?.styleOfBox === 'Bordered' ? ' tpr-box--bordered' : (this.settings?.backgroundColour.label === 'Blue' ? ' tpr-box--blue' : null);
         const isNestedBox = this.blockType?.contentElementTypeKey == "2e831668-9e36-44d9-95f4-de209f9a35d0";
 

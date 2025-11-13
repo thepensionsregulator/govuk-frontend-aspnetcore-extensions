@@ -1,12 +1,13 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { UmbMediaItemRepository, UmbMediaUrlRepository, UmbMediaItemModel, UmbMediaUrlModel, UmbMediaPickerPropertyValueEntry } from '@umbraco-cms/backoffice/media';
 
 interface ITprFeaturedImageContent extends UmbBlockDataType {
     image: Array<UmbMediaPickerPropertyValueEntry>;
-    blocks: UmbBlockValueDataPropertiesBaseType;
+    blocks: UmbBlockValueType<UmbBlockListLayoutModel>;
 }
 
 interface ITprFeaturedImageSettings extends UmbBlockDataType {

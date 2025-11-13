@@ -1,7 +1,8 @@
 import { html, customElement, LitElement, property, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockListLayoutModel, UMB_BLOCK_LIST_PROPERTY_EDITOR_SCHEMA_ALIAS } from '@umbraco-cms/backoffice/block-list';
 import { UmbMediaItemRepository } from '@umbraco-cms/backoffice/media';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT, UmbDocumentItemRepository } from '@umbraco-cms/backoffice/document';
 import { ILinkPickerModel } from '../types/ILinkPickerModel';
@@ -9,7 +10,7 @@ import { updateNodeName, createDocumentBlock, renderDocument } from '../helpers/
 import { ITprDocumentBlock } from '../types/ITprDocumentBlock';
 
 interface ITprDocumentsContent extends UmbBlockDataType {
-    documents: UmbBlockValueDataPropertiesBaseType;
+    documents: UmbBlockValueType<UmbBlockListLayoutModel>;
 }
 
 interface ITprDocumentsSettings extends UmbBlockDataType {
@@ -52,12 +53,13 @@ export class TprDocumentsView extends UmbElementMixin(LitElement) implements Umb
     override willUpdate(changedProperties: Map<string, any>) {
         // Called before render(). Convert block data into ITprDocumentBlock objects.
         if (changedProperties.has('content')) {
-            const docs = this.content?.documents?.contentData || [];
-            this.#documents = docs.map(doc => {
-                const docLink = (doc?.values.find(props => props.alias == "document")?.value as Array<ILinkPickerModel>)[0];
-                const datePublished = doc?.values.find(props => props.alias == "datePublished")?.value as string;
-                const numberOfPages = (doc?.values.find(props => props.alias == "numberOfPages")?.value as number);
-                const description = (doc?.values.find(props => props.alias == "description")?.value as string);
+            const docs = this.content?.documents?.layout[UMB_BLOCK_LIST_PROPERTY_EDITOR_SCHEMA_ALIAS] || [];
+            this.#documents = docs.map(layout => {
+                const doc = this.content?.documents?.contentData.find(item => item.key === layout.contentKey)!;
+                const docLink = (doc.values.find(props => props.alias == "document")?.value as Array<ILinkPickerModel>)[0];
+                const datePublished = doc.values.find(props => props.alias == "datePublished")?.value as string;
+                const numberOfPages = (doc.values.find(props => props.alias == "numberOfPages")?.value as number);
+                const description = (doc.values.find(props => props.alias == "description")?.value as string);
 
                 return createDocumentBlock(doc.key, docLink, datePublished, numberOfPages, description);
             });

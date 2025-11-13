@@ -1,13 +1,14 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
+import { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { renderAccordionSection } from '../helpers/accordion-helper';
 
 interface IGovUkAccordionSectionContent extends UmbBlockDataType {
     heading: string;
     summary: string;
-    blocks: UmbBlockValueDataPropertiesBaseType | null;
+    blocks: UmbBlockValueType<UmbBlockListLayoutModel> | null;
 }
 
 interface IGovUkAccordionSectionSettings extends UmbBlockDataType {
@@ -31,7 +32,7 @@ export class GovUkAccordionSectionView extends UmbElementMixin(LitElement) imple
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
-            ${ renderAccordionSection(this.content?.heading, this.content?.summary, this?.content?.blocks?.contentData) }
+            ${renderAccordionSection(this.content?.heading, this.content?.summary, this?.content?.blocks?.contentData) }
         </a>`;
     }
 }

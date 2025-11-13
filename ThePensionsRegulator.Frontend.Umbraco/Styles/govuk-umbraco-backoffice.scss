@@ -103,8 +103,22 @@ td, td:last-child {
     height: 100%;
 }
 
-.backoffice-block-view  .tpr-featured-image_info {
+.backoffice-block-view .tpr-featured-image_info {
     flex-basis: 50%;
     box-sizing: border-box;
     padding: $govuk-gutter-half;
+}
+
+.backoffice-block-view .backoffice-section-break {
+    border-top: 2px solid $tpr-colour-very-light-grey;
+    text-align: center;
+    position: relative;
+    top: .7em;
+}
+.backoffice-block-view .backoffice-section-break > span {
+    position: relative;
+    top: -.7em;
+    background: white;
+    display: inline-block;
+    padding: 0 10px;
 }

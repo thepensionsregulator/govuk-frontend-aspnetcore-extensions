@@ -21,6 +21,7 @@ const setupBlankComponent = () => {
 				        </div>
 			        </div>
 		        </div>
+                <p class="govuk-body govuk-visually-hidden" id="tpr-search-results-text"></p>
 	        </form>
 	        <footer class="tpr-search-results__footer">
 		        <ul class="govuk-list tpr-search-results__links">
@@ -112,7 +113,7 @@ describe('initialise accordion', () => {
         expect(searchInput).toHaveClass('govuk-input--error');
     });
 
-    it('should show error state if search terms characters are 2 or less', async () => {
+    it('should show error state if search terms characters are less than 2', async () => {
         global.fetch = jest.fn().mockResolvedValueOnce({
             json: async () => {
                 return { results: [] };
@@ -122,7 +123,7 @@ describe('initialise accordion', () => {
         setupBlankComponent();
 
         const searchInput = document.getElementById("tpr-search-results-ask-input");
-        searchInput.value = "hi";
+        searchInput.value = "h";
 
         const mockEvent = { preventDefault: jest.fn() };
         await searchButtonOnClick(mockEvent);
@@ -149,10 +150,33 @@ describe('initialise accordion', () => {
         const mockEvent = { preventDefault: jest.fn() };
         await searchButtonOnClick(mockEvent);
 
-        expect(document.querySelector('.govuk-form-group')).toHaveClass('govuk-form-group--error');
-        expect(document.getElementById('tpr-search-results-error-text')).not.toHaveClass('govuk-visually-hidden');
-        expect(document.getElementById('tpr-search-results-error-text')).toHaveTextContent('Your question returned no results, please try again.');
-        expect(document.getElementById('tpr-search-results-ask-input')).toHaveClass('govuk-input--error');
+        const resultsText = document.getElementById("tpr-search-results-text");
+
+        expect(resultsText).not.toHaveClass('govuk-visually-hidden');
+        expect(resultsText).toHaveTextContent("Your search for 'test' returned no results");
+
+        expect(mockEvent.preventDefault).toHaveBeenCalled();
+    });
+
+    it('should show sanitised text if misc text is entered', async () => {
+        global.fetch = jest.fn().mockResolvedValueOnce({
+            json: async () => {
+                return { results: [] };
+            }
+        });
+
+        setupBlankComponent();
+
+        const searchInput = document.getElementById("tpr-search-results-ask-input");
+        searchInput.value = "<marquee>hello world</marquee>";
+
+        const mockEvent = { preventDefault: jest.fn() };
+        await searchButtonOnClick(mockEvent);
+
+        const resultsText = document.getElementById("tpr-search-results-text");
+
+        expect(resultsText).not.toHaveClass('govuk-visually-hidden');
+        expect(resultsText).toHaveTextContent("Your search for 'hello world' returned no results");
 
         expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
@@ -192,7 +216,11 @@ describe('initialise accordion', () => {
 
         const heading = document.querySelector(".govuk-accordion__section-heading");
         const content = document.querySelector(".govuk-accordion__section-content");
+        const resultsText = document.getElementById("tpr-search-results-text");
+        
         expect(heading).toHaveTextContent(contentHeading);
+        expect(resultsText).not.toHaveClass('govuk-visually-hidden');
+        expect(resultsText).toHaveTextContent("Your search for 'test' returned these results:");
         expect(content).toHaveTextContent(pageContent);
         expect(document.querySelectorAll(".govuk-accordion__section").length).toBe(1);
         expect(mockEvent.preventDefault).toHaveBeenCalled();

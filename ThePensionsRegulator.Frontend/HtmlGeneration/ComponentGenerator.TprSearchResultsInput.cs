@@ -72,9 +72,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             formGroup.InnerHtml.AppendHtml(errorTextParagraph);
             formGroup.InnerHtml.AppendHtml(inputGroup);
 
+            var resultsText = new TagBuilder("p");
+            resultsText.AddCssClass("govuk-body govuk-visually-hidden");
+            resultsText.Attributes.Add("id", "tpr-search-results-text");
+
             var form = new TagBuilder("form");
             form.AddCssClass("tpr-search-results__form");
             form.InnerHtml.AppendHtml(formGroup);
+            form.InnerHtml.AppendHtml(resultsText);
 
             var outer = new TagBuilder("div");
             outer.InnerHtml.AppendHtml(heading);

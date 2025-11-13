@@ -17,6 +17,41 @@ function getSearchInput() {
     return document.getElementById("tpr-search-results-ask-input");
 }
 
+function getSearchResultsText() {
+    return document.getElementById("tpr-search-results-text");
+}
+
+function hideSearchResultsText(hideText) {
+    const searchResultsText = getSearchResultsText();
+    if (searchResultsText != null) {
+        if (hideText) {
+            searchResultsText.classList.add('govuk-visually-hidden');
+        }
+        else {
+            searchResultsText.classList.remove('govuk-visually-hidden');
+        }
+    }
+}
+
+function setSearchResultsText(resultsTextContent) {
+    const searchResultsText = getSearchResultsText();
+    if (searchResultsText != null) {
+        searchResultsText.innerHTML = resultsTextContent;
+        hideSearchResultsText(false);
+    }
+}
+
+function sanitizeString(input) {
+    if (!input || typeof input !== 'string' || input.trim() === '') {
+        return '';
+    }
+
+    const trimmedInput = input.trim();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(trimmedInput, 'text/html');
+    return (doc.body.textContent || '').trim();
+}
+
 function setSearchInput(searchTerm){
     const searchInput = getSearchInput();
     if (searchInput != null) {
@@ -38,6 +73,7 @@ async function initialiseAccordion() {
     let queryStringShowMore = getSearchTermQueryString(SHOW_MORE_QUERY_PARAM);
 
     resetShowMoreAnswersButton();
+
     if(queryStringShowMore)
     {
         showMoreQuestions = queryStringShowMore.toLowerCase() === 'true';
@@ -45,10 +81,10 @@ async function initialiseAccordion() {
 
     if(queryStringSearchTerm)
     {
-        setSearchInput(queryStringSearchTerm);
         await searchWithTerm(queryStringSearchTerm);        
-        return;        
+        return;
     }
+
     let results = [];
 
     toggleErrorTextVisibility(false);
@@ -64,16 +100,16 @@ async function initialiseAccordion() {
     if (results.length === 0) {
         createNoResultsFoundHeading();
     } else {
-
         searchResults = results;
-
         
         await displayResults();
     }
 }
 
 async function searchWithTerm(searchValue) {
-    if (searchValue.length < 3) {
+    searchValue = sanitizeString(searchValue?.trim()) || '';
+
+    if (searchValue.length < 2) {
         setErrorText('Your question must be 2 characters or more.', searchValue);
         return;
     }
@@ -81,7 +117,6 @@ async function searchWithTerm(searchValue) {
     toggleErrorTextVisibility(false);
 
     if (!searchValue || searchValue.trim() === '') {
-        // searchInput.value = '';
         setSearchInput('');
         navigateToSearchInput(false);
         toggleErrorTextVisibility(true);
@@ -89,6 +124,7 @@ async function searchWithTerm(searchValue) {
     }
 
     setSearchTermQueryString(SEARCH_TERM_QUERY_PARAM, searchValue);
+
     let searchUrl = new URL(searchContentApiUrl, window.location.origin);
     searchUrl.searchParams.set(SEARCH_TERM_QUERY_PARAM, searchValue);
 
@@ -105,10 +141,12 @@ async function searchWithTerm(searchValue) {
     removeAccordion("search-results-accordion");
 
     if (results.length === 0) {
-        setErrorText('Your question returned no results, please try again.', searchValue);
-        // toggleShowMoreButton(true);
+        setSearchResultsText(`Your search for <strong>'${searchValue}'</strong> returned no results.`);
     } else {
         removeNoResultsFound();
+
+        setSearchResultsText(`Your search for <strong>'${searchValue}'</strong> returned these results:`);
+
         searchResults = await Promise.all(
             results.map(async (result) => {
                 return await fetchContentById(result.key);
@@ -247,6 +285,7 @@ async function resetButtonOnClick() {
     setSearchTermQueryString(SEARCH_TERM_QUERY_PARAM, undefined);
     setSearchTermQueryString(SHOW_MORE_QUERY_PARAM,undefined);
     await initialiseAccordion();
+    hideSearchResultsText(true);
     navigateToSearchInput(false);
 }
 
@@ -264,8 +303,6 @@ async function showMoreAnswersOnClick() {
 
     if (showMoreQuestions === false) {
         showMoreQuestions = true;
-        // results = searchResults;
-        // if (showMoreButton) showMoreButton.textContent = 'Show fewer questions';
         setSearchTermQueryString(SHOW_MORE_QUERY_PARAM,true);
     }
     else {
@@ -285,7 +322,6 @@ async function updateShowMoreButton(){
     }
     else
     {
-
         toggleShowMoreButton(false);
         const showMoreButton = getShowMoreButton();
         if (showMoreQuestions === false) {
@@ -385,6 +421,7 @@ function getSearchTermQueryString(key) {
 
     return params.get(key);
 }
+
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("tpr-search-results-ask-button");
     const resetButton = document.getElementById("tpr-search-results-reset-button");
@@ -405,7 +442,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const searchResultsSection = document.getElementsByClassName("tpr-search-results__heading")[0];
     const headingLevel = searchResultsSection.tagName.toLowerCase();
-
     const headingLevelNumber = parseInt(headingLevel.replace('h', ''));
 
     if (headingLevelNumber >= 6) {

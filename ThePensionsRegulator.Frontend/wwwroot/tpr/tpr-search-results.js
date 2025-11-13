@@ -52,10 +52,10 @@ function sanitizeString(input) {
     return (doc.body.textContent || '').trim();
 }
 
-function setSearchInput(searchTerm){
+function resetSearchInput(){
     const searchInput = getSearchInput();
     if (searchInput != null) {
-        searchInput.value = searchTerm;
+        searchInput.value = '';
     }
 }
 
@@ -117,7 +117,7 @@ async function searchWithTerm(searchValue) {
     toggleErrorTextVisibility(false);
 
     if (!searchValue || searchValue.trim() === '') {
-        setSearchInput('');
+        resetSearchInput();
         navigateToSearchInput(false);
         toggleErrorTextVisibility(true);
         return;
@@ -280,7 +280,7 @@ async function searchButtonOnClick(event) {
 }
 
 async function resetButtonOnClick() {
-    setSearchInput('');
+    resetSearchInput();
     removeAccordion("search-results-accordion");
     setSearchTermQueryString(SEARCH_TERM_QUERY_PARAM, undefined);
     setSearchTermQueryString(SHOW_MORE_QUERY_PARAM,undefined);
@@ -468,4 +468,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-export { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility,setSearchTermQueryString, SEARCH_TERM_QUERY_PARAM, SHOW_MORE_QUERY_PARAM };
+export { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility, setSearchTermQueryString, SEARCH_TERM_QUERY_PARAM, SHOW_MORE_QUERY_PARAM, sanitizeString };

@@ -1,7 +1,7 @@
 ﻿import '@testing-library/jest-dom';
 
 import { jest } from '@jest/globals';
-import { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility, setSearchTermQueryString, SEARCH_TERM_QUERY_PARAM, SHOW_MORE_QUERY_PARAM} from '../wwwroot/tpr/tpr-search-results';
+import { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility, setSearchTermQueryString, SEARCH_TERM_QUERY_PARAM, SHOW_MORE_QUERY_PARAM, sanitizeString } from '../wwwroot/tpr/tpr-search-results';
 
 const setupBlankComponent = () => {
     document.body.innerHTML =
@@ -372,5 +372,55 @@ describe('resetButtonOnClick', () => {
         expect(document.querySelector('.govuk-form-group')).not.toHaveClass('govuk-form-group--error');
         expect(document.getElementById('tpr-search-results-error-text')).toHaveClass('govuk-visually-hidden');
         expect(document.getElementById('tpr-search-results-ask-input')).not.toHaveClass('govuk-input--error');
+    });
+
+    describe('sanitizeString', () => {
+        test('returns empty string for null input', () => {
+            expect(sanitizeString(null)).toBe('');
+        });
+
+        test('returns empty string for undefined input', () => {
+            expect(sanitizeString(undefined)).toBe('');
+        });
+
+        test('returns empty string for non-string input (number)', () => {
+            expect(sanitizeString(123)).toBe('');
+        });
+
+        test('returns empty string for non-string input (object)', () => {
+            expect(sanitizeString({})).toBe('');
+        });
+
+        test('returns empty string for empty string', () => {
+            expect(sanitizeString('')).toBe('');
+        });
+
+        test('returns empty string for whitespace-only string', () => {
+            expect(sanitizeString('    ')).toBe('');
+        });
+
+        test('trims leading and trailing spaces', () => {
+            expect(sanitizeString('   hello   ')).toBe('hello');
+        });
+
+        test('removes HTML tags and returns text content', () => {
+            expect(sanitizeString('<p>Hello World</p>')).toBe('Hello World');
+        });
+
+        test('handles nested HTML tags correctly', () => {
+            expect(sanitizeString('<div><span>Nested</span> Text</div>')).toBe('Nested Text');
+        });
+
+        test('removes script tags and returns safe text', () => {
+            expect(sanitizeString('<script>alert("hack")</script>Hello')).toBe('Hello');
+        });
+
+        test('handles mixed content with tags and text', () => {
+            expect(sanitizeString('Hello <b>World</b>!')).toBe('Hello World!');
+        });
+
+        test('returns trimmed text when HTML contains extra spaces', () => {
+            expect(sanitizeString('<div>   spaced text   </div>')).toBe('spaced text');
+        });
     });
 });

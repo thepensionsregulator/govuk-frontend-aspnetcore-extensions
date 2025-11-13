@@ -28,6 +28,10 @@
             {
                 dateValue = wholeDate;
             }
+            else if (DateTime.TryParse(modelStateEntry?.AttemptedValue, out var wholeDateTime))
+            {
+                dateValue = DateOnly.FromDateTime(wholeDateTime);
+            }
             else
             {
                 var rawAttemptedDay = modelStateEntry!.GetModelStateForProperty("Day")?.AttemptedValue;

@@ -34,6 +34,35 @@ td, td:last-child {
     @extend .govuk-table__cell;
 }
 
+// Box and nested box blocks
+.backoffice-block-header {
+    display: block;
+    padding: 15px;
+}
+
+.backoffice-block-header:link,
+.backoffice-block-header:visited {
+    text-decoration: none;
+    color: $tpr-colour-black;
+}
+
+.backoffice-block-header:hover .content-type {
+    text-decoration: underline;
+    color: #6570c3;
+}
+
+.backoffice-block-header {
+    border-top: 1px solid var(--uui-color-border,#d8d7d9);
+    border-left: 1px solid var(--uui-color-border,#d8d7d9);
+    border-right: 1px solid var(--uui-color-border,#d8d7d9);
+    border-radius: var(--uui-border-radius,3px);
+}
+
+.backoffice-block-header.for-tpr-box,
+.backoffice-block-header.for-tpr-nested-box {
+    margin: 0 5px -5px;
+}
+
 .backoffice-block-view > .tpr-related-links {
     margin-bottom: 20px;
 }

@@ -1,16 +1,14 @@
 ﻿import { Accordion } from '/govuk-frontend.min.js?v=5.13.0';
 
 let searchResults = [];
-
 let popularContentApiUrl = "";
 let searchContentApiUrl = "";
 let getContentByIdApiUrl = "";
-const SEARCH_TERM_QUERY_PARAM = "searchTerm";
-const SHOW_MORE_QUERY_PARAM = "showMore";
-
 let showMoreQuestions = false;
 let newHeadingLevel = 3;
 
+const SEARCH_TERM_QUERY_PARAM = "searchTerm";
+const SHOW_MORE_QUERY_PARAM = "showMore";
 const INITIAL_VISIBLE_RESULTS = 2;
 
 function getSearchInput() {
@@ -59,7 +57,7 @@ function resetSearchInput(){
     }
 }
 
-function getShowMoreButton() {
+function getShowMoreQuestionsButton() {
     return document.getElementById("tpr-search-results-show-more-questions");
 }
 
@@ -68,14 +66,27 @@ async function fetchJson(url) {
     return response.json();
 }
 
+async function fetchContentById(contentId) {
+    try {
+        const url = `${getContentByIdApiUrl}/${contentId}`;
+        return await fetchJson(url);
+    } catch (error) {
+        console.error("Failed to fetch content by ID:", error);
+        return null;
+    }
+}
+
 async function initialiseAccordion() {
+    let results = [];
     let queryStringSearchTerm = getSearchTermQueryString(SEARCH_TERM_QUERY_PARAM);
     let queryStringShowMore = getSearchTermQueryString(SHOW_MORE_QUERY_PARAM);
 
-    resetShowMoreAnswersButton();
+    searchResults = [];
 
-    if(queryStringShowMore)
-    {
+    resetShowMoreAnswersButton();
+    showErrorTextVisibility(false);
+
+    if (queryStringShowMore) {
         showMoreQuestions = queryStringShowMore.toLowerCase() === 'true';
     }
 
@@ -84,10 +95,6 @@ async function initialiseAccordion() {
         await searchWithTerm(queryStringSearchTerm);        
         return;
     }
-
-    let results = [];
-
-    toggleErrorTextVisibility(false);
 
     try {
         results = await fetchJson(`${popularContentApiUrl}`);
@@ -99,6 +106,7 @@ async function initialiseAccordion() {
 
     if (results.length === 0) {
         createNoResultsFoundHeading();
+        
     } else {
         searchResults = results;
         
@@ -109,17 +117,18 @@ async function initialiseAccordion() {
 async function searchWithTerm(searchValue) {
     searchValue = sanitizeString(searchValue?.trim()) || '';
 
+    showErrorTextVisibility(false);
+    hideShowMoreQuestionsButton(true);
+
     if (searchValue.length < 2) {
         setErrorText('Your question must be 2 characters or more.', searchValue);
         return;
     }
 
-    toggleErrorTextVisibility(false);
-
     if (!searchValue || searchValue.trim() === '') {
         resetSearchInput();
         navigateToSearchInput(false);
-        toggleErrorTextVisibility(true);
+        showErrorTextVisibility(true);
         return;
     }
 
@@ -226,17 +235,7 @@ function createAccordionSection(heading, content, index) {
     return accordionSection;
 }
 
-async function fetchContentById(contentId) {
-    try {
-        const url = `${getContentByIdApiUrl}/${contentId}`;
-        return await fetchJson(url);
-    } catch (error) {
-        console.error("Failed to fetch content by ID:", error);
-        return null;
-    }
-}
-
-function toggleErrorTextVisibility(showErrorText, errorTextContent = '') {
+function showErrorTextVisibility(showErrorText, errorTextContent = '') {
     const errorText = document.getElementById("tpr-search-results-error-text");
     const formGroup = document.querySelector('.tpr-search-results__form .govuk-form-group');
     const searchInput = getSearchInput();
@@ -259,7 +258,7 @@ function setErrorText(errorMessage, value = '') {
     const searchInput = getSearchInput();
     searchInput.value = value;
     navigateToSearchInput(false);
-    toggleErrorTextVisibility(true, errorMessage);
+    showErrorTextVisibility(true, errorMessage);
 }
 
 async function searchButtonOnClick(event) {
@@ -283,7 +282,7 @@ async function resetButtonOnClick() {
     resetSearchInput();
     removeAccordion("search-results-accordion");
     setSearchTermQueryString(SEARCH_TERM_QUERY_PARAM, undefined);
-    setSearchTermQueryString(SHOW_MORE_QUERY_PARAM,undefined);
+    setSearchTermQueryString(SHOW_MORE_QUERY_PARAM, undefined);
     await initialiseAccordion();
     hideSearchResultsText(true);
     navigateToSearchInput(false);
@@ -291,8 +290,8 @@ async function resetButtonOnClick() {
 
 async function resetShowMoreAnswersButton() {
     showMoreQuestions = false;
-    toggleShowMoreButton(false);
-    const showMoreButton = getShowMoreButton();
+    hideShowMoreQuestionsButton(false);
+    const showMoreButton = getShowMoreQuestionsButton();
     if (showMoreButton != null) {
         showMoreButton.textContent = 'Show more questions';
     }
@@ -317,13 +316,13 @@ async function updateShowMoreButton(){
 
     if(searchResults.length <= INITIAL_VISIBLE_RESULTS)
     {
-        toggleShowMoreButton(true);
+        hideShowMoreQuestionsButton(true);
         return;
     }
     else
     {
-        toggleShowMoreButton(false);
-        const showMoreButton = getShowMoreButton();
+        hideShowMoreQuestionsButton(false);
+        const showMoreButton = getShowMoreQuestionsButton();
         if (showMoreQuestions === false) {
             if (showMoreButton) showMoreButton.textContent = 'Show more questions';
         }
@@ -351,11 +350,11 @@ function createNoResultsFoundHeading() {
         searchBlock.after(noResultsHeading);
     }
 
-    toggleShowMoreButton(true);
+    hideShowMoreQuestionsButton(true);
 }
 
-function toggleShowMoreButton(hideButton) {
-    const showMoreButton = getShowMoreButton();
+function hideShowMoreQuestionsButton(hideButton) {
+    const showMoreButton = getShowMoreQuestionsButton();
     if (showMoreButton != null) {
         if (hideButton) {
             showMoreButton.classList.add('govuk-visually-hidden');
@@ -425,7 +424,7 @@ function getSearchTermQueryString(key) {
 document.addEventListener("DOMContentLoaded", function () {
     const searchButton = document.getElementById("tpr-search-results-ask-button");
     const resetButton = document.getElementById("tpr-search-results-reset-button");
-    const showMoreButton = getShowMoreButton();
+    const showMoreButton = getShowMoreQuestionsButton();
 
     if (searchButton == null || showMoreButton == null) {
         return;
@@ -468,4 +467,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-export { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, toggleErrorTextVisibility, setSearchTermQueryString, SEARCH_TERM_QUERY_PARAM, SHOW_MORE_QUERY_PARAM, sanitizeString };
+export { initialiseAccordion, searchButtonOnClick, resetButtonOnClick, showMoreAnswersOnClick, setSearchResults, navigateToSearchButtonOnClick, removeNoResultsFound, resetShowMoreAnswersButton, showErrorTextVisibility, setSearchTermQueryString, SEARCH_TERM_QUERY_PARAM, SHOW_MORE_QUERY_PARAM, sanitizeString };

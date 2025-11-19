@@ -94,9 +94,11 @@
     .tpr-header-search {
         display: none;
     }
-    .tpr-header-search__mobile{
+
+    .tpr-header-search__mobile {
         display: inline;
     }
+
     .tpr-mobile-menu__nav .tpr-mobile-menu__nav--active .tpr-header-search .tpr-header-search__mobile .tpr-header-search-autocomplete {
         width: 100%;
     }
@@ -111,6 +113,12 @@
     }
 
     .tpr-header-menu__nav.tpr-header-menu__nav--active .tpr-header-search__mobile {
+        display: none;
+    }
+}
+
+@media(min-width: 960px) {
+    .tpr-mobile-menu__header-search-container {
         display: none;
     }
 }

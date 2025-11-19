@@ -11,6 +11,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var mobileMenuToggle = new TagBuilder("a");
             mobileMenuToggle.AddCssClass("tpr-mobile-menu__toggle");
             mobileMenuToggle.Attributes.Add("href", tprHeaderBar.MobileMenuNoJsNavPage);
+            mobileMenuToggle.Attributes.Add("aria-live", "polite");
 
             if (tprMobileMenu.Attributes != null)
             {
@@ -137,7 +138,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     {
                         mobileMenuItem.AddCssClass("tpr-header-menu__nav-menu-item tpr-header-menu__nav-final-item");
                     }
-
+                    mobileMenuItem.Attributes.Add("aria-live", "polite");
                     headerMenuList.InnerHtml.AppendHtml(mobileMenuItem);
 
                     var arrowContainer = new TagBuilder("div");

@@ -119,10 +119,6 @@
         position: relative;
     }
 
-    .tpr-header-menu__nav-menu-item--active {
-        background: $tpr-colour-violet;
-    }
-
     .tpr-header-menu__nav-sub-menu {
         display: none;
     }
@@ -312,4 +308,9 @@
     .tpr-mobile-menu__svg {
         transform: translateY(4px);
     }
+}
+
+.tpr-header-menu__nav-menu-item--active {
+    background: $tpr-colour-violet;
+    color: $tpr-colour-white;
 }

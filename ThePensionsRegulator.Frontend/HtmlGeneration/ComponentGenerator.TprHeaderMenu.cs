@@ -158,7 +158,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         anchorTag.Attributes.Add("href", item.LinkUrl);
                     }
 
-                    anchorTag.Attributes.Add("aria-expanded", "false");              
+                    anchorTag.Attributes.Add("aria-expanded", "true");              
                     anchorTag.Attributes.Add("tabindex", "0");
                     anchorTag.Attributes.Add("role", "button");
 

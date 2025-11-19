@@ -4,10 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     highlightCurrentSection();
     const mediaQuery = window.matchMedia("(max-width: 993px)");
-    displayOverlay();
+
     function SelectNavOption(e) {
 
-     
         const toggles = document.querySelectorAll(".tpr-mobile-menu__toggle");
         const overlay = document.querySelectorAll(".tpr-header-menu__nav-overlay");
         const menuItems = document.querySelectorAll(".tpr-header-menu__nav-menu-item");
@@ -22,16 +21,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
             arrows.forEach(a => a.addEventListener("click", expandMobileMenuSubMenu))
 
-            menuItems.forEach(m => m.addEventListener("keydown", mobileKeyboardNavigation));     
-            console.log("mobile");
+            menuItems.forEach(m => {
+                const subMenu = m.querySelector(".tpr-header-menu__nav-sub-menu");
+                if (subMenu) {
+                    const a = m.querySelector("a");
+                    a.setAttribute("aria-expanded", false);
+                    subMenu.style.display = "none";
+                    m.removeEventListener("keydown", desktopKeyboardNavigation)
+                    m.addEventListener("keydown", mobileKeyboardNavigation)
+                }
+            });
         } else {
-            desktopKeyboardNavigation();
+
+            overlay?.forEach(o => o.classList.remove("tpr-header-menu__nav-overlay--visible"));
+
+            toggles.forEach(t => t.removeEventListener("click", closeMenu))
+
+            overlay.forEach(o => o.removeEventListener("click", closeMenu));
+
+            arrows.forEach(a => a.removeEventListener("click", expandMobileMenuSubMenu))
+
+            menuItems.forEach(m => {
+                const a = m.querySelector("a");
+                a.setAttribute("aria-expanded", false);
+
+                const subMenu = m.querySelector(".tpr-header-menu__nav-sub-menu");
+                if (subMenu) {
+
+                    subMenu.style.display = "none";
+                    console.log(subMenu.classList.style)
+                }
+                m.removeEventListener("keydown", mobileKeyboardNavigation)
+                m.addEventListener("keydown", desktopKeyboardNavigation)
+            });
+
+            removeActiveClass()
+            displayOverlay();
         }
+
     }
 
     SelectNavOption(mediaQuery);
-    mediaQuery.addEventListener("change", function () {
-        SelectNavOption(mediaQuery);
+    mediaQuery.addEventListener("change", SelectNavOption);
     });
 
 function highlightCurrentSection() {
@@ -57,7 +88,7 @@ function displayOverlay() {
     const overlay = document.querySelector(".tpr-header-menu__nav-overlay");
 
     document.querySelectorAll(".tpr-header-menu__nav-menu-item").forEach((item) => {
-
+        const a = item.querySelector('a');
         var subMenu = item.querySelector(".tpr-header-menu__nav-sub-menu");
         if (subMenu != null) {
 
@@ -66,6 +97,8 @@ function displayOverlay() {
                     overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
                     if (window.innerWidth > 993) {
                         subMenu.style.display = 'grid';
+
+                        a.setAttribute("aria-expanded", true)
                     }
                 })
 
@@ -75,6 +108,8 @@ function displayOverlay() {
                     overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
                     if (window.innerWidth > 993) {
                         subMenu.style.display = 'none';
+
+                        a.setAttribute("aria-expanded", false)
                     }
                 })
 
@@ -83,32 +118,21 @@ function displayOverlay() {
     });
 }
 
-function desktopKeyboardNavigation() {
+function desktopKeyboardNavigation(e) {
+
+    const menuItem = e.currentTarget
+   
     let menuItems = Array.from(document.querySelectorAll(".tpr-header-menu__nav-menu-item"));
 
-   
-    menuItems.forEach((item) => {
+    let a = menuItem.querySelector('a');
 
-        let a = item.querySelector('a');
-        a.setAttribute("aria-expanded", false);
-        const expanded = a.getAttribute("aria-expanded") === "false";
-
-        let subMenu = item.querySelector(".tpr-header-menu__nav-sub-menu");  
+    let subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
         let hasSubMenu = subMenu != null;
 
-        if (hasSubMenu) {
-            subMenu.style.display = 'none';
-        }
-
-        item.addEventListener("keydown", function (e) {
-
-            const activeElement = document.activeElement;
-
-            const currentItem = activeElement.closest(".tpr-header-menu__nav-menu-item");
-
-            const currentIndex = menuItems.indexOf(currentItem);
+    const currentIndex = menuItems.indexOf(menuItem);
 
             const overlay = document.querySelector(".tpr-header-menu__nav-overlay")
+
 
             switch (e.key) {
                 case "ArrowRight":
@@ -117,6 +141,7 @@ function desktopKeyboardNavigation() {
                     overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
                     if (hasSubMenu) {
                         subMenu.style.display = 'none';
+                a.setAttribute("aria-expanded", false);
                     }
                     break;
                 case "ArrowLeft":
@@ -125,13 +150,14 @@ function desktopKeyboardNavigation() {
                     overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
                     if (hasSubMenu) {
                         subMenu.style.display = 'none';
+                a.setAttribute("aria-expanded", false);
                     }
                     break;
                 case "ArrowUp":
                     e.preventDefault()
                     if (hasSubMenu) {
                         subMenu.style.display = 'none';
-                        a.setAttribute("aria-expanded", !expanded);
+                a.setAttribute("aria-expanded", false);
                         menuItems[(currentIndex)].querySelector('a')?.focus();
                     }
                     overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
@@ -140,15 +166,32 @@ function desktopKeyboardNavigation() {
                     e.preventDefault();
                     if (hasSubMenu) {
                         subMenu.style.display = 'grid';
+                subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style"); 
                         overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
-                        a.setAttribute("aria-expanded", expanded);
+                a.setAttribute("aria-expanded", true);
                     }
+            break;
                 default:
+            setTimeout(() => {
+
+                const nav = document.querySelector(".tpr-header-menu__nav");
+                const activeElement = document.activeElement;
+
+                if (!nav.contains(activeElement)) {
+                    overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+
+                    document.querySelectorAll(".tpr-header-menu__nav-sub-menu").forEach(s => s.style.display = "none");
+
+                    document.querySelectorAll(".tpr-header-menu__nav-menu-item").forEach(i => {
+
+                        let anchor = i.querySelector("a");
+                        anchor.setAttribute("aria-expanded", "false");
+
+                    });
+                }
+            }, 0);
                     break;
             }
-        });
-
-    });
 }
 
 function closeMenu() {
@@ -174,13 +217,8 @@ function closeMenu() {
         document.querySelectorAll(".tpr-header-menu__nav-container").forEach((nav) => {
             nav.classList.toggle("tpr-header-menu__nav-container--active");
         });
-    });
 }
 
-function removeOverlay() {
-    const overlay = document.querySelector(".tpr-header-menu__nav-overlay")
-    closeMenu(overlay);
-}
 
 function expandMobileMenuSubMenu(e) {
 
@@ -201,17 +239,8 @@ function expandMobileMenuSubMenu(e) {
 
 function mobileKeyboardNavigation(e) {
 
-    menuItems.forEach((menuItem) => {
-
-        let a = menuItem.querySelector('a');
-        a.setAttribute("aria-expanded", false);
-
-        menuItem.addEventListener("keydown", function (e) {
             if (e.key === " ") {
                 e.preventDefault();
-                const subMenu = menuItem.closest(".tpr-header-menu__nav-menu-item");
-                const childItem = subMenu?.querySelector(".tpr-header-menu__nav-sub-menu");
-                childItem?.classList.toggle("tpr-header-menu__nav-sub-menu--active");
 
                 const menuItem = e.currentTarget;
                 const subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
@@ -226,9 +255,6 @@ function mobileKeyboardNavigation(e) {
                 const expanded = a.getAttribute("aria-expanded") === "true";
                 a.setAttribute("aria-expanded", !expanded);
             }
-        });
-
-    });
 }
 
 function removeActiveClass() {

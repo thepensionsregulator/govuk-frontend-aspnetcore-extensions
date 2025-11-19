@@ -27,9 +27,9 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             };
             if (searchBoostingCategory.HasValue)
             {
-                string searchBoostingCategoryParam = $"?{TprPropertyAliases.SearchBoostingCategory}={searchBoostingCategory.Value}";
-                endpoints.ContentSearchApiUrl += searchBoostingCategoryParam;
-                endpoints.PopularContentApiUrl += searchBoostingCategoryParam;
+                string searchBoostingCategoryParam = $"{TprPropertyAliases.SearchBoostingCategory}={searchBoostingCategory.Value}";
+                endpoints.ContentSearchApiUrl += endpoints.ContentSearchApiUrl.Contains("?") ? $"&{searchBoostingCategoryParam}" : $"?{searchBoostingCategoryParam}";
+                endpoints.PopularContentApiUrl += endpoints.PopularContentApiUrl.Contains("?") ? $"&{searchBoostingCategoryParam}" : $"?{searchBoostingCategoryParam}";
             }
             return endpoints;
         }

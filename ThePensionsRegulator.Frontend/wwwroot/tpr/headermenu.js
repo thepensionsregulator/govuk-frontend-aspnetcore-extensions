@@ -12,12 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const menuItems = document.querySelectorAll(".tpr-header-menu__nav-menu-item");
         const arrows = document.querySelectorAll(".tpr-mobile-menu__arrow");
 
+
         if (e.matches) {
 
             toggles.forEach(t => t.removeAttribute("href"));
-            toggles.forEach(t => t.addEventListener("click", closeMenu))
+            toggles.forEach(t => t.addEventListener("click", toggleMobileMenu));
+            toggles.forEach(t => t.addEventListener("keydown", keyboardToggleMobileMenu));
 
-            overlay.forEach(o => o.addEventListener("click", closeMenu));
+            overlay.forEach(o => o.addEventListener("click", toggleMobileMenu));
 
             arrows.forEach(a => a.addEventListener("click", expandMobileMenuSubMenu))
 
@@ -35,9 +37,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             overlay?.forEach(o => o.classList.remove("tpr-header-menu__nav-overlay--visible"));
 
-            toggles.forEach(t => t.removeEventListener("click", closeMenu))
+            toggles.forEach(t => t.removeEventListener("click", toggleMobileMenu))
 
-            overlay.forEach(o => o.removeEventListener("click", closeMenu));
+            overlay.forEach(o => o.removeEventListener("click", toggleMobileMenu));
 
             arrows.forEach(a => a.removeEventListener("click", expandMobileMenuSubMenu))
 
@@ -55,8 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 m.addEventListener("keydown", desktopKeyboardNavigation)
             });
 
-            removeActiveClass()
-            displayOverlay();
+            removeActiveClasses()
+            displayDesktopOverlayOnHover();
         }
 
     }
@@ -83,7 +85,7 @@ function highlightCurrentSection() {
     });
 }
 
-function displayOverlay() {
+function displayDesktopOverlayOnHover() {
 
     const overlay = document.querySelector(".tpr-header-menu__nav-overlay");
 
@@ -116,6 +118,23 @@ function displayOverlay() {
             );
         }
     });
+}
+
+function keyboardToggleMobileMenu(e){
+
+    switch (e.key) {
+
+        case "ArrowDown":
+            e.preventDefault()
+            toggleMobileMenu()
+            break;
+        case "ArrowUp":
+            e.preventDefault()
+            toggleMobileMenu()
+            break;
+        default:
+            break;
+    }
 }
 
 function desktopKeyboardNavigation(e) {
@@ -194,7 +213,7 @@ function desktopKeyboardNavigation(e) {
     }
 }
 
-function closeMenu() {
+function toggleMobileMenu() {
 
     const toggle = document.querySelector(".tpr-mobile-menu__toggle");
     toggle.classList.toggle("tpr-mobile-menu__toggle--open");
@@ -219,7 +238,6 @@ function closeMenu() {
     });
 }
 
-
 function expandMobileMenuSubMenu(e) {
 
     const arrow = e.currentTarget;
@@ -232,7 +250,7 @@ function expandMobileMenuSubMenu(e) {
     subMenu.classList.toggle("tpr-header-menu__nav-sub-menu--active");
     arrow.classList.toggle("tpr-mobile-menu__arrow-down");
 
-    const a = menuItem.querySelector("i");
+    const a = menuItem.querySelector("a");
     const expanded = a.getAttribute("aria-expanded") === "true";
     a.setAttribute("aria-expanded", !expanded);
 }
@@ -257,7 +275,7 @@ function mobileKeyboardNavigation(e) {
     }
 }
 
-function removeActiveClass() {
+function removeActiveClasses() {
 
     document.querySelectorAll(".tpr-header-menu__nav-container").forEach((nav) => {
         nav.classList.remove("tpr-header-menu__nav-container--active");

@@ -29,9 +29,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     const a = m.querySelector("a");
                     a.setAttribute("aria-expanded", false);
                     subMenu.style.display = "none";
+                }
                     m.removeEventListener("keydown", desktopKeyboardNavigation)
                     m.addEventListener("keydown", mobileKeyboardNavigation)
-                }
             });
         } else {
 
@@ -51,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (subMenu) {
 
                     subMenu.style.display = "none";
-                    console.log(subMenu.classList.style)
                 }
                 m.removeEventListener("keydown", mobileKeyboardNavigation)
                 m.addEventListener("keydown", desktopKeyboardNavigation)

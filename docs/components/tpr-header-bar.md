@@ -16,7 +16,7 @@ The Pensions Regulator (TPR) uses the TPR header bar as a consistent part of the
     </tpr-header-bar-content>
     <tpr-header-search action="en/search-results" autocomplete-url="#" placeholder="search" aria-label="search" input-name="custom query string"></tpr-header-search>
      <tpr-header-menu aria-label="Example instructions for navigation" menu-item-aria-label="Click to expand submenu" no-js-navigation="/example-page" open-label="Close" close-label="Menu">
-        <tpr-header-menu-parent-item href="#" link-text="Example parent item 1">
+        <tpr-header-menu-parent-item href="#" link-text="Example parent item 1" lang="cy">
             <tpr-header-menu-child-item href="#" link-text="Example child item 1"></tpr-header-menu-child-item>
         </tpr-header-menu-parent-item> 
         <tpr-header-menu-parent-item href="#" link-text="Example parent item 2">
@@ -107,7 +107,8 @@ Views which require the `<tpr-header-menu>` should also include the `TPRHeaderMe
 | Attribute    | Type   | Description                                                       |
 | ------------ | ------ | ----------------------------------------------------------------- |
 | `href`       |`string`| Sets destination for the menu item.                               |     
-| `link-text`  |`string`| Sets the menu item title.                             | 
+| `link-text`  |`string`| Sets the menu item title.                                         | 
+| `lang`       |`string`| Sets langugage code for top level and child items. Defualt is `en`|
 
 Must be used inside the `<tpr-header-menu>` tag
 

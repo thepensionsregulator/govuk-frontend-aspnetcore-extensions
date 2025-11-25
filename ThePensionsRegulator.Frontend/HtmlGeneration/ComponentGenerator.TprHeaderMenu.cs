@@ -104,7 +104,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             govContainer.InnerHtml.AppendHtml(navContainer);
 
             var headerMenuList = new TagBuilder("ul");
-
+          
             navContainer.InnerHtml.AppendHtml(headerMenuList);
 
             if (tprHeaderBar.ShowSearch)
@@ -162,6 +162,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     anchorTag.Attributes.Add("aria-expanded", "true");              
                     anchorTag.Attributes.Add("tabindex", "0");
                     anchorTag.Attributes.Add("role", "button");
+                    anchorTag.Attributes.Add("lang", string.IsNullOrWhiteSpace(item.LanguageCode)? "en" : item.LanguageCode);
 
                     mobileMenuItem.InnerHtml.AppendHtml(anchorTag);
 
@@ -200,6 +201,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                             }
 
                             aTag.Attributes.Add("tabindex", "0");
+                            aTag.Attributes.Add("lang", string.IsNullOrWhiteSpace(item.LanguageCode) ? "en" : item.LanguageCode);
                             mobileMenuSubMenuItemTitle.InnerHtml.AppendHtml(aTag);
 
                             if (!string.IsNullOrWhiteSpace(subMenuItem.LinkText))

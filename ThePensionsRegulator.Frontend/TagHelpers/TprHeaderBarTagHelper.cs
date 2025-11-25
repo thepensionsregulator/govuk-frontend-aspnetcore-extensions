@@ -49,14 +49,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             List<TprHeaderMenuItem>? headerMenuItems = null;
             AttributeDictionary? headerMenuAttributes = null;
 
-            if (barContext.TprMobileMenuContext != null)
+            if (barContext.TprHeaderMenuContext != null)
             {
-                headerMenuAttributes = barContext.TprMobileMenuContext.Attributes;
-                headerMenuItems = barContext.TprMobileMenuContext.HeaderMenuParentItems.Select(i => new TprHeaderMenuItem
+                headerMenuAttributes = barContext.TprHeaderMenuContext.Attributes;
+                headerMenuItems = barContext.TprHeaderMenuContext.HeaderMenuParentItems.Select(i => new TprHeaderMenuItem
                 {
                     Attributes = i.Attributes,
                     LinkText = i.LinkText,
                     LinkUrl = i.LinkUrl,
+                    LanguageCode = i.LanguageCode,
                     HeaderMenuChildItems = i.HeaderMenuChildItems.Select(s => new TprHeaderMenuChildItem
                     {
                         LinkUrl = s.LinkUrl,

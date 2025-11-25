@@ -234,8 +234,9 @@
                             var linkUrl = item?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
                             var linkTextValue = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
                             var linkText = string.IsNullOrWhiteSpace(linkTextValue) ? linkUrl?.Name : linkTextValue;
+                            var languageCode = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLanguageCode);
                             var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenuChildItems);
-                            <tpr-header-menu-item href="@linkUrl?.Url" link-text="@linkText">
+                            <tpr-header-menu-item href="@linkUrl?.Url" link-text="@linkText" lang="@languageCode">
                                 @if (headerMenuChildItems != null)
                                 {
                                     @foreach (var child in headerMenuChildItems)

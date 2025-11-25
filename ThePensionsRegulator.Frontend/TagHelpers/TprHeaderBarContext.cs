@@ -29,7 +29,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public string? SearchAriaLabel => _search?.SearchAriaLabel;
         public string? SearchInputName => _search?.SearchInputName ?? "query";
         public bool? DisplayHeaderMenu => _headerMenuContext != null;
-        public TprHeaderMenuContext? TprMobileMenuContext => _headerMenuContext;
+        public TprHeaderMenuContext? TprHeaderMenuContext => _headerMenuContext;
         public string? HeaderMenuAriaLabel => _headerMenuContext?.HeaderMenuAriaLabel;
         public string? HeaderMenuItemAriaLabel => _headerMenuContext?.HeaderMenuItemAriaLabel;
         public string? MobileMenuNoJsNavPage => _headerMenuContext?.MobileMenuNoJsNavPage;
@@ -84,7 +84,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             _search = (attributes, showSearch, actionPath, autocompleteUrl, placeholderText, ariaLabel, inputName);
         }
-        public void SetHeaderMenu(TprHeaderMenuContext tprMobileMenuContext)
+        public void SetHeaderMenu(TprHeaderMenuContext tprHeaderMenuContext)
         {
             if (_headerMenuContext != null)
             {
@@ -93,7 +93,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     TprHeaderBarTagHelper.TagName
                     );
             }
-            _headerMenuContext = tprMobileMenuContext;
+            _headerMenuContext = tprHeaderMenuContext;
         }
     }
 }

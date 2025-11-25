@@ -13,12 +13,16 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         private const string UrlAttributeName = "href";
         private const string LinkTextAttributeName = "link-text";
+        private const string LanguageCodeAttributeName = "lang";
 
         [HtmlAttributeName(UrlAttributeName)]
         public required string Url {  get; set; }
 
         [HtmlAttributeName(LinkTextAttributeName)]
         public required string LinkText { get; set; }
+
+        [HtmlAttributeName(LanguageCodeAttributeName)]
+        public string? LanguageCode { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -33,7 +37,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();                           
             }
             
-            headerMenuItemContext.SetMenuItem(headerMenuItemContext.Attributes, LinkText, Url);
+            headerMenuItemContext.SetMenuItem(headerMenuItemContext.Attributes, LinkText, Url, LanguageCode);
             headerMenuContext.AddMenuItem(headerMenuItemContext);
             
             output.TagName = TagName;

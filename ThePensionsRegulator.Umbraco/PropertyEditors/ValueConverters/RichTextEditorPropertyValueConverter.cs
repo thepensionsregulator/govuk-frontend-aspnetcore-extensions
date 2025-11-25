@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Blocks;
 using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.DeliveryApi;
@@ -19,14 +20,12 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
     public class RichTextEditorPropertyValueConverter : RteBlockRenderingValueConverter
     {
         private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
-        private readonly List<string> _propertyEditorAliases = new();
 
         public RichTextEditorPropertyValueConverter(
             HtmlLocalLinkParser linkParser,
             HtmlUrlParser urlParser,
             HtmlImageSourceParser imageSourceParser,
             IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
-            IEnumerable<IRichTextPropertyEditorAliasProvider> propertyEditorAliasProviders,
             IApiRichTextElementParser apiRichTextElementParser,
             IApiRichTextMarkupParser apiRichTextMarkupParser,
             IPartialViewBlockEngine partialViewBlockEngine,
@@ -55,13 +54,6 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
                 deliveryApiSettings)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
-            if (propertyEditorAliasProviders is not null)
-            {
-                foreach (var aliasProvider in propertyEditorAliasProviders)
-                {
-                    _propertyEditorAliases.AddRange(aliasProvider.PropertyEditorAliases());
-                }
-            }
         }
 
         /// <inheritdoc />
@@ -76,7 +68,7 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
         /// <inheritdoc />
         public override bool IsConverter(IPublishedPropertyType propertyType)
         {
-            return _propertyEditorAliases.Contains(propertyType.EditorAlias);
+            return propertyType.EditorAlias == Constants.PropertyEditors.Aliases.RichText;
         }
     }
 

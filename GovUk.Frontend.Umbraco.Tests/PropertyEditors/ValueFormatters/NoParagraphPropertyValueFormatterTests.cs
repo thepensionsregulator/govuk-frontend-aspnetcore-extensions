@@ -10,14 +10,26 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
     [TestFixture]
     public class NoParagraphPropertyValueFormatterTests
     {
-        [TestCase(Constants.PropertyEditors.Aliases.RichText, false)]
-        [TestCase(PropertyEditorAliases.GovUkInlineRichText, true)]
-        [TestCase(PropertyEditorAliases.GovUkInlineInverseRichText, false)]
-        public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)
+        [TestCase("someOtherElementType", true, PropertyAliases.Hint, false)]
+        [TestCase(ElementTypeAliases.Hint, true, "someOtherProperty", false)]
+        [TestCase(ElementTypeAliases.Hint, true, PropertyAliases.Hint, true)]
+        [TestCase(ElementTypeAliases.Task, false, PropertyAliases.Hint, true)]
+        [TestCase(ElementTypeAliases.Details, false, PropertyAliases.DetailsText, true)]
+        [TestCase(ElementTypeAliases.InsetText, false, PropertyAliases.InsetText, true)]
+        [TestCase(ElementTypeAliases.WarningText, false, PropertyAliases.WarningText, true)]
+        [TestCase(ElementTypeAliases.PhaseBanner, true, PropertyAliases.PhaseBannerText, true)]
+        [TestCase(ElementTypeAliases.NotificationBanner, false, PropertyAliases.NotificationBannerHeading, true)]
+        [TestCase(ElementTypeAliases.SummaryListItem, false, PropertyAliases.SummaryListItemValue, true)]
+        public void Applies_only_to_correct_rich_text_properties(string contentTypeAlias, bool isComposition, string propertyAlias, bool expected)
         {
             // Arrange
             var formatter = new NoParagraphPropertyValueFormatter();
-            var propertyType = UmbracoPropertyFactory.CreatePropertyType(1, propertyEditorAlias, new RichTextConfiguration());
+            var propertyType = UmbracoPropertyFactory.CreatePropertyType(1, 
+                propertyAlias, 
+                Constants.PropertyEditors.Aliases.RichText, 
+                isComposition ? "someContentType" : contentTypeAlias, 
+                isComposition ? [contentTypeAlias] : [], 
+                new RichTextConfiguration());
 
             // Act
             var result = formatter.IsFormatter(propertyType);

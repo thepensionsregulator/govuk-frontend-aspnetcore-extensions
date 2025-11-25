@@ -1,5 +1,6 @@
 using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
+using GovUk.Frontend.Umbraco.ExampleApp.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.ExampleApp.Services;
 using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,8 @@ using System;
 using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.Umbraco.PropertyEditors;
+using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
@@ -69,6 +72,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
             services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
             services.AddTransient<ITprSearchResultsEndpointUrlProvider, TprQueryBasedSearchResultsEndpointUrlProvider>();
             services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();
+            services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
         }
 
         /// <summary>

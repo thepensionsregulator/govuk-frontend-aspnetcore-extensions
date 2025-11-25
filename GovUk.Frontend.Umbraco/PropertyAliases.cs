@@ -79,6 +79,8 @@
         public const string PageSettingHeadingScaleStart = "headingScaleStart";
         public const string PanelHeading = "panelHeading";
         public const string PanelText = "panelText";
+        public const string Phase = "govukPhase";
+        public const string PhaseBannerText = "govukPhaseBannerText";
         public const string RadioButtons = "radioButtons";
         public const string RadioButtonValue = "value";
         public const string RadioButtonLabel = "label";

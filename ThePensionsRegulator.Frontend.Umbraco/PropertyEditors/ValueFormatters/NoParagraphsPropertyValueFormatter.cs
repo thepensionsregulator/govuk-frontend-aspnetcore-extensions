@@ -14,7 +14,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
     public class NoParagraphsPropertyValueFormatter : TinyMCEPropertyValueFormatterBase, IPropertyValueFormatter
     {
         /// <inheritdoc />
-        public bool IsFormatter(IPublishedPropertyType propertyType) => TprPropertyEditorAliases.TprHeaderFooterRichText.Equals(propertyType.EditorAlias);
+        public virtual bool IsFormatter(IPublishedPropertyType propertyType) {
+            return (propertyType.Alias == TprPropertyAliases.HeaderContent && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.Header) ?? false)) ||
+                (propertyType.Alias == TprPropertyAliases.HeaderContext1 && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.ContextBarContext1) ?? false)) ||
+                (propertyType.Alias == TprPropertyAliases.HeaderContext2 && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.ContextBarContext2) ?? false)) ||
+                (propertyType.Alias == TprPropertyAliases.HeaderContext3 && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.ContextBarContext3) ?? false)) ||
+                (propertyType.Alias == TprPropertyAliases.FooterContent && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.Footer) ?? false));
+        }
 
         /// <inheritdoc />
         /// <remarks>

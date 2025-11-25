@@ -2,6 +2,7 @@
 @import "../../ThePensionsRegulator.Frontend/Styles/tpr.scss";
 @import "../../GovUk.Frontend.Umbraco/Styles/_backoffice-block-views.scss";
 @import "../../GovUk.Frontend.Umbraco/Styles/_backoffice-rich-text-formats.scss";
+@import "../../GovUk.Frontend.Umbraco/Styles/_backoffice-property-editors.scss";
 
 /* The TPR sticky footer applies a 100% height to these, but we do not want that to apply in the rich text editor 
    as it causes it to grow beyond its configured size.

@@ -1,10 +1,12 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Api.Management.Controllers;
 using Umbraco.Cms.Api.Management.Routing;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
@@ -14,7 +16,8 @@ namespace GovUk.Frontend.Umbraco.Validation
     [ApiExplorerSettings(GroupName = "GOV.UK API")]
     public class ModelPropertyController : ManagementApiControllerBase
     {
-        [HttpGet]
+        [HttpGet("{alias}")]
+        [ProducesResponseType<string>(StatusCodes.Status200OK)]
         public IEnumerable<string> ForDocumentType(string alias)
         {
             var filepath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;

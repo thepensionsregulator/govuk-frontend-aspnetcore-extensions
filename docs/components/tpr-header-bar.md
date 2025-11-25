@@ -108,7 +108,7 @@ Views which require the `<tpr-header-menu>` should also include the `TPRHeaderMe
 | ------------ | ------ | ----------------------------------------------------------------- |
 | `href`       |`string`| Sets destination for the menu item.                               |     
 | `link-text`  |`string`| Sets the menu item title.                                         | 
-| `lang`       |`string`| Sets langugage code for top level and child items. Defualt is `en`|
+| `lang`       |`string`| Sets language code for top level and child items, this is to support correct screen reader pronunciation when nav is not translated. Default is `en`
 
 Must be used inside the `<tpr-header-menu>` tag
 

@@ -1,7 +1,9 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderFooterTpr>
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
+@using ThePensionsRegulator.Umbraco
 @using ThePensionsRegulator.Umbraco.Blocks
+@using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Cms.Web.Common.PublishedModels;
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
@@ -18,6 +20,9 @@
     var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
     var showSearch = bool.Parse(settings?.Value<string>("tprHeaderShowSearch") ?? "false");
     var threeColumnLinks = settings?.Value<OverridableBlockGridModel>("threeColumnLinks");
+   
+    var column = threeColumnLinks?.Where(i => i.Content.ContentType.Alias == "govukGridThreeEqualColumns");
+
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -246,23 +251,26 @@
         <tpr-footer-bar class="govuk-!-margin-top-5">
             <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
             <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
-                <tpr-footer-bar-three-column-links>
-                    <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
-                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
-                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
-                </tpr-footer-bar-three-column-links>
-            <tpr-footer-bar-three-column-links>
-                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
-                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
-                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
-            </tpr-footer-bar-three-column-links>
-            <tpr-footer-bar-three-column-links>
-                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
-                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
-                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
-            </tpr-footer-bar-three-column-links>
+               
+                @foreach (var item in column)
+                {
+                    foreach (var link in item.Areas)
+                    {
+                        <tpr-footer-bar-three-column-links>
+                        @foreach (var y in link)
+                        {
+                            var vall = y.Content.Value<Link>("link");
+                            var text = y.Content.Value<string>("text");
+                            <tpr-footer-bar-three-column-link href="@vall.Url" link-text="@text"></tpr-footer-bar-three-column-link>
+                        }
+                        </tpr-footer-bar-three-column-links>
+
+                    }
+                }
+               
         </tpr-footer-bar>
     }
     <partial name="GOVUK/BodyClosing" />
+  
 </body>
 </html>

@@ -22,6 +22,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 	/// <summary>TPR footer</summary>
 	public partial interface ITprFooter : IPublishedElement
 	{
+		/// <summary>Three column links</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel ThreeColumnLinks { get; }
+
 		/// <summary>Content</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -73,6 +78,19 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
+
+		///<summary>
+		/// Three column links
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("threeColumnLinks")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel ThreeColumnLinks => GetThreeColumnLinks(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Three column links</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel GetThreeColumnLinks(ITprFooter that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel>(publishedValueFallback, "threeColumnLinks");
 
 		///<summary>
 		/// Content: A small number of links, or blank.

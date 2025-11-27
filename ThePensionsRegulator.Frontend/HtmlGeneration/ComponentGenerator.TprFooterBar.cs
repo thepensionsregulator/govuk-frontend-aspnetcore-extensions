@@ -37,6 +37,47 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             logoContainer.InnerHtml.AppendHtml(logoElement);
             tagBuilder.InnerHtml.AppendHtml(logoContainer);
 
+            var threeColumnLinks = new TagBuilder("div");
+            threeColumnLinks.AddCssClass("tpr-footer__three-column-links-container");
+            threeColumnLinks.MergeCssClass("govuk-body"); 
+
+            var numberOfColumns = tprFooterBar.ThreeColumnLinks?.Count;
+
+            if (tprFooterBar.ThreeColumnLinks != null && numberOfColumns > 0)
+            {
+                foreach (var column in tprFooterBar.ThreeColumnLinks)
+                {
+                    var ul = new TagBuilder("ul");
+                    ul.AddCssClass("tpr-footer__three-column-links");
+
+                    if (column.ThreeColumnFooterLinks != null)
+                    {
+
+                        foreach (var link in column.ThreeColumnFooterLinks)
+                        {
+                            var li = new TagBuilder("li");
+                            li.AddCssClass("tpr-footer__three-column-link");
+
+                            var a = new TagBuilder("a");
+                            a.AddCssClass("govuk-link");
+                           
+                            if (link.LinkText != null)
+                            {
+                                a.InnerHtml.Append(link.LinkText);
+                            }
+                            if (link.LinkUrl != null)
+                            {
+                                a.Attributes.Add("href", link.LinkUrl);
+                            }
+                            li.InnerHtml.AppendHtml(a);
+                            ul.InnerHtml.AppendHtml(li);
+                        }
+                    }
+                    threeColumnLinks.InnerHtml.AppendHtml(ul);
+                }
+                tagBuilder.InnerHtml.AppendHtml(threeColumnLinks);
+            }
+
             var hasContent = (tprFooterBar.Content != null && !string.IsNullOrWhiteSpace(tprFooterBar.Content.ToString()));
             var hasCopyright = (tprFooterBar.Copyright != null && !string.IsNullOrWhiteSpace(tprFooterBar.Copyright.ToString()));
 

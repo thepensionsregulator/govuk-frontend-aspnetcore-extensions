@@ -1,6 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderFooterTpr>
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
+@using ThePensionsRegulator.Umbraco.Blocks
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Cms.Web.Common.PublishedModels;
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
@@ -16,7 +17,7 @@
     var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprHeaderLogoAlt");
     var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
     var showSearch = bool.Parse(settings?.Value<string>("tprHeaderShowSearch") ?? "false");
-
+    var threeColumnLinks = settings?.Value<OverridableBlockGridModel>("threeColumnLinks");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -240,6 +241,26 @@
         <tpr-footer-bar class="govuk-!-margin-top-5">
             <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
             <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+        </tpr-footer-bar>
+
+        <tpr-footer-bar class="govuk-!-margin-top-5">
+            <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
+            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+                <tpr-footer-bar-three-column-links>
+                    <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
+                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
+                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
+                </tpr-footer-bar-three-column-links>
+            <tpr-footer-bar-three-column-links>
+                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
+                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
+                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
+            </tpr-footer-bar-three-column-links>
+            <tpr-footer-bar-three-column-links>
+                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
+                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
+                <tpr-footer-bar-three-column-link link-text="test" href="/success" lang="en"></tpr-footer-bar-three-column-link>
+            </tpr-footer-bar-three-column-links>
         </tpr-footer-bar>
     }
     <partial name="GOVUK/BodyClosing" />

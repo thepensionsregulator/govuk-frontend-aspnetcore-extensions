@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -9,11 +11,26 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public AttributeDictionary? LogoAttributes { get; set; }
         public string? LogoHref { get; set; }
         public string? LogoAlternativeText { get; set; }
+        public IList<TprFooterThreeColumnLinks>? ThreeColumnLinks { get; set; } 
         public AttributeDictionary? CopyrightAttributes { get; set; }
         public IHtmlContent? Copyright { get; set; }
         public bool CopyrightAllowHtml { get; set; }
         public AttributeDictionary? ContentAttributes { get; set; }
         public IHtmlContent? Content { get; set; }
         public bool ContentAllowHtml { get; set; }
+    }
+
+    public record TprFooterThreeColumnLinks
+    {
+        public AttributeDictionary? Attributes { get; set; }
+       public IList<TprThreeColumnFooterLink>? ThreeColumnFooterLinks { get; set; }
+    }
+
+    public record TprThreeColumnFooterLink
+    {
+        public AttributeDictionary? Attributes { get; set; }
+        public string? LinkText { get; set; }
+        public string? LinkUrl { get; set; }
+        public string? LanguageCode { get; set; }
     }
 }

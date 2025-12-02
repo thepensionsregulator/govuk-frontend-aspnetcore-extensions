@@ -106,14 +106,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprContext3 => global::Umbraco.Cms.Web.Common.PublishedModels.TprContextBar3.GetTprContext3(this, _publishedValueFallback);
 
 		///<summary>
-		/// Three column links
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("threeColumnLinks")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel ThreeColumnLinks => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetThreeColumnLinks(this, _publishedValueFallback);
-
-		///<summary>
 		/// Content: A small number of links, or blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
@@ -130,6 +122,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string TprFooterCopyright => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterCopyright(this, _publishedValueFallback);
 
 		///<summary>
+		/// Language Code: Defaults to 'en' if unselected, used to set language attribute of footer links.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprFooterLanguageCode")]
+		public virtual string TprFooterLanguageCode => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterLanguageCode(this, _publishedValueFallback);
+
+		///<summary>
 		/// Logo alternative text: Defaults to 'The Pensions Regulator home page' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
@@ -144,6 +144,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprFooterLogoHref")]
 		public virtual global::Umbraco.Cms.Core.Models.Link TprFooterLogoHref => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterLogoHref(this, _publishedValueFallback);
+
+		///<summary>
+		/// Three column links
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprFooterThreeColumnLinks")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterThreeColumnLinks(this, _publishedValueFallback);
 
 		///<summary>
 		/// Content: A small number of links, or blank.

@@ -63,6 +63,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                             var a = new TagBuilder("a");
                             a.AddCssClass("govuk-link");
+                            a.Attributes.Add("lang", string.IsNullOrWhiteSpace(tprFooterBar.LanguageCode) ? "en" : tprFooterBar.LanguageCode);
                            
                             if (link.LinkText != null)
                             {
@@ -95,9 +96,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 contentElement.MergeCssClass("tpr-footer__content");
                 if (hasContent)
                 {
+                    contentElement.MergeAttribute("lang", string.IsNullOrWhiteSpace(tprFooterBar.LanguageCode) ? "en" : tprFooterBar.LanguageCode);
+
                     if (tprFooterBar.ContentAllowHtml)
                     {
+                                         
                         contentElement.InnerHtml.AppendHtml(tprFooterBar.Content!);
+                       
                     }
                     else
                     {

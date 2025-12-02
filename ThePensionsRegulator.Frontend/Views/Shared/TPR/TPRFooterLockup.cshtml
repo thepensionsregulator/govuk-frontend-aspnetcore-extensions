@@ -16,7 +16,7 @@
 }
 @if (Model.ShowFooter)
 {
-    <tpr-footer-bar class="@Model.FooterBarClass">
+    <tpr-footer-bar class="@Model.FooterBarClass" lang="@Model.LanguageCode">
         <tpr-footer-bar-logo alt="@footerLogoAlt" href="@Model.LogoHref" />
 
         @if (@Model.ThreeColumnLinks != null)
@@ -36,7 +36,6 @@
                                 <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText"></tpr-footer-bar-three-column-link>
                             }
                         </tpr-footer-bar-three-column-links>
-
                     }
                 }
             }

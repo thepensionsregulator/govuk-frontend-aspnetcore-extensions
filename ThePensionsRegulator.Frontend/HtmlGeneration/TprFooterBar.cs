@@ -8,6 +8,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public record TprFooterBar
     {
         public AttributeDictionary? FooterBarAttributes { get; set; }
+        public string? LanguageCode { get; set; }
         public AttributeDictionary? LogoAttributes { get; set; }
         public string? LogoHref { get; set; }
         public string? LogoAlternativeText { get; set; }
@@ -18,18 +19,5 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public AttributeDictionary? ContentAttributes { get; set; }
         public IHtmlContent? Content { get; set; }
         public bool ContentAllowHtml { get; set; }
-    }
-
-    public record TprFooterThreeColumnLinks
-    {
-        public AttributeDictionary? Attributes { get; set; }
-       public IList<TprFooterThreeColumnLink>? ThreeColumnFooterLinks { get; set; }
-    }
-
-    public record TprFooterThreeColumnLink
-    {
-        public AttributeDictionary? Attributes { get; set; }
-        public string? LinkText { get; set; }
-        public string? LinkUrl { get; set; }
     }
 }

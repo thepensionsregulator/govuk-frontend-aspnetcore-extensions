@@ -18,14 +18,53 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
+	// Mixin Content Type with alias "tprHeaderMenu"
 	/// <summary>TPR header menu</summary>
-	[PublishedModel("tPRHeaderMenu")]
-	public partial class TPrheaderMenu : PublishedElementModel
+	public partial interface ITprHeaderMenu : IPublishedElement
+	{
+		/// <summary>No JS nav page</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::Umbraco.Cms.Core.Models.Link NoJsnavPage { get; }
+
+		/// <summary>Show header menu</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		bool ShowHeaderMenu { get; }
+
+		/// <summary>Menu ARIA label</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string TprHeaderMenuAriaLabel { get; }
+
+		/// <summary>Menu Items</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuBlockList { get; }
+
+		/// <summary>Menu item ARIA label</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string TprHeaderMenuItemAriaLabel { get; }
+
+		/// <summary>Toggle closed text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string TprHeaderMenuToggleClosedText { get; }
+
+		/// <summary>Toggle open text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string TprHeaderMenuToggleOpenText { get; }
+	}
+
+	/// <summary>TPR header menu</summary>
+	[PublishedModel("tprHeaderMenu")]
+	public partial class TprHeaderMenu : PublishedElementModel, ITprHeaderMenu
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		public new const string ModelTypeAlias = "tPRHeaderMenu";
+		public new const string ModelTypeAlias = "tprHeaderMenu";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
@@ -34,14 +73,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<TPrheaderMenu, TValue>> selector)
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<TprHeaderMenu, TValue>> selector)
 			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public TPrheaderMenu(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+		public TprHeaderMenu(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,19 +89,92 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// TPR Header Menu Aria Label
+		/// No JS nav page
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("noJSNavPage")]
+		public virtual global::Umbraco.Cms.Core.Models.Link NoJsnavPage => GetNoJsnavPage(this, _publishedValueFallback);
+
+		/// <summary>Static getter for No JS nav page</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::Umbraco.Cms.Core.Models.Link GetNoJsnavPage(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.Link>(publishedValueFallback, "noJSNavPage");
+
+		///<summary>
+		/// Show header menu
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[ImplementPropertyType("showHeaderMenu")]
+		public virtual bool ShowHeaderMenu => GetShowHeaderMenu(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Show header menu</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		public static bool GetShowHeaderMenu(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<bool>(publishedValueFallback, "showHeaderMenu");
+
+		///<summary>
+		/// Menu ARIA label
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderMenuAriaLabel")]
-		public virtual string TprHeaderMenuAriaLabel => this.Value<string>(_publishedValueFallback, "tprHeaderMenuAriaLabel");
+		public virtual string TprHeaderMenuAriaLabel => GetTprHeaderMenuAriaLabel(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Menu ARIA label</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetTprHeaderMenuAriaLabel(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprHeaderMenuAriaLabel");
 
 		///<summary>
-		/// TPR Header Menu Parent Items
+		/// Menu Items
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("tprHeaderMenuParentItems")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuParentItems => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "tprHeaderMenuParentItems");
+		[ImplementPropertyType("tprHeaderMenuBlockList")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuBlockList => GetTprHeaderMenuBlockList(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Menu Items</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel GetTprHeaderMenuBlockList(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(publishedValueFallback, "tprHeaderMenuBlockList");
+
+		///<summary>
+		/// Menu item ARIA label
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenuItemAriaLabel")]
+		public virtual string TprHeaderMenuItemAriaLabel => GetTprHeaderMenuItemAriaLabel(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Menu item ARIA label</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetTprHeaderMenuItemAriaLabel(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprHeaderMenuItemAriaLabel");
+
+		///<summary>
+		/// Toggle closed text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenuToggleClosedText")]
+		public virtual string TprHeaderMenuToggleClosedText => GetTprHeaderMenuToggleClosedText(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Toggle closed text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetTprHeaderMenuToggleClosedText(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprHeaderMenuToggleClosedText");
+
+		///<summary>
+		/// Toggle open text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenuToggleOpenText")]
+		public virtual string TprHeaderMenuToggleOpenText => GetTprHeaderMenuToggleOpenText(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Toggle open text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetTprHeaderMenuToggleOpenText(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprHeaderMenuToggleOpenText");
 	}
 }

@@ -66,7 +66,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string HeadingLevel => this.Value<string>(_publishedValueFallback, "headingLevel");
 
 		///<summary>
-		/// Search Boost Category: Prioritize results under the given topic/page
+		/// Search Boosting Category: Prioritize results under the given topic/page
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

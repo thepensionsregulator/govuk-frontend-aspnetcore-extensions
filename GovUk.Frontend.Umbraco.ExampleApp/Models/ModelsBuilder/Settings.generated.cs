@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Settings</summary>
 	[PublishedModel("settings")]
-	public partial class Settings : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprBackToTop, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprFooter, ITprHeader
+	public partial class Settings : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprBackToTop, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprFooter, ITprHeader, ITprHeaderMenu
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -170,7 +170,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::Umbraco.Cms.Core.Models.Link TprHeaderLogoHref => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderLogoHref(this, _publishedValueFallback);
 
 		///<summary>
-		/// Search aria-label text: Aria label for header search button
+		/// Search ARIA label: Aria label for header search button
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -178,7 +178,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string TprHeaderSearchAriaLabel => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderSearchAriaLabel(this, _publishedValueFallback);
 
 		///<summary>
-		/// Search placeholder text: Value displayed inside header search box
+		/// Search placeholder: Value displayed inside header search box
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -186,10 +186,65 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string TprHeaderSearchPlaceholderText => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderSearchPlaceholderText(this, _publishedValueFallback);
 
 		///<summary>
-		/// ShowSearch: Enable to display header search
+		/// Show search: Enable to display header search
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[ImplementPropertyType("tprHeaderShowSearch")]
 		public virtual bool TprHeaderShowSearch => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeader.GetTprHeaderShowSearch(this, _publishedValueFallback);
+
+		///<summary>
+		/// No JS nav page
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("noJSNavPage")]
+		public virtual global::Umbraco.Cms.Core.Models.Link NoJsnavPage => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetNoJsnavPage(this, _publishedValueFallback);
+
+		///<summary>
+		/// Show header menu
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[ImplementPropertyType("showHeaderMenu")]
+		public virtual bool ShowHeaderMenu => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetShowHeaderMenu(this, _publishedValueFallback);
+
+		///<summary>
+		/// Menu ARIA label
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenuAriaLabel")]
+		public virtual string TprHeaderMenuAriaLabel => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuAriaLabel(this, _publishedValueFallback);
+
+		///<summary>
+		/// Menu Items
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenuBlockList")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuBlockList => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuBlockList(this, _publishedValueFallback);
+
+		///<summary>
+		/// Menu item ARIA label
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenuItemAriaLabel")]
+		public virtual string TprHeaderMenuItemAriaLabel => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuItemAriaLabel(this, _publishedValueFallback);
+
+		///<summary>
+		/// Toggle closed text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenuToggleClosedText")]
+		public virtual string TprHeaderMenuToggleClosedText => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuToggleClosedText(this, _publishedValueFallback);
+
+		///<summary>
+		/// Toggle open text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprHeaderMenuToggleOpenText")]
+		public virtual string TprHeaderMenuToggleOpenText => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuToggleOpenText(this, _publishedValueFallback);
 	}
 }

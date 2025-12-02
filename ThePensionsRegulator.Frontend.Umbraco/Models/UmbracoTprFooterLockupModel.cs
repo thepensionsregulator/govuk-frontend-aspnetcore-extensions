@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using ThePensionsRegulator.Frontend.HtmlGeneration;
 using ThePensionsRegulator.Frontend.Models;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
@@ -18,6 +21,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Models
         public override string BackToTopText => string.IsNullOrEmpty(_settings.Value<string>("tprBackToTopText")) ? "Back to top" : _settings.Value<string>("tprBackToTopText")!;
         public override string? LogoAlternativeText => _settings.Value<string>("tprFooterLogoAlt");
         public override string? LogoHref => _settings.Value<Link>("tprFooterLogoHref")?.Url;
+        public override OverridableBlockGridModel? ThreeColumnLinks => _settings?.Value<OverridableBlockGridModel>("threeColumnLinks");
         public override string? Copyright => _settings.Value<string?>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString());
         public override string? FooterBarContent => _settings.Value<IHtmlEncodedString>("tprFooterContent")?.ToHtmlString();
     }

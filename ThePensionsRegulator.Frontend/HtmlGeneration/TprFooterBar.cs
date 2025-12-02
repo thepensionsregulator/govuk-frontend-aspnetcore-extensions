@@ -23,14 +23,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public record TprFooterThreeColumnLinks
     {
         public AttributeDictionary? Attributes { get; set; }
-       public IList<TprThreeColumnFooterLink>? ThreeColumnFooterLinks { get; set; }
+       public IList<TprFooterThreeColumnLink>? ThreeColumnFooterLinks { get; set; }
     }
 
-    public record TprThreeColumnFooterLink
+    public record TprFooterThreeColumnLink
     {
         public AttributeDictionary? Attributes { get; set; }
         public string? LinkText { get; set; }
         public string? LinkUrl { get; set; }
-        public string? LanguageCode { get; set; }
     }
 }

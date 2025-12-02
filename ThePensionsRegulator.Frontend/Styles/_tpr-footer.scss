@@ -14,7 +14,7 @@
     padding: govuk-px-to-rem(40) govuk-px-to-rem(20) 0;
 }
 
-@include govuk-media-query($from: tablet) {
+@include govuk-media-query($from: desktop) {
 
     .tpr-footer__upper-footer-container {
         display: grid;
@@ -45,7 +45,6 @@
     list-style-type: none;
 }
 
-
 @include govuk-media-query($from: tablet) {
     .tpr-footer__three-column-links-container {
         flex-direction: row;
@@ -55,7 +54,7 @@
 }
 
 .tpr-footer__three-column-link {
-    flex: 1;
+    padding: 0.5rem;
 }
 
 .tpr-footer__three-column-link > a:visited {

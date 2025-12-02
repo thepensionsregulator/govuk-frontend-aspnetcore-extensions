@@ -52,7 +52,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 threeColumnLinks = barContext.ThreeColumnLinksContexts.Select(x => new TprFooterThreeColumnLinks
                 {
                     Attributes = x.Attributes,
-                    ThreeColumnFooterLinks = x.ThreeColumnLinks.Select(i => new TprThreeColumnFooterLink
+                    ThreeColumnFooterLinks = x.ThreeColumnLinks.Select(i => new TprFooterThreeColumnLink
                     {
                         Attributes = i.Attributes,
                         LinkUrl = i.LinkUrl,

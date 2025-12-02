@@ -1,5 +1,6 @@
 ﻿@using ThePensionsRegulator.Frontend.HtmlGeneration;
 @using ThePensionsRegulator.Frontend.Models;
+@using Umbraco.Cms.Core.Models
 @model TprFooterLockupModel
 @addTagHelper *, ThePensionsRegulator.Frontend
 @{
@@ -7,6 +8,7 @@
     if (string.IsNullOrEmpty(backToTop)) { backToTop = ComponentGenerator.BackToTopLinkDefaultContent; }
     var footerLogoAlt = Model.LogoAlternativeText;
     if (string.IsNullOrEmpty(footerLogoAlt) && !string.IsNullOrEmpty(Model.LogoHref)) { footerLogoAlt = ComponentGenerator.FooterLogoDefaultAlt; }
+    var threeColumnLinks = @Model.ThreeColumnLinks;
 }
 @if (Model.ShowBackToTop)
 {
@@ -15,7 +17,30 @@
 @if (Model.ShowFooter)
 {
     <tpr-footer-bar class="@Model.FooterBarClass">
-        <tpr-footer-bar-logo alt="@footerLogoAlt" href="@Model.LogoHref"/>
+        <tpr-footer-bar-logo alt="@footerLogoAlt" href="@Model.LogoHref" />
+
+        @if (@Model.ThreeColumnLinks != null)
+        {
+            var column = threeColumnLinks?.Where(i => i.Content.ContentType.Alias == "govukGridThreeEqualColumns");
+            @if (column != null)
+            {
+                @foreach (var item in column)
+                {
+                    foreach (var links in item.Areas)
+                    {
+                        <tpr-footer-bar-three-column-links>
+                            @foreach (var link in links)
+                            {
+                                var linkUrl = link.Content.Value<Link>("link");
+                                var linkText = link.Content.Value<string>("text");
+                                <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText"></tpr-footer-bar-three-column-link>
+                            }
+                        </tpr-footer-bar-three-column-links>
+
+                    }
+                }
+            }
+        }
         <tpr-footer-bar-copyright>@Model.Copyright</tpr-footer-bar-copyright>
         <tpr-footer-bar-content allow-html="true">
             @Html.Raw(Model.FooterBarContent)

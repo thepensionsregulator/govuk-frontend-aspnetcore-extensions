@@ -41,24 +41,24 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             logoContainer.InnerHtml.AppendHtml(logoElement);
             upperFooterContainer.InnerHtml.AppendHtml(logoContainer);
 
-            var threeColumnLinks = new TagBuilder("div");
-            threeColumnLinks.AddCssClass("tpr-footer__three-column-links-container");
-            threeColumnLinks.MergeCssClass("govuk-body"); 
-
-            var numberOfColumns = tprFooterBar.ThreeColumnLinks?.Count;
-
-            if (tprFooterBar.ThreeColumnLinks != null && numberOfColumns > 0)
+            if (tprFooterBar.ThreeColumnLinks != null && tprFooterBar.ThreeColumnLinks?.Count > 0)
             {
+                var threeColumnLinks = new TagBuilder("div");
+                threeColumnLinks.AddCssClass("tpr-footer__three-column-links-container");
+                threeColumnLinks.MergeCssClass("govuk-body");
+
                 foreach (var column in tprFooterBar.ThreeColumnLinks)
                 {
                     var ul = new TagBuilder("ul");
+                    if(column.Attributes != null) { ul.MergeAttributes(column.Attributes); }
                     ul.AddCssClass("tpr-footer__three-column-links");
 
-                    if (column.ThreeColumnFooterLinks != null)
+                    if (column.ThreeColumnFooterLinks != null && column.ThreeColumnFooterLinks.Count > 0)
                     {
                         foreach (var link in column.ThreeColumnFooterLinks)
                         {
                             var li = new TagBuilder("li");
+                            if(link.Attributes != null) { li.MergeAttributes(link.Attributes); }
                             li.AddCssClass("tpr-footer__three-column-link");
 
                             var a = new TagBuilder("a");

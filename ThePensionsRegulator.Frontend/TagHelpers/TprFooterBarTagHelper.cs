@@ -57,7 +57,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                         Attributes = i.Attributes,
                         LinkUrl = i.LinkUrl,
                         LinkText = i.LinkText,
-                        LanguageCode = i.LanguageCode
                     }).ToList()
                 }).ToList();
             }

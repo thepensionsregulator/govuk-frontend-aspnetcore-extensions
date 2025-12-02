@@ -25,9 +25,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             footerContext.AddThreeColumLinks(threeColumnLinksContext);
             
-
             output.SuppressOutput();
         }
-
     }
 }

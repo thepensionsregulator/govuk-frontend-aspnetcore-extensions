@@ -49,7 +49,8 @@
 @include govuk-media-query($from: tablet) {
     .tpr-footer__three-column-links-container {
         flex-direction: row;
-        justify-content: space-evenly;
+        gap: 3rem;
+        justify-content: center;
     }
 }
 
@@ -60,6 +61,10 @@
 .tpr-footer__three-column-link > a:visited {
     color: $tpr-colour-steel;
     margin-bottom: govuk-px-to-rem(20);
+}
+
+.tpr-footer__three-column-link > a:focus {
+    color: $tpr-colour-eclipse;
 }
 
 // Wrapper around .tpr-footer__content and .tpr-footer__copyright allowing them to be positioned using flexbox at tablet & above

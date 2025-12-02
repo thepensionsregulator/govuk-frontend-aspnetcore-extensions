@@ -9,15 +9,14 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     internal class TprFooterBarThreeColumnLinkContext
     {
-        private (AttributeDictionary Attributes, string LinkText, string LinkUrl, string LanguageCode) _threeColumLink;
+        private (AttributeDictionary Attributes, string LinkText, string LinkUrl) _threeColumLink;
         public AttributeDictionary? Attributes { get; set; }
         public string? LinkText => _threeColumLink.LinkText;
         public string? LinkUrl => _threeColumLink.LinkUrl;
-        public string? LanguageCode => _threeColumLink.LanguageCode;
 
-        public void SetThreeColumnLink(AttributeDictionary attributes, string linkText, string linkUrl, string languageCode)
+        public void SetThreeColumnLink(AttributeDictionary attributes, string linkText, string linkUrl)
         {
-            _threeColumLink = (attributes, linkText, linkUrl, languageCode);
+            _threeColumLink = (attributes, linkText, linkUrl);
         }
     }
 }

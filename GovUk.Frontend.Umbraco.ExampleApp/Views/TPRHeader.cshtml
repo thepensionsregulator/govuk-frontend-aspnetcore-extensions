@@ -20,7 +20,7 @@
     var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
     var showSearch = bool.Parse(settings?.Value<string>("tprHeaderShowSearch") ?? "false");
     var threeColumnLinks = settings?.Value<OverridableBlockGridModel>("threeColumnLinks");
-   
+
     var column = threeColumnLinks?.Where(i => i.Content.ContentType.Alias == "govukGridThreeEqualColumns");
 
 }
@@ -251,26 +251,28 @@
         <tpr-footer-bar class="govuk-!-margin-top-5">
             <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
             <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
-               
+            @if (column != null)
+            {
                 @foreach (var item in column)
                 {
-                    foreach (var link in item.Areas)
+                    foreach (var links in item.Areas)
                     {
                         <tpr-footer-bar-three-column-links>
-                        @foreach (var y in link)
-                        {
-                            var vall = y.Content.Value<Link>("link");
-                            var text = y.Content.Value<string>("text");
-                            <tpr-footer-bar-three-column-link href="@vall.Url" link-text="@text"></tpr-footer-bar-three-column-link>
-                        }
+                            @foreach (var link in links)
+                            {
+                                var linkUrl = link.Content.Value<Link>("link");
+                                var linkText = link.Content.Value<string>("text");
+                                <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText"></tpr-footer-bar-three-column-link>
+                            }
                         </tpr-footer-bar-three-column-links>
 
                     }
                 }
-               
+            }
+
         </tpr-footer-bar>
     }
     <partial name="GOVUK/BodyClosing" />
-  
+
 </body>
 </html>

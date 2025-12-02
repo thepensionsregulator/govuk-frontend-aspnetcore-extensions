@@ -1,9 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -14,16 +10,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         private const string UrlAttributeName = "href";
         private const string LinkTextAttributeName = "link-text";
-        private const string LanguageCodeAttributeName = "lang";
 
         [HtmlAttributeName(UrlAttributeName)]
         public required string Url { get; set; }
 
         [HtmlAttributeName(LinkTextAttributeName)]
         public required string LinkText { get; set; }
-
-        [HtmlAttributeName(LanguageCodeAttributeName)]
-        public string? LanguageCode { get; set; }
 
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -39,13 +31,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();
             }
 
-            threeColumnLinkContext.SetThreeColumnLink(threeColumnLinkContext.Attributes, LinkText, Url, LanguageCode);
+            threeColumnLinkContext.SetThreeColumnLink(threeColumnLinkContext.Attributes, LinkText, Url);
             threeColumnLinksContext.AddLink(threeColumnLinkContext);
 
             output.TagName = TagName;
             output.SuppressOutput();
         }
-
-
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -9,7 +10,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     internal class TprFooterBarContext
     {
         private (AttributeDictionary Attributes, string? Href, string? AlternativeText)? _logo;
-        private readonly List<TprFooterBarThreeColumnLinksContext> _threeColumnLinks = new();                          //Ilist of tpr footer three column link context
+        private readonly List<TprFooterBarThreeColumnLinksContext> _threeColumnLinks = new();
         private (AttributeDictionary Attributes, IHtmlContent? Copyright, bool AllowHtml)? _copyright;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
 
@@ -61,8 +62,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         }
 
         public void AddThreeColumLinks(TprFooterBarThreeColumnLinksContext links)
-        {
-            _threeColumnLinks?.Add(links);
+        {                           
+            _threeColumnLinks.Add(links);
+            ExceptionHelper.MaxElementsPermittedIn(_threeColumnLinks, 3, TprFooterBarThreeColumnLinksTagHelper.TagName, TprFooterBarTagHelper.TagName);
         }
     }
 }

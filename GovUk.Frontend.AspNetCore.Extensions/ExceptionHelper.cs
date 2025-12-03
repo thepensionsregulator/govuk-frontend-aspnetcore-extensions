@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GovUk.Frontend.AspNetCore
@@ -32,5 +33,17 @@ namespace GovUk.Frontend.AspNetCore
 
         public static InvalidOperationException TheAttributeMustBeSpecified(string attributeName) =>
             new InvalidOperationException($"The '{attributeName}' attribute must be specified.");
+
+        public static void MaxElementsPermittedIn<T>(IEnumerable<T> collection, int maxAllowed, string child, string parent)
+        {
+            if (collection == null) throw new ArgumentNullException(child);
+
+            int count = collection.Count();
+            if (count > maxAllowed)
+            {
+                throw new InvalidOperationException(
+                    $"Only {maxAllowed} '{child}' are permitted in '{parent}', but {count} were provided.");
+            }      
+        }
     }
 }

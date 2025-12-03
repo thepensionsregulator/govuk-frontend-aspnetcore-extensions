@@ -2,11 +2,14 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Configuration;
+@using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Models;
+@using ThePensionsRegulator.Frontend.Umbraco.Services
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
 @inject IConfiguration Configuration
+@inject ITprGlobalNavigationService navigationSerivce;
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
@@ -30,6 +33,10 @@
             currentPage = Umbraco.AssignedContentItem;
             break;
     }
+    var headerViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
+
+    var menuItems = navigationSerivce.GetMenuItems(settings, headerViewModel);
+    headerLockup.HeaderMenuItems = menuItems;
 }
 
 <!DOCTYPE html>
@@ -97,3 +104,6 @@
 @await SmidgeHelper.JsHereAsync(debug: true)
 
 </html>
+
+
+

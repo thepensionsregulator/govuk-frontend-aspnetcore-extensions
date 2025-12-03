@@ -15,6 +15,16 @@
         public const string DocumentNumberOfPages = "numberOfPages";
         public const string DocumentTitle = "documentTitle";
         public const string DocumentsBlockList = "documents";
+        public const string HeaderMenuAriaLabel = "tprHeaderMenuAriaLabel";
+        public const string HeaderMenuItemAriaLabel = "tprHeaderMenuItemAriaLabel";
+        public const string HeaderMenuLinkText = "linkText";
+        public const string HeaderMenuLinkUrl = "linkUrl";
+        public const string HeaderMenuLanguageCode = "languageCode";
+        public const string HeaderMenuNoJsNavPage = "noJSNavPage";
+        public const string HeaderMenuToggleClosedText = "tprHeaderMenuToggleClosedText";
+        public const string HeaderMenuToggleOpenText = "tprHeaderMenuToggleOpenText";
+        public const string HeaderSearchAriaLabel = "tprHeaderAriaLabelText";
+        public const string HeaderSearchPlaceholderText = "tprHeaderSearchPlaceholderText";     
         public const string ImageAltText = "altText";
         public const string ImageDecorative = "decorativeImage";
         public const string ImageSize = "imageSize";

@@ -1,0 +1,158 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FooterTpr>
+@using Microsoft.Extensions.Configuration;
+@using ThePensionsRegulator.Frontend.HtmlGeneration;
+@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco
+@using ThePensionsRegulator.Umbraco.Blocks
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Strings;
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@using GovUk.Frontend.Umbraco.ExampleApp.Models
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Web.Common
+@inject IConfiguration Configuration
+@{
+    Layout = null;
+    var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
+    var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
+    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var skipLink = string.IsNullOrEmpty(settings?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : settings?.Value<string>("govukSkipLinkText");
+    var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprHeaderLogoAlt");
+    var languageCode = settings?.Value<string>("tprFooterLanguageCode");
+    var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
+    var threeColumnLinks = settings?.Value<OverridableBlockGridModel>("tprFooterThreeColumnLinks");
+    var column = threeColumnLinks?.Where(i => i.Content.ContentType.Alias == "govukGridThreeEqualColumns");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @if (useTPRstyles)
+    {
+        <partial name="TPR/Head" />
+    }
+    else
+    {
+        <partial name="GOVUK/Head" />
+    }
+    <title>@Model.PageHeadingOrName()</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="govuk-template__body ">
+    <partial name="GOVUK/BodyOpen" />
+
+    <header role="banner">
+        @if (useTPRstyles)
+        {
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-bar-label>@(settings?.Value<string?>("tprHeaderLabel"))</tpr-header-bar-label>
+                <tpr-header-bar-content allow-html="true">
+                    @(settings?.Value<IHtmlEncodedString>("tprHeaderContent"))
+                </tpr-header-bar-content>
+            </tpr-header-bar>
+            <tpr-context-bar>
+                <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
+                <tpr-context-bar-context-2>@(settings?.Value<IHtmlEncodedString>("tprContext2"))</tpr-context-bar-context-2>
+                <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
+            </tpr-context-bar>
+
+            <div class="govuk-width-container">
+                <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
+            </div>
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="@Model.Description" />
+            </div>
+
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.FooterWithContent" />
+            </div>
+            <tpr-footer-bar>
+                <tpr-footer-bar-logo alt="@footerLogoAlt" href="@(settings?.Value<Link>("tprFooterLogoHref")?.Url)" />
+                <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+                <tpr-footer-bar-content allow-html="true">
+                    @(settings?.Value<IHtmlEncodedString>("tprFooterContent"))
+                </tpr-footer-bar-content>
+            </tpr-footer-bar>
+
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.FooterWithoutContent" />
+            </div>
+            <tpr-footer-bar class="govuk-!-margin-top-5">
+                <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
+                <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+            </tpr-footer-bar>
+
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.FooterWithThreeColumnLinks" />
+            </div>
+            <tpr-footer-bar class="govuk-!-margin-top-5" lang="@languageCode">
+                <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
+                <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+                @if (column != null)
+                {
+                    @foreach (var item in column)
+                    {
+                        foreach (var links in item.Areas)
+                        {
+                            <tpr-footer-bar-three-column-links>
+                                @foreach (var link in links)
+                                {
+                                    var linkUrl = link.Content.Value<Link>("link");
+                                    var linkText = link.Content.Value<string>("text");
+                                    <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText"></tpr-footer-bar-three-column-link>
+                                }
+                            </tpr-footer-bar-three-column-links>
+
+                        }
+                    }
+                }
+
+            </tpr-footer-bar>
+
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.FooterWithThreeColumnLinksAndContent" />
+            </div>
+            <tpr-footer-bar class="govuk-!-margin-top-5" lang="@languageCode">
+                <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
+                <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+                @if (column != null)
+                {
+                    @foreach (var item in column)
+                    {
+                        foreach (var links in item.Areas)
+                        {
+                            <tpr-footer-bar-three-column-links>
+                                @foreach (var link in links)
+                                {
+                                    var linkUrl = link.Content.Value<Link>("link");
+                                    var linkText = link.Content.Value<string>("text");
+                                    <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText"></tpr-footer-bar-three-column-link>
+                                }
+                            </tpr-footer-bar-three-column-links>
+
+                        }
+                    }
+                }
+                <tpr-footer-bar-content allow-html="true">
+                    @(settings?.Value<IHtmlEncodedString>("tprFooterContent"))
+                </tpr-footer-bar-content>
+            </tpr-footer-bar>
+
+            <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.FinalBlocks" />
+            </div>
+        }
+        else
+        {
+            <div class="govuk-width-container">
+                <partial name="GOVUK/BlockList" model="Model.GOvukblocks" />
+            </div>
+        }
+    </header>
+    <tpr-back-to-top href="#main">@Umbraco.GetDictionaryValue("Back to top")</tpr-back-to-top>
+    <partial name="GOVUK/BodyClosing" />
+
+</body>
+</html>

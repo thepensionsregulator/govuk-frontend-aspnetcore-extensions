@@ -1,4 +1,4 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderFooterTpr>
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderTpr>
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
 @using ThePensionsRegulator.Frontend.Umbraco
@@ -17,14 +17,8 @@
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var skipLink = string.IsNullOrEmpty(settings?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : settings?.Value<string>("govukSkipLinkText");
-    var languageCode = settings?.Value<string>("tprFooterLanguageCode");
     var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprHeaderLogoAlt");
-    var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
     var showSearch = bool.Parse(settings?.Value<string>("tprHeaderShowSearch") ?? "false");
-    var threeColumnLinks = settings?.Value<OverridableBlockGridModel>("tprFooterThreeColumnLinks");
-
-    var column = threeColumnLinks?.Where(i => i.Content.ContentType.Alias == "govukGridThreeEqualColumns");
-
     var headerMenu = settings?.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenu); ;
     var headerMenuParentItems = headerMenu?.Where(i => i.Content.ContentType.Alias == TprElementTypeAliases.HeaderMenuItem);
 
@@ -201,6 +195,39 @@
                 <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
             </tpr-context-bar>
             <div class="govuk-width-container govuk-!-margin-top-5">
+                <partial name="GOVUK/BlockList" model="Model.HeaderWithHeaderMenuAndSearch" />
+            </div>
+            <tpr-header-bar>
+                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
+                <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="@(settings?.Value<string>("tprHeaderSearchPlaceholderText"))" aria-label="@(settings?.Value<string>("tprHeaderSearchAriaLabel"))"></tpr-header-search>
+                <tpr-header-menu aria-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuAriaLabel))" menu-item-aria-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuItemAriaLabel))" no-js-destination="@(settings?.Value<Link>(TprPropertyAliases.HeaderMenuNoJsNavPage)?.Url)" open-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuToggleOpenText))" close-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuToggleClosedText))">
+                    @if (headerMenuParentItems != null)
+                    {
+                        @foreach (var item in headerMenuParentItems)
+                        {
+
+                            var linkUrl = item?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
+                            var linkTextValue = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
+                            var linkText = string.IsNullOrWhiteSpace(linkTextValue) ? linkUrl?.Name : linkTextValue;
+                            var languageCode = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLanguageCode);
+                            var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenuChildItems);
+                            <tpr-header-menu-item href="@linkUrl?.Url" link-text="@linkText" lang="@languageCode">
+                                @if (headerMenuChildItems != null)
+                                {
+                                    @foreach (var child in headerMenuChildItems)
+                                    {
+                                        var childLinkUrl = child?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
+                                        var childLinkTextValue = child?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
+                                        var childLinkText = string.IsNullOrWhiteSpace(childLinkTextValue) ? childLinkUrl?.Name : childLinkTextValue;
+                                        <tpr-header-menu-child-item href="@childLinkUrl?.Url" link-text="@childLinkText"></tpr-header-menu-child-item>
+                                    }
+                                }
+                            </tpr-header-menu-item>
+                        }
+                    }
+                </tpr-header-menu>
+            </tpr-header-bar>
+            <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.HeaderWithSearch" />
             </div>
             <tpr-header-bar>
@@ -224,41 +251,7 @@
                 <tpr-context-bar-context-1>@(settings?.Value<IHtmlEncodedString>("tprContext1"))</tpr-context-bar-context-1>
                 <tpr-context-bar-context-2>@Model.Context2TextThatWraps</tpr-context-bar-context-2>
                 <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
-            </tpr-context-bar>
-             <div class="govuk-width-container govuk-!-margin-top-5">
-                <partial name="GOVUK/BlockList" model="Model.HeaderWithHeaderMenuAndSearch" />
-            </div>
-            <tpr-header-bar>
-                <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
-                <tpr-header-search action="/success/" autocomplete-url="/data.json" placeholder="@(settings?.Value<string>("tprHeaderSearchPlaceholderText"))" aria-label="@(settings?.Value<string>("tprHeaderSearchAriaLabel"))"></tpr-header-search>
-                <tpr-header-menu aria-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuAriaLabel))" menu-item-aria-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuItemAriaLabel))" no-js-destination="@(settings?.Value<Link>(TprPropertyAliases.HeaderMenuNoJsNavPage)?.Url)" open-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuToggleOpenText))" close-label="@(settings?.Value<string>(TprPropertyAliases.HeaderMenuToggleClosedText))">
-                    @if (headerMenuParentItems != null)
-                    {
-                        @foreach (var item in headerMenuParentItems)
-                        {
-                        
-                            var linkUrl = item?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
-                            var linkTextValue = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
-                            var linkText = string.IsNullOrWhiteSpace(linkTextValue) ? linkUrl?.Name : linkTextValue;
-                            var languageCode = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLanguageCode);
-                            var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenuChildItems);
-                            <tpr-header-menu-item href="@linkUrl?.Url" link-text="@linkText" lang="@languageCode">
-                                @if (headerMenuChildItems != null)
-                                {
-                                    @foreach (var child in headerMenuChildItems)
-                                    {
-                                        var childLinkUrl = child?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
-                                        var childLinkTextValue = child?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
-                                        var childLinkText = string.IsNullOrWhiteSpace(childLinkTextValue) ? childLinkUrl?.Name : childLinkTextValue;
-                                        <tpr-header-menu-child-item href="@childLinkUrl?.Url" link-text="@childLinkText"></tpr-header-menu-child-item>                                        
-                                    }
-                                }
-                            </tpr-header-menu-item>
-                        }
-                    }
-                </tpr-header-menu>           
-            </tpr-header-bar>
-
+            </tpr-context-bar>      
             <div class="govuk-width-container govuk-!-margin-top-5">
                 <partial name="GOVUK/BlockList" model="Model.FinalBlocks" />
             </div>
@@ -271,45 +264,6 @@
         }
     </header>
     <tpr-back-to-top href="#main">@Umbraco.GetDictionaryValue("Back to top")</tpr-back-to-top>
-    @if (!__tagHelperExecutionContext.Output.IsContentModified)
-    {
-        <tpr-footer-bar>
-            <tpr-footer-bar-logo alt="@footerLogoAlt" href="@(settings?.Value<Link>("tprFooterLogoHref")?.Url)" />
-            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
-            <tpr-footer-bar-content allow-html="true">
-                @(settings?.Value<IHtmlEncodedString>("tprFooterContent"))
-            </tpr-footer-bar-content>
-        </tpr-footer-bar>
-
-        <tpr-footer-bar class="govuk-!-margin-top-5">
-            <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
-            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
-        </tpr-footer-bar>
-
-        <tpr-footer-bar class="govuk-!-margin-top-5" lang="@languageCode">
-            <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
-            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
-            @if (column != null)
-            {
-                @foreach (var item in column)
-                {
-                    foreach (var links in item.Areas)
-                    {
-                        <tpr-footer-bar-three-column-links>
-                            @foreach (var link in links)
-                            {
-                                var linkUrl = link.Content.Value<Link>("link");
-                                var linkText = link.Content.Value<string>("text");
-                                <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText"></tpr-footer-bar-three-column-link>
-                            }
-                        </tpr-footer-bar-three-column-links>
-
-                    }
-                }
-            }
-
-        </tpr-footer-bar>
-    }
     <partial name="GOVUK/BodyClosing" />
 
 </body>

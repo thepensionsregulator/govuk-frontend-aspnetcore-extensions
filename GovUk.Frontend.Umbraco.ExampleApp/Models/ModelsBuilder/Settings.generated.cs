@@ -138,6 +138,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::Umbraco.Cms.Core.Models.Link TprFooterLogoHref => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterLogoHref(this, _publishedValueFallback);
 
 		///<summary>
+		/// Three column links
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprFooterThreeColumnLinks")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterThreeColumnLinks(this, _publishedValueFallback);
+
+		///<summary>
 		/// Content: A small number of links, or blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

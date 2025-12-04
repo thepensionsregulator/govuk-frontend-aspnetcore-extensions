@@ -298,6 +298,11 @@
     }
 }
 
+.tpr-header-menu__nav-menu-item--active {
+    background: $tpr-colour-violet;
+    color: $tpr-colour-white;
+}
+
 @media(min-width: 672px) {
 
     .tpr-mobile-menu__toggle {
@@ -310,7 +315,8 @@
     }
 }
 
-.tpr-header-menu__nav-menu-item--active {
-    background: $tpr-colour-violet;
-    color: $tpr-colour-white;
+@media(max-width: 993px) {
+    .tpr-header-menu__nav-menu-item--active:focus {
+        color: $tpr-colour-black;
+    }
 }

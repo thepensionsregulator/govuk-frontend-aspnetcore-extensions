@@ -2,6 +2,7 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, ThePensionsRegulator.Frontend
 @using HtmlAgilityPack;
+@using System.Globalization
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
 @using ThePensionsRegulator.Frontend.Models;
 @{
@@ -11,6 +12,7 @@
     var headerLogoAlt = Model.LogoAlternativeText;
     if (string.IsNullOrEmpty(headerLogoAlt) && !string.IsNullOrEmpty(Model.LogoHref)) { headerLogoAlt = ComponentGenerator.HeaderLogoDefaultAlt; }
     var showPhaseBanner = Model.ShowPhaseBanner && !string.IsNullOrEmpty(phase) && phase != "Live";
+    var languageCode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
 
 }
 @if (Model.ShowSkipLink)
@@ -37,7 +39,7 @@
                         {
                             @foreach (var item in Model.HeaderMenuItems.OfType<TprHeaderMenuItem>())
                             {
-                                <tpr-header-menu-item href="@item?.LinkUrl" link-text="@item?.LinkText">
+                                <tpr-header-menu-item href="@item?.LinkUrl" link-text="@item?.LinkText" lang="@languageCode">
 
                                     @if (item?.HeaderMenuChildItems != null)
                                     {

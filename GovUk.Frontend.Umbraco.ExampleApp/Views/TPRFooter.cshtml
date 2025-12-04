@@ -1,4 +1,5 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FooterTpr>
+@using System.Globalization;
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
 @using ThePensionsRegulator.Frontend.Umbraco
@@ -18,7 +19,7 @@
     var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var skipLink = string.IsNullOrEmpty(settings?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : settings?.Value<string>("govukSkipLinkText");
     var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprHeaderLogoAlt");
-    var languageCode = settings?.Value<string>("tprFooterLanguageCode");
+    var languageCode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
     var footerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprFooterLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprFooterLogoAlt");
     var threeColumnLinks = settings?.Value<OverridableBlockGridModel>("tprFooterThreeColumnLinks");
     var column = threeColumnLinks?.Where(i => i.Content.ContentType.Alias == "govukGridThreeEqualColumns");
@@ -147,7 +148,7 @@
         else
         {
             <div class="govuk-width-container">
-                <partial name="GOVUK/BlockList" model="Model.GOvukblocks" />
+                <partial name="GOVUK/BlockGrid" model="Model.GovukBlocks" />
             </div>
         }
     </header>

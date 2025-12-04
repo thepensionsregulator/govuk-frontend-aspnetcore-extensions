@@ -1,4 +1,5 @@
-﻿@using ThePensionsRegulator.Frontend.HtmlGeneration;
+﻿@using System.Globalization
+@using ThePensionsRegulator.Frontend.HtmlGeneration;
 @using ThePensionsRegulator.Frontend.Models;
 @using Umbraco.Cms.Core.Models
 @model TprFooterLockupModel
@@ -6,6 +7,7 @@
 @{
     var backToTop = Model.BackToTopText;
     if (string.IsNullOrEmpty(backToTop)) { backToTop = ComponentGenerator.BackToTopLinkDefaultContent; }
+    var languageCode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
     var footerLogoAlt = Model.LogoAlternativeText;
     if (string.IsNullOrEmpty(footerLogoAlt) && !string.IsNullOrEmpty(Model.LogoHref)) { footerLogoAlt = ComponentGenerator.FooterLogoDefaultAlt; }
     var threeColumnLinks = @Model.ThreeColumnLinks;
@@ -16,7 +18,7 @@
 }
 @if (Model.ShowFooter)
 {
-    <tpr-footer-bar class="@Model.FooterBarClass" lang="@Model.LanguageCode">
+    <tpr-footer-bar class="@Model.FooterBarClass" lang="@languageCode">
         <tpr-footer-bar-logo alt="@footerLogoAlt" href="@Model.LogoHref" />
 
         @if (@Model.ThreeColumnLinks != null)

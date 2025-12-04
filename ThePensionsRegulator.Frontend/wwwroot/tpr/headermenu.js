@@ -69,7 +69,19 @@ document.addEventListener("DOMContentLoaded", function () {
 function highlightCurrentSection() {
 
     let url = window.location.href.toString().split(window.location.host)[1];
+
+    url = url.replace(/^\/[a-z]{2}\//i, '/');
+    url = url.replace(/\/[a-z]{2}(?=\/|$)/gi, '');
+
     let section = Array.from(url).filter(char => char !== '/').join('').replace("-", " ");
+
+    const translations = {
+        "cyflogwyr": "employers",
+        "amdanom ni": "about us",
+        "llyfrgell ddogfen": "document library"
+    }
+
+    section = translations[section.toLowerCase()] || section.toLowerCase();
 
     document.querySelectorAll(".tpr-header-menu__nav-menu-item").forEach((item) => {
 

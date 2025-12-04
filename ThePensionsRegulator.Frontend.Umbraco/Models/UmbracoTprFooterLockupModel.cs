@@ -19,7 +19,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Models
             _settings = settings ?? throw new ArgumentNullException(nameof(settings));
         }
         public override string BackToTopText => string.IsNullOrEmpty(_settings.Value<string>("tprBackToTopText")) ? "Back to top" : _settings.Value<string>("tprBackToTopText")!;
-        public override string? LanguageCode => _settings?.Value<string>("tprFooterLanguageCode");
         public override string? LogoAlternativeText => _settings.Value<string>("tprFooterLogoAlt");
         public override string? LogoHref => _settings.Value<Link>("tprFooterLogoHref")?.Url;
         public override OverridableBlockGridModel? ThreeColumnLinks => _settings?.Value<OverridableBlockGridModel>("tprFooterThreeColumnLinks");

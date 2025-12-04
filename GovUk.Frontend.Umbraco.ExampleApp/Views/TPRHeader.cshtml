@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<HeaderTpr>
 @using Microsoft.Extensions.Configuration;
+@using System.Globalization
 @using ThePensionsRegulator.Frontend.HtmlGeneration;
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Umbraco
@@ -21,6 +22,7 @@
     var showSearch = bool.Parse(settings?.Value<string>("tprHeaderShowSearch") ?? "false");
     var headerMenu = settings?.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenu); ;
     var headerMenuParentItems = headerMenu?.Where(i => i.Content.ContentType.Alias == TprElementTypeAliases.HeaderMenuItem);
+    var languageCode = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
 
 }
 <!DOCTYPE html>
@@ -209,7 +211,6 @@
                             var linkUrl = item?.Content.Value<Link>(TprPropertyAliases.HeaderMenuLinkUrl);
                             var linkTextValue = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLinkText);
                             var linkText = string.IsNullOrWhiteSpace(linkTextValue) ? linkUrl?.Name : linkTextValue;
-                            var languageCode = item?.Content.Value<string>(TprPropertyAliases.HeaderMenuLanguageCode);
                             var headerMenuChildItems = item?.Content.Value<OverridableBlockListModel>(TprElementTypeAliases.HeaderMenuChildItems);
                             <tpr-header-menu-item href="@linkUrl?.Url" link-text="@linkText" lang="@languageCode">
                                 @if (headerMenuChildItems != null)

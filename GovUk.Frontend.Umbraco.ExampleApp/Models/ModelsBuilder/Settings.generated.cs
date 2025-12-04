@@ -122,14 +122,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string TprFooterCopyright => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterCopyright(this, _publishedValueFallback);
 
 		///<summary>
-		/// Language Code: Defaults to 'en' if unselected, used to set language attribute of footer links.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("tprFooterLanguageCode")]
-		public virtual string TprFooterLanguageCode => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterLanguageCode(this, _publishedValueFallback);
-
-		///<summary>
 		/// Logo alternative text: Defaults to 'The Pensions Regulator home page' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

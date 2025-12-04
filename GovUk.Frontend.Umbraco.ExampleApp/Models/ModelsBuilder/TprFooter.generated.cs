@@ -32,11 +32,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		string TprFooterCopyright { get; }
 
-		/// <summary>Language Code</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		string TprFooterLanguageCode { get; }
-
 		/// <summary>Logo alternative text</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -109,19 +104,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static string GetTprFooterCopyright(ITprFooter that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprFooterCopyright");
-
-		///<summary>
-		/// Language Code: Defaults to 'en' if unselected, used to set language attribute of footer links.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("tprFooterLanguageCode")]
-		public virtual string TprFooterLanguageCode => GetTprFooterLanguageCode(this, _publishedValueFallback);
-
-		/// <summary>Static getter for Language Code</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static string GetTprFooterLanguageCode(ITprFooter that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprFooterLanguageCode");
 
 		///<summary>
 		/// Logo alternative text: Defaults to 'The Pensions Regulator home page' if left blank.

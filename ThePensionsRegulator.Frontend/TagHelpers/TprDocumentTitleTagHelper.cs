@@ -19,10 +19,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             {
                 output.PreElement.SetHtmlContent("<dt>");
 
-                string[] knownFileExtensions = ["csv", "doc", "docx", "dotx", "odt", "pdf", "pptx", "rtf", "xlst", "xlsx"];
-                var fileExtension = string.Empty;
-
-                if (documentContext.Href.Contains('.')) { fileExtension = documentContext.Href.Split(".").Skip(1).ToArray()[0].ToString(); }
+                string[] knownFileExtensions = [".csv", ".doc", ".docx", ".dotx", ".odt", ".pdf", ".pptx", ".rtf", ".xlst", ".xlsx"];
+                var fileExtension = System.IO.Path.GetExtension(documentContext.Href);
                 var isMediaLink = knownFileExtensions.Contains(fileExtension);
 
                 output.TagName = $"a class=\"govuk-link\" href=\"{documentContext.Href}\"";

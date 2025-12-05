@@ -14,6 +14,14 @@
     padding: govuk-px-to-rem(40) govuk-px-to-rem(20) 0;
 }
 
+@include govuk-media-query($from: desktop) {
+
+    .tpr-footer__upper-footer-container {
+        display: grid;
+        grid-template-columns: 1fr 4fr;
+    }
+}
+
 .tpr-footer__footer-logo {
     @include tpr-footer-width-container;
     padding-bottom: govuk-px-to-rem(20);
@@ -22,6 +30,40 @@
 .tpr-footer__footer-logo img {
     width: govuk-px-to-rem(126);
     height: govuk-px-to-rem(47);
+}
+
+.tpr-footer__three-column-links-container {
+    display: flex;
+    flex-direction: column;
+    gap: govuk-px-to-rem(20);
+}
+
+.tpr-footer__three-column-links {
+    display: flex;
+    flex-direction: column;
+    gap: govuk-px-to-rem(10);
+    list-style-type: none;
+}
+
+@include govuk-media-query($from: tablet) {
+    .tpr-footer__three-column-links-container {
+        flex-direction: row;
+        gap: 3rem;
+        justify-content: center;
+    }
+}
+
+.tpr-footer__three-column-link {
+    padding: 0.5rem;
+}
+
+.tpr-footer__three-column-link > a:visited {
+    color: $tpr-colour-steel;
+    margin-bottom: govuk-px-to-rem(20);
+}
+
+.tpr-footer__three-column-link > a:focus {
+    color: $tpr-colour-eclipse;
 }
 
 // Wrapper around .tpr-footer__content and .tpr-footer__copyright allowing them to be positioned using flexbox at tablet & above
@@ -37,7 +79,6 @@
     display: flex;
     flex-direction: column;
 }
-
 // Support a copyright statement with no content in .tpr-footer__content - the element must still be present for the flexbox layout
 // to push the copyright statement to the right at tablet & above
 .tpr-footer__content--empty {
@@ -67,6 +108,7 @@
 
     .tpr-footer__footer-logo {
         padding-bottom: govuk-px-to-rem(60);
+        margin-left: -2rem;
     }
 
     .tpr-footer__content-container {
@@ -90,4 +132,3 @@
         padding-right: govuk-px-to-rem(85);
     }
 }
-

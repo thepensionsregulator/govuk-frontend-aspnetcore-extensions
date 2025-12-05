@@ -41,6 +41,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		global::Umbraco.Cms.Core.Models.Link TprFooterLogoHref { get; }
+
+		/// <summary>Three column links</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks { get; }
 	}
 
 	/// <summary>TPR footer</summary>
@@ -125,5 +130,18 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		public static global::Umbraco.Cms.Core.Models.Link GetTprFooterLogoHref(ITprFooter that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.Link>(publishedValueFallback, "tprFooterLogoHref");
+
+		///<summary>
+		/// Three column links
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprFooterThreeColumnLinks")]
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks => GetTprFooterThreeColumnLinks(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Three column links</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel GetTprFooterThreeColumnLinks(ITprFooter that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel>(publishedValueFallback, "tprFooterThreeColumnLinks");
 	}
 }

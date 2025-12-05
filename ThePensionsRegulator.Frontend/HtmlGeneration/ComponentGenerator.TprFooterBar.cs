@@ -18,6 +18,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             tagBuilder.MergeCssClass("tpr-footer");
             tagBuilder.MergeAttribute("role", "contentinfo");
 
+            var upperFooterContainer = new TagBuilder("div");
+            upperFooterContainer.MergeCssClass("tpr-footer__upper-footer-container");
+            tagBuilder.InnerHtml.AppendHtml(upperFooterContainer);
+
             var logoContainer = new TagBuilder("div");
             logoContainer.MergeCssClass("tpr-footer__footer-logo");
 
@@ -35,7 +39,48 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             logoElement.InnerHtml.AppendHtml(logo);
 
             logoContainer.InnerHtml.AppendHtml(logoElement);
-            tagBuilder.InnerHtml.AppendHtml(logoContainer);
+            upperFooterContainer.InnerHtml.AppendHtml(logoContainer);
+
+            if (tprFooterBar.ThreeColumnLinks != null && tprFooterBar.ThreeColumnLinks?.Count > 0)
+            {
+                var threeColumnLinks = new TagBuilder("div");
+                threeColumnLinks.AddCssClass("tpr-footer__three-column-links-container");
+                threeColumnLinks.MergeCssClass("govuk-body");
+
+                foreach (var column in tprFooterBar.ThreeColumnLinks)
+                {
+                    var ul = new TagBuilder("ul");
+                    if(column.Attributes != null) { ul.MergeAttributes(column.Attributes); }
+                    ul.AddCssClass("tpr-footer__three-column-links");
+
+                    if (column.ThreeColumnFooterLinks != null && column.ThreeColumnFooterLinks.Count > 0)
+                    {
+                        foreach (var link in column.ThreeColumnFooterLinks)
+                        {
+                            var li = new TagBuilder("li");
+                            if(link.Attributes != null) { li.MergeAttributes(link.Attributes); }
+                            li.AddCssClass("tpr-footer__three-column-link");
+
+                            var a = new TagBuilder("a");
+                            a.AddCssClass("govuk-link");
+                            a.Attributes.Add("lang", string.IsNullOrWhiteSpace(tprFooterBar.LanguageCode) ? "en" : tprFooterBar.LanguageCode);
+                           
+                            if (link.LinkText != null)
+                            {
+                                a.InnerHtml.Append(link.LinkText);
+                            }
+                            if (link.LinkUrl != null)
+                            {
+                                a.Attributes.Add("href", link.LinkUrl);
+                            }
+                            li.InnerHtml.AppendHtml(a);
+                            ul.InnerHtml.AppendHtml(li);
+                        }
+                    }
+                    threeColumnLinks.InnerHtml.AppendHtml(ul);
+                }
+                upperFooterContainer.InnerHtml.AppendHtml(threeColumnLinks);
+            }
 
             var hasContent = (tprFooterBar.Content != null && !string.IsNullOrWhiteSpace(tprFooterBar.Content.ToString()));
             var hasCopyright = (tprFooterBar.Copyright != null && !string.IsNullOrWhiteSpace(tprFooterBar.Copyright.ToString()));
@@ -51,9 +96,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 contentElement.MergeCssClass("tpr-footer__content");
                 if (hasContent)
                 {
+                    contentElement.MergeAttribute("lang", string.IsNullOrWhiteSpace(tprFooterBar.LanguageCode) ? "en" : tprFooterBar.LanguageCode);
+
                     if (tprFooterBar.ContentAllowHtml)
                     {
+                                         
                         contentElement.InnerHtml.AppendHtml(tprFooterBar.Content!);
+                       
                     }
                     else
                     {

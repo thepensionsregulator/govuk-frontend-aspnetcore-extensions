@@ -1,0 +1,90 @@
+﻿@using GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.ExampleApp.Models
+@{
+    ViewData["Title"] = "TPR footer";
+}
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column govuk-grid-column-full">
+                <p class="govuk-body">The TPR footer bar is one component usually present at the bottom of pages across the site.</p>
+                <p class="govuk-body">
+                    It supports localisation / culture variance and consists of three areas:
+                </p>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li>the TPR logo</li>
+                    <li>links (optional)</li>
+                    <li>a copyright statement</li>
+                </ul>
+                <p class="govuk-body">
+                    It is possible for the logo not to be linked, as demonstrated in the second example.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<tpr-footer-bar class="govuk-!-margin-top-5" lang="en">
+    <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="/" />
+    <tpr-footer-bar-copyright>@DateTimeOffset.UtcNow.Year.ToString() The Pensions Regulator</tpr-footer-bar-copyright>
+    <tpr-footer-bar-three-column-links>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+    </tpr-footer-bar-three-column-links>
+    <tpr-footer-bar-three-column-links>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+    </tpr-footer-bar-three-column-links>
+    <tpr-footer-bar-three-column-links>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+    </tpr-footer-bar-three-column-links>
+    <tpr-footer-bar-content allow-html="true">
+        <a class="govuk-link" href="">Example Link</a>
+        <a class="govuk-link" href="">Example Link</a>
+    </tpr-footer-bar-content>
+</tpr-footer-bar>
+
+
+<tpr-footer-bar class="govuk-!-margin-top-5" lang="en">
+    <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
+    <tpr-footer-bar-copyright>@DateTimeOffset.UtcNow.Year.ToString() The Pensions Regulator</tpr-footer-bar-copyright>
+    <tpr-footer-bar-three-column-links>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+    </tpr-footer-bar-three-column-links>
+    <tpr-footer-bar-three-column-links>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+    </tpr-footer-bar-three-column-links>
+    <tpr-footer-bar-three-column-links>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link href="" link-text="Example Link"></tpr-footer-bar-three-column-link>
+    </tpr-footer-bar-three-column-links>
+</tpr-footer-bar>
+
+<tpr-footer-bar class="govuk-!-margin-top-5" lang="en">
+    <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="/" />
+    <tpr-footer-bar-copyright>@DateTimeOffset.UtcNow.Year.ToString() The Pensions Regulator</tpr-footer-bar-copyright>
+    <tpr-footer-bar-content allow-html="true">
+        <a class="govuk-link" href="">Example Link</a>
+        <a class="govuk-link" href="">Example Link</a>
+    </tpr-footer-bar-content>
+</tpr-footer-bar>
+
+<tpr-footer-bar class="govuk-!-margin-top-5" lang="en">
+    <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="/" />
+    <tpr-footer-bar-copyright>@DateTimeOffset.UtcNow.Year.ToString() The Pensions Regulator</tpr-footer-bar-copyright>
+</tpr-footer-bar>

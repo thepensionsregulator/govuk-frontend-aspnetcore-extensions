@@ -7,8 +7,19 @@ The Pensions Regulator (TPR) uses the TPR footer bar as the footer on its web pa
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
 
-<tpr-footer-bar>
+<tpr-footer-bar lang="en">
     <tpr-footer-bar-logo href="https://example.org" alt="Go to example" />
+    <tpr-footer-bar-three-column-links>
+        <tpr-footer-bar-three-column-link link-text="Example link" href="#"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link link-text="Example link" href="#"></tpr-footer-bar-three-column-link>
+    </tpr-footer-bar-three-column-links>
+    <tpr-footer-bar-three-column-links>
+        <tpr-footer-bar-three-column-link link-text="Example link" href="#"></tpr-footer-bar-three-column-link>
+        <tpr-footer-bar-three-column-link link-text="Example link" href="#"></tpr-footer-bar-three-column-link>
+    </tpr-footer-bar-three-column-links>
+    <tpr-footer-bar-three-column-links>
+         <tpr-footer-bar-three-column-link link-text="Example link" href="#"></tpr-footer-bar-three-column-link>
+    </tpr-footer-bar-three-column-links>
     <tpr-footer-bar-copyright>2023 The Pensions Regulator</tpr-footer-bar-copyright>
     <tpr-footer-bar-content>
         <a class="govuk-link" href="#">A link</a>
@@ -27,6 +38,12 @@ The Pensions Regulator (TPR) uses the TPR footer bar as the footer on its web pa
 
 _Required_
 
+| Attribute | Type   | Description                                      |
+|-----------|--------|--------------------------------------------------|
+| `lang`    | string | Sets the language attribute for footer links.    |
+
+
+
 ### `<govuk-footer-bar-logo>`
 
 Configures the TPR logo, which links to The Pensions Regulator's website by default.
@@ -37,6 +54,23 @@ Configures the TPR logo, which links to The Pensions Regulator's website by defa
 | `alt`     | `string` | Sets the alternative text for the logo. Default is `The Pensions Regulator home page`.         |
 
 Must be inside a `<govuk-footer-bar>` element.
+
+
+### `<tpr-footer-bar-three-column-links>`
+
+Generates `ul` container for `tpr-footer-bar-three-column-links`.
+
+Must be inside a `<govuk-footer-bar>` element.
+
+### `<tpr-footer-bar-three-column-link>`
+
+| Attribute    | Type     | Description                |
+|-------------|---------|----------------------------|
+| `href`      | string  | Sets the URL for the link. |
+| `link-text` | string  | Sets the link title.       |
+
+
+Must be inside a `<tpr-footer-bar-three-column-links>` element.
 
 ### `<govuk-footer-bar-copyright>`
 

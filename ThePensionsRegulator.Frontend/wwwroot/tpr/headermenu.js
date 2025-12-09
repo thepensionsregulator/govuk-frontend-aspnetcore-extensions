@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     a.setAttribute("aria-expanded", false);
                     subMenu.style.display = "none";
                 }
-                    m.removeEventListener("keydown", desktopKeyboardNavigation)
-                    m.addEventListener("keydown", mobileKeyboardNavigation)
+                m.removeEventListener("keydown", desktopKeyboardNavigation)
+                m.addEventListener("keydown", mobileKeyboardNavigation)
             });
         } else {
 
@@ -75,6 +75,10 @@ function highlightCurrentSection() {
 
     let section = Array.from(url).filter(char => char !== '/').join('').replace("-", " ");
 
+    if (!section) {
+        return;
+    }
+
     const translations = {
         "cyflogwyr": "employers",
         "amdanom ni": "about us",
@@ -92,7 +96,6 @@ function highlightCurrentSection() {
 
             anchor.classList.toggle("tpr-header-menu__nav-menu-item--active")
         }
-
     });
 }
 
@@ -102,7 +105,7 @@ function displayDesktopOverlayOnHover() {
 
     document.querySelectorAll(".tpr-header-menu__nav-menu-item").forEach((item) => {
         const a = item.querySelector('a');
-        var subMenu = item.querySelector(".tpr-header-menu__nav-sub-menu"); 
+        var subMenu = item.querySelector(".tpr-header-menu__nav-sub-menu");
         if (subMenu != null) {
 
             ["mouseenter"].forEach((evt) =>
@@ -131,7 +134,7 @@ function displayDesktopOverlayOnHover() {
     });
 }
 
-function keyboardToggleMobileMenu(e){
+function keyboardToggleMobileMenu(e) {
 
     switch (e.key) {
 
@@ -196,7 +199,7 @@ function desktopKeyboardNavigation(e) {
             e.preventDefault();
             if (hasSubMenu) {
                 subMenu.style.display = 'grid';
-                subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style"); 
+                subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style");
                 overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
                 a.setAttribute("aria-expanded", "true");
             }

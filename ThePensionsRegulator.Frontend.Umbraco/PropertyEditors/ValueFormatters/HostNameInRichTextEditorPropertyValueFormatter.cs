@@ -39,6 +39,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
         {
             if (value is null) { return string.Empty; }
             var html = value is IHtmlEncodedString encoded ? encoded.ToHtmlString() : value.ToString();
+            if (string.IsNullOrWhiteSpace(html)) { return string.Empty; }
             var document = new HtmlDocument();
             document.LoadHtml(html);
             var links = document.DocumentNode.SelectNodes("//a[@href and @href!='' and normalize-space(@href) != ' ']");

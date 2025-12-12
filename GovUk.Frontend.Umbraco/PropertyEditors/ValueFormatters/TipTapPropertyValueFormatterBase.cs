@@ -4,9 +4,9 @@ using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
 {
-    public abstract class TinyMCEPropertyValueFormatterBase
+    public abstract class TipTapPropertyValueFormatterBase
     {
-        protected IHtmlEncodedString ApplyGovUkTypographyToTinyMCE(object value, TypographyOptions? options = null)
+        protected IHtmlEncodedString ApplyGovUkTypographyToTipTap(object value, TypographyOptions? options = null)
         {
             var govukHtml = GovUkTypography.Apply(
                 value is IHtmlEncodedString html ? html.ToHtmlString() : value as string,
@@ -30,22 +30,23 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         }
 
         /// <summary>
-        /// TinyMCE automatically surrounds text in a paragraph. Remove that paragraph unless it has a class applied.
+        /// TipTap (and TinyMCE before it) automatically surrounds text in a paragraph. Remove that paragraph unless it has a class applied.
         /// </summary>
         /// <param name="html"></param>
         /// <returns></returns>
         protected static IHtmlEncodedString RemoveWrappingParagraphIfNoClass(IHtmlEncodedString html)
         {
-            if (!string.IsNullOrWhiteSpace(html.ToHtmlString()))
+            var richTextHtml = html.ToHtmlString();
+            if (!string.IsNullOrWhiteSpace(richTextHtml))
             {
                 var document = new HtmlDocument();
-                document.LoadHtml(html.ToHtmlString());
+                document.LoadHtml(richTextHtml);
 
                 if (document.DocumentNode.ChildNodes.Count == 1 &&
                 document.DocumentNode.FirstChild.NodeType == HtmlNodeType.Element &&
                 document.DocumentNode.FirstChild.Name == "p" &&
-                (string.IsNullOrWhiteSpace(document.DocumentNode.FirstChild.GetAttributeValue("class", null)) ||
-                 document.DocumentNode.FirstChild.GetAttributeValue("class", null) == "govuk-body"))
+                (string.IsNullOrWhiteSpace(document.DocumentNode.FirstChild.GetAttributeValue("class", null!)) ||
+                 document.DocumentNode.FirstChild.GetAttributeValue("class", null!) == "govuk-body"))
                 {
                     html = new HtmlEncodedString(document.DocumentNode.FirstChild.InnerHtml);
                 }
@@ -102,11 +103,21 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
             var permittedStyleAttributes = new Dictionary<string, string> {
                 {"text-align: center;" , "govuk-!-text-align-centre" },
                 {"text-align: right;" , "govuk-!-text-align-right" },
+                
+                // Indents last saved using TinyMCE
                 {"padding-left: 40px", "govuk-!-padding-left-7" },
                 {"padding-left: 80px", "govuk-!-padding-left-14" },
                 {"padding-left: 120px", "govuk-!-padding-left-21" },
                 {"padding-left: 160px", "govuk-!-padding-left-28" },
-                {"padding-left: 200px", "govuk-!-padding-left-35" }
+                {"padding-left: 200px", "govuk-!-padding-left-35" },
+
+                // Indents last saved using TipTap
+                {"text-indent: 1rem", "govuk-!-padding-left-7" },
+                {"text-indent: 2rem", "govuk-!-padding-left-14" },
+                {"text-indent: 3rem", "govuk-!-padding-left-21" },
+                {"text-indent: 4rem", "govuk-!-padding-left-28" },
+                {"text-indent: 5rem", "govuk-!-padding-left-35" }
+                
             };
 
             return ApplyPermittedStylesToElements(document, permittedStyleAttributes, "p", null);

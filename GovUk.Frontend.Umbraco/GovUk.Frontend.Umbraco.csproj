@@ -36,12 +36,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Include="Styles\_backoffice-property-editors.scss" />
-		<Content Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
 		<Content Include="Styles\_govuk-spacing.scss" />
 		<Content Include="Styles\_govuk-list.scss" />
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.targets">

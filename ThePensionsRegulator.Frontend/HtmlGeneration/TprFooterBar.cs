@@ -8,7 +8,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public record TprFooterBar
     {
         public AttributeDictionary? FooterBarAttributes { get; set; }
-        public string? LanguageCode { get; set; }
         public AttributeDictionary? LogoAttributes { get; set; }
         public string? LogoHref { get; set; }
         public string? LogoAlternativeText { get; set; }

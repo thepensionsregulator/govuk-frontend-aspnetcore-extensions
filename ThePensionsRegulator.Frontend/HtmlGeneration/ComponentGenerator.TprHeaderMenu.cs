@@ -124,12 +124,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 foreach (var item in headerMenu.HeaderMenuItems)
                 {
                     var mobileMenuItem = new TagBuilder("li");
-
-                    if (item.Attributes != null)
-                    {
-                        mobileMenuItem.MergeAttributes(item.Attributes);
-                    }
-
+                    
                     if (headerMenu.HeaderMenuItems.Count >= currentTprMenuItems || item != headerMenu.HeaderMenuItems.Last())
                     {
                         mobileMenuItem.AddCssClass("tpr-header-menu__nav-menu-item");
@@ -154,16 +149,21 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                     var anchorTag = new TagBuilder("a");
 
+                    if (item.Attributes != null)
+                    {
+                        anchorTag.MergeAttributes(item.Attributes);
+                    }
+
                     if (!string.IsNullOrWhiteSpace(item.LinkUrl))
                     {
                         anchorTag.Attributes.Add("href", item.LinkUrl);
                     }
-
+                   
                     anchorTag.Attributes.Add("aria-expanded", "true");              
                     anchorTag.Attributes.Add("tabindex", "0");
                     anchorTag.Attributes.Add("role", "button");
-                    anchorTag.Attributes.Add("lang", string.IsNullOrWhiteSpace(item.LanguageCode)? "en" : item.LanguageCode);
-
+                   
+                    
                     mobileMenuItem.InnerHtml.AppendHtml(anchorTag);
 
                     if (!string.IsNullOrWhiteSpace(item.LinkText))
@@ -181,11 +181,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         {
                             var mobileMenuSubMenuItem = new TagBuilder("li");
 
-                            if (subMenuItem.Attributes != null)
-                            {
-                                mobileMenuItem.MergeAttributes(subMenuItem.Attributes);
-                            }
-
                             mobileMenuSubMenuItem.AddCssClass("tpr-header-menu__nav-sub-menu-item");
                             headerMenuSubMenu.InnerHtml.AppendHtml(mobileMenuSubMenuItem);
 
@@ -195,13 +190,17 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                             var aTag = new TagBuilder("a");
 
+                            if (subMenuItem.Attributes != null)
+                            {
+                                aTag.MergeAttributes(subMenuItem.Attributes);
+                            }
                             if (!string.IsNullOrWhiteSpace(subMenuItem.LinkUrl))
                             {
                                 aTag.Attributes.Add("href", subMenuItem.LinkUrl);
                             }
 
                             aTag.Attributes.Add("tabindex", "0");
-                            aTag.Attributes.Add("lang", string.IsNullOrWhiteSpace(item.LanguageCode) ? "en" : item.LanguageCode);
+        
                             mobileMenuSubMenuItemTitle.InnerHtml.AppendHtml(aTag);
 
                             if (!string.IsNullOrWhiteSpace(subMenuItem.LinkText))

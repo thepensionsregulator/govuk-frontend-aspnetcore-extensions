@@ -9,7 +9,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     internal class TprFooterBarThreeColumnLinksContext
     {
-        private (AttributeDictionary Attributes, List<TprFooterBarThreeColumnLinkContext>) _column;
+        
         public AttributeDictionary? Attributes { get; set; }    
         private readonly List<TprFooterBarThreeColumnLinkContext> _threeColumnLinks = new();
         public IReadOnlyList<TprFooterBarThreeColumnLinkContext> ThreeColumnLinks => _threeColumnLinks;
@@ -20,7 +20,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         }
         public void SetThreeColumnLinks(AttributeDictionary attributes, List<TprFooterBarThreeColumnLinkContext> links)
         {
-            _column = (attributes, links);
+            Attributes = attributes;
+            _threeColumnLinks.Clear();
+            _threeColumnLinks.AddRange(links);
         }
     }
 }

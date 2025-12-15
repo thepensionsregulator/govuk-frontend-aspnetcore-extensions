@@ -10,7 +10,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public AttributeDictionary? Attributes { get; set; }
         public required string LinkText { get; set; }
         public required string LinkUrl { get; set; }
-        public string? LanguageCode { get; set; } 
+        
         public IList<TprHeaderMenuChildItem> HeaderMenuChildItems { get; set; } = [];
 
         public TprHeaderMenuItem() { }

@@ -58,13 +58,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         foreach (var link in column.ThreeColumnFooterLinks)
                         {
                             var li = new TagBuilder("li");
-                            if(link.Attributes != null) { li.MergeAttributes(link.Attributes); }
+                            
                             li.AddCssClass("tpr-footer__three-column-link");
 
                             var a = new TagBuilder("a");
                             a.AddCssClass("govuk-link");
-                            a.Attributes.Add("lang", string.IsNullOrWhiteSpace(tprFooterBar.LanguageCode) ? "en" : tprFooterBar.LanguageCode);
-                           
+                          
                             if (link.LinkText != null)
                             {
                                 a.InnerHtml.Append(link.LinkText);
@@ -73,6 +72,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                             {
                                 a.Attributes.Add("href", link.LinkUrl);
                             }
+
+                            if (link.Attributes != null) { 
+                                a.MergeAttributes(link.Attributes); 
+                            }
+                            
                             li.InnerHtml.AppendHtml(a);
                             ul.InnerHtml.AppendHtml(li);
                         }
@@ -96,8 +100,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 contentElement.MergeCssClass("tpr-footer__content");
                 if (hasContent)
                 {
-                    contentElement.MergeAttribute("lang", string.IsNullOrWhiteSpace(tprFooterBar.LanguageCode) ? "en" : tprFooterBar.LanguageCode);
-
                     if (tprFooterBar.ContentAllowHtml)
                     {
                                          

@@ -9,7 +9,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
     /// <summary>
     /// Apply GOV.UK typography classes to HTML from the Umbraco rich text editor, and remove the paragraph element if there is only one.
     /// </summary>
-    public class NoParagraphInversePropertyValueFormatter : TipTapPropertyValueFormatterBase, IPropertyValueFormatter
+    public class NoParagraphInversePropertyValueFormatter : TinyMCEPropertyValueFormatterBase, IPropertyValueFormatter
     {
         /// <inheritdoc />
         public virtual bool IsFormatter(IPublishedPropertyType propertyType) => propertyType.Alias == PropertyAliases.PanelText && propertyType.ContentType?.Alias == ElementTypeAliases.Panel;
@@ -21,7 +21,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
         /// it is possible to provide a string of HTML to <see cref="OverridablePublishedElement.OverrideValue(string, object)"/>.
         /// </remarks>
         public object FormatValue(object value) => RemoveWrappingParagraphIfNoClass(
-            ApplyGovUkTypographyToTipTap(value, new TypographyOptions { BackgroundType = BackgroundType.Dark })
+            ApplyGovUkTypographyToTinyMCE(value, new TypographyOptions { BackgroundType = BackgroundType.Dark })
         );
     }
 }

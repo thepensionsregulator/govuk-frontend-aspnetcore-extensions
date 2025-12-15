@@ -4,9 +4,9 @@ using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
 {
-    public abstract class TipTapPropertyValueFormatterBase
+    public abstract class TinyMCEPropertyValueFormatterBase
     {
-        protected IHtmlEncodedString ApplyGovUkTypographyToTipTap(object value, TypographyOptions? options = null)
+        protected IHtmlEncodedString ApplyGovUkTypographyToTinyMCE(object value, TypographyOptions? options = null)
         {
             var govukHtml = GovUkTypography.Apply(
                 value is IHtmlEncodedString html ? html.ToHtmlString() : value as string,
@@ -117,7 +117,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
                 {"text-indent: 3rem", "govuk-!-padding-left-21" },
                 {"text-indent: 4rem", "govuk-!-padding-left-28" },
                 {"text-indent: 5rem", "govuk-!-padding-left-35" }
-                
+
             };
 
             return ApplyPermittedStylesToElements(document, permittedStyleAttributes, "p", null);

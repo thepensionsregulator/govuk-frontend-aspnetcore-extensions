@@ -20,10 +20,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-footer-bar";
 
-        private const string LanguageAttriubteName = "lang";
+        private const string LanguageAttributeName = "lang";
 
-        [HtmlAttributeName(LanguageAttriubteName)]
-        public string LanguageCode { get; set; }
+        [HtmlAttributeName(LanguageAttributeName)]
+        public string? LanguageCode { get; set; }
 
         private readonly ITprHtmlGenerator _htmlGenerator;
 
@@ -69,7 +69,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var tagBuilder = _htmlGenerator.GenerateTprFooterBar(new TprFooterBar
             {
                 FooterBarAttributes = output.Attributes.ToAttributeDictionary(),
-                LanguageCode = LanguageCode,
                 LogoAttributes = barContext.LogoAttributes,
                 LogoHref = barContext.LogoHref ?? ComponentGenerator.FooterLogoDefaultHref,
                 LogoAlternativeText = barContext.LogoAlternativeText ?? ComponentGenerator.FooterLogoDefaultAlt,

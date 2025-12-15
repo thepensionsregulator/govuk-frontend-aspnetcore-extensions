@@ -57,11 +57,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     Attributes = i.Attributes,
                     LinkText = i.LinkText,
                     LinkUrl = i.LinkUrl,
-                    LanguageCode = i.LanguageCode,
                     HeaderMenuChildItems = i.HeaderMenuChildItems.Select(s => new TprHeaderMenuChildItem
                     {
                         LinkUrl = s.LinkUrl,
                         LinkText = s.LinkText,
+                        Attributes = s.Attributes
                     }).ToList()
                 }).ToList();
             }

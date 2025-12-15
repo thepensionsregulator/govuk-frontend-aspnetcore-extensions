@@ -5,18 +5,17 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     internal class TprHeaderMenuItemContext
     {
-        private (AttributeDictionary Attributes, string LinkText, string LinkUrl, string? LanguageCode) _menuItem;
+        private (AttributeDictionary Attributes, string LinkText, string LinkUrl) _menuItem;
         public AttributeDictionary? Attributes { get; set; }
         public string LinkText => _menuItem.LinkText;
         public string LinkUrl => _menuItem.LinkUrl;
-        public string? LanguageCode => _menuItem.LanguageCode;
-
+        
         private readonly List<TprHeaderMenuChildItemContext> _headerMenuChildItems = new();
         public IReadOnlyList<TprHeaderMenuChildItemContext> HeaderMenuChildItems => _headerMenuChildItems;
 
-        public void SetMenuItem(AttributeDictionary attributes, string linkText, string linkUrl, string? languageCode)
+        public void SetMenuItem(AttributeDictionary attributes, string linkText, string linkUrl)
         {
-            _menuItem = (attributes, linkText, linkUrl, languageCode);
+            _menuItem = (attributes, linkText, linkUrl);
         }
 
         public void AddChildItem(TprHeaderMenuChildItemContext tprMobileMenuItemsSubItemsContext)

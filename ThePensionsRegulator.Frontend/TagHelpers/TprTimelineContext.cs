@@ -17,7 +17,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private int _headingLevel;
         // private string _dateSize;
         private bool _hideTail;
-        private string _ariaTitle;
+        private string? _ariaTitle;
 
         public IReadOnlyList<TprTimelineItem> Tasks => _items;
 

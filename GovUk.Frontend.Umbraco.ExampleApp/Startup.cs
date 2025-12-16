@@ -1,5 +1,6 @@
 using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
+using GovUk.Frontend.Umbraco.ExampleApp.NotificationHandlers;
 using GovUk.Frontend.Umbraco.ExampleApp.Services;
 using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Builder;
@@ -17,6 +18,7 @@ using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
+using uSync.BackOffice;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp
 {
@@ -53,6 +55,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                 .AddBackOffice()
                 .AddWebsite()
                 .AddComposers()
+                .AddNotificationHandler<uSyncExportedItemNotification, uSyncNotificationHandler>()
                 .Build();
 
             if (_config.GetValue<bool>("TPRStyles"))

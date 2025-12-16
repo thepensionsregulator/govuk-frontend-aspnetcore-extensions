@@ -17,7 +17,7 @@
     flex: 1 1 100%;
 }
 
-.govuk-button-group {
+.tpr-search-results .govuk-button-group {
     display: flex;
     flex-direction: column;
     flex: 1 1 100%;
@@ -28,16 +28,19 @@
         flex-wrap: nowrap;
     }
 
-    .govuk-button-group {
-        flex-direction: row;
-        gap: 0.5rem;
-        flex: 0 0 auto;
-        align-items: center;
-        margin: 0;
-    }
+    .tpr-search-results {
 
-    .govuk-button-group .govuk-button {
-        margin: 0;
+        .govuk-button-group {
+            flex-direction: row;
+            gap: 0.5rem;
+            flex: 0 0 auto;
+            align-items: center;
+            margin: 0;
+        }
+
+        .govuk-button-group .govuk-button {
+            margin: 0;
+        }
     }
 }
 

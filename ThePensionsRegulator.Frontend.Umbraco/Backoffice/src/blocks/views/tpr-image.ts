@@ -3,6 +3,7 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UmbMediaItemRepository, UmbMediaUrlRepository, UmbMediaItemModel, UmbMediaUrlModel, UmbMediaPickerPropertyValueEntry } from '@umbraco-cms/backoffice/media';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface ITprImageContent extends UmbBlockDataType {
     image: Array<UmbMediaPickerPropertyValueEntry>;
@@ -78,7 +79,7 @@ export class TprImageView extends UmbElementMixin(LitElement) implements UmbBloc
         const displayImage = imageExtensions.find(ext => ext === this.#imageUrl?.extension?.toLowerCase()) && !this.#image?.isTrashed;
 
         return html`
-            <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+            <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
             <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
                 ${displayImage ? html`<img src="${this.#imageUrl?.url}" alt="${altText}" class="${cssClasses}" />` : null}
                 <p class="govuk-body backoffice-image-label ${this.#image?.isTrashed ? 'is-trashed' : null}">

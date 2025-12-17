@@ -4,6 +4,7 @@ import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfigura
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkInsetTextContent extends UmbBlockDataType {
     text: UmbPropertyEditorRteValueType;
@@ -32,7 +33,7 @@ export class GovUkInsetTextView extends UmbElementMixin(LitElement) implements U
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-inset-text backoffice-block-view ${ this.settings?.cssClasses}">${unsafeHTML(disableLinks(this.content?.text.markup)) }</a>
         `;
     }

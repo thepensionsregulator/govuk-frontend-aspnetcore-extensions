@@ -5,6 +5,7 @@ import type { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffic
 import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { renderRadioButton } from '../helpers/radios-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkRadioContent extends UmbBlockDataType {
     conditionalBlocks: UmbBlockValueType<UmbBlockListLayoutModel>;
@@ -34,7 +35,7 @@ export class GovUkRadioView extends UmbElementMixin(LitElement) implements UmbBl
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${renderRadioButton(this.content?.label, this.content?.value, this.content?.hint?.markup, this.content?.conditionalBlocks?.contentData, true) }
         </a>

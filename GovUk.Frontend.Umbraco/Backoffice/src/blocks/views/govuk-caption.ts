@@ -2,6 +2,7 @@ import { html, customElement, LitElement, property } from '@umbraco-cms/backoffi
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 interface IGovUkCaptionContent extends UmbBlockDataType {
     caption: string;
 }
@@ -29,7 +30,7 @@ export class GovUkCaptionView extends UmbElementMixin(LitElement) implements Umb
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="govuk-caption-l ${ this.settings?.cssClasses}">${this.content?.caption }</div>
         </a>

@@ -3,6 +3,7 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { ILinkPickerModel } from '../types/ILinkPickerModel';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 interface ITprYouTubeVideoContent extends UmbBlockDataType {
     title: string;
     url: string;
@@ -50,7 +51,7 @@ export class TprYouTubeVideoView extends UmbElementMixin(LitElement) implements 
         const parseUrlResult = this.#tryParseVideoUrl(this.content?.url);
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="tpr-video-wrapper-no-cookies ${this.settings?.cssClasses}">
                 <div class="tpr-video-wrapper-no-cookies__video-container">

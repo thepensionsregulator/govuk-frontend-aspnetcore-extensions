@@ -3,6 +3,7 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
 import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface ITprSectionCardsContent extends UmbBlockDataType {
     cards: UmbBlockValueType<UmbBlockListLayoutModel>;
@@ -35,7 +36,7 @@ export class TprSectionCardsView extends UmbElementMixin(LitElement) implements 
         if ((this.content?.cards?.contentData?.length || 0) > 1) { blocksText = `${this.content?.cards.contentData.length} blocks.` }
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="${this.settings?.cssClasses}">
                 <h2 class="govuk-heading-s">Section cards</h2>

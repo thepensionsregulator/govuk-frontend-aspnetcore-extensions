@@ -2,6 +2,7 @@ import { html, customElement, LitElement, property } from '@umbraco-cms/backoffi
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkHiddenSettings extends UmbBlockDataType {
     modelProperty: string;
@@ -23,7 +24,7 @@ export class GovUkHiddenView extends UmbElementMixin(LitElement) implements UmbB
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <p class="backoffice-additional-blocks">Hidden field ${this.settings?.modelProperty ? '(bound to ' + this.settings.modelProperty + ')' : '(not bound to a property)'}</p>
         </a>

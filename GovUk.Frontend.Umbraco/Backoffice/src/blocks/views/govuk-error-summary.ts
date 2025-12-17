@@ -2,6 +2,7 @@ import { html, customElement, LitElement, property } from '@umbraco-cms/backoffi
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 interface IGovUkErrorSummaryContent extends UmbBlockDataType {
     title: string;
 }
@@ -29,7 +30,7 @@ export class GovUkErrorSummaryView extends UmbElementMixin(LitElement) implement
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="govuk-error-summary">
                 <h2 class="govuk-error-summary__title">${ this.content?.title || "There is a problem" }</h2>

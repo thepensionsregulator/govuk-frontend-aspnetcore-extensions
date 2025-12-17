@@ -5,6 +5,7 @@ import type { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffic
 import { UmbBlockListLayoutModel, UMB_BLOCK_LIST_PROPERTY_EDITOR_SCHEMA_ALIAS } from '@umbraco-cms/backoffice/block-list';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkSelectContent extends UmbBlockDataType {
     label: string;
@@ -36,7 +37,7 @@ export class GovUkSelectView extends UmbElementMixin(LitElement) implements UmbB
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view ${ this.settings?.cssClasses }">
             ${ this.settings?.labelIsPageHeading ?
             html`<h1 class="govuk-label-wrapper">

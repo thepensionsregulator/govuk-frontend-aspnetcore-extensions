@@ -5,6 +5,7 @@ import { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/blo
 import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkNotificationBannerContent extends UmbBlockDataType {
     heading: UmbPropertyEditorRteValueType;
@@ -46,7 +47,7 @@ export class GovUkNotificationBannerView extends UmbElementMixin(LitElement) imp
         }
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="${bannerClass} ${ this.settings?.cssClasses }">
                 <div class="govuk-notification-banner__header">

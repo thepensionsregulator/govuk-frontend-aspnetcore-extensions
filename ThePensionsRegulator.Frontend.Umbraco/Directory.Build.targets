@@ -40,8 +40,16 @@
 	</Target>
 
 	<!-- Restore npm packages for backoffice development. -->
-	<Target Name="GovUkFrontendUmbraco_NpmInstall" BeforeTargets="BeforeBuild">
+	<Target Name="TprFrontendUmbraco_NpmInstall" BeforeTargets="BeforeBuild">
 		<Message Text="Restoring Backoffice npm packages" Importance="high" />
 		<Exec Command="npm install" WorkingDirectory="Backoffice" />
+	</Target>
+
+	<!-- Create a version to use as a cache-busting parameter for backoffice customisation -->
+	<Target Name="TprFrontendUmbraco_GenerateTypeScriptVersion" BeforeTargets="Build">
+		<WriteLinesToFile
+		  File="Backoffice/src/package-version.generated.ts"
+		  Lines="export const PACKAGE_VERSION = '$(Version)'"
+		  Overwrite="true" />
 	</Target>
 </Project>

@@ -4,6 +4,7 @@ import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration 
 import { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
 import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { renderAccordionSection } from '../helpers/accordion-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkAccordionSectionContent extends UmbBlockDataType {
     heading: string;
@@ -30,7 +31,7 @@ export class GovUkAccordionSectionView extends UmbElementMixin(LitElement) imple
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${renderAccordionSection(this.content?.heading, this.content?.summary, this?.content?.blocks?.contentData) }
         </a>`;

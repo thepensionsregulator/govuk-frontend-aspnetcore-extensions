@@ -3,6 +3,8 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { renderRadiosDivider } from '../helpers/radios-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
+
 interface IGovUkRadiosDividerContent extends UmbBlockDataType {
     text: string;
 }
@@ -22,7 +24,7 @@ export class GovUkRadiosDividerView extends UmbElementMixin(LitElement) implemen
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${renderRadiosDivider(this.content?.text) }
         </a>

@@ -2,6 +2,7 @@ import { html, customElement, LitElement, property } from '@umbraco-cms/backoffi
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkSectionBreakSettings extends UmbBlockDataType {
     hidden: boolean;
@@ -25,7 +26,7 @@ export class GovUkSectionBreakView extends UmbElementMixin(LitElement) implement
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <p class="govuk-body backoffice-section-break"><span>${this.settings?.hidden ? 'Hidden section break' : 'Section break'} (${this.settings?.size || 'Large'})</span></p>
         </a>`;

@@ -7,6 +7,7 @@ import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT, UmbDocumentItemRepository } from
 import { ILinkPickerModel } from '../types/ILinkPickerModel';
 import { createDocumentBlock, renderDocument, updateNodeName } from '../helpers/document-helper';
 import { ITprDocumentBlock } from '../types/ITprDocumentBlock';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface ITprDocumentContent extends UmbBlockDataType {
     key: string;
@@ -85,7 +86,7 @@ export class TprDocumentView extends UmbElementMixin(LitElement) implements UmbB
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${ renderDocument(this.#document,false) }
         </a>`;

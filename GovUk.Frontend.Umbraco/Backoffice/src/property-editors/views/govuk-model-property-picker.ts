@@ -4,6 +4,7 @@ import { UmbLitElement } from '@umbraco-cms/backoffice/lit-element';
 import type { UmbPropertyEditorUiElement } from '@umbraco-cms/backoffice/property-editor';
 import { umbHttpClient } from '@umbraco-cms/backoffice/http-client';
 import { UMB_CONTENT_WORKSPACE_CONTEXT } from '@umbraco-cms/backoffice/content'; 
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 @customElement('govuk-model-property-picker')
 export class GovUkModelPropertyPickerView extends UmbLitElement implements UmbPropertyEditorUiElement {
@@ -60,7 +61,7 @@ export class GovUkModelPropertyPickerView extends UmbLitElement implements UmbPr
 			selected: option.value === this.value
 		}));
 
-		return html`<link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+		return html`<link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
 				${propertyNamesWithSelected.length ? html`<uui-select .options="${propertyNamesWithSelected}" @change="${this.#onChange}" />` :
 				html`<div class="govuk-umbraco-error">
 						<span class="govuk-umbraco-error__icon">

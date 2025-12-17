@@ -27,7 +27,8 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
         internal static DateInputItemTypes[] SupportedItemTypes { get; } =
         [
             DateInputItemTypes.DayMonthAndYear,
-            DateInputItemTypes.MonthAndYear
+            DateInputItemTypes.MonthAndYear,
+            DateInputItemTypes.DayAndMonth
         ];
 
         private readonly DateInputModelConverter _dateInputModelConverter;
@@ -65,6 +66,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
 
             var blockSettings = !string.IsNullOrEmpty(bindingContext.ModelMetadata.PropertyName) ? umbracoContext.PublishedRequest.PublishedContent.FindOverridableBlockModels(_publishedValueFallback).FindBlockByBoundProperty(bindingContext.ModelMetadata.PropertyName)?.Settings : null;
             var dayEnabled = blockSettings is not null ? blockSettings.Value<bool>(PropertyAliases.DateInputShowDay) : true;
+            var yearEnabled = blockSettings is not null ? blockSettings.Value<bool>(PropertyAliases.DateInputShowYear) : true;
 
             var dayModelName = $"{bindingContext.ModelName}.{DayComponentName}";
             var monthModelName = $"{bindingContext.ModelName}.{MonthComponentName}";
@@ -72,7 +74,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
 
             var dayValueProviderResult = dayEnabled ? bindingContext.ValueProvider.GetValue(dayModelName) : ValueProviderResult.None;
             var monthValueProviderResult = bindingContext.ValueProvider.GetValue(monthModelName);
-            var yearValueProviderResult = bindingContext.ValueProvider.GetValue(yearModelName);
+            var yearValueProviderResult = yearEnabled ? bindingContext.ValueProvider.GetValue(yearModelName) : ValueProviderResult.None;
 
             if ((dayValueProviderResult == ValueProviderResult.None || dayValueProviderResult.FirstValue == string.Empty) &&
                 (monthValueProviderResult == ValueProviderResult.None || monthValueProviderResult.FirstValue == string.Empty) &&
@@ -81,8 +83,20 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 return Task.CompletedTask;
             }
 
-            var itemTypes = dayEnabled ? DateInputItemTypes.DayMonthAndYear : DateInputItemTypes.MonthAndYear;
-
+            DateInputItemTypes itemTypes;
+            if (!dayEnabled)
+            {
+                itemTypes = DateInputItemTypes.MonthAndYear;
+            }
+            else if (!yearEnabled)
+            {
+                itemTypes = DateInputItemTypes.DayAndMonth;
+            }
+            else
+            {
+                itemTypes = DateInputItemTypes.DayMonthAndYear;
+            }
+            
             if (!SupportedItemTypes.Contains(itemTypes))
             {
                 // Weird combination of fields submitted; we're done
@@ -241,8 +255,15 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                 // If we only have the month and not a year, we should assume the year could be a leap year.
                 if (monthIsValid)
                 {
-                    var y = yearIsValid ? parsedYear : 2000;  // 2000 is a leap year
-                    maxDaysInMonth = DateTime.DaysInMonth(y, parsedMonth);
+                    var assumedYear = 2000; // 2000 is a leap year
+                    if (yearIsValid && parsedYear != 0)
+                    {
+                        assumedYear = parsedYear;
+                    }
+                    /*var assumedYear = yearIsValid ? parsedYear : 2000; */ 
+                    // Bug is here, the year could be valid because it has not been provided, which means parsedYear will be null
+
+                    maxDaysInMonth = DateTime.DaysInMonth(assumedYear, parsedMonth);
                 }
 
                 if (string.IsNullOrEmpty(day))
@@ -258,7 +279,7 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
             dateParts = errors == DateInputParseErrors.None ? new(
                 expectDay ? parsedDay : 1,
                 expectMonth ? parsedMonth : null,
-                expectYear ? parsedYear : null) : default;
+                expectYear ? parsedYear : 1900) : default;
             return errors;
 
             bool TryParseDay(string value, out int result) => int.TryParse(value, out result);

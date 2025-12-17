@@ -1,4 +1,4 @@
-import { govuk } from "../_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-validation.js";
+import { govuk } from "../_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-validation.min.js";
 
 const validator = govuk().getValidator();
 govuk().createErrorSummary();

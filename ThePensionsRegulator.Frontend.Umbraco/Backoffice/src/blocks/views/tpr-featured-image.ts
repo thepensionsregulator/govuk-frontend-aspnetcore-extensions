@@ -4,6 +4,7 @@ import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration 
 import { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
 import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { UmbMediaItemRepository, UmbMediaUrlRepository, UmbMediaItemModel, UmbMediaUrlModel, UmbMediaPickerPropertyValueEntry } from '@umbraco-cms/backoffice/media';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface ITprFeaturedImageContent extends UmbBlockDataType {
     image: Array<UmbMediaPickerPropertyValueEntry>;
@@ -75,7 +76,7 @@ export class TprFeaturedImageView extends UmbElementMixin(LitElement) implements
         if ((this.content?.blocks?.contentData?.length || 0) > 1) { blocksText = `${this.content?.blocks.contentData.length} blocks.` }
 
         return html`
-            <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+            <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
             <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
                 <div class="tpr-featured-image${this.settings?.horizontal ? ' tpr-featured-image--horizontal' : null}">
                     <div class="tpr-featured-image_thumbnail">

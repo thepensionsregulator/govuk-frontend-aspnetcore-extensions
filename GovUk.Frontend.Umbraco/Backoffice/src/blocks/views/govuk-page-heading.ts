@@ -3,6 +3,7 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkPageHeadingContent extends UmbBlockDataType {
     text: string;
@@ -44,7 +45,7 @@ export class GovUkPageHeadingView extends UmbElementMixin(LitElement) implements
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <h1 class="govuk-heading-l ${ this.settings?.cssClasses}">${this.content?.text ? this.content.text : this._nodeName }</h1>
         </a>`;

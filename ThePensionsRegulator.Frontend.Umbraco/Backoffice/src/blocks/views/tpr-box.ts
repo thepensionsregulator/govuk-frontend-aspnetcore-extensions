@@ -3,7 +3,7 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UmbBlockGridTypeModel } from '@umbraco-cms/backoffice/block-grid';
-
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IColourPickerValue {
     label: string;
@@ -38,7 +38,7 @@ export class TprBoxView extends UmbElementMixin(LitElement) implements UmbBlockE
         const isNestedBox = this.blockType?.contentElementTypeKey == "2e831668-9e36-44d9-95f4-de209f9a35d0";
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a class="backoffice-block-header ${isNestedBox ? 'for-tpr-nested-box' : 'for-tpr-box'}" href="${this.config?.editSettingsPath}">
 			<uui-icon-registry-essential>
                 <uui-icon name="icon-checkbox-empty" aria-hidden="true" />

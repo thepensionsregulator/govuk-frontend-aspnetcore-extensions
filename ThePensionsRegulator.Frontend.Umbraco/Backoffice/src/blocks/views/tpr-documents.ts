@@ -8,6 +8,7 @@ import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT, UmbDocumentItemRepository } from
 import { ILinkPickerModel } from '../types/ILinkPickerModel';
 import { updateNodeName, createDocumentBlock, renderDocument } from '../helpers/document-helper';
 import { ITprDocumentBlock } from '../types/ITprDocumentBlock';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface ITprDocumentsContent extends UmbBlockDataType {
     documents: UmbBlockValueType<UmbBlockListLayoutModel>;
@@ -84,7 +85,7 @@ export class TprDocumentsView extends UmbElementMixin(LitElement) implements Umb
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <dl class="tpr-documents govuk-list ${ this.settings?.cssClasses}">
                 ${repeat(this.#documents || [],

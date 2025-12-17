@@ -4,6 +4,7 @@ import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfigura
 import type { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
 import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkFieldsetContent extends UmbBlockDataType {
     legend: string;
@@ -54,7 +55,7 @@ export class GovUkFieldsetView extends UmbElementMixin(LitElement) implements Um
         const legendClass = this.settings?.legendIsPageHeading ? 'govuk-fieldset__legend--l' : 'govuk-fieldset__legend--for-fieldset';
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <fieldset class="govuk-fieldset ${ this.settings?.cssClasses}">
                 <legend class="govuk-fieldset__legend ${legendClass}">${ this.settings?.legendIsPageHeading ? html `<h1 class="govuk-fieldset__heading">${ legend }</h1>`: legend }</legend>

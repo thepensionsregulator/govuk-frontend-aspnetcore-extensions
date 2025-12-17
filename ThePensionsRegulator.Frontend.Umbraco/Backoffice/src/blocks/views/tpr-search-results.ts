@@ -3,6 +3,8 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { ILinkPickerModel } from '../types/ILinkPickerModel';
+import { PACKAGE_VERSION } from '../../package-version.generated';
+
 interface ITprSearchResultsContent extends UmbBlockDataType {
     heading: string;
     footerLinks: Array<ILinkPickerModel>;
@@ -52,7 +54,7 @@ export class TprSearchResultsView extends UmbElementMixin(LitElement) implements
     override render() {
         const inputId = crypto.randomUUID();
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view js-enabled">
             <aside class="tpr-search-results ${this.settings?.cssClasses}">
                 ${this.#renderHeading(this.content?.heading, this.settings?.headingClass, this.settings?.headingLevel?.[0])}

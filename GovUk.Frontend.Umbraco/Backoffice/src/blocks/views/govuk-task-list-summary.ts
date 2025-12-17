@@ -2,6 +2,7 @@ import { html, customElement, LitElement, property } from '@umbraco-cms/backoffi
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkTaskListSummaryContent extends UmbBlockDataType {
     incompleteStatus: string;
@@ -31,7 +32,7 @@ export class GovUkTaskListSummaryView extends UmbElementMixin(LitElement) implem
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-task-list-summary backoffice-block-view ${ this.settings?.cssClasses}">
             <h2 class="govuk-task-list-summary__heading govuk-heading-s">${ this.content?.incompleteStatus || 'Tasks incomplete' }</h2>
             <p class="govuk-task-list-summary__tracker govuk-body">${ this.content?.tracker || "You've completed 1 of 2 tasks." }</p>

@@ -59,7 +59,7 @@
             <main id="main" class="govuk-main-wrapper">@RenderBody()</main>
           </div>
         </div>
-        <partial name="TPR/UmbracoBodyClosing" />
+        <partial name="TPR/BodyClosing" />
       </body>
     </html>
     ```

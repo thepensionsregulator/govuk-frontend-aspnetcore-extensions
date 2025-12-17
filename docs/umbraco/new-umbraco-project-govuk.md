@@ -50,7 +50,7 @@
        <div class="govuk-width-container">
          <main class="govuk-main-wrapper" id="main">@RenderBody()</main>
        </div>
-       <partial name="GOVUK/UmbracoBodyClosing" />
+       <partial name="GOVUK/BodyClosing" />
      </body>
    </html>
    ```

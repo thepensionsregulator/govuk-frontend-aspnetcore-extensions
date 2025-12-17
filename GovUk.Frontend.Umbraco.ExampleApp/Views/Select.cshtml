@@ -1,13 +1,13 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SelectViewModel>
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
-@section head{
+@section head {
     <title>@Model.Page!.PageHeadingOrName()</title>
 }
-@using (Html.BeginUmbracoForm<SelectSurfaceController>(nameof(SelectSurfaceController.Index), new {}, new { novalidate="novalidate" }))
+@using (Html.BeginUmbracoForm<SelectSurfaceController>(nameof(SelectSurfaceController.Index), new { }, new { novalidate = "novalidate" }))
 {
     <partial name="GOVUK/BlockList" model="Model.Page!.Blocks" />
 }
 @section scripts {
-    <partial name="GOVUK/UmbracoValidation" />
+    <partial name="GOVUK/Validation" />
 }

@@ -2,8 +2,5 @@
 @section head{
     <title>@Model.PageHeadingOrName()</title>
 }
-@{
-    //SmidgeHelper.RequiresJs(new JavaScriptFile { FilePath = "~/js/NotificationBanner.js", Order = 0 });
-}
-
+<script src="/js/NotificationBanner.js" type="module" asp-append-version="true"></script>
 <partial name="GOVUK/BlockList" model="Model.Blocks" />

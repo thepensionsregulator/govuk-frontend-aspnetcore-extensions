@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             overlay.forEach(o => o.addEventListener("click", toggleMobileMenu));
 
+
             arrows.forEach(a => a.addEventListener("click", expandMobileMenuSubMenu))
 
             menuItems.forEach(m => {
@@ -36,9 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
 
             overlay?.forEach(o => o.classList.remove("tpr-header-menu__nav-overlay--visible"));
-
             toggles.forEach(t => t.removeEventListener("click", toggleMobileMenu))
-
             overlay.forEach(o => o.removeEventListener("click", toggleMobileMenu));
 
             arrows.forEach(a => a.removeEventListener("click", expandMobileMenuSubMenu))
@@ -54,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 m.removeEventListener("keydown", mobileKeyboardNavigation)
                 m.addEventListener("keydown", desktopKeyboardNavigation)
+                overlay.forEach(o => o.addEventListener("click", removeOverlayOnClick));
             });
 
             removeActiveClasses()
@@ -68,12 +68,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function highlightCurrentSection() {
 
-    let url = window.location.href.toString().split(window.location.host)[1];
+    let url = window.location.pathname;
 
     url = url.replace(/^\/[a-z]{2}\//i, '/');
     url = url.replace(/\/[a-z]{2}(?=\/|$)/gi, '');
 
-    let section = Array.from(url).filter(char => char !== '/').join('').replace("-", " ");
+    let section = url.split('/').slice(1, 2).join('').replace("-", " ");
 
     if (!section) {
         return;
@@ -134,6 +134,12 @@ function displayDesktopOverlayOnHover() {
     });
 }
 
+function removeOverlayOnClick() {
+
+    const overlay = document.querySelector(".tpr-header-menu__nav-overlay");
+    overlay?.classList.remove("tpr-header-menu__nav-overlay--visible")
+}
+
 function keyboardToggleMobileMenu(e) {
 
     switch (e.key) {
@@ -165,7 +171,23 @@ function desktopKeyboardNavigation(e) {
     const currentIndex = menuItems.indexOf(menuItem);
 
     const overlay = document.querySelector(".tpr-header-menu__nav-overlay")
+    const nav = document.querySelector(".tpr-header-menu__nav");
 
+    nav.addEventListener("focusin", (e) => {
+        const newlyFocusedItem = e.target.closest(".tpr-header-menu__nav-menu-item");
+        if (!newlyFocusedItem) return;
+
+        document.querySelectorAll(".tpr-header-menu__nav-menu-item").forEach(item => {
+            if (item !== newlyFocusedItem) {
+                const a = item.querySelector("a");
+                const sub = item.querySelector(".tpr-header-menu__nav-sub-menu");
+                if (sub) {
+                    sub.style.display = "none";
+                    a?.setAttribute("aria-expanded", "false");
+                }
+            }
+        });
+    });
 
     switch (e.key) {
         case "ArrowRight":
@@ -202,6 +224,14 @@ function desktopKeyboardNavigation(e) {
                 subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style");
                 overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
                 a.setAttribute("aria-expanded", "true");
+            }
+            break;
+        case "Escape":
+            if (hasSubMenu) {
+                subMenu.style.display = 'none';
+                a.setAttribute("aria-expanded", "false");
+                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+                a.focus();
             }
             break;
         default:

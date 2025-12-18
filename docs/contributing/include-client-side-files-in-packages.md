@@ -23,3 +23,24 @@ Update the `*.csproj` file to add the `<package-name>.props` file to the package
     <PackagePath>build;buildTransitive</PackagePath>
 </Content>
 ```
+
+## Minifying and caching client-side files
+
+When including a client-side file on a page, always enable client-side caching with a cache-busting parameter that ensures the cache is reset when a new version of the package is published.
+
+### JavaScript files
+
+Configure minification in `bundleconfig.json` at the root of the project. This is processed by the `BuildBundlerMinifier` NuGet package. Then use `asp-append-version="true"` to add a cache-busting parameter:
+
+```razor
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<script src="/<package-name>/js/my-js-file.min.js" type="module" asp-append-version="true"></script>
+```
+
+### Add a Cache-Control header
+
+If you add files to expected locations they will automatically get a `Cache-Control` header which caches them for a long time.
+
+This is controlled by a class in each project which implements `ThePensionsRegulator.GovUk.Frontend.Caching.IStaticFileCachePolicy`. You can update the class for the project you're working on if you need the header added to other client-side paths.
+
+`ThePensionsRegulator.GovUk.Frontend.Caching.CacheStaticFilesMiddleware` looks at all the `IStaticFileCachePolicy` instances and, if the path of the request matches, it adds the `Cache-Control` header.

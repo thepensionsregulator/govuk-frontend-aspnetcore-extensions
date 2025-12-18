@@ -1,9 +1,9 @@
+using GovUk.Frontend.AspNetCore.Extensions.Caching;
 using GovUk.Frontend.AspNetCore.Extensions.Configuration;
 using GovUk.Frontend.AspNetCore.Extensions.ModelBinding;
 using GovUk.Frontend.AspNetCore.Extensions.Security;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace GovUk.Frontend.AspNetCore.Extensions
 {
@@ -40,6 +40,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions
                 options.ModelBinderProviders.Insert(0, new UkPostcodeModelBinderProvider());
             });
             services.AddSingleton(new GovUkFrontendOptionsProvider(configureOptionsWithDefaults));
+            services.AddTransient<IStaticFileCachePolicy, GovUkStaticFileCachePolicy>();
 
             return services;
         }

@@ -160,8 +160,9 @@ function keyboardToggleMobileMenu(e) {
 function desktopKeyboardNavigation(e) {
 
     const menuItem = e.currentTarget
+    const menuItemElements = document.querySelectorAll(".tpr-header-menu__nav-menu-item")
 
-    let menuItems = Array.from(document.querySelectorAll(".tpr-header-menu__nav-menu-item"));
+    let menuItems = Array.from(menuItemElements);
 
     let a = menuItem.querySelector('a');
 
@@ -177,7 +178,7 @@ function desktopKeyboardNavigation(e) {
         const newlyFocusedItem = e.target.closest(".tpr-header-menu__nav-menu-item");
         if (!newlyFocusedItem) return;
 
-        document.querySelectorAll(".tpr-header-menu__nav-menu-item").forEach(item => {
+        menuItemElements.forEach(item => {
             if (item !== newlyFocusedItem) {
                 const a = item.querySelector("a");
                 const sub = item.querySelector(".tpr-header-menu__nav-sub-menu");
@@ -192,20 +193,20 @@ function desktopKeyboardNavigation(e) {
     switch (e.key) {
         case "ArrowRight":
             e.preventDefault();
-            menuItems[(currentIndex + 1) % menuItems.length].querySelector('a')?.focus();
-            overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+            menuItems[(currentIndex + 1) % menuItems.length].querySelector('a')?.focus();         
             if (hasSubMenu) {
                 subMenu.style.display = 'none';
                 a.setAttribute("aria-expanded", "false");
+                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             }
             break;
         case "ArrowLeft":
             e.preventDefault();
             menuItems[(currentIndex - 1 + menuItems.length) % menuItems.length].querySelector('a')?.focus();
-            overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             if (hasSubMenu) {
                 subMenu.style.display = 'none';
                 a.setAttribute("aria-expanded", "false");
+                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             }
             break;
         case "ArrowUp":
@@ -213,17 +214,17 @@ function desktopKeyboardNavigation(e) {
             if (hasSubMenu) {
                 subMenu.style.display = 'none';
                 a.setAttribute("aria-expanded", "false");
-                menuItems[(currentIndex)].querySelector('a')?.focus();
+                a.focus();
+                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             }
-            overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             break;
         case "ArrowDown":
             e.preventDefault();
             if (hasSubMenu) {
                 subMenu.style.display = 'grid';
+                a.setAttribute("aria-expanded", "true");
                 subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style");
                 overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
-                a.setAttribute("aria-expanded", "true");
             }
             break;
         case "Escape":

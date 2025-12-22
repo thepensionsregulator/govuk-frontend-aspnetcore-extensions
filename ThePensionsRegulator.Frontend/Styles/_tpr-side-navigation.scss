@@ -14,7 +14,7 @@ $side-nav-selection-border-size: govuk-spacing(1);
 }
 
 a.tpr-side-nav__desktop-link {
-    display: block;
+    display: none;
 }
 
 .tpr-side-nav li {
@@ -26,7 +26,7 @@ a.tpr-side-nav__desktop-link {
 }
 
 .tpr-side-nav__mobile-expand-toggle {
-    display: none;
+    display: block;
     color: $tpr-colour-royal-blue;
     border: none;
     background-color: transparent;
@@ -40,29 +40,24 @@ a.tpr-side-nav__desktop-link {
 }
 
 .tpr-side-nav__mobile-expand-toggle__arrow {
-    content: url(../../ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg);
-    max-height: 25px;
-    max-width: 25px;
     float: inline-end;
 }
 
-.tpr-side-nav a {
+.tpr-side-nav .govuk-link {
+    font-weight: normal;
+}
+
+.tpr-side-nav a:not(.tpr-side-nav__mobile-expand-toggle):not(.tpr-side-nav__desktop-link) {
     text-decoration: none;
     padding: govuk-spacing(1);
     padding-left: $side-nav-indentation-space;
     display: inline-block;
     position: relative;
-
-    &.govuk-link--no-visited-state {
-        font-weight: normal;
-        font-family: "Open Sans", Arial, sans-serif;
-    }
 }
 .tpr-side-nav a.tpr-side-nav__desktop-link {
     padding-left: govuk-spacing(1);
 }
 
-// Root ul only
 .tpr-side-nav > ul {
     margin: $side-nav-indentation-space ($side-nav-indentation-space * -1);
 }
@@ -72,8 +67,12 @@ ul.tpr-side-nav__list {
     padding-inline-start: 0;
     display:none;
 }
-ul[data-level = "1"]{
-    display:block;
+
+.tpr-side-nav__list[data-level = "1"]{
+    display:none;
+}
+.tpr-side-nav__list--expanded[data-level = "1"] {
+    display: block;
 }
 
 .tpr-side-nav__list ul {
@@ -92,16 +91,13 @@ ul[data-level = "1"]{
     display: flex;
 }
 
-.tpr-side-nav__list-item__arrow {
-    content: url(../../ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg);
-    max-height: 25px;
-    max-width: 25px;
+.tpr-side-nav__list-item-arrow {
     float: inline-end;
     padding: 0.2em;
     cursor: pointer;
 }
 
-.tpr-side-nav__arrow--up {
+.tpr-side-nav__list-item-arrow--up {
     transform: rotate(180deg);
 }
 
@@ -141,16 +137,16 @@ li.tpr-side-nav__list-item--expanded {
     border-color: transparent;
 }
 
-@include govuk-media-query($until:tablet) {
-    ul[data-level = "1"] {
-        display: none;
+@include govuk-media-query($from:tablet) {
+    .tpr-side-nav__list[data-level = "1"] {
+        display: block;
     }
 
     a.tpr-side-nav__desktop-link {
-        display: none;
+        display: block;
     }
 
-    button.tpr-side-nav__mobile-expand-toggle {
-        display: block;
+    .tpr-side-nav__mobile-expand-toggle {
+        display: none;
     }
 }

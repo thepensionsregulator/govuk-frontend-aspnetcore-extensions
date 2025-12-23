@@ -37,7 +37,7 @@ export class GovUkPanelView extends UmbElementMixin(LitElement) implements UmbBl
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-panel--confirmation govuk-panel backoffice-block-view ${ this.settings?.cssClasses}">
             ${this?.content?.panelHeading ? html`<h1 class="govuk-panel__title">${ this.content?.panelHeading }</h1>` : null }
-            ${this.content?.panelText.markup ? html`<div class="govuk-panel__body">${ unsafeHTML(disableLinks(this.content?.panelText.markup)) }</div>` : null }
+            ${this.content?.panelText?.markup ? html`<div class="govuk-panel__body">${ unsafeHTML(disableLinks(this.content?.panelText?.markup)) }</div>` : null }
         </a>
         `;
     }

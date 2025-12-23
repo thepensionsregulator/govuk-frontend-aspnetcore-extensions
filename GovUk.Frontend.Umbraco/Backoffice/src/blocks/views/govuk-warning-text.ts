@@ -39,7 +39,7 @@ export class GovUkWarningTextView extends UmbElementMixin(LitElement) implements
             <span aria-hidden="true" class="govuk-warning-text__icon">!</span>
             <strong class="govuk-warning-text__text" aria-hidden="true">
                 <span class="govuk-visually-hidden">${ this.content?.iconFallbackText || "Warning" }</span>
-                ${ unsafeHTML(disableLinks(this.content?.text.markup)) }
+                ${ unsafeHTML(disableLinks(this.content?.text?.markup)) }
             </strong>
         </a>
         `;

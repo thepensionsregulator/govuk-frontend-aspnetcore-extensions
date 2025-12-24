@@ -12,7 +12,7 @@ using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco.Caching;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 namespace ThePensionsRegulator.Frontend.Umbraco
 {

@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Dictionary;

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ThePensionsRegulator.Frontend.Models;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;

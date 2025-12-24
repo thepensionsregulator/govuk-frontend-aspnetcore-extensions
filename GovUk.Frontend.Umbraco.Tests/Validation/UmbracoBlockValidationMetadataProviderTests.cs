@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
 

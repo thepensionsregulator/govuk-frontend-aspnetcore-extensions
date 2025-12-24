@@ -3,9 +3,9 @@
 @inject IGovUkGridClassBuilder gridClassBuilder
 @using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Models
-@using ThePensionsRegulator.Umbraco.Blocks;
-@using Umbraco.Cms.Core.Models.Blocks
 @using GovUk.Frontend.Umbraco.Services
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Extensions
 @{
     var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.GridRowBlocks)?.FilteredBlocks().ToList() ?? new List<OverridableBlockListItem>();

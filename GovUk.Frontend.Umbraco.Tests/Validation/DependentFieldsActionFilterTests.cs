@@ -9,7 +9,7 @@ using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Net.Http;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 
 namespace GovUk.Frontend.Umbraco.Tests.Validation

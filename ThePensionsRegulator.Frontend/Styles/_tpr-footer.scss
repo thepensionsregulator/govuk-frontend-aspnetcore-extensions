@@ -2,28 +2,13 @@
 @import 'govuk/base';
 @import 'govuk/helpers/_focused';
 
-// Like .govuk-width-container but without the margins because they're handled according to TPR brand by padding on .tpr-footer
-@mixin tpr-footer-width-container {
-    max-width: $govuk-page-width;
-    margin: auto;
-}
-
 .tpr-footer {
     background: $tpr-colour-whisper;
     border-top: govuk-px-to-rem(6) solid $tpr-colour-steel;
-    padding: govuk-px-to-rem(40) govuk-px-to-rem(20) 0;
-}
-
-@include govuk-media-query($from: desktop) {
-
-    .tpr-footer__upper-footer-container {
-        display: grid;
-        grid-template-columns: 1fr 4fr;
-    }
+    padding: govuk-px-to-rem(40) 0 0;
 }
 
 .tpr-footer__footer-logo {
-    @include tpr-footer-width-container;
     padding-bottom: govuk-px-to-rem(20);
 }
 
@@ -32,43 +17,16 @@
     height: govuk-px-to-rem(47);
 }
 
-.tpr-footer__three-column-links-container {
-    display: flex;
-    flex-direction: column;
-    gap: govuk-px-to-rem(20);
+.tpr-footer__links { 
+    @include govuk-responsive-margin(8, "bottom");
 }
 
-.tpr-footer__three-column-links {
-    display: flex;
-    flex-direction: column;
-    gap: govuk-px-to-rem(10);
-    list-style-type: none;
-}
-
-@include govuk-media-query($from: tablet) {
-    .tpr-footer__three-column-links-container {
-        flex-direction: row;
-        gap: 3rem;
-        justify-content: center;
-    }
-}
-
-.tpr-footer__three-column-link {
-    padding: 0.5rem;
-}
-
-.tpr-footer__three-column-link > a:visited {
-    color: $tpr-colour-steel;
-    margin-bottom: govuk-px-to-rem(20);
-}
-
-.tpr-footer__three-column-link > a:focus {
-    color: $tpr-colour-eclipse;
+.tpr-footer__links > li {
+    @include govuk-responsive-margin(4, "bottom");
 }
 
 // Wrapper around .tpr-footer__content and .tpr-footer__copyright allowing them to be positioned using flexbox at tablet & above
 .tpr-footer__content-container {
-    @include tpr-footer-width-container;
     border-top: govuk-px-to-rem(1) solid $tpr-colour-very-light-grey;
     padding-top: govuk-px-to-rem(22);
 }
@@ -86,11 +44,14 @@
 }
 
 .tpr-footer__content > a:link,
-.tpr-footer__content > a:visited {
+.tpr-footer__content > a:visited,
+.tpr-footer__links a:link,
+.tpr-footer__links a:visited {
     color: $tpr-colour-steel;
     margin-bottom: govuk-px-to-rem(20);
 }
 
+.tpr-footer__links a:focus,
 .tpr-footer__content > a:focus {
     color: $tpr-colour-eclipse;
 }
@@ -101,14 +62,8 @@
 }
 
 @include govuk-media-query($from: tablet) {
-    .tpr-footer {
-        padding-left: govuk-px-to-rem(30);
-        padding-right: govuk-px-to-rem(30);
-    }
-
     .tpr-footer__footer-logo {
         padding-bottom: govuk-px-to-rem(60);
-        margin-left: -2rem;
     }
 
     .tpr-footer__content-container {
@@ -123,12 +78,5 @@
     .tpr-footer__content > a {
         margin-bottom: 0;
         margin-right: govuk-px-to-rem(29);
-    }
-}
-
-@include govuk-media-query($from: desktop) {
-    .tpr-footer {
-        padding-left: govuk-px-to-rem(85);
-        padding-right: govuk-px-to-rem(85);
     }
 }

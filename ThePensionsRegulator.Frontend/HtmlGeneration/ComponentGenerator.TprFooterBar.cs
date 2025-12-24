@@ -18,12 +18,16 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             tagBuilder.MergeCssClass("tpr-footer");
             tagBuilder.MergeAttribute("role", "contentinfo");
 
+            var widthContainer = new TagBuilder("div");
+            widthContainer.MergeCssClass("govuk-width-container");
+            tagBuilder.InnerHtml.AppendHtml(widthContainer);
+
             var upperFooterContainer = new TagBuilder("div");
-            upperFooterContainer.MergeCssClass("tpr-footer__upper-footer-container");
-            tagBuilder.InnerHtml.AppendHtml(upperFooterContainer);
+            upperFooterContainer.MergeCssClass("govuk-grid-row");
+            widthContainer.InnerHtml.AppendHtml(upperFooterContainer);
 
             var logoContainer = new TagBuilder("div");
-            logoContainer.MergeCssClass("tpr-footer__footer-logo");
+            logoContainer.MergeCssClass("govuk-grid-column-one-quarter tpr-footer__footer-logo");
 
             var logoIsLinked = !string.IsNullOrEmpty(tprFooterBar.LogoHref);
             var logoElement = new TagBuilder(logoIsLinked ? "a" : "span");
@@ -43,27 +47,26 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             if (tprFooterBar.ThreeColumnLinks != null && tprFooterBar.ThreeColumnLinks?.Count > 0)
             {
-                var threeColumnLinks = new TagBuilder("div");
-                threeColumnLinks.AddCssClass("tpr-footer__three-column-links-container");
-                threeColumnLinks.MergeCssClass("govuk-body");
 
                 foreach (var column in tprFooterBar.ThreeColumnLinks)
                 {
-                    var ul = new TagBuilder("ul");
-                    if(column.Attributes != null) { ul.MergeAttributes(column.Attributes); }
-                    ul.AddCssClass("tpr-footer__three-column-links");
-
                     if (column.ThreeColumnFooterLinks != null && column.ThreeColumnFooterLinks.Count > 0)
                     {
+                        var linksColumn = new TagBuilder("div");
+                        linksColumn.AddCssClass("govuk-grid-column-one-quarter");
+
+                        var ul = new TagBuilder("ul");
+                        if (column.Attributes != null) { ul.MergeAttributes(column.Attributes); }
+                        ul.AddCssClass("govuk-list");
+                        ul.AddCssClass("tpr-footer__links");
+
                         foreach (var link in column.ThreeColumnFooterLinks)
                         {
                             var li = new TagBuilder("li");
-                            
-                            li.AddCssClass("tpr-footer__three-column-link");
 
                             var a = new TagBuilder("a");
                             a.AddCssClass("govuk-link");
-                          
+
                             if (link.LinkText != null)
                             {
                                 a.InnerHtml.Append(link.LinkText);
@@ -73,17 +76,19 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                                 a.Attributes.Add("href", link.LinkUrl);
                             }
 
-                            if (link.Attributes != null) { 
-                                a.MergeAttributes(link.Attributes); 
+                            if (link.Attributes != null)
+                            {
+                                a.MergeAttributes(link.Attributes);
                             }
-                            
+
                             li.InnerHtml.AppendHtml(a);
                             ul.InnerHtml.AppendHtml(li);
                         }
+
+                        linksColumn.InnerHtml.AppendHtml(ul);
+                        upperFooterContainer.InnerHtml.AppendHtml(linksColumn);
                     }
-                    threeColumnLinks.InnerHtml.AppendHtml(ul);
                 }
-                upperFooterContainer.InnerHtml.AppendHtml(threeColumnLinks);
             }
 
             var hasContent = (tprFooterBar.Content != null && !string.IsNullOrWhiteSpace(tprFooterBar.Content.ToString()));
@@ -102,9 +107,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 {
                     if (tprFooterBar.ContentAllowHtml)
                     {
-                                         
+
                         contentElement.InnerHtml.AppendHtml(tprFooterBar.Content!);
-                       
+
                     }
                     else
                     {
@@ -134,7 +139,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     }
                     contentContainer.InnerHtml.AppendHtml(copyrightElement);
                 }
-                tagBuilder.InnerHtml.AppendHtml(contentContainer);
+                widthContainer.InnerHtml.AppendHtml(contentContainer);
             }
 
             return tagBuilder;

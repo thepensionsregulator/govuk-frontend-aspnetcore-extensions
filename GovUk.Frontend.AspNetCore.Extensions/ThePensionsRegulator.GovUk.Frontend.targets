@@ -12,7 +12,7 @@
 		</PropertyGroup>
 
 		<!-- Copy files from this project to the consuming project. -->
-		<Message Text="ThePensionsRegulator.GovUk.Frontend not copying SASS files from ThePensionsRegulator.GovUk.Frontend because the target project is not a web project or Razor class library." Condition="$(TprGovUkFrontend_TargetProjectIsWebOrRclProject) != true" Importance="high" />
+		<Message Text="ThePensionsRegulator.GovUk.Frontend not copying SASS files because the target project is not a web project or Razor class library." Condition="$(TprGovUkFrontend_TargetProjectIsWebOrRclProject) != true" Importance="high" />
 		<CallTarget Targets="TprGovUkFrontend_CopyFiles" Condition="$(TprGovUkFrontend_TargetProjectIsWebOrRclProject) == true" />
 	</Target>
 

@@ -57,4 +57,25 @@
 		<Message Text="Deleting obsolete files: @(TprFrontendUmbraco_DirsToRemove)" />
 		<RemoveDir Directories="@(TprFrontendUmbraco_DirsToRemove)" />
 	</Target>
+
+	<Target Name="TprFrontendUmbraco_GenerateProps" BeforeTargets="BeforeBuild">
+		<!--Generate a .props file so that ThePensionsRegulator.Frontend.Umbraco.targets has access to the package version. -->
+		<Message Text="ThePensionsRegulator.Frontend.Umbraco generating $(ProjectDir)ThePensionsRegulator.Frontend.Umbraco.props to ..." Importance="high" />
+		<ItemGroup>
+			<TprFrontendUmbracoPropsText Include="TprFrontendUmbracoPropsText">
+				<Text>
+					<![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<TprFrontendUmbracoPackageVersion>$(Version)</TprFrontendUmbracoPackageVersion>
+	</PropertyGroup>
+</Project>
+				]]>
+				</Text>
+			</TprFrontendUmbracoPropsText>
+			<TprFrontendUmbracoProps Include="%(TprFrontendUmbracoPropsText.Text)" />
+		</ItemGroup>
+		<WriteLinesToFile File="$(ProjectDir)ThePensionsRegulator.Frontend.Umbraco.generated.props" Lines="@(TprFrontendUmbracoProps)" Overwrite="True" />
+	</Target>
 </Project>

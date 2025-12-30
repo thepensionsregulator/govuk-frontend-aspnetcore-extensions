@@ -34,6 +34,27 @@
 		  Overwrite="true" />
 	</Target>
 
+	<Target Name="TprFrontend_GenerateProps" BeforeTargets="BeforeBuild">
+		<!--Generate a .props file so that ThePensionsRegulator.Frontend.targets has access to the package version. -->
+		<Message Text="ThePensionsRegulator.Frontend generating $(ProjectDir)ThePensionsRegulator.Frontend.props" Importance="high" />
+		<ItemGroup>
+			<TprFrontendPropsText Include="TprFrontendPropsText">
+				<Text>
+					<![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<TprFrontendPackageVersion>$(Version)</TprFrontendPackageVersion>
+	</PropertyGroup>
+</Project>
+				]]>
+				</Text>
+			</TprFrontendPropsText>
+			<TprFrontendProps Include="%(TprFrontendPropsText.Text)" />
+		</ItemGroup>
+		<WriteLinesToFile File="$(ProjectDir)ThePensionsRegulator.Frontend.generated.props" Lines="@(TprFrontendProps)" Overwrite="True" />
+	</Target>
+
 	<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
 	<Target Name="TprFrontend_Clean" Condition="Exists('$(ProjectDir)wwwroot\tpr\')">
 		<ItemGroup>

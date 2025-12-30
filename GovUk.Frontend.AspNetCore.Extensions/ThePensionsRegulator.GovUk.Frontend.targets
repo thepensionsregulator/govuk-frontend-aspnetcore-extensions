@@ -1,70 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Target Name="ThePensionsRegulatorGovUkFrontend" BeforeTargets="BeforeBuild">
-		<!-- Look for the PackageReference to this package to get the current version.
-			 Use that version to find the NuGet package folder, and copy govuk-frontend SASS files to the Styles folder in the consuming project.
-			 If this package is a transitive dependency the PackageReference will not be found, so show a message.
-		-->
-		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend']/@Version">
-			<Output TaskParameter="Result" ItemName="TprGovUkFrontendVersion" />
-		</XmlPeek>
+	<Import Project="..\build\ThePensionsRegulator.GovUk.Frontend.generated.props"/>
 
+	<Target Name="ThePensionsRegulatorGovUkFrontend" BeforeTargets="BeforeBuild">
 		<!-- Determine if the consuming project is a web project. If it isn't then skip copying/generating files. -->
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/@Sdk">
 			<Output TaskParameter="Result" ItemName="TprGovUkFrontend_TargetProjectSdk" />
 		</XmlPeek>
 		<PropertyGroup>
-			<TprGovUkFrontend_HasPackageReferenceToTprGovUkFrontend Condition="@(TprGovUkFrontendVersion->Count() )>0">true</TprGovUkFrontend_HasPackageReferenceToTprGovUkFrontend>
-			<TprGovUkFrontend_TargetProjectIsWebProject Condition="@(TprGovUkFrontend_TargetProjectSdk)=='Microsoft.NET.Sdk.Web'">true</TprGovUkFrontend_TargetProjectIsWebProject>
 			<TprGovUkFrontend_TargetProjectIsWebOrRclProject Condition="@(TprGovUkFrontend_TargetProjectSdk)=='Microsoft.NET.Sdk.Web' Or @(TprGovUkFrontend_TargetProjectSdk)=='Microsoft.NET.Sdk.Razor'">true</TprGovUkFrontend_TargetProjectIsWebOrRclProject>
 		</PropertyGroup>
 
 		<!-- Copy files from this project to the consuming project. -->
 		<Message Text="ThePensionsRegulator.GovUk.Frontend not copying SASS files from ThePensionsRegulator.GovUk.Frontend because the target project is not a web project or Razor class library." Condition="$(TprGovUkFrontend_TargetProjectIsWebOrRclProject) != true" Importance="high" />
-		<Message Text="ThePensionsRegulator.GovUk.Frontend not copying SASS files from ThePensionsRegulator.GovUk.Frontend because it is a transitive dependency without access to the correct path. These may be copied by the package that references ThePensionsRegulator.GovUk.Frontend or you may need to add a direct reference to ThePensionsRegulator.GovUk.Frontend." Importance="high"
-				 Condition="$(TprGovUkFrontend_TargetProjectIsWebOrRclProject) == true And $(TprGovUkFrontend_HasPackageReferenceToTprGovUkFrontend) != true"/>
-		<CallTarget Targets="TprGovUkFrontend_CopyFiles" Condition="$(TprGovUkFrontend_TargetProjectIsWebOrRclProject) == true And $(TprGovUkFrontend_HasPackageReferenceToTprGovUkFrontend) == true" />
-		<CallTarget Targets="TprGovUkFrontend_GenerateFiles" Condition="$(TprGovUkFrontend_TargetProjectIsWebOrRclProject) == true" />
+		<CallTarget Targets="TprGovUkFrontend_CopyFiles" Condition="$(TprGovUkFrontend_TargetProjectIsWebOrRclProject) == true" />
 	</Target>
 
 	<Target Name="TprGovUkFrontend_CopyFiles">
-		<!-- Look for the PackageReference to this package to get the current version.
-			 Use that version to find the NuGet package folder, and copy govuk-frontend SASS files to the Styles folder in the consuming project.
-			 If this package is a transitive dependency the PackageReference will not be found, so show a message.
-		-->
-		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend']/@Version">
-			<Output TaskParameter="Result" ItemName="ThePensionsRegulatorGovUkFrontendVersion" />
-		</XmlPeek>
+		<!-- Use the version of this package to find the NuGet package folder, and copy files from the package to the consuming project. -->
 		<PropertyGroup>
-			<ThePensionsRegulatorGovUkFrontendVersion>@(ThePensionsRegulatorGovUkFrontendVersion)</ThePensionsRegulatorGovUkFrontendVersion>
-			<TprGovUkFrontend_CopyFiles_StylesFolderExists Condition="Exists('$(ProjectDir)Styles')">true</TprGovUkFrontend_CopyFiles_StylesFolderExists>
-			<TprGovUkFrontend_CopyFiles_UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</TprGovUkFrontend_CopyFiles_UserProfile>
-			<TprGovUkFrontend_CopyFiles_UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</TprGovUkFrontend_CopyFiles_UserProfile>
-			<ThePensionsRegulatorGovUkFrontendSassFolder>$(TprGovUkFrontend_CopyFiles_UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(ThePensionsRegulatorGovUkFrontendVersion)\contentFiles\any\$(TargetFramework)\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
+			<TprGovUkFrontend_StylesFolderExists Condition="Exists('$(ProjectDir)Styles')">true</TprGovUkFrontend_StylesFolderExists>
+			<TprGovUkFrontend_UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</TprGovUkFrontend_UserProfile>
+			<TprGovUkFrontend_UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</TprGovUkFrontend_UserProfile>
+			<ThePensionsRegulatorGovUkFrontendSassFolder>$(TprGovUkFrontend_UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(TprGovUkFrontendPackageVersion)\contentFiles\any\$(TargetFramework)\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
 		</PropertyGroup>
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(ThePensionsRegulatorGovUkFrontendSassFolder)**\*.scss" />
 		</ItemGroup>
 
-		<!-- The following copy task is also configured in ThePensionsRegulator.Frontend.targets, ThePensionsRegulator.GovUk.Frontend.Umbraco.targets 
-		     and ThePensionsRegulator.Frontend.Umbraco.targets in case this package is referenced as a transitive dependency -->
-		<Message Text="ThePensionsRegulator.GovUk.Frontend not copying SASS files because $(ProjectDir)Styles does not exist." Importance="high" Condition="$(TprGovUkFrontend_CopyFiles_StylesFolderExists) != true" />
-		<Message Text="ThePensionsRegulator.GovUk.Frontend copying SASS files from $(ThePensionsRegulatorGovUkFrontendSassFolder) to $(ProjectDir)." Importance="high" Condition="$(TprGovUkFrontend_CopyFiles_StylesFolderExists) == true" />
+		<Message Text="ThePensionsRegulator.GovUk.Frontend not copying SASS files because $(ProjectDir)Styles does not exist." Importance="high" Condition="$(TprGovUkFrontend_StylesFolderExists) != true" />
+		<Message Text="ThePensionsRegulator.GovUk.Frontend copying SASS files from $(ThePensionsRegulatorGovUkFrontendSassFolder) to $(ProjectDir)." Importance="high" Condition="$(TprGovUkFrontend_StylesFolderExists) == true" />
 
 		<Copy SourceFiles="@(ThePensionsRegulatorGovUkFrontendSassFiles)"
 			  DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
-			  Condition="$(TprGovUkFrontend_CopyFiles_StylesFolderExists) == true" />
+			  Condition="$(TprGovUkFrontend_StylesFolderExists) == true" />
 
-	</Target>
-
-	<Target Name="TprGovUkFrontend_GenerateFiles">
 		<!-- Generate a .gitignore so that govuk-frontend SASS files copied from this package are not committed to the consuming project's source control.
 			 Only do that if the folder exists, otherwise they'll also get created in an projects with no interest in SASS. -->
-		<PropertyGroup>
-			<TprGovUkFrontend_GenerateFiles_StylesFolderExists Condition="Exists('$(ProjectDir)Styles')">true</TprGovUkFrontend_GenerateFiles_StylesFolderExists>
-		</PropertyGroup>
-
-		<Message Text="ThePensionsRegulator.GovUk.Frontend generating $(ProjectDir)Styles\govuk\.gitignore to prevent commit of SASS files copied into the project" Importance="high" Condition="$(TprGovUkFrontend_GenerateFiles_StylesFolderExists) == true" />
+		<Message Text="ThePensionsRegulator.GovUk.Frontend generating $(ProjectDir)Styles\govuk\.gitignore to prevent commit of SASS files copied into the project." Importance="high" Condition="$(TprGovUkFrontend_StylesFolderExists) == true" />
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendGitIgnoreText Include="ThePensionsRegulatorGovUkFrontendGitIgnoreText">
 				<Text>
@@ -75,7 +48,7 @@
 			</ThePensionsRegulatorGovUkFrontendGitIgnoreText>
 			<ThePensionsRegulatorGovUkFrontendGitIgnore Include="%(ThePensionsRegulatorGovUkFrontendGitIgnoreText.Text)" />
 		</ItemGroup>
-		<WriteLinesToFile File="$(ProjectDir)Styles\govuk\.gitignore" Lines="@(ThePensionsRegulatorGovUkFrontendGitIgnore)" Overwrite="True" Condition="$(TprGovUkFrontend_GenerateFiles_StylesFolderExists) == true" />
+		<WriteLinesToFile File="$(ProjectDir)Styles\govuk\.gitignore" Lines="@(ThePensionsRegulatorGovUkFrontendGitIgnore)" Overwrite="True" Condition="$(TprGovUkFrontend_StylesFolderExists) == true" />
 	</Target>
 	
 	<!-- In pipeline builds if a CSS file exists AspNetCore.SassCompiler won't overwrite it with the generated version, 

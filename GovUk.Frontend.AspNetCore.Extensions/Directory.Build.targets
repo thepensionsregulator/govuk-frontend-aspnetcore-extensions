@@ -34,6 +34,26 @@
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 
+	<Target Name="GovUkFrontend_GenerateProps" BeforeTargets="BeforeBuild">
+		 <!--Generate a .props file so that ThePensionsRegulator.GovUk.Frontend.targets has access to the package version. --> 
+		<Message Text="ThePensionsRegulator.GovUk.Frontend generating $(ProjectDir)ThePensionsRegulator.GovUk.Frontend.props" Importance="high" />
+		<ItemGroup>
+			<TprGovUkFrontendPropsText Include="TprGovUkFrontendPropsText">
+				<Text>
+					<![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<TprGovUkFrontendPackageVersion>$(Version)</TprGovUkFrontendPackageVersion>
+	</PropertyGroup>
+</Project>
+				]]></Text>
+			</TprGovUkFrontendPropsText>
+			<TprGovUkFrontendProps Include="%(TprGovUkFrontendPropsText.Text)" />
+		</ItemGroup>
+		<WriteLinesToFile File="$(ProjectDir)ThePensionsRegulator.GovUk.Frontend.generated.props" Lines="@(TprGovUkFrontendProps)" Overwrite="True" />
+	</Target>
+
 	<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
 	<Target Name="GovUkFrontend_Clean" Condition="Exists('$(ProjectDir)wwwroot\govuk\')">
 		<ItemGroup>

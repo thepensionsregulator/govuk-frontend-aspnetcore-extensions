@@ -5,7 +5,7 @@
 	-->
 	<Target Name="UmbracoExample_CopyFilesFromGovUkFrontend" BeforeTargets="BeforeBuild">
 		<ItemGroup>
-			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\govuk-umbraco-backoffice.css*" />
+			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\wwwroot\ThePensionsRegulator.Frontend.Umbraco\css\govuk-umbraco-backoffice.css*" />
 		</ItemGroup>
 
 		<Message Text="Copying files from ThePensionsRegulator.Frontend.Umbraco to $(ProjectDir)" Importance="high" />

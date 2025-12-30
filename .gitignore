@@ -416,10 +416,8 @@ ood.flag
 appsettings.Development.json
 
 # CSS files generated from SASS
-govuk-umbraco-backoffice.css
-govuk-umbraco-backoffice.css.map
-govuk-frontend*.css
-govuk-frontend*.css.map
+govuk-umbraco-backoffice.css*
+govuk-frontend*.css*
 tpr.css*
 
 # Minified JS files

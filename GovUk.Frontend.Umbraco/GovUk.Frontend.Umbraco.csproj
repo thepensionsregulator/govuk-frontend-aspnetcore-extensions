@@ -33,7 +33,7 @@
 		
 		<!-- Dont include the uSync folder as part of packaging nuget build. Instead pack it in a different folder. -->
 		<Content Remove="uSync\**" />
-		<None Include="uSync\**\*">
+		<None Include="uSync\**\*.config">
 			<PackagePath>uSync</PackagePath>
 			<Pack>true</Pack>
 		</None>
@@ -65,6 +65,7 @@
 		<PackageReference Include="TinyMCE.Umbraco" Version="17.0.0" />
 		<PackageReference Include="Umbraco.Cms.Api.Management" Version="17.0.2" />
 		<PackageReference Include="Umbraco.Cms.Web.Website" Version="17.0.2" />
+		<PackageReference Include="uSync.BackOffice" Version="17.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

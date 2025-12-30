@@ -33,7 +33,8 @@
 		<Message Text="ThePensionsRegulator.Frontend copying SASS files from $(TprFrontendSassFolder) to $(ProjectDir)" Importance="high" Condition="$(TprFrontend_StylesFolderExists) == true"/>
 		<Copy SourceFiles="@(TprFrontendSassFiles)"
 			  DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
-			  Condition="$(TprFrontend_StylesFolderExists) == true"/>
+			  Condition="$(TprFrontend_StylesFolderExists) == true"
+			  SkipUnchangedFiles="true"/>
 
 		<!-- Generate a .gitignore so that SASS files from the ThePensionsRegulator.Frontend package are not committed to the consuming project's source control.	 
 			 Only do that if the folder exists, otherwise they'll also get created in a project with no interest in SASS.  -->

@@ -26,24 +26,24 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Backoffice\node_modules\**" />
-	  <Content Remove="Backoffice\node_modules\**" />
-	  <EmbeddedResource Remove="Backoffice\node_modules\**" />
-	  <None Remove="Backoffice\node_modules\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Remove="Backoffice\package-lock.json" />
 		<Content Remove="Backoffice\package.json" />
 		<Content Remove="Backoffice\public\umbraco-package.json" />
 		<Content Remove="Backoffice\tsconfig.json" />
 		<Content Remove="sasscompiler.json" />
+
+		<!-- Dont include the uSync folder as part of packaging nuget build. Instead pack it in a different folder. -->
+		<Content Remove="uSync\**" />
+		<None Include="uSync\**\*">
+			<PackagePath>uSync</PackagePath>
+			<Pack>true</Pack>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
-		  <PackagePath>build;buildTransitive</PackagePath>
-		  <Pack>true</Pack>
+			<PackagePath>build;buildTransitive</PackagePath>
+			<Pack>true</Pack>
 		</Content>
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.generated.props">
 			<PackagePath>build</PackagePath>
@@ -68,41 +68,41 @@
 
 	<ItemGroup>
 		<None Include="..\tpr-nuget.png">
-		  <Pack>True</Pack>
-		  <PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
 		</None>
 		<None Include="Backoffice\package-lock.json" />
 		<None Include="Backoffice\package.json">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 		<None Include="Backoffice\public\umbraco-package.json">
-		  <Pack>false</Pack>
+			<Pack>false</Pack>
 		</None>
 		<None Include="Backoffice\tsconfig.json" />
 		<None Include="sasscompiler.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="Backoffice\src\blocks\helpers\media-helper.ts">
-	    <SubType>Code</SubType>
-	  </None>
-	  <None Update="NuGetReadme.md">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
-	  <None Update="Styles\tpr.scss">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="Styles\govuk-umbraco-backoffice.scss">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
+		<None Update="Backoffice\src\blocks\helpers\media-helper.ts">
+			<SubType>Code</SubType>
+		</None>
+		<None Update="NuGetReadme.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Update="Styles\tpr.scss">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="Styles\govuk-umbraco-backoffice.scss">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
+		<UpToDateCheckInput Remove="Styles\tpr.scss" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Backoffice\node_modules\**" />
+		<UpToDateCheckInput Remove="Backoffice\node_modules\**" />
 	</ItemGroup>
 </Project>

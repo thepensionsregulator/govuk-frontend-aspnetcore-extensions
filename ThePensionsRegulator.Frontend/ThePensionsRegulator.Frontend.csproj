@@ -83,6 +83,7 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
+		<None Include="bundleconfig.json" />
 
 		<Content Include="ThePensionsRegulator.Frontend.targets">
 			<Pack>true</Pack>
@@ -294,6 +295,10 @@
 
 	<ItemGroup>
 		<UpToDateCheckInput Remove="Views\Partials\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="bundleconfig.json" />
 	</ItemGroup>
 
 	<ItemGroup>

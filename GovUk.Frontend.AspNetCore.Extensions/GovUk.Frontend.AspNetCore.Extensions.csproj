@@ -27,6 +27,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="bundleconfig.json" />
 		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
 		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\jquery.validate.min.js" />
 		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\dist\jquery.min.js" />
@@ -126,6 +127,7 @@
 			<Pack>true</Pack>
 			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\objects</PackagePath>
 		</Content>
+		<Content Remove="bundleconfig.json" />
 		<None Include="..\tpr-nuget.png">
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>

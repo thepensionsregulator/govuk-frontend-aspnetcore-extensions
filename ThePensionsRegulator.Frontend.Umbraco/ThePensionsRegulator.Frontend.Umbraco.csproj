@@ -33,7 +33,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Content Remove="Backoffice\package-lock.json" />
+		<Content Remove="Backoffice\package.json" />
 		<Content Remove="Backoffice\public\umbraco-package.json" />
+		<Content Remove="Backoffice\tsconfig.json" />
 		<Content Remove="sasscompiler.json" />
 	</ItemGroup>
 
@@ -69,9 +72,14 @@
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
+		<None Include="Backoffice\package-lock.json" />
+		<None Include="Backoffice\package.json">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<None Include="Backoffice\public\umbraco-package.json">
 		  <Pack>false</Pack>
 		</None>
+		<None Include="Backoffice\tsconfig.json" />
 		<None Include="sasscompiler.json" />
 	</ItemGroup>
 

@@ -38,13 +38,7 @@
 		<Copy SourceFiles="@(ContentTypes)"
 			DestinationFiles="$(ProjectDir)uSync\v17\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
-
-	<!-- Restore npm packages for backoffice development. -->
-	<Target Name="GovUkFrontendUmbraco_NpmInstall" BeforeTargets="BeforeBuild">
-		<Message Text="Restoring Backoffice npm packages" Importance="high" />
-		<Exec Command="npm install" WorkingDirectory="Backoffice" />
-	</Target>
-
+	
 	<!-- Create a version to use as a cache-busting parameter for backoffice customisation -->
 	<Target Name="GovUkFrontendUmbraco_GenerateTypeScriptVersion" BeforeTargets="Build">
 		<WriteLinesToFile

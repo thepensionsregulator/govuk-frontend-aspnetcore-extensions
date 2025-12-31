@@ -18,11 +18,11 @@ resources:
     - repository: hooks
       type: git
       name: TPR/Tools-TPRGitHooks
-      ref: develop
+      ref: release/1.0.1
     - repository: pipelines
       type: git
       name: TPR/Tools-AzurePipelines
-      ref: develop
+      ref: release/1.1.0
 
 steps:
   - checkout: self
@@ -32,9 +32,7 @@ steps:
 
   - template: git-secrets.steps.yml@hooks
     parameters:
-      repoPath: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions
-
-  - task: NuGetToolInstaller@1
+      repoPath: $(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions
 
   - task: NodeTool@0
     inputs:
@@ -70,17 +68,14 @@ steps:
 
   # Do not publish JS test results to the pipeline as Azure DevOps cannot publish both C# and JS results so we have to choose
 
-  - task: UseDotNet@2
-    displayName: Install .NET 8.0.4
-    inputs:
-      version: 8.0.204 # SDK version for 8.0.4
-      performMultiLevelLookup: true
-      includePreviewVersions: false
+  - task: NuGetToolInstaller@1
+    displayName: Install NuGet
 
   - task: DotNetCoreCLI@2
     displayName: dotnet restore
     inputs:
       command: "restore"
+      arguments: --configuration $(buildConfiguration)
       projects: "$(solution)"
       includeNuGetOrg: true
 
@@ -90,14 +85,14 @@ steps:
 
   # Build this project first to avoid a race condition with SASS compilation, where GovUk.Frontend.Umbraco depends upon this project completing first
   - task: DotNetCoreCLI@2
-    displayName: dotnet build
+    displayName: Build ThePensionsRegulator.Frontend
     inputs:
       command: "build"
       arguments: --configuration $(buildConfiguration)
       projects: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend\ThePensionsRegulator.Frontend.csproj
 
   - task: DotNetCoreCLI@2
-    displayName: dotnet build
+    displayName: Build ThePensionsRegulator.Frontend.Umbraco
     inputs:
       command: "build"
       arguments: --configuration $(buildConfiguration)
@@ -133,8 +128,8 @@ steps:
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco\bin\$(buildConfiguration)
       Contents: |
-        ThePensionsRegulator.Umbraco*.nupkg
-        ThePensionsRegulator.Umbraco*.snupkg
+        ThePensionsRegulator.Umbraco.*.nupkg
+        ThePensionsRegulator.Umbraco.*.snupkg
       TargetFolder: $(Build.ArtifactStagingDirectory)
       flattenFolders: true
 

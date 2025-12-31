@@ -24,9 +24,9 @@
         {
             var hint = task.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
             var link = task.Content.Value<Link>(PropertyAliases.TaskListTaskLink)?.Url;
-            var statusText = task.Settings.Value<string>(PropertyAliases.TaskListTaskStatusText);
-            var status = task.Settings.Value<string>(PropertyAliases.TaskListTaskStatus)?.Replace(" ", string.Empty);
-            <govuk-task-list-task href="@link" class="@(task.Settings.Value<string>(PropertyAliases.CssClasses))">
+            var statusText = task.Settings?.Value<string>(PropertyAliases.TaskListTaskStatusText);
+            var status = task.Settings?.Value<string>(PropertyAliases.TaskListTaskStatus)?.Replace(" ", string.Empty);
+            <govuk-task-list-task href="@link" class="@(task.Settings?.Value<string>(PropertyAliases.CssClasses))">
                 <govuk-task-list-task-name>@(task.Content.Value<string>(PropertyAliases.TaskListTaskName))</govuk-task-list-task-name>
                 @if (!string.IsNullOrEmpty(hint?.ToHtmlString()))
                 {

@@ -28,7 +28,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         public new IOverridablePublishedElement Content { get => (IOverridablePublishedElement)base.Content; }
 
         /// <inheritdoc/>
-        public new IOverridablePublishedElement Settings { get => (IOverridablePublishedElement)base.Settings; }
+        public new IOverridablePublishedElement? Settings { get => (IOverridablePublishedElement?)base.Settings; }
 
         /// <inheritdoc/>
         public new IList<OverridableBlockGridArea> Areas

@@ -2,7 +2,6 @@
 using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using ThePensionsRegulator.Umbraco.Testing;
-using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
@@ -360,18 +359,14 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "contentTypeAlias", "value"));
 
             var matchingBlock1 = new OverridableBlockListItem(
-#nullable disable            
-                new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
-#nullable enable
+                new BlockListItem(Guid.NewGuid(), matchingBlockContent1.Object, null, null),
                             OverridableBlockListItem.NoopPublishedElementFactory
                         );
             var matchingBlockContent2 = new Mock<IOverridablePublishedElement>();
             matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "contentTypeAlias", "value"));
 
             var matchingBlock2 = new OverridableBlockListItem(
-#nullable disable            
-                        new BlockListItem(Udi.Create(Constants.UdiEntityType.Element, Guid.NewGuid()), matchingBlockContent1.Object, null, null),
-#nullable enable
+                        new BlockListItem(Guid.NewGuid(), matchingBlockContent1.Object, null, null),
                         OverridableBlockListItem.NoopPublishedElementFactory
                     );
             var grandChildBlockList = new OverridableBlockListModel(new[] { matchingBlock1, matchingBlock2 }, null, OverridableBlockListItem.NoopPublishedElementFactory);

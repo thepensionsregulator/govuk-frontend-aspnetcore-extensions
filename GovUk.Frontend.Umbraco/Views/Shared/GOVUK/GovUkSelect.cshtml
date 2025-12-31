@@ -16,16 +16,16 @@
 @{
     var options = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SelectOptions)!;
 
-    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
     if (!string.IsNullOrEmpty(modelPropertyName))
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
-    var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
     var attemptedValue = modelStateEntry?.AttemptedValue?.ToUpperInvariant();
     var label = Model.Content.Value<string>(PropertyAliases.SelectLabel)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var labelIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.LabelIsPageHeading);
+    var labelIsPageHeading = Model.Settings?.Value<bool>(PropertyAliases.LabelIsPageHeading) ?? false;
     var labelClass = labelIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LabelAsHeading1 : null;
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
     var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
@@ -34,7 +34,7 @@
     var errorMessage = hasErrorMessage ? string.Join(". ", modelStateEntry!.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null;
 }
 <govuk-client-side-validation
-    error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+    error-message-required="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageRequired))">
     <govuk-select name="@modelPropertyName" class="@cssClasses" select-aria-invalid="@invalid">
         <govuk-select-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-select-label>
         @if (hasHint)

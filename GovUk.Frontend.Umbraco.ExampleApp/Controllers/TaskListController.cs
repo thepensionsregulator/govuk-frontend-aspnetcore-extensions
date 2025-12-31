@@ -3,7 +3,6 @@ using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.Blocks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
@@ -25,8 +24,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             var target = viewModel.Blocks!.FindBlockByClass("yet-another-thing");
             if (target != null)
             {
-                target.Settings.OverrideValue(nameof(GovukTaskSettings.Status), TaskListTaskStatus.Completed.ToString());
-                target.Settings.OverrideValue(nameof(GovukTaskSettings.StatusText), "Done");
+                target.Settings?.OverrideValue(nameof(GovukTaskSettings.Status), TaskListTaskStatus.Completed.ToString());
+                target.Settings?.OverrideValue(nameof(GovukTaskSettings.StatusText), "Done");
             }
 
             return CurrentTemplate(viewModel);

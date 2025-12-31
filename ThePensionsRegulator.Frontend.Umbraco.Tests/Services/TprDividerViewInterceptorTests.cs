@@ -101,7 +101,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             var dividerClass = isFieldset ? TprClassNames.DividerForFieldsetWithLegendAsPageHeading : TprClassNames.DividerForFormComponentWithLabelAsPageHeading;
 
             var blockViewModel = CreateBlockView(contentAlias, settingsAlias, classWasAlreadyPresent, classWasAlreadyPresent ? dividerClass : null);
-            Mock.Get(blockViewModel.CurrentBlock.Settings).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, legendIsPageHeading);
+            Mock.Get(blockViewModel.CurrentBlock.Settings!).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, legendIsPageHeading);
 
             var interceptor = new TprDividerViewInterceptor();
 
@@ -150,7 +150,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             blockViewModel.PreviousBlock = CreateBlock(contentAlias, settingsAlias);
             if (isPageHeadingProperty is not null)
             {
-                Mock.Get(blockViewModel.PreviousBlock.Settings).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
+                Mock.Get(blockViewModel.PreviousBlock.Settings!).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
             }
 
             var interceptor = new TprDividerViewInterceptor();
@@ -189,7 +189,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             blockViewModel.NextBlock = CreateBlock(contentAlias, settingsAlias);
             if (isPageHeadingProperty is not null)
             {
-                Mock.Get(blockViewModel.NextBlock.Settings).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
+                Mock.Get(blockViewModel.NextBlock.Settings!).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
             }
 
             var interceptor = new TprDividerViewInterceptor();

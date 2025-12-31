@@ -1,12 +1,9 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using GovUk.Frontend.Umbraco.Validation;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.Extensions.Logging;
-using System;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
@@ -26,7 +23,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             {
                 Response.Cookies.Append(
                     CookieRequestCultureProvider.DefaultCookieName,
-                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(Request.Query["culture"])),
+                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(Request.Query["culture"]!)),
                     new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
                 );
 

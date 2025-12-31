@@ -43,9 +43,9 @@
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
 
-    <header role="banner">
-        @if (useTPRstyles)
-        {
+    @if (useTPRstyles)
+    {
+        <header role="banner">
             <tpr-header-bar>
                 <tpr-header-bar-logo alt="@headerLogoAlt" href="@(settings?.Value<Link>("tprHeaderLogoHref")?.Url)" />
                 <tpr-header-bar-label>@(settings?.Value<string?>("tprHeaderLabel"))</tpr-header-bar-label>
@@ -58,100 +58,100 @@
                 <tpr-context-bar-context-2>@(settings?.Value<IHtmlEncodedString>("tprContext2"))</tpr-context-bar-context-2>
                 <tpr-context-bar-context-3>@(settings?.Value<IHtmlEncodedString>("tprContext3"))</tpr-context-bar-context-3>
             </tpr-context-bar>
+        </header>
 
+        <div class="tpr-main-wrapper">
             <div class="govuk-width-container">
                 <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
             </div>
-            <div class="govuk-width-container govuk-!-margin-top-5">
-                <partial name="GOVUK/BlockList" model="@Model.Description" />
-            </div>
-
-            <div class="govuk-width-container govuk-!-margin-top-5">
+            <main id="main" class="govuk-main-wrapper govuk-!-padding-bottom-0">
+                <div class="govuk-!-margin-top-5">
+                    <partial name="GOVUK/BlockList" model="@Model.Description" />
+                </div>
                 <partial name="GOVUK/BlockList" model="Model.FooterWithContent" />
-            </div>
-            <tpr-footer-bar>
-                <tpr-footer-bar-logo alt="@footerLogoAlt" href="@(settings?.Value<Link>("tprFooterLogoHref")?.Url)" />
-                <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
-                <tpr-footer-bar-content allow-html="true">
-                    @(settings?.Value<IHtmlEncodedString>("tprFooterContent"))
-                </tpr-footer-bar-content>
-            </tpr-footer-bar>
+            </main>
+        </div>
 
-            <div class="govuk-width-container govuk-!-margin-top-5">
-                <partial name="GOVUK/BlockList" model="Model.FooterWithoutContent" />
-            </div>
-            <tpr-footer-bar class="govuk-!-margin-top-5">
-                <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
-                <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
-            </tpr-footer-bar>
+        <tpr-footer-bar>
+            <tpr-footer-bar-logo alt="@footerLogoAlt" href="@(settings?.Value<Link>("tprFooterLogoHref")?.Url)" />
+            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+            <tpr-footer-bar-content allow-html="true">
+                @(settings?.Value<IHtmlEncodedString>("tprFooterContent"))
+            </tpr-footer-bar-content>
+        </tpr-footer-bar>
 
-            <div class="govuk-width-container govuk-!-margin-top-5">
-                <partial name="GOVUK/BlockList" model="Model.FooterWithThreeColumnLinks" />
-            </div>
-            <tpr-footer-bar class="govuk-!-margin-top-5" lang="@languageCode">
-                <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
-                <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
-                @if (column != null)
+        <div class="govuk-!-margin-top-5">
+            <partial name="GOVUK/BlockList" model="Model.FooterWithoutContent" />
+        </div>
+        <tpr-footer-bar>
+            <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
+            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+        </tpr-footer-bar>
+
+        <div class="govuk-!-margin-top-5">
+            <partial name="GOVUK/BlockList" model="Model.FooterWithThreeColumnLinks" />
+        </div>
+        <tpr-footer-bar lang="@languageCode">
+            <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
+            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+            @if (column != null)
+            {
+                @foreach (var item in column)
                 {
-                    @foreach (var item in column)
+                    foreach (var links in item.Areas)
                     {
-                        foreach (var links in item.Areas)
-                        {
-                            <tpr-footer-bar-three-column-links>
-                                @foreach (var link in links)
-                                {
-                                    var linkUrl = link.Content.Value<Link>("link");
-                                    var linkText = link.Content.Value<string>("text");
-                                    <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText" lang="en-gb"></tpr-footer-bar-three-column-link>
-                                }
-                            </tpr-footer-bar-three-column-links>
+                        <tpr-footer-bar-three-column-links>
+                            @foreach (var link in links)
+                            {
+                                var linkUrl = link.Content.Value<Link>("link");
+                                var linkText = link.Content.Value<string>("text");
+                                <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText" lang="en-gb"></tpr-footer-bar-three-column-link>
+                            }
+                        </tpr-footer-bar-three-column-links>
 
-                        }
                     }
                 }
+            }
 
-            </tpr-footer-bar>
+        </tpr-footer-bar>
 
-            <div class="govuk-width-container govuk-!-margin-top-5">
-                <partial name="GOVUK/BlockList" model="Model.FooterWithThreeColumnLinksAndContent" />
-            </div>
-            <tpr-footer-bar class="govuk-!-margin-top-5" lang="@languageCode">
-                <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
-                <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
-                @if (column != null)
+        <div class="govuk-!-margin-top-5">
+            <partial name="GOVUK/BlockList" model="Model.FooterWithThreeColumnLinksAndContent" />
+        </div>
+        <tpr-footer-bar lang="@languageCode">
+            <tpr-footer-bar-logo alt="The Pensions Regulator logo" href="" />
+            <tpr-footer-bar-copyright>@(settings?.Value<string>("tprFooterCopyright")?.Replace("{{year}}", DateTimeOffset.UtcNow.Year.ToString()))</tpr-footer-bar-copyright>
+            @if (column != null)
+            {
+                @foreach (var item in column)
                 {
-                    @foreach (var item in column)
+                    foreach (var links in item.Areas)
                     {
-                        foreach (var links in item.Areas)
-                        {
-                            <tpr-footer-bar-three-column-links>
-                                @foreach (var link in links)
-                                {
-                                    var linkUrl = link.Content.Value<Link>("link");
-                                    var linkText = link.Content.Value<string>("text");
-                                    <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText"></tpr-footer-bar-three-column-link>
-                                }
-                            </tpr-footer-bar-three-column-links>
+                        <tpr-footer-bar-three-column-links>
+                            @foreach (var link in links)
+                            {
+                                var linkUrl = link.Content.Value<Link>("link");
+                                var linkText = link.Content.Value<string>("text");
+                                <tpr-footer-bar-three-column-link href="@linkUrl?.Url" link-text="@linkText"></tpr-footer-bar-three-column-link>
+                            }
+                        </tpr-footer-bar-three-column-links>
 
-                        }
                     }
                 }
-                <tpr-footer-bar-content allow-html="true">
-                    @(settings?.Value<IHtmlEncodedString>("tprFooterContent"))
-                </tpr-footer-bar-content>
-            </tpr-footer-bar>
+            }
+            <tpr-footer-bar-content allow-html="true">
+                @(settings?.Value<IHtmlEncodedString>("tprFooterContent"))
+            </tpr-footer-bar-content>
+        </tpr-footer-bar>
 
-            <div class="govuk-width-container govuk-!-margin-top-5">
-                <partial name="GOVUK/BlockList" model="Model.FinalBlocks" />
-            </div>
-        }
-        else
-        {
-            <div class="govuk-width-container">
-                <partial name="GOVUK/BlockList" model="Model.GovukBlocks" />
-            </div>
-        }
-    </header>
+        <div class="govuk-!-margin-top-5">
+            <partial name="GOVUK/BlockList" model="Model.FinalBlocks" />
+        </div>
+    }
+    else
+    {
+        <partial name="GOVUK/BlockList" model="Model.GovukBlocks" />
+    }
     <tpr-back-to-top href="#main">@Umbraco.GetDictionaryValue("Back to top")</tpr-back-to-top>
     <partial name="GOVUK/BodyClosing" />
 

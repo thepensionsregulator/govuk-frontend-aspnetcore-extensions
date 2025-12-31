@@ -35,7 +35,7 @@ function createGovUkValidator() {
       updateTitle: function () {
           const titleTag = document.getElementsByTagName("title")[0];
           let prefix = "";
-          if (titleTag.getAttribute("data-govuk-error-prefix") == null) {
+          if (!titleTag || titleTag.getAttribute("data-govuk-error-prefix") == null) {
               prefix = "Error: "
           }
           else {

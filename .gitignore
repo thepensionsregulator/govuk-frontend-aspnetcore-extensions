@@ -412,9 +412,6 @@ umbraco-package-schema.json
 ood.flag
 **/wwwroot/App_Plugins/**/*
 
-# Development environment
-appsettings.Development.json
-
 # CSS files generated from SASS
 govuk-umbraco-backoffice.css
 govuk-umbraco-backoffice.css.map

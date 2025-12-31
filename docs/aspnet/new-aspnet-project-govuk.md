@@ -1,32 +1,30 @@
 # Configure a new ASP.NET project (GOV.UK)
 
-1. Create a new project using the 'ASP.NET Core Web App (Model-View-Controller)' template in Visual Studio.
+1. Create a new project using the 'ASP.NET Core Web App (Model-View-Controller)' template in Visual Studio 2026 or later. Select .NET 10.0 or later as the Framework.
 
 2. Add the `ThePensionsRegulator.GovUk.Frontend` NuGet package to your project.
 
-3. In `Startup.cs` add the following:
+3. In `Program.cs` add the following:
 
    ```csharp
    using GovUk.Frontend.AspNetCore.Extensions;
 
-   public void ConfigureServices(IServiceCollection services)
-   {
-       // Other code here
+   var builder = WebApplication.CreateBuilder(args);
+   builder.Services.AddGovUkFrontendExtensions();
 
-       services.AddGovUkFrontendExtensions();
-   }
+   // other code to configure builder.Services
 
-   public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-   {
-      // Other code here
+   var app = builder.Build();
+   app.UseGovUkFrontendExtensions();
 
-      app.UseGovUkFrontendExtensions();
-   }
+   // other code to configure app
+
+   app.Run();
    ```
 
-   You shouldn't need to call `app.UseStaticFiles()` as it's called for you, but if you do it must be called after `app.UseGovUkFrontendExtensions()`.
+   You shouldn't need to configure support for static assets as it's done for you, but if you do it must be called after `app.UseGovUkFrontendExtensions()`.
 
-4. Add partial views and the `govuk-template__body` class to `Views/Shared/_Layout.cshtml` as shown below. You should also make sure you have a `<main>` element in your markup.
+4. Replace the contents of `Views/Shared/_Layout.cshtml` with the code shown below.
 
    ```html
    <!DOCTYPE html>
@@ -37,7 +35,7 @@
        <partial name="GOVUK/Head" />
        @RenderSection("head", required: false)
      </head>
-     <body class="govuk-template__body ">
+     <body class="govuk-template__body">
        <partial name="GOVUK/BodyOpen" />
        <div class="govuk-width-container">
          <main class="govuk-main-wrapper" id="main">@RenderBody()</main>

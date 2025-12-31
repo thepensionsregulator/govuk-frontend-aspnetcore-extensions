@@ -2,13 +2,16 @@ using AngleSharp.Diffing.Extensions;
 using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Text.Encodings.Web;
+using Xunit;
 using TaskStatus = GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration.TaskStatus;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
 {
     public partial class ComponentTests
     {
-        [TestCaseSource(typeof(ComponentFixtureData), nameof(ComponentFixtureData.GetTaskListData))]
+        [Theory]
+        [ComponentFixtureData<OptionsJson.TaskList>("task-list",
+            exclude: "with falsy values")]
         public void TaskList(ComponentTestCaseData<OptionsJson.TaskList> data) =>
             CheckComponentHtmlMatchesExpectedHtml(
                 data,

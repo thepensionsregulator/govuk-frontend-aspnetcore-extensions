@@ -2,6 +2,7 @@ using AngleSharp.Diffing;
 using AngleSharp.Diffing.Core;
 using AngleSharp.Dom;
 using System.Text;
+using Xunit.Sdk;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
 {
@@ -26,7 +27,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
                     DiffConverter.Append(diff, sb);
                 }
 
-                NUnit.Framework.Assert.Fail(sb.ToString());
+                throw new XunitException(sb.ToString());
             }
         }
 

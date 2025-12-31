@@ -26,6 +26,7 @@ namespace ThePensionsRegulator.Frontend.Tests.Caching
         // no querystring
         [InlineData("/ThePensionsRegulator.Frontend/style.css", false)]
         [InlineData("/other/file.js", false)]
+        [InlineData("/favicon.ico", true)]
 
         // wrong querystring
         [InlineData("/ThePensionsRegulator.Frontend/style.css?other=value", false)]

@@ -3,6 +3,7 @@
 @using GovUk.Frontend.AspNetCore.Extensions;
 @using GovUk.Frontend.Umbraco;
 @using GovUk.Frontend.Umbraco.Models
+@using System.Text.RegularExpressions
 @using ThePensionsRegulator.Umbraco;
 @using ThePensionsRegulator.Umbraco.Core
 @using ThePensionsRegulator.Umbraco.Core.Blocks
@@ -16,7 +17,8 @@
 {
     <govuk-task-list 
         id="@Model.Content.Key"
-        class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))"
+        id-prefix="@Model.Content.Key"
+        class="@(Model.Settings?.Value<string>(PropertyAliases.CssClasses))"
     >
         @foreach (var task in tasks)
         {
@@ -42,7 +44,7 @@
                         var defaultTextForStatus = parsedStatus.AsText() ?? string.Empty;
                         textForStatus = @Umbraco.GetDictionaryValueOrDefault($"Task list - {defaultTextForStatus}", defaultTextForStatus);
                     }
-                    <govuk-task-list-task-status status="@parsedStatus">@textForStatus</govuk-task-list-task-status>
+                    <govuk-task-list-task-status status="@parsedStatus" class="@(parsedStatus.AsHtmlClass())">@textForStatus</govuk-task-list-task-status>
                 }
             </govuk-task-list-task>
         }

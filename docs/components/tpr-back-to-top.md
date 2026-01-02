@@ -49,7 +49,7 @@ This component has culture variants enabled for localisation purposes.
 Finally, pass that content node to the `TPRFooterLockup` partial view on your layout to add the typical combination of TPR back to top and [TPR footer bar](tpr-footer-bar.md) to your application.
 
 ```razor
-@using GovUk.Frontend.Umbraco.Models;
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
 @{

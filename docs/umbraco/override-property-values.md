@@ -6,7 +6,7 @@ For example, if you wanted to apply an additional CSS class to a grid row:
 
 ```csharp
 /// Controller
-using ThePensionsRegulator.Umbraco.BlockLists;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using System.Linq;
 
 var viewModel = new MyDocumentType(CurrentPage, null);

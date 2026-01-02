@@ -154,9 +154,9 @@ The card title will automatically be used as visually-hidden text on each action
 You can also supply card actions and summary list items at runtime from a database or other data source.
 
 ```csharp
-using ThePensionsRegulator.Umbraco.BlockLists;
-using GovUk.Frontend.Umbraco.BlockLists;
-using GovUk.Frontend.Umbraco.Models;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Web.Common.PublishedModels;
 

@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco", "GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj", "{B0D74DE0-13E1-40A0-AA15-9A81E5356C4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.GovUk.Frontend.Umbraco", "ThePensionsRegulator.GovUk.Frontend.Umbraco\ThePensionsRegulator.GovUk.Frontend.Umbraco.csproj", "{B0D74DE0-13E1-40A0-AA15-9A81E5356C4B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.AspNetCore.Extensions", "GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj", "{63F4C04D-3311-44DD-8F06-64F7E0396395}"
 EndProject
@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.ExampleApp",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco.ExampleApp", "GovUk.Frontend.Umbraco.ExampleApp\GovUk.Frontend.Umbraco.ExampleApp.csproj", "{58C3146F-D2C2-46D8-B59C-2482E75584EF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.Umbraco.Tests", "GovUk.Frontend.Umbraco.Tests\GovUk.Frontend.Umbraco.Tests.csproj", "{216A148E-1402-4778-9823-2FE5ADDF1360}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests", "ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests\ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.csproj", "{216A148E-1402-4778-9823-2FE5ADDF1360}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GovUk.Frontend.AspNetCore.Extensions.UnitTests", "GovUk.Frontend.AspNetCore.Extensions.UnitTests\GovUk.Frontend.AspNetCore.Extensions.UnitTests.csproj", "{AC6F49AE-C825-466D-837A-9376CF1FAA07}"
 EndProject

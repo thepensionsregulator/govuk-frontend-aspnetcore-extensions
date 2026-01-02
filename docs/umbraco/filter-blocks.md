@@ -4,7 +4,7 @@ When using the block list editor, if you need to conditionally hide some of the 
 
 ```csharp
 /// Controller
-using ThePensionsRegulator.Umbraco.BlockLists
+using ThePensionsRegulator.Umbraco.Core.Blocks
 
 var viewModel = new MyDocumentType(CurrentPage, null);
 

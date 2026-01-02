@@ -1,0 +1,50 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Strings;
+@using Umbraco.Extensions
+@{
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+    var listItems = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItems)!;
+}
+<govuk-summary-list id="@Model.Content.Key" class="@cssClasses">
+    @foreach (var listItem in listItems.FilteredBlocks())
+    {
+        <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
+            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</govuk-summary-list-row-key>
+            <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
+            @{
+                var actionsModel = listItem.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions)!;
+                var actions = actionsModel.FilteredBlocks();
+                if (actions.Any()) 
+                {
+                    <govuk-summary-list-row-actions>
+                    @foreach (var action in actions)
+                    {
+                        var link = action.Content.Value<Link>(PropertyAliases.SummaryListActionLink);
+
+                        if (!string.IsNullOrEmpty(link?.Url))
+                        {
+                            var openInNewTab = link.Target?.Equals("_blank") ?? false;
+                            if (openInNewTab)
+                            {
+                                var visuallyHidden = $"{listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey)} {Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)}";
+                                <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@visuallyHidden" target="_blank" rel="noreferrer noopener">@(action.Content.Value<string>(PropertyAliases.SummaryListActionLinkText))</govuk-summary-list-row-action>
+                            }
+                            else
+                            {
+                                var visuallyHidden = listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey);
+                                <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@visuallyHidden">@(action.Content.Value<string>(PropertyAliases.SummaryListActionLinkText))</govuk-summary-list-row-action>
+                            }
+                        }
+                    }
+                    </govuk-summary-list-row-actions>
+                }
+            }
+        </govuk-summary-list-row>
+    }
+</govuk-summary-list>

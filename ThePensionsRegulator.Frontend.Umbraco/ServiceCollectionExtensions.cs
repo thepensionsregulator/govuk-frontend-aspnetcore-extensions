@@ -1,8 +1,6 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions.Caching;
 using GovUk.Frontend.AspNetCore.Extensions.Security;
-using GovUk.Frontend.Umbraco;
-using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -12,6 +10,9 @@ using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco.Caching;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 namespace ThePensionsRegulator.Frontend.Umbraco
@@ -77,7 +78,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             }
 
             // GovUk.Frontend.Umbraco
-            services.AddGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
+            services.AddTprGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
 
             // ThePensionsRegulator.Frontend
             services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();

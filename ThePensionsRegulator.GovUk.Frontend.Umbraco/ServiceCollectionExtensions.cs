@@ -1,9 +1,8 @@
 using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions;
-using GovUk.Frontend.AspNetCore.Extensions.Caching;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using ThePensionsRegulator.GovUk.Frontend.Caching;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Caching;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.HtmlGeneration;

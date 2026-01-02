@@ -16,7 +16,7 @@ npm run govuk
 dotnet test
 ```
 
-> Visual Studio may not run `GovUk.Frontend.AspNetCore.Extensions.ConformanceTests` correctly the first time. Right-click the project and select 'Rebuild' to fix this.
+> Visual Studio may not run `ThePensionsRegulator.GovUk.Frontend.ConformanceTests` correctly the first time. Right-click the project and select 'Rebuild' to fix this.
 
 Install [Pester](https://pester.dev/docs/quick-start) before running the following command.
 

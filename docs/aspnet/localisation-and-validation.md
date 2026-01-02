@@ -242,7 +242,7 @@ services.AddMvc()
 
 The _downside_ to this is that it only supports one resource file per model. For example, if a project contains multiple address fields, the same error message will need to be copied throughout the project.
 
-One solution to this is to use a custom Localizer that allows for a (graceful) fallback to some other resource file. This localizer is part of the `GovUk.Frontend.AspNetCore.Extensions` library, called `DataAnnotationStringLocalizer`
+One solution to this is to use a custom Localizer that allows for a (graceful) fallback to some other resource file. This localizer is part of the `ThePensionsRegulator.GovUk.Frontend` library, called `DataAnnotationStringLocalizer`
 
 Setup is simple
 

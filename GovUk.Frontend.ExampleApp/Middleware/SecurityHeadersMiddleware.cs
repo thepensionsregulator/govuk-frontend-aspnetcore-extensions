@@ -1,4 +1,4 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Security;
+﻿using ThePensionsRegulator.GovUk.Frontend.Security;
 
 namespace GovUk.Frontend.ExampleApp.Middleware
 {

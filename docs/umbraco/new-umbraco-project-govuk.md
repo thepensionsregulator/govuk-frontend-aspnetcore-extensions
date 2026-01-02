@@ -29,7 +29,7 @@
 
    ```razor
    @addTagHelper *, GovUk.Frontend.AspNetCore
-   @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+   @addTagHelper *, ThePensionsRegulator.GovUk.Frontend
    ```
 
 9. Create `Views/Shared/_Layout.cshtml` with the code shown below.

@@ -1,7 +1,7 @@
 ﻿using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using ThePensionsRegulator.GovUk.Frontend;
 using ComponentGenerator = ThePensionsRegulator.Frontend.HtmlGeneration.ComponentGenerator;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers

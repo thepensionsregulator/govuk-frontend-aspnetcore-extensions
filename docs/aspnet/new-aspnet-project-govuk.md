@@ -7,22 +7,22 @@
 3. In `Program.cs` add the following:
 
    ```csharp
-   using GovUk.Frontend.AspNetCore.Extensions;
+   using ThePensionsRegulator.GovUk.Frontend;
 
    var builder = WebApplication.CreateBuilder(args);
-   builder.Services.AddGovUkFrontendExtensions();
+   builder.Services.AddTprGovUkFrontend();
 
    // other code to configure builder.Services
 
    var app = builder.Build();
-   app.UseGovUkFrontendExtensions();
+   app.UseTprGovUkFrontend();
 
    // other code to configure app
 
    app.Run();
    ```
 
-   You shouldn't need to configure support for static assets as it's done for you, but if you do it must be called after `app.UseGovUkFrontendExtensions()`.
+   You shouldn't need to configure support for static assets as it's done for you, but if you do it must be called after `app.UseTprGovUkFrontend()`.
 
 4. Replace the contents of `Views/Shared/_Layout.cshtml` with the code shown below.
 
@@ -50,14 +50,14 @@
 
    ```csharp
    @addTagHelper *, GovUk.Frontend.AspNetCore
-   @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+   @addTagHelper *, ThePensionsRegulator.GovUk.Frontend.AspNetCore
    ```
 
 6. [Add validation rules to your model](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0) as you normally would for ASP.NET, using attributes from the [System.ComponentModel.DataAnnotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) namespace.
 
    > JQuery is included to support the standard ASP.NET validation. We recommend using vanilla JavaScript for everything else.
 
-7. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `GovUk.Frontend.AspNetCore.Extensions`.
+7. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `ThePensionsRegulator.GovUk.Frontend`.
 
    ```csharp
    <form asp-controller="Home" asp-action="Post" method="post" novalidate>

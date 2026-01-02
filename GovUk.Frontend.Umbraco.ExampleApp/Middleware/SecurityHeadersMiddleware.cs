@@ -1,4 +1,4 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Security;
+﻿using ThePensionsRegulator.GovUk.Frontend.Security;
 using Umbraco.Cms.Infrastructure.Migrations.Install;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Middleware

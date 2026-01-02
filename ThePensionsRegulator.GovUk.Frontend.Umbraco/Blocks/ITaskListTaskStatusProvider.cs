@@ -1,5 +1,4 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions;
-using Umbraco.Cms.Core.Models.PublishedContent;
+﻿using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
 {

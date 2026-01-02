@@ -1,12 +1,12 @@
 using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions;
-using GovUk.Frontend.AspNetCore.Extensions.Caching;
-using GovUk.Frontend.AspNetCore.Extensions.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using ThePensionsRegulator.Frontend.Caching;
 using ThePensionsRegulator.Frontend.Security;
 using ThePensionsRegulator.Frontend.Services;
+using ThePensionsRegulator.GovUk.Frontend;
+using ThePensionsRegulator.GovUk.Frontend.Caching;
+using ThePensionsRegulator.GovUk.Frontend.Security;
 
 namespace ThePensionsRegulator.Frontend
 {

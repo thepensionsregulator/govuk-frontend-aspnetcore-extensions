@@ -35,7 +35,7 @@
 
     ```razor
     @addTagHelper *, GovUk.Frontend.AspNetCore
-    @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+    @addTagHelper *, ThePensionsRegulator.GovUk.Frontend
     @addTagHelper *, ThePensionsRegulator.Frontend
     ```
 

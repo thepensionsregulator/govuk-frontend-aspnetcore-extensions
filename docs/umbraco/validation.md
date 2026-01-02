@@ -14,14 +14,14 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions
     // Other code here, including app.UseUmbraco()...
 
     // Note: two extra services are being injected to the Configure method and used here
-    app.UseGovUkFrontendUmbracoExtensions(mvcOptions, umbracoContextAccessor);
+    app.UseTprGovUkFrontendUmbraco(mvcOptions, umbracoContextAccessor);
 }
 ```
 
 On your controller and surface controller, add a `ModelType` attribute identifying the type of your view model.
 
 ```csharp
-using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using ThePensionsRegulator.GovUk.Frontend.Validation;
 
 public class MyDocumentTypeController : RenderController
 {

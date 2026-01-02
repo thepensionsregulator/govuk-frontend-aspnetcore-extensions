@@ -1,6 +1,6 @@
 using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions.Caching;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ThePensionsRegulator.GovUk.Frontend.Caching;
 
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration

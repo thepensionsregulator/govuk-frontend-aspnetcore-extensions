@@ -1,8 +1,8 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Moq;
 using NUnit.Framework;
+using ThePensionsRegulator.GovUk.Frontend.Models;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Testing;
 

@@ -1,5 +1,3 @@
-using GovUk.Frontend.AspNetCore.Extensions;
-using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.ExampleApp;
 using GovUk.Frontend.ExampleApp.Middleware;
 using GovUk.Frontend.ExampleApp.Models.Validators;
@@ -10,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using System.Reflection;
 using ThePensionsRegulator.Frontend;
+using ThePensionsRegulator.GovUk.Frontend;
+using ThePensionsRegulator.GovUk.Frontend.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
@@ -23,7 +23,7 @@ if (config?.TPRStyles == true)
 }
 else
 {
-    builder.Services.AddGovUkFrontendExtensions();
+    builder.Services.AddTprGovUkFrontend();
 }
 
 #region Localization services

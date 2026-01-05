@@ -121,3 +121,10 @@
 .backoffice-block-view .govuk-error-summary span.govuk-link {
     color: $govuk-error-colour;
 }
+
+/* If govuk-\!-display-none is applied the preview could disappear entirely, leaving no backoffice UI,
+    so override it to show a faded version instead. */
+.backoffice-block-view .govuk-\!-display-none {
+    display: block !important;
+    opacity: 0.3;
+}

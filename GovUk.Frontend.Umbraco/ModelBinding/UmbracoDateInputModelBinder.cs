@@ -260,8 +260,6 @@ namespace GovUk.Frontend.Umbraco.ModelBinding
                     {
                         assumedYear = parsedYear;
                     }
-                    /*var assumedYear = yearIsValid ? parsedYear : 2000; */ 
-                    // Bug is here, the year could be valid because it has not been provided, which means parsedYear will be null
 
                     maxDaysInMonth = DateTime.DaysInMonth(assumedYear, parsedMonth);
                 }

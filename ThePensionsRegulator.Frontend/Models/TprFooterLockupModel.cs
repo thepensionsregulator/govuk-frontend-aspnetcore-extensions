@@ -1,5 +1,5 @@
-﻿using ThePensionsRegulator.Frontend.HtmlGeneration;
-using ThePensionsRegulator.Umbraco.Blocks;
+﻿using System.Collections.Generic;
+using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend.Models
 {
@@ -13,7 +13,7 @@ namespace ThePensionsRegulator.Frontend.Models
         public virtual string? LanguageCode { get; init; }
         public virtual string? LogoAlternativeText { get; init; } = ComponentGenerator.FooterLogoDefaultAlt;
         public virtual string? LogoHref { get; init; } = ComponentGenerator.FooterLogoDefaultHref;
-        public virtual OverridableBlockGridModel? ThreeColumnLinks { get; init; }
+        public virtual IEnumerable<IEnumerable<TprFooterLink>> ThreeColumnLinks { get; init; } = [];
         public virtual string? Copyright { get; init; }
         public virtual string? FooterBarContent { get; init; }
     }

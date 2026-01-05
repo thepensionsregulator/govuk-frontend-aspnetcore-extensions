@@ -1,41 +1,51 @@
+@using System.Web
 @using ThePensionsRegulator.Frontend
 @using ThePensionsRegulator.Frontend.Models
 @model TprSideNavigationViewModel
-<nav class="tpr-side-nav" aria-label="@Model.AriaNavigationLabel">
+@{
+    var query = HttpUtility.ParseQueryString(Context.Request.QueryString.ToString());
+    var isMobileExpanded = query["tpr-side-nav"] == "expand";
+    query["tpr-side-nav"] = "expand";
+    var expandMobileUrl = Context.Request.Path + "?" + query;
+
+    var id = "tpr-side-nav__" + Guid.NewGuid().ToString().Substring(0,8);
+}
+<nav class="tpr-side-nav" id="@id" aria-label="@Model.AriaNavigationLabel" data-expand-text="@Model.ExpandItemLabel" data-collapse-text="@Model.CollapseItemLabel">
     @{
         var level = 1;
         if (Model.TitleLink is not null)
         {
             <h2 class="govuk-heading-m">
-                <button aria-expanded="false" type="button" class="govuk-link--no-visited-state tpr-side-nav__mobile-expand-toggle">
+                <a href="@expandMobileUrl" class="govuk-link govuk-link--no-visited-state tpr-side-nav__mobile-expand-toggle">
                     @Model.TitleLink.Name
-                    <img alt="tpr-arrow-image" class="tpr-side-nav__mobile-expand-toggle__arrow" />
-                </button>
-                <a class="govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
+                    <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" width="25" height="25" alt="@(string.Format(isMobileExpanded ? Model.CollapseItemLabel : Model.ExpandItemLabel, string.Empty))" class="tpr-side-nav__mobile-expand-toggle__arrow" />
+                </a>
+                <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
             </h2>
         }
-        RenderNavListLayer(Model.NavigationLinks, level);
+        await RenderNavListLayer(Model.NavigationLinks, level, isMobileExpanded ? "tpr-side-nav__list--expanded" : null);
     }
 </nav>
 @{
-    void RenderNavListLayer(List<TprSideNavigationLink> navigationLinks, int level)
+    async Task RenderNavListLayer(List<TprSideNavigationLink> navigationLinks, int level, string? listClass)
     {
-        <ul class="tpr-side-nav__list" data-level="@level">
+        <ul class="tpr-side-nav__list @listClass" id="@(id)__list" data-level="@level">
             @foreach (var child in navigationLinks)
             {
-                <li @(child.IsCurrentPage && !child.IsExpanded ? "class=tpr-side-nav__list-item--active" : string.Empty) @(child.IsExpanded && !child.IsCurrentPage ? "class=tpr-side-nav__list-item--expanded" : string.Empty) @Html.Raw(child.IsCurrentPage && child.IsExpanded ? "class='tpr-side-nav__list-item--active tpr-side-nav__list-item--expanded'" : string.Empty)>
+                var childId = $"{id}-{Guid.NewGuid().ToString().Substring(0, 8)}";
+                <li id="@childId" @(child.IsCurrentPage && !child.IsExpanded ? "class=tpr-side-nav__list-item--active" : string.Empty) @(child.IsExpanded && !child.IsCurrentPage ? "class=tpr-side-nav__list-item--expanded" : string.Empty) @Html.Raw(child.IsCurrentPage && child.IsExpanded ? "class='tpr-side-nav__list-item--active tpr-side-nav__list-item--expanded'" : string.Empty)>
                     <div class="tpr-side-nav__list-item-wrapper">
-                        <a class="govuk-link--no-visited-state" @(child.IsCurrentPage ? "aria-current=page" : string.Empty) href="@child.Url">@child.Name</a>
+                        <a class="govuk-link govuk-link--no-visited-state" @(child.IsCurrentPage ? "aria-current=page" : string.Empty) href="@child.Url">@child.Name</a>
                         @if (child.Children is not null && child.Children.Any())
                         {
-                            <button type="button" class="tpr-side-nav__list-item__expand-toggle" aria-expanded="@child.IsExpanded">
-                                <img alt="tpr-arrow-image" class="tpr-side-nav__list-item__arrow @(child.IsExpanded ? "tpr-side-nav__arrow--up" : "")" />
-                            </button>
+                            var arrowNoJsAlternative = string.Format(child.IsExpanded ? Model.ExpandedItemLabel : Model.CollapsedItemLabel, child.Name);
+                            var arrowClass = child.IsExpanded ? "tpr-side-nav__list-item-arrow tpr-side-nav__list-item-arrow--up" : "tpr-side-nav__list-item-arrow";
+                            <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" width="25" height="25" alt="@arrowNoJsAlternative" class="@arrowClass" />
                         }
                     </div>
                     @if (child.Children is not null && child.Children.Any())
                     {
-                        RenderNavListLayer(child.Children, ++level);
+                        await RenderNavListLayer(child.Children, ++level, null);
                     }
                 </li>
             }

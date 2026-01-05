@@ -4,19 +4,29 @@ namespace GovUk.Frontend.Umbraco.HtmlGeneration
 {
     public class DateInputHtmlEnhancer : IDateInputHtmlEnhancer
     {
-        public string EnhanceHtml(string html, bool dayEnabled)
+        public string EnhanceHtml(string html, bool dayEnabled, bool yearEnabled)
         {
-            if (dayEnabled) { return html; }
+            if (dayEnabled && yearEnabled) { return html; }
 
             var document = new HtmlDocument();
             document.LoadHtml(html);
 
-
-            var wrapperForDayInput = document.DocumentNode.SelectSingleNode($"//div[{WithClass("govuk-date-input__item")} and div[{WithClass(GovUkClassNames.FormGroup)} and input[{EndsWith("@id", ".Day")}]]]");
-
-            if (wrapperForDayInput is not null)
+            if (!dayEnabled)
             {
-                wrapperForDayInput.ParentNode.RemoveChild(wrapperForDayInput);
+                var wrapperForDayInput = document.DocumentNode.SelectSingleNode($"//div[{WithClass("govuk-date-input__item")} and div[{WithClass(GovUkClassNames.FormGroup)} and input[{EndsWith("@id", ".Day")}]]]");
+                if (wrapperForDayInput is not null)
+                {
+                    wrapperForDayInput.ParentNode.RemoveChild(wrapperForDayInput);
+                }
+            }
+
+            if (!yearEnabled)
+            {
+                var wrapperForYearInput = document.DocumentNode.SelectSingleNode($"//div[{WithClass("govuk-date-input__item")} and div[{WithClass(GovUkClassNames.FormGroup)} and input[{EndsWith("@id", ".Year")}]]]");
+                if (wrapperForYearInput is not null)
+                {
+                    wrapperForYearInput.ParentNode.RemoveChild(wrapperForYearInput);
+                }
             }
 
             return document.DocumentNode.OuterHtml;

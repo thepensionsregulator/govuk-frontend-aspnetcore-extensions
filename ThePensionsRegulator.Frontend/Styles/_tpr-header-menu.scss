@@ -217,12 +217,6 @@
             text-decoration: none;
             padding: 1rem;
         }
-
-        a:hover {
-            background: $tpr-colour-white;
-            text-decoration: underline;
-            color: $tpr-colour-black;
-        }
     }
 
     .tpr-header-menu__nav-menu-item {
@@ -295,6 +289,12 @@
         background-color: rgba(0,0,0,0.5);
         z-index: -1;
         cursor: pointer;
+    }
+
+    .tpr-header-menu__nav-menu-item:focus-within > a, .tpr-header-menu__nav-menu-item:hover > a { 
+        background: $tpr-colour-white;
+        text-decoration: underline;
+        color: $tpr-colour-black;
     }
 }
 

@@ -11,9 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const overlay = document.querySelectorAll(".tpr-header-menu__nav-overlay");
         const menuItems = document.querySelectorAll(".tpr-header-menu__nav-menu-item");
         const arrows = document.querySelectorAll(".tpr-mobile-menu__arrow");
+        const nav = document.querySelector(".tpr-header-menu__nav");
+
+        const isMobile = e.matches;
 
 
-        if (e.matches) {
+        if (isMobile) {
 
             toggles.forEach(t => t.removeAttribute("href"));
             toggles.forEach(t => t.addEventListener("click", toggleMobileMenu));
@@ -22,6 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
             overlay.forEach(o => o.addEventListener("click", toggleMobileMenu));
 
             arrows.forEach(a => a.addEventListener("click", expandMobileMenuSubMenu))
+
+            nav.removeEventListener("focusin", restoreDefaultMenuState);
 
             menuItems.forEach(m => {
                 const subMenu = m.querySelector(".tpr-header-menu__nav-sub-menu");
@@ -36,10 +41,9 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
 
             overlay?.forEach(o => o.classList.remove("tpr-header-menu__nav-overlay--visible"));
-
             toggles.forEach(t => t.removeEventListener("click", toggleMobileMenu))
-
             overlay.forEach(o => o.removeEventListener("click", toggleMobileMenu));
+            nav.addEventListener("focusin", restoreDefaultMenuState);
 
             arrows.forEach(a => a.removeEventListener("click", expandMobileMenuSubMenu))
 
@@ -68,12 +72,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function highlightCurrentSection() {
 
-    let url = window.location.href.toString().split(window.location.host)[1];
+    let url = window.location.pathname;
 
     url = url.replace(/^\/[a-z]{2}\//i, '/');
     url = url.replace(/\/[a-z]{2}(?=\/|$)/gi, '');
 
-    let section = Array.from(url).filter(char => char !== '/').join('').replace("-", " ");
+    let section = url.split('/').slice(1, 2).join('').replace("-", " ");
 
     if (!section) {
         return;
@@ -128,11 +132,11 @@ function displayDesktopOverlayOnHover() {
                         a.setAttribute("aria-expanded", "false")
                     }
                 })
-
             );
         }
     });
 }
+
 
 function keyboardToggleMobileMenu(e) {
 
@@ -154,8 +158,9 @@ function keyboardToggleMobileMenu(e) {
 function desktopKeyboardNavigation(e) {
 
     const menuItem = e.currentTarget
+    const menuItemElements = document.querySelectorAll(".tpr-header-menu__nav-menu-item")
 
-    let menuItems = Array.from(document.querySelectorAll(".tpr-header-menu__nav-menu-item"));
+    let menuItems = Array.from(menuItemElements);
 
     let a = menuItem.querySelector('a');
 
@@ -166,24 +171,23 @@ function desktopKeyboardNavigation(e) {
 
     const overlay = document.querySelector(".tpr-header-menu__nav-overlay")
 
-
     switch (e.key) {
         case "ArrowRight":
             e.preventDefault();
             menuItems[(currentIndex + 1) % menuItems.length].querySelector('a')?.focus();
-            overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             if (hasSubMenu) {
                 subMenu.style.display = 'none';
                 a.setAttribute("aria-expanded", "false");
+                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             }
             break;
         case "ArrowLeft":
             e.preventDefault();
             menuItems[(currentIndex - 1 + menuItems.length) % menuItems.length].querySelector('a')?.focus();
-            overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             if (hasSubMenu) {
                 subMenu.style.display = 'none';
                 a.setAttribute("aria-expanded", "false");
+                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             }
             break;
         case "ArrowUp":
@@ -191,17 +195,25 @@ function desktopKeyboardNavigation(e) {
             if (hasSubMenu) {
                 subMenu.style.display = 'none';
                 a.setAttribute("aria-expanded", "false");
-                menuItems[(currentIndex)].querySelector('a')?.focus();
+                a.focus();
+                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             }
-            overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             break;
         case "ArrowDown":
             e.preventDefault();
             if (hasSubMenu) {
                 subMenu.style.display = 'grid';
+                a.setAttribute("aria-expanded", "true");
                 subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style");
                 overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
-                a.setAttribute("aria-expanded", "true");
+            }
+            break;
+        case "Escape":
+            if (hasSubMenu) {
+                subMenu.style.display = 'none';
+                a.setAttribute("aria-expanded", "false");
+                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+                a.focus();
             }
             break;
         default:
@@ -225,6 +237,37 @@ function desktopKeyboardNavigation(e) {
             }, 0);
             break;
     }
+}
+
+function restoreDefaultMenuState(e) {
+
+    const menuItemElements = document.querySelectorAll(".tpr-header-menu__nav-menu-item")
+    const overlay = document.querySelector(".tpr-header-menu__nav-overlay")
+
+    const newlyFocusedItem = e.target.closest(".tpr-header-menu__nav-menu-item");
+    if (!newlyFocusedItem) return;
+
+    menuItemElements.forEach(item => {
+
+        const sub = item.querySelector(".tpr-header-menu__nav-sub-menu");
+        const a = item.querySelector("a");
+
+        if (item !== newlyFocusedItem) {
+            if (sub) {
+                sub.style.display = "none";
+                a?.setAttribute("aria-expanded", "false");
+            }
+        }
+
+        const focusedTopLevelItem = newlyFocusedItem.querySelector("a");
+        if (e.target === focusedTopLevelItem) {
+            overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+            if (sub) {
+                sub.style.display = "none";
+                a?.setAttribute("aria-expanded", "false");
+            }
+        }
+    });
 }
 
 function toggleMobileMenu() {

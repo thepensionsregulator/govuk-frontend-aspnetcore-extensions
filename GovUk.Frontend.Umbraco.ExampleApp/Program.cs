@@ -23,6 +23,7 @@ else
 {
     builder.Services.AddGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
     builder.Services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
+    builder.Services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
 }
 
 builder.Services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServiceForExampleApp>();

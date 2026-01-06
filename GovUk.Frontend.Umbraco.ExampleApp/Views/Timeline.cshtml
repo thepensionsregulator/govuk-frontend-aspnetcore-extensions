@@ -1,13 +1,20 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Timeline>
+@using Microsoft.Extensions.Configuration;
+@inject IConfiguration Configuration
+@{
+    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+}
 @section head {
 	<title>@Model.PageHeadingOrName()</title>
 }
 
-<div class="govuk-width-container govuk-!-margin-top-5"><div class="govuk-grid-row govuk-grid-row--tpr-divider">
-    <div class="govuk-grid-column govuk-grid-column-full">
-        <h1 class="govuk-heading-l">@Model.Name</h1>
-    </div>
-</div>
+@if (useTPRstyles)
+{
+    @:<div class="govuk-width-container govuk-!-margin-top-5"><div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-full">
+            <h1 class="govuk-heading-l">@Model.Name</h1>
+        </div>
+    @:</div>
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
@@ -161,3 +168,8 @@
         </tpr-timeline>
     </div>
 </div>
+}
+else
+{
+    <partial name="GOVUK/BlockList" model="Model.GovukBlocks" />
+}

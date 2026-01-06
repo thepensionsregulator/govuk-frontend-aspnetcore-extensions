@@ -291,7 +291,7 @@
         cursor: pointer;
     }
 
-    .tpr-header-menu__nav-menu-item:focus-within > a, .tpr-header-menu__nav-menu-item:hover > a /*.tpr-header-menu__nav-container a[aria-expanded="true"]*/ { //this is displaying without js
+    .tpr-header-menu__nav-menu-item:focus-within > a, .tpr-header-menu__nav-menu-item:hover > a { 
         background: $tpr-colour-white;
         text-decoration: underline;
         color: $tpr-colour-black;

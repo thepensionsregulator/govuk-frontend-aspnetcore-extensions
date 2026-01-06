@@ -8,49 +8,7 @@
 
 4. In your Umbraco project install the `uSync` NuGet package, making sure that the version aligns with the version of Umbraco you installed. See [uSync for Umbraco](https://jumoo.co.uk/usync/).
 
-5. In `appsettings.json` add the following configuration. This includes the [Paste from Word plugin for TinyMCE](https://github.com/pangaeatech/tinymce-paste-from-word-plugin). The settings shown for `Umbraco:CMS` are in addition to those present by default, not a replacement.
-
-   ```json
-   {
-     "Umbraco": {
-       "CMS": {
-         "Global": {
-           "UseHttps": true,
-           "SanitizeTinyMce": true
-         },
-         "ModelsBuilder": {
-           "ModelsMode": "SourceCodeManual",
-           "ModelsDirectory": "~/Models/ModelsBuilder",
-           "IncludeVersionNumberInGeneratedModels": false
-         },
-         "RichTextEditor": {
-           "ValidElements": "+a[id|rel|data-id|data-udi|rev|charset|hreflang|lang|tabindex|type|name|href|target|class],-strong/-b[class],-em/-i[class],-strike[class],p[id|style|class],-ol[style|class|reversed|start|type],-ul[style|class],-li[class],br[class],-sub[class],-sup[class],-blockquote[class],-table[class|id|lang],-tr[id|lang|class|rowspan],tbody[id|class],thead[id|class],tfoot[id|class],#td[id|lang|class|colspan|rowspan|width],#th[id|lang|class|colspan|rowspan|width|scope],caption[id|lang|class],-div[id|class],-span[class],-pre[class],-h1[id|class],-h2[id|class],-h3[id|class],-h4[id|class],-h5[id|class],-h6[id|class],hr[class],small[class],dd[id|class|lang],dl[id|class|lang],dt[id|class|dir|lang]",
-           "CustomConfig": {
-             "table_advtab": "false",
-             "table_cell_advtab": "false",
-             "table_row_advtab": "false",
-             "table_default_attributes": "{}",
-             "table_default_styles": "{}",
-             "table_class_list": "[{\"title\":\"None\",\"value\":\"\"},{\"title\": \"Width: three-quarters\",\"value\": \"govuk-!-width-three-quarters\"},{\"title\": \"Width: two-thirds\",\"value\": \"govuk-!-width-two-thirds\"},{\"title\": \"Width: one-half\",\"value\": \"govuk-!-width-one-half\"}]",
-             "table_cell_class_list": "[{\"title\":\"None\",\"value\":\"\"},{\"title\":\"Header cell\",\"value\":\"govuk-table__header\"},{\"title\": \"Numeric header cell\",\"value\": \"govuk-table__header--numeric\"},{\"title\": \"Numeric data cell\",\"value\": \"govuk-table__cell--numeric\"},{\"title\": \"Width: one-half\",\"value\": \"govuk-!-width-one-half\"},{\"title\": \"Width: one-third\",\"value\": \"govuk-!-width-one-third\"},{\"title\": \"Width: one-quarter\",\"value\": \"govuk-!-width-one-quarter\"}]",
-             "table_header_type": "sectionCells",
-             "table_sizing_mode": "relative",
-             "table_resize_bars": "false",
-             "object_resizing": "img",
-             "contextmenu": "link lists table",
-             "external_plugins": "{\"paste_from_word\":\"/App_Plugins/GOVUK/tinymce/paste-from-word.min.js\"}",
-             "paste_webkit_styles": "all",
-             "paste_remove_styles_if_webkit": "false"
-           }
-         },
-         "RuntimeMinification": {
-           "UseInMemoryCache": true,
-           "CacheBuster": "Timestamp"
-         }
-       }
-     }
-   }
-   ```
+5. Update `appsettings.json` and `appsettings.Development.json` with the [recommended appsettings configuration for a new Umbraco project](new-umbraco-project-appsettings.md).
 
 6. Create a `wwwroot/media` folder with the following `.gitignore` file in it.
 

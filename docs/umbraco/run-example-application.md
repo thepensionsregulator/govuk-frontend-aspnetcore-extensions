@@ -27,13 +27,13 @@ By default the example application uses The Pensions Regulator (TPR) branding. T
 3. Remove the `ConnectionStrings` section from `GovUk.Frontend.Umbraco.ExampleApp\appsettings.json`. It will be re-generated automatically.
 4. Re-run the example application.
 
-### Error during installation: Boot failed
+### 500 error during installation
 
-!['Boot failed' error](../images/umbraco-boot-failed.png)
+![500 error](../images/umbraco-500.png)
 
 This happens when your SQLLite database is configured in `appsettings.json`, but doesn't exist.
 
 1. Delete the `ConnectionStrings` section from `appsettings.json`.
 2. Re-run the example application.
 3. If you see the Umbraco installer follow the steps above to complete the installation. The `ConnectionStrings` section will be put back into `appsettings.json` automatically.
-4. If you still see the `Boot failed` error, it's happening for another reason. Look in `GovUk.Frontend.Umbraco.ExampleApp\umbraco\Logs` to find the error message.
+4. If you still see the 500 error, it's happening for another reason. Look in `GovUk.Frontend.Umbraco.ExampleApp\umbraco\Logs` to find the error message.

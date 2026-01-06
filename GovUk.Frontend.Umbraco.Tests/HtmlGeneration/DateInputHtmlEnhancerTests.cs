@@ -32,13 +32,13 @@ namespace GovUk.Frontend.Umbraco.Tests.HtmlGeneration
             </div>";
 
         [Test]
-        public void When_DayEnabled_Is_True_Html_Is_Unchanged()
+        public void When_DayEnabled_Is_True_And_YearEnabled_Is_True_Html_Is_Unchanged()
         {
             // Arrange
             var enhancer = new DateInputHtmlEnhancer();
 
             // Act
-            var result = enhancer.EnhanceHtml(DATE_INPUT_HTML, true);
+            var result = enhancer.EnhanceHtml(DATE_INPUT_HTML, true, true);
 
             // Assert
             Assert.That(result, Is.EqualTo(DATE_INPUT_HTML));
@@ -51,7 +51,7 @@ namespace GovUk.Frontend.Umbraco.Tests.HtmlGeneration
             var enhancer = new DateInputHtmlEnhancer();
 
             // Act
-            var result = enhancer.EnhanceHtml(DATE_INPUT_HTML, false);
+            var result = enhancer.EnhanceHtml(DATE_INPUT_HTML, false, true);
 
             // Assert
             var doc = new HtmlDocument();
@@ -61,6 +61,25 @@ namespace GovUk.Frontend.Umbraco.Tests.HtmlGeneration
             Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Day']"), Is.Null);
             Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Month']").Count, Is.EqualTo(1));
             Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Year']").Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void When_YearEnabled_Is_False_Year_Field_Is_Removed()
+        {
+            // Arrange
+            var enhancer = new DateInputHtmlEnhancer();
+
+            // Act
+            var result = enhancer.EnhanceHtml(DATE_INPUT_HTML, true, false);
+
+            // Assert
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result);
+
+            Assert.That(doc.DocumentNode.SelectNodes("//div[@class='govuk-date-input__item']").Count, Is.EqualTo(2));
+            Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Day']").Count, Is.EqualTo(1));
+            Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Month']").Count, Is.EqualTo(1));
+            Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Year']"), Is.Null);
         }
     }
 }

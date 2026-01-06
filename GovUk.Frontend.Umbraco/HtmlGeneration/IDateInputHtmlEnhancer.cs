@@ -2,6 +2,6 @@
 {
     public interface IDateInputHtmlEnhancer
     {
-        string EnhanceHtml(string html, bool dayEnabled);
+        string EnhanceHtml(string html, bool dayEnabled, bool yearEnabled);
     }
 }

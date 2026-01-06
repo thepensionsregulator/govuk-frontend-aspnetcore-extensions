@@ -79,6 +79,7 @@
     }
     var readOnly = Model.Settings.Value<bool>(PropertyAliases.ReadOnly);
     var showDay = Model.Settings.Value<bool?>(PropertyAliases.DateInputShowDay) ?? true;
+    var showYear = Model.Settings.Value<bool?>(PropertyAliases.DateInputShowYear) ?? true;
 }
 <div class="@(GovUkClassNames.FormGroup)@(invalidClass)@(cssClass)">
     <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
@@ -100,7 +101,7 @@
             {
                 if (readOnly)
                 {
-                    <govuk-date-input-options show-day="@showDay">
+                    <govuk-date-input-options show-day="@showDay" show-year="@showYear">
                         <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
                             @if (hasHint)
                             {
@@ -118,7 +119,7 @@
                 }
                 else
                 {
-                    <govuk-date-input-options show-day="@showDay">
+                    <govuk-date-input-options show-day="@showDay" show-year="@showYear">
                         <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
                             @if (hasHint)
                             {
@@ -139,7 +140,7 @@
             {
                 if (readOnly)
                 {
-                    <govuk-date-input-options show-day="@showDay">
+                    <govuk-date-input-options show-day="@showDay" show-year="@showYear">
                         <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName">
                             @if (hasHint)
                             {
@@ -157,7 +158,7 @@
                 }
                 else
                 {
-                    <govuk-date-input-options show-day="@showDay">
+                    <govuk-date-input-options show-day="@showDay" show-year="@showYear">
                         <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName">
                             @if (hasHint)
                             {

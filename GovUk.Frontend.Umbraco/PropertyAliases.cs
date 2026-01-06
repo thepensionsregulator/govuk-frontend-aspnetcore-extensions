@@ -28,6 +28,7 @@
         public const string ColumnSize = "columnSize";
         public const string ColumnSizeFromDesktop = "columnSizeFromDesktop";
         public const string DateInputShowDay = "showDay";
+        public const string DateInputShowYear = "showYear";
         public const string DateInputFieldsetBlocks = "fieldsetBlocks";
         public const string DetailsSummary = "summary";
         public const string DecorativeImage = "decorativeImage";

@@ -178,6 +178,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
                 UmbracoBlockGridFactory.CreateContentOrSettings("settings")
                     .SetupUmbracoTextboxPropertyValue(PropertyAliases.ModelProperty, nameof(ExampleModel.DateProperty))
                     .SetupUmbracoBooleanPropertyValue(PropertyAliases.DateInputShowDay, false)
+                    .SetupUmbracoBooleanPropertyValue(PropertyAliases.DateInputShowYear, true)
                     .Object
             );
             var grid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
@@ -224,6 +225,68 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             Assert.AreEqual("2020", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
             Assert.AreEqual("4", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
             Assert.AreEqual(null, bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
+
+            Assert.AreEqual(0, bindingContext.ModelState.ErrorCount);
+        }
+
+        [Test]
+        public async Task BindModelAsync_DayAndMonth_AllComponentsProvided_PassesValuesToConverterAndBindsResult()
+        {
+            // Arrange
+            var modelType = typeof(ExampleModel);
+
+            var block = UmbracoBlockGridFactory.CreateOverridableBlock(
+                UmbracoBlockGridFactory.CreateContentOrSettings("content").Object,
+                UmbracoBlockGridFactory.CreateContentOrSettings("settings")
+                    .SetupUmbracoTextboxPropertyValue(PropertyAliases.ModelProperty, nameof(ExampleModel.DateProperty))
+                    .SetupUmbracoBooleanPropertyValue(PropertyAliases.DateInputShowDay, true)
+                    .SetupUmbracoBooleanPropertyValue(PropertyAliases.DateInputShowYear, false)
+                    .Object
+            );
+            var grid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
+            _testContext.CurrentPage.SetupUmbracoBlockGridPropertyValue("blocks", grid);
+
+
+            ModelBindingContext bindingContext = new DefaultModelBindingContext()
+            {
+                ActionContext = CreateActionContext(),
+                ModelMetadata = new EmptyModelMetadataProvider().GetMetadataForProperty(modelType, nameof(ExampleModel.DateProperty)),
+                ModelName = nameof(ExampleModel.DateProperty),
+                ModelState = new ModelStateDictionary(),
+                ValueProvider = new SimpleValueProvider()
+                {
+                    { $"{nameof(ExampleModel.DateProperty)}.Day", "25" },
+                    { $"{nameof(ExampleModel.DateProperty)}.Month", "12" }
+                }
+            };
+
+            var converterMock = new Mock<DateInputModelConverter>();
+
+            converterMock
+                .Protected()
+                .Setup<object>("ConvertToModelCore", ItExpr.IsAny<DateInputConvertToModelContext>())
+                .Returns(new DateOnly(1900, 12, 25))
+                .Verifiable();
+
+            var modelBinder = CreateModelBinder(converterMock.Object);
+
+            // Act
+            await modelBinder.BindModelAsync(bindingContext);
+
+            // Assert
+            converterMock.Verify();
+
+            Assert.True(bindingContext.Result.IsModelSet);
+
+            Assert.IsInstanceOf<DateOnly>(bindingContext.Result.Model);
+            var date = (DateOnly)bindingContext.Result.Model!;
+            Assert.AreEqual(1900, date.Year);
+            Assert.AreEqual(12, date.Month);
+            Assert.AreEqual(25, date.Day);
+
+            Assert.AreEqual(null, bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
+            Assert.AreEqual("12", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
+            Assert.AreEqual("25", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
 
             Assert.AreEqual(0, bindingContext.ModelState.ErrorCount);
         }

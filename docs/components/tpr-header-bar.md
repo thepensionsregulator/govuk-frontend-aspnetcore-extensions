@@ -16,12 +16,12 @@ The Pensions Regulator (TPR) uses the TPR header bar as a consistent part of the
     </tpr-header-bar-content>
     <tpr-header-search action="en/search-results" autocomplete-url="#" placeholder="search" aria-label="search" input-name="custom query string"></tpr-header-search>
      <tpr-header-menu aria-label="Example instructions for navigation" menu-item-aria-label="Click to expand submenu" no-js-navigation="/example-page" open-label="Close" close-label="Menu">
-        <tpr-header-menu-parent-item href="#" link-text="Example parent item 1" lang="cy">
+        <tpr-header-menu-item href="#" link-text="Example parent item 1" lang="cy">
             <tpr-header-menu-child-item href="#" link-text="Example child item 1"></tpr-header-menu-child-item>
-        </tpr-header-menu-parent-item>
-        <tpr-header-menu-parent-item href="#" link-text="Example parent item 2">
+        </tpr-header-menu-item>
+        <tpr-header-menu-item href="#" link-text="Example parent item 2">
              <tpr-header-menu-child-item href="#" link-text="Example child item 2"></tpr-header-menu-child-item>
-        </tpr-header-menu-parent-item>
+        </tpr-header-menu-item>
     </tpr-header-menu>
 </tpr-header-bar>
 ```
@@ -97,10 +97,10 @@ Views which require the `<tpr-header-search>` should also include the `TPRHeader
 | `close-label`          | `string` | Sets value for the mobile menu toggle label when the menu is collapsed.                                        |
 
 Using the `<tpr-header-menu>` tag will generate the toggle as part of the header bar and the associated nav which will dispay underneath the header.
-Adding `<tpr-header-menu-parent-item>` will create items to populate the the menu and `<tpr-mobile-menu-child-item>` can be nested inside these parent items to populate each sub menu.
-Views which require the `<tpr-header-menu>` should also include the `TPRHeaderMenu` partial view, in order to use javascript functionality.
+Adding `<tpr-header-menu-item>` will create items to populate the the menu and `<tpr-header-menu-child-item>` can be nested inside these parent items to populate each sub menu.
+Views which require the `<tpr-header-menu>` should also include the `TPRHeaderMenu` partial view, in order to use JavaScript functionality.
 
-### `<tpr-header-menu-parent-item>`
+### `<tpr-header-menu-item>`
 
 | Attribute   | Type     | Description                                                                                                                                          |
 | ----------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -117,7 +117,7 @@ Must be used inside the `<tpr-header-menu>` tag
 | `href`      | `string` | Sets destination for the menu item. |
 | `link-text` | `string` | Sets the menu item title.           |
 
-Must be used inside the `<tpr-header-menu-parent-item>` tag
+Must be used inside the `<tpr-header-menu-item>` tag
 
 ## Umbraco
 

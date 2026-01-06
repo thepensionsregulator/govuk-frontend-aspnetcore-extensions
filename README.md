@@ -1,6 +1,6 @@
 # GOV.UK Design System for ASP.NET MVC and Umbraco
 
-This builds on [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore) by James Gunn.
+This builds on [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/x-govuk/govuk-frontend-aspnetcore) by James Gunn.
 
 We add support for:
 
@@ -9,31 +9,31 @@ We add support for:
 - Adding the following non-interactive components entirely in Umbraco:
 
   - [Accordion](/docs/components/accordion.md)
-  - [Details](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/details.md)
-  - [Error summary](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/error-summary.md)
-  - [Fieldset](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/fieldset.md)
-  - [Inset text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/inset-text.md)
-  - [Notification banner](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/notification-banner.md)
-  - [Panel](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/panel.md)
+  - [Details](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/details.md)
+  - [Error summary](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/error-summary.md)
+  - [Fieldset](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/fieldset.md)
+  - [Inset text](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/inset-text.md)
+  - [Notification banner](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/notification-banner.md)
+  - [Panel](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/panel.md)
   - [Section break](https://design-system.service.gov.uk/styles/section-break/)
   - [Summary card](/docs/components/summary-card.md)
   - [Summary list](/docs/components/summary-list.md)
-  - [Warning text](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/warning-text.md)
+  - [Warning text](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/warning-text.md)
 
 - Configuring the text for the following components in Umbraco:
 
   - [Button](/docs/components/button.md)
   - [Checkboxes](/docs/components/checkboxes.md)
-  - [Character count](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/character-count.md)
+  - [Character count](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/character-count.md)
   - [Date input](/docs/components/date-input.md)
-  - [Error message](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/error-message.md)
+  - [Error message](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/error-message.md)
   - [File upload](/docs/components/file-upload.md)
-  - [Pagination](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/pagination.md)
-  - [Phase banner](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/phase-banner.md)
+  - [Pagination](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/pagination.md)
+  - [Phase banner](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/phase-banner.md)
   - [Radios](/docs/components/radios.md)
   - [Select](/docs/components/select.md)
-  - [Skip link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/skip-link.md)
-  - [Textarea](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/textarea.md)
+  - [Skip link](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/skip-link.md)
+  - [Textarea](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/textarea.md)
   - [Text input](/docs/components/text-input.md)
 
 - Additional components:
@@ -56,8 +56,8 @@ We add support for:
   - [TPR YouTube video](/docs/components/tpr-youtube-video.md)
 
 - The Pensions Regulator (TPR) styling for all of the above components, and:
-  - [Back link](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
-  - [Breadcrumbs](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/breadcrumbs.md)
+  - [Back link](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
+  - [Breadcrumbs](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/breadcrumbs.md)
 
 We target [GOV.UK Frontend v5.13.0](https://github.com/alphagov/govuk-frontend/releases/tag/v5.13.0) in line with James Gunn's base project.
 
@@ -82,17 +82,19 @@ ASP.NET support for The Pensions Regulator components, and The Pensions Regulato
 
 We provide features for building applications with Umbraco, particularly for working with block grids and block lists. These are not dependent on the GOV.UK Design System (but some examples do refer to GOV.UK Design System components).
 
+We support LTS versions of Umbraco, currently Umbraco 17.x on .NET 10. Use v9.x of our packages for Umbraco 13 support on .NET 8.
+
 - [Run the Umbraco example application](docs/umbraco/run-example-application.md)
 - [Filter the block list](docs/umbraco/filter-blocks.md)
 - [Format property values](docs/umbraco/format-property-values.md)
 - [Override property values](docs/umbraco/override-property-values.md)
 - [Umbraco unit testing](docs/umbraco/unit-testing.md)
 
-Umbraco features not dependent upon the GOV.UK Design System are published on NuGet as [ThePensionsRegulator.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco)
+Umbraco features not dependent upon the GOV.UK Design System are published on NuGet as [ThePensionsRegulator.Umbraco.Core](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco.Core).
 
 ![ThePensionsRegulator.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco)
 
-Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbraco.Testing](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco.Testing)
+Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbraco.Testing](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco.Testing).
 
 ![ThePensionsRegulator.Umbraco.Testing on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco.Testing)
 
@@ -121,7 +123,7 @@ Umbraco GOV.UK Design System support with TPR styling and components is publishe
 
 This project prioritises the components required by The Pensions Regulator (TPR). Please open an issue if you find a bug, want to request improvements to a component we already support, or wish to implement a component we do not yet support. Pull requests are welcome.
 
-We also encourage contributions to the base project we're building upon, [govuk-frontend-aspnetcore](https://github.com/gunndabad/govuk-frontend-aspnetcore).
+We also encourage contributions to the base project we're building upon, [govuk-frontend-aspnetcore](https://github.com/x-govuk/govuk-frontend-aspnetcore).
 
 See [Contributing to govuk-frontend-aspnetcore-extensions](CONTRIBUTING.md) for how to implement and test features.
 

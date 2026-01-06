@@ -23,7 +23,7 @@ This example has TPR styling:
 When JavaScript is enabled the component is hidden on short pages. Include the following script to enable this behaviour. This is included by default when referencing `<partial name="TPR/BodyClosing" />` in your layout.
 
 ```html
-<script src="/_content/ThePensionsRegulator.GovUk.Frontend/tpr/tpr-back-to-top.min.js"></script>
+<script src="/ThePensionsRegulator.Frontend/js/tpr-back-to-top.min.js"></script>
 ```
 
 ## API

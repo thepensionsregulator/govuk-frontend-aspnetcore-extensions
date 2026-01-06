@@ -1,6 +1,6 @@
 # Update govuk-frontend-aspnetcore and GOV.UK Frontend
 
-This project builds on [govuk-frontend-aspnetcore](https://github.com/gunndabad/govuk-frontend-aspnetcore) by James Gunn, which in turn builds on [GOV.UK Frontend](https://github.com/alphagov/govuk-frontend).
+This project builds on [govuk-frontend-aspnetcore](https://github.com/x-govuk/govuk-frontend-aspnetcore) by James Gunn, which in turn builds on [GOV.UK Frontend](https://github.com/alphagov/govuk-frontend).
 
 When you update either you must:
 

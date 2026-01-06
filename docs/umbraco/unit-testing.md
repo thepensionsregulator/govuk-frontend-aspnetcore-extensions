@@ -2,7 +2,7 @@
 
 Add `ThePensionsRegulator.Umbraco.Testing` NuGet package.
 
-Examples on this page are shown with NUnit, but these helper classes should work with any testing framework. However [Moq](https://github.com/moq/moq4) is required for mocking with these helper classes.
+Examples on this page are shown with XUnit, but these helper classes should work with any testing framework. However [Moq](https://github.com/moq/moq4) is required for mocking with these helper classes.
 
 ## Create an Umbraco context
 
@@ -14,17 +14,14 @@ using ThePensionsRegulator.Umbraco.Testing;
 private UmbracoTestContext _testContext;
 private ExampleController _controllerUnderTest;
 
-[SetUp]
-public void SetUp()
+public MyTestClass()
 {
     _testContext = new();
 
     _controllerUnderTest = new(
         Mock.Of<ILogger<ExampleController>>(),
         _testContext.CompositeViewEngine.Object,
-        _testContext.UmbracoContextAccessor.Object,
-        _testContext.VariationContextAccessor.Object,
-        _testContext.ServiceContext
+        _testContext.UmbracoContextAccessor.Object
         )
     {
         ControllerContext = _testContext.ControllerContext
@@ -69,6 +66,7 @@ _testContext.CurrentPage.SetupUmbracoBooleanPropertyValue("myTrueFalsePropertyAl
 _testContext.CurrentPage.SetupUmbracoContentPickerPropertyValue("myContentPropertyAlias", UmbracoContentFactory.CreateContent<IPublishedContent>("pickedContentAlias").Object);
 _testContext.CurrentPage.SetupUmbracoMultiUrlPickerPropertyValue("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
 _testContext.CurrentPage.SetupUmbracoBlockListPropertyValue("myBlockListPropertyAlias", myBlockList);
+_testContext.CurrentPage.SetupUmbracoBlockGridPropertyValue("myBlockGridPropertyAlias", myBlockGrid);
 ```
 
 If the above overloads don't meet your needs you can create a property directly.
@@ -76,13 +74,13 @@ If the above overloads don't meet your needs you can create a property directly.
 ```csharp
 var prop1 = UmbracoPropertyFactory.CreateProperty("myPropertyAlias", myPropertyType, string.Empty);
 var prop2 = UmbracoPropertyFactory.CreateRichTextProperty("myRichTextPropertyAlias", string.Empty);
-var prop2 = UmbracoPropertyFactory.CreateTextboxProperty("myTextPropertyAlias", string.Empty);
-var prop2 = UmbracoPropertyFactory.CreateIntegerProperty("myIntegerPropertyAlias", 123);
-var prop3 = UmbracoPropertyFactory.CreateBooleanProperty("myTrueFalsePropertyAlias", true);
-var prop3 = UmbracoPropertyFactory.CreateContentPickerProperty("myContentPickerPropertyAlias", UmbracoContentFactory.CreateContent<IPublishedContent>("pickedContentAlias").Object);
-var prop4 = UmbracoPropertyFactory.CreateMultiUrlPickerProperty("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
-var prop5 = UmbracoPropertyFactory.CreateBlockListProperty("myBlockListPropertyAlias", myBlockList);
-var prop5 = UmbracoPropertyFactory.CreateBlockGridProperty("myBlockGridPropertyAlias", myBlockGrid);
+var prop3 = UmbracoPropertyFactory.CreateTextboxProperty("myTextPropertyAlias", string.Empty);
+var prop4 = UmbracoPropertyFactory.CreateIntegerProperty("myIntegerPropertyAlias", 123);
+var prop5 = UmbracoPropertyFactory.CreateBooleanProperty("myTrueFalsePropertyAlias", true);
+var prop6 = UmbracoPropertyFactory.CreateContentPickerProperty("myContentPickerPropertyAlias", UmbracoContentFactory.CreateContent<IPublishedContent>("pickedContentAlias").Object);
+var prop7 = UmbracoPropertyFactory.CreateMultiUrlPickerProperty("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
+var prop8 = UmbracoPropertyFactory.CreateBlockListProperty("myBlockListPropertyAlias", myBlockList);
+var prop9 = UmbracoPropertyFactory.CreateBlockGridProperty("myBlockGridPropertyAlias", myBlockGrid);
 ```
 
 ## Mock Umbraco block lists and block grids

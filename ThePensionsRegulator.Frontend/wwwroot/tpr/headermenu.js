@@ -170,7 +170,7 @@ function desktopKeyboardNavigation(e) {
     const currentIndex = menuItems.indexOf(menuItem);
 
     const overlay = document.querySelector(".tpr-header-menu__nav-overlay")
-  
+
     switch (e.key) {
         case "ArrowRight":
             e.preventDefault();
@@ -250,19 +250,22 @@ function restoreDefaultMenuState(e) {
     menuItemElements.forEach(item => {
 
         const sub = item.querySelector(".tpr-header-menu__nav-sub-menu");
+        const a = item.querySelector("a");
 
         if (item !== newlyFocusedItem) {
-            const a = item.querySelector("a");
             if (sub) {
                 sub.style.display = "none";
-                a?.setAttribute("aria-expanded", "false");             
+                a?.setAttribute("aria-expanded", "false");
             }
         }
 
         const focusedTopLevelItem = newlyFocusedItem.querySelector("a");
         if (e.target === focusedTopLevelItem) {
             overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
-            sub.style.display = "none";
+            if (sub) {
+                sub.style.display = "none";
+                a?.setAttribute("aria-expanded", "false");
+            }
         }
     });
 }

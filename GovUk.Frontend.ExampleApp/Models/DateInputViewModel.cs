@@ -1,4 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -14,5 +15,8 @@ namespace GovUk.Frontend.ExampleApp.Models
         public DateOnly? Field3 { get; set; }
 
         public DateOnly? Field4 { get; set; }
+
+        [DateInput(DateInputItemTypes.DayAndMonth)]
+        public ValueTuple<int, int>? Field5 { get; set; }
     }
 }

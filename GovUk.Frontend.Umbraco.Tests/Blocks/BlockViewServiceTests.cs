@@ -3,7 +3,6 @@ using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Moq;
-using NUnit.Framework;
 using System;
 using System.Linq;
 using ThePensionsRegulator.Umbraco;
@@ -12,7 +11,6 @@ using ThePensionsRegulator.Umbraco.Testing;
 
 namespace GovUk.Frontend.Umbraco.Tests.Blocks
 {
-    [TestFixture]
     public class BlockViewServiceTests
     {
 # nullable disable
@@ -20,14 +18,13 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         private Mock<IGovUkFieldsetErrorFinder> _fieldsetErrorFinder;
 #nullable enable
 
-        [SetUp]
-        public void SetupMocks()
+        public BlockViewServiceTests()
         {
             _gridClassBuilder = new();
             _fieldsetErrorFinder = new();
         }
 
-        [Test]
+        [Fact]
         public void OverridableBlockGridModel_applies_filter()
         {
             // Arrange
@@ -46,11 +43,11 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.First().CurrentBlock.Content.ContentType.Alias, Is.EqualTo(ALLOWED));
+            Assert.Equal(1, result.Count());
+            Assert.Equal(ALLOWED, result.First().CurrentBlock.Content.ContentType.Alias);
         }
 
-        [Test]
+        [Fact]
         public void OverridableBlockAreaModel_applies_filter()
         {
             // Arrange
@@ -69,11 +66,11 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.First().CurrentBlock.Content.ContentType.Alias, Is.EqualTo(ALLOWED));
+            Assert.Equal(1, result.Count());
+            Assert.Equal(ALLOWED, result.First().CurrentBlock.Content.ContentType.Alias);
         }
 
-        [Test]
+        [Fact]
         public void OverridableBlockListModel_applies_filter()
         {
             // Arrange
@@ -92,11 +89,11 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.First().CurrentBlock.Content.ContentType.Alias, Is.EqualTo(ALLOWED));
+            Assert.Equal(1, result.Count());
+            Assert.Equal(ALLOWED, result.First().CurrentBlock.Content.ContentType.Alias);
         }
 
-        [Test]
+        [Fact]
         public void Grid_with_no_blocks_returns_empty_list()
         {
             // Arrange
@@ -108,10 +105,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result, Is.Empty);
+            Assert.Empty(result);
         }
 
-        [Test]
+        [Fact]
         public void Area_with_no_blocks_returns_empty_list()
         {
             // Arrange
@@ -123,10 +120,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result, Is.Empty);
+            Assert.Empty(result);
         }
 
-        [Test]
+        [Fact]
         public void Grid_sets_previous_current_and_next_block()
         {
             // Arrange
@@ -142,18 +139,18 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary()).ToList();
 
             // Assert
-            Assert.That(result[0].PreviousBlock, Is.Null);
-            Assert.That(result[0].CurrentBlock, Is.EqualTo(model[0]));
-            Assert.That(result[0].NextBlock, Is.EqualTo(model[1]));
-            Assert.That(result[1].PreviousBlock, Is.EqualTo(model[0]));
-            Assert.That(result[1].CurrentBlock, Is.EqualTo(model[1]));
-            Assert.That(result[1].NextBlock, Is.EqualTo(model[2]));
-            Assert.That(result[2].PreviousBlock, Is.EqualTo(model[1]));
-            Assert.That(result[2].CurrentBlock, Is.EqualTo(model[2]));
-            Assert.That(result[2].NextBlock, Is.Null);
+            Assert.Null(result[0].PreviousBlock);
+            Assert.Equal(model[0], result[0].CurrentBlock);
+            Assert.Equal(model[1], result[0].NextBlock);
+            Assert.Equal(model[0], result[1].PreviousBlock);
+            Assert.Equal(model[1], result[1].CurrentBlock);
+            Assert.Equal(model[2], result[1].NextBlock);
+            Assert.Equal(model[1], result[2].PreviousBlock);
+            Assert.Equal(model[2], result[2].CurrentBlock);
+            Assert.Null(result[2].NextBlock);
         }
 
-        [Test]
+        [Fact]
         public void Area_sets_previous_current_and_next_block()
         {
             // Arrange
@@ -169,18 +166,18 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary()).ToList();
 
             // Assert
-            Assert.That(result[0].PreviousBlock, Is.Null);
-            Assert.That(result[0].CurrentBlock, Is.EqualTo(model[0]));
-            Assert.That(result[0].NextBlock, Is.EqualTo(model[1]));
-            Assert.That(result[1].PreviousBlock, Is.EqualTo(model[0]));
-            Assert.That(result[1].CurrentBlock, Is.EqualTo(model[1]));
-            Assert.That(result[1].NextBlock, Is.EqualTo(model[2]));
-            Assert.That(result[2].PreviousBlock, Is.EqualTo(model[1]));
-            Assert.That(result[2].CurrentBlock, Is.EqualTo(model[2]));
-            Assert.That(result[2].NextBlock, Is.Null);
+            Assert.Null(result[0].PreviousBlock);
+            Assert.Equal(model[0], result[0].CurrentBlock);
+            Assert.Equal(model[1], result[0].NextBlock);
+            Assert.Equal(model[0], result[1].PreviousBlock);
+            Assert.Equal(model[1], result[1].CurrentBlock);
+            Assert.Equal(model[2], result[1].NextBlock);
+            Assert.Equal(model[1], result[2].PreviousBlock);
+            Assert.Equal(model[2], result[2].CurrentBlock);
+            Assert.Null(result[2].NextBlock);
         }
 
-        [Test]
+        [Fact]
         public void List_with_no_blocks_returns_empty_list()
         {
             // Arrange
@@ -192,10 +189,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result, Is.Empty);
+            Assert.Empty(result);
         }
 
-        [Test]
+        [Fact]
         public void List_sets_previous_current_and_next_block()
         {
             // Arrange
@@ -211,25 +208,26 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary()).ToList();
 
             // Assert
-            Assert.That(result[0].PreviousBlock, Is.Null);
-            Assert.That(result[0].CurrentBlock, Is.EqualTo(model[0]));
-            Assert.That(result[0].NextBlock, Is.EqualTo(model[1]));
-            Assert.That(result[1].PreviousBlock, Is.EqualTo(model[0]));
-            Assert.That(result[1].CurrentBlock, Is.EqualTo(model[1]));
-            Assert.That(result[1].NextBlock, Is.EqualTo(model[2]));
-            Assert.That(result[2].PreviousBlock, Is.EqualTo(model[1]));
-            Assert.That(result[2].CurrentBlock, Is.EqualTo(model[2]));
-            Assert.That(result[2].NextBlock, Is.Null);
+            Assert.Null(result[0].PreviousBlock);
+            Assert.Equal(model[0], result[0].CurrentBlock);
+            Assert.Equal(model[1], result[0].NextBlock);
+            Assert.Equal(model[0], result[1].PreviousBlock);
+            Assert.Equal(model[1], result[1].CurrentBlock);
+            Assert.Equal(model[2], result[1].NextBlock);
+            Assert.Equal(model[1], result[2].PreviousBlock);
+            Assert.Equal(model[2], result[2].CurrentBlock);
+            Assert.Null(result[2].NextBlock);
         }
 
-        [TestCase(true, true, true)]
-        [TestCase(true, true, false)]
-        [TestCase(true, false, true)]
-        [TestCase(true, false, false)]
-        [TestCase(false, true, true)]
-        [TestCase(false, true, false)]
-        [TestCase(false, false, true)]
-        [TestCase(false, false, false)]
+        [Theory]
+        [InlineData(true, true, true)]
+        [InlineData(true, true, false)]
+        [InlineData(true, false, true)]
+        [InlineData(true, false, false)]
+        [InlineData(false, true, true)]
+        [InlineData(false, true, false)]
+        [InlineData(false, false, true)]
+        [InlineData(false, false, false)]
         public void Grid_sets_OpenWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled_and_RenderWidthContainer_true_and_block_is_not_the_same_as_the_previous_block(bool renderWidthContainerForBlocksEnabled, bool renderWidthContainer, bool sameAsPrevious)
         {
             // Arrange
@@ -264,17 +262,18 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.Last().OpenWidthContainer, Is.EqualTo(renderWidthContainerForBlocksEnabled && renderWidthContainer && !sameAsPrevious));
+            Assert.Equal(renderWidthContainerForBlocksEnabled && renderWidthContainer && !sameAsPrevious, result.Last().OpenWidthContainer);
         }
 
-        [TestCase(true, true, true)]
-        [TestCase(true, true, false)]
-        [TestCase(true, false, true)]
-        [TestCase(true, false, false)]
-        [TestCase(false, true, true)]
-        [TestCase(false, true, false)]
-        [TestCase(false, false, true)]
-        [TestCase(false, false, false)]
+        [Theory]
+        [InlineData(true, true, true)]
+        [InlineData(true, true, false)]
+        [InlineData(true, false, true)]
+        [InlineData(true, false, false)]
+        [InlineData(false, true, true)]
+        [InlineData(false, true, false)]
+        [InlineData(false, false, true)]
+        [InlineData(false, false, false)]
         public void Grid_sets_CloseWidthContainer_to_true_if_RenderWidthContainerForBlocks_enabled_and_RenderWidthContainer_true_and_block_is_not_the_same_as_the_next_block(bool renderWidthContainerForBlocksEnabled, bool renderWidthContainer, bool sameAsNext)
         {
             // Arrange
@@ -310,11 +309,12 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().CloseWidthContainer, Is.EqualTo(renderWidthContainerForBlocksEnabled && renderWidthContainer && !sameAsNext));
+            Assert.Equal(renderWidthContainerForBlocksEnabled && renderWidthContainer && !sameAsNext, result.First().CloseWidthContainer);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public void Area_sets_OpenWidthContainer_to_false_for_any_RenderWidthContainerForBlocks_setting(bool renderWidthContainerForBlocksEnabled)
         {
             // Arrange
@@ -331,11 +331,12 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().OpenWidthContainer, Is.False);
+            Assert.False(result.First().OpenWidthContainer);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
         public void Area_sets_CloseWidthContainer_to_false_for_any_RenderWidthContainerForBlocks_setting(bool renderWidthContainerForBlocksEnabled)
         {
             // Arrange
@@ -352,25 +353,26 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().CloseWidthContainer, Is.False);
+            Assert.False(result.First().CloseWidthContainer);
         }
 
-        [TestCase(true, true, true, true)]
-        [TestCase(true, true, true, false)]
-        [TestCase(true, true, false, true)]
-        [TestCase(true, false, true, true)]
-        [TestCase(false, true, true, true)]
-        [TestCase(false, true, true, false)]
-        [TestCase(false, false, true, true)]
-        [TestCase(true, false, false, true)]
-        [TestCase(true, true, false, false)]
-        [TestCase(false, true, false, true)]
-        [TestCase(true, false, true, false)]
-        [TestCase(false, false, false, true)]
-        [TestCase(false, false, true, false)]
-        [TestCase(false, true, false, false)]
-        [TestCase(true, false, false, false)]
-        [TestCase(false, false, false, false)]
+        [Theory]
+        [InlineData(true, true, true, true)]
+        [InlineData(true, true, true, false)]
+        [InlineData(true, true, false, true)]
+        [InlineData(true, false, true, true)]
+        [InlineData(false, true, true, true)]
+        [InlineData(false, true, true, false)]
+        [InlineData(false, false, true, true)]
+        [InlineData(true, false, false, true)]
+        [InlineData(true, true, false, false)]
+        [InlineData(false, true, false, true)]
+        [InlineData(true, false, true, false)]
+        [InlineData(false, false, false, true)]
+        [InlineData(false, false, true, false)]
+        [InlineData(false, true, false, false)]
+        [InlineData(true, false, false, false)]
+        [InlineData(false, false, false, false)]
         public void Lists_sets_OpenWidthContainer_to_true_if_RenderWidthContainer_enabled_for_both_site_and_block_list_and_RenderGrid_is_true_and_current_block_is_not_the_same_as_the_previous_block(
                 bool renderWidthContainerForSiteEnabled,
                 bool renderWidthContainerForBlockListEnabled,
@@ -410,25 +412,26 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.Last().OpenWidthContainer, Is.EqualTo(renderWidthContainerForSiteEnabled && renderWidthContainerForBlockListEnabled && renderGrid && !sameAsPrevious));
+            Assert.Equal(renderWidthContainerForSiteEnabled && renderWidthContainerForBlockListEnabled && renderGrid && !sameAsPrevious, result.Last().OpenWidthContainer);
         }
 
-        [TestCase(true, true, true, true)]
-        [TestCase(true, true, true, false)]
-        [TestCase(true, true, false, true)]
-        [TestCase(true, false, true, true)]
-        [TestCase(false, true, true, true)]
-        [TestCase(false, true, true, false)]
-        [TestCase(false, false, true, true)]
-        [TestCase(true, false, false, true)]
-        [TestCase(true, true, false, false)]
-        [TestCase(false, true, false, true)]
-        [TestCase(true, false, true, false)]
-        [TestCase(false, false, false, true)]
-        [TestCase(false, false, true, false)]
-        [TestCase(false, true, false, false)]
-        [TestCase(true, false, false, false)]
-        [TestCase(false, false, false, false)]
+        [Theory]
+        [InlineData(true, true, true, true)]
+        [InlineData(true, true, true, false)]
+        [InlineData(true, true, false, true)]
+        [InlineData(true, false, true, true)]
+        [InlineData(false, true, true, true)]
+        [InlineData(false, true, true, false)]
+        [InlineData(false, false, true, true)]
+        [InlineData(true, false, false, true)]
+        [InlineData(true, true, false, false)]
+        [InlineData(false, true, false, true)]
+        [InlineData(true, false, true, false)]
+        [InlineData(false, false, false, true)]
+        [InlineData(false, false, true, false)]
+        [InlineData(false, true, false, false)]
+        [InlineData(true, false, false, false)]
+        [InlineData(false, false, false, false)]
         public void Lists_sets_CloseWidthContainer_to_true_if_RenderWidthContainer_enabled_for_both_site_and_block_list_and_RenderGrid_is_true_and_current_block_not_the_same_as_the_next_block(
                 bool renderWidthContainerForSiteEnabled,
                 bool renderWidthContainerForBlockListEnabled,
@@ -468,13 +471,14 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().CloseWidthContainer, Is.EqualTo(renderWidthContainerForSiteEnabled && renderWidthContainerForBlockListEnabled && renderGrid && !sameAsNext));
+            Assert.Equal(renderWidthContainerForSiteEnabled && renderWidthContainerForBlockListEnabled && renderGrid && !sameAsNext, result.First().CloseWidthContainer);
         }
 
-        [TestCase(true, true)]
-        [TestCase(true, false)]
-        [TestCase(false, true)]
-        [TestCase(false, false)]
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(false, false)]
         public void Grid_sets_OpenGridRowAndColumn_to_true_for_blocks_with_no_areas_and_block_is_not_the_same_as_the_previous_block(bool hasGridAreas, bool sameAsPrevious)
         {
             // Arrange
@@ -512,13 +516,14 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.Last().OpenGridRowAndColumn, Is.EqualTo(!hasGridAreas && !sameAsPrevious));
+            Assert.Equal(!hasGridAreas && !sameAsPrevious, result.Last().OpenGridRowAndColumn);
         }
 
-        [TestCase(true, true)]
-        [TestCase(true, false)]
-        [TestCase(false, true)]
-        [TestCase(false, false)]
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(false, false)]
         public void Grid_sets_CloseGridRowAndColumn_to_true_for_blocks_with_no_areas_and_block_is_not_the_same_as_the_next_block(bool hasGridAreas, bool sameAsNext)
         {
             // Arrange
@@ -556,13 +561,14 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().CloseGridRowAndColumn, Is.EqualTo(!hasGridAreas && !sameAsNext));
+            Assert.Equal(!hasGridAreas && !sameAsNext, result.First().CloseGridRowAndColumn);
         }
 
-        [TestCase(true, true)]
-        [TestCase(true, false)]
-        [TestCase(false, true)]
-        [TestCase(false, false)]
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(false, false)]
         public void Area_sets_OpenGridRowAndColumn_to_true_for_blocks_with_no_areas_and_block_is_not_the_same_as_the_previous_block(bool hasGridAreas, bool sameAsPrevious)
         {
             // Arrange
@@ -600,13 +606,14 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.Last().OpenGridRowAndColumn, Is.EqualTo(!hasGridAreas && !sameAsPrevious));
+            Assert.Equal(!hasGridAreas && !sameAsPrevious, result.Last().OpenGridRowAndColumn);
         }
 
-        [TestCase(true, true)]
-        [TestCase(true, false)]
-        [TestCase(false, true)]
-        [TestCase(false, false)]
+        [Theory]
+        [InlineData(true, true)]
+        [InlineData(true, false)]
+        [InlineData(false, true)]
+        [InlineData(false, false)]
         public void Area_sets_CloseGridRowAndColumn_to_true_for_blocks_with_no_areas_and_block_is_not_the_same_as_the_next_block(bool hasGridAreas, bool sameAsNext)
         {
             // Arrange
@@ -644,17 +651,18 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().CloseGridRowAndColumn, Is.EqualTo(!hasGridAreas && !sameAsNext));
+            Assert.Equal(!hasGridAreas && !sameAsNext, result.First().CloseGridRowAndColumn);
         }
 
-        [TestCase(true, true, true)]
-        [TestCase(true, true, false)]
-        [TestCase(true, false, true)]
-        [TestCase(true, false, false)]
-        [TestCase(false, true, true)]
-        [TestCase(false, true, false)]
-        [TestCase(false, false, true)]
-        [TestCase(false, false, false)]
+        [Theory]
+        [InlineData(true, true, true)]
+        [InlineData(true, true, false)]
+        [InlineData(true, false, true)]
+        [InlineData(true, false, false)]
+        [InlineData(false, true, true)]
+        [InlineData(false, true, false)]
+        [InlineData(false, false, true)]
+        [InlineData(false, false, false)]
         public void List_sets_OpenGridRowAndColumn_based_on_RenderGrid_if_current_block_is_not_grid_row_and_block_is_not_the_same_as_the_previous_block(
             bool renderGrid,
             bool currentBlockIsGridRow,
@@ -692,17 +700,18 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.Last().OpenGridRowAndColumn, Is.EqualTo(renderGrid && !currentBlockIsGridRow && !sameAsPrevious));
+            Assert.Equal(renderGrid && !currentBlockIsGridRow && !sameAsPrevious, result.Last().OpenGridRowAndColumn);
         }
 
-        [TestCase(true, true, true)]
-        [TestCase(true, true, false)]
-        [TestCase(true, false, true)]
-        [TestCase(true, false, false)]
-        [TestCase(false, true, true)]
-        [TestCase(false, true, false)]
-        [TestCase(false, false, true)]
-        [TestCase(false, false, false)]
+        [Theory]
+        [InlineData(true, true, true)]
+        [InlineData(true, true, false)]
+        [InlineData(true, false, true)]
+        [InlineData(true, false, false)]
+        [InlineData(false, true, true)]
+        [InlineData(false, true, false)]
+        [InlineData(false, false, true)]
+        [InlineData(false, false, false)]
         public void List_sets_CloseGridRowAndColumn_based_on_RenderGrid_if_current_block_is_not_grid_row_and_block_is_not_the_same_as_the_next_block(
             bool renderGrid,
             bool currentBlockIsGridRow,
@@ -740,12 +749,13 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().CloseGridRowAndColumn, Is.EqualTo(renderGrid && !currentBlockIsGridRow && !sameAsNext));
+            Assert.Equal(renderGrid && !currentBlockIsGridRow && !sameAsNext, result.First().CloseGridRowAndColumn);
         }
 
-        [TestCase(false, false, false)]
-        [TestCase(true, false, true)]
-        [TestCase(true, true, false)]
+        [Theory]
+        [InlineData(false, false, false)]
+        [InlineData(true, false, true)]
+        [InlineData(true, true, false)]
         public void Grid_applies_fieldset_error_classes_and_container_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
         {
             // Arrange
@@ -771,21 +781,22 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             if (expectClasses)
             {
-                Assert.That(result.First().OpenFieldsetErrorContainer, Is.True);
-                Assert.That(result.First().CloseFieldsetErrorContainer, Is.True);
-                Assert.That(result.First().FieldsetErrorClasses, Is.EqualTo(FIELDSET_ERROR_CLASS));
+                Assert.True(result.First().OpenFieldsetErrorContainer);
+                Assert.True(result.First().CloseFieldsetErrorContainer);
+                Assert.Equal(FIELDSET_ERROR_CLASS, result.First().FieldsetErrorClasses);
             }
             else
             {
-                Assert.That(result.First().OpenFieldsetErrorContainer, Is.False);
-                Assert.That(result.First().CloseFieldsetErrorContainer, Is.False);
-                Assert.That(result.First().FieldsetErrorClasses, Is.Null);
+                Assert.False(result.First().OpenFieldsetErrorContainer);
+                Assert.False(result.First().CloseFieldsetErrorContainer);
+                Assert.Null(result.First().FieldsetErrorClasses);
             }
         }
 
-        [TestCase(false, false, false)]
-        [TestCase(true, false, true)]
-        [TestCase(true, true, false)]
+        [Theory]
+        [InlineData(false, false, false)]
+        [InlineData(true, false, true)]
+        [InlineData(true, true, false)]
         public void List_applies_fieldset_error_classes_and_container_if_there_are_fieldset_errors_and_legend_is_not_page_heading(bool hasErrors, bool legendIsPageHeading, bool expectClasses)
         {
             // Arrange
@@ -811,19 +822,19 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             if (expectClasses)
             {
-                Assert.That(result.First().OpenFieldsetErrorContainer, Is.True);
-                Assert.That(result.First().CloseFieldsetErrorContainer, Is.True);
-                Assert.That(result.First().FieldsetErrorClasses, Is.EqualTo(FIELDSET_ERROR_CLASS));
+                Assert.True(result.First().OpenFieldsetErrorContainer);
+                Assert.True(result.First().CloseFieldsetErrorContainer);
+                Assert.Equal(FIELDSET_ERROR_CLASS, result.First().FieldsetErrorClasses);
             }
             else
             {
-                Assert.That(result.First().OpenFieldsetErrorContainer, Is.False);
-                Assert.That(result.First().CloseFieldsetErrorContainer, Is.False);
-                Assert.That(result.First().FieldsetErrorClasses, Is.Null);
+                Assert.False(result.First().OpenFieldsetErrorContainer);
+                Assert.False(result.First().CloseFieldsetErrorContainer);
+                Assert.Null(result.First().FieldsetErrorClasses);
             }
         }
 
-        [Test]
+        [Fact]
         public void Grid_sets_row_and_column_class_are_set_from_GovUkGridClassBuilder()
         {
             // Arrange
@@ -842,11 +853,11 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().RowClasses, Is.EqualTo(ROW_CLASS));
-            Assert.That(result.First().ColumnClasses, Is.EqualTo(COLUMN_CLASS));
+            Assert.Equal(ROW_CLASS, result.First().RowClasses);
+            Assert.Equal(COLUMN_CLASS, result.First().ColumnClasses);
         }
 
-        [Test]
+        [Fact]
         public void List_sets_row_and_column_class_are_set_from_GovUkGridClassBuilder()
         {
             // Arrange
@@ -865,35 +876,36 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
 
             // Assert
-            Assert.That(result.First().RowClasses, Is.EqualTo(ROW_CLASS));
-            Assert.That(result.First().ColumnClasses, Is.EqualTo(COLUMN_CLASS));
+            Assert.Equal(ROW_CLASS, result.First().RowClasses);
+            Assert.Equal(COLUMN_CLASS, result.First().ColumnClasses);
         }
 
         // true if everything the same with default row classes
-        [TestCase(true, true, true, true, "", "", "", "", true)]
-        [TestCase(false, false, false, false, "", "", "", "", true)]
+        [Theory]
+        [InlineData(true, true, true, true, "", "", "", "", true)]
+        [InlineData(false, false, false, false, "", "", "", "", true)]
 
         // false if grid areas different
-        [TestCase(true, false, false, false, "", "", "", "", false)]
-        [TestCase(false, true, false, false, "", "", "", "", false)]
+        [InlineData(true, false, false, false, "", "", "", "", false)]
+        [InlineData(false, true, false, false, "", "", "", "", false)]
 
         // false if one is a grid row block and the other isn't
-        [TestCase(false, false, true, false, "", "", "", "", false)]
-        [TestCase(false, false, false, true, "", "", "", "", false)]
+        [InlineData(false, false, true, false, "", "", "", "", false)]
+        [InlineData(false, false, false, true, "", "", "", "", false)]
 
         // any custom row class should return false
-        [TestCase(false, false, false, false, "custom", "", "", "", false)]
-        [TestCase(false, false, false, false, "", "custom", "", "", false)]
-        [TestCase(false, false, false, false, "custom", "custom", "", "", false)]
-        [TestCase(false, false, false, false, "custom1", "custom2", "", "", false)]
+        [InlineData(false, false, false, false, "custom", "", "", "", false)]
+        [InlineData(false, false, false, false, "", "custom", "", "", false)]
+        [InlineData(false, false, false, false, "custom", "custom", "", "", false)]
+        [InlineData(false, false, false, false, "custom1", "custom2", "", "", false)]
 
         // true if column classes match
-        [TestCase(false, false, false, false, "", "", "custom", "custom", true)]
+        [InlineData(false, false, false, false, "", "", "custom", "custom", true)]
 
         // false if column class different
-        [TestCase(false, false, false, false, "", "", "custom", "", false)]
-        [TestCase(false, false, false, false, "", "", "", "custom", false)]
-        [TestCase(false, false, false, false, "", "", "custom1", "custom2", false)]
+        [InlineData(false, false, false, false, "", "", "custom", "", false)]
+        [InlineData(false, false, false, false, "", "", "", "custom", false)]
+        [InlineData(false, false, false, false, "", "", "custom1", "custom2", false)]
         public void SameAsNext_matches_on_row_class_and_column_class_and_grid_areas_and_grid_row_block(
             bool currentBlockHasAreas,
             bool nextBlockHasAreas,
@@ -916,34 +928,35 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                                 currentBlockIsGridRow, nextBlockIsGridRow);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expectSameAsNext));
+            Assert.Equal(expectSameAsNext, result);
         }
 
         // true if everything the same with default row classes
-        [TestCase(true, true, true, true, "", "", "", "", true)]
-        [TestCase(false, false, false, false, "", "", "", "", true)]
+        [Theory]
+        [InlineData(true, true, true, true, "", "", "", "", true)]
+        [InlineData(false, false, false, false, "", "", "", "", true)]
 
         // false if grid areas different
-        [TestCase(true, false, false, false, "", "", "", "", false)]
-        [TestCase(false, true, false, false, "", "", "", "", false)]
+        [InlineData(true, false, false, false, "", "", "", "", false)]
+        [InlineData(false, true, false, false, "", "", "", "", false)]
 
         // false if one is a grid row block and the other isn't
-        [TestCase(false, false, true, false, "", "", "", "", false)]
-        [TestCase(false, false, false, true, "", "", "", "", false)]
+        [InlineData(false, false, true, false, "", "", "", "", false)]
+        [InlineData(false, false, false, true, "", "", "", "", false)]
 
         // any custom row class should return false
-        [TestCase(false, false, false, false, "custom", "", "", "", false)]
-        [TestCase(false, false, false, false, "", "custom", "", "", false)]
-        [TestCase(false, false, false, false, "custom", "custom", "", "", false)]
-        [TestCase(false, false, false, false, "custom1", "custom2", "", "", false)]
+        [InlineData(false, false, false, false, "custom", "", "", "", false)]
+        [InlineData(false, false, false, false, "", "custom", "", "", false)]
+        [InlineData(false, false, false, false, "custom", "custom", "", "", false)]
+        [InlineData(false, false, false, false, "custom1", "custom2", "", "", false)]
 
         // true if column classes match
-        [TestCase(false, false, false, false, "", "", "custom", "custom", true)]
+        [InlineData(false, false, false, false, "", "", "custom", "custom", true)]
 
         // false if column class different
-        [TestCase(false, false, false, false, "", "", "custom", "", false)]
-        [TestCase(false, false, false, false, "", "", "", "custom", false)]
-        [TestCase(false, false, false, false, "", "", "custom1", "custom2", false)]
+        [InlineData(false, false, false, false, "", "", "custom", "", false)]
+        [InlineData(false, false, false, false, "", "", "", "custom", false)]
+        [InlineData(false, false, false, false, "", "", "custom1", "custom2", false)]
         public void SameAsPrevious_matches_on_row_class_and_column_class_and_grid_areas_and_grid_row_block(
             bool previousBlockHasAreas,
             bool currentBlockHasAreas,
@@ -966,7 +979,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                 previousBlockIsGridRow, currentBlockIsGridRow);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expectSameAsPrevious));
+            Assert.Equal(expectSameAsPrevious, result);
         }
     }
 }

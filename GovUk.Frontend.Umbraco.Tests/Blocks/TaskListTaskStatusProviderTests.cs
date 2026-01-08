@@ -1,6 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.Umbraco.Blocks;
-using NUnit.Framework;
 using System;
 using System.Linq;
 using ThePensionsRegulator.Umbraco;
@@ -11,7 +10,6 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace GovUk.Frontend.Umbraco.Tests.Blocks
 {
-    [TestFixture]
     public class TaskListTaskStatusProviderTests
     {
         private static OverridableBlockListModel CreateBlockListWithTaskListSummaryAndTaskList(OverridableBlockListModel blockListOfTasks)
@@ -70,7 +68,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                                 );
         }
 
-        [Test]
+        [Fact]
         public void Null_content_throws_ArgumentNullException()
         {
             // Arrange
@@ -82,7 +80,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 #nullable enable
         }
 
-        [Test]
+        [Fact]
         public void Task_statuses_returned_from_BlockList()
         {
             // Arrange
@@ -97,12 +95,12 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(2));
-            Assert.That(result.Contains(TaskListTaskStatus.Completed));
-            Assert.That(result.Contains(TaskListTaskStatus.Incomplete));
+            Assert.Equal(2, result.Count);
+            Assert.Contains(TaskListTaskStatus.Completed, result);
+            Assert.Contains(TaskListTaskStatus.Incomplete, result);
         }
 
-        [Test]
+        [Fact]
         public void Task_statuses_returned_from_BlockGrid()
         {
             // Arrange
@@ -117,12 +115,12 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(2));
-            Assert.That(result.Contains(TaskListTaskStatus.Completed));
-            Assert.That(result.Contains(TaskListTaskStatus.Incomplete));
+            Assert.Equal(2, result.Count);
+            Assert.Contains(TaskListTaskStatus.Completed, result);
+            Assert.Contains(TaskListTaskStatus.Incomplete, result);
         }
 
-        [Test]
+        [Fact]
         public void BlockList_filter_is_applied_for_tasks()
         {
             // Arrange
@@ -138,11 +136,11 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Contains(TaskListTaskStatus.Completed));
+            Assert.Equal(1, result.Count);
+            Assert.Contains(TaskListTaskStatus.Completed, result);
         }
 
-        [Test]
+        [Fact]
         public void BlockGrid_filter_is_applied_for_tasks()
         {
             // Arrange
@@ -158,11 +156,11 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Contains(TaskListTaskStatus.Completed));
+            Assert.Equal(1, result.Count);
+            Assert.Contains(TaskListTaskStatus.Completed, result);
         }
 
-        [Test]
+        [Fact]
         public void Overridden_status_is_applied_for_tasks()
         {
             // Arrange
@@ -189,8 +187,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             var result = provider.FindTaskStatuses(content.Object).ToList();
 
             // Assert
-            Assert.That(result.Count, Is.EqualTo(1));
-            Assert.That(result.Contains(TaskListTaskStatus.NotStarted));
+            Assert.Equal(1, result.Count);
+            Assert.Contains(TaskListTaskStatus.NotStarted, result);
         }
     }
 }

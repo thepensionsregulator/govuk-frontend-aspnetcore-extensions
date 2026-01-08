@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNetCore.Routing;
 using Moq;
 using Moq.Protected;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -32,8 +31,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         private UmbracoHelper _umbracoHelper;
 #nullable enable
 
-        [SetUp]
-        public void SetUp()
+        public UmbracoDateInputModelBinderTests()
         {
             _testContext = new();
             _cultureDictionary = new Mock<ICultureDictionary>();
@@ -57,7 +55,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
                     _umbracoHelperAccessor.Object
                 );
 
-        [Test]
+        [Fact]
         public async Task BindModelAsync_BackOfficeRequest_DoesNotBind()
         {
             // Arrange
@@ -90,7 +88,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             Assert.False(bindingContext.Result.IsModelSet);
         }
 
-        [Test]
+        [Fact]
         public async Task BindModelAsync_AllComponentsEmpty_DoesNotBind()
         {
             // Arrange
@@ -116,7 +114,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             Assert.False(bindingContext.Result.IsModelSet);
         }
 
-        [Test]
+        [Fact]
         public async Task BindModelAsync_CompleteDate_AllComponentsProvided_PassesValuesToConverterAndBindsResult()
         {
             // Arrange
@@ -154,20 +152,20 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 
             Assert.True(bindingContext.Result.IsModelSet);
 
-            Assert.IsInstanceOf<DateOnly>(bindingContext.Result.Model);
+            Assert.IsType<DateOnly>(bindingContext.Result.Model);
             var date = (DateOnly)bindingContext.Result.Model!;
-            Assert.AreEqual(2020, date.Year);
-            Assert.AreEqual(4, date.Month);
-            Assert.AreEqual(1, date.Day);
+            Assert.Equal(2020, date.Year);
+            Assert.Equal(4, date.Month);
+            Assert.Equal(1, date.Day);
 
-            Assert.AreEqual("2020", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
-            Assert.AreEqual("4", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
-            Assert.AreEqual("1", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
+            Assert.Equal("2020", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
+            Assert.Equal("4", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
+            Assert.Equal("1", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
 
-            Assert.AreEqual(0, bindingContext.ModelState.ErrorCount);
+            Assert.Equal(0, bindingContext.ModelState.ErrorCount);
         }
 
-        [Test]
+        [Fact]
         public async Task BindModelAsync_MonthAndYear_AllComponentsProvided_PassesValuesToConverterAndBindsResult()
         {
             // Arrange
@@ -216,20 +214,20 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 
             Assert.True(bindingContext.Result.IsModelSet);
 
-            Assert.IsInstanceOf<DateOnly>(bindingContext.Result.Model);
+            Assert.IsType<DateOnly>(bindingContext.Result.Model);
             var date = (DateOnly)bindingContext.Result.Model!;
-            Assert.AreEqual(2020, date.Year);
-            Assert.AreEqual(4, date.Month);
-            Assert.AreEqual(1, date.Day);
+            Assert.Equal(2020, date.Year);
+            Assert.Equal(4, date.Month);
+            Assert.Equal(1, date.Day);
 
-            Assert.AreEqual("2020", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
-            Assert.AreEqual("4", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
-            Assert.AreEqual(null, bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
+            Assert.Equal("2020", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
+            Assert.Equal("4", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
+            Assert.Equal(null, bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
 
-            Assert.AreEqual(0, bindingContext.ModelState.ErrorCount);
+            Assert.Equal(0, bindingContext.ModelState.ErrorCount);
         }
 
-        [Test]
+        [Fact]
         public async Task BindModelAsync_DayAndMonth_AllComponentsProvided_PassesValuesToConverterAndBindsResult()
         {
             // Arrange
@@ -278,32 +276,33 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 
             Assert.True(bindingContext.Result.IsModelSet);
 
-            Assert.IsInstanceOf<DateOnly>(bindingContext.Result.Model);
+            Assert.IsType<DateOnly>(bindingContext.Result.Model);
             var date = (DateOnly)bindingContext.Result.Model!;
-            Assert.AreEqual(1900, date.Year);
-            Assert.AreEqual(12, date.Month);
-            Assert.AreEqual(25, date.Day);
+            Assert.Equal(1900, date.Year);
+            Assert.Equal(12, date.Month);
+            Assert.Equal(25, date.Day);
 
-            Assert.AreEqual(null, bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
-            Assert.AreEqual("12", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
-            Assert.AreEqual("25", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
+            Assert.Equal(null, bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Year"]?.AttemptedValue);
+            Assert.Equal("12", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Month"]?.AttemptedValue);
+            Assert.Equal("25", bindingContext.ModelState[$"{nameof(ExampleModel.DateProperty)}.Day"]?.AttemptedValue);
 
-            Assert.AreEqual(0, bindingContext.ModelState.ErrorCount);
+            Assert.Equal(0, bindingContext.ModelState.ErrorCount);
         }
 
-        [TestCase("", "4", "2020")]
-        [TestCase("1", "", "2020")]
-        [TestCase("1", "4", "")]
-        [TestCase("0", "4", "2020")]
-        [TestCase("-1", "4", "2020")]
-        [TestCase("32", "4", "2020")]
-        [TestCase("1", "0", "2020")]
-        [TestCase("1", "-1", "2020")]
-        [TestCase("1", "13", "2020")]
-        [TestCase("1", "4", "0")]
-        [TestCase("1", "4", "-1")]
-        [TestCase("1", "4", "10000")]
-        [TestCase("x", "y", "z")]
+        [Theory]
+        [InlineData("", "4", "2020")]
+        [InlineData("1", "", "2020")]
+        [InlineData("1", "4", "")]
+        [InlineData("0", "4", "2020")]
+        [InlineData("-1", "4", "2020")]
+        [InlineData("32", "4", "2020")]
+        [InlineData("1", "0", "2020")]
+        [InlineData("1", "-1", "2020")]
+        [InlineData("1", "13", "2020")]
+        [InlineData("1", "4", "0")]
+        [InlineData("1", "4", "-1")]
+        [InlineData("1", "4", "10000")]
+        [InlineData("x", "y", "z")]
         public async Task BindModelAsync_MissingOrInvalidComponents_FailsBinding(string day, string month, string year)
         {
             // Arrange
@@ -343,15 +342,15 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             await modelBinder.BindModelAsync(bindingContext);
 
             // Assert
-            Assert.AreEqual(ModelBindingResult.Failed(), bindingContext.Result);
+            Assert.Equal(ModelBindingResult.Failed(), bindingContext.Result);
 
-            Assert.AreEqual(day, bindingContext.ModelState["TheModelName.Day"]?.AttemptedValue);
-            Assert.AreEqual(month, bindingContext.ModelState["TheModelName.Month"]?.AttemptedValue);
-            Assert.AreEqual(year, bindingContext.ModelState["TheModelName.Year"]?.AttemptedValue);
+            Assert.Equal(day, bindingContext.ModelState["TheModelName.Day"]?.AttemptedValue);
+            Assert.Equal(month, bindingContext.ModelState["TheModelName.Month"]?.AttemptedValue);
+            Assert.Equal(year, bindingContext.ModelState["TheModelName.Year"]?.AttemptedValue);
         }
 
-        [Test]
-        public void BindModelAsync_CannotAccessUmbracoHelper()
+        [Fact]
+        public async Task BindModelAsync_CannotAccessUmbracoHelper()
         {
             // Arrange
             var modelType = typeof(DateOnly);
@@ -377,25 +376,23 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             _umbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out nullUmbracoHelper)).Returns(false);
 
             // Act / Assert
-            Assert.Multiple(() =>
-            {
-                var exc = Assert.ThrowsAsync<InvalidOperationException>(() => modelBinder.BindModelAsync(bindingContext));
-                Assert.That(exc?.Message, Is.EqualTo("Unable to access Umbraco helper"));
-            });
+            var exc = await Assert.ThrowsAsync<InvalidOperationException>(() => modelBinder.BindModelAsync(bindingContext));
+            Assert.Equal("Unable to access Umbraco helper", exc.Message);
         }
 
-        [TestCase(DateInputParseErrors.MissingYear, $"{nameof(ExampleModel.DateProperty)} must include a year")]
-        [TestCase(DateInputParseErrors.InvalidYear, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
-        [TestCase(DateInputParseErrors.MissingMonth, $"{nameof(ExampleModel.DateProperty)} must include a month")]
-        [TestCase(DateInputParseErrors.InvalidMonth, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
-        [TestCase(DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
-        [TestCase(DateInputParseErrors.MissingDay, $"{nameof(ExampleModel.DateProperty)} must include a day")]
-        [TestCase(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingMonth, $"{nameof(ExampleModel.DateProperty)} must include a month and year")]
-        [TestCase(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingDay, $"{nameof(ExampleModel.DateProperty)} must include a day and year")]
-        [TestCase(DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingDay, $"{nameof(ExampleModel.DateProperty)} must include a day and month")]
-        [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
-        [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
-        [TestCase(DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
+        [Theory]
+        [InlineData(DateInputParseErrors.MissingYear, $"{nameof(ExampleModel.DateProperty)} must include a year")]
+        [InlineData(DateInputParseErrors.InvalidYear, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
+        [InlineData(DateInputParseErrors.MissingMonth, $"{nameof(ExampleModel.DateProperty)} must include a month")]
+        [InlineData(DateInputParseErrors.InvalidMonth, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
+        [InlineData(DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
+        [InlineData(DateInputParseErrors.MissingDay, $"{nameof(ExampleModel.DateProperty)} must include a day")]
+        [InlineData(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingMonth, $"{nameof(ExampleModel.DateProperty)} must include a month and year")]
+        [InlineData(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingDay, $"{nameof(ExampleModel.DateProperty)} must include a day and year")]
+        [InlineData(DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingDay, $"{nameof(ExampleModel.DateProperty)} must include a day and month")]
+        [InlineData(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
+        [InlineData(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
+        [InlineData(DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, $"{nameof(ExampleModel.DateProperty)} must be a real date")]
         public void GetModelStateErrorMessageReturnsDefaultErrorMessage(DateInputParseErrors parseErrors, string expectedMessage)
         {
             // Arrange
@@ -406,21 +403,22 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _cultureDictionary.Object, parseErrors, modelMetadata, _umbracoHelper);
 
             // Assert
-            Assert.AreEqual(expectedMessage, result);
+            Assert.Equal(expectedMessage, result);
         }
 
-        [TestCase(DateInputParseErrors.MissingYear, DictionaryConstants.DateMustIncludeAYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.InvalidYear, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.MissingMonth, DictionaryConstants.DateMustIncludeAMonth, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.InvalidMonth, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADay, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingMonth, DictionaryConstants.DateMustIncludeAMonthAndYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADayAndYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADayAndMonth, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
-        [TestCase(DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [Theory]
+        [InlineData(DateInputParseErrors.MissingYear, DictionaryConstants.DateMustIncludeAYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.InvalidYear, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.MissingMonth, DictionaryConstants.DateMustIncludeAMonth, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.InvalidMonth, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADay, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingMonth, DictionaryConstants.DateMustIncludeAMonthAndYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.MissingYear | DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADayAndYear, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingDay, DictionaryConstants.DateMustIncludeADayAndMonth, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.InvalidYear | DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
+        [InlineData(DateInputParseErrors.InvalidMonth | DateInputParseErrors.InvalidDay, DictionaryConstants.DateMustBeARealDate, $"{nameof(ExampleModel.DateProperty)}: custom error message")]
         public void GetModelStateErrorMessageReturnsCustomErrorMessage(DateInputParseErrors parseErrors, string dictionaryConstant, string expectedMessage)
         {
             // Arrange
@@ -433,16 +431,17 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _cultureDictionary.Object, parseErrors, modelMetadata, _umbracoHelper);
 
             // Assert
-            Assert.AreEqual(expectedMessage, result);
+            Assert.Equal(expectedMessage, result);
         }
 
-        [TestCase(DateInputItemTypes.MonthAndYear, null, "3", 3, "2020")]
-        [TestCase(DateInputItemTypes.DayMonthAndYear, "1", "1", 1, "2020")]
-        [TestCase(DateInputItemTypes.DayMonthAndYear, "29", "2", 2, "2020")]
-        [TestCase(DateInputItemTypes.DayMonthAndYear, "31", "12", 12, "2020")]
-        [TestCase(DateInputItemTypes.DayMonthAndYear, "31", "dec", 12, "2020")]
-        [TestCase(DateInputItemTypes.DayMonthAndYear, "31", "January", 1, "2020")]
-        [TestCase(DateInputItemTypes.DayMonthAndYear, "29", "February", 2, "2024")]
+        [Theory]
+        [InlineData(DateInputItemTypes.MonthAndYear, null, "3", 3, "2020")]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "1", 1, "2020")]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "29", "2", 2, "2020")]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "31", "12", 12, "2020")]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "31", "dec", 12, "2020")]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "31", "January", 1, "2020")]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "29", "February", 2, "2024")]
         public void Parse_ValidDate_Returns_Date(DateInputItemTypes itemTypes, string? day, string month, int expectedMonth, string year)
         {
             // Arrange
@@ -451,38 +450,39 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             var result = UmbracoDateInputModelBinder.Parse(itemTypes, day, month, year, true, out var parsed);
 
             // Assert
-            Assert.That(result, Is.EqualTo(DateInputParseErrors.None));
+            Assert.Equal(DateInputParseErrors.None, result);
 
             var expectedDay = (itemTypes & DateInputItemTypes.Day) != 0 ? int.Parse(day!) : 1;
             var expectedYear = int.Parse(year);
-            Assert.That(expectedDay, Is.EqualTo(parsed.Day));
-            Assert.That(expectedMonth, Is.EqualTo(parsed.Month));
-            Assert.That(expectedYear, Is.EqualTo(parsed.Year));
+            Assert.Equal(parsed.Day, expectedDay);
+            Assert.Equal(parsed.Month, expectedMonth);
+            Assert.Equal(parsed.Year, expectedYear);
         }
 
-        [TestCase("", "4", "2020", false, DateInputParseErrors.MissingDay)]
-        [TestCase(null, "4", "2020", false, DateInputParseErrors.MissingDay)]
-        [TestCase("1", "", "2020", false, DateInputParseErrors.MissingMonth)]
-        [TestCase("1", null, "2020", false, DateInputParseErrors.MissingMonth)]
-        [TestCase("1", "4", null, false, DateInputParseErrors.MissingYear)]
-        [TestCase("1", "4", "", false, DateInputParseErrors.MissingYear)]
-        [TestCase("0", "4", "2020", false, DateInputParseErrors.InvalidDay)]
-        [TestCase("-1", "4", "2020", false, DateInputParseErrors.InvalidDay)]
-        [TestCase("32", "4", "2020", false, DateInputParseErrors.InvalidDay)]
-        [TestCase("x", "4", "2020", false, DateInputParseErrors.InvalidDay)]
-        [TestCase("1", "0", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [TestCase("1", "-1", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [TestCase("1", "13", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [TestCase("1", "x", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [TestCase("1", "4", "15", false, DateInputParseErrors.InvalidYear)]
-        [TestCase("1", "4", "0", false, DateInputParseErrors.InvalidYear)]
-        [TestCase("1", "4", "-1", false, DateInputParseErrors.InvalidYear)]
-        [TestCase("1", "4", "10000", false, DateInputParseErrors.InvalidYear)]
-        [TestCase("1", "4", "x", false, DateInputParseErrors.InvalidYear)]
-        [TestCase("1", "x", "2020", true, DateInputParseErrors.InvalidMonth)]
-        [TestCase("1", "dec", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [TestCase("31", "January", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [TestCase("29", "February", "2023", true, DateInputParseErrors.InvalidDay)]
+        [Theory]
+        [InlineData("", "4", "2020", false, DateInputParseErrors.MissingDay)]
+        [InlineData(null, "4", "2020", false, DateInputParseErrors.MissingDay)]
+        [InlineData("1", "", "2020", false, DateInputParseErrors.MissingMonth)]
+        [InlineData("1", null, "2020", false, DateInputParseErrors.MissingMonth)]
+        [InlineData("1", "4", null, false, DateInputParseErrors.MissingYear)]
+        [InlineData("1", "4", "", false, DateInputParseErrors.MissingYear)]
+        [InlineData("0", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [InlineData("-1", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [InlineData("32", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [InlineData("x", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [InlineData("1", "0", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData("1", "-1", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData("1", "13", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData("1", "x", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData("1", "4", "15", false, DateInputParseErrors.InvalidYear)]
+        [InlineData("1", "4", "0", false, DateInputParseErrors.InvalidYear)]
+        [InlineData("1", "4", "-1", false, DateInputParseErrors.InvalidYear)]
+        [InlineData("1", "4", "10000", false, DateInputParseErrors.InvalidYear)]
+        [InlineData("1", "4", "x", false, DateInputParseErrors.InvalidYear)]
+        [InlineData("1", "x", "2020", true, DateInputParseErrors.InvalidMonth)]
+        [InlineData("1", "dec", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData("31", "January", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData("29", "February", "2023", true, DateInputParseErrors.InvalidDay)]
         public void Parse_InvalidDate_ComputesExpectedParseErrors(
             string day, string month, string year, bool acceptMonthNames, DateInputParseErrors expectedParseErrors)
         {
@@ -492,10 +492,10 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             var result = UmbracoDateInputModelBinder.Parse(DateInputItemTypes.DayMonthAndYear, day, month, year, acceptMonthNames, out var dateComponents);
 
             // Assert
-            Assert.AreEqual(null, dateComponents.Day);
-            Assert.AreEqual(null, dateComponents.Month);
-            Assert.AreEqual(null, dateComponents.Year);
-            Assert.AreEqual(expectedParseErrors, result);
+            Assert.Null(dateComponents.Day);
+            Assert.Null(dateComponents.Month);
+            Assert.Null(dateComponents.Year);
+            Assert.Equal(expectedParseErrors, result);
         }
 
         private ActionContext CreateActionContext() => new ActionContext(_testContext.HttpContext.Object, new RouteData(), new ActionDescriptor());

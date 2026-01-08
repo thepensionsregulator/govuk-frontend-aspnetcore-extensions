@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Moq;
-using NUnit.Framework;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
@@ -14,7 +13,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
     {
         private const string VIEWMODEL_PROPERTY_NAME = "Field1";
 
-        [Test]
+        [Fact]
         public void Non_fieldset_returns_no_results()
         {
             var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.GridRow, ElementTypeAliases.ErrorMessage, true, VIEWMODEL_PROPERTY_NAME);
@@ -24,10 +23,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
-            Assert.AreEqual(0, results.Count());
+            Assert.Empty(results);
         }
 
-        [Test]
+        [Fact]
         public void Render_error_classes_false_no_results()
         {
             var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, false, VIEWMODEL_PROPERTY_NAME);
@@ -37,10 +36,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
-            Assert.AreEqual(0, results.Count());
+            Assert.Empty(results);
         }
 
-        [Test]
+        [Fact]
         public void No_ModelState_error_returns_no_results()
         {
             var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, true, VIEWMODEL_PROPERTY_NAME);
@@ -49,10 +48,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
-            Assert.AreEqual(0, results.Count());
+            Assert.Empty(results);
         }
 
-        [Test]
+        [Fact]
         public void Block_other_than_ErrorMessage_bound_to_invalid_property_returns_no_results()
         {
             var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.TextInput, true, VIEWMODEL_PROPERTY_NAME);
@@ -62,10 +61,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
-            Assert.AreEqual(0, results.Count());
+            Assert.Empty(results);
         }
 
-        [Test]
+        [Fact]
         public void ErrorMessage_block_bound_to_invalid_property_returns_ErrorMessage_block()
         {
             var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, true, VIEWMODEL_PROPERTY_NAME);
@@ -75,11 +74,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
-            Assert.AreEqual(1, results.Count());
-            Assert.AreEqual(ElementTypeAliases.ErrorMessage, results.First().Content.ContentType.Alias);
+            Assert.Single(results);
+            Assert.Equal(ElementTypeAliases.ErrorMessage, results.First().Content.ContentType.Alias);
         }
 
-        [Test]
+        [Fact]
         public void Page_level_error_is_not_matched_to_unbound_error_message()
         {
             var fieldsetBlock = CreateUmbracoTestContentForClasses(ElementTypeAliases.Fieldset, ElementTypeAliases.ErrorMessage, true, string.Empty);
@@ -89,7 +88,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
 
-            Assert.AreEqual(0, results.Count());
+            Assert.Empty(results);
         }
 
         private static OverridableBlockListItem CreateUmbracoTestContentForClasses(string aliasOfParentBlock, string aliasOfChildBlock, bool fieldsetErrorsEnabled, string modelPropertyBoundToErrorMessage)

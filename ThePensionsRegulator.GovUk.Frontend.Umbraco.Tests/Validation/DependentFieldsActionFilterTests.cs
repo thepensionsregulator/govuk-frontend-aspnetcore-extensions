@@ -1,18 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using Moq;
-using NUnit.Framework;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
 {
-    [TestFixture]
     public class DependentFieldsActionFilterTests
     {
         private const string PARENT_MODEL_PROPERTY = "Field1";
@@ -20,7 +18,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
         private const string RADIO_WITH_DEPENDENT_FIELD_VALUE = "1";
         private const string RADIO_WITHOUT_DEPENDENT_FIELD_VALUE = "2";
 
-        [Test]
+        [Fact]
         public void Invalid_ModelState_remains_invalid_for_non_dependent_field()
         {
             // Arrange
@@ -39,13 +37,13 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
             filter.OnActionExecuting(actionExecutingContext);
 
             // Assert
-            Assert.That(modelState.Count, Is.EqualTo(1));
-            Assert.That(modelState[DEPENDENT_MODEL_PROPERTY]!.ValidationState, Is.EqualTo(ModelValidationState.Invalid));
+            Assert.Single(modelState);
+            Assert.Equal(ModelValidationState.Invalid, modelState[DEPENDENT_MODEL_PROPERTY]!.ValidationState);
         }
 
 
 
-        [Test]
+        [Fact]
         public void Invalid_ModelState_set_to_skipped_when_parent_field_is_invalid()
         {
             // Arrange
@@ -65,12 +63,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
             filter.OnActionExecuting(actionExecutingContext);
 
             // Assert
-            Assert.That(modelState.Count, Is.EqualTo(2));
-            Assert.That(modelState[PARENT_MODEL_PROPERTY]!.ValidationState, Is.EqualTo(ModelValidationState.Invalid));
-            Assert.That(modelState[DEPENDENT_MODEL_PROPERTY]!.ValidationState, Is.EqualTo(ModelValidationState.Skipped));
+            Assert.Equal(2, modelState.Count);
+            Assert.Equal(ModelValidationState.Invalid, modelState[PARENT_MODEL_PROPERTY]!.ValidationState);
+            Assert.Equal(ModelValidationState.Skipped, modelState[DEPENDENT_MODEL_PROPERTY]!.ValidationState);
         }
 
-        [Test]
+        [Fact]
         public void Invalid_ModelState_set_to_skipped_when_parent_field_is_valid_but_parent_option_not_selected()
         {
             // Arrange
@@ -91,12 +89,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
             filter.OnActionExecuting(actionExecutingContext);
 
             // Assert
-            Assert.That(modelState.Count, Is.EqualTo(2));
-            Assert.That(modelState[PARENT_MODEL_PROPERTY]!.ValidationState, Is.EqualTo(ModelValidationState.Valid));
-            Assert.That(modelState[DEPENDENT_MODEL_PROPERTY]!.ValidationState, Is.EqualTo(ModelValidationState.Skipped));
+            Assert.Equal(2, modelState.Count);
+            Assert.Equal(ModelValidationState.Valid, modelState[PARENT_MODEL_PROPERTY]!.ValidationState);
+            Assert.Equal(ModelValidationState.Skipped, modelState[DEPENDENT_MODEL_PROPERTY]!.ValidationState);
         }
 
-        [Test]
+        [Fact]
         public void Invalid_ModelState_remains_invalid_when_parent_field_is_valid_and_parent_option_selected()
         {
             // Arrange
@@ -117,9 +115,9 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
             filter.OnActionExecuting(actionExecutingContext);
 
             // Assert
-            Assert.That(modelState.Count, Is.EqualTo(2));
-            Assert.That(modelState[PARENT_MODEL_PROPERTY]!.ValidationState, Is.EqualTo(ModelValidationState.Valid));
-            Assert.That(modelState[DEPENDENT_MODEL_PROPERTY]!.ValidationState, Is.EqualTo(ModelValidationState.Invalid));
+            Assert.Equal(2, modelState.Count);
+            Assert.Equal(ModelValidationState.Valid, modelState[PARENT_MODEL_PROPERTY]!.ValidationState);
+            Assert.Equal(ModelValidationState.Invalid, modelState[DEPENDENT_MODEL_PROPERTY]!.ValidationState);
         }
 
         private static OverridableBlockListModel BlockListWithRadiosWithOneDependentField()

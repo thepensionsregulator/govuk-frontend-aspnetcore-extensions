@@ -16,14 +16,16 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
     public class SelectController : RenderController
     {
         private readonly IPublishedValueFallback _publishedValueFallback;
-        private readonly IPublishedSnapshotAccessor _publishedSnapshotAccessor;
+        private readonly IPublishedContentTypeCache _publishedContentTypeCache;
+        private readonly IVariationContextAccessor _variationContextAccessor;
 
         public SelectController(ILogger<RenderController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor,
-            IPublishedValueFallback publishedValueFallback, IPublishedSnapshotAccessor publishedSnapshotAccessor) :
+            IPublishedValueFallback publishedValueFallback, IPublishedContentTypeCache publishedContentTypeCache, IVariationContextAccessor variationContextAccessor) :
             base(logger, compositeViewEngine, umbracoContextAccessor)
         {
             _publishedValueFallback = publishedValueFallback;
-            _publishedSnapshotAccessor = publishedSnapshotAccessor;
+            _publishedContentTypeCache = publishedContentTypeCache;
+            _variationContextAccessor = variationContextAccessor;
         }
 
         [ModelType(typeof(SelectViewModel))]
@@ -45,7 +47,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             viewModel.Page.Blocks!.FindBlockByClass("external-data")!
                 .Content
-                .OverrideSelectOptions(optionsFromDataSource, _publishedSnapshotAccessor, viewModel.Page.Blocks!.Filter);
+                .OverrideSelectOptions(optionsFromDataSource, _publishedContentTypeCache, _variationContextAccessor, viewModel.Page.Blocks!.Filter);
 
             return CurrentTemplate(viewModel);
         }

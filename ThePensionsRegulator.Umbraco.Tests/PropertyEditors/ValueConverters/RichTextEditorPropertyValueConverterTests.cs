@@ -9,11 +9,11 @@ using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Logging;
-using Umbraco.Cms.Core.Macros;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
+using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Strings;
@@ -42,10 +42,10 @@ namespace ThePensionsRegulator.Umbraco.Tests.PropertyEditors.ValueConverters
             var contentSettings = new Mock<IOptionsMonitor<ContentSettings>>();
             contentSettings.Setup(x => x.CurrentValue).Returns(new ContentSettings { ResolveUrlsFromTextString = false });
 
+            var blockEditorVarianceHandler =  new BlockEditorVarianceHandler(testContext.LanguageService.Object, testContext.ContentTypeService.Object);
+
             var valueConverter = new RichTextEditorPropertyValueConverter(
-                testContext.UmbracoContextAccessor.Object,
-                Mock.Of<IMacroRenderer>(),
-                new HtmlLocalLinkParser(testContext.UmbracoContextAccessor.Object, urlProvider),
+                new HtmlLocalLinkParser(urlProvider),
                 new HtmlUrlParser(contentSettings.Object, Mock.Of<ILogger<HtmlUrlParser>>(), Mock.Of<IProfilingLogger>(), Mock.Of<IIOHelper>()),
                 new HtmlImageSourceParser(urlProvider),
                 new List<IPropertyValueFormatter> { formatter.Object },
@@ -53,18 +53,20 @@ namespace ThePensionsRegulator.Umbraco.Tests.PropertyEditors.ValueConverters
                 Mock.Of<IApiRichTextElementParser>(),
                 Mock.Of<IApiRichTextMarkupParser>(),
                 Mock.Of<IPartialViewBlockEngine>(),
-                new BlockEditorConverter(testContext.PublishedSnapshotAccessor.Object, testContext.PublishedModelFactory.Object),
+                new BlockEditorConverter(testContext.PublishedContentTypeCache.Object, Mock.Of<ICacheManager>(), testContext.PublishedModelFactory.Object, testContext.VariationContextAccessor.Object, blockEditorVarianceHandler), // TODO : Add types to UmbracoTestContext 
                 Mock.Of<IJsonSerializer>(),
                 Mock.Of<IApiElementBuilder>(),
                 Mock.Of<RichTextBlockPropertyValueConstructorCache>(),
-                Mock.Of<ILogger<RteMacroRenderingValueConverter>>(),
+                Mock.Of<ILogger<RteBlockRenderingValueConverter>>(),
+                blockEditorVarianceHandler,
+                testContext.VariationContextAccessor.Object,
                 Mock.Of<IOptionsMonitor<DeliveryApiSettings>>()
                 );
 
             // Act
             var result = valueConverter.ConvertIntermediateToObject(
                 UmbracoContentFactory.CreateContent<IPublishedElement>().Object,
-                propertyType, PropertyCacheLevel.Snapshot, new FakeRichTextIntermediateValue { Markup = INITIAL_VALUE }, false);
+                propertyType, PropertyCacheLevel.Element, new FakeRichTextIntermediateValue { Markup = INITIAL_VALUE }, false);
 
             // Assert
             Assert.Equal(EXPECTED_VALUE, ((IHtmlEncodedString?)result)?.ToHtmlString());

@@ -3,14 +3,12 @@ using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Blocks;
 using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.DeliveryApi;
-using Umbraco.Cms.Core.Macros;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
 using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Core.Templates;
-using Umbraco.Cms.Core.Web;
 
 namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
 {
@@ -18,13 +16,12 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
     /// A property value converter for rich text properties using TinyMCE which does the built-in conversion and then applies any 
     /// <see cref="IPropertyValueFormatter"/> instances registered with the dependency injection container.
     /// </summary>
-    public class RichTextEditorPropertyValueConverter : RteMacroRenderingValueConverter
+    public class RichTextEditorPropertyValueConverter : RteBlockRenderingValueConverter
     {
         private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
         private readonly List<string> _propertyEditorAliases = new();
 
-        public RichTextEditorPropertyValueConverter(IUmbracoContextAccessor umbracoContextAccessor,
-            IMacroRenderer macroRenderer,
+        public RichTextEditorPropertyValueConverter(
             HtmlLocalLinkParser linkParser,
             HtmlUrlParser urlParser,
             HtmlImageSourceParser imageSourceParser,
@@ -37,11 +34,12 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
             IJsonSerializer jsonSerializer,
             IApiElementBuilder apiElementBuilder,
             RichTextBlockPropertyValueConstructorCache richTextBlockConstructorCache,
-            ILogger<RteMacroRenderingValueConverter> macroLogger,
+            ILogger<RteBlockRenderingValueConverter> logger,
+            BlockEditorVarianceHandler blockEditorVarianceHandler,
+            IVariationContextAccessor variationContextAccessor,
+
             IOptionsMonitor<DeliveryApiSettings> deliveryApiSettings) :
-            base(umbracoContextAccessor,
-                macroRenderer,
-                linkParser,
+            base(linkParser,
                 urlParser,
                 imageSourceParser,
                 apiRichTextElementParser,
@@ -51,7 +49,9 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
                 jsonSerializer,
                 apiElementBuilder,
                 richTextBlockConstructorCache,
-                macroLogger,
+                logger,
+                variationContextAccessor,
+                blockEditorVarianceHandler,
                 deliveryApiSettings)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
@@ -72,9 +72,6 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
 
             return _propertyValueFormatters.ApplyFormatters(propertyType, value);
         }
-
-        /// <inheritdoc />
-        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Snapshot;
 
         /// <inheritdoc />
         public override bool IsConverter(IPublishedPropertyType propertyType)

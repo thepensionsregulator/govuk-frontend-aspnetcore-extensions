@@ -18,7 +18,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
         private readonly string? _hostName;
         private readonly IContextAwareHostUpdater _contextAwareHostUpdater;
         private readonly List<string> _propertyEditorAliases = new List<string> {
-            Constants.PropertyEditors.Aliases.TinyMce,
+            Constants.PropertyEditors.Aliases.RichText,
             GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineRichText,
             GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineInverseRichText,
             TprPropertyEditorAliases.TprHeaderFooterRichText

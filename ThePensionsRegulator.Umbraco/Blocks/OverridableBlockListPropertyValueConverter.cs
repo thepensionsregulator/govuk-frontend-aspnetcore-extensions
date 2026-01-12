@@ -5,6 +5,7 @@ using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
+using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Services;
 
 namespace ThePensionsRegulator.Umbraco.Blocks
@@ -21,8 +22,11 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             IContentTypeService contentTypeService,
             IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
             IApiElementBuilder apiElementBuilder,
-            BlockListPropertyValueConstructorCache constructorCache)
-            : base(proflog, blockConverter, contentTypeService, apiElementBuilder, constructorCache)
+            IJsonSerializer jsonSerializer,
+            BlockListPropertyValueConstructorCache constructorCache,
+            IVariationContextAccessor variationContextAccessor,
+            BlockEditorVarianceHandler blockEditorVarianceHandler)
+            : base(proflog, blockConverter, contentTypeService, apiElementBuilder, jsonSerializer, constructorCache, variationContextAccessor, blockEditorVarianceHandler)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
         }
@@ -42,6 +46,6 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         }
 
         /// <inheritdoc />
-        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Snapshot;
+        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Element;
     }
 }

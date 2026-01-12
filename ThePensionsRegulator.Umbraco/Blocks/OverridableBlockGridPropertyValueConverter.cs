@@ -21,8 +21,10 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             IJsonSerializer jsonSerializer,
             IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
             IApiElementBuilder apiElementBuilder,
-            BlockGridPropertyValueConstructorCache constructorCache)
-            : base(proflog, blockConverter, jsonSerializer, apiElementBuilder, constructorCache)
+            BlockGridPropertyValueConstructorCache constructorCache,
+            IVariationContextAccessor variationContextAccessor,
+            BlockEditorVarianceHandler blockEditorVarianceHandler)
+            : base(proflog, blockConverter, jsonSerializer, apiElementBuilder, constructorCache, variationContextAccessor, blockEditorVarianceHandler)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
         }
@@ -42,6 +44,6 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         }
 
         /// <inheritdoc />
-        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Snapshot;
+        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Element;
     }
 }

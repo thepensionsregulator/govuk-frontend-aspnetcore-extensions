@@ -10,7 +10,7 @@
 @{
     var text = Model.Content.Value<string>(TprPropertyAliases.BackToMenuText);
     var link = Model.Content.Value<Link>(TprPropertyAliases.BackToMenuLink);
-    if (link is null) { return; }
+    if (link is null || string.IsNullOrEmpty(link.Url)) { return; }
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
 <tpr-back-to-menu href="@link.Url" id="@Model.Content.Key" class="@cssClasses">@text</tpr-back-to-menu>

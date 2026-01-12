@@ -19,24 +19,24 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors.ValueConverters
         private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
 
         public MultiUrlPickerPropertyValueConverter(
-            IPublishedSnapshotAccessor publishedSnapshotAccessor,
             IProfilingLogger proflog,
             IJsonSerializer jsonSerializer,
-            IUmbracoContextAccessor umbracoContextAccessor,
             IPublishedUrlProvider publishedUrlProvider,
             IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
             IApiContentNameProvider apiContentNameProvider,
             IApiMediaUrlProvider apiMediaUrlProvider,
-            IApiContentRouteBuilder apiRouteBuilder
+            IApiContentRouteBuilder apiRouteBuilder,
+            IPublishedContentCache publishedContentCache,
+            IPublishedMediaCache publishedMediaCache
             )
-            : base(publishedSnapshotAccessor,
-                  proflog,
+            : base(proflog,
                   jsonSerializer,
-                  umbracoContextAccessor,
                   publishedUrlProvider,
                   apiContentNameProvider,
                   apiMediaUrlProvider,
-                  apiRouteBuilder)
+                  apiRouteBuilder,
+                  publishedContentCache,
+                  publishedMediaCache)
         {
             _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
         }

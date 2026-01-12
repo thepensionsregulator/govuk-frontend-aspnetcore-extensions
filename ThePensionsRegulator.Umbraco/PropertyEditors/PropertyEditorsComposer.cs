@@ -13,7 +13,7 @@ namespace ThePensionsRegulator.Umbraco.PropertyEditors
     {
         public void Compose(IUmbracoBuilder builder)
         {
-            builder.PropertyValueConverters().Remove<RteMacroRenderingValueConverter>();
+            builder.PropertyValueConverters().Remove<RteBlockRenderingValueConverter>();
             builder.PropertyValueConverters().Remove<MultiUrlPickerValueConverter>();
             builder.Services.AddTransient<IRichTextPropertyEditorAliasProvider, DefaultRichTextPropertyEditorAliasProvider>();
         }

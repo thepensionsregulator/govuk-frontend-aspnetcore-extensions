@@ -2,7 +2,6 @@ using GovUk.Frontend.Umbraco;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Smidge;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 
@@ -18,16 +17,16 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         {
             app.UseGovUkFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
 
-            app.UseSmidge(bundles =>
-            {
-                bundles.CreateCss("tpr-frontend-css", "/_content/ThePensionsRegulator.Frontend.Umbraco/tpr/tpr.css");
+            //app.UseSmidge(bundles =>
+            //{
+            //    bundles.CreateCss("tpr-frontend-css", "/_content/ThePensionsRegulator.Frontend.Umbraco/tpr/tpr.css");
 
-                bundles.CreateJs("tpr-frontend-js", "~/govuk-frontend.min.js?v=5.13.0",
-                    "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-js-init.js",
-                    "/_content/ThePensionsRegulator.Frontend/tpr/tpr-back-to-top.js",
-                    "/_content/ThePensionsRegulator.Frontend/tpr/tpr-side-navigation.js",
-                    "/_content/ThePensionsRegulator.Frontend/tpr/headermenu.js");
-            });
+            //    bundles.CreateJs("tpr-frontend-js", "~/govuk-frontend.min.js?v=5.13.0",
+            //        "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-js-init.js",
+            //        "/_content/ThePensionsRegulator.Frontend/tpr/tpr-back-to-top.js",
+            //        "/_content/ThePensionsRegulator.Frontend/tpr/tpr-side-navigation.js",
+            //        "/_content/ThePensionsRegulator.Frontend/tpr/headermenu.js");
+            //});
 
             return app;
         }

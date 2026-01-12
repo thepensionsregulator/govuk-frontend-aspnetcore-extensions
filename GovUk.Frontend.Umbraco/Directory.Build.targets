@@ -29,13 +29,13 @@
 		 If that reference is missing the consuming project will report a build error. -->
 	<Target Name="GovUkFrontendUmbraco_CopyUSync" BeforeTargets="BeforeBuild">
 		<ItemGroup>
-			<DataTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v9\DataTypes\GOVUK*.config"></DataTypes>
-			<ContentTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v9\ContentTypes\govuk*.config"></ContentTypes>
+			<DataTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v17\DataTypes\GOVUK*.config"></DataTypes>
+			<ContentTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v17\ContentTypes\govuk*.config"></ContentTypes>
 		</ItemGroup>
 		<Copy SourceFiles="@(DataTypes)"
-			DestinationFiles="$(ProjectDir)uSync\v9\DataTypes\%(RecursiveDir)%(Filename)%(Extension)" />
+			DestinationFiles="$(ProjectDir)uSync\v17\DataTypes\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(ContentTypes)"
-			DestinationFiles="$(ProjectDir)uSync\v9\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)" />
+			DestinationFiles="$(ProjectDir)uSync\v17\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 
 </Project>

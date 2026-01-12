@@ -9,7 +9,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
     public class NoParagraphsPropertyValueFormatterTests
     {
         [Theory]
-        [InlineData(Constants.PropertyEditors.Aliases.TinyMce, false)]
+        [InlineData(Constants.PropertyEditors.Aliases.RichText, false)]
         [InlineData(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineRichText, false)]
         [InlineData(GovUk.Frontend.Umbraco.PropertyEditorAliases.GovUkInlineInverseRichText, false)]
         [InlineData(TprPropertyEditorAliases.TprHeaderFooterRichText, true)]

@@ -94,7 +94,6 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                 })
                 .WithEndpoints(u =>
                 {
-                    u.UseInstallerEndpoints();
                     u.UseBackOfficeEndpoints();
                     u.UseWebsiteEndpoints();
                 });

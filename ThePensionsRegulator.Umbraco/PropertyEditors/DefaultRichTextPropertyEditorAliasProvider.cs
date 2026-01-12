@@ -12,7 +12,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors
         /// <inheritdoc/>
         public IEnumerable<string> PropertyEditorAliases()
         {
-            return [Constants.PropertyEditors.Aliases.TinyMce];
+            return [Constants.PropertyEditors.Aliases.RichText];
         }
     }
 }

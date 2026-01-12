@@ -12,7 +12,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
 
         public OverridableBlockListItem(BlockListItem item, Func<IPublishedElement?, IOverridablePublishedElement?> publishedElementFactory) :
 #nullable disable
-            base(item.ContentUdi, publishedElementFactory(item.Content), item.SettingsUdi, publishedElementFactory(item.Settings))
+            base(item.ContentKey, publishedElementFactory(item.Content), item.SettingsKey, publishedElementFactory(item.Settings))
 #nullable enable
         {
 

@@ -36,6 +36,33 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukCheckbox',
+        name: "Block editor custom view for 'Checkbox' blocks",
+        element: () => import('./blocks/views/govuk-checkbox'),
+        forContentTypeAlias: 'govukCheckbox'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukCheckboxes',
+        name: "Block editor custom view for 'Checkboxes' blocks",
+        element: () => import('./blocks/views/govuk-checkboxes'),
+        forContentTypeAlias: 'govukCheckboxes'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukCheckboxesDivider',
+        name: "Block editor custom view for 'Checkboxes divider' blocks",
+        element: () => import('./blocks/views/govuk-checkboxes-divider'),
+        forContentTypeAlias: 'govukCheckboxesDivider'
+    },    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukDateInput',
+        name: "Block editor custom view for 'Date input' blocks",
+        element: () => import('./blocks/views/govuk-date-input'),
+        forContentTypeAlias: 'govukDateInput'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukDetails',
         name: "Block editor custom view for 'Details' blocks",
         element: () => import('./blocks/views/govuk-details'),
@@ -61,6 +88,20 @@ export const manifests: Array<UmbExtensionManifest> = [
         name: "Block editor custom view for 'Fieldset' blocks",
         element: () => import('./blocks/views/govuk-fieldset'),
         forContentTypeAlias: 'govukFieldset'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukFileUpload',
+        name: "Block editor custom view for 'File upload' blocks",
+        element: () => import('./blocks/views/govuk-file-upload'),
+        forContentTypeAlias: 'govukFileUpload'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukHidden',
+        name: "Block editor custom view for 'Hidden field' blocks",
+        element: () => import('./blocks/views/govuk-hidden'),
+        forContentTypeAlias: 'govukHidden'
     },
     {
         type: 'blockEditorCustomView',
@@ -113,6 +154,34 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukRadio',
+        name: "Block editor custom view for 'Radio button' blocks",
+        element: () => import('./blocks/views/govuk-radio'),
+        forContentTypeAlias: 'govukRadio'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukRadios',
+        name: "Block editor custom view for 'Radio buttons' blocks",
+        element: () => import('./blocks/views/govuk-radios'),
+        forContentTypeAlias: 'govukRadios'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukRadiosDivider',
+        name: "Block editor custom view for 'Radio button divider' blocks",
+        element: () => import('./blocks/views/govuk-radios-divider'),
+        forContentTypeAlias: 'govukRadiosDivider'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukSelect',
+        name: "Block editor custom view for 'Select' blocks",
+        element: () => import('./blocks/views/govuk-select'),
+        forContentTypeAlias: 'govukSelect'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukSummaryList',
         name: "Block editor custom view for 'Summary list' blocks",
         element: () => import('./blocks/views/govuk-summary-list'),
@@ -120,10 +189,59 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukSummaryListAction',
+        name: "Block editor custom view for 'Summary list action' blocks",
+        element: () => import('./blocks/views/govuk-summary-list-action'),
+        forContentTypeAlias: ['govukSummaryListAction', 'govukSummaryCardAction']
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukSummaryListItem',
+        name: "Block editor custom view for 'Summary list item' blocks",
+        element: () => import('./blocks/views/govuk-summary-list-item'),
+        forContentTypeAlias: 'govukSummaryListItem'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukSummaryCard',
         name: "Block editor custom view for 'Summary card' blocks",
         element: () => import('./blocks/views/govuk-summary-card'),
         forContentTypeAlias: 'govukSummaryCard'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTask',
+        name: "Block editor custom view for 'Task' blocks",
+        element: () => import('./blocks/views/govuk-task'),
+        forContentTypeAlias: 'govukTask'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTaskList',
+        name: "Block editor custom view for 'Task list' blocks",
+        element: () => import('./blocks/views/govuk-task-list'),
+        forContentTypeAlias: 'govukTaskList'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTaskListSummary',
+        name: "Block editor custom view for 'Task list summary' blocks",
+        element: () => import('./blocks/views/govuk-task-list-summary'),
+        forContentTypeAlias: 'govukTaskListSummary'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTextarea',
+        name: "Block editor custom view for 'Textarea' blocks",
+        element: () => import('./blocks/views/govuk-textarea'),
+        forContentTypeAlias: 'govukTextarea'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.govukTextInput',
+        name: "Block editor custom view for 'Text input' blocks",
+        element: () => import('./blocks/views/govuk-text-input'),
+        forContentTypeAlias: 'govukTextInput'
     },
     {
         type: 'blockEditorCustomView',

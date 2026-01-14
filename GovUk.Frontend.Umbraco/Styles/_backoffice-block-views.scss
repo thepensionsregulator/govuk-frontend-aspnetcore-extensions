@@ -14,8 +14,8 @@
 .backoffice-block-view > .govuk-accordion,
 .backoffice-block-view.govuk-caption-l,
 .backoffice-block-view.govuk-error-message,
-.backoffice-block-view:has(> .govuk-link)
-{
+.backoffice-block-view:has(> .govuk-link),
+.backoffice-block-view:has(.govuk-textarea) {
     padding-bottom: 20px;
 }
 
@@ -35,7 +35,10 @@
 .backoffice-block-view > .govuk-error-summary,
 .backoffice-block-view.govuk-panel,
 .backoffice-block-view > .govuk-summary-list,
-.backoffice-block-view > .govuk-date-input__fieldset {
+.backoffice-block-view > .govuk-task-list__item,
+.backoffice-block-view > .govuk-date-input__fieldset,
+.backoffice-block-view .govuk-checkboxes__divider,
+.backoffice-block-view .govuk-radios__divider {
     margin-bottom: 20px;
 }
 .backoffice-block-view > .govuk-notification-banner__content {

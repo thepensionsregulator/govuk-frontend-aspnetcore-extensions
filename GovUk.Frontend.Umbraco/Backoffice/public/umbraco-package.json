@@ -1,0 +1,14 @@
+{
+  "id": "ThePensionsRegulator.GovUk.Frontend.Umbraco",
+  "name": "ThePensionsRegulator.GovUk.Frontend.Umbraco",
+  "version": "0.0.0",
+  "allowTelemetry": true,
+  "extensions": [
+    {
+      "name": "ThePensionsRegulator.GovUk.Frontend.Umbraco",
+      "alias": "ThePensionsRegulator.GovUk.Frontend.Umbraco",
+      "type": "bundle",
+      "js": "/App_Plugins/ThePensionsRegulator.GovUk.Frontend.Umbraco/manifest.js"
+    }
+  ]
+}

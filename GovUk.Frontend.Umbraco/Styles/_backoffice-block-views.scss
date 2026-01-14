@@ -11,29 +11,33 @@
     margin-top: 0;
 }
 
-.backoffice-block-view.govuk-accordion,
-.backoffice-block-view.govuk-caption-l {
+.backoffice-block-view > .govuk-accordion,
+.backoffice-block-view.govuk-caption-l,
+.backoffice-block-view.govuk-error-message,
+.backoffice-block-view:has(> .govuk-link)
+{
     padding-bottom: 20px;
 }
 
 .backoffice-block-view.govuk-caption-l,
 .backoffice-block-view.govuk-details,
-.backoffice-block-view.govuk-error-message,
 .backoffice-block-view > .govuk-error-summary,
-.backoffice-block-view.govuk-fieldset,
+.backoffice-block-view > .govuk-fieldset,
 .backoffice-block-view.govuk-form-group:not(.backoffice-block-view-textarea),
 .backoffice-block-view.govuk-inset-text,
 .backoffice-block-view.govuk-notification-banner,
 .backoffice-block-view.govuk-panel {
     padding-top: 20px;
 }
-.backoffice-block-view.govuk-accordion,
+.backoffice-block-view > .govuk-accordion,
+.backoffice-block-view.govuk-details > summary,
+.backoffice-block-view.govuk-error-message,
+.backoffice-block-view > .govuk-error-summary,
 .backoffice-block-view.govuk-panel,
-.backoffice-block-view.govuk-summary-list,
+.backoffice-block-view > .govuk-summary-list,
 .backoffice-block-view > .govuk-date-input__fieldset {
     margin-bottom: 20px;
 }
-.backoffice-block-view.govuk-panel,
 .backoffice-block-view > .govuk-notification-banner__content {
     padding-bottom: 0;
 }
@@ -41,7 +45,7 @@
 .backoffice-block-view.govuk-panel a:visited {
     color: #fff;
 }
-.backoffice-block-view.govuk-fieldset {
+.backoffice-block-view > .govuk-fieldset {
     border: 2px dashed #ccc;
     padding: 20px;
     min-height: 20px;
@@ -64,13 +68,17 @@
     padding-right: 40px;
 }
 
-.backoffice-block-view.govuk-summary-card .govuk-summary-list__row:not(.govuk-summary-list__row--no-actions) > :last-child {
+.backoffice-block-view > .govuk-summary-card .govuk-summary-list__row:not(.govuk-summary-list__row--no-actions) > :last-child {
     padding-right: 0;
 }
 
 .backoffice-block-view .govuk-summary-card__content {
     padding-bottom: 0;
     margin-bottom: 20px;
+}
+.backoffice-block-view .govuk-summary-card > .backoffice-additional-blocks {
+    margin-top: 20px;
+    margin-bottom: 0;
 }
 .backoffice-block-view .govuk-task-list__link {
     color: $govuk-link-colour;
@@ -83,4 +91,15 @@
 /* Add padding to columns so that it's possible to get to the settings in the backoffice UI */
 .backoffice-columns {
     padding: 10px;
+}
+
+/* Show an inverse button on a dark background, or else it'll be invisible */
+.backoffice-block-view-inverse {
+    padding: 10px;
+    background: #333;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+.backoffice-block-view-inverse > :last-child {
+    margin-bottom: 0;
 }

@@ -22,49 +22,40 @@
 		<PackageId>ThePensionsRegulator.$(AssemblyName)</PackageId>
 		<Product>ThePensionsRegulator.$(AssemblyName)</Product>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Content Remove="sasscompiler.json" />
+		<Compile Remove="App_Plugins\GOVUK\blocks\controllers\**" />
+		<Content Remove="App_Plugins\GOVUK\blocks\controllers\**" />
+
+		<!-- Dont include the Backoffice folder as part of packaging nuget build -->
+		<Content Remove="Backoffice\**" />
+		<EmbeddedResource Remove="App_Plugins\GOVUK\blocks\controllers\**" />
+		<None Remove="App_Plugins\GOVUK\blocks\controllers\**" />
+
+		<!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
+		<None Include="Backoffice\public\umbraco-package.json" Pack="false" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
 	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 	  <None Remove="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="App_Plugins\GOVUK\blocks\controllers\govukPageHeading.controller.js" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCaption.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDetails.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorMessage.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorSummary.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkInsetTextPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBannerPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPageHeading.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelectPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryCardPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryListPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextAreaPreview.html" />
 		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextInputPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypographyPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkWarningTextPreview.html" />
 		<Content Include="App_Plugins\GOVUK\govuk.controller.js" />
 		<Content Include="App_Plugins\GOVUK\govuk.css" />
 		<Content Include="App_Plugins\GOVUK\model-property.html" />
@@ -110,6 +101,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Backoffice\src\blocks\helpers\accordion-helper.ts">
+	    <SubType>Code</SubType>
+	  </None>
 	  <None Update="NuGetReadme.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
@@ -140,5 +134,9 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\_backoffice-rich-text-formats.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="App_Plugins\GOVUK\blocks\controllers\**" />
 	</ItemGroup>
 </Project>

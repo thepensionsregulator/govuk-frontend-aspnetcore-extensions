@@ -1,14 +1,14 @@
 import { html, customElement, LitElement, property, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
+import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkNotificationBannerContent extends UmbBlockDataType {
-    heading: IRichTextProperty;
-    text: IRichTextProperty;
-    blocks: IBlockListProperty | null;
+    heading: UmbPropertyEditorRteValueType;
+    text: UmbPropertyEditorRteValueType;
+    blocks: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkNotificationBannerSettings extends UmbBlockDataType {
@@ -27,6 +27,9 @@ export class GovUkNotificationBannerView extends UmbElementMixin(LitElement) imp
     @property({ attribute: false })
     settings?: IGovUkNotificationBannerSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -43,7 +46,7 @@ export class GovUkNotificationBannerView extends UmbElementMixin(LitElement) imp
 
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="${bannerClass} ${ this.settings?.cssClasses }">
                 <div class="govuk-notification-banner__header">
                     ${ this.settings?.title ? html`<h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">${this.settings?.title}</h2>` : null }
@@ -51,12 +54,12 @@ export class GovUkNotificationBannerView extends UmbElementMixin(LitElement) imp
                     ${ this.settings?.type === 'Success' && !(this.settings?.title) ? html`<h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">Success</h2>` : null }
                 </div>
                 <div class="govuk-notification-banner__content" aria-hidden="true">
-                    <h3 class="govuk-notification-banner__heading">${ html`${unsafeHTML(this.content?.heading.markup) }` }</h3>
-                    ${ this.content?.text?.markup ? html`<p class="govuk-body">${unsafeHTML(this.content.text.markup) }</p>` : null }
+                    <h3 class="govuk-notification-banner__heading">${ html`${unsafeHTML(disableLinks(this.content?.heading.markup)) }` }</h3>
+                    ${ this.content?.text?.markup ? html`<p class="govuk-body">${unsafeHTML(disableLinks(this.content.text.markup)) }</p>` : null }
                     <p class="backoffice-additional-blocks">${ blocks }</p>
                 </div>
             </div>
-        </div>
+        </a>
         `;
     }
 }

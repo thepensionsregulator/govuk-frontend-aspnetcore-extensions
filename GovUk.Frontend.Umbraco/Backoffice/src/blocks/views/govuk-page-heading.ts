@@ -1,6 +1,6 @@
 import { html, customElement, LitElement, property,state } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 
@@ -22,6 +22,9 @@ export class GovUkPageHeadingView extends UmbElementMixin(LitElement) implements
     @property({ attribute: false })
     settings?: IGovUkPageHeadingSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     @state()
     _nodeName?: string;
 
@@ -42,8 +45,9 @@ export class GovUkPageHeadingView extends UmbElementMixin(LitElement) implements
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <h1 class="govuk-heading-l backoffice-block-view ${ this.settings?.cssClasses }">${this.content?.text ? this.content.text : this._nodeName }</h1>
-        `;
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
+            <h1 class="govuk-heading-l ${ this.settings?.cssClasses}">${this.content?.text ? this.content.text : this._nodeName }</h1>
+        </a>`;
     }
 }
 

@@ -1,6 +1,6 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 interface IGovUkErrorSummaryContent extends UmbBlockDataType {
     title: string;
@@ -20,6 +20,9 @@ export class GovUkErrorSummaryView extends UmbElementMixin(LitElement) implement
     @property({ attribute: false })
     settings?: IGovUkErrorSummarySettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -27,14 +30,14 @@ export class GovUkErrorSummaryView extends UmbElementMixin(LitElement) implement
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="govuk-error-summary">
                 <h2 class="govuk-error-summary__title">${ this.content?.title || "There is a problem" }</h2>
                 <div class="govuk-error-summary__body">
-                    <ul class="govuk-error-summary__list govuk-list"><li><a href="javascript:return false">Example error message</a></li></ul>
+                    <ul class="govuk-error-summary__list govuk-list"><li><span class="govuk-link">Example error message</span></li></ul>
                 </div>
             </div>
-        </div>
+        </a>
         `;
     }
 }

@@ -1,15 +1,14 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
 import { renderSummaryListItem } from '../helpers/summary-list-helper';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 
 interface IGovUkSummaryListItemContent extends UmbBlockDataType {
     itemKey: string;
-    itemValue: IRichTextProperty;
-    actions: IBlockListProperty | null;
+    itemValue: UmbPropertyEditorRteValueType;
+    actions: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkSummaryListItemSettings extends UmbBlockDataType {
@@ -26,6 +25,9 @@ export class GovUkSummaryListItemView extends UmbElementMixin(LitElement) implem
     @property({ attribute: false })
     settings?: IGovUkSummaryListItemSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -33,9 +35,11 @@ export class GovUkSummaryListItemView extends UmbElementMixin(LitElement) implem
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <dl class="backoffice-block-view govuk-summary-list">
-            ${ renderSummaryListItem(this.content?.itemKey, this.content?.itemValue?.markup, this.content?.actions?.contentData) }
-        </dl>
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
+            <dl class="govuk-summary-list">
+                ${ renderSummaryListItem(this.content?.itemKey, this.content?.itemValue?.markup, this.content?.actions?.contentData) }
+            </dl>
+        </a>
         `;
     }
 }

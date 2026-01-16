@@ -1,11 +1,12 @@
 import { html, customElement, LitElement, property, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
+import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkTypographyContent extends UmbBlockDataType {
-    text: IRichTextProperty;
+    text: UmbPropertyEditorRteValueType;
 }
 
 interface IGovUkTypographySettings extends UmbBlockDataType {
@@ -21,6 +22,9 @@ export class GovUkTypographyView extends UmbElementMixin(LitElement) implements 
     @property({ attribute: false })
     settings?: IGovUkTypographySettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -28,7 +32,7 @@ export class GovUkTypographyView extends UmbElementMixin(LitElement) implements 
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-body backoffice-block-view">${unsafeHTML(this.content?.text.markup) }</div>
+        <a href="${this.config?.editContentPath ?? ''}" class="govuk-body backoffice-block-view">${unsafeHTML(disableLinks(this.content?.text.markup)) }</a>
         `;
     }
 }

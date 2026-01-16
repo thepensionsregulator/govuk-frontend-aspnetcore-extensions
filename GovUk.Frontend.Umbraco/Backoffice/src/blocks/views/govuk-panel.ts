@@ -1,12 +1,13 @@
 import { html, customElement, LitElement, property, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
+import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkPanelContent extends UmbBlockDataType {
     panelHeading: string;
-    panelText: IRichTextProperty;
+    panelText: UmbPropertyEditorRteValueType;
 }
 
 interface IGovUkPanelSettings extends UmbBlockDataType {
@@ -23,6 +24,9 @@ export class GovUkPanelView extends UmbElementMixin(LitElement) implements UmbBl
     @property({ attribute: false })
     settings?: IGovUkPanelSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -30,11 +34,10 @@ export class GovUkPanelView extends UmbElementMixin(LitElement) implements UmbBl
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="govuk-panel--confirmation govuk-panel backoffice-block-view ${ this.settings?.cssClasses}">
+        <a href="${this.config?.editContentPath ?? ''}" class="govuk-panel--confirmation govuk-panel backoffice-block-view ${ this.settings?.cssClasses}">
             ${this?.content?.panelHeading ? html`<h1 class="govuk-panel__title">${ this.content?.panelHeading }</h1>` : null }
-            ${this.content?.panelText.markup ? html`<div class="govuk-panel__body">${ unsafeHTML(this.content?.panelText.markup) }</div>` : null }
-        </div>
-        <div class="govuk-caption-l backoffice-block-view">${ this.content?.caption }</div>
+            ${this.content?.panelText.markup ? html`<div class="govuk-panel__body">${ unsafeHTML(disableLinks(this.content?.panelText.markup)) }</div>` : null }
+        </a>
         `;
     }
 }

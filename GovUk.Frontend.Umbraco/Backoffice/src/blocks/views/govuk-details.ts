@@ -1,12 +1,13 @@
 import { html, customElement, LitElement, property, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
+import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkDetailsContent extends UmbBlockDataType {
     summary: string;
-    text: IRichTextProperty;
+    text: UmbPropertyEditorRteValueType;
 }
 
 interface IGovUkDetailsSettings extends UmbBlockDataType {
@@ -23,6 +24,9 @@ export class GovUkDetailsView extends UmbElementMixin(LitElement) implements Umb
     @property({ attribute: false })
     settings?: IGovUkDetailsSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -30,10 +34,12 @@ export class GovUkDetailsView extends UmbElementMixin(LitElement) implements Umb
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <details class="govuk-details backoffice-block-view ${ this.settings?.cssClasses}">
-            <summary class="govuk-details__summary"><span class="govuk-details__summary-text">${ this.content?.summary }</span></summary>
-            ${ unsafeHTML(this.content?.text.markup) }
-        </details>
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
+            <details class="govuk-details ${ this.settings?.cssClasses}">
+                <summary class="govuk-details__summary"><span class="govuk-details__summary-text">${ this.content?.summary }</span></summary>
+                ${ unsafeHTML(disableLinks(this.content?.text.markup)) }
+            </details>
+        </a>
         `;
     }
 }

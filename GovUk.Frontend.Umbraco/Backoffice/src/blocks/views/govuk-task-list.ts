@@ -1,12 +1,12 @@
 import { html, customElement, LitElement, property, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { renderTask } from '../helpers/task-list-helper';
 
 interface IGovUkTaskListContent extends UmbBlockDataType {
-    tasks: IBlockListProperty | null;
+    tasks: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkTaskListSettings extends UmbBlockDataType {
@@ -23,6 +23,9 @@ export class GovUkTaskListView extends UmbElementMixin(LitElement) implements Um
     @property({ attribute: false })
     settings?: IGovUkTaskListSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -30,26 +33,25 @@ export class GovUkTaskListView extends UmbElementMixin(LitElement) implements Um
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-
-        <div class="backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${ this.content?.tasks?.contentData ? 
                 html`<ul class="govuk-task-list ${this.settings?.cssClasses}">
                     ${ repeat(this.content?.tasks?.contentData,
                         (task) => task.key,
                         (task, index) => {
-                            const taskName= task?.values.find(props => props.alias == "taskName")?.value;
-                            const hint = task?.values.find(props => props.alias == "hint")?.value;
+                            const taskName = (task?.values.find(props => props.alias == "taskName")?.value as string)?.toString();
+                            const hint = (task?.values.find(props => props.alias == "hint")?.value as UmbPropertyEditorRteValueType);
 
                             const settings = this.content?.tasks?.settingsData[index];
-                            const status = settings?.values.find(props => props.alias == "status")?.value;
-                            const cssClasses = settings?.values.find(props => props.alias == "cssClasses")?.value;
+                            const status = (settings?.values.find(props => props.alias == "status")?.value as string)?.toString();
+                            const cssClasses = (settings?.values.find(props => props.alias == "cssClasses")?.value as string)?.toString();
 
                             return renderTask(true, taskName, hint?.markup, status, cssClasses);
                         }
                     )}
                     </ul>`
                     : html`<p class="backoffice-additional-blocks">Task list with no tasks.</li>` }
-        </div>
+        </a>
         `;
     }
 }

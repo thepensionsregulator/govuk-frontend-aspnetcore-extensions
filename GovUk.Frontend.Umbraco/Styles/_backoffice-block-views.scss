@@ -5,22 +5,28 @@
     margin: 20px 20px 0;
     border-bottom: 1px dashed #bbbabf;
     padding-top: .1px;
+    display: block;
+    cursor: pointer;
+    color: $govuk-text-colour;
 }
+
+.backoffice-block-view:link, .backoffice-block-view:visited {
+    text-decoration: none;
+}
+
 .backoffice-block-view p,
-.backoffice-block-view.govuk-heading-l {
+.backoffice-block-view > .govuk-heading-l {
     margin-top: 0;
 }
 
 .backoffice-block-view > .govuk-accordion,
-.backoffice-block-view.govuk-caption-l,
-.backoffice-block-view.govuk-error-message,
+.backoffice-block-view > .govuk-caption-l,
 .backoffice-block-view:has(> .govuk-link),
 .backoffice-block-view:has(.govuk-textarea) {
     padding-bottom: 20px;
 }
 
-.backoffice-block-view.govuk-caption-l,
-.backoffice-block-view.govuk-details,
+.backoffice-block-view > .govuk-details,
 .backoffice-block-view > .govuk-error-summary,
 .backoffice-block-view > .govuk-fieldset,
 .backoffice-block-view.govuk-form-group:not(.backoffice-block-view-textarea),
@@ -30,8 +36,7 @@
     padding-top: 20px;
 }
 .backoffice-block-view > .govuk-accordion,
-.backoffice-block-view.govuk-details > summary,
-.backoffice-block-view.govuk-error-message,
+.backoffice-block-view > .govuk-error-message,
 .backoffice-block-view > .govuk-error-summary,
 .backoffice-block-view.govuk-panel,
 .backoffice-block-view > .govuk-summary-list,
@@ -44,8 +49,8 @@
 .backoffice-block-view > .govuk-notification-banner__content {
     padding-bottom: 0;
 }
-.backoffice-block-view.govuk-panel a:link,
-.backoffice-block-view.govuk-panel a:visited {
+.backoffice-block-view.govuk-panel,
+.backoffice-block-view.govuk-panel span.govuk-link {
     color: #fff;
 }
 .backoffice-block-view > .govuk-fieldset {
@@ -105,4 +110,13 @@
 }
 .backoffice-block-view-inverse > :last-child {
     margin-bottom: 0;
+}
+
+/* Links are disabled by converting them to span, but should still look like links. */
+.backoffice-block-view span.govuk-link {
+    color: $govuk-link-colour;
+    cursor: pointer;
+}
+.backoffice-block-view .govuk-error-summary span.govuk-link {
+    color: $govuk-error-colour;
 }

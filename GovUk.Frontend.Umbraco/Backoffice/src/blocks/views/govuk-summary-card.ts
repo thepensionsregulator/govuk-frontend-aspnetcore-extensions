@@ -1,14 +1,13 @@
 import { html, customElement, LitElement, property, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IBlockListProperty } from '../interfaces/IBlockListProperty';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
 import { renderSummaryList } from '../helpers/summary-list-helper';
 
 interface IGovUkSummaryCardContent extends UmbBlockDataType {
     cardTitle: string;
-    cardActions: IBlockListProperty | null;
-    summaryListItems: IBlockListProperty | null;
+    cardActions: UmbBlockValueDataPropertiesBaseType | null;
+    summaryListItems: UmbBlockValueDataPropertiesBaseType | null;
 }
 
 interface IGovUkSummaryCardSettings extends UmbBlockDataType {
@@ -25,6 +24,9 @@ export class GovUkSummaryCardView extends UmbElementMixin(LitElement) implements
     @property({ attribute: false })
     settings?: IGovUkSummaryCardSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -32,7 +34,7 @@ export class GovUkSummaryCardView extends UmbElementMixin(LitElement) implements
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="govuk-summary-card ${ this.settings?.cssClasses}">
                 <div class="govuk-summary-card__title-wrapper"><h2 class="govuk-summary-card__title">${this.content?.cardTitle}</h2>
                     ${this.content?.cardActions?.contentData ? html`<div class="govuk-summary-card__actions">
@@ -47,7 +49,7 @@ export class GovUkSummaryCardView extends UmbElementMixin(LitElement) implements
                     html`<div class="govuk-summary-card__content">${ renderSummaryList(this.content?.summaryListItems?.contentData || []) }</div>` :
                     html`<p class="backoffice-additional-blocks">Summary card with no list items.</p>` }
             </div>
-        </div>
+        </a>
         `;
     }
 }

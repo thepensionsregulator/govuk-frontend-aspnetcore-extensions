@@ -1,14 +1,13 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-import { IRichTextProperty } from '../interfaces/IRichTextProperty';
-import { IBlockListProperty } from "../interfaces/IBlockListProperty";
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { renderRadioButton } from '../helpers/radios-helper';
 
 interface IGovUkRadioContent extends UmbBlockDataType {
-    conditionalBlocks: IBlockListProperty;
-    hint: IRichTextProperty;
+    conditionalBlocks: UmbBlockValueDataPropertiesBaseType;
+    hint: UmbPropertyEditorRteValueType;
     label: string;
     value: string;
 }
@@ -25,6 +24,9 @@ export class GovUkRadioView extends UmbElementMixin(LitElement) implements UmbBl
 
     @property({ attribute: false })
     settings?: IGovUkRadioSettings;
+
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
     constructor() {
         super();
     }
@@ -32,9 +34,9 @@ export class GovUkRadioView extends UmbElementMixin(LitElement) implements UmbBl
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <div class="backoffice-block-view">
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${renderRadioButton(this.content?.label, this.content?.value, this.content?.hint?.markup, this.content?.conditionalBlocks?.contentData, true) }
-        </div>
+        </a>
         `;
     }
 }

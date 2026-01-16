@@ -1,6 +1,6 @@
 import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement } from '@umbraco-cms/backoffice/block-custom-view';
+import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 interface IGovUkErrorMessageContent extends UmbBlockDataType {
     error: string;
@@ -20,6 +20,9 @@ export class GovUkErrorMessageView extends UmbElementMixin(LitElement) implement
     @property({ attribute: false })
     settings?: IGovUkErrorMessageSettings;
 
+    @property({ attribute: false })
+    config?: UmbBlockEditorCustomViewConfiguration;
+
     constructor() {
         super();
     }
@@ -27,7 +30,9 @@ export class GovUkErrorMessageView extends UmbElementMixin(LitElement) implement
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
-        <p class="govuk-error-message backoffice-block-view ${ this.settings?.cssClasses }">${ this.content?.error }</p>
+        <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
+            <p class="govuk-error-message ${ this.settings?.cssClasses}">${this.content?.error }</p>
+        </a>
         `;
     }
 }

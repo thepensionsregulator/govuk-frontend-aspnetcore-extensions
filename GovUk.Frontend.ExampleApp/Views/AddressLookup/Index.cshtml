@@ -1,0 +1,56 @@
+﻿@model AddressLookupViewModel
+@{
+    ViewData["Title"] = "Address lookup";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">
+            The address lookup component wraps address input fields in a fieldset element, applying TPR styling and structure.
+        </p>
+
+        <p class="govuk-body">
+            Use the <strong>'tpr-address-lookup-legend'</strong> tag helper to add an optional legend to the fieldset.
+            The legend will be rendered as a proper <code>&lt;legend&gt;</code> element with the <code>govuk-fieldset__legend</code> class applied.
+        </p>
+
+        <p class="govuk-body">
+            Any child content (such as <code>govuk-input</code> components) will be rendered inside the fieldset after the legend.
+        </p>
+
+        <form asp-controller="AddressLookup" asp-action="Post" method="post" novalidate>
+            <tpr-address-lookup>
+                <tpr-address-lookup-legend>Enter new address</tpr-address-lookup-legend>
+                <govuk-input for="AddressLine1">
+                    <govuk-input-label>Address line 1</govuk-input-label>
+                </govuk-input>
+                <govuk-input for="AddressLine2">
+                    <govuk-input-label>Address line 2</govuk-input-label>
+                </govuk-input>
+                <govuk-input for="TownOrCity">
+                    <govuk-input-label>Town or City</govuk-input-label>
+                </govuk-input>
+                <govuk-input for="Region">
+                    <govuk-input-label>Region</govuk-input-label>
+                </govuk-input>
+                <govuk-input for="Postcode">
+                    <govuk-input-label>Postal Code</govuk-input-label>
+                </govuk-input>
+            </tpr-address-lookup>
+
+            <govuk-button type="submit">Submit</govuk-button>
+        </form>
+    </div>
+</div>
+
+@section scripts {
+    <partial name="GOVUK/Validation" />
+}

@@ -1,0 +1,36 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@using GovUk.Frontend.Umbraco.Blocks
+@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco.Services
+@using ThePensionsRegulator.Umbraco
+@using ThePensionsRegulator.Umbraco.Blocks
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Extensions
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Web.Common
+@using Microsoft.Extensions.Configuration
+@using PropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
+@addTagHelper *, ThePensionsRegulator.Frontend
+
+@{
+    var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+	var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
+	var blocks = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.AddressLookupBlocks);
+}
+
+<div class="@cssClasses">
+    <tpr-address-lookup>
+        <tpr-address-lookup-legend>@legend</tpr-address-lookup-legend>
+        @if (blocks is not null && blocks.Any())
+        {
+            var childBlocks = new BlockListViewModel(blocks)
+            {
+                RenderGrid = false,
+                RenderWidthContainer = false
+            };
+            <div>
+                @await Html.PartialAsync("GOVUK/BlockList", childBlocks)
+            </div>
+        }
+    </tpr-address-lookup>
+</div>

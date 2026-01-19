@@ -1,9 +1,16 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<AddressLookup>
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<AddressLookupViewModel>
+@using GovUk.Frontend.Umbraco.ExampleApp.Controllers
+@using GovUk.Frontend.Umbraco.ExampleApp.Models
 @section head{
-	<title>@Model.PageHeadingOrName()</title>
+	<title>@Model.Page.PageHeadingOrName()</title>
 }
 
-<partial name="GOVUK/BlockGrid" model="Model.Blocks" />
 
+@using (Html.BeginUmbracoForm<AddressLookupSurfaceController>(nameof(AddressLookupSurfaceController.Index), new {}, new { novalidate="novalidate" }))
+{
+	<partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
+}
 
-@* <partial name="GOVUK/BlockGrid" model="Model.Grid" /> *@
+@section scripts {
+    <partial name="GOVUK/UmbracoValidation" />
+}

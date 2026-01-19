@@ -2,6 +2,7 @@
 {
     public static class TprPropertyAliases
     {
+        public const string AddressLookupBlocks = "addressLookupBlocks";
         public const string BackToMenuText = "text";
         public const string BackToMenuLink = "link";
         public const string Image = "image";

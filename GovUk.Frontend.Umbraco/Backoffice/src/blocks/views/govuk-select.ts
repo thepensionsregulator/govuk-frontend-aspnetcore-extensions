@@ -1,14 +1,15 @@
 import { html, customElement, LitElement, property, repeat, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import type { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockListLayoutModel, UMB_BLOCK_LIST_PROPERTY_EDITOR_SCHEMA_ALIAS } from '@umbraco-cms/backoffice/block-list';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkSelectContent extends UmbBlockDataType {
     label: string;
     hint: UmbPropertyEditorRteValueType;
-    options: UmbBlockValueDataPropertiesBaseType | null;
+    options: UmbBlockValueType<UmbBlockListLayoutModel> | undefined;
 }
 
 interface IGovUkSelectSettings extends UmbBlockDataType {
@@ -44,9 +45,10 @@ export class GovUkSelectView extends UmbElementMixin(LitElement) implements UmbB
             html`<label class="govuk-label">${this.content?.label}</label>` }            
             ${ this.content?.hint.markup ? html`<div class="govuk-hint">${ unsafeHTML(disableLinks(this.content?.hint.markup))}</div>` : null }
             <select class="govuk-select">
-                ${ this?.content?.options?.contentData ? repeat(this.content?.options?.contentData,
-                    (opt) => opt.key,
-                    (opt) => {
+                ${ this?.content?.options?.contentData ? repeat(this.content?.options?.layout[UMB_BLOCK_LIST_PROPERTY_EDITOR_SCHEMA_ALIAS] || [],
+                    (layout) => layout.contentKey,
+                    (layout) => {
+                        const opt = this.content?.options?.contentData.find(item => item.key === layout.contentKey);
                         const value = opt?.values.find(props => props.alias == "value")?.value;
                         const label = opt?.values.find(props => props.alias == "label")?.value;
 

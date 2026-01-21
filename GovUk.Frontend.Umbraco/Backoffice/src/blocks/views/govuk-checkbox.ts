@@ -1,7 +1,8 @@
 import { html, customElement, LitElement, property, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import type { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
 
@@ -9,7 +10,7 @@ interface IGovUkCheckboxContent extends UmbBlockDataType {
     label: string;
     value: string;
     hint: UmbPropertyEditorRteValueType;
-    conditionalBlocks: UmbBlockValueDataPropertiesBaseType;
+    conditionalBlocks: UmbBlockValueType<UmbBlockListLayoutModel>;
 }
 
 interface IGovUkCheckboxSettings extends UmbBlockDataType {

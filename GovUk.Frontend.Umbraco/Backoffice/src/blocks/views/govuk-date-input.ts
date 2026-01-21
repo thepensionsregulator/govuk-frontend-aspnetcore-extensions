@@ -1,13 +1,14 @@
 import { html, customElement, LitElement, property, unsafeHTML, state } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkDateInputContent extends UmbBlockDataType {
-    fieldsetBlocks: UmbBlockValueDataPropertiesBaseType;
+    fieldsetBlocks: UmbBlockValueType<UmbBlockListLayoutModel>;
     legend: string;
     hint: UmbPropertyEditorRteValueType;
 }

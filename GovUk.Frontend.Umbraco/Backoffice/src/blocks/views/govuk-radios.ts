@@ -1,15 +1,16 @@
 import { html, customElement, LitElement, property, state, unsafeHTML, repeat } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
-import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
-import type { UmbBlockDataType, UmbBlockValueDataPropertiesBaseType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
+import { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
+import { UmbBlockListLayoutModel, UMB_BLOCK_LIST_PROPERTY_EDITOR_SCHEMA_ALIAS } from '@umbraco-cms/backoffice/block-list';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 import { renderRadiosDivider, renderRadioButton } from '../helpers/radios-helper';
 import { disableLinks } from '../helpers/html-helper';
 
 interface IGovUkRadiosContent extends UmbBlockDataType {
-    fieldsetBlocks: UmbBlockValueDataPropertiesBaseType;
-    radioButtons: UmbBlockValueDataPropertiesBaseType;
+    fieldsetBlocks: UmbBlockValueType<UmbBlockListLayoutModel>;
+    radioButtons: UmbBlockValueType<UmbBlockListLayoutModel>;
     legend: string;
     hint: UmbPropertyEditorRteValueType;
 }
@@ -51,7 +52,6 @@ export class GovUkRadiosView extends UmbElementMixin(LitElement) implements UmbB
     }
 
     override render() {
-
         let blocksText = "No blocks.";
         if (this.content?.fieldsetBlocks?.contentData?.length === 1) { blocksText = "1 block." }
         if ((this.content?.fieldsetBlocks?.contentData?.length || 0) > 1) { blocksText = `${this.content?.fieldsetBlocks?.contentData.length} blocks.` }
@@ -69,9 +69,10 @@ export class GovUkRadiosView extends UmbElementMixin(LitElement) implements UmbB
                 <div class="govuk-form-group">
                     ${this.content?.hint?.markup ? html`<div class="govuk-hint">${unsafeHTML(disableLinks(this.content?.hint?.markup))}</div>` : null}
                     <div class="govuk-radios ${horizontalLayout ? "govuk-radios--inline" : null}">
-                        ${ repeat(this.content?.radioButtons?.contentData || [],
-                            (radio) => radio.key,
-                            (radio) => {
+                        ${ repeat(this.content?.radioButtons?.layout[UMB_BLOCK_LIST_PROPERTY_EDITOR_SCHEMA_ALIAS] || [],
+                            (layout) => layout.contentKey,
+                            (layout) => {
+                                const radio = this.content?.radioButtons?.contentData.find(item => item.key === layout.contentKey)!;
                                 const govukRadiosDivider = "5bbc1a49-49b7-4119-b6ad-c113226d92e0";
                                 if (radio.contentTypeKey === govukRadiosDivider) {
                                     const text = (radio?.values.find(props => props.alias == "text")?.value as string);
@@ -80,7 +81,7 @@ export class GovUkRadiosView extends UmbElementMixin(LitElement) implements UmbB
                                     const label = (radio?.values.find(props => props.alias == "label")?.value as string);
                                     const value = (radio?.values.find(props => props.alias == "value")?.value as string);
                                     const hint = (radio?.values.find(props => props.alias == "hint")?.value as UmbPropertyEditorRteValueType);
-                                    const conditionalBlocks = (radio?.values.find(props => props.alias == "conditionalBlocks")?.value as UmbBlockValueDataPropertiesBaseType);
+                                    const conditionalBlocks = (radio?.values.find(props => props.alias == "conditionalBlocks")?.value as UmbBlockValueType<UmbBlockListLayoutModel>);
                                     return renderRadioButton(label, value, hint?.markup, conditionalBlocks?.contentData, !horizontalLayout)
                                 }
                             }

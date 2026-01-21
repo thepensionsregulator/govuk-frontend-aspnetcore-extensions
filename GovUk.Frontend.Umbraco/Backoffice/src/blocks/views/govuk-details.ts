@@ -35,7 +35,7 @@ export class GovUkDetailsView extends UmbElementMixin(LitElement) implements Umb
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
-            <details class="govuk-details ${ this.settings?.cssClasses}">
+            <details class="govuk-details ${ this.settings?.cssClasses}" open>
                 <summary class="govuk-details__summary"><span class="govuk-details__summary-text">${ this.content?.summary }</span></summary>
                 ${ unsafeHTML(disableLinks(this.content?.text.markup)) }
             </details>

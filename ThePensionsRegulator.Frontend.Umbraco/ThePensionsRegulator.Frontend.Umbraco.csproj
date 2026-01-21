@@ -21,20 +21,23 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageId>$(AssemblyName)</PackageId>
 		<Product>$(AssemblyName)</Product>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Backoffice\node_modules\**" />
+	  <Content Remove="Backoffice\node_modules\**" />
+	  <EmbeddedResource Remove="Backoffice\node_modules\**" />
+	  <None Remove="Backoffice\node_modules\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Remove="Backoffice\public\umbraco-package.json" />
 		<Content Remove="sasscompiler.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRSearchResults.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRImage.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYouTubeVideo.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRRelatedLinks.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRSectionCards.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRDocuments.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
@@ -70,10 +73,16 @@
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>
 		</None>
+		<None Include="Backoffice\public\umbraco-package.json">
+		  <Pack>false</Pack>
+		</None>
 		<None Include="sasscompiler.json" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Backoffice\src\blocks\helpers\media-helper.ts">
+	    <SubType>Code</SubType>
+	  </None>
 	  <None Update="NuGetReadme.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
@@ -92,5 +101,9 @@
 
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Backoffice\node_modules\**" />
 	</ItemGroup>
 </Project>

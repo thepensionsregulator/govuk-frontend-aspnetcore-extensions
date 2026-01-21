@@ -18,21 +18,6 @@ p.tpr-add-link {
     margin: 5px;
 }
 
-
-.tpr-youtube-video-previewbox{
-    width: 100%;
-    background: white;
-    border-radius: 10px;
-    border: $govuk-border-width solid $tpr-colour-eclipse;
-    display: flex;
-    align-content: center;
-    box-sizing: border-box;
-}
-
-.tpr-youtube-video-previewbox-play-button{
-    margin:0 20%;
-}
-
 table {
     @extend .govuk-table;
 }
@@ -47,4 +32,93 @@ th {
 
 td, td:last-child {
     @extend .govuk-table__cell;
+}
+
+// Box and nested box blocks
+.backoffice-block-header {
+    display: block;
+    padding: 15px;
+}
+
+.backoffice-block-header:link,
+.backoffice-block-header:visited {
+    text-decoration: none;
+    color: $tpr-colour-black;
+}
+
+.backoffice-block-header:hover .content-type {
+    text-decoration: underline;
+    color: #6570c3;
+}
+
+.backoffice-block-header {
+    border-top: 1px solid var(--uui-color-border,#d8d7d9);
+    border-left: 1px solid var(--uui-color-border,#d8d7d9);
+    border-right: 1px solid var(--uui-color-border,#d8d7d9);
+    border-radius: var(--uui-border-radius,3px);
+}
+
+.backoffice-block-header.for-tpr-box,
+.backoffice-block-header.for-tpr-nested-box {
+    margin: 0 5px -5px;
+}
+
+.backoffice-block-view > .tpr-related-links {
+    margin-bottom: 20px;
+}
+
+// video and image blocks
+.backoffice-block-view > .tpr-video-wrapper-no-cookies, 
+.backoffice-block-view > .tpr-image {
+    max-width: 600px;
+}
+
+// Image and featured image blocks
+.backoffice-block-view .backoffice-image-label {
+    font-weight: bold;
+}
+
+.backoffice-block-view .tpr-featured-image:not(.tpr-featured-image--horizontal) .backoffice-image-label {
+    margin: 0 $govuk-gutter-half;
+}
+
+.backoffice-block-view .is-trashed {
+    background: $govuk-error-colour;
+    color: $tpr-colour-white;
+    padding: govuk-spacing(1)
+}
+
+// Featured image block
+.backoffice-block-view > .tpr-featured-image .tpr-box {
+    margin: 0px;
+}
+
+.backoffice-block-view > .tpr-featured-image_thumbnail {
+    flex-basis: 50%;
+}
+
+.backoffice-block-view > .tpr-featured-image_thumbnail img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.backoffice-block-view .tpr-featured-image_info {
+    flex-basis: 50%;
+    box-sizing: border-box;
+    padding: $govuk-gutter-half;
+}
+
+.backoffice-block-view .backoffice-section-break {
+    border-top: 2px solid $tpr-colour-very-light-grey;
+    text-align: center;
+    position: relative;
+    top: .7em;
+}
+.backoffice-block-view .backoffice-section-break > span {
+    position: relative;
+    top: -.7em;
+    background: white;
+    display: inline-block;
+    padding: 0 10px;
 }

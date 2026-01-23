@@ -1,37 +1,36 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using ThePensionsRegulator.Umbraco.Blocks;
-using Umbraco.Cms.Api.Management.Controllers;
-using Umbraco.Cms.Api.Management.Routing;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
-namespace GovUk.Frontend.Umbraco.Validation
+namespace GovUk.Frontend.Umbraco.PropertyEditors.ModelPropertyPicker
 {
-    [VersionedApiBackOfficeRoute("model-property")]
-    [ApiExplorerSettings(GroupName = "GOV.UK API")]
-    public class ModelPropertyController : ManagementApiControllerBase
+    /// <summary>
+    /// Gets C# property names associated with a document type by looking for the ModelTypeAttribute 
+    /// on the Index action method of a controller with the same name as the document type alias.
+    /// </summary>
+    public class ModelTypeAttributeModelPropertyProvider : IModelPropertyProvider
     {
-        [HttpGet]
-        public IEnumerable<string> ForDocumentType(string alias)
+        /// <inheritdoc/>
+        public IEnumerable<string> GetPropertyNames(string documentTypeAlias)
         {
             var filepath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
-           
+
             List<Type> controllers = new();
 
             var files = Directory.GetFiles(filepath, "*.dll").ToList();
 
             files.RemoveAll(x => x.Contains(@"\System.") || x.Contains(@"\Microsoft.")); // Don't load dlls where there won't be any custom code. This list is not exhaustive
-            
-            foreach(var file in files) 
-            { 
+
+            foreach (var file in files)
+            {
                 Assembly assembly = Assembly.LoadFrom(file);
                 List<Type> controllersToAdd = assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(RenderController))).ToList();
                 controllers.AddRange(controllersToAdd);
             }
-            var controllerType = controllers?.FirstOrDefault(x => x.Name.ToUpperInvariant() == $"{alias.ToUpperInvariant()}CONTROLLER");
+            var controllerType = controllers?.FirstOrDefault(x => x.Name.ToUpperInvariant() == $"{documentTypeAlias.ToUpperInvariant()}CONTROLLER");
             if (controllerType != null)
             {
                 var actionMethods = controllerType.GetMethods().Where(x => x.Name == "Index");

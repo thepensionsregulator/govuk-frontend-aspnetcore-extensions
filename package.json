@@ -42,6 +42,7 @@
     "govuk-frontend": "^5.13.0"
   },
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
+    "backoffice": "cd GovUk.Frontend.Umbraco/Backoffice && npm install && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm install && npm run build"
   }
 }

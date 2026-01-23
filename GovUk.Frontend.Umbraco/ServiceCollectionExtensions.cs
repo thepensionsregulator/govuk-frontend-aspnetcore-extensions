@@ -4,6 +4,7 @@ using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.HtmlGeneration;
 using GovUk.Frontend.Umbraco.ModelBinding;
 using GovUk.Frontend.Umbraco.PropertyEditors;
+using GovUk.Frontend.Umbraco.PropertyEditors.ModelPropertyPicker;
 using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.Services;
 using GovUk.Frontend.Umbraco.Validation;
@@ -68,6 +69,7 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IDefaultColumnClassProvider, GovUkPageHeadingColumnClassProvider>();
             services.AddTransient<IGovUkHeadingClassProvider, GovUkHeadingClassProvider>();
             services.AddTransient<BlockViewService>();
+            services.AddTransient<IModelPropertyProvider, ModelTypeAttributeModelPropertyProvider>();
 
             return services;
         }

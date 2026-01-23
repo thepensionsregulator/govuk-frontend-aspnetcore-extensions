@@ -7,7 +7,6 @@
 		<ItemGroup>
 			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\App_Plugins\**" />
 			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\govuk-umbraco-backoffice.css*" />
-			<PluginFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
 		<Message Text="Copying files from GovUk.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
@@ -16,7 +15,5 @@
 		<Message Text="Copying files from ThePensionsRegulator.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
 		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\css\%(RecursiveDir)%(Filename)%(Extension)" />
-		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 </Project>

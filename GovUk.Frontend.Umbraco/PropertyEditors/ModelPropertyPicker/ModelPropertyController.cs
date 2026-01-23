@@ -10,7 +10,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ModelPropertyPicker
     public class ModelPropertyController(IEnumerable<IModelPropertyProvider> _modelPropertyProviders) : ManagementApiControllerBase
     {
         [HttpGet("{alias}")]
-        [ProducesResponseType<string>(StatusCodes.Status200OK)]
+        [ProducesResponseType<IEnumerable<string>>(StatusCodes.Status200OK)]
         public IEnumerable<string> ForDocumentType(string alias)
         {
             foreach (var provider in _modelPropertyProviders)

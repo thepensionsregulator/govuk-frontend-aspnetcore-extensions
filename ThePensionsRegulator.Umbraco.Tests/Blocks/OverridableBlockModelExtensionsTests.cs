@@ -361,7 +361,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         private static (OverridableBlockListModel BlockList, IList<OverridableBlockListItem> BlocksToMatch) CreateOverridableChildBlockListWithMultipleMatchingBlocks()
         {
             var matchingBlockContent1 = new Mock<IOverridablePublishedElement>();
-            matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "value"));
+            matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "contentTypeAlias", "value"));
 
             var matchingBlock1 = new OverridableBlockListItem(
 #nullable disable            
@@ -370,7 +370,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
                             OverridableBlockListItem.NoopPublishedElementFactory
                         );
             var matchingBlockContent2 = new Mock<IOverridablePublishedElement>();
-            matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "value"));
+            matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "contentTypeAlias", "value"));
 
             var matchingBlock2 = new OverridableBlockListItem(
 #nullable disable            

@@ -12,7 +12,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
     public class GovUkTypographyPropertyValueFormatter : TinyMCEPropertyValueFormatterBase, IPropertyValueFormatter
     {
         /// <inheritdoc />
-        public bool IsFormatter(IPublishedPropertyType propertyType) => Constants.PropertyEditors.Aliases.RichText.Equals(propertyType.EditorAlias);
+        public virtual bool IsFormatter(IPublishedPropertyType propertyType) => Constants.PropertyEditors.Aliases.RichText.Equals(propertyType.EditorAlias);
 
         /// <inheritdoc />
         /// <remarks>

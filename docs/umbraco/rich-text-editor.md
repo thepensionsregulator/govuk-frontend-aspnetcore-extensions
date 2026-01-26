@@ -1,6 +1,8 @@
 # Configure the rich text editor
 
-There are many [settings for the rich text editor](https://docs.umbraco.com/umbraco-cms/reference/configuration/richtexteditorsettings) in Umbraco. See [Configure a new Umbraco project](new-umbraco-project-govuk.md) for the recommended settings to apply for all projects using GOV.UK code. These recommended settings can be updated for your project if required.
+There are many [settings for the rich text editor](https://github.com/ProWorksCorporation/TinyMCE-Umbraco) in Umbraco. See [Configure a new Umbraco project](new-umbraco-project-govuk.md) for the recommended settings to apply for all projects using GOV.UK code. These recommended settings can be updated for your project if required.
+
+Data types in this repo use the TinyMCE editor rather than the default TipTap editor. This is due to [limited support for list styles in TipTap](https://github.com/umbraco/Umbraco-CMS/issues/21146) and the inability to add custom formats easily to already-defined data types in the rich text editor.
 
 ## Add custom formats to the rich text editor
 
@@ -25,8 +27,4 @@ p.custom-format {
 
 It is often useful to create a new rich text editor data type, so that only the formatting options relevant to the specific context can be offered. For example, you might want to offer only bold text and bulleted lists rather than all of the possible formatting options.
 
-This project adds the ability to [format Umbraco property values](./format-property-values.md) including rich text editor values. This changes the process to add a new rich text editor data type from the Umbraco default.
-
-1. Create a new class which inherits from `Umbraco.Cms.Core.PropertyEditors.RichTextPropertyEditor`. This should not change anything from the base class, except the `alias` and `name` in the `[DataEditor]` attribute. See `GovUkInlineRichTextPropertyEditor` for an example. This class will be discovered automatically by Umbraco.
-2. Create a new class which implements `ThePensionsRegulator.Umbraco.PropertyEditors.IRichTextPropertyEditorAliasProvider` and returns the alias of your new property editor. Register your implementation with dependency injection. See `GovUkRichTextPropertyEditorAliasProvider` for an example.
-3. Create a new data type in the Umbraco backoffice which uses your new property editor.
+This project adds the ability to [format Umbraco property values](./format-property-values.md), including rich text editor values, at the time they are rendered on the page.

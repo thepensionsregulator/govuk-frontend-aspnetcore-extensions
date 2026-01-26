@@ -62,7 +62,6 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IPropertyValueFormatter, NoParagraphInversePropertyValueFormatter>();
             services.AddTransient<IPartialViewPathProvider, GovUkPartialViewPathProvider>();
             services.AddTransient<IDateInputHtmlEnhancer, DateInputHtmlEnhancer>();
-            services.AddTransient<IRichTextPropertyEditorAliasProvider, GovUkRichTextPropertyEditorAliasProvider>();
             services.AddTransient<IGovUkFieldsetErrorFinder, GovUkFieldsetErrorFinder>();
             services.AddTransient<IGovUkGridClassBuilder, GovUkGridClassBuilder>();
             services.AddTransient<IDefaultColumnClassProvider, GovUkCaptionColumnClassProvider>();

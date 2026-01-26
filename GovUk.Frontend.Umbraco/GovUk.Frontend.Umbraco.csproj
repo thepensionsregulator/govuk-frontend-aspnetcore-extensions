@@ -36,12 +36,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Content Include="Styles\_backoffice-property-editors.scss" />
-		<Content Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
 		<Content Include="Styles\_govuk-spacing.scss" />
 		<Content Include="Styles\_govuk-list.scss" />
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.targets">
@@ -64,8 +59,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
+		<PackageReference Include="TinyMCE.Umbraco" Version="17.0.0" />
 		<PackageReference Include="Umbraco.Cms.Api.Management" Version="17.0.2" />
 		<PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="17.0.2" />
+		<PackageReference Include="Umbraco.Cms.Web.Website" Version="17.0.2" />
 	</ItemGroup>
 
 	<ItemGroup>

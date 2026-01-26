@@ -15,6 +15,8 @@
         public const string Checkbox = "govukCheckbox";
         public const string CheckboxSettings = "govukCheckboxSettings";
         public const string CheckboxesDivider = "govukCheckboxesDivider";
+        public const string Details = "govukDetails";
+        public const string DetailsSettings = "govukDetailsSettings";
         public const string DateInput = "govukDateInput";
         public const string DateInputSettings = "govukDateInputSettings";
         public const string ErrorMessage = "govukErrorMessage";
@@ -44,8 +46,16 @@
         public const string GridTwoColumnLayoutSettings = "govukGridTwoColumnLayoutSettings";
         public const string GridThreeColumnLayoutSettings = "govukGridThreeColumnLayoutSettings";
         public const string GridFourColumnLayoutSettings = "govukGridFourColumnLayoutSettings";
+        public const string Hint = "govukHint";
+        public const string InsetText = "govukInsetText";
+        public const string InsetTextSettings = "govukInsetTextSettings";
+        public const string NotificationBanner = "govukNotificationBanner";
+        public const string NotificationBannerSettings = "govukNotificationBannerSettings";
+        public const string Panel = "govukPanel";
+        public const string PanelSettings = "govukPanelSettings";
         public const string PageHeading = "govukPageHeading";
         public const string PageHeadingSettings = "govukPageHeadingSettings";
+        public const string PhaseBanner = "govukPhaseBanner";
         public const string Radios = "govukRadios";
         public const string RadiosSettings = "govukRadiosSettings";
         public const string Radio = "govukRadio";
@@ -73,5 +83,7 @@
         public const string TextareaSettings = "govukTextareaSettings";
         public const string Typography = "govukTypography";
         public const string TypographySettings = "govukTypographySettings";
+        public const string WarningText = "govukWarningText";
+        public const string WarningTextSettings = "govukWarningTextSettings";
     }
 }

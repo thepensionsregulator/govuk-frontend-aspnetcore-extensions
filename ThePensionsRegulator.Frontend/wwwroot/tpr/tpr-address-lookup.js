@@ -12,6 +12,10 @@ class TprAddressLookup {
     FIND_ADDRESS = "find-address";
     CONFIRM_BUTTON = "confirm-button";
     SELECT_ADDRESS = "select-address";
+    RETURN_TO_POSTCODE = "return-to-postcode";
+    ADDRESS_NOT_ON_LIST = "address-not-on-list";
+    LINK_LIST = "link-list";
+    EDIT_ADDRESS = "edit-address";
 
     JsonResults = [];
 
@@ -131,15 +135,12 @@ class TprAddressLookup {
             }
         }
 
-        console.log(selectInput);
         const selectedUPRN = selectInput.value;
-        console.log(`Selected UPRN: ${selectedUPRN}`);
-        selectInput.remove();
-
         const confirmAddressbutton = this.getComponentByDataAddressAttribute(this.CONFIRM_BUTTON);
+
+        selectInput.remove();
         confirmAddressbutton.remove();
 
-        console.log(this.JsonResults);
         const matchedDPA = this.JsonResults.find(x => x.DPA.UPRN == selectedUPRN);
         const address = matchedDPA.DPA.ADDRESS;
         const addressReplaced = address.replaceAll(",", "<br/>");
@@ -148,8 +149,16 @@ class TprAddressLookup {
         selectedAddressElement.className = "govuk-body";
         selectedAddressElement.innerHTML = addressReplaced;
 
+
+        const editAddress = createListItem(createLink("Edit address", this.EDIT_ADDRESS));
+        const linkList = this.getComponentByDataAddressAttribute(this.LINK_LIST);
+        console.log(linkList);
+
         this.container.appendChild(selectedAddressElement);
 
+        linkList.replaceChildren(editAddress);
+
+        //const editAddressLink =
     }
 
     returnToSearchOnClick(event) {
@@ -208,20 +217,19 @@ class TprAddressLookup {
         const confirmAddressbutton = this.createConfirmAddressButton();
         this.container.appendChild(confirmAddressbutton);
 
-        const enterAddressNotOnListLink = createLink("Enter address not on list", "address-not-on-list");
-        const returnToAddressLookupLink = createLink("Return to postcode search", "return-to-postcode");
+        const enterAddressNotOnListLink = createLink("Enter address not on list", this.ADDRESS_NOT_ON_LIST);
+        const returnToAddressLookupLink = createLink("Return to postcode search", this.RETURN_TO_POSTCODE);
         returnToAddressLookupLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
 
         const enterAddressListItem = createListItem(enterAddressNotOnListLink);
         const returnToAddressListItem =  createListItem(returnToAddressLookupLink);
 
-
-        const linkList = createUnorderedList()
+        const linkList = createUnorderedLinkList(this.LINK_LIST);
+        
         linkList.appendChild(enterAddressListItem);
         linkList.appendChild(returnToAddressListItem);
 
         this.container.appendChild(linkList);
-
     }
 }
 
@@ -261,8 +269,9 @@ function createLink(label, dataAddressLookupValue) {
     return link;
 }
 
-function createUnorderedList() {
+function createUnorderedLinkList(dataAddressLookupValue) {
     const ul = document.createElement("ul");
+    ul.setAttribute("data-address-lookup", dataAddressLookupValue);
     ul.classList = "govuk-list tpr-address-lookup__links";
 
     return ul;

@@ -21,34 +21,78 @@
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
+
     var addressLine1ModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty);
+    var addressLine1UmbracoLabel = Model.Content.Value<string?>(TprPropertyAliases.AddressLine1Label);
+    var addressLine1Label = !string.IsNullOrEmpty(addressLine1UmbracoLabel) ? addressLine1UmbracoLabel : "Address line 1"; 
+
     var addressLine2ModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ModelProperty);
+    var addressLine2UmbracoLabel = Model.Content.Value<string?>(TprPropertyAliases.AddressLine2Label);
+    var addressLine2Label = !string.IsNullOrEmpty(addressLine2UmbracoLabel) ? addressLine2UmbracoLabel : "Address line 2";
+
     var townOrCityModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.TownOrCityModelProperty);
+    var townOrCityUmbracoLabel = Model.Content.Value<string?>(TprPropertyAliases.TownOrCityLabel);
+    var townOrCityLabel = !string.IsNullOrEmpty(townOrCityUmbracoLabel) ? townOrCityUmbracoLabel : "Town or city";
+
     var countyModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.CountyModelProperty);
+    var countyUmbracoLabel = Model.Content.Value<string?>(TprPropertyAliases.CountyLabel);
+    var countyLabel = !string.IsNullOrEmpty(countyUmbracoLabel) ? countyUmbracoLabel : "County";
+
     var countryModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.CountryModelProperty);
-    var postcodeModelPropertyName = Model.Settings.Value<string?>(TprPropertyAliases.PostcodeModelProperty);
+    var countryUmbracoLabel = Model.Content.Value<string?>(TprPropertyAliases.CountryLabel);
+    var countryLabel = !string.IsNullOrEmpty(countryUmbracoLabel) ? countryUmbracoLabel : "Country";
+
+    var postcodeModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.PostcodeModelProperty);
+    var postcodeUmbracoLabel = Model.Content.Value<string?>(TprPropertyAliases.PostcodeLabel);
+    var postcodeLabel = !string.IsNullOrEmpty(postcodeUmbracoLabel) ? postcodeUmbracoLabel : "Postcode";
 
     //TODO: add autocomplete, will need to test this on a different device
 }
 
 <tpr-address-lookup class="@cssClasses">
     <tpr-address-lookup-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</tpr-address-lookup-legend>
-    <govuk-input name=@addressLine1ModelPropertyName autocomplete="address-line1">
-        <govuk-input-label>Address line 1</govuk-input-label>
-    </govuk-input>
-    <govuk-input name=@addressLine2ModelPropertyName>
-        <govuk-input-label>Address line 2</govuk-input-label>
-    </govuk-input>
-    <govuk-input name=@townOrCityModelPropertyName input-class="govuk-input--width-20">
-        <govuk-input-label>Town or city</govuk-input-label>
-    </govuk-input>
-    <govuk-input name=@countyModelPropertyName input-class="govuk-input--width-20">
-        <govuk-input-label>County</govuk-input-label>
-    </govuk-input>
-    <govuk-input name=@countryModelPropertyName input-class="govuk-input--width-20">
-        <govuk-input-label>Country</govuk-input-label>
-    </govuk-input>
-    <govuk-input name=@postcodeModelPropertyName input-class="govuk-input--width-10">
-        <govuk-input-label>Postcode/ zip code</govuk-input-label>
-    </govuk-input>
+    <govuk-client-side-validation 
+        error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ErrorMessageRequired))"
+        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ErrorMessageMaxLength))">
+        <govuk-input name=@addressLine1ModelPropertyName autocomplete="address-line1">
+            <govuk-input-label>@addressLine1Label</govuk-input-label>
+        </govuk-input>
+    </govuk-client-side-validation>
+
+    <govuk-client-side-validation 
+        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ErrorMessageMaxLength))">
+        <govuk-input name=@addressLine2ModelPropertyName>
+            <govuk-input-label>@addressLine2Label</govuk-input-label>
+        </govuk-input>
+    </govuk-client-side-validation>
+
+    <govuk-client-side-validation 
+        error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.TownOrCityErrorMessageRequired))"
+        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.TownOrCityErrorMessageMaxLength))">
+        <govuk-input name=@townOrCityModelPropertyName input-class="govuk-input--width-20">
+            <govuk-input-label>@townOrCityLabel</govuk-input-label>
+        </govuk-input>
+    </govuk-client-side-validation>
+
+    <govuk-client-side-validation 
+        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.CountyErrorMessageMaxLength))">
+        <govuk-input name=@countyModelPropertyName input-class="govuk-input--width-20">
+            <govuk-input-label>@countyLabel</govuk-input-label>
+        </govuk-input>
+    </govuk-client-side-validation>
+
+    <govuk-client-side-validation 
+        error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.CountryErrorMessageRequired))">
+        <govuk-input name=@countryModelPropertyName input-class="govuk-input--width-20">
+            <govuk-input-label>@countryLabel</govuk-input-label>
+        </govuk-input>
+    </govuk-client-side-validation>
+
+    <govuk-client-side-validation 
+        error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.PostcodeErrorMessageRequired))"
+        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.PostcodeErrorMessageMaxLength))">
+        <govuk-input name=@postcodeModelPropertyName input-class="govuk-input--width-10">
+            <govuk-input-label>@postcodeLabel</govuk-input-label>
+        </govuk-input>
+    </govuk-client-side-validation>
 </tpr-address-lookup>

@@ -50,11 +50,59 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Address line 1 label: Defaults to 'Address line 1' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine1Label")]
+		public virtual string AddressLine1Label => this.Value<string>(_publishedValueFallback, "addressLine1Label");
+
+		///<summary>
+		/// Address line 2 label: Defaults to 'Address line 2' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine2Label")]
+		public virtual string AddressLine2Label => this.Value<string>(_publishedValueFallback, "addressLine2Label");
+
+		///<summary>
+		/// Country label: Defaults to 'Country' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countryLabel")]
+		public virtual string CountryLabel => this.Value<string>(_publishedValueFallback, "countryLabel");
+
+		///<summary>
+		/// County label: Defaults to 'County' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countyLabel")]
+		public virtual string CountyLabel => this.Value<string>(_publishedValueFallback, "countyLabel");
+
+		///<summary>
 		/// Legend: Use {{name}} to include the page name.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("legend")]
 		public virtual string Legend => this.Value<string>(_publishedValueFallback, "legend");
+
+		///<summary>
+		/// Postcode label: Defaults to 'Postcode' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postcodeLabel")]
+		public virtual string PostcodeLabel => this.Value<string>(_publishedValueFallback, "postcodeLabel");
+
+		///<summary>
+		/// Town or city label: Defaults to 'Town or city' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("townOrCityLabel")]
+		public virtual string TownOrCityLabel => this.Value<string>(_publishedValueFallback, "townOrCityLabel");
 	}
 }

@@ -50,12 +50,36 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Address line 1 model property: The name of the property on the view model being bound to address line 1 in the code.
+		/// Address line 1 error message maximum length: Sets the message displayed if address line 1 is set by the code to require text of a maximum length.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine1ErrorMessageMaxLength")]
+		public virtual string AddressLine1ErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "addressLine1ErrorMessageMaxLength");
+
+		///<summary>
+		/// Address line 1 error message required: Sets the message displayed if address line 1 is set by the code to be required.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine1ErrorMessageRequired")]
+		public virtual string AddressLine1ErrorMessageRequired => this.Value<string>(_publishedValueFallback, "addressLine1ErrorMessageRequired");
+
+		///<summary>
+		/// Address line 1 model  property: The name of the property on the view model being bound to address line 1 in the code.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("addressLine1ModelProperty")]
 		public virtual string AddressLine1ModelProperty => this.Value<string>(_publishedValueFallback, "addressLine1ModelProperty");
+
+		///<summary>
+		/// Address line 2 error message maximum length: Sets the message displayed if address line 2 is set by the code to require text of a maximum length.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine2ErrorMessageMaxLength")]
+		public virtual string AddressLine2ErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "addressLine2ErrorMessageMaxLength");
 
 		///<summary>
 		/// Address line 2 model property: The name of the property on the view model being bound to address line 2 in the code.
@@ -66,12 +90,28 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string AddressLine2ModelProperty => this.Value<string>(_publishedValueFallback, "addressLine2ModelProperty");
 
 		///<summary>
+		/// Country error message required: Sets the message displayed if country is set by the code to be required.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countryErrorMessageRequired")]
+		public virtual string CountryErrorMessageRequired => this.Value<string>(_publishedValueFallback, "countryErrorMessageRequired");
+
+		///<summary>
 		/// Country model property: The name of the property on the view model being bound to country in the code.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("countryModelProperty")]
 		public virtual string CountryModelProperty => this.Value<string>(_publishedValueFallback, "countryModelProperty");
+
+		///<summary>
+		/// County error message maximum length: Sets the message displayed if county is set by the code to be of a maximum length.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countyErrorMessageMaxLength")]
+		public virtual string CountyErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "countyErrorMessageMaxLength");
 
 		///<summary>
 		/// County model property: The name of the property on the view model being bound to county in the code.
@@ -82,12 +122,36 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string CountyModelProperty => this.Value<string>(_publishedValueFallback, "countyModelProperty");
 
 		///<summary>
+		/// Postcode error message maximum length: Sets the message displayed if postcode is set by the code to be of a maximum length.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postcodeErrorMessageMaxLength")]
+		public virtual string PostcodeErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "postcodeErrorMessageMaxLength");
+
+		///<summary>
 		/// Postcode model property: The name of the property on the view model being bound to postcode in the code.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("postcodeModelProperty")]
 		public virtual string PostcodeModelProperty => this.Value<string>(_publishedValueFallback, "postcodeModelProperty");
+
+		///<summary>
+		/// Town or city error message maximum length: Sets the message displayed if town or city is set by the code to be of a maximum length.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("townOrCityErrorMessageMaxLength")]
+		public virtual string TownOrCityErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "townOrCityErrorMessageMaxLength");
+
+		///<summary>
+		/// Town or city error message required: Sets the message displayed if town or city is set by the code to be required.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("townOrCityErrorMessageRequired")]
+		public virtual string TownOrCityErrorMessageRequired => this.Value<string>(_publishedValueFallback, "townOrCityErrorMessageRequired");
 
 		///<summary>
 		/// Town or city model property: The name of the property on the view model being bound to town or city in the code.

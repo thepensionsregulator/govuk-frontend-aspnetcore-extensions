@@ -2,9 +2,13 @@
 {
     public static class TprPropertyAliases
     {
+        public const string AddressLine1ModelProperty = "addressLine1ModelProperty";
+        public const string AddressLine2ModelProperty = "addressLine2ModelProperty";
         public const string AddressLookupBlocks = "addressLookupBlocks";
         public const string BackToMenuText = "text";
         public const string BackToMenuLink = "link";
+        public const string CountryModelProperty = "countryModelProperty";
+        public const string CountyModelProperty = "countyModelProperty";
         public const string Image = "image";
         public const string RelatedLinksHeading = "heading";
         public const string RelatedLinksLinks = "links";
@@ -35,6 +39,7 @@
         public const string ImageDecorative = "decorativeImage";
         public const string ImageSize = "imageSize";
         public const string ImageSpaceAfter = "spaceAfter";
+        public const string PostcodeModelProperty = "postcodeModelProperty";
         public const string SearchResultsHeading = "heading";
         public const string SearchResultsFooterLinks = "footerlinks";
         public const string SearchResultsHeadingClass = "headingClass";
@@ -50,6 +55,7 @@
         public const string SectionCardDescriptionPropertyDefault = "description";
         public const string SideNavigationRoot = "navigationRoot";
         public const string SideNavigationBlacklistedPages = "blacklistedPages";
+        public const string TownOrCityModelProperty = "townOrCityModelProperty";
         public const string VideoUrl = "url";
         public const string VideoTitle = "title";
         public const string VideoTranscriptUrl = "transcriptUrl";

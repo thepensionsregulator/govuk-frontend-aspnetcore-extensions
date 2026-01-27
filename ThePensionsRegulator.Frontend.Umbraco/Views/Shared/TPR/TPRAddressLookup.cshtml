@@ -11,26 +11,40 @@
 @using Microsoft.Extensions.Configuration
 @using PropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
 @addTagHelper *, ThePensionsRegulator.Frontend
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 
 @{
     var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-	var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
-	var blocks = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.AddressLookupBlocks);
+    var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
+    var addressLine1ModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty);
+    var addressLine2ModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ModelProperty);
+    var townOrCityModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.TownOrCityModelProperty);
+    var countyModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.CountyModelProperty);
+    var countryModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.CountryModelProperty);
+    var postcodeModelPropertyName = Model.Settings.Value<string?>(TprPropertyAliases.PostcodeModelProperty);
+
+    //TODO: add autocomplete, will need to test this on a different device
 }
 
-<div class="@cssClasses">
-    <tpr-address-lookup>
-        <tpr-address-lookup-legend>@legend</tpr-address-lookup-legend>
-        @if (blocks is not null && blocks.Any())
-        {
-            var childBlocks = new BlockListViewModel(blocks)
-            {
-                RenderGrid = false,
-                RenderWidthContainer = false
-            };
-            <div>
-                @await Html.PartialAsync("GOVUK/BlockList", childBlocks)
-            </div>
-        }
-    </tpr-address-lookup>
-</div>
+<tpr-address-lookup class="@cssClasses">
+    <tpr-address-lookup-legend>@legend</tpr-address-lookup-legend>
+    <govuk-input name=@addressLine1ModelPropertyName autocomplete="address-line1">
+        <govuk-input-label>Address line 1</govuk-input-label>
+    </govuk-input>
+    <govuk-input name=@addressLine2ModelPropertyName>
+        <govuk-input-label>Address line 2</govuk-input-label>
+    </govuk-input>
+    <govuk-input name=@townOrCityModelPropertyName input-class="govuk-input--width-20">
+        <govuk-input-label>Town or city</govuk-input-label>
+    </govuk-input>
+    <govuk-input name=@countyModelPropertyName input-class="govuk-input--width-20">
+        <govuk-input-label>County</govuk-input-label>
+    </govuk-input>
+    <govuk-input name=@countryModelPropertyName input-class="govuk-input--width-20">
+        <govuk-input-label>Country</govuk-input-label>
+    </govuk-input>
+    <govuk-input name=@postcodeModelPropertyName input-class="govuk-input--width-10">
+        <govuk-input-label>Postcode/ zip code</govuk-input-label>
+    </govuk-input>
+</tpr-address-lookup>

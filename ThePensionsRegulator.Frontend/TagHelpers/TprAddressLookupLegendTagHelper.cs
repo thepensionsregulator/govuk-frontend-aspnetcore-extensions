@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -9,6 +10,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-address-lookup-legend";
 
+        private const string IsPageheadingAttributeName = "is-page-heading";
+
+        [HtmlAttributeName(IsPageheadingAttributeName)]
+        public bool? IsPageHeading { get; set; }
+
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -16,7 +22,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             var childContent = await output.GetChildContentAsync();
 
-            addressLookupContext.SetLegend(output.Attributes.ToAttributeDictionary(), childContent);
+            addressLookupContext.SetLegend(
+                IsPageHeading ?? ComponentGenerator.AddressLookupIsPageHeadingByDefault,
+                output.Attributes.ToAttributeDictionary(), 
+                childContent);
 
             output.SuppressOutput();
         }

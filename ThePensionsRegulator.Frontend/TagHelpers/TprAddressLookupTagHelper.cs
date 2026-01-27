@@ -36,7 +36,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 childContent = await output.GetChildContentAsync();
             }
 
+            addressLookupContext.ThrowIfNotComplete();
+
+
             var tagBuilder = _htmlGenerator.GenerateTprAddressLookup(
+                addressLookupContext.IsLegendPageHeading,
                 addressLookupContext.LegendAttributes,
                 addressLookupContext.Legend,
                 childContent);

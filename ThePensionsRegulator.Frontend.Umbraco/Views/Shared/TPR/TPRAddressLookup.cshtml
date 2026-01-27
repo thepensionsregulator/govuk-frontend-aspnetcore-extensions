@@ -1,5 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@inject IGovUkHeadingClassProvider headingClassProvider
 @using GovUk.Frontend.Umbraco.Blocks
+@using GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco
@@ -16,6 +18,8 @@
 
 @{
     var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
+    var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
     var addressLine1ModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty);
     var addressLine2ModelPropertyName = Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ModelProperty);
@@ -28,7 +32,7 @@
 }
 
 <tpr-address-lookup class="@cssClasses">
-    <tpr-address-lookup-legend>@legend</tpr-address-lookup-legend>
+    <tpr-address-lookup-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</tpr-address-lookup-legend>
     <govuk-input name=@addressLine1ModelPropertyName autocomplete="address-line1">
         <govuk-input-label>Address line 1</govuk-input-label>
     </govuk-input>

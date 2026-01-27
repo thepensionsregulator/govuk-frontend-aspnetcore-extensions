@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Address lookup settings</summary>
 	[PublishedModel("tprAddressLookupSettings")]
-	public partial class TprAddressLookupSettings : PublishedElementModel, IGovukCssClasses
+	public partial class TprAddressLookupSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLegendIsPageHeading
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -104,5 +104,44 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClasses")]
 		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
+
+		///<summary>
+		/// CSS classes for row: Applied to the grid row which contains this component and other adjacent components that have the same setting.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClassesForRow")]
+		public virtual string CssClassesForRow => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGrid.GetCssClassesForRow(this, _publishedValueFallback);
+
+		///<summary>
+		/// Column size
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("columnSize")]
+		public virtual string ColumnSize => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetColumnSize(this, _publishedValueFallback);
+
+		///<summary>
+		/// Column size (from desktop): Defaults to 'two-thirds' if both column size properties are left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("columnSizeFromDesktop")]
+		public virtual string ColumnSizeFromDesktop => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetColumnSizeFromDesktop(this, _publishedValueFallback);
+
+		///<summary>
+		/// CSS classes for column: Applied to the grid column which contains this component and other adjacent components that have the same setting.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("cssClassesForColumn")]
+		public virtual string CssClassesForColumn => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetCssClassesForColumn(this, _publishedValueFallback);
+
+		///<summary>
+		/// The legend is the page heading
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[ImplementPropertyType("legendIsPageHeading")]
+		public virtual bool LegendIsPageHeading => global::Umbraco.Cms.Web.Common.PublishedModels.GovukLegendIsPageHeading.GetLegendIsPageHeading(this, _publishedValueFallback);
 	}
 }

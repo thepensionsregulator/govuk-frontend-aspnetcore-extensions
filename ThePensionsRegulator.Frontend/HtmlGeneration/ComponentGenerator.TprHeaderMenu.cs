@@ -145,7 +145,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     arrow.Attributes.Add("role", "button");
                     arrowContainer.InnerHtml.AppendHtml(arrow);
 
-                    mobileMenuItem.InnerHtml.AppendHtml(arrowContainer);
 
                     var anchorTag = new TagBuilder("a");
 
@@ -165,6 +164,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                    
                     
                     mobileMenuItem.InnerHtml.AppendHtml(anchorTag);
+                    mobileMenuItem.InnerHtml.AppendHtml(arrowContainer);
 
                     if (!string.IsNullOrWhiteSpace(item.LinkText))
                     {

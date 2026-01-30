@@ -10,6 +10,7 @@
 @using ThePensionsRegulator.Umbraco
 @using ThePensionsRegulator.Umbraco.Blocks
 @using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Strings
 @using Umbraco.Extensions
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Web.Common
@@ -23,7 +24,15 @@
     var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
+    var hintText = Model.Content.Value<IHtmlEncodedString?>(PropertyAliases.Hint);
+    var hintTextBlocks = Model.Content.Value<OverridableBlockListModel>("fieldsetBlocks");
+    var addressLine1ModelProperty = Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty);
+    var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hintText?.ToHtmlString()) ? null : $"{addressLine1ModelProperty}-hint";
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
+    if (hintTextBlocks is not null && hintTextBlocks.Any())
+    {
+        fieldsetDescribedBy = $"{addressLine1ModelProperty}-blocks {fieldsetDescribedBy}".TrimEnd();
+    }
 
     var addressLine1State = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty),
@@ -66,12 +75,27 @@
             "Country",
             ViewContext.ModelState
 		);
-
-    //TODO: add hint text and OR hint blocks?
 }
 
-<tpr-address-lookup class="@cssClasses">
+<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy">
     <tpr-address-lookup-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</tpr-address-lookup-legend>
+
+    @if (hintTextBlocks is not null && hintTextBlocks.Any())
+    {
+        var childBlocks = new BlockListViewModel(hintTextBlocks)
+        {
+            RenderGrid = false,
+            RenderWidthContainer = false
+        };
+        <div id="@addressLine1ModelProperty-blocks">
+            @await Html.PartialAsync("GOVUK/BlockList", childBlocks)
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(hintText?.ToString()))
+    {
+            <div class="govuk-hint">@hintText</div>
+    }
+
     <govuk-client-side-validation 
         error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ErrorMessageRequired))"
         error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ErrorMessageMaxLength))">

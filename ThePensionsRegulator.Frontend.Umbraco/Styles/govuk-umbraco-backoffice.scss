@@ -19,22 +19,6 @@ p.tpr-add-link {
     margin: 5px;
 }
 
-table {
-    @extend .govuk-table;
-}
-
-caption {
-    @extend .govuk-table__caption;
-}
-
-th {
-    @extend .govuk-table__header;
-}
-
-td, td:last-child {
-    @extend .govuk-table__cell;
-}
-
 // Box and nested box blocks
 .backoffice-block-header {
     display: block;

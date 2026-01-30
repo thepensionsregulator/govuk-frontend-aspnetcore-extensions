@@ -31,14 +31,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @if (useTPRstyles)
     {
-        <partial name="TPR/Head" />
+        <partial name="TPR/UmbracoHead" />
     }
     else
     {
-        <partial name="GOVUK/Head" />
+        <partial name="GOVUK/UmbracoHead" />
     }
     <title>@Model.PageHeadingOrName()</title>
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />

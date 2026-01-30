@@ -36,6 +36,20 @@ export const manifests: Array<UmbExtensionManifest> = [
     },
     {
         type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprHeaderMenuItem',
+        name: "Block editor custom view for 'Header menu item' blocks",
+        element: () => import('./blocks/views/tpr-header-menu-item'),
+        forContentTypeAlias: 'tprHeaderMenuItem'
+    },
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprHeaderMenuChildItem',
+        name: "Block editor custom view for 'Header menu child item' blocks",
+        element: () => import('./blocks/views/tpr-header-menu-item'),
+        forContentTypeAlias: 'tprHeaderMenuChildItem'
+    },
+    {
+        type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprImage',
         name: "Block editor custom view for 'Image' blocks",
         element: () => import('./blocks/views/tpr-image'),

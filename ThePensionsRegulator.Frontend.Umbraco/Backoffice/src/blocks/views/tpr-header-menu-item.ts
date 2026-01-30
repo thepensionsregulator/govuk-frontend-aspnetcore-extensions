@@ -2,23 +2,15 @@ import { html, customElement, LitElement, property } from '@umbraco-cms/backoffi
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
-interface IGovUkLinkContent extends UmbBlockDataType {
-    text: string;
+interface ITprHeaderMenuItemContent extends UmbBlockDataType {
+    linkText: string;
 }
 
-interface IGovUkLinkSettings extends UmbBlockDataType {
-    cssClasses: string;
-}
-
-
-@customElement('govuk-link')
-export class GovUkLinkView extends UmbElementMixin(LitElement) implements UmbBlockEditorCustomViewElement {
+@customElement('tpr-header-menu-item')
+export class TprHeaderMenuItemView extends UmbElementMixin(LitElement) implements UmbBlockEditorCustomViewElement {
 
     @property({ attribute: false })
-    content?: IGovUkLinkContent;
-
-    @property({ attribute: false })
-    settings?: IGovUkLinkSettings;
+    content?: ITprHeaderMenuItemContent;
 
     @property({ attribute: false })
     config?: UmbBlockEditorCustomViewConfiguration;
@@ -31,9 +23,9 @@ export class GovUkLinkView extends UmbElementMixin(LitElement) implements UmbBlo
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
-            <span class="govuk-link ${this.settings?.cssClasses}">${this.content?.text}</span>
+            <span class="govuk-link">${this.content?.linkText}</span>
         </a>`;
     }
 }
 
-export default GovUkLinkView;
+export default TprHeaderMenuItemView;

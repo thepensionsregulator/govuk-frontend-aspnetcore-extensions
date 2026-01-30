@@ -1,5 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
+using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
@@ -20,8 +21,11 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         {
             var viewModel = new AddressLookupViewModel
             {
-                Page = new AddressLookup(CurrentPage, null)
+                Page = new AddressLookup(CurrentPage, null),
+                ShippingAddressLine1 = "Shipping Address line 1"
             };
+
+            ModelState.SetInitialValue(nameof(viewModel.ShippingAddressLine1), viewModel.ShippingAddressLine1.ToString());
 
             return CurrentTemplate(viewModel);
         }

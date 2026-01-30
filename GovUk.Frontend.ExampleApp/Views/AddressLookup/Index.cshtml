@@ -28,20 +28,39 @@
 
         <form asp-controller="AddressLookup" asp-action="Post" method="post" novalidate>
             <tpr-address-lookup>
-                <tpr-address-lookup-legend>Enter new address</tpr-address-lookup-legend>
-                <govuk-input for="AddressLine1">
+                <tpr-address-lookup-legend>Enter shipping address</tpr-address-lookup-legend>
+                <govuk-input for="ShippingAddressLine1">
                     <govuk-input-label>Address line 1</govuk-input-label>
                 </govuk-input>
-                <govuk-input for="AddressLine2">
+                <govuk-input for="ShippingAddressLine2">
                     <govuk-input-label>Address line 2</govuk-input-label>
                 </govuk-input>
-                <govuk-input for="TownOrCity">
-                    <govuk-input-label>Town or City</govuk-input-label>
+                <govuk-input for="ShippingTownOrCity">
+                    <govuk-input-label>Town or city</govuk-input-label>
                 </govuk-input>
-                <govuk-input for="Region">
-                    <govuk-input-label>Region</govuk-input-label>
+                <govuk-input for="ShippingCounty">
+                    <govuk-input-label>County</govuk-input-label>
                 </govuk-input>
-                <govuk-input for="Postcode">
+                <govuk-input for="ShippingPostcode">
+                    <govuk-input-label>Postal Code</govuk-input-label>
+                </govuk-input>
+            </tpr-address-lookup>
+
+            <tpr-address-lookup>
+                <tpr-address-lookup-legend>Enter billing address</tpr-address-lookup-legend>
+                <govuk-input for="BillingAddressLine1">
+                    <govuk-input-label>Address line 1</govuk-input-label>
+                </govuk-input>
+                <govuk-input for="BillingAddressLine2">
+                    <govuk-input-label>Address line 2</govuk-input-label>
+                </govuk-input>
+                <govuk-input for="BillingTownOrCity">
+                    <govuk-input-label>Town or city</govuk-input-label>
+                </govuk-input>
+                <govuk-input for="BillingCounty">
+                    <govuk-input-label>County</govuk-input-label>
+                </govuk-input>
+                <govuk-input for="BillingPostcode">
                     <govuk-input-label>Postal Code</govuk-input-label>
                 </govuk-input>
             </tpr-address-lookup>

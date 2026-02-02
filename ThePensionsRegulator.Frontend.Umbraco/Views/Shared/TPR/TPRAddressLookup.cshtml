@@ -1,6 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @inject IGovUkHeadingClassProvider headingClassProvider
 @inject IAddressFieldStateHelper addressFieldStateHelper
+@inject ITprAddressLookupEndpointUrlProvider addressLookupEndpointUrlProvider
 @using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Validation
@@ -77,7 +78,7 @@
 		);
 }
 
-<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy">
+<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" data-address-lookup-url=@addressLookupEndpointUrlProvider.GetAddressLookupEndpoint()>
     <tpr-address-lookup-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</tpr-address-lookup-legend>
 
     @if (hintTextBlocks is not null && hintTextBlocks.Any())

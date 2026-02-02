@@ -98,6 +98,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<IYouTubeVideoIdParser, YouTubeVideoIdParser>();
             services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
             services.AddTransient<IAddressFieldStateHelper, AddressFieldStateHelper>();
+            services.AddTransient<ITprAddressLookupEndpointUrlProvider, TprAddressLookupEndpointUrlProvider>();
 
             return services;
         }

@@ -29,9 +29,9 @@ class TprAddressLookup {
     // - Pressing 'confirm address' triggers validation if no address is selected in 'select' component
     // - Pressing 'confirm address' removes select and button, shows address as a govuk-body p tag. Populate some hidden input fields so a form can get these fields
 
-    createGovukTextInput(labelText, dataAddressLookupValue) {
+    createGovukTextInput(labelText, dataAddressLookupValue, cssClass) {
         const formGroup = document.createElement("div");
-        formGroup.classList = "govuk-form-group";
+        formGroup.classList = `govuk-form-group ${cssClass}`;
         const inputId = `${dataAddressLookupValue}-${this.index}`;
 
         const label = document.createElement("label");
@@ -58,8 +58,8 @@ class TprAddressLookup {
 
         this.JsonResults = [];
 
-        const buildingNameGroup = this.createGovukTextInput("Building name", this.BUILDING_INPUT);
-        const postcodeGroup = this.createGovukTextInput("Postcode", this.POSTCODE);
+        const buildingNameGroup = this.createGovukTextInput("Building name", this.BUILDING_INPUT, "govuk-input--width-20");
+        const postcodeGroup = this.createGovukTextInput("Postcode", this.POSTCODE, "govuk-input--width-10");
         const findAddressButton = this.createFindAddressButton();
 
         this.container.appendChild(buildingNameGroup);
@@ -121,6 +121,25 @@ class TprAddressLookup {
         return button;
     }
 
+    buildAddressParagraph(address, postcode) {
+        const selectedAddressParagraph = document.createElement("p");
+        selectedAddressParagraph.classList = "govuk-body";
+        const addressArray = address.split(",");
+
+        addressArray.forEach((addressLine) => {
+            addressLine = addressLine.trim();
+            if (addressLine == postcode) {
+                selectedAddressParagraph.appendChild(document.createTextNode(addressLine));
+            } else {
+                const sentanceCase = toSentenceCase(addressLine);
+                selectedAddressParagraph.appendChild(document.createTextNode(sentanceCase)); 
+            }
+            selectedAddressParagraph.appendChild(document.createElement("br"));
+        });
+
+        return selectedAddressParagraph;
+    }
+
     confirmAddressOnClick(event) {
         event.preventDefault();
         const selectInput = this.getComponentByDataAddressAttribute(this.SELECT_ADDRESS);
@@ -142,23 +161,16 @@ class TprAddressLookup {
         confirmAddressbutton.remove();
 
         const matchedDPA = this.JsonResults.find(x => x.DPA.UPRN == selectedUPRN);
-        const address = matchedDPA.DPA.ADDRESS;
-        const addressReplaced = address.replaceAll(",", "<br/>");
+        const selectedAddressElement = this.buildAddressParagraph(matchedDPA.DPA.ADDRESS, matchedDPA.DPA.POSTCODE);
 
-        const selectedAddressElement = document.createElement("p");
-        selectedAddressElement.className = "govuk-body";
-        selectedAddressElement.innerHTML = addressReplaced;
-
-
-        const editAddress = createListItem(createLink("Edit address", this.EDIT_ADDRESS));
+        const editLink = createLink("Edit address", this.EDIT_ADDRESS);
+        editLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
+        const editAddress = createListItem(editLink);
         const linkList = this.getComponentByDataAddressAttribute(this.LINK_LIST);
-        console.log(linkList);
 
-        this.container.appendChild(selectedAddressElement);
+        this.container.insertBefore(selectedAddressElement, linkList);
 
         linkList.replaceChildren(editAddress);
-
-        //const editAddressLink =
     }
 
     returnToSearchOnClick(event) {
@@ -231,6 +243,8 @@ class TprAddressLookup {
 
         this.container.appendChild(linkList);
     }
+
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -282,4 +296,8 @@ function createListItem(innerHTML) {
     li.appendChild(innerHTML);
 
     return li;
+}
+
+function toSentenceCase(text) {
+    return text.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 }

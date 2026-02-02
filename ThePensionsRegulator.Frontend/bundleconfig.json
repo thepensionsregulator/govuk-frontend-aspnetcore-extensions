@@ -1,0 +1,37 @@
+[
+  {
+    "outputFileName": "wwwroot/tpr/autocomplete.min.js",
+    "inputFiles": [
+      "wwwroot/tpr/autocomplete.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/tpr/headermenu.min.js",
+    "inputFiles": [
+      "wwwroot/tpr/headermenu.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/tpr/tpr-back-to-top.min.js",
+    "inputFiles": [
+      "wwwroot/tpr/tpr-back-to-top.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/tpr/tpr-search-results.min.js",
+    "inputFiles": [
+      "wwwroot/tpr/tpr-search-results.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/tpr/tpr-side-navigation.min.js",
+    "inputFiles": [
+      "wwwroot/tpr/tpr-side-navigation.js"
+    ],
+    "minify": { "enabled": true }
+  }
+]

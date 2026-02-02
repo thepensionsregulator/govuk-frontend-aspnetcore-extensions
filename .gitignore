@@ -422,6 +422,10 @@ govuk-frontend*.css
 govuk-frontend*.css.map
 tpr.css*
 
+# Minified JS files
+**/wwwroot/govuk/*.min.js
+**/wwwroot/tpr/*.min.js
+
 # Jest
 junit.xml
 cobertura-coverage.xml

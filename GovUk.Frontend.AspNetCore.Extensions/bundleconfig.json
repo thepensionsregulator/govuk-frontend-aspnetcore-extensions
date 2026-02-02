@@ -1,0 +1,16 @@
+[
+  {
+    "outputFileName": "wwwroot/govuk/govuk-js-init.min.js",
+    "inputFiles": [
+      "wwwroot/govuk/govuk-js-init.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/govuk/govuk-validation.min.js",
+    "inputFiles": [
+      "wwwroot/govuk/govuk-validation.js"
+    ],
+    "minify": { "enabled": true }
+  }
+]

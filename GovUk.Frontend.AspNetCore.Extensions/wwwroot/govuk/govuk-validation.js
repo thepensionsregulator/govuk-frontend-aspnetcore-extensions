@@ -511,7 +511,7 @@ function createGovUkValidator() {
     },
 
     // Ported from .NET Core code so that behaviour matches https://source.dot.net/#System.ComponentModel.Annotations/System/ComponentModel/DataAnnotations/PhoneAttribute.cs
-    validatePhone(value, element) {
+    validatePhone: function(value, element) {
       if (!value) {
         return true;
       }
@@ -615,7 +615,7 @@ function createGovUkValidator() {
     },
 
     // Custom range validator to handle numbers with commas in
-    validateRangeWithCommas(value, element, param) {
+    validateRangeWithCommas: function(value, element, param) {
       var commaFreeVal = Number(value.replace(/,/g, ""));
       if (!value) {
         return true;

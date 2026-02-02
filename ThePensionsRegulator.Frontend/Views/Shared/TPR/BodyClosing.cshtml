@@ -1,7 +1,3 @@
-﻿@using GovUk.Frontend.AspNetCore
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<script src="/govuk-frontend.min.js?v=@GovUkFrontendInfo.Version" type="module"></script>
-<script src="/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-js-init.js" type="module" asp-append-version="true"></script>
-<script src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-back-to-top.js" type="module" asp-append-version="true"></script>
-<script src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-side-navigation.js" type="module" asp-append-version="true"></script>
-<script src="/_content/ThePensionsRegulator.Frontend/tpr/headermenu.js" type="module" asp-append-version="true"></script>
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<partial name="GOVUK/BodyClosing" />
+<script src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-back-to-top.min.js" type="module" asp-append-version="true"></script>

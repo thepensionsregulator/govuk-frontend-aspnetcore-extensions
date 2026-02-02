@@ -4,6 +4,7 @@ import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfigura
 import type { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffice/block';
 import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { renderSummaryList } from '../helpers/summary-list-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkSummaryListContent extends UmbBlockDataType {
     items: UmbBlockValueType<UmbBlockListLayoutModel> | null;
@@ -32,7 +33,7 @@ export class GovUkSummaryListView extends UmbElementMixin(LitElement) implements
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${ this.content?.items?.contentData ? 
                 renderSummaryList(this.content?.items, this.settings?.cssClasses) :

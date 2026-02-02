@@ -3,6 +3,7 @@ import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { ILinkPickerModel } from '../types/ILinkPickerModel';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface ITprRelatedLinksContent extends UmbBlockDataType {
     heading: string;
@@ -32,7 +33,7 @@ export class TprRelatedLinksView extends UmbElementMixin(LitElement) implements 
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="tpr-related-links ${ this.settings?.cssClasses}">
                 <h2 class="govuk-heading-m">${ this.content?.heading ? this.content.heading : 'Related' }</h2>

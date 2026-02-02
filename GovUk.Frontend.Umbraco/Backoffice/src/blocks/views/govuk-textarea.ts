@@ -4,6 +4,7 @@ import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfigura
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkTextareaContent extends UmbBlockDataType {
     label: string;
@@ -39,7 +40,7 @@ export class GovUkTextareaView extends UmbElementMixin(LitElement) implements Um
         const rows = this.settings?.rows ?? 5;
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view ${this.settings?.cssClasses}">
             ${this.settings?.labelIsPageHeading ?
                 html`<h1 class="govuk-label-wrapper">

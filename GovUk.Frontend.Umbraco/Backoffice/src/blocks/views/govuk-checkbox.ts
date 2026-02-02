@@ -5,6 +5,7 @@ import type { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffic
 import { UmbBlockListLayoutModel } from '@umbraco-cms/backoffice/block-list';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkCheckboxContent extends UmbBlockDataType {
     label: string;
@@ -41,7 +42,7 @@ export class GovUkCheckboxView extends UmbElementMixin(LitElement) implements Um
         if ((this.content?.conditionalBlocks?.contentData?.length || 0) > 1) { conditionalBlocksText = `${this.content?.conditionalBlocks.contentData.length} conditional blocks.` }
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view">
             <div class="govuk-checkboxes ${ this.settings?.cssClasses}">
                 <div class="govuk-checkboxes__item">

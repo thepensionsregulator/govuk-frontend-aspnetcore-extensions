@@ -7,6 +7,7 @@ import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 import { renderCheckboxesDivider, renderCheckbox } from '../helpers/checkboxes-helper';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkCheckboxesContent extends UmbBlockDataType {
     legend: string;
@@ -58,7 +59,7 @@ export class GovUkCheckboxesView extends UmbElementMixin(LitElement) implements 
         const legendClass = this.settings?.legendIsPageHeading ? 'govuk-fieldset__legend--l' : 'govuk-fieldset__legend--for-field';
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view">
             <fieldset class="govuk-fieldset govuk-checkboxes__fieldset ${this.settings?.cssClasses}">
                 <legend class="govuk-fieldset__legend ${legendClass}">${this.settings?.legendIsPageHeading ? html`<h1 class="govuk-fieldset__heading">${legend}</h1>` : legend}</legend>

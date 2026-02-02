@@ -4,6 +4,7 @@ import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfigura
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkWarningTextContent extends UmbBlockDataType {
     iconFallbackText: string;
@@ -33,7 +34,7 @@ export class GovUkWarningTextView extends UmbElementMixin(LitElement) implements
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-warning-text backoffice-block-view ${ this.settings?.cssClasses}">
             <span aria-hidden="true" class="govuk-warning-text__icon">!</span>
             <strong class="govuk-warning-text__text" aria-hidden="true">

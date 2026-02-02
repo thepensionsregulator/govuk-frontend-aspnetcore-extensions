@@ -4,6 +4,7 @@ import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfigura
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { renderTask } from '../helpers/task-list-helper';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkTaskContent extends UmbBlockDataType {
     taskName: string;
@@ -34,7 +35,7 @@ export class GovUkTaskView extends UmbElementMixin(LitElement) implements UmbBlo
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${ renderTask(true, this.content?.taskName, this.content?.hint?.markup, this.settings?.status, this.settings?.cssClasses) }
         </a>

@@ -5,6 +5,7 @@ import type { UmbBlockDataType, UmbBlockValueType } from '@umbraco-cms/backoffic
 import { UmbBlockListLayoutModel, UMB_BLOCK_LIST_PROPERTY_EDITOR_SCHEMA_ALIAS } from '@umbraco-cms/backoffice/block-list';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { renderTask } from '../helpers/task-list-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkTaskListContent extends UmbBlockDataType {
     tasks: UmbBlockValueType<UmbBlockListLayoutModel> | null;
@@ -33,7 +34,7 @@ export class GovUkTaskListView extends UmbElementMixin(LitElement) implements Um
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             ${ this.content?.tasks?.contentData ? 
                 html`<ul class="govuk-task-list ${this.settings?.cssClasses}">

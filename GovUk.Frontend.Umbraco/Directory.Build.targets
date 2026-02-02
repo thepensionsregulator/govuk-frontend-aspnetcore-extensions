@@ -43,4 +43,12 @@
 		<Message Text="Restoring Backoffice npm packages" Importance="high" />
 		<Exec Command="npm install" WorkingDirectory="Backoffice" />
 	</Target>
+
+	<!-- Create a version to use as a cache-busting parameter for backoffice customisation -->
+	<Target Name="GovUkFrontendUmbraco_GenerateTypeScriptVersion" BeforeTargets="Build">
+		<WriteLinesToFile
+		  File="Backoffice/src/package-version.generated.ts"
+		  Lines="export const PACKAGE_VERSION = '$(Version)'"
+		  Overwrite="true" />
+	</Target>
 </Project>

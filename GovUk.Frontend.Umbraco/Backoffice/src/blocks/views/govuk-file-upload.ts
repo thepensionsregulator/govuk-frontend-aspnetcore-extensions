@@ -5,6 +5,7 @@ import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 interface IGovUkFileUploadContent extends UmbBlockDataType {
     label: string;
     hint: UmbPropertyEditorRteValueType;
@@ -51,7 +52,7 @@ export class GovUkFileUploadView extends UmbElementMixin(LitElement) implements 
 
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
 
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view ${ this.settings?.cssClasses }">
             ${this.settings?.labelIsPageHeading ?

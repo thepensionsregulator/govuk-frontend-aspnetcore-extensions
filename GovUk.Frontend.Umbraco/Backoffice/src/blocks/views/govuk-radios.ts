@@ -7,6 +7,7 @@ import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { UMB_DOCUMENT_PROPERTY_DATASET_CONTEXT } from '@umbraco-cms/backoffice/document';
 import { renderRadiosDivider, renderRadioButton } from '../helpers/radios-helper';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkRadiosContent extends UmbBlockDataType {
     fieldsetBlocks: UmbBlockValueType<UmbBlockListLayoutModel>;
@@ -61,7 +62,7 @@ export class GovUkRadiosView extends UmbElementMixin(LitElement) implements UmbB
         const horizontalLayout = this.settings?.layout === 'Horizontal';
 
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-form-group backoffice-block-view">
             <fieldset class="govuk-fieldset govuk-radios__fieldset ${ this.settings?.cssClasses}">
                 <legend class="govuk-fieldset__legend ${legendClass}">${this.settings?.legendIsPageHeading ? html`<h1 class="govuk-fieldset__heading">${legend}</h1>` : legend }</legend>

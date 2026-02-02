@@ -2,6 +2,7 @@ import { html, customElement, LitElement, property } from '@umbraco-cms/backoffi
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 interface IGovUkLinkAsButtonContent extends UmbBlockDataType {
     text: string;
 }
@@ -39,7 +40,7 @@ export class GovUkLinkAsButtonView extends UmbElementMixin(LitElement) implement
             blockViewClass = "backoffice-block-view-inverse";
         }
 
-        return html`<link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        return html`<link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
             <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
                 <div class="${ blockViewClass }">
                 ${ this.settings?.isStartButton ?

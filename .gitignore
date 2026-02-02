@@ -435,3 +435,6 @@ GovUk.Frontend.Umbraco/uSync/v17/ContentTypes/
 GovUk.Frontend.Umbraco/uSync/v17/DataTypes/
 ThePensionsRegulator.Frontend.Umbraco/uSync/v17/ContentTypes/
 ThePensionsRegulator.Frontend.Umbraco/uSync/v17/DataTypes/
+
+# Generated files with package version info
+*.generated.*

@@ -4,6 +4,7 @@ import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfigura
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
 import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { disableLinks } from '../helpers/html-helper';
+import { PACKAGE_VERSION } from '../../package-version.generated';
 
 interface IGovUkPanelContent extends UmbBlockDataType {
     panelHeading: string;
@@ -33,7 +34,7 @@ export class GovUkPanelView extends UmbElementMixin(LitElement) implements UmbBl
 
     override render() {
         return html`
-        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css" />
+        <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="govuk-panel--confirmation govuk-panel backoffice-block-view ${ this.settings?.cssClasses}">
             ${this?.content?.panelHeading ? html`<h1 class="govuk-panel__title">${ this.content?.panelHeading }</h1>` : null }
             ${this.content?.panelText.markup ? html`<div class="govuk-panel__body">${ unsafeHTML(disableLinks(this.content?.panelText.markup)) }</div>` : null }

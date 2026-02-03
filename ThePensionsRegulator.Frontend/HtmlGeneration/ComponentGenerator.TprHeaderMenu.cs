@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -133,18 +132,20 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     {
                         mobileMenuItem.AddCssClass("tpr-header-menu__nav-menu-item tpr-header-menu__nav-final-item");
                     }
-                    mobileMenuItem.Attributes.Add("aria-live", "polite");
+                    
                     headerMenuList.InnerHtml.AppendHtml(mobileMenuItem);
 
                     var arrowContainer = new TagBuilder("div");
                     arrowContainer.AddCssClass("tpr-mobile-menu__arrow-container");
 
-                    var arrow = new TagBuilder("i");
+                    var arrow = new TagBuilder("button");
                     arrow.AddCssClass("tpr-mobile-menu__arrow tpr-mobile-menu__arrow-right");
-                    arrow.Attributes.Add("aria-label", tprHeaderBar.HeaderMenuItemAriaLabel);
-                    arrow.Attributes.Add("role", "button");
+                    if (tprHeaderBar.HeaderMenuItemAriaLabel != null)
+                    {
+                        arrow.Attributes.Add("aria-label", $"{item.LinkText}: {tprHeaderBar.HeaderMenuItemAriaLabel}"); //null check
+                    }
+                    arrow.Attributes.Add("aria-expanded", "true");
                     arrowContainer.InnerHtml.AppendHtml(arrow);
-
 
                     var anchorTag = new TagBuilder("a");
 
@@ -158,21 +159,19 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                         anchorTag.Attributes.Add("href", item.LinkUrl);
                     }
                    
-                    anchorTag.Attributes.Add("aria-expanded", "true");              
                     anchorTag.Attributes.Add("tabindex", "0");
-                    anchorTag.Attributes.Add("role", "button");
                    
-                    
                     mobileMenuItem.InnerHtml.AppendHtml(anchorTag);
-                    mobileMenuItem.InnerHtml.AppendHtml(arrowContainer);
+                    
 
                     if (!string.IsNullOrWhiteSpace(item.LinkText))
                     {
                         anchorTag.InnerHtml.Append(item.LinkText);
                     }
-
                     if (item.HeaderMenuChildItems != null && item.HeaderMenuChildItems.Count > 0)
                     {
+                        mobileMenuItem.InnerHtml.AppendHtml(arrowContainer);
+
                         var headerMenuSubMenu = new TagBuilder("ul");
                         headerMenuSubMenu.AddCssClass("tpr-header-menu__nav-sub-menu");
                         mobileMenuItem.InnerHtml.AppendHtml(headerMenuSubMenu);

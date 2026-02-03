@@ -31,13 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
             menuItems.forEach(m => {
                 const subMenu = m.querySelector(".tpr-header-menu__nav-sub-menu");
                 if (subMenu) {
-                    const a = m.querySelector("a");
-                    a.setAttribute("aria-expanded", false);
+                    const button = m.querySelector("button");
+                    button.setAttribute("aria-expanded", false);
                     subMenu.style.display = "none";
                 }
                 m.removeEventListener("keydown", desktopKeyboardNavigation)
-                m.addEventListener("keydown", mobileKeyboardNavigation)
             });
+            arrows.forEach(a => a.addEventListener("keydown", mobileKeyboardNavigation))
         } else {
 
             overlay?.forEach(o => o.classList.remove("tpr-header-menu__nav-overlay--visible"));
@@ -56,10 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     subMenu.style.display = "none";
                 }
-                m.removeEventListener("keydown", mobileKeyboardNavigation)
                 m.addEventListener("keydown", desktopKeyboardNavigation)
             });
 
+            arrows.forEach(a => a.removeEventListener("click", mobileKeyboardNavigation));
             removeActiveClasses()
             displayDesktopOverlayOnHover();
         }
@@ -250,12 +250,12 @@ function restoreDefaultMenuState(e) {
     menuItemElements.forEach(item => {
 
         const sub = item.querySelector(".tpr-header-menu__nav-sub-menu");
-        const a = item.querySelector("a");
+        const button = item.querySelector("button");
 
         if (item !== newlyFocusedItem) {
             if (sub) {
                 sub.style.display = "none";
-                a?.setAttribute("aria-expanded", "false");
+                button?.setAttribute("aria-expanded", "false");
             }
         }
 
@@ -264,7 +264,7 @@ function restoreDefaultMenuState(e) {
             overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             if (sub) {
                 sub.style.display = "none";
-                a?.setAttribute("aria-expanded", "false");
+                button?.setAttribute("aria-expanded", "false");
             }
         }
     });
@@ -307,9 +307,8 @@ function expandMobileMenuSubMenu(e) {
     subMenu.classList.toggle("tpr-header-menu__nav-sub-menu--active");
     arrow.classList.toggle("tpr-mobile-menu__arrow-down");
 
-    const a = menuItem.querySelector("a");
-    const expanded = a.getAttribute("aria-expanded") === "true";
-    a.setAttribute("aria-expanded", !expanded);
+    const expanded = arrow.getAttribute("aria-expanded") === "true";
+    arrow.setAttribute("aria-expanded", !expanded);
 }
 
 function mobileKeyboardNavigation(e) {
@@ -317,18 +316,7 @@ function mobileKeyboardNavigation(e) {
     if (e.key === " ") {
         e.preventDefault();
 
-        const menuItem = e.currentTarget;
-        const subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
-        subMenu.removeAttribute("style");
-
-        const arrow = menuItem.querySelector(".tpr-mobile-menu__arrow");
-
-        subMenu?.classList.toggle("tpr-header-menu__nav-sub-menu--active");
-        arrow.classList.toggle("tpr-mobile-menu__arrow-down");
-
-        const a = menuItem.querySelector("a");
-        const expanded = a.getAttribute("aria-expanded") === "true";
-        a.setAttribute("aria-expanded", !expanded);
+        expandMobileMenuSubMenu(e);
     }
 }
 

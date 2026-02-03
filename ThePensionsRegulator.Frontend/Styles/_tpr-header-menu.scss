@@ -142,10 +142,8 @@
     }
 
     .tpr-mobile-menu__arrow-container {
-        padding: 4.5px;
         position: absolute;
         left: 85%;
-        top: 4%;
         padding: 0.7rem;
         display: flex;
         flex-direction: row-reverse;
@@ -177,6 +175,13 @@
         transform: rotate(45deg);
         -webkit-transform: rotate(45deg);
         top: 1rem;
+    }
+
+    .tpr-mobile-menu__arrow-container:focus-within {
+        color: $tpr-colour-black;
+        background-color: $tpr-colour-tangerine-yellow;
+        box-shadow: 0 -2px $tpr-colour-tangerine-yellow, 0 4px $tpr-colour-black;
+        text-decoration: none;
     }
 
     .tpr-mobile-menu__arrow:focus-visible {

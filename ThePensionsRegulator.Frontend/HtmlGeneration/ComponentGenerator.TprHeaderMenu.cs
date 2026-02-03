@@ -142,7 +142,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     arrow.AddCssClass("tpr-mobile-menu__arrow tpr-mobile-menu__arrow-right");
                     if (tprHeaderBar.HeaderMenuItemAriaLabel != null)
                     {
-                        arrow.Attributes.Add("aria-label", $"{item.LinkText}: {tprHeaderBar.HeaderMenuItemAriaLabel}"); //null check
+                        arrow.Attributes.Add("aria-label", $"{item.LinkText}: {tprHeaderBar.HeaderMenuItemAriaLabel}"); 
                     }
                     arrow.Attributes.Add("aria-expanded", "true");
                     arrowContainer.InnerHtml.AppendHtml(arrow);

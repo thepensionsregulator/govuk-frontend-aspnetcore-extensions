@@ -1,9 +1,10 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
+using GovUk.Frontend.AspNetCore.Extensions.Caching;
 using GovUk.Frontend.Umbraco.Blocks;
+using GovUk.Frontend.Umbraco.Caching;
 using GovUk.Frontend.Umbraco.HtmlGeneration;
 using GovUk.Frontend.Umbraco.ModelBinding;
-using GovUk.Frontend.Umbraco.PropertyEditors;
 using GovUk.Frontend.Umbraco.PropertyEditors.ModelPropertyPicker;
 using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.Services;
@@ -11,7 +12,6 @@ using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System;
 using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 
@@ -69,6 +69,7 @@ namespace GovUk.Frontend.Umbraco
             services.AddTransient<IGovUkHeadingClassProvider, GovUkHeadingClassProvider>();
             services.AddTransient<BlockViewService>();
             services.AddTransient<IModelPropertyProvider, ModelTypeAttributeModelPropertyProvider>();
+            services.AddTransient<IStaticFileCachePolicy, GovUkUmbracoStaticFileCachePolicy>();
 
             return services;
         }

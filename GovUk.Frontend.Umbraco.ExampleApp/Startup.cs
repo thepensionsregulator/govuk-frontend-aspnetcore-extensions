@@ -3,23 +3,14 @@ using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
 using GovUk.Frontend.Umbraco.ExampleApp.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.ExampleApp.Services;
 using GovUk.Frontend.Umbraco.Services;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using System;
 using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
-using Umbraco.Cms.Core.DeliveryApi;
-using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
-using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp
 {
@@ -89,6 +80,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
 
             app.UseHttpsRedirection();
             app.UseSecurityHeaders();
+            app.UseTprFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
 
             app.UseUmbraco()
                 .WithMiddleware(u =>
@@ -103,7 +95,6 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
                 });
 
 
-            app.UseTprFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
         }
     }
 }

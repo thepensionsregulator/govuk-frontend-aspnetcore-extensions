@@ -113,12 +113,12 @@
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
     builder.Services.AddTprFrontendUmbraco();
 
-    // default code from `builder.CreateUmbracoBuilder()` down to `app.UseUmbraco()` goes here...
-
     var mvcOptions = app.Services.GetRequiredService<IOptions<MvcOptions>>();
     var umbracoContextAccessor = app.Services.GetRequiredService<IUmbracoContextAccessor>();
     var publishedValueFallback = app.Services.GetRequiredService<IPublishedValueFallback>();
     app.UseTprFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
+
+    // default code from `builder.CreateUmbracoBuilder()` down to `app.UseUmbraco()` goes here...
 
     // await app.RunAsync(); goes here...
     ```

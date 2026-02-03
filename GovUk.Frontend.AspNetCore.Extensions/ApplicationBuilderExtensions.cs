@@ -1,5 +1,5 @@
+using GovUk.Frontend.AspNetCore.Extensions.Caching;
 using Microsoft.AspNetCore.Builder;
-using System;
 
 namespace GovUk.Frontend.AspNetCore.Extensions
 {
@@ -11,6 +11,9 @@ namespace GovUk.Frontend.AspNetCore.Extensions
             {
                 throw new ArgumentNullException(nameof(app));
             }
+
+            app.UseMiddleware<CacheStaticFilesMiddleware>();
+            app.UseStaticFiles();
 
             app.UseGovUkFrontend();
 

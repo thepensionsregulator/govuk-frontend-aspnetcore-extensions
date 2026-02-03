@@ -29,6 +29,8 @@
    }
    ```
 
+   You shouldn't need to call `app.UseStaticFiles()` as it's called for you, but if you do it must be called after `app.UseTprFrontend()`.
+
 6. Add partial views and the `govuk-template__body` class to `Views/Shared/_Layout.cshtml` as shown below. You should also make sure you have a `<main>` element in your markup.
 
    ```html

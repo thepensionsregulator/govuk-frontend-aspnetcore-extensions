@@ -18,7 +18,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 output.PreElement.SetHtmlContent($"<dd>Published: {documentContext.DatePublished}</dd>");
             }
 
-            output.TagName = "dd";
+            if (!string.IsNullOrEmpty(documentContext.Description)) 
+            {
+                output.Content.SetHtmlContent(documentContext.Description);
+                output.TagName = "dd";
+            }
+            else
+            {
+                output.TagName = "";
+            }
         }
     }
 }

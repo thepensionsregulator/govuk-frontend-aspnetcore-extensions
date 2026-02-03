@@ -46,21 +46,21 @@
                         : mediaLinkDocName;
                 }
 
-                <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
+                <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" description="@docDescription" innercss="@innerCssClasses">
 
                     <tpr-document-title>@docTitle</tpr-document-title>
 
-                    <tpr-document-description>@docDescription</tpr-document-description>
+                    <tpr-document-description></tpr-document-description>
 
                 </tpr-document>
             }
             else
             {
-                <tpr-document href="@docHref" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
+                <tpr-document href="@docHref" pages="@docPages" datepublished="@docDatePublished" description="@docDescription" innercss="@innerCssClasses">
 
                     <tpr-document-title>@documentLink.Name</tpr-document-title>
 
-                    <tpr-document-description>@docDescription</tpr-document-description>
+                    <tpr-document-description></tpr-document-description>
 
                 </tpr-document>
             }

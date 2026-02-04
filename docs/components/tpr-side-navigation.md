@@ -6,7 +6,7 @@ A design component that is used to display a navigational menu on the left-hand 
 
 The `govuk-frontend-aspnetcore-extensions` project supplies you with a service interface named `ITprSideNavigationLinksService` in the `ThePensionsRegulator.Frontend.Services` namespace, located within the `ThePensionsRegulator.Frontend` package.
 
-Create your own implementation of the `ITprSideNavigationLinksService` interface by inheriting from it in your own custom service class e.g: 
+Create your own implementation of the `ITprSideNavigationLinksService` interface by inheriting from it in your own custom service class. For example:
 
 ```csharp
 public class SideNavigationLinksServiceForExampleApp : ITprSideNavigationLinksService
@@ -86,8 +86,8 @@ services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksService
 
 ## Render the side navigation
 
-You can then render the TPR side navigation component in your project by calling the `TprSideNavigation` view component.
+You can then render the TPR side navigation component in your project using the `TprSideNavigation` partial view.
 
-```csharp
-@await Component.InvokeAsync("TprSideNavigation")
+```razor
+<partial name="TPR/TPRSideNavigation" />
 ```

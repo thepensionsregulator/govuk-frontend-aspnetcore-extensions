@@ -22,9 +22,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("datepublished")]
         public string? DatePublished { get; set; }
 
-        [HtmlAttributeName("description")]
-        public string? Description { get; set; }
-
         [HtmlAttributeName("innercss")]
         public string? InnerCss { get; set; }
 
@@ -37,7 +34,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             documentContext.KbSize = KbSize;
             documentContext.Pages = Pages;
             documentContext.DatePublished = DatePublished;
-            documentContext.Description = Description;
             documentContext.Document = await output.GetChildContentAsync();
 
             output.TagName = $"div class=\"{TagName} {InnerCss}\"";

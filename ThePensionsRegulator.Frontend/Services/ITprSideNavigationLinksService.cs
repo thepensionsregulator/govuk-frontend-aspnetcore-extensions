@@ -4,6 +4,6 @@ namespace ThePensionsRegulator.Frontend.Services
 {
     public interface ITprSideNavigationLinksService
     {
-        public TprSideNavigationViewModel? GetLinks();
+        public TprSideNavigationViewModel GetLinks();
     }
 }

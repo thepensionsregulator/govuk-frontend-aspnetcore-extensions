@@ -6,13 +6,8 @@
 @{
     // If AblePlayer is enabled it will set cookies, so check for consent first.
     if (!consentCookie.HasConsent(TprConsentCookieReader.TPR_CONSENT_CATEGORY_FUNCTIONALITY)){ return; }
-    
-    // TODO: External dependencies are normally included in this repo (see Validation.cshtml).
-    //       so we need to ensure it's not included in different ways or with multiple copies per page.
-    //       Review and consoldidate approach to client-side third-party dependencies before releasing Able Player support.
-    //       See https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions/issues/381
 }
-<script src="/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery/dist/jquery.min.js" crossorigin="anonymous" type="module" asp-append-version="true"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js" integrity="sha384-ETDm/j6COkRSUfVFsGNM5WYE4WjyRgfDhy4Pf4Fsc8eNw/eYEMqYZWuxTzMX6FBa" crossorigin="anonymous"></script>
+<script src="/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery/dist/jquery.min.js" type="module" asp-append-version="true"></script>
+<script src="/_content/ThePensionsRegulator.Frontend/lib/js.cookie.min.js" type="module" asp-append-version="true"></script>
 <link rel="stylesheet" href="/_content/ThePensionsRegulator.Frontend/lib/ableplayer/build/ableplayer.min.css" type="module" asp-append-version="true" />
 <script src="/_content/ThePensionsRegulator.Frontend/lib/ableplayer/build/ableplayer.min.js" type="module" asp-append-version="true"></script>

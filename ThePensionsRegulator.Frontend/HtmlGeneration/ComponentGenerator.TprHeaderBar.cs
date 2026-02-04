@@ -1,4 +1,5 @@
 using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions.Caching;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 
@@ -34,7 +35,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var screenLogo = new TagBuilder("img");
             screenLogo.TagRenderMode = TagRenderMode.SelfClosing;
             if (tprHeaderBar.LogoAttributes != null) { screenLogo.MergeAttributes(tprHeaderBar.LogoAttributes); }
-            screenLogo.Attributes.Add("src", "/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-header.svg");
+            screenLogo.Attributes.Add("src", $"/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-header.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
             screenLogo.Attributes.Add("alt", tprHeaderBar.LogoAlternativeText);
             screenLogo.Attributes.Add("width", "180");
             screenLogo.Attributes.Add("height", "75");
@@ -43,7 +44,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var printLogo = new TagBuilder("img");
             printLogo.TagRenderMode = TagRenderMode.SelfClosing;
-            printLogo.Attributes.Add("src", "/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-footer.svg");
+            printLogo.Attributes.Add("src", $"/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
             printLogo.Attributes.Add("alt", tprHeaderBar.LogoAlternativeText);
             printLogo.Attributes.Add("width", "180");
             printLogo.Attributes.Add("height", "75");
@@ -144,10 +145,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var autoCompleteContainer = new TagBuilder("div");
             autoCompleteContainer.AddCssClass("tpr-autocomplete-container");
-            if (!string.IsNullOrEmpty(tprHeaderBar.AutoCompleteUrl)) 
+            if (!string.IsNullOrEmpty(tprHeaderBar.AutoCompleteUrl))
             {
                 autoCompleteContainer.Attributes.Add("data-autocomplete-url", tprHeaderBar.AutoCompleteUrl);
-            }        
+            }
             autoComplete.InnerHtml.AppendHtml(autoCompleteContainer);
 
             var searchInput = new TagBuilder("input");

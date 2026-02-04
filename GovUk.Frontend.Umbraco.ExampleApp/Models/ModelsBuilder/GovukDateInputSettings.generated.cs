@@ -57,6 +57,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool ShowDay => this.Value<bool>(_publishedValueFallback, "showDay");
 
 		///<summary>
+		/// Show the year field: If the year field is hidden the year defaults to 1900.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[ImplementPropertyType("showYear")]
+		public virtual bool ShowYear => this.Value<bool>(_publishedValueFallback, "showYear");
+
+		///<summary>
 		/// CSS classes: Applied to the outermost HTML element of the component.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

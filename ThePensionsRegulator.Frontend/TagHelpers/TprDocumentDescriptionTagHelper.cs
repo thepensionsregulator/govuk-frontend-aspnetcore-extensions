@@ -11,14 +11,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var documentContext = (TprDocumentContext)context.Items[typeof(TprDocumentsTagHelper)];
-            documentContext.DocumentDescription = await output.GetChildContentAsync();
+            var innerText = await output.GetChildContentAsync();
+            documentContext.DocumentDescription = innerText;
 
             if (!string.IsNullOrEmpty(documentContext.DatePublished))
             {
                 output.PreElement.SetHtmlContent($"<dd>Published: {documentContext.DatePublished}</dd>");
             }
 
-            output.TagName = "dd";
+            output.TagName = innerText.IsEmptyOrWhiteSpace ? "" : "dd";
         }
     }
 }

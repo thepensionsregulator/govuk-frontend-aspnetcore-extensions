@@ -25,4 +25,11 @@
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 
+	<!-- Create a version to use as a cache-busting parameter for images in SASS -->
+	<Target Name="TprFrontend_GenerateSassVersion" BeforeTargets="TprFrontend_BuildSass">
+		<WriteLinesToFile
+		  File="Styles/_tpr-frontend-version.generated.scss"
+		  Lines="$tpr-frontend-version: '$(Version)'"
+		  Overwrite="true" />
+	</Target>
 </Project>

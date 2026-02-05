@@ -1,48 +1,74 @@
-using GovUk.Frontend.AspNetCore.Extensions.ConformanceTests.OptionsJson;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Reflection;
+using Xunit;
+using Xunit.Sdk;
+using Xunit.v3;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
 {
-    public class ComponentFixtureData
+    public class ComponentFixtureData<T> : DataAttribute
     {
-        public static IEnumerable<object[]> GetTaskListData() => GetData<TaskList>("task-list.json", [new TaskListConverter()]);
+        private readonly string _fixtureFilename;
+        private readonly Type _optionsType;
+        private readonly string? _only;
+        private readonly HashSet<string> _exclude;
 
-        public static IEnumerable<object[]> GetData<T>(string fixturesFilename, JsonConverter[]? optionsConverters)
+        public ComponentFixtureData(
+            string fixtureFileName,
+            string? only = null,
+            params string[] exclude)
         {
-            var fixturesFile = Path.Combine("Fixtures", fixturesFilename);
+            _fixtureFilename = fixtureFileName ?? throw new ArgumentNullException(nameof(fixtureFileName));
+            _optionsType = typeof(T);
+            _only = only;
+            _exclude = [.. exclude ?? Array.Empty<string>()];
 
-            if (!File.Exists(fixturesFile))
+            if (!_fixtureFilename.EndsWith(".json"))
             {
-                throw new FileNotFoundException(
-                    $"Could not find fixtures file at: '{fixturesFile}'.",
-                    fixturesFile);
-            }
-
-            var fixturesJson = File.ReadAllText(fixturesFile);
-            var fixtures = JObject.Parse(fixturesJson).SelectToken("fixtures");
-
-            if (fixtures is null)
-            {
-                throw new InvalidOperationException($"Couldn't find fixtures in '{fixturesFile}'.");
-            }
-
-            var testCaseDataType = typeof(ComponentTestCaseData<>).MakeGenericType(typeof(T));
-
-            foreach (var fixture in fixtures)
-            {
-                var name = fixture["name"]!.ToString();
-                var options = JsonConvert.DeserializeObject<T>(fixture["options"]!.ToString(), optionsConverters ?? []);
-                var html = fixture["html"]!.ToString();
-
-                var testCaseData = Activator.CreateInstance(testCaseDataType, name, options, html)!;
-
-                yield return new object[]
-                {
-                    testCaseData
-                };
+                _fixtureFilename += ".json";
             }
         }
+
+        public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(MethodInfo testMethod, DisposalTracker disposalTracker)
+        {
+            return new ValueTask<IReadOnlyCollection<ITheoryDataRow>>(Impl().ToArray());
+
+            IEnumerable<ITheoryDataRow> Impl()
+            {
+                var fixturesFile = Path.Combine("Fixtures", _fixtureFilename);
+
+                if (!File.Exists(fixturesFile))
+                {
+                    throw new FileNotFoundException(
+                        $"Could not find fixtures file at: '{fixturesFile}'.",
+                        fixturesFile);
+                }
+
+                var fixturesJson = File.ReadAllText(fixturesFile);
+                var fixtures = JObject.Parse(fixturesJson).SelectToken("fixtures") ?? throw new InvalidOperationException($"Couldn't find fixtures in '{fixturesFile}'.");
+                var testCaseDataType = typeof(ComponentTestCaseData<>).MakeGenericType(_optionsType);
+
+                foreach (var fixture in fixtures)
+                {
+                    var name = fixture["name"]?.ToString() ?? string.Empty;
+
+                    if (_exclude.Contains(name) || (_only is not null && name != _only))
+                    {
+                        continue;
+                    }
+
+                    var options = JsonConvert.DeserializeObject<T>(fixture["options"]!.ToString(), new TaskListConverter());
+                    var html = fixture["html"]?.ToString();
+
+                    var testCaseData = Activator.CreateInstance(testCaseDataType, name, options, html);
+
+                    yield return new TheoryDataRow(testCaseData);
+                }
+            }
+        }
+
+        public override bool SupportsDiscoveryEnumeration() => true;
     }
 
 }

@@ -1,9 +1,4 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Security;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading.Tasks;
 using Umbraco.Cms.Infrastructure.Migrations.Install;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Middleware
@@ -24,12 +19,11 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Middleware
             if (databaseBuilder.IsDatabaseConfigured && path.StartsWith("/umbraco", StringComparison.OrdinalIgnoreCase) == false)
             {
                 var connectSrcForHotReload = _webHostEnvironment.IsDevelopment() ? "'self' ws://localhost:* http://localhost:64300" : string.Empty;
-                var scriptSrcForAblePlayer = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js";
                 var styleSrcForAblePlayer = "'sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f' 'sha384-ETDm/j6COkRSUfVFsGNM5WYE4WjyRgfDhy4Pf4Fsc8eNw/eYEMqYZWuxTzMX6FBa'";
                 var nonce = nonceProvider.GetNonce();
                 context.Response.Headers.Append("Content-Security-Policy",
                         "default-src 'self'; " +
-                        $"script-src 'self' 'nonce-{nonce}' {scriptSrcForAblePlayer} youtube.com www.youtube.com www.youtube-nocookie.com;" +
+                        $"script-src 'self' 'nonce-{nonce}' youtube.com www.youtube.com www.youtube-nocookie.com;" +
                         $"style-src 'self' {styleSrcForAblePlayer};" +
                         "img-src 'self' https://i.ytimg.com; " +
                         "frame-src youtube.com www.youtube.com www.youtube-nocookie.com; " +

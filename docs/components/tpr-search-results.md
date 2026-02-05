@@ -74,12 +74,14 @@ If JavaScript is not available then this component will not display and the acco
 
 #### JavaScript
 
-The JavaScript file `tpr-search-results.js` is provided as part of the `ThePensionsRegulator.Frontend` nuget package. This will need to be included in any view that uses this component.
+The JavaScript file `tpr-search-results.min.js` is provided as part of the `ThePensionsRegulator.Frontend` nuget package. This will need to be included in any view that uses this component outside of Umbraco.
 
-```html
+```razor
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <script
-  src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.js"
+  src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.min.js"
   type="module"
+  asp-append-version="true"
 ></script>
 ```
 
@@ -148,11 +150,14 @@ These are configured via the `appsettings.json` under a section named  `Search
     "PopularContentUrl": "/SearchResultsData/popularContentExample.json"
 }
 ```
+
 #### Search results relevance and popular results
+
 A new setting has been introduced for this component to boost search results under a particular content section.
 
 This can be controlled using the endpoint urls exposed in appsettings.json by implementing the ITprSearchResultsEndpointUrlProvider interface.
-```csharp 
+
+```csharp
 public interface ITprSearchResultsEndpointUrlProvider
 {
     TprSearchResultEndpoints GetSearchResultsEndpoints(Guid? searchBoostingCategory);
@@ -162,8 +167,14 @@ public interface ITprSearchResultsEndpointUrlProvider
 As part of this project a concrete implementation based on query string values is provided to append the search category page identifier to the popular content and search content api endpoints.
 
 The provider ensures the category identifier is appended at the end of the relevant endpoints as illustrated below:
+
 ```html
-<aside class=" tpr-search-results" data-content-by-id-url="/SearchResultsData/" data-popular-content-url="/SearchResultsData/popularContentExample.json?searchBoostingCategory=5e682cbe-b867-491a-955f-3382446d5663" data-search-content-url="/SearchResultsData/searchResults.json?searchBoostingCategory=5e682cbe-b867-491a-955f-3382446d5663">
-.....
-</aside>  
+<aside
+  class=" tpr-search-results"
+  data-content-by-id-url="/SearchResultsData/"
+  data-popular-content-url="/SearchResultsData/popularContentExample.json?searchBoostingCategory=5e682cbe-b867-491a-955f-3382446d5663"
+  data-search-content-url="/SearchResultsData/searchResults.json?searchBoostingCategory=5e682cbe-b867-491a-955f-3382446d5663"
+>
+  .....
+</aside>
 ```

@@ -4,7 +4,7 @@
 }
 @section secondary_navigation{
 	<div class="govuk-width-container">
-		@await Component.InvokeAsync("GovUkBreadcrumb")
+		<partial name="GOVUK/GovUkBreadcrumbs" />
 	</div>
 }
 <partial name="GOVUK/BlockList" model="Model.Blocks" />

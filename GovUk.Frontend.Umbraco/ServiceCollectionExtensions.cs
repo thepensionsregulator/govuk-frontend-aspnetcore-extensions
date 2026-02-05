@@ -12,8 +12,8 @@ using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 namespace GovUk.Frontend.Umbraco
 {

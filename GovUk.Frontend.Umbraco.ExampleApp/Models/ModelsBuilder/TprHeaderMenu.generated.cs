@@ -39,7 +39,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		/// <summary>Menu Items</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuBlockList { get; }
+        global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprHeaderMenuBlockList { get; }
 
 		/// <summary>Menu item ARIA label</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
@@ -131,12 +131,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderMenuBlockList")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuBlockList => GetTprHeaderMenuBlockList(this, _publishedValueFallback);
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprHeaderMenuBlockList => GetTprHeaderMenuBlockList(this, _publishedValueFallback);
 
 		/// <summary>Static getter for Menu Items</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel GetTprHeaderMenuBlockList(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(publishedValueFallback, "tprHeaderMenuBlockList");
+		public static global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel GetTprHeaderMenuBlockList(ITprHeaderMenu that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(publishedValueFallback, "tprHeaderMenuBlockList");
 
 		///<summary>
 		/// Menu item ARIA label

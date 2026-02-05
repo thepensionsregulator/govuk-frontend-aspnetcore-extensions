@@ -1,6 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using System.Reflection;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;

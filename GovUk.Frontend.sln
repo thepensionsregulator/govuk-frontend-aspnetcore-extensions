@@ -28,9 +28,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbrac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco.Testing.Tests", "ThePensionsRegulator.Umbraco.Testing.Tests\ThePensionsRegulator.Umbraco.Testing.Tests.csproj", "{1EE40980-0B7B-4ABE-9114-FBB0903473DF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco", "ThePensionsRegulator.Umbraco\ThePensionsRegulator.Umbraco.csproj", "{D3D20332-3DBE-403B-8111-DDAE8AFF952B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco.Core", "ThePensionsRegulator.Umbraco.Core\ThePensionsRegulator.Umbraco.Core.csproj", "{D3D20332-3DBE-403B-8111-DDAE8AFF952B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco.Tests", "ThePensionsRegulator.Umbraco.Tests\ThePensionsRegulator.Umbraco.Tests.csproj", "{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Umbraco.Core.Tests", "ThePensionsRegulator.Umbraco.Core.Tests\ThePensionsRegulator.Umbraco.Core.Tests.csproj", "{1BF4CD4A-4EE2-4D2A-B2AA-D79285E3140B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ThePensionsRegulator.Frontend", "ThePensionsRegulator.Frontend\ThePensionsRegulator.Frontend.csproj", "{46179407-2938-411E-B499-5049A1EE5FDE}"
 EndProject

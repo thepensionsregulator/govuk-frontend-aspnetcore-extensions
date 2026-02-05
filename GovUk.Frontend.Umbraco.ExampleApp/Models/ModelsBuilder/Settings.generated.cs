@@ -143,7 +143,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprFooterThreeColumnLinks")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterThreeColumnLinks(this, _publishedValueFallback);
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterThreeColumnLinks(this, _publishedValueFallback);
 
 		///<summary>
 		/// Content: A small number of links, or blank.
@@ -229,7 +229,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderMenuBlockList")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuBlockList => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuBlockList(this, _publishedValueFallback);
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprHeaderMenuBlockList => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuBlockList(this, _publishedValueFallback);
 
 		///<summary>
 		/// Menu item ARIA label

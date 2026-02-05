@@ -2,7 +2,7 @@
 using GovUk.Frontend.Umbraco.Blocks;
 using Moq;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 using GovUkElementTypeAliases = GovUk.Frontend.Umbraco.ElementTypeAliases;
 using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases;

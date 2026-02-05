@@ -4,7 +4,7 @@ using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Strings;
-using Core = Umbraco.Cms.Core;
+using CmsConstants = Umbraco.Cms.Core.Constants;
 
 namespace ThePensionsRegulator.Umbraco.Testing
 {
@@ -81,7 +81,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateRichTextProperty(string propertyAlias, string contentTypeAlias, IHtmlEncodedString? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(RICH_TEXT_DATA_TYPE_ID, propertyAlias, Core.Constants.PropertyEditors.Aliases.RichText, contentTypeAlias, [], new RichTextConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(RICH_TEXT_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.RichText, contentTypeAlias, [], new RichTextConfiguration()), value);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateTextboxProperty(string propertyAlias, string contentTypeAlias, string? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(TEXTBOX_DATA_TYPE_ID, propertyAlias, Core.Constants.PropertyEditors.Aliases.TextBox, contentTypeAlias, [], new TextboxConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(TEXTBOX_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.TextBox, contentTypeAlias, [], new TextboxConfiguration()), value);
         }
 
 
@@ -106,7 +106,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateIntegerProperty(string propertyAlias, string contentTypeAlias, int? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(INTEGER_DATA_TYPE_ID, propertyAlias, Core.Constants.PropertyEditors.Aliases.Integer, contentTypeAlias, [], null), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(INTEGER_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.Integer, contentTypeAlias, [], null), value);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateBlockListProperty(string propertyAlias, string contentTypeAlias, IEnumerable<BlockListItem>? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BLOCKLIST_DATA_TYPE_ID, propertyAlias, Core.Constants.PropertyEditors.Aliases.BlockList, contentTypeAlias, [], new BlockListConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BLOCKLIST_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.BlockList, contentTypeAlias, [], new BlockListConfiguration()), value);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateBlockGridProperty(string propertyAlias, string contentTypeAlias, IEnumerable<BlockGridItem>? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BLOCKGRID_DATA_TYPE_ID, propertyAlias, Core.Constants.PropertyEditors.Aliases.BlockGrid, contentTypeAlias, [], new BlockGridConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BLOCKGRID_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.BlockGrid, contentTypeAlias, [], new BlockGridConfiguration()), value);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateBooleanProperty(string propertyAlias, string contentTypeAlias, bool? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, propertyAlias, Core.Constants.PropertyEditors.Aliases.Boolean, contentTypeAlias, [], null), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.Boolean, contentTypeAlias, [], null), value);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateBooleanProperty(string propertyAlias, string contentTypeAlias, bool value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, propertyAlias, Core.Constants.PropertyEditors.Aliases.Boolean, contentTypeAlias, [], null), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.Boolean, contentTypeAlias, [], null), value);
         }
 
         /// <summary>
@@ -166,7 +166,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateMultiUrlPickerProperty(string propertyAlias, string contentTypeAlias, Link? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(MULTI_URL_PICKER_DATA_TYPE_ID, propertyAlias, Core.Constants.PropertyEditors.Aliases.MultiUrlPicker, contentTypeAlias, [], new MultiUrlPickerConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(MULTI_URL_PICKER_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.MultiUrlPicker, contentTypeAlias, [], new MultiUrlPickerConfiguration()), value);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The mocked Umbraco property.</returns>
         public static IPublishedProperty CreateContentPickerProperty(string propertyAlias, string contentTypeAlias, IPublishedElement? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(CONTENT_PICKER_DATA_TYPE_ID, propertyAlias, Core.Constants.PropertyEditors.Aliases.ContentPicker, contentTypeAlias, [], new ContentPickerConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(CONTENT_PICKER_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.ContentPicker, contentTypeAlias, [], new ContentPickerConfiguration()), value);
         }
     }
 }

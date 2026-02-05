@@ -1,7 +1,7 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.AspNetCore.Http;
 using ThePensionsRegulator.Frontend.Services;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;

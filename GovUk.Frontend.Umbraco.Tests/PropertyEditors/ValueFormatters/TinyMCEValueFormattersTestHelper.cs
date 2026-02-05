@@ -1,6 +1,6 @@
 ﻿using HtmlAgilityPack;
 using NUnit.Framework;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters

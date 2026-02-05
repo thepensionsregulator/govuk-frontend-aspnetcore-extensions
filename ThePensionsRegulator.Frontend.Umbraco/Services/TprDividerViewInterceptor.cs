@@ -1,8 +1,8 @@
 ﻿using GovUk.Frontend.Umbraco.Blocks;
 using System.Collections.Generic;
 using System.Linq;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using GovUkElementTypeAliases = GovUk.Frontend.Umbraco.ElementTypeAliases;
 using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases;
 

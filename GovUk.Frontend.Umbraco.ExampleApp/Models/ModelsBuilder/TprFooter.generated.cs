@@ -45,7 +45,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		/// <summary>Three column links</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks { get; }
+        global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks { get; }
 	}
 
 	/// <summary>TPR footer</summary>
@@ -137,11 +137,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprFooterThreeColumnLinks")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks => GetTprFooterThreeColumnLinks(this, _publishedValueFallback);
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks => GetTprFooterThreeColumnLinks(this, _publishedValueFallback);
 
 		/// <summary>Static getter for Three column links</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel GetTprFooterThreeColumnLinks(ITprFooter that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel>(publishedValueFallback, "tprFooterThreeColumnLinks");
+		public static global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel GetTprFooterThreeColumnLinks(ITprFooter that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel>(publishedValueFallback, "tprFooterThreeColumnLinks");
 	}
 }

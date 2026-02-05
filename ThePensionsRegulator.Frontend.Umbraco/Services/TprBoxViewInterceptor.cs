@@ -1,8 +1,8 @@
 ﻿using GovUk.Frontend.Umbraco;
 using GovUk.Frontend.Umbraco.Blocks;
 using Microsoft.Extensions.Options;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {

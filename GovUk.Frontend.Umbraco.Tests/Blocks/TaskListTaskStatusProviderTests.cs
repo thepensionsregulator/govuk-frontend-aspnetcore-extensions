@@ -1,10 +1,8 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.Umbraco.Blocks;
 using NUnit.Framework;
-using System;
-using System.Linq;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.Common.PublishedModels;

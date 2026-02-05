@@ -124,12 +124,12 @@ steps:
       flattenFolders: true
 
   - task: CopyFiles@2
-    displayName: Copy ThePensionsRegulator.Umbraco package to staging folder
+    displayName: Copy ThePensionsRegulator.Umbraco.Core package to staging folder
     inputs:
-      SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco\bin\$(buildConfiguration)
+      SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Umbraco.Core\bin\$(buildConfiguration)
       Contents: |
-        ThePensionsRegulator.Umbraco.*.nupkg
-        ThePensionsRegulator.Umbraco.*.snupkg
+        ThePensionsRegulator.Umbraco.Core*.nupkg
+        ThePensionsRegulator.Umbraco.Core*.snupkg
       TargetFolder: $(Build.ArtifactStagingDirectory)
       flattenFolders: true
 

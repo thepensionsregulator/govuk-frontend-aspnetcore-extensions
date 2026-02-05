@@ -33,7 +33,7 @@ export class GovUkTypographyView extends UmbElementMixin(LitElement) implements 
     override render() {
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
-        <a href="${this.config?.editContentPath ?? ''}" class="govuk-body backoffice-block-view">${unsafeHTML(disableLinks(this.content?.text.markup)) }</a>
+        <a href="${this.config?.editContentPath ?? ''}" class="govuk-body backoffice-block-view">${unsafeHTML(disableLinks(this.content?.text?.markup)) }</a>
         `;
     }
 }

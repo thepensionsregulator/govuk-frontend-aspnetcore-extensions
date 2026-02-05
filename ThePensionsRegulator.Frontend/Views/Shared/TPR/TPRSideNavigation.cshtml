@@ -1,8 +1,12 @@
 @using System.Web
 @using ThePensionsRegulator.Frontend
 @using ThePensionsRegulator.Frontend.Models
-@model TprSideNavigationViewModel
+@using ThePensionsRegulator.Frontend.Services
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject ITprSideNavigationLinksService sideNavigationLinksService
 @{
+    var viewModel = sideNavigationLinksService.GetLinks();
+
     var query = HttpUtility.ParseQueryString(Context.Request.QueryString.ToString());
     var isMobileExpanded = query["tpr-side-nav"] == "expand";
     query["tpr-side-nav"] = "expand";
@@ -10,20 +14,20 @@
 
     var id = "tpr-side-nav__" + Guid.NewGuid().ToString().Substring(0,8);
 }
-<nav class="tpr-side-nav" id="@id" aria-label="@Model.AriaNavigationLabel" data-expand-text="@Model.ExpandItemLabel" data-collapse-text="@Model.CollapseItemLabel">
+<nav class="tpr-side-nav" id="@id" aria-label="@viewModel.AriaNavigationLabel" data-expand-text="@viewModel.ExpandItemLabel" data-collapse-text="@viewModel.CollapseItemLabel">
     @{
         var level = 1;
-        if (Model.TitleLink is not null)
+        if (viewModel.TitleLink is not null)
         {
             <h2 class="govuk-heading-m">
                 <a href="@expandMobileUrl" class="govuk-link govuk-link--no-visited-state tpr-side-nav__mobile-expand-toggle">
-                    @Model.TitleLink.Name
-                    <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" width="25" height="25" alt="@(string.Format(isMobileExpanded ? Model.CollapseItemLabel : Model.ExpandItemLabel, string.Empty))" class="tpr-side-nav__mobile-expand-toggle__arrow" />
+                    @viewModel.TitleLink.Name
+                    <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" asp-append-version="true" width="25" height="25" alt="@(string.Format(isMobileExpanded ? viewModel.CollapseItemLabel : viewModel.ExpandItemLabel, string.Empty))" class="tpr-side-nav__mobile-expand-toggle__arrow" />
                 </a>
-                <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
+                <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@viewModel.TitleLink.Url">@viewModel.TitleLink.Name</a>
             </h2>
         }
-        await RenderNavListLayer(Model.NavigationLinks, level, isMobileExpanded ? "tpr-side-nav__list--expanded" : null);
+        await RenderNavListLayer(viewModel.NavigationLinks, level, isMobileExpanded ? "tpr-side-nav__list--expanded" : null);
     }
 </nav>
 @{
@@ -38,9 +42,9 @@
                         <a class="govuk-link govuk-link--no-visited-state" @(child.IsCurrentPage ? "aria-current=page" : string.Empty) href="@child.Url">@child.Name</a>
                         @if (child.Children is not null && child.Children.Any())
                         {
-                            var arrowNoJsAlternative = string.Format(child.IsExpanded ? Model.ExpandedItemLabel : Model.CollapsedItemLabel, child.Name);
+                            var arrowNoJsAlternative = string.Format(child.IsExpanded ? viewModel.ExpandedItemLabel : viewModel.CollapsedItemLabel, child.Name);
                             var arrowClass = child.IsExpanded ? "tpr-side-nav__list-item-arrow tpr-side-nav__list-item-arrow--up" : "tpr-side-nav__list-item-arrow";
-                            <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" width="25" height="25" alt="@arrowNoJsAlternative" class="@arrowClass" />
+                            <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" asp-append-version="true" width="25" height="25" alt="@arrowNoJsAlternative" class="@arrowClass" />
                         }
                     </div>
                     @if (child.Children is not null && child.Children.Any())
@@ -53,4 +57,4 @@
     }
 }
 
-<script src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-side-navigation.js" type="module" asp-append-version="true"></script>
+<script src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-side-navigation.min.js" type="module" asp-append-version="true"></script>

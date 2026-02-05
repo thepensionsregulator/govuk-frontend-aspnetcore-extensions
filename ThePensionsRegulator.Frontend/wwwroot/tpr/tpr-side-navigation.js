@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mobileToggle.addEventListener("click", expandOrCollapseMobileNav);
     noJsMobileLink[0].parentNode.replaceChild(mobileToggle, noJsMobileLink[0]);
 
-   
+
     // list item expand/collapse handling
     var sideNavListItemToggles = document.getElementsByClassName("tpr-side-nav__list-item-arrow");
     for (var i = 0; i < sideNavListItemToggles.length; i++) {
@@ -89,7 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (parent.dataset.level > 1 && parent.closest("li").classList.contains("tpr-side-nav__list-item--expanded")) {
             return;
         }
-        for(let node of el.closest("ul[data-level='1']").children){
+        const children = el.closest("ul[data-level='1']").children;
+        for (let node of children) {
             node.classList.remove("tpr-side-nav__list-item--expanded");
             const toggle = node.querySelector(".tpr-side-nav__list-item__expand-toggle");
             if (toggle) { toggle.setAttribute("aria-expanded", "false"); }

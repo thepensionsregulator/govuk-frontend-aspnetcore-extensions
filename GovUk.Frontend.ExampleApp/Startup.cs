@@ -3,15 +3,9 @@ using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.ExampleApp.Middleware;
 using GovUk.Frontend.ExampleApp.Models.Validators;
 using GovUk.Frontend.ExampleSharedResource;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using ThePensionsRegulator.Frontend;
@@ -88,13 +82,12 @@ namespace GovUk.Frontend.ExampleApp
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseTprFrontend();
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseSecurityHeaders();
 
             app.UseRouting();
 
-            app.UseTprFrontend();
 
             // Localization.
             var supportedCultures = new[] {

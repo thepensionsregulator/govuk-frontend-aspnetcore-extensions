@@ -64,6 +64,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool PlaysInline => this.Value<bool>(_publishedValueFallback, "playsInline");
 
 		///<summary>
+		/// Smaller heading
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[ImplementPropertyType("smallerHeading")]
+		public virtual bool SmallerHeading => this.Value<bool>(_publishedValueFallback, "smallerHeading");
+
+		///<summary>
 		/// CSS classes: Applied to the outermost HTML element of the component.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

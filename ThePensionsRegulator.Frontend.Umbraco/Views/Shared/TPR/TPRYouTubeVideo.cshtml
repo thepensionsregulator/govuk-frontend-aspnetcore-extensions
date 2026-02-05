@@ -21,10 +21,10 @@
     var useAblePlayer = false;
     if (useAblePlayer)
     {
-        if (!consentCookie.HasConsent(TprConsentCookieReader.TPR_CONSENT_CATEGORY_FUNCTIONALITY)){ useAblePlayer = false; }
+        if (!consentCookie.HasConsent(TprConsentCookieReader.TPR_CONSENT_CATEGORY_FUNCTIONALITY)) { useAblePlayer = false; }
     }
     var videoUrl = Model.Content.Value<string>(TprPropertyAliases.VideoUrl);
-    if(string.IsNullOrWhiteSpace(videoUrl))
+    if (string.IsNullOrWhiteSpace(videoUrl))
     {
         return;
     }
@@ -52,17 +52,19 @@
 
     var autoplay = Model.Settings.Value<bool>(TprPropertyAliases.VideoAutoplay);
     bool playsInline = Model.Settings.Value<bool>(TprPropertyAliases.VideoPlaysInline)!;
+    var description = Model.Content.Value<string>(TprPropertyAliases.VideoDescription);
+    var smallerHeading = Model.Settings.Value<bool>(TprPropertyAliases.VideoSmallerHeading);
 }
-<tpr-youtube-video
-    id="@id" 
-    class="@cssClasses"
-    title="@title"
-    youtube-video-id="@videoId"
-    use-able-player="@useAblePlayer"
-    autoplay="@autoplay"
-    plays-inline="@playsInline"
-    transcript-url="@transcriptUrl"
-    transcript-title="@transcriptTitle"
-    transcript-target="@transcriptTarget"
-    >
+<tpr-youtube-video id="@id"
+                   class="@cssClasses"
+                   title="@title"
+                   description="@description"
+                   youtube-video-id="@videoId"
+                   use-able-player="@useAblePlayer"
+                   autoplay="@autoplay"
+                   plays-inline="@playsInline"
+                   smaller-heading="@smallerHeading"
+                   transcript-url="@transcriptUrl"
+                   transcript-title="@transcriptTitle"
+                   transcript-target="@transcriptTarget">
 </tpr-youtube-video>

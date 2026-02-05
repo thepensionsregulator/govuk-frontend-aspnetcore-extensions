@@ -17,7 +17,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
 
             var videoTag = new TagBuilder("video");
-            if (!video.Attributes.ContainsKey("id")) { video.Attributes.Add("id", Guid.NewGuid().ToString()); } // Able Player requires id
+            if (!video.Attributes.ContainsKey("id")) { video.Attributes.Add("id", Guid.NewGuid().ToString()); }
             videoTag.MergeAttributes(video.Attributes);
             videoTag.Attributes.Add("data-able-player", null);
             videoTag.Attributes.Add("data-youtube-nocookie", null);
@@ -37,6 +37,22 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var containerTag = new TagBuilder("div");
             containerTag.MergeAttributes(video.Attributes);
             containerTag.MergeCssClass("tpr-video-wrapper-no-cookies");
+
+            var heading = new TagBuilder("h3");
+            heading.MergeCssClass(video.SmallerHeading ? "govuk-heading-s" : "govuk-heading-m");
+            heading.MergeCssClass("tpr-video-wrapper-no-cookies__heading");
+            heading.InnerHtml.AppendHtml($"{video.Title} (video)");
+            containerTag.InnerHtml.AppendHtml(heading);
+
+            if (!string.IsNullOrWhiteSpace(video.Description))
+            {
+                var description = new TagBuilder("p");
+                description.MergeCssClass("govuk-body");
+                description.MergeCssClass("tpr-video-wrapper-no-cookies__description");
+                description.InnerHtml.AppendHtml(video.Description);
+                containerTag.InnerHtml.AppendHtml(description);
+            }
+
             var wrapperTag = new TagBuilder("div");
             wrapperTag.MergeCssClass("tpr-video-wrapper-no-cookies__video-container");
 
@@ -47,8 +63,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 src += "?autoplay=1&mute=1";
             }
 
+            var iframeTitle = $"Video: {video.Title} (video)";
             iFrame.Attributes.Add("src", src);
-            iFrame.Attributes.Add("title", video.Title);
+            iFrame.Attributes.Add("title", iframeTitle);
             iFrame.Attributes.Add("frameborder", "0");
             iFrame.Attributes.Add("allow", "accelerometer; autoplay;  encrypted-media; gyroscope; picture-in-picture; web-share");
             iFrame.Attributes.Add("referrerpolicy", "strict-origin-when-cross-origin");
@@ -61,6 +78,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             if (!string.IsNullOrWhiteSpace(video.TranscriptUrl))
             {
+                var transcriptContainer = new TagBuilder("div");
+                transcriptContainer.MergeCssClass("tpr-video-wrapper-no-cookies__transcript-container");
+
                 var transcriptLink = new TagBuilder("a");
                 transcriptLink.MergeCssClass("tpr-video-wrapper-no-cookies__transcript-link");
                 transcriptLink.Attributes.Add("href", video.TranscriptUrl);
@@ -68,8 +88,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 {
                     transcriptLink.Attributes.Add("target", video.TranscriptTarget);
                 }
-                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle ?? $"View transcript for '{video.Title}'");
-                containerTag.InnerHtml.AppendHtml(transcriptLink);
+                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle ?? $"Read transcript: {video.Title}");
+
+                transcriptContainer.InnerHtml.AppendHtml(transcriptLink);
+                containerTag.InnerHtml.AppendHtml(transcriptContainer);
             }
 
             return containerTag;

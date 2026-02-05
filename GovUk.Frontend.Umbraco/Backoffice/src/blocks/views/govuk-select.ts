@@ -44,7 +44,7 @@ export class GovUkSelectView extends UmbElementMixin(LitElement) implements UmbB
                     <label class="govuk-label govuk-label--l">${this.content?.label}</label>
                 </h1>` :
             html`<label class="govuk-label">${this.content?.label}</label>` }            
-            ${ this.content?.hint.markup ? html`<div class="govuk-hint">${ unsafeHTML(disableLinks(this.content?.hint.markup))}</div>` : null }
+            ${ this.content?.hint?.markup ? html`<div class="govuk-hint">${ unsafeHTML(disableLinks(this.content?.hint?.markup))}</div>` : null }
             <select class="govuk-select">
                 ${ this?.content?.options?.contentData ? repeat(this.content?.options?.layout[UMB_BLOCK_LIST_PROPERTY_EDITOR_SCHEMA_ALIAS] || [],
                     (layout) => layout.contentKey,

@@ -15,9 +15,10 @@ class AddressLookupComponentBuilder {
         return formGroup;
     }
 
-    createGovukTextInput(labelText, dataAddressLookupValue, cssClass) {
+    createGovukTextInput(labelText, dataAddressLookupValue, inputWidth) {
         const formGroup = document.createElement("div");
-        formGroup.classList = `${this.config.CSS_CLASSES.FORM_GROUP} ${cssClass}`;
+        const widthClass = this.#getWidthCssClass(inputWidth);
+        formGroup.classList = `${this.config.CSS_CLASSES.FORM_GROUP} ${widthClass}`;
         const inputId = `${dataAddressLookupValue}-${this.index}`;
 
         const label = document.createElement("label");
@@ -33,6 +34,24 @@ class AddressLookupComponentBuilder {
 
         formGroup.appendChild(label);
         formGroup.appendChild(input);
+
+        return formGroup;
+    }
+
+    createGovukTextInputWithValidation(labelText, dataAddressLookupValue, inputWidth, requiredErrorMessage, maxLengthErrorMessage) {
+        const formGroup = this.createGovukTextInput(labelText, dataAddressLookupValue, inputWidth);
+        const input = formGroup.querySelector("input");
+
+        if (requiredErrorMessage !== undefined) {
+            input.setAttribute("data-val", "true");
+            input.setAttribute("required", "required");
+            input.setAttribute("data-val-required", requiredErrorMessage);
+        }
+
+        if (maxLengthErrorMessage !== undefined) {
+            input.setAttribute("data-val", "true");
+            input.setAttribute("data-val-maxlength", maxLengthErrorMessage);
+        }
 
         return formGroup;
     }
@@ -135,6 +154,37 @@ class AddressLookupComponentBuilder {
     createOption(value, label) {
         const option = new Option(label, value);
         return option;
+    }
+
+    #getWidthCssClass(inputWidth) {
+        let inputClass = "";
+        switch (inputWidth) {
+            case "xx-small":
+                inputClass = "govuk-input--width-2";
+                break;
+            case "x-small":
+                inputClass = "govuk-input--width-3";
+                break;
+            case "small":
+                inputClass = "govuk-input--width-4";
+                break;
+            case "medium":
+                inputClass = "govuk-input--width-5";
+                break;
+            case "large":
+                inputClass = "govuk-input--width-10";
+                break;
+            case "x-large":
+                inputClass = "govuk-input--width-20";
+                break;
+            case "xx-large":
+                inputClass = "govuk-input--width-30";
+                break;
+            default:
+                break;
+        }
+
+        return inputClass;
     }
 }
 

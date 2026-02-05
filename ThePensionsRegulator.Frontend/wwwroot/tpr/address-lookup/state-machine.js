@@ -2,7 +2,9 @@
     static STATES = {
         SEARCH: 'search',
         SELECT: 'select',
-        CONFIRMED: 'confirmed'
+        CONFIRMED: 'confirmed',
+        MANNUAL_UK_ENTRY: 'manual_uk_entry',
+        MANNUAL_INTERNATIONAL_ENTRY: 'manual_international_entry'
     };
 
     constructor() {
@@ -12,8 +14,8 @@
 
     transition(newState, data) {
         const validTransitions = {
-            [AddressLookupStateMachine.STATES.SEARCH]: [AddressLookupStateMachine.STATES.SELECT],
-            [AddressLookupStateMachine.STATES.SELECT]: [AddressLookupStateMachine.STATES.CONFIRMED, AddressLookupStateMachine.STATES.SEARCH],
+            [AddressLookupStateMachine.STATES.SEARCH]: [AddressLookupStateMachine.STATES.SELECT, AddressLookupStateMachine.STATES.MANNUAL_INTERNATIONAL_ENTRY],
+            [AddressLookupStateMachine.STATES.SELECT]: [AddressLookupStateMachine.STATES.CONFIRMED, AddressLookupStateMachine.STATES.SEARCH, AddressLookupStateMachine.STATES.MANNUAL_UK_ENTRY],
             [AddressLookupStateMachine.STATES.CONFIRMED]: [AddressLookupStateMachine.STATES.SEARCH]
         };
 

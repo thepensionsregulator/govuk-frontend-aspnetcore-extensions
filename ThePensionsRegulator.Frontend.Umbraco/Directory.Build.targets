@@ -19,7 +19,7 @@
 			<SassPath>$(MsBuildThisFileDirectory)Styles\</SassPath>
 			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
 			<GovUkFrontEndExtensionsFolder>$(MsBuildThisFileDirectory)..\GovUk.Frontend.AspNetCore.Extensions\Styles\</GovUkFrontEndExtensionsFolder>
-			<WwwrootPath>$(MsBuildThisFileDirectory)wwwroot\tpr\</WwwrootPath>
+			<WwwrootPath>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.Frontend.Umbraco\css\</WwwrootPath>
 		</PropertyGroup>
 		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)tpr.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SassPath) $(WwwrootPath)tpr.css"/>
 		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)govuk-umbraco-backoffice.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SassPath) $(SassPath)govuk-umbraco-backoffice.css"/>

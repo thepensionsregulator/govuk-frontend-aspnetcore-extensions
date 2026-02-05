@@ -6,7 +6,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Caching
     {
         public bool IsImmutable(string path, IQueryCollection query)
         {
-            return path.StartsWith("/_content/ThePensionsRegulator.GovUk.Frontend/", StringComparison.OrdinalIgnoreCase) &&
+            return path.StartsWith("/ThePensionsRegulator.GovUk.Frontend/", StringComparison.OrdinalIgnoreCase) &&
                    query.ContainsKey("v") &&
                    !string.IsNullOrEmpty(query["v"]);
         }

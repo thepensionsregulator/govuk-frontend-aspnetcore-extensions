@@ -12,8 +12,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Caching
         [InlineData("/App_Plugins/ThePensionsRegulator.Frontend.Umbraco/tpr-component-hfdksfhks.js", true)]
         [InlineData("/App_Plugins/ThePensionsRegulator.Frontend.Umbraco/package-version.generated-hjrkehwrk.js", true)]
         [InlineData("/App_Plugins/ThePensionsRegulator.Frontend.Umbraco/example-helper-code-hdjskhfjds.js", true)]
-        [InlineData("/tpr/tpr.css?v=1.0.0", true)]
-        [InlineData("/TPR/TPR.CSS?v=1.0.0", true)]
+        [InlineData("/ThePensionsRegulator.Frontend.Umbraco/css/tpr.css?v=1.0.0", true)]
+        [InlineData("/THEPENSIONSREGULATOR.FRONTEND.UMBRACO/CSS/TPR.CSS?v=1.0.0", true)]
 
         // no path
         [InlineData("?v=1.0.0", false)]
@@ -24,12 +24,12 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Caching
         [InlineData("/other-content/ThePensionsRegulator.Frontend.Umbraco/tpr-component-hfjdkfs.js", false)]
 
         // no querystring
-        [InlineData("/tpr/tpr.css", false)]
+        [InlineData("/ThePensionsRegulator.Frontend.Umbraco/css/tpr.css", false)]
         [InlineData("/other/file.js", false)]
 
         // wrong querystring
-        [InlineData("/tpr/tpr.css?other=value", false)]
-        [InlineData("/tpr/tpr.css?v=", false)]
+        [InlineData("/ThePensionsRegulator.Frontend.Umbraco/css/tpr.css?other=value", false)]
+        [InlineData("/ThePensionsRegulator.Frontend.Umbraco/css/tpr.css?v=", false)]
         public void IsImmutable_ReturnsExpectedResult(string path, bool expected)
         {
             // Arrange

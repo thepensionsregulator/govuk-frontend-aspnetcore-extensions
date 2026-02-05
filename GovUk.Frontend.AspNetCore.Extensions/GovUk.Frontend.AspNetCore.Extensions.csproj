@@ -23,13 +23,14 @@
 		<PackageId>ThePensionsRegulator.GovUk.Frontend</PackageId>
 		<Product>ThePensionsRegulator.GovUk.Frontend</Product>
 		<GovUkFrontEndSrcFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndSrcFolder>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
-		<None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.min.js" />
-		<None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
-		<None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\jquery.validate.min.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\dist\jquery.min.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\dist\jquery.min.map" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -130,15 +131,15 @@
 		  <PackagePath>\</PackagePath>
 		</None>
 
-		<None Include="wwwroot\govuk\govuk-frontend.css.map" />
-		<None Include="wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
-		<None Include="wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt" />
-		<None Include="wwwroot\lib\jquery-validation\dist\additional-methods.js" />
-		<None Include="wwwroot\lib\jquery-validation\dist\additional-methods.min.js" />
-		<None Include="wwwroot\lib\jquery-validation\dist\jquery.validate.js" />
-		<None Include="wwwroot\lib\jquery-validation\LICENSE.md" />
-		<None Include="wwwroot\lib\jquery\dist\jquery.js" />
-		<None Include="wwwroot\lib\jquery\LICENSE.txt" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\css\govuk-frontend.css.map" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\additional-methods.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\additional-methods.min.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\jquery.validate.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\LICENSE.md" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\dist\jquery.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\LICENSE.txt" />
 
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.targets">
 			<Pack>true</Pack>

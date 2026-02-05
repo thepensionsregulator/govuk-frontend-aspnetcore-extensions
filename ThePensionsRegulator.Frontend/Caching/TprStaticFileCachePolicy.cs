@@ -7,7 +7,7 @@ namespace ThePensionsRegulator.Frontend.Caching
     {
         public bool IsImmutable(string path, IQueryCollection query)
         {
-            return path.StartsWith("/_content/ThePensionsRegulator.Frontend/", StringComparison.OrdinalIgnoreCase) &&
+            return path.StartsWith("/ThePensionsRegulator.Frontend/", StringComparison.OrdinalIgnoreCase) &&
                    query.ContainsKey("v") && !string.IsNullOrEmpty(query["v"]);
         }
     }

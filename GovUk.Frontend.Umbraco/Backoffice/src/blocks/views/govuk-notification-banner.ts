@@ -57,7 +57,7 @@ export class GovUkNotificationBannerView extends UmbElementMixin(LitElement) imp
                 </div>
                 <div class="govuk-notification-banner__content" aria-hidden="true">
                     <h3 class="govuk-notification-banner__heading">${ html`${unsafeHTML(disableLinks(this.content?.heading?.markup)) }` }</h3>
-                    ${ this.content?.text?.markup ? html`<p class="govuk-body">${unsafeHTML(disableLinks(this.content.text?.markup)) }</p>` : null }
+                    ${ this.content?.text?.markup ? html`<p class="govuk-body">${unsafeHTML(disableLinks(this.content?.text?.markup)) }</p>` : null }
                     <p class="backoffice-additional-blocks">${ blocks }</p>
                 </div>
             </div>

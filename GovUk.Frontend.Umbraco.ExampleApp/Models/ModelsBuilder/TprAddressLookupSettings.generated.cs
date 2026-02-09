@@ -130,6 +130,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string PostcodeErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "postcodeErrorMessageMaxLength");
 
 		///<summary>
+		/// Postcode error message required: Sets the message displayed if postcode is set by the code to be required
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postcodeErrorMessageRequired")]
+		public virtual string PostcodeErrorMessageRequired => this.Value<string>(_publishedValueFallback, "postcodeErrorMessageRequired");
+
+		///<summary>
 		/// Postcode model property: The name of the property on the view model being bound to postcode in the code.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

@@ -44,7 +44,7 @@
     var addressLine2State = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.AddressLine2Label),
-            "Address line 2",
+            "Address line 2 (optional)",
             ViewContext.ModelState
         );
 
@@ -58,7 +58,7 @@
     var countyState = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.CountyModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.CountyLabel),
-            "County",
+            "County (optional)",
             ViewContext.ModelState
         );
 

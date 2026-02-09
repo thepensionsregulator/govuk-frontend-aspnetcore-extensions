@@ -58,7 +58,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string AddressLine1Label => this.Value<string>(_publishedValueFallback, "addressLine1Label");
 
 		///<summary>
-		/// Address line 2 label: Defaults to 'Address line 2' if left blank.
+		/// Address line 2 label: Defaults to 'Address line 2 (optional)' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -74,7 +74,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string CountryLabel => this.Value<string>(_publishedValueFallback, "countryLabel");
 
 		///<summary>
-		/// County label: Defaults to 'County' if left blank.
+		/// County label: Defaults to 'County (optional)' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

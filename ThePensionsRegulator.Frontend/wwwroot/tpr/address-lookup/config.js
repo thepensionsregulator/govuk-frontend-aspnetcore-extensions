@@ -16,6 +16,7 @@
         ADDRESS_LINE_1: "address-line-1",
         ADDRESS_LINE_2: "address-line-2",
         TOWN_OR_CITY: "town-or-city",
+        COUNTY: "county",
         REGION_INTERNATIONAL: "region-international",
         POSTCODE_INTERNATIONAL: "postcode-international",
         COUNTRY: "country",

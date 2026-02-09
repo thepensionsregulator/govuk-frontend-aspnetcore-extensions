@@ -79,6 +79,11 @@ class TprAddressLookup {
     }
 
     renderConfirmedView(UPRN) {
+        // renderConfirmedView should always be provided with an addres object.
+        // If UK manual entry, we will have address line 1, address line 2, town, county, post code
+        // If international manual entry, we will have address line 1, address line 2, town, region, country, post code
+        // If from the postcode lookup API, we will need to have mapped that data to an object that fits the above format. We don't know how to do that mapping yet.
+
         this.clearContainer();
 
         const selectedAddress = this.JsonResults.find(x => x.DPA.UPRN === UPRN);
@@ -96,7 +101,6 @@ class TprAddressLookup {
     }
 
     renderInternationalManualEntryView() {
-        console.log("Render international manual entry view");
         this.clearContainer();
         const addressLine1Input = this.componentBuilder.createGovukTextInputWithValidation(
             ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_1,
@@ -146,32 +150,133 @@ class TprAddressLookup {
             ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_20
         );
 
+        const confirmAddressButton = this.componentBuilder.createConfirmAddressButton((event) => this.confirmManualInternationalAddressOnClick(event));
+        const returnToAddressLookupLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.RETURN_TO_POSTCODE_SEARCH, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.RETURN_TO_POSTCODE);
+        const linkList = this.componentBuilder.createLinkList([returnToAddressLookupLink]);
+
         this.container.appendChild(addressLine1Input);
         this.container.appendChild(addressLine2Input);
         this.container.appendChild(townOrCityInput);
         this.container.appendChild(regionInput);
         this.container.appendChild(countryInput);
         this.container.appendChild(postcodeInput);
+        this.container.appendChild(confirmAddressButton);
+        this.container.appendChild(linkList);
     }
 
     renderUKManualEntryView() {
-        console.log("Render UK manual entry view");
+        this.clearContainer();
+
+        const addressLine1Input = this.componentBuilder.createGovukTextInputWithValidation(
+            ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_1,
+            ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1,
+            ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.XX_LARGE,
+            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED,
+            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500
+        );
+
+        const addressLine2Input = this.componentBuilder.createGovukTextInputWithValidation(
+            ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_2,
+            ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2,
+            ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.XX_LARGE,
+            undefined,
+            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500
+        );
+
+        const townOrCityInput = this.componentBuilder.createGovukTextInputWithValidation(
+            ADDRESS_LOOKUP_CONFIG.LABELS.TOWN_OR_CITY,
+            ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY,
+            ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE,
+            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED,
+            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500
+        );
+
+        const countyInput = this.componentBuilder.createGovukTextInputWithValidation(
+            ADDRESS_LOOKUP_CONFIG.LABELS.COUNTRY,
+            ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY,
+            ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE,
+            undefined,
+            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500
+        );
+
+        //TODO: Better validation of what a UK postcode is, should use a regex
+        const postcodeInput = this.componentBuilder.createGovukTextInputWithValidation(
+            ADDRESS_LOOKUP_CONFIG.LABELS.COUNTRY,
+            ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY,
+            ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE,
+            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED,
+            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_20
+        );
+
+        const confirmAddressButton = this.componentBuilder.createConfirmAddressButton((event) => this.confirmManualUKAddressOnClick(event));
+        const returnToAddressLookupLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.RETURN_TO_POSTCODE_SEARCH, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.RETURN_TO_POSTCODE);
+        const linkList = this.componentBuilder.createLinkList([returnToAddressLookupLink]);
+
+        this.container.appendChild(addressLine1Input);
+        this.container.appendChild(addressLine2Input);
+        this.container.appendChild(townOrCityInput);
+        this.container.appendChild(countyInput);
+        this.container.appendChild(postcodeInput);
+        this.container.appendChild(confirmAddressButton);
+        this.container.appendChild(linkList);
     }
 
     getComponentByDataAddressAttribute(attributeValue) {
         return this.container.querySelector(`[data-address-lookup='${attributeValue}']`);
     }
 
+    confirmManualInternationalAddressOnClick(event) {
+        event.preventDefault();
+
+        const inputsToValidate = [];
+        const addressLine1Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
+        const addressLine2Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2);
+        const townOrCityInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY);
+        const regionInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL);
+        const countryInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY);
+        const postcodeInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL);
+        inputsToValidate.push(addressLine1Input, addressLine2Input, townOrCityInput, regionInput, countryInput, postcodeInput);
+
+        const isValid = this.validator.validateMultiple(inputsToValidate);
+        if (!isValid) {
+            return;
+        }
+
+        // Build an address object to pass to the confirmed state.
+        this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, {});
+    }
+
+    confirmManualUKAddressOnClick(event) {
+        event.preventDefault();
+
+        const inputsToValidate = [];
+        const addressLine1Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
+        const addressLine2Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2);
+        const townOrCityInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY);
+        const county = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY);
+        const postcode = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE);
+
+        const isValid = this.validator.validateMultiple([addressLine1Input, addressLine2Input, townOrCityInput, county, postcode]);
+        if (!isValid) {
+            return;
+        }
+
+        // Build an address object to pass to the confirmed state.
+        this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, {});
+    }
+
     confirmAddressOnClick(event) {
         event.preventDefault();
-        const selectInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS);
 
+        const selectInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS);
         const isValid = this.validator.validate(selectInput);
         if (!isValid) {
             return;
         }
 
         const selectedUPRN = selectInput.value;
+
+        // Build an address object to pass to the confirmed state.
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, selectedUPRN);
     }
 

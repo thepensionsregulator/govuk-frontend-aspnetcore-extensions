@@ -1,8 +1,29 @@
 ﻿<div class="govuk-form-group backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit address lookup component">
     <fieldset class="govuk-fieldset tpr-address-lookup" aria-hidden="true">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--for-field" ng-bind-html="block.data.legend"></legend>
-            <p class="backoffice-additional-blocks" ng-if="!block.data.addressLookupBlocks.contentData">No blocks.</p>
-            <p class="backoffice-additional-blocks" ng-if="block.data.addressLookupBlocks.contentData.length===1">1 block.</p>
-            <p class="backoffice-additional-blocks" ng-if="block.data.addressLookupBlocks.contentData.length>1">{{block.data.addressLookupBlocks.contentData.length}} blocks.</p>
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--for-fieldset" ng-bind-html="block.data.legend"></legend>
+        <div class="govuk-form-group backoffice-block-view">
+            <label class="govuk-label" ng-bind-html="block.data.addressLine1Label || 'Address line 1'" aria-hidden="true"></label>
+            <input class="govuk-input" type="text" aria-hidden="true" />
+        </div>
+        <div class="govuk-form-group backoffice-block-view">
+            <label class="govuk-label" ng-bind-html="block.data.addressLine2Label || 'Address line 2'" aria-hidden="true"></label>
+            <input class="govuk-input" type="text" aria-hidden="true" />
+        </div>
+        <div class="govuk-form-group backoffice-block-view">
+            <label class="govuk-label" ng-bind-html="block.data.townOrCityLabel || 'Town or city'" aria-hidden="true"></label>
+            <input class="govuk-input" type="text" aria-hidden="true" />
+        </div>
+        <div class="govuk-form-group backoffice-block-view">
+            <label class="govuk-label" ng-bind-html="block.data.countyLabel || 'County'" aria-hidden="true"></label>
+            <input class="govuk-input" type="text" aria-hidden="true" />
+        </div>
+        <div class="govuk-form-group backoffice-block-view">
+            <label class="govuk-label" ng-bind-html="block.data.countryLabel || 'Country'" aria-hidden="true"></label>
+            <input class="govuk-input" type="text" aria-hidden="true" />
+        </div>
+        <div class="govuk-form-group backoffice-block-view">
+            <label class="govuk-label" ng-bind-html="block.data.postcodeLabel ||'Postcode'" aria-hidden="true"></label>
+            <input class="govuk-input" type="text" aria-hidden="true" />
+        </div>
     </fieldset>
 </div>

@@ -25,7 +25,7 @@
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
     var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
     var hintText = Model.Content.Value<IHtmlEncodedString?>(PropertyAliases.Hint);
-    var hintTextBlocks = Model.Content.Value<OverridableBlockListModel>("fieldsetBlocks");
+    var hintTextBlocks = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.AddressLookupFieldsetBlocks);
     var addressLine1ModelProperty = Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty);
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hintText?.ToHtmlString()) ? null : $"{addressLine1ModelProperty}-hint";
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();

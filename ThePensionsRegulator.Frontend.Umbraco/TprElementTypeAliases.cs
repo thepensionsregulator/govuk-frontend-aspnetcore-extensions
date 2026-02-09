@@ -6,6 +6,7 @@
         public const string AccordionSettings = "tprAccordionSettings";
         public const string AccordionSection = "tprAccordionSection";
         public const string AccordionSectionSettings = "tprAccordionSectionSettings";
+        public const string AddressLookup = "tprAddressLookup";
         public const string BackToMenu = "tprBackToMenu";
         public const string BackToMenuSettings = "tprBackToMenuSettings";
         public const string BackToTop = "tprBackToTop";

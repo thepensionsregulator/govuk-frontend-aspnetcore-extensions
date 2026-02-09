@@ -36,7 +36,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Validation
 
             var addressLookupBlocks = umbracoContext.PublishedRequest.PublishedContent
                 .FindOverridableBlockModels(_publishedValueFallback)
-                .FindBlocksByContentTypeAlias("tprAddressLookup", _publishedValueFallback);
+                .FindBlocksByContentTypeAlias(TprElementTypeAliases.AddressLookup, _publishedValueFallback);
 
             if (!addressLookupBlocks.Any()) { return; }
 

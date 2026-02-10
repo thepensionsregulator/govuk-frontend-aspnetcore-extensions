@@ -130,7 +130,7 @@
     }
 
         &:visited {
-            color: $tpr-colour-violet;
+            /* color: $tpr-colour-violet;*/  //when active are unable to see link
         }
     }
 
@@ -164,7 +164,6 @@
         padding: 4.5px;
         left: 93%;
         top: 40%;
-        margin: 0.3rem;
         cursor: pointer;
         width: 1rem;
         height: 1rem;
@@ -186,7 +185,7 @@
     .tpr-mobile-menu__arrow-container:focus-within {
         color: $tpr-colour-black;
         background-color: $tpr-colour-tangerine-yellow;
-        box-shadow: 0 -2px $tpr-colour-black, 0 4px $tpr-colour-tangerine-yellow;
+        box-shadow: 0 -2px $tpr-colour-tangerine-yellow, 0 4px $tpr-colour-black;
         text-decoration: none;
     }
 
@@ -219,6 +218,11 @@
         z-index: -1;
         cursor: pointer;
     }
+
+    .tpr-header-menu_menu-item-arrow--active {
+        background-color:transparent;
+
+}
 }
 
 @media(min-width: 993px) {
@@ -249,8 +253,8 @@
             color: $tpr-colour-white;
             text-decoration: none;
             padding: 1rem;
-            padding-right: 0.7rem;
-            padding-left: 0.7rem;
+            padding-right: 0.3rem;
+            padding-left: 0.3rem;
             padding-bottom: 1.2rem; 
         }
     }
@@ -266,10 +270,10 @@
     .tpr-header-menu__nav-menu-item {
 
         a:focus-within {
-            outline: $govuk-focus-width $govuk-focus-colour;
-            box-shadow: 0 5px $tpr-colour-black, 0 7px $tpr-colour-tangerine-yellow;
+            box-shadow: 0 0 0 2px $tpr-colour-tangerine-yellow, 0 0 0 4px $tpr-colour-black;
             color: $tpr-colour-black;
             background-color: $tpr-colour-white;
+            outline: 3px solid transparent;
         }
     }
 
@@ -279,7 +283,6 @@
         padding-top: 1rem;
         padding-right: 0.1rem;
     }
-
 
     .tpr-mobile-menu__arrow {
         position: relative;
@@ -303,19 +306,16 @@
     }
 
     .tpr-mobile-menu__arrow-container:focus-within {
+        box-shadow: 0 0 0 2px $tpr-colour-tangerine-yellow, 0 0 0 4px $tpr-colour-black;
         color: $tpr-colour-black;
         background-color: $tpr-colour-white;
-        box-shadow: 0 5px $tpr-colour-black, 0 7px $tpr-colour-tangerine-yellow;
-        text-decoration: none;
+        outline: 3px solid transparent;
     }
 
     .tpr-mobile-menu__arrow:focus {
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
         }
-    .tpr-mobile-menu__arrow:hover {
-        color: $tpr-colour-black
-    }
 
 
 
@@ -340,10 +340,6 @@
             color: none;
             background: none;
         }
-
-        a:focus {
-            outline: $govuk-focus-width solid $govuk-focus-colour;
-        }
     }
 
     .tpr-mobile-menu__arrow:active .tpr-header-menu__nav-menu-item:hover .tpr-header-menu__nav-sub-menu-item, .tpr-header-menu__nav-menu-item:focus-within .tpr-header-menu__nav-sub-menu-item {
@@ -361,6 +357,7 @@
 
     .tpr-header-menu__nav-menu-item.tpr-header-menu__nav-final-item {
         margin-left: auto;
+        margin-right: 0;
     }
 
     .tpr-header-menu__nav-inner-container {
@@ -393,6 +390,20 @@
         background: $tpr-colour-white;      
     }
 
+    .tpr-header-menu__nav-menu-item:has(.tpr-header-menu__nav-sub-menu:focus-within) > a { //focus within sub menu
+        background: $tpr-colour-white;
+        color: $tpr-colour-black;
+    }
+
+    .tpr-header-menu__nav-menu-item:has(.tpr-header-menu__nav-sub-menu:focus-within) .tpr-mobile-menu__arrow-container {
+        background: $tpr-colour-white;
+
+        .tpr-mobile-menu__arrow{
+            border-right: $govuk-focus-width solid $tpr-colour-black;
+            border-bottom: $govuk-focus-width solid $tpr-colour-black;
+        }
+    }
+
     .tpr-mobile-menu__arrow:hover {
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
@@ -402,6 +413,10 @@
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
         outline: none;
+    }
+
+    .tpr-header-menu__nav-menu-item{
+        margin-right: 0.5rem;
     }
 
     .tpr-header-menu__nav-sub-menu {
@@ -418,6 +433,11 @@
     background: $tpr-colour-violet;
     color: $tpr-colour-white;
 }
+
+.tpr-header-menu_menu-item-arrow--active {
+    background: $tpr-colour-violet;
+}
+
 
 @media(min-width: 672px) {
 

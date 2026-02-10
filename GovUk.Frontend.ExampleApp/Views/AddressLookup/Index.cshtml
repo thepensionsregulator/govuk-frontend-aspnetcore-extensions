@@ -29,40 +29,50 @@
         <form asp-controller="AddressLookup" asp-action="Post" method="post" novalidate>
             <tpr-address-lookup data-address-lookup-url="/AddressLookupData/results.json">
                 <tpr-address-lookup-legend>Enter shipping address</tpr-address-lookup-legend>
-                <govuk-input for="ShippingAddressLine1">
-                    <govuk-input-label>Address line 1</govuk-input-label>
-                </govuk-input>
-                <govuk-input for="ShippingAddressLine2">
-                    <govuk-input-label>Address line 2</govuk-input-label>
-                </govuk-input>
-                <govuk-input for="ShippingTownOrCity">
-                    <govuk-input-label>Town or city</govuk-input-label>
-                </govuk-input>
-                <govuk-input for="ShippingCounty">
-                    <govuk-input-label>County</govuk-input-label>
-                </govuk-input>
-                <govuk-input for="ShippingPostcode">
-                    <govuk-input-label>Postal Code</govuk-input-label>
-                </govuk-input>
+                <govuk-client-side-validation>
+                    <govuk-input for="ShippingAddressLine1" input-class="govuk-input--width-30" autocomplete="address-line1">
+                        <govuk-input-label>Address line 1</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="ShippingAddressLine2" input-class="govuk-input--width-30" autocomplete="address-line2">
+                        <govuk-input-label>Address line 2 (optional)</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="ShippingTownOrCity" input-class="govuk-input--width-20" autocomplete="address-level2">
+                        <govuk-input-label>Town or city</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="ShippingCounty" input-class="govuk-input--width-20" autocomplete="address-level3">
+                        <govuk-input-label>County (optional)</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="ShippingCountry" input-class="govuk-input--width-20" autocomplete="country">
+                        <govuk-input-label>Country</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="ShippingPostcode" input-class="govuk-input--width-10" autocomplete="postal-code">
+                        <govuk-input-label>Postcode</govuk-input-label>
+                    </govuk-input>
+                </govuk-client-side-validation>
             </tpr-address-lookup>
 
             <tpr-address-lookup>
                 <tpr-address-lookup-legend>Enter billing address</tpr-address-lookup-legend>
-                <govuk-input for="BillingAddressLine1">
-                    <govuk-input-label>Address line 1</govuk-input-label>
-                </govuk-input>
-                <govuk-input for="BillingAddressLine2">
-                    <govuk-input-label>Address line 2</govuk-input-label>
-                </govuk-input>
-                <govuk-input for="BillingTownOrCity">
-                    <govuk-input-label>Town or city</govuk-input-label>
-                </govuk-input>
-                <govuk-input for="BillingCounty">
-                    <govuk-input-label>County</govuk-input-label>
-                </govuk-input>
-                <govuk-input for="BillingPostcode">
-                    <govuk-input-label>Postal Code</govuk-input-label>
-                </govuk-input>
+                <govuk-client-side-validation>
+                    <govuk-input for="BillingAddressLine1" input-class="govuk-input--width-30" autocomplete="address-line1">
+                        <govuk-input-label>Address line 1</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="BillingAddressLine2" input-class="govuk-input--width-30" autocomplete="address-line2">
+                        <govuk-input-label>Address line 2</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="BillingTownOrCity" input-class="govuk-input--width-20" autocomplete="address-level2">
+                        <govuk-input-label>Town or city</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="BillingCounty" input-class="govuk-input--width-20"  autocomplete="address-level3">
+                        <govuk-input-label>County</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="BillingCountry" input-class="govuk-input--width-20" autocomplete="country">
+                        <govuk-input-label>Country</govuk-input-label>
+                    </govuk-input>
+                    <govuk-input for="BillingPostcode" input-class="govuk-input--width-10" autocomplete="postal-code">
+                        <govuk-input-label>Postcode</govuk-input-label>
+                    </govuk-input>
+                </govuk-client-side-validation>
             </tpr-address-lookup>
 
             <govuk-button type="submit">Submit</govuk-button>

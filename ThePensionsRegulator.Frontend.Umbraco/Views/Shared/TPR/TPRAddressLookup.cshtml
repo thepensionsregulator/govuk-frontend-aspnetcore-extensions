@@ -24,9 +24,9 @@
 @{
     var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
-    var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
+    var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : string.Empty;
     var hintText = Model.Content.Value<IHtmlEncodedString?>(PropertyAliases.Hint);
-    var hintTextBlocks = Model.Content.Value<OverridableBlockListModel>("fieldsetBlocks");
+    var hintTextBlocks = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.AddressLookupFieldsetBlocks);
     var addressLine1ModelProperty = Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty);
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hintText?.ToHtmlString()) ? null : $"{addressLine1ModelProperty}-hint";
     var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
@@ -45,7 +45,7 @@
     var addressLine2State = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.AddressLine2Label),
-            "Address line 2",
+            "Address line 2 (optional)",
             ViewContext.ModelState
         );
 
@@ -59,7 +59,7 @@
     var countyState = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.CountyModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.CountyLabel),
-            "County",
+            "County (optional)",
             ViewContext.ModelState
         );
 

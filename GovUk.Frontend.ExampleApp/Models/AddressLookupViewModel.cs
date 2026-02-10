@@ -21,6 +21,7 @@ namespace GovUk.Frontend.ExampleApp.Models
         [Required(ErrorMessage = "Shipping country is required")]
         public string? ShippingCountry { get; set; }
 
+        [Required(ErrorMessage = "Shipping postcode is required")]
         [MaxLength(20, ErrorMessage = "Shipping postcode must not exceed 20 characters")]
         public string? ShippingPostcode { get; set; }
 
@@ -41,6 +42,7 @@ namespace GovUk.Frontend.ExampleApp.Models
         [Required(ErrorMessage = "Billing country is required")]
         public string? BillingCountry { get; set; }
 
+        [Required(ErrorMessage = "Billing postcode is required")]
         [MaxLength(20, ErrorMessage = "Billing postcode must not exceed 20 characters")]
         public string? BillingPostcode { get; set; }
     }

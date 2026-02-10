@@ -10,9 +10,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-address-lookup-legend";
 
-        private const string IsPageheadingAttributeName = "is-page-heading";
+        private const string IsPageHeadingAttributeName = "is-page-heading";
 
-        [HtmlAttributeName(IsPageheadingAttributeName)]
+        [HtmlAttributeName(IsPageHeadingAttributeName)]
         public bool? IsPageHeading { get; set; }
 
         /// <inheritdoc/>

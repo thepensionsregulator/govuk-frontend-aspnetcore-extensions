@@ -119,7 +119,6 @@
 		<ItemGroup>
 			<uSyncFilesFromGovUkFrontendUmbraco Include="$(GovUkFrontendUmbracoContentFiles)uSync\**" />
 			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(GovUkFrontendUmbracoContentFiles)Content\**" />
-			<PluginFilesFromGovUkFrontendUmbraco Include="$(GovUkFrontendUmbracoContentFiles)App_Plugins\**" />
 		</ItemGroup>
 		<Message Text="Detected ThePensionsRegulator.GovUk.Frontend.Umbraco as a transitive dependency. Copying files from $(GovUkFrontendUmbracoContentFiles) to $(ProjectDir)." Importance="high"
 			     Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false" />
@@ -128,9 +127,6 @@
 			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false" />
 		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
 		      DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)"
-			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false" />
-		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
-		      DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)"
 			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false" />
 
 		<!-- Copy files from this project to the consuming project. It's important to do this AFTER copying files for 
@@ -142,15 +138,12 @@
 		<ItemGroup>
 			<uSyncFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
 			<WwwrootFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
-			<PluginFilesFromTprFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
 		</ItemGroup>
 		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high" />
 		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" />
-		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 
 		<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
 		<Delete Files="$(ProjectDir)uSync\v9\DataTypes\TPRSectionCardsCardDescriptionRichTextEditor.config" Condition="Exists('$(ProjectDir)uSync\v9\DataTypes\TPRSectionCardsCardDescriptionRichTextEditor.config')" />
@@ -163,18 +156,6 @@
 		<!-- Generate .gitignore files so that files from the ThePensionsRegulator.Frontend.Umbraco package are not committed to the consuming project's source control. 
 			 There's no need to generate one for wwwroot\css because this package depends on ThePensionsRegulator.GovUk.Frontend.Umbraco, which already did that.
 		-->
-		<ItemGroup>
-			<TprFrontendUmbracoGitIgnoreText Include="TprFrontendUmbracoGitIgnoreText">
-				<Text>
-					*
-					!.gitignore
-				</Text>
-			</TprFrontendUmbracoGitIgnoreText>
-			<TprFrontendUmbracoGitIgnore Include="%(TprFrontendUmbracoGitIgnoreText.Text)" />
-		</ItemGroup>
-		<Message Text="Generating $(ProjectDir)App_Plugins\ThePensionsRegulator.Frontend.Umbraco\.gitignore" Importance="high" />
-		<WriteLinesToFile File="$(ProjectDir)App_Plugins\ThePensionsRegulator.Frontend.Umbraco\.gitignore" Lines="@(TprFrontendUmbracoGitIgnore)" Overwrite="True"/>
-
 		<ItemGroup>
 			<TprFrontendUmbracoUSyncGitIgnoreText Include="TprFrontendUmbracoUSyncGitIgnoreText">
 				<Text>

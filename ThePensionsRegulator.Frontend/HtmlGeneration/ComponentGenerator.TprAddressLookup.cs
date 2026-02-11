@@ -41,7 +41,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 else
                 {
                     legendTag.InnerHtml.AppendHtml(legendContent);
-                    legendTag.MergeCssClass("govuk-fieldset__legend-for-fieldset");
+                    legendTag.MergeCssClass("govuk-fieldset__legend--for-fieldset");
                 }
                                
 

@@ -44,7 +44,7 @@ class TprAddressLookup {
     }
 
     renderSearchView() {
-        this.clearContainerAndUpdateLegend("Search by postcode");
+        this.clearContainer();
 
         this.JsonResults = [];
 
@@ -62,7 +62,7 @@ class TprAddressLookup {
     }
 
     renderSelectView(addressResults) {
-        this.clearContainerAndUpdateLegend("Choose an address");
+        this.clearContainer();
 
         const addressOptions = addressResults.map(result => this.componentBuilder.createOption(result.id, result.address));
         const selectElement = this.componentBuilder.createAddressSelect(addressOptions);
@@ -82,7 +82,7 @@ class TprAddressLookup {
     }
 
     renderConfirmedView(address) {
-        this.clearContainerAndUpdateLegend();
+        this.clearContainer();
 
         const fullAddress = [
             address.addressLine1,
@@ -103,7 +103,7 @@ class TprAddressLookup {
     }
 
     renderInternationalManualEntryView() {
-        this.clearContainerAndUpdateLegend();
+        this.clearContainer();
         const addressLine1Input = this.componentBuilder.createGovukTextInputWithValidation(
             ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_1,
             ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1,
@@ -167,7 +167,7 @@ class TprAddressLookup {
     }
 
     renderUKManualEntryView() {
-        this.clearContainerAndUpdateLegend();
+        this.clearContainer();
 
         const addressLine1Input = this.componentBuilder.createGovukTextInputWithValidation(
             ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_1,
@@ -297,19 +297,9 @@ class TprAddressLookup {
         this.stateMachine.transition(AddressLookupStateMachine.STATES.MANNUAL_UK_ENTRY);
     }
 
-    clearContainerAndUpdateLegend(legendText) {
-        const legend = this.container.querySelector('legend');
-
-        // Remove all children except the legend
-        Array.from(this.container.children).forEach(child => {
-            if (child !== legend && !child.contains(legend)) {
-                this.container.removeChild(child);
-            }
-        });
-
-        // Update the legend text if it exists
-        if (legend && legendText) {
-            legend.textContent = legendText;
+    clearContainer() {
+        while (this.container.firstChild) {
+            this.container.removeChild(this.container.firstChild);
         }
     }
 

@@ -78,7 +78,7 @@
 		);
 }
 
-<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" data-address-lookup-url=@addressLookupEndpointUrlProvider.GetAddressLookupEndpoint()>
+<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" data-address-lookup-search-url=@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint() data-address-lookup-id-url=@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()>
     <tpr-address-lookup-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</tpr-address-lookup-legend>
 
     @if (hintTextBlocks is not null && hintTextBlocks.Any())

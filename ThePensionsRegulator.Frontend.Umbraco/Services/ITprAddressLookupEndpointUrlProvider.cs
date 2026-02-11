@@ -2,6 +2,8 @@
 {
     public interface ITprAddressLookupEndpointUrlProvider
     {
-        public string GetAddressLookupEndpoint();
+        public string GetAddressLookupSearchEndpoint();
+
+        public string GetAddressLookupIdEndpoint();
     }
 }

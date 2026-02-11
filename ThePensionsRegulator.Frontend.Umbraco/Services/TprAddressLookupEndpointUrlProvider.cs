@@ -11,11 +11,19 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
             _addressLookupSection = configuration.GetSection("AddressLookup");
         }
 
-        public string GetAddressLookupEndpoint()
+        public string GetAddressLookupSearchEndpoint()
         {
-            var apiEndpoint = _addressLookupSection["ApiEndpoint"] ?? string.Empty;
+            return GetValue("SearchEndpoint");
+        }
+        
+        public string GetAddressLookupIdEndpoint()
+        {
+            return GetValue("AddressByIdEndpoint");
+        }
 
-            return apiEndpoint;
+        private string GetValue(string section) 
+        {
+            return _addressLookupSection[section] ?? string.Empty;
         }
     }
 }

@@ -7,10 +7,11 @@ class TprAddressLookup {
     constructor(element, key) {
         this.container = element;
         this.index = key;
-        this.apiEndpoint = element.getAttribute("data-address-lookup-url");
+        this.searchEndpoint = element.getAttribute("data-address-lookup-search-url");
+        this.idEndpoint = element.getAttribute("data-address-lookup-id-url");
         this.stateMachine = new AddressLookupStateMachine();
         this.stateMachine.onChange((newState, data) => this.onStateChange(newState, data));
-        this.apiService = new AddressLookupApiService(this.apiEndpoint);
+        this.apiService = new AddressLookupApiService(this.searchEndpoint, this.idEndpoint);
         this.validator = new AddressLookupValidator(element);
         this.componentBuilder = new AddressLookupComponentBuilder(this.index, ADDRESS_LOOKUP_CONFIG);
 

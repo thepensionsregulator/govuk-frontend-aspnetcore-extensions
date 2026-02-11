@@ -206,21 +206,17 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
 
             var parentBlockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
                 UmbracoBlockGridFactory.CreateOverridableBlock(
-                    new OverridablePublishedElement(
-                        UmbracoBlockGridFactory.CreateContentOrSettings(DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS)
-                            .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, UmbracoBlockListFactory.CreateOverridableBlockListModel(Array.Empty<OverridableBlockListItem>()))
-                            .Object
-                        )
+                    UmbracoBlockGridFactory.CreateContentOrSettings(DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS)
+                        .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, UmbracoBlockListFactory.CreateOverridableBlockListModel(Array.Empty<OverridableBlockListItem>()))
+                        .Object
                     )
                 );
 
             var overriddenChildBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
                 UmbracoBlockListFactory.CreateOverridableBlock(
-                    new OverridablePublishedElement(
-                        UmbracoBlockListFactory.CreateContentOrSettings(OVERRIDDEN_BLOCK_TYPE_ALIAS)
-                            .SetupUmbracoTextboxPropertyValue(OVERRIDDEN_TEXT_PROPERTY, OVERRIDDEN_TEXT_VALUE)
-                            .Object
-                        )
+                    UmbracoBlockListFactory.CreateContentOrSettings(OVERRIDDEN_BLOCK_TYPE_ALIAS)
+                        .SetupUmbracoTextboxPropertyValue(OVERRIDDEN_TEXT_PROPERTY, OVERRIDDEN_TEXT_VALUE)
+                        .Object
                     )
                 );
             parentBlockGrid[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, overriddenChildBlockList);

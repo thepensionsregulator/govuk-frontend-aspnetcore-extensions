@@ -216,11 +216,9 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
         {
             var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
                 UmbracoBlockListFactory.CreateBlock(
-                    new OverridablePublishedElement(
-                        UmbracoContentFactory.CreateContent<IPublishedElement>()
-                        .SetupUmbracoTextboxPropertyValue(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, ORIGINAL_VALUE)
-                        .Object
-                        )
+                    UmbracoContentFactory.CreateContent<IOverridablePublishedElement>()
+                    .SetupUmbracoTextboxPropertyValue(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, ORIGINAL_VALUE)
+                    .Object
                     )
                 );
 
@@ -238,11 +236,9 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
         {
             var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
                 UmbracoBlockListFactory.CreateBlock(
-                    new OverridablePublishedElement(
-                        UmbracoContentFactory.CreateContent<IPublishedElement>()
-                        .SetupUmbracoTextboxPropertyValue(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, ORIGINAL_VALUE)
-                        .Object
-                        )
+                    UmbracoContentFactory.CreateContent<IOverridablePublishedElement>()
+                    .SetupUmbracoTextboxPropertyValue(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, ORIGINAL_VALUE)
+                    .Object
                     )
                 );
 

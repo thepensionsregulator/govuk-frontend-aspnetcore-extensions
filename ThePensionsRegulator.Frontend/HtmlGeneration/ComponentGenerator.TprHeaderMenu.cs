@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -136,10 +137,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     headerMenuList.InnerHtml.AppendHtml(mobileMenuItem);
 
                     var arrowContainer = new TagBuilder("div");
-                    arrowContainer.AddCssClass("tpr-mobile-menu__arrow-container");
+                    arrowContainer.AddCssClass("tpr-header-menu__arrow-container");
 
                     var arrow = new TagBuilder("button");
-                    arrow.AddCssClass("tpr-mobile-menu__arrow");
+                    arrow.AddCssClass("tpr-header-menu__arrow");
                     if (tprHeaderBar.HeaderMenuItemAriaLabel != null)
                     {
                         arrow.Attributes.Add("aria-label", $"{item.LinkText}: {tprHeaderBar.HeaderMenuItemAriaLabel}"); 

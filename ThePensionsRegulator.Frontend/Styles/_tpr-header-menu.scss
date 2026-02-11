@@ -58,14 +58,14 @@
     padding-left: 0.3rem;
 }
 
-.tpr-mobile-menu__toggle--open::before {
-    content: "x";
-    font-size: 1.5rem;
-    font-weight: 700;
-    font-family: $govuk-font-family;
-    color: $tpr-colour-royal-blue;
-    margin-left: 0.5rem;
-}
+    .tpr-mobile-menu__toggle--open::before {
+        content: "x";
+        font-size: 1.5rem;
+        font-weight: 700;
+        font-family: $govuk-font-family;
+        color: $tpr-colour-royal-blue;
+        margin-left: 0.5rem;
+    }
 
 .tpr-mobile-menu__svg {
     width: 1.5rem;
@@ -75,9 +75,9 @@
     display: flex;
 }
 
-.tpr-mobile-menu__svg.tpr-mobile-menu__svg--hide {
-    display: none;
-}
+    .tpr-mobile-menu__svg.tpr-mobile-menu__svg--hide {
+        display: none;
+    }
 
 .tpr-mobile-menu__toggle .tpr-header-menu__menu-icon {
     fill: $tpr-colour-white;
@@ -127,10 +127,10 @@
 
         &:link {
             color: $tpr-colour-royal-blue;
-    }
+        }
 
         &:visited {
-            /* color: $tpr-colour-violet;*/  //when active are unable to see link
+            /* color: $tpr-colour-violet;*/ //when active are unable to see link
         }
     }
 
@@ -147,7 +147,7 @@
         flex-direction: column;
     }
 
-    .tpr-mobile-menu__arrow-container {
+    .tpr-header-menu__arrow-container {
         position: absolute;
         left: 85%;
         padding: 0.7rem;
@@ -157,9 +157,9 @@
         margin-top: -3rem;
     }
 
-    .tpr-mobile-menu__arrow {
+    .tpr-header-menu__arrow {
         display: inline-block;
-        border: solid $tpr-colour-royal-blue; 
+        border: solid $tpr-colour-royal-blue;
         border-width: 0 3px 3px 0;
         padding: 4.5px;
         left: 93%;
@@ -170,26 +170,26 @@
         background-color: transparent;
     }
 
-    .tpr-mobile-menu__arrow-right {
+    .tpr-header-menu__arrow-right {
         transform: rotate(-45deg);
         -webkit-transform: rotate(-45deg);
         top: 27%;
     }
 
-    .tpr-mobile-menu__arrow-down {
+    .tpr-header-menu__arrow-down {
         transform: rotate(45deg);
         -webkit-transform: rotate(45deg);
         top: 1rem;
     }
 
-    .tpr-mobile-menu__arrow-container:focus-within {
+    .tpr-header-menu__arrow-container:focus-within {
         color: $tpr-colour-black;
         background-color: $tpr-colour-tangerine-yellow;
         box-shadow: 0 -2px $tpr-colour-tangerine-yellow, 0 4px $tpr-colour-black;
         text-decoration: none;
     }
 
-    .tpr-mobile-menu__arrow:focus-visible {
+    .tpr-header-menu__arrow:focus-visible {
         outline: $govuk-focus-width solid $govuk-focus-colour;
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
@@ -220,9 +220,8 @@
     }
 
     .tpr-header-menu_menu-item-arrow--active {
-        background-color:transparent;
-
-}
+        background-color: transparent;
+    }
 }
 
 @media(min-width: 993px) {
@@ -255,14 +254,14 @@
             padding: 1rem;
             padding-right: 0.3rem;
             padding-left: 0.3rem;
-            padding-bottom: 1.2rem; 
+            padding-bottom: 1.2rem;
         }
     }
 
-    .tpr-header-menu__nav{
+    .tpr-header-menu__nav {
         position: relative;
 
-        ul{
+        ul {
             position: relative;
         }
     }
@@ -277,19 +276,19 @@
         }
     }
 
-    .tpr-mobile-menu__arrow-container {
+    .tpr-header-menu__arrow-container {
         display: inline;
         padding-bottom: 1.2rem;
         padding-top: 1rem;
         padding-right: 0.1rem;
     }
 
-    .tpr-mobile-menu__arrow {
+    .tpr-header-menu__arrow {
         position: relative;
         bottom: 0.3rem;
         border: solid $tpr-colour-white;
         border-width: 0 3px 3px 0;
-        padding:0;
+        padding: 0;
         margin: 0.3rem;
         cursor: pointer;
         width: 0.8rem;
@@ -299,27 +298,25 @@
         -webkit-transform: rotate(45deg);
     }
 
-    .tpr-mobile-menu__arrow-up {
+    .tpr-header-menu__arrow-up {
         transform: rotate(225deg);
         -webkit-transform: rotate(225deg);
         bottom: 0rem;
     }
 
-    .tpr-mobile-menu__arrow-container:focus-within {
+    .tpr-header-menu__arrow-container:focus-within {
         box-shadow: 0 0 0 2px $tpr-colour-tangerine-yellow, 0 0 0 4px $tpr-colour-black;
         color: $tpr-colour-black;
         background-color: $tpr-colour-white;
         outline: 3px solid transparent;
     }
 
-    .tpr-mobile-menu__arrow:focus {
+    .tpr-header-menu__arrow:focus {
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
-        }
+    }
 
-
-
-    .tpr-mobile-menu__arrow:active .tpr-header-menu__nav-menu-item:hover .tpr-header-menu__nav-sub-menu, .tpr-header-menu__nav-menu-item:focus-within .tpr-header-menu__nav-sub-menu {
+    .tpr-header-menu__arrow:active .tpr-header-menu__nav-menu-item:hover .tpr-header-menu__nav-sub-menu, .tpr-header-menu__nav-menu-item:focus-within .tpr-header-menu__nav-sub-menu {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         background: $tpr-colour-white;
@@ -335,14 +332,13 @@
         a {
             color: $tpr-colour-royal-blue;
         }
-
-        a:hover {
-            color: none;
-            background: none;
-        }
+            a:hover {
+                color: none;
+                background: none;
+            }
     }
 
-    .tpr-mobile-menu__arrow:active .tpr-header-menu__nav-menu-item:hover .tpr-header-menu__nav-sub-menu-item, .tpr-header-menu__nav-menu-item:focus-within .tpr-header-menu__nav-sub-menu-item {
+    .tpr-header-menu__arrow:active .tpr-header-menu__nav-menu-item:hover .tpr-header-menu__nav-sub-menu-item, .tpr-header-menu__nav-menu-item:focus-within .tpr-header-menu__nav-sub-menu-item {
         display: flex;
         flex: 0 0 25%;
         box-sizing: border-box;
@@ -353,7 +349,6 @@
     .tpr-header-menu__nav-sub-menu-item-title {
         display: flex
     }
-
 
     .tpr-header-menu__nav-menu-item.tpr-header-menu__nav-final-item {
         margin-left: auto;
@@ -386,47 +381,38 @@
         color: $tpr-colour-black;
     }
 
-    .tpr-mobile-menu__arrow-container:has(.tpr-mobile-menu__arrow:hover) {
-        background: $tpr-colour-white;      
+    .tpr-header-menu__arrow-container:has(.tpr-header-menu__arrow:hover) {
+        background: $tpr-colour-white;
     }
 
-    .tpr-header-menu__nav-menu-item:has(.tpr-header-menu__nav-sub-menu:focus-within) > a { //focus within sub menu
+    .tpr-header-menu__nav-menu-item:has(.tpr-header-menu__nav-sub-menu:focus-within) > a {
         background: $tpr-colour-white;
         color: $tpr-colour-black;
     }
 
-    .tpr-header-menu__nav-menu-item:has(.tpr-header-menu__nav-sub-menu:focus-within) .tpr-mobile-menu__arrow-container {
+    .tpr-header-menu__nav-menu-item:has(.tpr-header-menu__nav-sub-menu:focus-within) .tpr-header-menu__arrow-container {
         background: $tpr-colour-white;
 
-        .tpr-mobile-menu__arrow{
+        .tpr-header-menu__arrow {
             border-right: $govuk-focus-width solid $tpr-colour-black;
             border-bottom: $govuk-focus-width solid $tpr-colour-black;
         }
     }
 
-    .tpr-mobile-menu__arrow:hover {
+    .tpr-header-menu__arrow:hover {
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
     }
 
-    .tpr-mobile-menu__arrow:focus-visible {
+    .tpr-header-menu__arrow:focus-visible {
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
         outline: none;
     }
 
-    .tpr-header-menu__nav-menu-item{
+    .tpr-header-menu__nav-menu-item {
         margin-right: 0.5rem;
     }
-
-    .tpr-header-menu__nav-sub-menu {
-        a {
-           /* outline: $govuk-focus-width $tpr-colour-royal-blue;
-            box-shadow: 0 5px $tpr-colour-black, 0 7px $tpr-colour-tangerine-yellow;
-            background-color: $tpr-colour-white;*/
-        }
-    }
-
 }
 
 .tpr-header-menu__nav-menu-item--active {
@@ -437,7 +423,6 @@
 .tpr-header-menu_menu-item-arrow--active {
     background: $tpr-colour-violet;
 }
-
 
 @media(min-width: 672px) {
 

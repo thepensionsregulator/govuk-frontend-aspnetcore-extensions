@@ -28,13 +28,14 @@
         FORM_GROUP: "govuk-form-group",
         LABEL: "govuk-label",
         INPUT: "govuk-input",
-        INPUT_WIDTH_10: "govuk-input--width-10",
         INPUT_WIDTH_20: "govuk-input--width-20",
         SELECT: "govuk-select",
         BUTTON_SECONDARY: "govuk-button govuk-button--secondary",
         LINK: "govuk-link",
         LINK_LIST: "govuk-list tpr-address-lookup__links",
-        BODY: "govuk-body"
+        BODY: "govuk-body",
+        FIELDSET: "govuk-fieldset",
+        LEGEND: "govuk-fieldset__legend govuk-fieldset__legend--for-fieldset"
     },
 
     INPUT_WIDTHS: {
@@ -49,9 +50,13 @@
 
     LABELS: {
         BUILDING_NAME: "Building name",
-        POSTCODE: "Postcode",
-        FIND_ADDRESS_BUTTON: "Find address",
+        CHOOSE_AN_ADDRESS: "Choose an address",
         CONFIRM_ADDRESS_BUTTON: "Confirm address",
+        ENTER_NEW_INTERNATIONAL_ADDRESS: "Enter new international address",
+        ENTER_NEW_UK_ADDRESS: "Enter new UK address",
+        POSTCODE: "Postcode",
+        SEARCH_BY_POSTCODE: "Search by postcode",
+        FIND_ADDRESS_BUTTON: "Find address",
         SELECT_ADDRESS_PLACEHOLDER: "",
         ADDRESS_LINE_1: "Address line 1",
         ADDRESS_LINE_2: "Address line 2",
@@ -73,6 +78,7 @@
     ERROR_MESSAGES: {
         SELECT_REQUIRED: "Select an address",
         MAX_LENGTH_500: "Your answer must not exceed 500 characters",
+        MAX_LENGTH_100: "Must be no more than 100 characters",
         MAX_LENGTH_20: "Your answer must not exceed 20 characters",
         INVALID_COUNTRY: "This is not a valid country",
         COUNTRY_NOT_UK: "This page is for international addresses",

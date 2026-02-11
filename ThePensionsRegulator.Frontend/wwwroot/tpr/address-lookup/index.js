@@ -4,6 +4,7 @@ import { AddressLookupStateMachine } from "./state-machine.js";
 import { AddressLookupComponentBuilder } from "./component-builder.js";
 import { AddressLookupValidator } from "./validator.js";
 import { AddressMapper } from "./mapper.js";
+import { govuk as govukValidator } from "../../../../_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-validation.js";
 
 class TprAddressLookup {
     constructor(element, key) {
@@ -18,8 +19,14 @@ class TprAddressLookup {
         this.componentBuilder = new AddressLookupComponentBuilder(this.index, ADDRESS_LOOKUP_CONFIG);
         this.addressMapper = new AddressMapper();
 
+        this.validator = govukValidator().getValidator();
+
+        console.log(this.validator);
+
         this.renderSearchView();
     }
+
+
 
     JsonResults = [];
 
@@ -48,15 +55,18 @@ class TprAddressLookup {
 
         this.JsonResults = [];
 
-        const buildingNameGroup = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.BUILDING_NAME, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.BUILDING_INPUT, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE);
+        const fieldset = this.componentBuilder.createFieldset(ADDRESS_LOOKUP_CONFIG.LABELS.SEARCH_BY_POSTCODE);
+        const buildingNameGroup = this.componentBuilder.createGovukTextInputWithValidation(ADDRESS_LOOKUP_CONFIG.LABELS.BUILDING_NAME, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.BUILDING_INPUT, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE, undefined, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_100);
         const postcodeGroup = this.componentBuilder.createPostcodeTextInput();
         const findAddressButton = this.componentBuilder.createFindAddressButton((event) => this.findAddressButtonOnClick(event));
         const enterInternationalAddressLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.ENTER_INTERNATIONAL_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ENTER_INTERNATIONAL_ADDRESS);
         enterInternationalAddressLink.addEventListener("click", (event) => { this.enterInternationalAddressOnClick(event); });
         const linkList = this.componentBuilder.createLinkList([ enterInternationalAddressLink ]);
 
-        this.container.appendChild(buildingNameGroup);
-        this.container.appendChild(postcodeGroup);
+        fieldset.appendChild(buildingNameGroup);
+        fieldset.appendChild(postcodeGroup);
+
+        this.container.appendChild(fieldset);
         this.container.appendChild(findAddressButton);
         this.container.appendChild(linkList);
     }
@@ -65,16 +75,19 @@ class TprAddressLookup {
         this.clearContainer();
 
         const addressOptions = addressResults.map(result => this.componentBuilder.createOption(result.id, result.address));
-        const selectElement = this.componentBuilder.createAddressSelect(addressOptions);
+        const selectElement = this.componentBuilder.createAddressSelect(ADDRESS_LOOKUP_CONFIG.LABELS.CHOOSE_AN_ADDRESS, addressOptions);
 
         const confirmAddressButton = this.componentBuilder.createConfirmAddressButton((event) => this.confirmAddressOnClick(event));
 
         const enterAddressNotOnListLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.ENTER_ADDRESS_NOT_ON_LIST, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_NOT_ON_LIST);
         enterAddressNotOnListLink.addEventListener("click", event => { this.enterAddressNotOnListOnClick(event); });
+        const enterAddressNotOnListLinkItem = this.componentBuilder.createListItem(enterAddressNotOnListLink);
+
         const returnToAddressLookupLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.RETURN_TO_POSTCODE_SEARCH, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.RETURN_TO_POSTCODE);
         returnToAddressLookupLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
+        const returnToAddressLookupLinkItem = this.componentBuilder.createListItem(returnToAddressLookupLink);
 
-        const linkList = this.componentBuilder.createLinkList([enterAddressNotOnListLink, returnToAddressLookupLink]);
+        const linkList = this.componentBuilder.createLinkList([enterAddressNotOnListLinkItem, returnToAddressLookupLinkItem]);
 
         this.container.appendChild(selectElement);
         this.container.appendChild(confirmAddressButton);
@@ -104,6 +117,9 @@ class TprAddressLookup {
 
     renderInternationalManualEntryView() {
         this.clearContainer();
+
+        const fieldset = this.componentBuilder.createFieldset(ADDRESS_LOOKUP_CONFIG.LABELS.ENTER_NEW_INTERNATIONAL_ADDRESS);
+
         const addressLine1Input = this.componentBuilder.createGovukTextInputWithValidation(
             ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_1,
             ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1,
@@ -156,18 +172,22 @@ class TprAddressLookup {
         const returnToAddressLookupLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.RETURN_TO_POSTCODE_SEARCH, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.RETURN_TO_POSTCODE);
         const linkList = this.componentBuilder.createLinkList([returnToAddressLookupLink]);
 
-        this.container.appendChild(addressLine1Input);
-        this.container.appendChild(addressLine2Input);
-        this.container.appendChild(townOrCityInput);
-        this.container.appendChild(regionInput);
-        this.container.appendChild(countryInput);
-        this.container.appendChild(postcodeInput);
+        fieldset.appendChild(addressLine1Input);
+        fieldset.appendChild(addressLine2Input);
+        fieldset.appendChild(townOrCityInput);
+        fieldset.appendChild(regionInput);
+        fieldset.appendChild(countryInput);
+        fieldset.appendChild(postcodeInput);
+
+        this.container.appendChild(fieldset);
         this.container.appendChild(confirmAddressButton);
         this.container.appendChild(linkList);
     }
 
     renderUKManualEntryView() {
         this.clearContainer();
+
+        const fieldset = this.componentBuilder.createFieldset(ADDRESS_LOOKUP_CONFIG.LABELS.ENTER_NEW_UK_ADDRESS);
 
         const addressLine1Input = this.componentBuilder.createGovukTextInputWithValidation(
             ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_1,
@@ -214,11 +234,13 @@ class TprAddressLookup {
         const returnToAddressLookupLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.RETURN_TO_POSTCODE_SEARCH, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.RETURN_TO_POSTCODE);
         const linkList = this.componentBuilder.createLinkList([returnToAddressLookupLink]);
 
-        this.container.appendChild(addressLine1Input);
-        this.container.appendChild(addressLine2Input);
-        this.container.appendChild(townOrCityInput);
-        this.container.appendChild(countyInput);
-        this.container.appendChild(postcodeInput);
+        fieldset.appendChild(addressLine1Input);
+        fieldset.appendChild(addressLine2Input);
+        fieldset.appendChild(townOrCityInput);
+        fieldset.appendChild(countyInput);
+        fieldset.appendChild(postcodeInput);
+
+        this.container.appendChild(fieldset);
         this.container.appendChild(confirmAddressButton);
         this.container.appendChild(linkList);
     }
@@ -321,7 +343,7 @@ class TprAddressLookup {
         this.JsonResults = searchResults.results;
 
         if (searchResults.results.length === 1) {
-            this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address: searchResults.results[0].DPA });
+            this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address: searchResults.results[0] });
         } else if (searchResults.results.length > 1) {
             this.stateMachine.transition(AddressLookupStateMachine.STATES.SELECT, { results: searchResults.results });
         } else {

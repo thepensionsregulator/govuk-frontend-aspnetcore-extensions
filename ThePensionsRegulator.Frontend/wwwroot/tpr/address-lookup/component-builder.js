@@ -6,7 +6,7 @@ class AddressLookupComponentBuilder {
     }
 
     createPostcodeTextInput() {
-        const formGroup = this.createGovukTextInput(this.config.LABELS.POSTCODE, this.config.DATA_ATTRIBUTES.POSTCODE, this.config.CSS_CLASSES.INPUT_WIDTH_10);
+        const formGroup = this.createGovukTextInput(this.config.LABELS.POSTCODE, this.config.DATA_ATTRIBUTES.POSTCODE, this.config.INPUT_WIDTHS.LARGE);
         const input = formGroup.querySelector("input");
         input.setAttribute("data-val", "true");
         input.setAttribute("required", "required");
@@ -54,6 +54,19 @@ class AddressLookupComponentBuilder {
         }
 
         return formGroup;
+    }
+
+    createFieldset(legendText) {
+        const fieldset = document.createElement("fieldset");
+        fieldset.classList = this.config.CSS_CLASSES.FIELDSET;
+
+        const legend = document.createElement("legend");
+        legend.classList = this.config.CSS_CLASSES.LEGEND;
+        legend.innerText = legendText;
+
+        fieldset.appendChild(legend);
+
+        return fieldset;    
     }
 
     createConfirmedAddressParagraph(address, postcode) {
@@ -125,16 +138,23 @@ class AddressLookupComponentBuilder {
         return listItem;
     }
 
-    createAddressSelect(addressOptions) {
+    createAddressSelect(labelText, addressOptions) {
         const formGroupContainer = document.createElement("div");
         formGroupContainer.classList = this.config.CSS_CLASSES.FORM_GROUP;
+
+        const inputId = `${this.config.FIELD_NAMES.SELECT_ADDRESS}-${this.index}`;
+        const label = document.createElement("label");
+        label.classList = this.config.CSS_CLASSES.LABEL;
+        label.innerText = labelText;
+        label.setAttribute("for", inputId);
 
         const select = document.createElement("select");
         select.setAttribute(this.config.ATTRIBUTES.BASE, this.config.DATA_ATTRIBUTES.SELECT_ADDRESS);
         select.setAttribute("data-val", "true");
         select.setAttribute("data-val-required", this.config.ERROR_MESSAGES.SELECT_REQUIRED);
         select.classList = this.config.CSS_CLASSES.SELECT;
-        select.name = `${this.config.FIELD_NAMES.SELECT_ADDRESS}-${this.index}`;
+        select.name = inputId;
+        select.id = inputId;
 
         const blankOption = new Option("", "", true, true);
         blankOption.selected = "selected";
@@ -146,6 +166,7 @@ class AddressLookupComponentBuilder {
             });
         }
 
+        formGroupContainer.appendChild(label);
         formGroupContainer.appendChild(select);
 
         return formGroupContainer;

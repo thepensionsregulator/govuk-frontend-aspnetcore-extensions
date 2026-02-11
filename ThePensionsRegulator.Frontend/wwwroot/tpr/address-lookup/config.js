@@ -57,6 +57,7 @@
         ADDRESS_LINE_2: "Address line 2",
         TOWN_OR_CITY: "Town or city",
         REGION_INTERNATIONAL: "Province/region/state (optional)",
+        COUNTY: "County",
         COUNTRY: "Country",
         POSTCODE_INTERNATIONAL: "Postal code/zip code",
 

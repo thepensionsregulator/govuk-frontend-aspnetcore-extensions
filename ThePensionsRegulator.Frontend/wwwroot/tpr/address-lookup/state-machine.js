@@ -16,7 +16,9 @@
         const validTransitions = {
             [AddressLookupStateMachine.STATES.SEARCH]: [AddressLookupStateMachine.STATES.SELECT, AddressLookupStateMachine.STATES.MANNUAL_INTERNATIONAL_ENTRY],
             [AddressLookupStateMachine.STATES.SELECT]: [AddressLookupStateMachine.STATES.CONFIRMED, AddressLookupStateMachine.STATES.SEARCH, AddressLookupStateMachine.STATES.MANNUAL_UK_ENTRY],
-            [AddressLookupStateMachine.STATES.CONFIRMED]: [AddressLookupStateMachine.STATES.SEARCH]
+            [AddressLookupStateMachine.STATES.CONFIRMED]: [AddressLookupStateMachine.STATES.SEARCH],
+            [AddressLookupStateMachine.STATES.MANNUAL_INTERNATIONAL_ENTRY]: [AddressLookupStateMachine.STATES.CONFIRMED],
+            [AddressLookupStateMachine.STATES.MANNUAL_UK_ENTRY]: [AddressLookupStateMachine.STATES.CONFIRMED]
         };
 
         if (!validTransitions[this.currentState].includes(newState)) {

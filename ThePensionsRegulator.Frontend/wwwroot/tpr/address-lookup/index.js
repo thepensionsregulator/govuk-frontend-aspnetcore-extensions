@@ -3,6 +3,8 @@ import { ADDRESS_LOOKUP_CONFIG } from "./config.js";
 import { AddressLookupStateMachine } from "./state-machine.js";
 import { AddressLookupComponentBuilder } from "./component-builder.js";
 import { AddressLookupValidator } from "./validator.js";
+import { AddressMapper } from "./mapper.js";
+
 class TprAddressLookup {
     constructor(element, key) {
         this.container = element;
@@ -14,9 +16,9 @@ class TprAddressLookup {
         this.apiService = new AddressLookupApiService(this.searchEndpoint, this.idEndpoint);
         this.validator = new AddressLookupValidator(element);
         this.componentBuilder = new AddressLookupComponentBuilder(this.index, ADDRESS_LOOKUP_CONFIG);
+        this.addressMapper = new AddressMapper();
 
         this.renderSearchView();
-        console.log(`Creating TPR address lookup component with id: ${this.index}`);
     }
 
     JsonResults = [];
@@ -30,7 +32,7 @@ class TprAddressLookup {
                 this.renderSelectView(data.results);
                 break;
             case AddressLookupStateMachine.STATES.CONFIRMED:
-                this.renderConfirmedView(data);
+                this.renderConfirmedView(data.address);
                 break;
             case AddressLookupStateMachine.STATES.MANNUAL_INTERNATIONAL_ENTRY:
                 this.renderInternationalManualEntryView();
@@ -42,7 +44,7 @@ class TprAddressLookup {
     }
 
     renderSearchView() {
-        this.clearContainer();
+        this.clearContainerAndUpdateLegend("Search by postcode");
 
         this.JsonResults = [];
 
@@ -60,9 +62,9 @@ class TprAddressLookup {
     }
 
     renderSelectView(addressResults) {
-        this.clearContainer();
+        this.clearContainerAndUpdateLegend("Choose an address");
 
-        const addressOptions = addressResults.map(result => this.componentBuilder.createOption(result.DPA.UPRN, result.DPA.ADDRESS));
+        const addressOptions = addressResults.map(result => this.componentBuilder.createOption(result.id, result.address));
         const selectElement = this.componentBuilder.createAddressSelect(addressOptions);
 
         const confirmAddressButton = this.componentBuilder.createConfirmAddressButton((event) => this.confirmAddressOnClick(event));
@@ -79,18 +81,17 @@ class TprAddressLookup {
         this.container.appendChild(linkList);
     }
 
-    renderConfirmedView(UPRN) {
-        // renderConfirmedView should always be provided with an addres object.
-        // If UK manual entry, we will have address line 1, address line 2, town, county, post code
-        // If international manual entry, we will have address line 1, address line 2, town, region, country, post code
-        // If from the postcode lookup API, we will need to have mapped that data to an object that fits the above format. We don't know how to do that mapping yet.
+    renderConfirmedView(address) {
+        this.clearContainerAndUpdateLegend();
 
-        this.clearContainer();
+        const fullAddress = [
+            address.addressLine1,
+            address.addressLine2,
+            address.townOrCity,
+            address.county || address.region,
+            address.country].filter(Boolean).join(", ");
 
-        const selectedAddress = this.JsonResults.find(x => x.DPA.UPRN === UPRN);
-        console.log(selectedAddress);
-
-        const confirmedAddress = this.componentBuilder.createConfirmedAddressParagraph(selectedAddress.DPA.ADDRESS, selectedAddress.DPA.POSTCODE);
+        const confirmedAddress = this.componentBuilder.createConfirmedAddressParagraph(fullAddress, address.postcode);
 
         const editLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.EDIT_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.EDIT_ADDRESS);
         editLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
@@ -102,7 +103,7 @@ class TprAddressLookup {
     }
 
     renderInternationalManualEntryView() {
-        this.clearContainer();
+        this.clearContainerAndUpdateLegend();
         const addressLine1Input = this.componentBuilder.createGovukTextInputWithValidation(
             ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_1,
             ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1,
@@ -166,7 +167,7 @@ class TprAddressLookup {
     }
 
     renderUKManualEntryView() {
-        this.clearContainer();
+        this.clearContainerAndUpdateLegend();
 
         const addressLine1Input = this.componentBuilder.createGovukTextInputWithValidation(
             ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_1,
@@ -193,8 +194,8 @@ class TprAddressLookup {
         );
 
         const countyInput = this.componentBuilder.createGovukTextInputWithValidation(
-            ADDRESS_LOOKUP_CONFIG.LABELS.COUNTRY,
-            ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY,
+            ADDRESS_LOOKUP_CONFIG.LABELS.COUNTY,
+            ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY,
             ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE,
             undefined,
             ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500
@@ -202,8 +203,8 @@ class TprAddressLookup {
 
         //TODO: Better validation of what a UK postcode is, should use a regex
         const postcodeInput = this.componentBuilder.createGovukTextInputWithValidation(
-            ADDRESS_LOOKUP_CONFIG.LABELS.COUNTRY,
-            ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY,
+            ADDRESS_LOOKUP_CONFIG.LABELS.POSTCODE,
+            ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE,
             ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE,
             ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED,
             ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_20
@@ -243,8 +244,8 @@ class TprAddressLookup {
             return;
         }
 
-        // Build an address object to pass to the confirmed state.
-        this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, {});
+        var address = this.addressMapper.mapFromManualInternationalEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, regionInput.value, countryInput.value, postcodeInput.value);
+        this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 
     confirmManualUKAddressOnClick(event) {
@@ -254,19 +255,19 @@ class TprAddressLookup {
         const addressLine1Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
         const addressLine2Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2);
         const townOrCityInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY);
-        const county = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY);
-        const postcode = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE);
+        const countyInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY);
+        const postcodeInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE);
 
-        const isValid = this.validator.validateMultiple([addressLine1Input, addressLine2Input, townOrCityInput, county, postcode]);
+        const isValid = this.validator.validateMultiple([addressLine1Input, addressLine2Input, townOrCityInput, countyInput, postcodeInput]);
         if (!isValid) {
             return;
         }
 
-        // Build an address object to pass to the confirmed state.
-        this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, {});
+        var address = this.addressMapper.mapFromManualUKEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, countyInput.value, postcodeInput.value);
+        this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 
-    confirmAddressOnClick(event) {
+    async confirmAddressOnClick(event) {
         event.preventDefault();
 
         const selectInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS);
@@ -276,9 +277,9 @@ class TprAddressLookup {
         }
 
         const selectedUPRN = selectInput.value;
-
-        // Build an address object to pass to the confirmed state.
-        this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, selectedUPRN);
+        const addressResult = await this.apiService.getAddressById(selectedUPRN);
+        const address = this.addressMapper.mapFromApiResult(addressResult);
+        this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 
     returnToSearchOnClick(event) {
@@ -296,9 +297,19 @@ class TprAddressLookup {
         this.stateMachine.transition(AddressLookupStateMachine.STATES.MANNUAL_UK_ENTRY);
     }
 
-    clearContainer() {
-        while (this.container.firstChild) {
-            this.container.removeChild(this.container.firstChild);
+    clearContainerAndUpdateLegend(legendText) {
+        const legend = this.container.querySelector('legend');
+
+        // Remove all children except the legend
+        Array.from(this.container.children).forEach(child => {
+            if (child !== legend && !child.contains(legend)) {
+                this.container.removeChild(child);
+            }
+        });
+
+        // Update the legend text if it exists
+        if (legend && legendText) {
+            legend.textContent = legendText;
         }
     }
 
@@ -330,7 +341,6 @@ class TprAddressLookup {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("TPR Address Lookup script loaded");
     const addressLookupComponents = document.querySelectorAll(ADDRESS_LOOKUP_CONFIG.COMPONENT_SELECTOR);
     addressLookupComponents.forEach((element, key) => {
         new TprAddressLookup(element, key);

@@ -123,14 +123,11 @@
         &:focus {
             background: $tpr-colour-tangerine-yellow;
             border-bottom: $govuk-focus-width solid $tpr-colour-black;
+            color: $tpr-colour-black;
         }
 
         &:link {
             color: $tpr-colour-royal-blue;
-        }
-
-        &:visited {
-            /* color: $tpr-colour-violet;*/ //when active are unable to see link
         }
     }
 

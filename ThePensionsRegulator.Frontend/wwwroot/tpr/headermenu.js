@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             overlay.forEach(o => o.addEventListener("click", toggleMobileMenu));
 
+            arrows.forEach(a => a.removeEventListener("click", onClickDisplaySubMenuDesktop));
+
             arrows.forEach(a => a.addEventListener("click", expandMobileMenuSubMenu));
             arrows.forEach(a => a.classList.toggle("tpr-header-menu__arrow-right"));
             arrows.forEach(a => a.classList.remove("tpr-header-menu__arrow-down"));

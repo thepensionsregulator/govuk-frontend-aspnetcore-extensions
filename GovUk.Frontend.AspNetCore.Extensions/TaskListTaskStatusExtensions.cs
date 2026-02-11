@@ -24,5 +24,15 @@ namespace GovUk.Frontend.AspNetCore.Extensions
 
         [GeneratedRegex("([A-Z])")]
         private static partial Regex CapitalLetters();
+
+        /// <summary>
+        /// Generate an HTML class name suitable for the <c>govuk-task-list-status</c> element.
+        /// </summary>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public static string AsHtmlClass(this TaskListTaskStatus status)
+        {
+            return "govuk-task-list__status-" + Regex.Replace(status.ToString(), "([A-Z])", "-$1").ToLowerInvariant();
+        }
     }
 }

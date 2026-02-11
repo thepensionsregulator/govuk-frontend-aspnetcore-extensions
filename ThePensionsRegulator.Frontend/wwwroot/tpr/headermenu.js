@@ -139,11 +139,40 @@ function handleOutsideClick(e) {
     openItem.focus();
 }
 
+let desktopSubMenuObserver = null;
+
+function observeSubMenuVisibility(item, subMenu, overlay) {
+
+    if (!("IntersectionObserver" in window)) return;
+
+    if (desktopSubMenuObserver) {
+        desktopSubMenuObserver.disconnect();
+    }
+
+    desktopSubMenuObserver = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) {
+            closeSubMenuDesktop(item, subMenu, overlay);
+        }
+    },
+        {
+            root: null,
+            threshold: 0
+       }
+     
+    );
+    desktopSubMenuObserver.observe(subMenu);
+}
+
 function closeSubMenuDesktop(item, subMenu, overlay) {
     subMenu.style.display = 'none';
     item.setAttribute("aria-expanded", "false");
     item.classList.remove("tpr-header-menu__arrow-up");
     overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+
+    if (desktopSubMenuObserver) {
+        desktopSubMenuObserver.disconnect();
+        desktopSubMenuObserver = null;
+    }
 }
 
 function openSubMenuDesktop(item, subMenu, overlay) {
@@ -152,6 +181,8 @@ function openSubMenuDesktop(item, subMenu, overlay) {
     item.classList.add("tpr-header-menu__arrow-up");
     subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style");
     overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
+
+    observeSubMenuVisibility(item, subMenu, overlay);
 }
 
 function keyboardToggleMobileMenu(e) {

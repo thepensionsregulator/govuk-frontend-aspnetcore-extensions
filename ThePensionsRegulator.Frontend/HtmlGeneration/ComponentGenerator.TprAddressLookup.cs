@@ -7,13 +7,20 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
     public partial class ComponentGenerator
     {
-        internal const string TprAddressLookupElement = "fieldset";
+        internal const string TprAddressLookupElement = "div";
         internal const bool AddressLookupIsPageHeadingByDefault = false;
 
-        public virtual TagBuilder GenerateTprAddressLookup(bool isLegendPageHeading, AttributeDictionary? legendAttributes, IHtmlContent? legendContent, IHtmlContent? childContent)
+        public virtual TagBuilder GenerateTprAddressLookup(bool isLegendPageHeading, AttributeDictionary? legendAttributes, IHtmlContent? legendContent, IHtmlContent? childContent, string? fieldsetDescribedBy)
         {
-            var fieldSet = new TagBuilder(TprAddressLookupElement);
-            fieldSet.AddCssClass("govuk-fieldset tpr-address-lookup");
+            var container = new TagBuilder(TprAddressLookupElement);
+            container.AddCssClass("tpr-address-lookup");
+
+            var fieldSet = new TagBuilder("fieldset");
+            fieldSet.AddCssClass("govuk-fieldset");
+            if (!string.IsNullOrEmpty(fieldsetDescribedBy))
+            {
+                fieldSet.Attributes.Add("described-by", fieldsetDescribedBy);
+            }
 
             if (legendContent is not null)
             {
@@ -46,7 +53,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 fieldSet.InnerHtml.AppendHtml(childContent);
             }
 
-            return fieldSet;
+            container.InnerHtml.AppendHtml(fieldSet);
+
+            return container;
         }
     }
 }

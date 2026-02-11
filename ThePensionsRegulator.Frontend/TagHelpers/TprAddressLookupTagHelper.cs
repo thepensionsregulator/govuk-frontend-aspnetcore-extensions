@@ -12,6 +12,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     public class TprAddressLookupTagHelper : TagHelper
     {
         internal const string TagName = "tpr-address-lookup";
+        internal const string DescribedByAttributeName = "described-by";
 
         private readonly ITprHtmlGenerator _htmlGenerator;
 
@@ -24,6 +25,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         {
 
         }
+
+        [HtmlAttributeName(DescribedByAttributeName)]
+        public string? DescribedBy { get; set; }
 
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -43,7 +47,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 addressLookupContext.IsLegendPageHeading,
                 addressLookupContext.LegendAttributes,
                 addressLookupContext.Legend,
-                childContent);
+                childContent,
+                DescribedBy);
 
             output.TagName = tagBuilder.TagName;
             output.MergeAttributes(tagBuilder);

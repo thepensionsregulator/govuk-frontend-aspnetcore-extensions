@@ -1,4 +1,5 @@
 ﻿using Moq;
+using ThePensionsRegulator.Umbraco.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Testing
@@ -24,7 +25,20 @@ namespace ThePensionsRegulator.Umbraco.Testing
 
             publishedContent.Setup(x => x.Key).Returns(Guid.NewGuid());
             publishedContent.Setup(x => x.Properties).Returns(new List<IPublishedProperty>());
+
+            var overridablePublishedElement = publishedContent as Mock<IOverridablePublishedElement>;
+            if (overridablePublishedElement != null)
+            {
+                overridablePublishedElement.Setup(element => element.OverrideValue(It.IsAny<string>(), It.IsAny<object>()))
+                    .Callback<string, object>((alias, overriddenValue) => SetupOverriddenValue(alias, overriddenValue, overridablePublishedElement));
+            }
+
             return publishedContent;
+        }
+
+        private static void SetupOverriddenValue<T>(string alias, T overriddenValue, Mock<IOverridablePublishedElement> overridablePublishedElement)
+        {
+            overridablePublishedElement.Setup(element => element.Value<T>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(overriddenValue);
         }
     }
 }

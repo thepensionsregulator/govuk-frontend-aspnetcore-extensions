@@ -11,7 +11,7 @@
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
-    var outerCssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var outerCssClasses = Model.Settings is not null ? Model.Settings.Value<string>(PropertyAliases.CssClasses) : "";
     var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.DocumentsBlockList);
 }
 

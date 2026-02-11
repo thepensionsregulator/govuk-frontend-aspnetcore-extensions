@@ -55,10 +55,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                     )
             });
 
-            var content = new OverridablePublishedElement(
-                UmbracoContentFactory.CreateContent<IPublishedElement>(ElementTypeAliases.Checkboxes)
+            var content =
+                UmbracoContentFactory.CreateContent<IOverridablePublishedElement>(ElementTypeAliases.Checkboxes)
                     .SetupUmbracoBlockListPropertyValue(PropertyAliases.Checkboxes, originalItems)
-                    .Object);
+                    .Object;
 
             var replacement = new CheckboxItemBase[]
             {
@@ -131,10 +131,9 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                     )
             });
 
-            var content = new OverridablePublishedElement(
-                UmbracoContentFactory.CreateContent<IPublishedElement>(ElementTypeAliases.Radios)
+            var content = UmbracoContentFactory.CreateContent<IOverridablePublishedElement>(ElementTypeAliases.Radios)
                     .SetupUmbracoBlockListPropertyValue(PropertyAliases.RadioButtons, originalItems)
-                    .Object);
+                    .Object;
 
             var replacement = new RadioItemBase[]
             {
@@ -205,10 +204,9 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                     )
             });
 
-            var content = new OverridablePublishedElement(
-                UmbracoContentFactory.CreateContent<IPublishedElement>(ElementTypeAliases.Select)
+            var content = UmbracoContentFactory.CreateContent<IOverridablePublishedElement>(ElementTypeAliases.Select)
                     .SetupUmbracoBlockListPropertyValue(PropertyAliases.SelectOptions, originalOptions)
-                    .Object);
+                    .Object;
 
             var replacement = new[]
             {
@@ -269,10 +267,9 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                     )
             });
 
-            var content = new OverridablePublishedElement(
-                UmbracoContentFactory.CreateContent<IPublishedElement>(ElementTypeAliases.SummaryCard)
+            var content = UmbracoContentFactory.CreateContent<IOverridablePublishedElement>(ElementTypeAliases.SummaryCard)
                     .SetupUmbracoBlockListPropertyValue(PropertyAliases.SummaryCardActions, originalItems)
-                    .Object);
+                    .Object;
 
             var replacement = new[]
             {
@@ -338,10 +335,9 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                     )
             });
 
-            var content = new OverridablePublishedElement(
-                UmbracoContentFactory.CreateContent<IPublishedElement>(componentAlias)
-                    .SetupUmbracoBlockListPropertyValue(listItemsPropertyAlias, originalItems)
-                    .Object);
+            var content = UmbracoContentFactory.CreateContent<IOverridablePublishedElement>(componentAlias)
+                .SetupUmbracoBlockListPropertyValue(listItemsPropertyAlias, originalItems)
+                .Object;
 
             var replacement = new[]
             {

@@ -52,9 +52,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
 
                     var taskListAttributes = options.Attributes.ToAttributeDictionary();
                     if (!string.IsNullOrEmpty(options.Classes)) { taskListAttributes.MergeAttribute("class", options.Classes); }
-                    if (!string.IsNullOrEmpty(options.IdPrefix)) { taskListAttributes.Add("id", options.IdPrefix); }
 
-                    return generator.GenerateTaskList(taskListAttributes, tasks).ToHtmlString(HtmlEncoder.Default);
+                    return generator.GenerateTaskList(taskListAttributes, tasks, options.IdPrefix).ToHtmlString(HtmlEncoder.Default);
                 });
 
         private static TaskStatus BuildStatus(OptionsJson.TaskListTask item)

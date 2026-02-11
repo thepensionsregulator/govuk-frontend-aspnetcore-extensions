@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
     <None Include="wwwroot\media\.gitignore" />
     <None Include="wwwroot\media\grphyhbj\example-powerpoint-file.pptx" />
     <None Include="wwwroot\media\icaposfq\example-pdf-file.pdf" />

@@ -98,11 +98,13 @@ class TprAddressLookup {
         this.clearContainer();
 
         const fullAddress = [
+            address.organisationName,
             address.addressLine1,
             address.addressLine2,
-            address.townOrCity,
+            address.town,
             address.county || address.region,
-            address.country].filter(Boolean).join(", ");
+            address.country,
+            address.postcode].filter(Boolean).join(", ");
 
         const confirmedAddress = this.componentBuilder.createConfirmedAddressParagraph(fullAddress, address.postcode);
 

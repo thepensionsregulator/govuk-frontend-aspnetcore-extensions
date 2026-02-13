@@ -1,9 +1,10 @@
 ﻿class AddressMapper {
     mapFromApiResult(apiResults) {
         return {
+            organisationName: apiResults.organisationName,
             addressLine1: apiResults.addressLine1,
             addressLine2: apiResults.addressLine2,
-            postTown: apiResults.town,
+            town: apiResults.town,
             county: apiResults.county,
             postcode: apiResults.postCode
         };
@@ -13,7 +14,7 @@
         return {
             addressLine1: addressLine1,
             addressLine2: addressLine2 || '',
-            postTown: town,
+            town: town,
             county: county || '',
             postcode: postcode
         };
@@ -23,7 +24,7 @@
         return {
             addressLine1: addressLine1,
             addressLine2: addressLine2 || '',
-            postTown: town,
+            town: town,
             county: region || '',
             country: country,
             postcode: postcode

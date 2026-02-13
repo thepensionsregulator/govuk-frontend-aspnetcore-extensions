@@ -1,0 +1,57 @@
+{
+    "10013045561": {
+        "organisationName": "The Pensions Regulator",
+        "addressLine1": "Napier House",
+        "addressLine2": "Trafalgar Place",
+        "addressLine3": "",
+        "town": "Brighton",
+        "county": "East Sussex",
+        "postCode": "BN1 4DW",
+        "deliveryPoint": "12345678",
+        "businessUrn": "GB123456789000"
+    },
+    "10013045562": {
+        "organisationName": "",
+        "addressLine1": "10 High Street",
+        "addressLine2": "",
+        "addressLine3": "",
+        "town": "Brighton",
+        "county": "East Sussex",
+        "postCode": "BN1 1AB",
+        "deliveryPoint": "",
+        "businessUrn": ""
+    },
+    "10013045563": {
+        "organisationName": "",
+        "addressLine1": "25 Marine Parade",
+        "addressLine2": "",
+        "addressLine3": "",
+        "town": "Brighton",
+        "county": "East Sussex",
+        "postCode": "BN2 1TL",
+        "deliveryPoint": "",
+        "businessUrn": ""
+    },
+    "10013045564": {
+        "organisationName": "The Old Ship Hotel",
+        "addressLine1": "Kings Road",
+        "addressLine2": "",
+        "addressLine3": "",
+        "town": "Brighton",
+        "county": "East Sussex",
+        "postCode": "BN1 1NR",
+        "deliveryPoint": "",
+        "businessUrn": ""
+    },
+    "10013045565": {
+        "organisationName": "Brighton Town Hall",
+        "addressLine1": "Bartholomew Square",
+        "addressLine2": "",
+        "addressLine3": "",
+        "town": "Brighton",
+        "county": "East Sussex",
+        "postCode": "BN1 1JA",
+        "deliveryPoint": "",
+        "businessUrn": ""
+    }
+}

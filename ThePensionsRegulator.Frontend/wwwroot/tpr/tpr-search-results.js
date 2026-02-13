@@ -452,8 +452,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     initialiseAccordion();
 
-    const navigateToSearchButton = document.getElementsByClassName("tpr-search-results__nav-button")[0];
-    if (navigateToSearchButton != null) {
+    const navigateToSearchButtons = document.getElementsByClassName("tpr-search-results__nav-button");
+    for (const navigateToSearchButton of navigateToSearchButtons) {
         const newTabSpan = navigateToSearchButton.querySelector("span.govuk-visually-hidden");
         if (newTabSpan) {
             newTabSpan.remove();

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+		 InitialTargets="TprFrontendUmbraco_Clean">
 	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
 		 because in Release configuration it removes the comments that are needed to configure the Umbraco rich text editor.
@@ -51,5 +52,15 @@
 		  File="Backoffice/src/package-version.generated.ts"
 		  Lines="export const PACKAGE_VERSION = '$(Version)'"
 		  Overwrite="true" />
+	</Target>
+
+	<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
+	<Target Name="TprFrontendUmbraco_Clean" Condition="Exists('$(ProjectDir)wwwroot\tpr\')">
+		<ItemGroup>
+			<!-- Removed in v10.0.0 -->
+			<TprFrontendUmbraco_DirsToRemove Include="$(ProjectDir)wwwroot\tpr\" />
+		</ItemGroup>
+		<Message Text="Deleting obsolete files: @(TprFrontendUmbraco_DirsToRemove)" />
+		<RemoveDir Directories="@(TprFrontendUmbraco_DirsToRemove)" />
 	</Target>
 </Project>

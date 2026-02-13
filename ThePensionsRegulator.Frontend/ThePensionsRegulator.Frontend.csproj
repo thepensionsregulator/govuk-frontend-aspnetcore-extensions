@@ -88,6 +88,10 @@
 			<Pack>true</Pack>
 			<PackagePath>build;buildTransitive</PackagePath>
 		</Content>
+		<Content Include="ThePensionsRegulator.Frontend.generated.props">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
 		<Content Include="Styles\_tpr-variables.scss">
 			<Pack>true</Pack>
 			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\tpr</PackagePath>

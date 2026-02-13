@@ -145,6 +145,10 @@
 			<Pack>true</Pack>
 			<PackagePath>build;buildTransitive</PackagePath>
 		</Content>
+		<Content Include="ThePensionsRegulator.GovUk.Frontend.generated.props">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
 	</ItemGroup>
 	
 	<ItemGroup>

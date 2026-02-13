@@ -43,6 +43,10 @@
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
 		</Content>
+		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.generated.props">
+			<PackagePath>build</PackagePath>
+			<Pack>true</Pack>
+		</Content>
 		<Content Include="Styles\govuk-umbraco-backoffice.css">
 			<PackagePath>contentFiles\any\$(TargetFramework)\Content\css</PackagePath>
 			<Pack>true</Pack>

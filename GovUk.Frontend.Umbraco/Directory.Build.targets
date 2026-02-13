@@ -38,13 +38,7 @@
 		<Copy SourceFiles="@(ContentTypes)"
 			DestinationFiles="$(ProjectDir)uSync\v17\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
-
-	<!-- Restore npm packages for backoffice development. -->
-	<Target Name="GovUkFrontendUmbraco_NpmInstall" BeforeTargets="BeforeBuild">
-		<Message Text="Restoring Backoffice npm packages" Importance="high" />
-		<Exec Command="npm install" WorkingDirectory="Backoffice" />
-	</Target>
-
+	
 	<!-- Create a version to use as a cache-busting parameter for backoffice customisation -->
 	<Target Name="GovUkFrontendUmbraco_GenerateTypeScriptVersion" BeforeTargets="Build">
 		<WriteLinesToFile
@@ -62,4 +56,26 @@
 		<Message Text="Deleting obsolete files: @(GovUkFrontendUmbraco_DirsToRemove)" />
 		<RemoveDir Directories="@(GovUkFrontendUmbraco_DirsToRemove)" />
 	</Target>
+
+	<Target Name="TprGovUkFrontendUmbraco_GenerateProps" BeforeTargets="BeforeBuild">
+		<!--Generate a .props file so that ThePensionsRegulator.GovUk.Frontend.Umbraco.targets has access to the package version. -->
+		<Message Text="ThePensionsRegulator.GovUk.Frontend.Umbraco generating $(ProjectDir)ThePensionsRegulator.GovUk.Frontend.Umbraco.props" Importance="high" />
+		<ItemGroup>
+			<TprGovUkFrontendUmbracoPropsText Include="TprGovUkFrontendUmbracoPropsText">
+				<Text>
+					<![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<TprGovUkFrontendUmbracoPackageVersion>$(Version)</TprGovUkFrontendUmbracoPackageVersion>
+	</PropertyGroup>
+</Project>
+				]]>
+				</Text>
+			</TprGovUkFrontendUmbracoPropsText>
+			<TprGovUkFrontendUmbracoProps Include="%(TprGovUkFrontendUmbracoPropsText.Text)" />
+		</ItemGroup>
+		<WriteLinesToFile File="$(ProjectDir)ThePensionsRegulator.GovUk.Frontend.Umbraco.generated.props" Lines="@(TprGovUkFrontendUmbracoProps)" Overwrite="True" />
+	</Target>
+
 </Project>

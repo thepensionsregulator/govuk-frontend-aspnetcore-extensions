@@ -1,24 +1,15 @@
 ﻿import { toSentenceCase } from "./utils.js";
+import { InputBuilder } from "./input-builder.js";
+
 class AddressLookupComponentBuilder {
     constructor(index, config) {
         this.index = index;
         this.config = config;
     }
 
-    createPostcodeTextInput() {
-        const formGroup = this.createGovukTextInput(this.config.LABELS.POSTCODE, this.config.DATA_ATTRIBUTES.POSTCODE, this.config.INPUT_WIDTHS.LARGE);
-        const input = formGroup.querySelector("input");
-        input.setAttribute("data-val", "true");
-        input.setAttribute("required", "required");
-        input.setAttribute("data-val-required", this.config.ERROR_MESSAGES.REQUIRED);
-
-        return formGroup;
-    }
-
     createGovukTextInput(labelText, dataAddressLookupValue, inputWidth) {
         const formGroup = document.createElement("div");
-        const widthClass = this.#getWidthCssClass(inputWidth);
-        formGroup.classList = `${this.config.CSS_CLASSES.FORM_GROUP} ${widthClass}`;
+        formGroup.classList = `${this.config.CSS_CLASSES.FORM_GROUP}`;
         const inputId = `${dataAddressLookupValue}-${this.index}`;
 
         const label = document.createElement("label");
@@ -26,8 +17,9 @@ class AddressLookupComponentBuilder {
         label.innerText = labelText;
         label.setAttribute("for", inputId);
 
+        const widthClass = this.#getWidthCssClass(inputWidth);
         const input = document.createElement("input");
-        input.classList = this.config.CSS_CLASSES.INPUT;
+        input.classList = `${this.config.CSS_CLASSES.INPUT} ${widthClass}`;
         input.setAttribute(this.config.ATTRIBUTES.BASE, dataAddressLookupValue);
         input.setAttribute("name", dataAddressLookupValue);
         input.setAttribute("id", inputId);
@@ -35,26 +27,9 @@ class AddressLookupComponentBuilder {
         formGroup.appendChild(label);
         formGroup.appendChild(input);
 
-        return formGroup;
+        return new InputBuilder(formGroup);
     }
 
-    createGovukTextInputWithValidation(labelText, dataAddressLookupValue, inputWidth, requiredErrorMessage, maxLengthErrorMessage) {
-        const formGroup = this.createGovukTextInput(labelText, dataAddressLookupValue, inputWidth);
-        const input = formGroup.querySelector("input");
-
-        if (requiredErrorMessage !== undefined) {
-            input.setAttribute("data-val", "true");
-            input.setAttribute("required", "required");
-            input.setAttribute("data-val-required", requiredErrorMessage);
-        }
-
-        if (maxLengthErrorMessage !== undefined) {
-            input.setAttribute("data-val", "true");
-            input.setAttribute("data-val-maxlength", maxLengthErrorMessage);
-        }
-
-        return formGroup;
-    }
 
     createFieldset(legendText) {
         const fieldset = document.createElement("fieldset");
@@ -144,14 +119,12 @@ class AddressLookupComponentBuilder {
 
         const inputId = `${this.config.FIELD_NAMES.SELECT_ADDRESS}-${this.index}`;
         const label = document.createElement("label");
-        label.classList = this.config.CSS_CLASSES.LABEL;
+        label.classList = `${this.config.CSS_CLASSES.LABEL} govuk-label--l`;
         label.innerText = labelText;
         label.setAttribute("for", inputId);
 
         const select = document.createElement("select");
         select.setAttribute(this.config.ATTRIBUTES.BASE, this.config.DATA_ATTRIBUTES.SELECT_ADDRESS);
-        select.setAttribute("data-val", "true");
-        select.setAttribute("data-val-required", this.config.ERROR_MESSAGES.SELECT_REQUIRED);
         select.classList = this.config.CSS_CLASSES.SELECT;
         select.name = inputId;
         select.id = inputId;
@@ -169,7 +142,7 @@ class AddressLookupComponentBuilder {
         formGroupContainer.appendChild(label);
         formGroupContainer.appendChild(select);
 
-        return formGroupContainer;
+        return new InputBuilder(formGroupContainer);
     }
 
     createOption(value, label) {

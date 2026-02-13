@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" 
+		 InitialTargets="GovUkFrontend_Clean">
 	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
 		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
@@ -27,10 +28,19 @@
 			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
 			<SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
 			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
-			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\</TargetFolder>
+			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.GovUk.Frontend\css\</TargetFolder>
 		</PropertyGroup>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-frontend.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(SourceFolder) $(TargetFolder)govuk\govuk-frontend.css"/>
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-frontend.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(SourceFolder) $(TargetFolder)govuk-frontend.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 
+	<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
+	<Target Name="GovUkFrontend_Clean" Condition="Exists('$(ProjectDir)wwwroot\govuk\')">
+		<ItemGroup>
+			<!-- Removed in v10.0.0 -->
+			<GovUkFrontend_DirsToRemove Include="$(ProjectDir)wwwroot\govuk\" />
+		</ItemGroup>
+		<Message Text="Deleting obsolete files: @(GovUkFrontend_DirsToRemove)" />
+		<RemoveDir Directories="@(GovUkFrontend_DirsToRemove)" />
+	</Target>
 </Project>

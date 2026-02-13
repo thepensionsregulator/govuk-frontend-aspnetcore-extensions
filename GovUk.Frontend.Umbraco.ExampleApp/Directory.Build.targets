@@ -3,7 +3,7 @@
 	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019
 		 It copies files that would normally be installed by NuGet, but the example app uses a project reference to avoid a NuGet update cycle for every change during testing.
 	-->
-	<Target Name="CopyFilesFromGovUkFrontend" BeforeTargets="BeforeBuild">
+	<Target Name="UmbracoExample_CopyFilesFromGovUkFrontend" BeforeTargets="BeforeBuild">
 		<ItemGroup>
 			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\govuk-umbraco-backoffice.css*" />
 		</ItemGroup>

@@ -22,6 +22,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageId>ThePensionsRegulator.Frontend</PackageId>
 		<Product>ThePensionsRegulator.Frontend</Product>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -33,7 +34,6 @@
 		<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="3.4.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-		<PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.10" />
 	</ItemGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
@@ -83,10 +83,6 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-		<Content Include="ThePensionsRegulator.Frontend.props">
-			<Pack>true</Pack>
-			<PackagePath>build;buildTransitive</PackagePath>
-		</Content>
 
 		<Content Include="ThePensionsRegulator.Frontend.targets">
 			<Pack>true</Pack>
@@ -118,95 +114,95 @@
 		<Content Update="sasscompiler.json" Pack="false">
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\build\ableplayer.dist.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\build\ableplayer.dist.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\build\ableplayer.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\build\ableplayer.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\build\ableplayer.min.css">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\build\ableplayer.min.css">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\build\ableplayer.min.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\build\ableplayer.min.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\styles\ableplayer.css">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\styles\ableplayer.css">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\ca.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\ca.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\cs.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\cs.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\da.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\da.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\de.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\de.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\en.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\en.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\es.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\es.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\fr.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\fr.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\he.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\he.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\id.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\id.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\it.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\it.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\ja.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\ja.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\nb.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\nb.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\nl.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\nl.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\pt-br.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\pt-br.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\pt.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\pt.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\sv.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\sv.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\tr.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\tr.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>
-		<Content Update="wwwroot\lib\ableplayer\translations\zh-tw.js">
+		<Content Update="wwwroot\ThePensionsRegulator.Frontend\lib\ableplayer\translations\zh-tw.js">
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 		</Content>

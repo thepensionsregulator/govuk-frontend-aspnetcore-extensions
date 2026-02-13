@@ -35,7 +35,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var screenLogo = new TagBuilder("img");
             screenLogo.TagRenderMode = TagRenderMode.SelfClosing;
             if (tprHeaderBar.LogoAttributes != null) { screenLogo.MergeAttributes(tprHeaderBar.LogoAttributes); }
-            screenLogo.Attributes.Add("src", $"/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-header.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
+            screenLogo.Attributes.Add("src", $"/ThePensionsRegulator.Frontend/img/tpr-logo-header.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
             screenLogo.Attributes.Add("alt", tprHeaderBar.LogoAlternativeText);
             screenLogo.Attributes.Add("width", "180");
             screenLogo.Attributes.Add("height", "75");
@@ -44,7 +44,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var printLogo = new TagBuilder("img");
             printLogo.TagRenderMode = TagRenderMode.SelfClosing;
-            printLogo.Attributes.Add("src", $"/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
+            printLogo.Attributes.Add("src", $"/ThePensionsRegulator.Frontend/img/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
             printLogo.Attributes.Add("alt", tprHeaderBar.LogoAlternativeText);
             printLogo.Attributes.Add("width", "180");
             printLogo.Attributes.Add("height", "75");

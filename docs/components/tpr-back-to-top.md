@@ -20,10 +20,10 @@ This example has TPR styling:
 
 ## Client-side support
 
-When JavaScript is enabled the component is hidden on short pages. Include the following script to enable this behaviour. This is included by default when referencing `<partial name="TPR/Head" />` in your layout.
+When JavaScript is enabled the component is hidden on short pages. Include the following script to enable this behaviour. This is included by default when referencing `<partial name="TPR/BodyClosing" />` in your layout.
 
 ```html
-<script src="/_content/ThePensionsRegulator.GovUk.Frontend/tpr/tpr-back-to-top.js"></script>
+<script src="/_content/ThePensionsRegulator.GovUk.Frontend/tpr/tpr-back-to-top.min.js"></script>
 ```
 
 ## API

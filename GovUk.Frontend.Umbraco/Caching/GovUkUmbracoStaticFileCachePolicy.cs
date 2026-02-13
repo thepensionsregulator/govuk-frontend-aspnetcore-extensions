@@ -12,7 +12,7 @@ namespace GovUk.Frontend.Umbraco.Caching
             return path.StartsWith($"{basePath}govuk-", StringComparison.OrdinalIgnoreCase) ||
                    path.StartsWith($"{basePath}package-version.generated-", StringComparison.OrdinalIgnoreCase) ||
                   (path.StartsWith(basePath, StringComparison.OrdinalIgnoreCase) && path.Contains("-helper-", StringComparison.OrdinalIgnoreCase)) ||
-                  (path.StartsWith("/govuk/govuk-frontend.css", StringComparison.OrdinalIgnoreCase) && query.ContainsKey("v") && !string.IsNullOrEmpty(query["v"])) ||
+                  (path.StartsWith("/ThePensionsRegulator.GovUk.Frontend.Umbraco/", StringComparison.OrdinalIgnoreCase) && query.ContainsKey("v") && !string.IsNullOrEmpty(query["v"])) ||
                   (path.StartsWith("/css/govuk-umbraco-backoffice.css", StringComparison.OrdinalIgnoreCase) && query.ContainsKey("v") && !string.IsNullOrEmpty(query["v"]));
         }
     }

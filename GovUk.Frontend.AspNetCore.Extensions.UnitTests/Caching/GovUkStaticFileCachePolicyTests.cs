@@ -9,10 +9,10 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests.Caching
         private readonly GovUkStaticFileCachePolicy _policy = new();
 
         [Theory]
-        [InlineData("/_content/ThePensionsRegulator.GovUk.Frontend/style.css?v=1.0.0", true)]
-        [InlineData("/_content/ThePensionsRegulator.GovUk.Frontend/script.js?v=1.0.0", true)]
-        [InlineData("/_content/ThePensionsRegulator.GovUk.Frontend/image.png?v=1.0.0", true)]
-        [InlineData("/_CONTENT/THEPENSIONSREGULATOR.GOVUK.FRONTEND/STYLE.CSS?v=1.0.0", true)]
+        [InlineData("/ThePensionsRegulator.GovUk.Frontend/style.css?v=1.0.0", true)]
+        [InlineData("/ThePensionsRegulator.GovUk.Frontend/script.js?v=1.0.0", true)]
+        [InlineData("/ThePensionsRegulator.GovUk.Frontend/image.png?v=1.0.0", true)]
+        [InlineData("/THEPENSIONSREGULATOR.GOVUK.FRONTEND/STYLE.CSS?v=1.0.0", true)]
 
         // no path
         [InlineData("?v=1.0.0", false)]
@@ -23,13 +23,13 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests.Caching
         [InlineData("/other-content/ThePensionsRegulator.GovUk.Frontend/style.css?v=1.0.0", false)]
 
         // no querystring
-        [InlineData("/_content/ThePensionsRegulator.GovUk.Frontend/style.css", false)]
+        [InlineData("/ThePensionsRegulator.GovUk.Frontend/style.css", false)]
         [InlineData("/govuk/style.css", false)]
         [InlineData("/other/file.js", false)]
 
         // wrong querystring
-        [InlineData("/_content/ThePensionsRegulator.GovUk.Frontend/style.css?other=value", false)]
-        [InlineData("/_content/ThePensionsRegulator.GovUk.Frontend/image.png?v=", false)]
+        [InlineData("/ThePensionsRegulator.GovUk.Frontend/style.css?other=value", false)]
+        [InlineData("/ThePensionsRegulator.GovUk.Frontend/image.png?v=", false)]
         public void IsImmutable_ReturnsExpectedResult(string path, bool expected)
         {
             // Arrange

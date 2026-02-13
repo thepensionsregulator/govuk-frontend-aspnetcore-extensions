@@ -1,4 +1,4 @@
-import { govuk } from "../wwwroot/govuk/govuk-validation";
+import { govuk } from "../wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-validation";
 import { jest } from '@jest/globals';
 
 describe("validatePhone", () => {

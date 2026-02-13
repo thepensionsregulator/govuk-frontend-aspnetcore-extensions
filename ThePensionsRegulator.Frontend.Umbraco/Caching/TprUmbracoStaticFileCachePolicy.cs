@@ -12,7 +12,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Caching
             return path.StartsWith($"{basePath}tpr-", StringComparison.OrdinalIgnoreCase) ||
                    path.StartsWith($"{basePath}package-version.generated-", StringComparison.OrdinalIgnoreCase) ||
                   (path.StartsWith(basePath, StringComparison.OrdinalIgnoreCase) && path.Contains("-helper-", StringComparison.OrdinalIgnoreCase)) ||
-                  (path.StartsWith("/tpr/tpr.css", StringComparison.OrdinalIgnoreCase) && query.ContainsKey("v") && !string.IsNullOrEmpty(query["v"]));
+                  (path.StartsWith("/ThePensionsRegulator.Frontend.Umbraco/", StringComparison.OrdinalIgnoreCase) && query.ContainsKey("v") && !string.IsNullOrEmpty(query["v"]));
         }
     }
 }

@@ -1,15 +1,22 @@
 [
   {
-    "outputFileName": "wwwroot/govuk/govuk-js-init.min.js",
+    "outputFileName": "wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-js-init.min.js",
     "inputFiles": [
-      "wwwroot/govuk/govuk-js-init.js"
+      "wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-js-init.js"
     ],
     "minify": { "enabled": true }
   },
   {
-    "outputFileName": "wwwroot/govuk/govuk-validation.min.js",
+    "outputFileName": "wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-js-test.min.js",
     "inputFiles": [
-      "wwwroot/govuk/govuk-validation.js"
+      "wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-js-test.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-validation.min.js",
+    "inputFiles": [
+      "wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-validation.js"
     ],
     "minify": { "enabled": true }
   }

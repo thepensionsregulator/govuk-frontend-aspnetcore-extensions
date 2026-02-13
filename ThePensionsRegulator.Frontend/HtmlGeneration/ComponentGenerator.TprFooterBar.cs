@@ -36,7 +36,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var logo = new TagBuilder("img");
             logo.TagRenderMode = TagRenderMode.SelfClosing;
             if (tprFooterBar.LogoAttributes != null) { logo.MergeAttributes(tprFooterBar.LogoAttributes); }
-            logo.Attributes.Add("src", $"/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
+            logo.Attributes.Add("src", $"/ThePensionsRegulator.Frontend/img/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
             logo.Attributes.Add("alt", tprFooterBar.LogoAlternativeText);
             logo.Attributes.Add("width", "126");
             logo.Attributes.Add("height", "47");

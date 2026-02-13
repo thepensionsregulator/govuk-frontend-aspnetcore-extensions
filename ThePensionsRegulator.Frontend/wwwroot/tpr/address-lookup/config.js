@@ -93,6 +93,9 @@
     VALIDATION: {
         POSTCODE_REQUIRED: true,
         SELECT_REQUIRED: true
+    },
+    PATTERNS: {
+        POST_CODE: "^[\\s()-.]*[A-Za-z()-.]{1,2}[\\s()-.]*[0-9()-.]{1,2}[\\s()-.]*[A-Za-z()-.]?[\\s()-.]*[0-9()-.][\\s()-.]*[ABDEFGHJLNPQRSTUWXYZabdefghjlnpqrstuwxyz()-.]{2}[\\s()-.]*$"
     }
 };
 

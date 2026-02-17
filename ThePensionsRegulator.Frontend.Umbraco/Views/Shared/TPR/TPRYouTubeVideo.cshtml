@@ -77,6 +77,9 @@
             _ => headingClasses.Heading2
         };
     }
+
+    var iframeTitle = Umbraco.GetDictionaryValue("Video title");
+    iframeTitle = iframeTitle.Replace("{{VIDEO_TITLE}}", title);
 }
 <tpr-youtube-video id="@id"
                    class="@cssClasses"
@@ -90,5 +93,6 @@
                    heading-size="@headingSize"
                    transcript-url="@transcriptUrl"
                    transcript-title="@transcriptTitle"
-                   transcript-target="@transcriptTarget">
+                   transcript-target="@transcriptTarget"
+                   iframe-title="@iframeTitle">
 </tpr-youtube-video>

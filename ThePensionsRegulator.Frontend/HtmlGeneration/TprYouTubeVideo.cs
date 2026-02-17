@@ -16,5 +16,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public required string? TranscriptUrl { get; set; }
         public required string? TranscriptTitle { get; set; }
         public required string? TranscriptTarget { get; set; }
+        public required string IframeTitle { get; set; }
     }
 }

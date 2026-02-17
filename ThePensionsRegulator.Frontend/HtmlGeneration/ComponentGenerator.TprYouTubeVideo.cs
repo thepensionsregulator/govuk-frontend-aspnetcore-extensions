@@ -45,7 +45,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 heading.MergeCssClass(video.HeadingSize);
             }
             heading.MergeCssClass("tpr-video-wrapper-no-cookies__heading");
-            heading.InnerHtml.AppendHtml($"{video.Title} (video)");
+            heading.InnerHtml.AppendHtml(video.IframeTitle);
             containerTag.InnerHtml.AppendHtml(heading);
 
             if (!string.IsNullOrWhiteSpace(video.Description))
@@ -67,9 +67,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 src += "?autoplay=1&mute=1";
             }
 
-            var iframeTitle = $"Video: {video.Title} (video)";
             iFrame.Attributes.Add("src", src);
-            iFrame.Attributes.Add("title", iframeTitle);
+            iFrame.Attributes.Add("title", video.IframeTitle);
             iFrame.Attributes.Add("frameborder", "0");
             iFrame.Attributes.Add("allow", "accelerometer; autoplay;  encrypted-media; gyroscope; picture-in-picture; web-share");
             iFrame.Attributes.Add("referrerpolicy", "strict-origin-when-cross-origin");

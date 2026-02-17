@@ -28,6 +28,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string TranscriptUrlAttributeName = "transcript-url";
         private const string TranscriptTitleAttributeName = "transcript-title";
         private const string TranscriptTargetAttributeName = "transcript-target";
+        private const string IframeTitleAttributeName = "iframe-title";
         private readonly string[] MinimisedAttributeList = { "autoplay", "playsinline", "data-able-player", "data-youtube-nocookie", "allowfullscreen", "credentialless" };
 
         private string _title = string.Empty;
@@ -42,6 +43,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private string? _transcriptUrl = null;
         private string? _transcriptTitle = null;
         private string? _transcriptTarget = null;
+        private string? _iframeTitle = null;
         private readonly ITprHtmlGenerator _htmlGenerator;
 
         /// <summary>
@@ -143,6 +145,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         }
 
 
+        [HtmlAttributeName(IframeTitleAttributeName)]
+        public string? IframeTitle
+        {
+            get => _iframeTitle;
+            set => _iframeTitle = value;
+        }
+
         /// <inheritdoc/>
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -162,7 +171,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     HeadingSize = HeadingSize,
                     TranscriptUrl = TranscriptUrl,
                     TranscriptTitle = TranscriptTitle,
-                    TranscriptTarget = TranscriptTarget
+                    TranscriptTarget = TranscriptTarget,
+                    IframeTitle = IframeTitle ?? Title
                 });
             }
             else
@@ -180,7 +190,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     HeadingSize = HeadingSize,
                     TranscriptUrl = TranscriptUrl,
                     TranscriptTitle = TranscriptTitle,
-                    TranscriptTarget = TranscriptTarget
+                    TranscriptTarget = TranscriptTarget,
+                    IframeTitle = IframeTitle ?? Title
                 });
             }
 

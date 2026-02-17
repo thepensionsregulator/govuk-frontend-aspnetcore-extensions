@@ -17,7 +17,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
 
             var videoTag = new TagBuilder("video");
-            if (!video.Attributes.ContainsKey("id")) { video.Attributes.Add("id", Guid.NewGuid().ToString()); }
+            if (!video.Attributes.ContainsKey("id")) { video.Attributes.Add("id", Guid.NewGuid().ToString()); } // Able Player requires id
             videoTag.MergeAttributes(video.Attributes);
             videoTag.Attributes.Add("data-able-player", null);
             videoTag.Attributes.Add("data-youtube-nocookie", null);

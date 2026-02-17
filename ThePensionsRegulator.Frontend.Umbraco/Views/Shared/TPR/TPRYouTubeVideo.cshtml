@@ -79,7 +79,7 @@
     }
 
     var iframeTitle = Umbraco.GetDictionaryValue("Video title");
-    iframeTitle = iframeTitle.Replace("{{VIDEO_TITLE}}", title);
+    iframeTitle = iframeTitle?.Replace("{{VIDEO_TITLE}}", title);
 }
 <tpr-youtube-video id="@id"
                    class="@cssClasses"

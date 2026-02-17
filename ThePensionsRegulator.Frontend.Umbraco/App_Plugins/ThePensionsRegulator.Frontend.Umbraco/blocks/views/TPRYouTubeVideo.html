@@ -1,7 +1,7 @@
 ﻿<div class="backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit YouTube video">
     <div class="tpr-youtube-video-preview-content">
         <h3 ng-if="block.data.title">{{ block.data.title }}</h3>
-        <p ng-if="block.data.description">{{ block.data.description }}</p>
+        <p ng-if="block.data.description.markup" ng-bind-html="block.data.description.markup"></p>
     </div>
     <div class="tpr-youtube-video-previewbox">
         <svg class="tpr-youtube-video-previewbox-play-button" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">

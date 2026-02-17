@@ -35,7 +35,7 @@
         return;
     }
     string id = Model.Content.Key.ToString();
-    var title = Model.Content.Value<string>(TprPropertyAliases.VideoTitle);
+    var title = Model.Content.Value<string?>(TprPropertyAliases.VideoTitle) ?? string.Empty;
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var transcriptLink = Model.Content.Value<Link>(TprPropertyAliases.VideoTranscriptUrl);
     var transcriptUrl = string.Empty;
@@ -52,9 +52,9 @@
     }
     transcriptTitle = transcriptTitle.Replace("{{title}}", title);
 
-    var autoplay = Model.Settings.Value<bool>(TprPropertyAliases.VideoAutoplay);
-    bool playsInline = Model.Settings.Value<bool>(TprPropertyAliases.VideoPlaysInline)!;
-    var description = Model.Content.Value<string>(TprPropertyAliases.VideoDescription);
+    var autoplay = Model.Settings.Value<bool?>(TprPropertyAliases.VideoAutoplay) ?? false;
+    bool playsInline = Model.Settings.Value<bool?>(TprPropertyAliases.VideoPlaysInline) ?? true;
+    var description = Model.Content.Value<string?>(TprPropertyAliases.VideoDescription) ?? string.Empty;
 
     var headingLevelProperty = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingLevel) ?? string.Empty;
     var headingLevelNumber = headingLevelProperty.Replace("heading ", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();

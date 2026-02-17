@@ -2,9 +2,11 @@
 @addTagHelper *, ThePensionsRegulator.Frontend
 @inject IYouTubeVideoIdParser videoIdParser
 @inject IConsentCookieReader consentCookie
+@inject IGovUkHeadingClassProvider headingClassProvider
 @using GovUk.Frontend.AspNetCore.Extensions.Security
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Frontend.Security
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Services
@@ -58,12 +60,23 @@
     var headingLevelNumber = headingLevelProperty.Replace("heading ", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
     if (!int.TryParse(headingLevelNumber, out int numericHeadingLevel) || numericHeadingLevel < 1 || numericHeadingLevel > 6)
     {
-        numericHeadingLevel = 3;
-    } //TODO: is h3 the best defualt?
+        numericHeadingLevel = 2;
+    }
     var headingLevel = $"h{numericHeadingLevel}";
 
+    var headingClasses = headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem);
     var headingSize = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingSize);
-    if (string.IsNullOrWhiteSpace(headingSize)) { headingSize = "govuk-heading-m"; }
+    if (string.IsNullOrWhiteSpace(headingSize))
+    {
+        headingSize = numericHeadingLevel switch
+        {
+            1 => headingClasses.Heading1,
+            2 => headingClasses.Heading2,
+            3 => headingClasses.Heading3,
+            4 => headingClasses.Heading4,
+            _ => headingClasses.Heading2
+        };
+    }
 }
 <tpr-youtube-video id="@id"
                    class="@cssClasses"

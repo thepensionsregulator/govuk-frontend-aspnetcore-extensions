@@ -33,13 +33,17 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public virtual TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(TprYouTubeVideo video)
         {
             Guard.ArgumentNotNullOrEmpty(nameof(video.YouTubeVideoId), video.YouTubeVideoId);
+            Guard.ArgumentNotNullOrEmpty(nameof(video.HeadingLevel), video.HeadingLevel);
 
             var containerTag = new TagBuilder("div");
             containerTag.MergeAttributes(video.Attributes);
             containerTag.MergeCssClass("tpr-video-wrapper-no-cookies");
 
-            var heading = new TagBuilder("h3");
-            heading.MergeCssClass(video.SmallerHeading ? "govuk-heading-s" : "govuk-heading-m");
+            var heading = new TagBuilder(video.HeadingLevel);
+            if (!string.IsNullOrWhiteSpace(video.HeadingSize))
+            {
+                heading.MergeCssClass(video.HeadingSize);
+            }
             heading.MergeCssClass("tpr-video-wrapper-no-cookies__heading");
             heading.InnerHtml.AppendHtml($"{video.Title} (video)");
             containerTag.InnerHtml.AppendHtml(heading);

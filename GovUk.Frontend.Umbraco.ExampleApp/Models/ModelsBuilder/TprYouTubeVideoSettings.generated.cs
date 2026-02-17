@@ -57,18 +57,27 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool Autoplay => this.Value<bool>(_publishedValueFallback, "autoplay");
 
 		///<summary>
+		/// Heading level: Select the heading level for your text.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingLevel")]
+		public virtual string HeadingLevel => this.Value<string>(_publishedValueFallback, "headingLevel");
+
+		///<summary>
+		/// Heading size: Select the font size of the heading from a range of classes.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingSize")]
+		public virtual string HeadingSize => this.Value<string>(_publishedValueFallback, "headingSize");
+
+		///<summary>
 		/// Plays inline: Play the video within the page (applies to iOS devices only).
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[ImplementPropertyType("playsInline")]
 		public virtual bool PlaysInline => this.Value<bool>(_publishedValueFallback, "playsInline");
-
-		///<summary>
-		/// Smaller heading
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[ImplementPropertyType("smallerHeading")]
-		public virtual bool SmallerHeading => this.Value<bool>(_publishedValueFallback, "smallerHeading");
 
 		///<summary>
 		/// CSS classes: Applied to the outermost HTML element of the component.

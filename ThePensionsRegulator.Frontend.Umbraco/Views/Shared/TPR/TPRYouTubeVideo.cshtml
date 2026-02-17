@@ -53,7 +53,17 @@
     var autoplay = Model.Settings.Value<bool>(TprPropertyAliases.VideoAutoplay);
     bool playsInline = Model.Settings.Value<bool>(TprPropertyAliases.VideoPlaysInline)!;
     var description = Model.Content.Value<string>(TprPropertyAliases.VideoDescription);
-    var smallerHeading = Model.Settings.Value<bool>(TprPropertyAliases.VideoSmallerHeading);
+
+    var headingLevelProperty = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingLevel) ?? string.Empty;
+    var headingLevelNumber = headingLevelProperty.Replace("heading ", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
+    if (!int.TryParse(headingLevelNumber, out int numericHeadingLevel) || numericHeadingLevel < 1 || numericHeadingLevel > 6)
+    {
+        numericHeadingLevel = 3;
+    } //TODO: is h3 the best defualt?
+    var headingLevel = $"h{numericHeadingLevel}";
+
+    var headingSize = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingSize);
+    if (string.IsNullOrWhiteSpace(headingSize)) { headingSize = "govuk-heading-m"; }
 }
 <tpr-youtube-video id="@id"
                    class="@cssClasses"
@@ -63,7 +73,8 @@
                    use-able-player="@useAblePlayer"
                    autoplay="@autoplay"
                    plays-inline="@playsInline"
-                   smaller-heading="@smallerHeading"
+                   heading-level="@headingLevel"
+                   heading-size="@headingSize"
                    transcript-url="@transcriptUrl"
                    transcript-title="@transcriptTitle"
                    transcript-target="@transcriptTarget">

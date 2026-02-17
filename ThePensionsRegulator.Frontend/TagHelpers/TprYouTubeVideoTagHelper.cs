@@ -23,7 +23,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string PreloadAttributeName = "preload";
         private const string UseAblePlayerAttributeName = "use-able-player";
         private const string DescriptionAttributeName = "description";
-        private const string SmallerHeadingAttributeName = "smaller-heading";
+        private const string HeadingLevelAttributeName = "heading-level";
+        private const string HeadingSizeAttributeName = "heading-size";
         private const string TranscriptUrlAttributeName = "transcript-url";
         private const string TranscriptTitleAttributeName = "transcript-title";
         private const string TranscriptTargetAttributeName = "transcript-target";
@@ -36,7 +37,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private string _preload = ComponentGenerator.YouTubeVideoDefaultPreload;
         private bool _useAblePlayer = false;
         private string? _description = null;
-        private bool _smallerHeading = false;
+        private string _headingLevel = "h3";
+        private string? _headingSize = null;
         private string? _transcriptUrl = null;
         private string? _transcriptTitle = null;
         private string? _transcriptTarget = null;
@@ -105,11 +107,18 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             set => _description = value;
         }
 
-        [HtmlAttributeName(SmallerHeadingAttributeName)]
-        public bool SmallerHeading
+        [HtmlAttributeName(HeadingLevelAttributeName)]
+        public string HeadingLevel
         {
-            get => _smallerHeading;
-            set => _smallerHeading = value;
+            get => _headingLevel;
+            set => _headingLevel = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
+        }
+
+        [HtmlAttributeName(HeadingSizeAttributeName)]
+        public string? HeadingSize
+        {
+            get => _headingSize;
+            set => _headingSize = value;
         }
 
         [HtmlAttributeName(TranscriptUrlAttributeName)]
@@ -149,7 +158,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     PlaysInline = PlaysInline,
                     Preload = Preload,
                     Description = Description,
-                    SmallerHeading = SmallerHeading,
+                    HeadingLevel = HeadingLevel,
+                    HeadingSize = HeadingSize,
                     TranscriptUrl = TranscriptUrl,
                     TranscriptTitle = TranscriptTitle,
                     TranscriptTarget = TranscriptTarget
@@ -166,7 +176,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     PlaysInline = PlaysInline,
                     Preload = Preload,
                     Description = Description,
-                    SmallerHeading = SmallerHeading,
+                    HeadingLevel = HeadingLevel,
+                    HeadingSize = HeadingSize,
                     TranscriptUrl = TranscriptUrl,
                     TranscriptTitle = TranscriptTitle,
                     TranscriptTarget = TranscriptTarget

@@ -44,6 +44,9 @@ describe('UK postcode validation', () => {
             'W1J 7NT',      // West End
             'SE1P 4AA',     // Double letter area with letter in district
             'EH99 1SP',     // Edinburgh (double digit district)
+
+            // allow dashes seperating the postcode
+            'SW1A-1AA'
         ];
 
         test.each(validPostcodes)('should accept valid postcode: %s', (postcode) => {
@@ -67,6 +70,7 @@ describe('UK postcode validation', () => {
             'SW1A 1AK',     // Invalid final letter (K not allowed)
             'SW1A 1AM',     // Invalid final letter (M not allowed)
             'SW1A 1AV',     // Invalid final letter (V not allowed)
+            'SW1A!1AV',     // Contains invalid character
         ];
 
         test.each(invalidPostcodes)('should reject invalid postcode: %s', (postcode) => {

@@ -170,10 +170,9 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             {
                 UmbracoBlockListFactory.CreateOverridableBlock(
                     UmbracoBlockListFactory.CreateContentOrSettings(ElementTypeAliases.Task).Object,
-                    // Must use a non-mocked OverridablePublishedElement for this test
-                    new OverridablePublishedElement(UmbracoContentFactory.CreateContent<IPublishedElement>(ElementTypeAliases.TaskSettings)
+                    UmbracoContentFactory.CreateContent<IOverridablePublishedElement>(ElementTypeAliases.TaskSettings)
                         .SetupUmbracoTextboxPropertyValue(PropertyAliases.TaskListTaskStatus, TaskListTaskStatus.Completed.ToString())
-                    .Object)
+                    .Object
                 )
             });
             blockListOfTasks[0].Settings.OverrideValue(PropertyAliases.TaskListTaskStatus, TaskListTaskStatus.NotStarted.ToString());

@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const toggles = document.querySelectorAll(".tpr-mobile-menu__toggle");
         const overlay = document.querySelectorAll(".tpr-header-menu__nav-overlay");
         const menuItems = document.querySelectorAll(".tpr-header-menu__nav-menu-item");
-        const arrows = document.querySelectorAll(".tpr-mobile-menu__arrow");
+        const arrows = document.querySelectorAll(".tpr-header-menu__arrow");
         const nav = document.querySelector(".tpr-header-menu__nav");
 
         const isMobile = e.matches;
@@ -24,31 +24,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
             overlay.forEach(o => o.addEventListener("click", toggleMobileMenu));
 
-            arrows.forEach(a => a.addEventListener("click", expandMobileMenuSubMenu))
+            arrows.forEach(a => a.removeEventListener("click", onClickDisplaySubMenuDesktop));
+
+            arrows.forEach(a => a.addEventListener("click", expandMobileMenuSubMenu));
+            arrows.forEach(a => a.classList.toggle("tpr-header-menu__arrow-right"));
+            arrows.forEach(a => a.classList.remove("tpr-header-menu__arrow-down"));
 
             nav.removeEventListener("focusin", restoreDefaultMenuState);
 
             menuItems.forEach(m => {
                 const subMenu = m.querySelector(".tpr-header-menu__nav-sub-menu");
                 if (subMenu) {
-                    const a = m.querySelector("a");
-                    a.setAttribute("aria-expanded", false);
+                    const button = m.querySelector("button");
+                    button.setAttribute("aria-expanded", false);
                     subMenu.style.display = "none";
                 }
                 m.removeEventListener("keydown", desktopKeyboardNavigation)
-                m.addEventListener("keydown", mobileKeyboardNavigation)
             });
+            arrows.forEach(a => a.addEventListener("keydown", mobileKeyboardNavigation))
         } else {
 
             overlay?.forEach(o => o.classList.remove("tpr-header-menu__nav-overlay--visible"));
             toggles.forEach(t => t.removeEventListener("click", toggleMobileMenu))
             overlay.forEach(o => o.removeEventListener("click", toggleMobileMenu));
             nav.addEventListener("focusin", restoreDefaultMenuState);
-
-            arrows.forEach(a => a.removeEventListener("click", expandMobileMenuSubMenu))
+            arrows.forEach(a => a.addEventListener("click", onClickDisplaySubMenuDesktop));
+            arrows.forEach(a => a.removeEventListener("click", expandMobileMenuSubMenu));
 
             menuItems.forEach(m => {
-                const a = m.querySelector("a");
+                const a = m.querySelector("button");
                 a.setAttribute("aria-expanded", false);
 
                 const subMenu = m.querySelector(".tpr-header-menu__nav-sub-menu");
@@ -56,12 +60,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     subMenu.style.display = "none";
                 }
-                m.removeEventListener("keydown", mobileKeyboardNavigation)
                 m.addEventListener("keydown", desktopKeyboardNavigation)
             });
 
+            arrows.forEach(a => a.removeEventListener("keydown", mobileKeyboardNavigation));
             removeActiveClasses()
-            displayDesktopOverlayOnHover();
+            handleOutsideClick()
         }
 
     }
@@ -94,54 +98,98 @@ function highlightCurrentSection() {
     document.querySelectorAll(".tpr-header-menu__nav-menu-item").forEach((item) => {
 
         const anchor = item.querySelector('a');
-        let x = anchor.innerHTML.toLowerCase();
+        let anchorText = anchor.innerHTML.toLowerCase();
 
-        if (x.includes(section.toLowerCase())) {
+        const arrow = item.querySelector(".tpr-header-menu__arrow-container")
 
+        if (anchorText.includes(section.toLowerCase())) {
             anchor.classList.toggle("tpr-header-menu__nav-menu-item--active")
+            arrow.classList.toggle("tpr-header-menu_menu-item-arrow--active")
         }
     });
 }
 
-function displayDesktopOverlayOnHover() {
-
+function onClickDisplaySubMenuDesktop(e) {
+    const item = e.currentTarget;
+    const isExpanded = item.getAttribute("aria-expanded") === "true";
+    const menuItem = item.closest(".tpr-header-menu__nav-menu-item");
+    const subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
     const overlay = document.querySelector(".tpr-header-menu__nav-overlay");
 
-    document.querySelectorAll(".tpr-header-menu__nav-menu-item").forEach((item) => {
-        const a = item.querySelector('a');
-        var subMenu = item.querySelector(".tpr-header-menu__nav-sub-menu");
-        if (subMenu != null) {
+    if (isExpanded) {
+        closeSubMenuDesktop(item, subMenu, overlay);
+    } else {
+        openSubMenuDesktop(item, subMenu, overlay);
 
-            ["mouseenter"].forEach((evt) =>
-                item.addEventListener(evt, () => {
-                    overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
-                    if (window.innerWidth > 993) {
-                        subMenu.style.display = 'grid';
-
-                        a.setAttribute("aria-expanded", "true")
-                    }
-                })
-
-            );
-            ["mouseleave"].forEach((evt) =>
-                item.addEventListener(evt, () => {
-                    overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
-                    if (window.innerWidth > 993) {
-                        subMenu.style.display = 'none';
-
-                        a.setAttribute("aria-expanded", "false")
-                    }
-                })
-            );
-        }
-    });
+        document.addEventListener("click", handleOutsideClick)
+    }
 }
 
+function handleOutsideClick(e) {
+    const openItem = document.querySelector('[aria-expanded="true"]');
+    if (!openItem) return;
+
+    const menuItem = openItem.closest(".tpr-header-menu__nav-menu-item")
+    if (menuItem === null) return
+
+    const subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
+    const overlay = document.querySelector(".tpr-header-menu__nav-overlay");
+
+    if (menuItem.contains(e.target)) return;
+
+    closeSubMenuDesktop(openItem, subMenu, overlay);
+    openItem.focus();
+}
+
+let desktopSubMenuObserver = null;
+
+function observeSubMenuVisibility(item, subMenu, overlay) {
+
+    if (!("IntersectionObserver" in window)) return;
+
+    if (desktopSubMenuObserver) {
+        desktopSubMenuObserver.disconnect();
+    }
+
+    desktopSubMenuObserver = new IntersectionObserver(([entry]) => {
+        if (!entry.isIntersecting) {
+            closeSubMenuDesktop(item, subMenu, overlay);
+        }
+    },
+        {
+            root: null,
+            threshold: 0
+       }
+     
+    );
+    desktopSubMenuObserver.observe(subMenu);
+}
+
+function closeSubMenuDesktop(item, subMenu, overlay) {
+    subMenu.style.display = 'none';
+    item.setAttribute("aria-expanded", "false");
+    item.classList.remove("tpr-header-menu__arrow-up");
+    overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+
+    if (desktopSubMenuObserver) {
+        desktopSubMenuObserver.disconnect();
+        desktopSubMenuObserver = null;
+    }
+}
+
+function openSubMenuDesktop(item, subMenu, overlay) {
+    subMenu.style.display = 'grid';
+    item.setAttribute("aria-expanded", "true");
+    item.classList.add("tpr-header-menu__arrow-up");
+    subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style");
+    overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
+
+    observeSubMenuVisibility(item, subMenu, overlay);
+}
 
 function keyboardToggleMobileMenu(e) {
 
     switch (e.key) {
-
         case "ArrowDown":
             e.preventDefault()
             toggleMobileMenu()
@@ -160,60 +208,87 @@ function desktopKeyboardNavigation(e) {
     const menuItem = e.currentTarget
     const menuItemElements = document.querySelectorAll(".tpr-header-menu__nav-menu-item")
 
-    let menuItems = Array.from(menuItemElements);
+    let focusableElements = [];
+    menuItemElements.forEach(item => {
+        const anchor = item.querySelector('a');
+        const button = item.querySelector('button');
+
+        if (anchor) focusableElements.push(anchor);
+        if (button) focusableElements.push(button);
+
+    });
+
+    const activeElement = document.activeElement;
+    const currentIndex = Array.from(focusableElements).indexOf(activeElement);
 
     let a = menuItem.querySelector('a');
+    let button = menuItem.querySelector('button');
 
     let subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
     let hasSubMenu = subMenu != null;
 
-    const currentIndex = menuItems.indexOf(menuItem);
-
     const overlay = document.querySelector(".tpr-header-menu__nav-overlay")
+
+    const isToggleFocused = activeElement === menuItem.querySelector("button");
 
     switch (e.key) {
         case "ArrowRight":
             e.preventDefault();
-            menuItems[(currentIndex + 1) % menuItems.length].querySelector('a')?.focus();
+            const next = focusableElements[(currentIndex + 1) % focusableElements.length]
+            if (next) { next.focus() }
             if (hasSubMenu) {
-                subMenu.style.display = 'none';
-                a.setAttribute("aria-expanded", "false");
-                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+                closeSubMenuDesktop(button, subMenu, overlay);
             }
             break;
         case "ArrowLeft":
             e.preventDefault();
-            menuItems[(currentIndex - 1 + menuItems.length) % menuItems.length].querySelector('a')?.focus();
+            const previous = focusableElements[(currentIndex - 1 + focusableElements.length) % focusableElements.length]
+            if (previous) { previous.focus() }
             if (hasSubMenu) {
-                subMenu.style.display = 'none';
-                a.setAttribute("aria-expanded", "false");
-                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+                closeSubMenuDesktop(button, subMenu, overlay);
             }
             break;
         case "ArrowUp":
             e.preventDefault()
             if (hasSubMenu) {
-                subMenu.style.display = 'none';
-                a.setAttribute("aria-expanded", "false");
-                a.focus();
-                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+                closeSubMenuDesktop(button, subMenu, overlay);
+                button.focus();
             }
             break;
         case "ArrowDown":
             e.preventDefault();
-            if (hasSubMenu) {
-                subMenu.style.display = 'grid';
-                a.setAttribute("aria-expanded", "true");
-                subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style");
-                overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
+            if (hasSubMenu && isToggleFocused) {
+                openSubMenuDesktop(button, subMenu, overlay);
+            }
+            break;
+        case " ":
+            e.preventDefault();
+            if (hasSubMenu && isToggleFocused) {
+                const isExpanded = button.getAttribute("aria-expanded") === "true";
+                if (isExpanded) {
+                    closeSubMenuDesktop(button, subMenu, overlay);
+                    button.focus();
+                } else {
+                    openSubMenuDesktop(button, subMenu, overlay);
+                }
+            }
+            break;
+        case "Enter":
+            if (hasSubMenu && isToggleFocused) {
+                e.preventDefault();
+                const isExpanded = button.getAttribute("aria-expanded") === "true";
+                if (isExpanded) {
+                    closeSubMenuDesktop(button, subMenu, overlay);
+                    button.focus();
+                } else {
+                    openSubMenuDesktop(button, subMenu, overlay);
+                }
             }
             break;
         case "Escape":
             if (hasSubMenu) {
-                subMenu.style.display = 'none';
-                a.setAttribute("aria-expanded", "false");
-                overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
-                a.focus();
+                closeSubMenuDesktop(button, subMenu, overlay);
+                button.focus();
             }
             break;
         default:
@@ -229,9 +304,9 @@ function desktopKeyboardNavigation(e) {
 
                     document.querySelectorAll(".tpr-header-menu__nav-menu-item").forEach(i => {
 
-                        let anchor = i.querySelector("a");
-                        anchor.setAttribute("aria-expanded", "false");
-
+                        let button = i.querySelector("button");
+                        button.setAttribute("aria-expanded", "false");
+                        button.classList.remove("tpr-header-menu__arrow-up");
                     });
                 }
             }, 0);
@@ -250,12 +325,13 @@ function restoreDefaultMenuState(e) {
     menuItemElements.forEach(item => {
 
         const sub = item.querySelector(".tpr-header-menu__nav-sub-menu");
-        const a = item.querySelector("a");
+        const button = item.querySelector("button");
 
         if (item !== newlyFocusedItem) {
             if (sub) {
                 sub.style.display = "none";
-                a?.setAttribute("aria-expanded", "false");
+                button?.setAttribute("aria-expanded", "false");
+                button.classList.remove("tpr-header-menu__arrow-up");
             }
         }
 
@@ -264,7 +340,8 @@ function restoreDefaultMenuState(e) {
             overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
             if (sub) {
                 sub.style.display = "none";
-                a?.setAttribute("aria-expanded", "false");
+                button?.setAttribute("aria-expanded", "false");
+                button.classList.remove("tpr-header-menu__arrow-up");
             }
         }
     });
@@ -305,11 +382,10 @@ function expandMobileMenuSubMenu(e) {
     subMenu.removeAttribute("style");
 
     subMenu.classList.toggle("tpr-header-menu__nav-sub-menu--active");
-    arrow.classList.toggle("tpr-mobile-menu__arrow-down");
+    arrow.classList.toggle("tpr-header-menu__arrow-down");
 
-    const a = menuItem.querySelector("a");
-    const expanded = a.getAttribute("aria-expanded") === "true";
-    a.setAttribute("aria-expanded", !expanded);
+    const expanded = arrow.getAttribute("aria-expanded") === "true";
+    arrow.setAttribute("aria-expanded", !expanded);
 }
 
 function mobileKeyboardNavigation(e) {
@@ -317,18 +393,7 @@ function mobileKeyboardNavigation(e) {
     if (e.key === " ") {
         e.preventDefault();
 
-        const menuItem = e.currentTarget;
-        const subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
-        subMenu.removeAttribute("style");
-
-        const arrow = menuItem.querySelector(".tpr-mobile-menu__arrow");
-
-        subMenu?.classList.toggle("tpr-header-menu__nav-sub-menu--active");
-        arrow.classList.toggle("tpr-mobile-menu__arrow-down");
-
-        const a = menuItem.querySelector("a");
-        const expanded = a.getAttribute("aria-expanded") === "true";
-        a.setAttribute("aria-expanded", !expanded);
+        expandMobileMenuSubMenu(e);
     }
 }
 
@@ -343,6 +408,7 @@ function removeActiveClasses() {
 
         var toggleText = toggle.querySelector(".tpr-header-menu__button")
         toggleText.classList.remove("tpr-header-menu__button--opened")
+        toggleText.setAttribute("aria-expanded", "false");
 
         var svg = toggle.querySelector(".tpr-mobile-menu__svg")
         svg.classList.remove("tpr-mobile-menu__svg--hide")
@@ -351,8 +417,9 @@ function removeActiveClasses() {
         button.textContent = button.getAttribute("data-close-label");
     });
 
-    document.querySelectorAll(".tpr-mobile-menu__arrow").forEach((arrow) => {
-        arrow.classList.remove("tpr-mobile-menu__arrow-down");
+    document.querySelectorAll(".tpr-header-menu__arrow").forEach((arrow) => {
+        arrow.classList.remove("tpr-header-menu__arrow-up");
+        arrow.classList.remove("tpr-header-menu__arrow-right");
     });
 
     document.querySelectorAll(".tpr-header-menu__nav-sub-menu").forEach((subMenu) => {

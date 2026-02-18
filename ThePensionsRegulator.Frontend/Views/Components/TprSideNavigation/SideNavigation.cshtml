@@ -23,13 +23,13 @@
                 <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
             </h2>
         }
-        await RenderNavListLayer(Model.NavigationLinks, level, isMobileExpanded ? "tpr-side-nav__list--expanded" : null);
+        await RenderNavListLayer(Model.NavigationLinks, null, level, isMobileExpanded ? "tpr-side-nav__list--expanded" : null);
     }
 </nav>
 @{
-    async Task RenderNavListLayer(List<TprSideNavigationLink> navigationLinks, int level, string? listClass)
+    async Task RenderNavListLayer(List<TprSideNavigationLink> navigationLinks, TprSideNavigationLink? parent, int level, string? listClass)
     {
-        <ul class="tpr-side-nav__list @listClass" id="@(id)__list" data-level="@level">
+        <ul class="tpr-side-nav__list @listClass" id="@(id)__list" data-level="@level" @Html.Raw(parent is not null ? $"aria-labelledby='Child links of {parent.Name}'" : string.Empty)>
             @foreach (var child in navigationLinks)
             {
                 var childId = $"{id}-{Guid.NewGuid().ToString().Substring(0, 8)}";
@@ -45,7 +45,7 @@
                     </div>
                     @if (child.Children is not null && child.Children.Any())
                     {
-                        await RenderNavListLayer(child.Children, ++level, null);
+                        await RenderNavListLayer(child.Children, child, ++level, null);
                     }
                 </li>
             }

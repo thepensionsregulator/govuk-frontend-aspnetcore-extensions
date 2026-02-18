@@ -38,7 +38,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private string _preload = ComponentGenerator.YouTubeVideoDefaultPreload;
         private bool _useAblePlayer = false;
         private string? _description = null;
-        private string _headingLevel = "h3";
+        private string _headingLevel = "h2";
         private string? _headingSize = null;
         private string? _transcriptUrl = null;
         private string? _transcriptTitle = null;

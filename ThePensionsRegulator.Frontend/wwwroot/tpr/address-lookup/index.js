@@ -55,6 +55,7 @@ class TprAddressLookup {
             .build();
         const postcodeGroup = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.POSTCODE, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.LARGE)
             .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED)
+            .addPatternValidation(ADDRESS_LOOKUP_CONFIG.PATTERNS.POSTCODE, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.INVALID_POSTCODE)
             .build();
         const findAddressButton = this.componentBuilder.createFindAddressButton((event) => this.findAddressButtonOnClick(event));
         const enterInternationalAddressLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.ENTER_INTERNATIONAL_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ENTER_INTERNATIONAL_ADDRESS);
@@ -67,6 +68,8 @@ class TprAddressLookup {
         this.container.appendChild(fieldset);
         this.container.appendChild(findAddressButton);
         this.container.appendChild(linkList);
+
+        this.validator.reparse();
     }
 
     renderSelectView(addressResults) {
@@ -191,10 +194,10 @@ class TprAddressLookup {
             .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
             .build();
 
-        //TODO: Better validation of what a UK postcode is, should use a regex
         const postcodeInput = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.POSTCODE, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE)
             .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED)
             .addMaxLengthValidation(20, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_20)
+            .addPatternValidation(ADDRESS_LOOKUP_CONFIG.PATTERNS.POSTCODE, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.INVALID_POSTCODE)
             .build();
 
 
@@ -212,6 +215,8 @@ class TprAddressLookup {
         this.container.appendChild(fieldset);
         this.container.appendChild(confirmAddressButton);
         this.container.appendChild(linkList);
+
+        this.validator.reparse();
     }
 
     getComponentByDataAddressAttribute(attributeValue) {

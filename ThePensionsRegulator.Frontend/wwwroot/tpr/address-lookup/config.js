@@ -95,7 +95,7 @@
         SELECT_REQUIRED: true
     },
     PATTERNS: {
-        POST_CODE: "^[\\s()-.]*[A-Za-z()-.]{1,2}[\\s()-.]*[0-9()-.]{1,2}[\\s()-.]*[A-Za-z()-.]?[\\s()-.]*[0-9()-.][\\s()-.]*[ABDEFGHJLNPQRSTUWXYZabdefghjlnpqrstuwxyz()-.]{2}[\\s()-.]*$"
+        POSTCODE: "^\\s*[A-Za-z]{1,2}[0-9]{1,2}[A-Za-z]?[\\s\\-]*[0-9][ABDEFGHJLNPQRSTUWXYZabdefghjlnpqrstuwxyz]{2}\\s*$"
     }
 };
 

@@ -30,6 +30,13 @@ class AddressLookupValidator {
         return validator;
     }
 
+    reparse() {
+        if (!this.form) return;
+        $(this.form).removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($(this.form));
+        this.jQueryValidator = this.#initValidator();
+    }
+
     clearErrors() {
         if (!this.jQueryValidator) return;
 

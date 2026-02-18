@@ -50,8 +50,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             if (!string.IsNullOrWhiteSpace(video.Description))
             {
-                var description = new TagBuilder("p");
-                description.MergeCssClass("govuk-body");
+                var description = new TagBuilder("div");
                 description.MergeCssClass("tpr-video-wrapper-no-cookies__description");
                 description.InnerHtml.AppendHtml(video.Description);
                 containerTag.InnerHtml.AppendHtml(description);

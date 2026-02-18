@@ -65,10 +65,10 @@
     var headingLevel = $"h{numericHeadingLevel}";
 
     var headingClasses = headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem);
-    var headingSize = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingSize);
-    if (string.IsNullOrWhiteSpace(headingSize))
+    var headingClass = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingSize);
+    if (string.IsNullOrWhiteSpace(headingClass))
     {
-        headingSize = numericHeadingLevel switch
+        headingClass = numericHeadingLevel switch
         {
             1 => headingClasses.Heading1,
             2 => headingClasses.Heading2,
@@ -90,7 +90,7 @@
                    autoplay="@autoplay"
                    plays-inline="@playsInline"
                    heading-level="@headingLevel"
-                   heading-size="@headingSize"
+                   heading-size="@headingClass"
                    transcript-url="@transcriptUrl"
                    transcript-title="@transcriptTitle"
                    transcript-target="@transcriptTarget"

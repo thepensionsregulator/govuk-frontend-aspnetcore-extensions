@@ -57,20 +57,20 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool Autoplay => this.Value<bool>(_publishedValueFallback, "autoplay");
 
 		///<summary>
-		/// Heading level: Select the heading level for your text.
+		/// Heading class: Set the font size of the heading from a range of classes. Defaults to 'govuk-heading-m' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingClass")]
+		public virtual string HeadingClass => this.Value<string>(_publishedValueFallback, "headingClass");
+
+		///<summary>
+		/// Heading level: Set the heading level for your text. Defaults to H2 if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("headingLevel")]
 		public virtual string HeadingLevel => this.Value<string>(_publishedValueFallback, "headingLevel");
-
-		///<summary>
-		/// Heading size: Select the font size of the heading from a range of classes.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("headingSize")]
-		public virtual string HeadingSize => this.Value<string>(_publishedValueFallback, "headingSize");
 
 		///<summary>
 		/// Plays inline: Play the video within the page (applies to iOS devices only).

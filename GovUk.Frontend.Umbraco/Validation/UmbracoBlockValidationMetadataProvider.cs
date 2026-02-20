@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -86,7 +83,7 @@ namespace GovUk.Frontend.Umbraco.Validation
                 }
                 else
                 {
-                    customError = block.Settings.GetProperty(errorMessagePropertyAlias)?.GetValue()?.ToString();
+                    customError = block.Settings?.GetProperty(errorMessagePropertyAlias)?.GetValue()?.ToString();
                 }
                 if (!string.IsNullOrEmpty(customError))
                 {

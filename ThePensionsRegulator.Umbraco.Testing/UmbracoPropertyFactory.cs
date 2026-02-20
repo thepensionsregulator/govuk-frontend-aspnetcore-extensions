@@ -65,7 +65,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             contentType.Setup(x => x.CompositionAliases).Returns(compositionAliases is not null ? [.. compositionAliases] : []);
 
             var contentTypeFactory = new Mock<IPublishedContentTypeFactory>();
-            contentTypeFactory.Setup(x => x.GetDataType(dataTypeId)).Returns(new PublishedDataType(dataTypeId, propertyEditorAlias, "TODO", new Lazy<object?>(configuration)));
+            contentTypeFactory.Setup(x => x.GetDataType(dataTypeId)).Returns(new PublishedDataType(dataTypeId, propertyEditorAlias, propertyEditorAlias, new Lazy<object?>(configuration)));
             var publishedPropertyType = new PublishedPropertyType(contentType.Object, propertyType.Object, propertyValueConverters, Mock.Of<IPublishedModelFactory>(), contentTypeFactory.Object);
 
             converter.Setup(x => x.IsConverter(publishedPropertyType)).Returns(true);

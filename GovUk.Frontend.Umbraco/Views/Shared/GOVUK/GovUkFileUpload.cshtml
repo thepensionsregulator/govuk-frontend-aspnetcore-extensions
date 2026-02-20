@@ -14,24 +14,24 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
     if (!string.IsNullOrEmpty(modelPropertyName))
     {
         ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
     }
-    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
-    var labelIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.LabelIsPageHeading);
+    var cssClass = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+    var labelIsPageHeading = Model.Settings?.Value<bool>(PropertyAliases.LabelIsPageHeading) ?? false;
     var labelClass = labelIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LabelAsHeading1 : null;
     var label = Model.Content.Value<string>(PropertyAliases.FileUploadLabel)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
-    var fileTypes = Model.Settings.Value<string>(PropertyAliases.FileUploadFileTypes);
-    var errorMessagePrefix = Model.Settings.Value<string>(PropertyAliases.ErrorMessagePrefix);
+    var fileTypes = Model.Settings?.Value<string>(PropertyAliases.FileUploadFileTypes);
+    var errorMessagePrefix = Model.Settings?.Value<string>(PropertyAliases.ErrorMessagePrefix);
     if (string.IsNullOrEmpty(errorMessagePrefix)) { errorMessagePrefix = "Error"; }
-    var allowMultiple = Model.Settings.Value<bool>(PropertyAliases.FileUploadAllowMultiple);
+    var allowMultiple = Model.Settings?.Value<bool>(PropertyAliases.FileUploadAllowMultiple) ?? false;
 }
 <govuk-client-side-validation
-    error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))">
+    error-message-required="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageRequired))">
 
     <govuk-file-upload name="@modelPropertyName" class="@cssClass" input-accept="@fileTypes" javascript-enhancements="true" multiple="@allowMultiple">
         <govuk-file-upload-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-file-upload-label>

@@ -15,7 +15,7 @@
 <govuk-summary-list id="@Model.Content.Key" class="@cssClasses">
     @foreach (var listItem in listItems.FilteredBlocks())
     {
-        <govuk-summary-list-row class="@(listItem.Settings.Value<string>(PropertyAliases.CssClasses))">
+        <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
             <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
             @{

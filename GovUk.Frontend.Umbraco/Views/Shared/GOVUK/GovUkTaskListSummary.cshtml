@@ -17,7 +17,7 @@
     var totalActionableTasks = taskStatuses.Count(x => x != TaskListTaskStatus.NotApplicable);
     var completedTasks = taskStatuses.Count(x => x == TaskListTaskStatus.Completed);
 
-    if (!Int32.TryParse(Model.Settings.Value<string>(PropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out var headingLevel))
+    if (!Int32.TryParse(Model.Settings?.Value<string>(PropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out var headingLevel))
     {
         headingLevel = 2;
     }
@@ -31,7 +31,7 @@
 
 <govuk-task-list-summary 
     id="@Model.Content.Key"
-    class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))"
+    class="@(Model.Settings?.Value<string>(PropertyAliases.CssClasses))"
     heading-level="@headingLevel"
     incomplete-status="@(incompleteStatus)"
     completed-status="@(completedStatus)"

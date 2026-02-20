@@ -48,13 +48,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
                 Assert.Equal(2, result.Count);
                 Assert.Equal("Test", result[0].LinkText);
                 Assert.Equal("/test", result[0].LinkUrl);
-                
+
                 Assert.Equal(2, result[0]?.HeaderMenuChildItems?.Count);
                 Assert.Equal("ChildTest", childItems?[0].LinkText);
                 Assert.Equal("/childTest", childItems?[0]?.LinkUrl);
                 Assert.Equal("ChildTest1", childItems?[1]?.LinkText);
                 Assert.Equal("/childTest1", childItems?[1]?.LinkUrl);
-              
+
                 Assert.Equal("Test1", result[1].LinkText);
                 Assert.Equal("/test1", result[1].LinkUrl);
                 Assert.Equal(0, result[1]?.HeaderMenuChildItems?.Count);
@@ -65,7 +65,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public void GetMenuItems_WhenSettingsNodeIsNull_ReturnsEmptyList()
         {
             //Act
-            var result = _sut.GetMenuItems(null, _menuViewModel);
+            var result = _sut.GetMenuItems(null!, _menuViewModel);
 
             //Arrange
             Assert.Empty(result);
@@ -75,7 +75,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public void GetMenuItems_WhenHeaderMenuBlockListAliasIsNull_ReturnsEmptyList()
         {
             //Act
-            var result = _sut.GetMenuItems(_settingsNode.Object, null);
+            var result = _sut.GetMenuItems(_settingsNode.Object, null!);
 
             //Arrange
             Assert.Empty(result);

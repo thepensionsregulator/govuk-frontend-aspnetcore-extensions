@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System;
-using System.Collections.Generic;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
@@ -118,7 +116,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var modelType = modelPropertyResolver.ResolveModelType(viewContext);
 
-            Assert.Equal(modelType, typeof(DefaultModel));
+            Assert.Equal(typeof(DefaultModel), modelType);
         }
 
         private static ViewDataDictionary CreateViewData()
@@ -140,7 +138,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var modelType = modelPropertyResolver.ResolveModelType(viewContext);
 
-            Assert.Equal(modelType, typeof(ModelFromModelType));
+            Assert.Equal(typeof(ModelFromModelType), modelType);
 
         }
 
@@ -151,8 +149,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var property = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DefaultModelProperty));
 
-            Assert.Equal(property.DeclaringType, typeof(DefaultModel));
-            Assert.Equal(property.Name, nameof(DefaultModel.DefaultModelProperty));
+            Assert.Equal(typeof(DefaultModel), property.DeclaringType);
+            Assert.Equal(nameof(DefaultModel.DefaultModelProperty), property.Name);
         }
 
 
@@ -165,12 +163,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             var propertyFromMonthField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty.Month));
             var propertyFromYearField = modelPropertyResolver.ResolveModelProperty(typeof(DefaultModel), nameof(DefaultModel.DateTimeProperty.Year));
 
-            Assert.Equal(propertyFromDayField.DeclaringType, typeof(DateTime));
-            Assert.Equal(propertyFromDayField.Name, nameof(DefaultModel.DateTimeProperty.Day));
-            Assert.Equal(propertyFromMonthField.DeclaringType, typeof(DateTime));
-            Assert.Equal(propertyFromMonthField.Name, nameof(DefaultModel.DateTimeProperty.Month));
-            Assert.Equal(propertyFromYearField.DeclaringType, typeof(DateTime));
-            Assert.Equal(propertyFromYearField.Name, nameof(DefaultModel.DateTimeProperty.Year));
+            Assert.Equal(typeof(DateTime), propertyFromDayField.DeclaringType);
+            Assert.Equal(nameof(DefaultModel.DateTimeProperty.Day), propertyFromDayField.Name);
+            Assert.Equal(typeof(DateTime), propertyFromMonthField.DeclaringType);
+            Assert.Equal(nameof(DefaultModel.DateTimeProperty.Month), propertyFromMonthField.Name);
+            Assert.Equal(typeof(DateTime), propertyFromYearField.DeclaringType);
+            Assert.Equal(nameof(DefaultModel.DateTimeProperty.Year), propertyFromYearField.Name);
         }
 
         [Fact]
@@ -179,8 +177,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(ParentModel), nameof(ParentModel.Child.ChildModelProperty));
-            Assert.Equal(childProperty.DeclaringType, typeof(ChildModel));
-            Assert.Equal(childProperty.Name, nameof(ParentModel.Child.ChildModelProperty));
+            Assert.Equal(typeof(ChildModel), childProperty.DeclaringType);
+            Assert.Equal(nameof(ParentModel.Child.ChildModelProperty), childProperty.Name);
 
 
         }
@@ -192,8 +190,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(ParentModel), "Child.ChildModelProperty");
-            Assert.Equal(childProperty.DeclaringType, typeof(ChildModel));
-            Assert.Equal(childProperty.Name, nameof(ParentModel.Child.ChildModelProperty));
+            Assert.Equal(typeof(ChildModel), childProperty.DeclaringType);
+            Assert.Equal(nameof(ParentModel.Child.ChildModelProperty), childProperty.Name);
         }
 
         [Fact]
@@ -202,11 +200,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
             var modelPropertyResolver = new ModelPropertyResolver();
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(IterativeModel), "List[0].ChildModelProperty");
-            Assert.Equal(childProperty.DeclaringType, typeof(ChildModel));
+            Assert.Equal(typeof(ChildModel), childProperty.DeclaringType);
 
             var childType = typeof(IterativeModel).GetProperty("List")!.PropertyType.GenericTypeArguments[0];
             Assert.Equal(typeof(ChildModel), childType);
-            Assert.Equal(childProperty.Name, nameof(ChildModel.ChildModelProperty));
+            Assert.Equal(nameof(ChildModel.ChildModelProperty), childProperty.Name);
         }
 
         [Fact]
@@ -216,7 +214,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var childProperty = modelPropertyResolver.ResolveModelProperty(typeof(IterativeModel), "Array[0]");
             Assert.Equal(childProperty.PropertyType, typeof(IterativeModel).GetProperty("Array")!.PropertyType);
-            Assert.Equal(childProperty.Name, nameof(IterativeModel.Array));
+            Assert.Equal(nameof(IterativeModel.Array), childProperty.Name);
         }
 
         [Fact]

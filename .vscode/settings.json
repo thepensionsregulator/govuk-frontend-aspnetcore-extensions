@@ -1,3 +1,4 @@
 {
-  "jest.jestCommandLine": "npx jest"
+  "jest.jestCommandLine": "npx jest",
+  "snyk.advanced.autoSelectOrganization": true
 }

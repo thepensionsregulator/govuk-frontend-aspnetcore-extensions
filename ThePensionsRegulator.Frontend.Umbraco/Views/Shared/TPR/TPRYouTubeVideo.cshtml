@@ -35,7 +35,7 @@
     }
     string id = Model.Content.Key.ToString();
     var title = Model.Content.Value<string>(TprPropertyAliases.VideoTitle);
-    var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
     var transcriptLink = Model.Content.Value<Link>(TprPropertyAliases.VideoTranscriptUrl);
     var transcriptUrl = string.Empty;
     var transcriptTarget = string.Empty;
@@ -51,8 +51,8 @@
     }
     transcriptTitle = transcriptTitle.Replace("{{title}}", title);
 
-    var autoplay = Model.Settings.Value<bool>(TprPropertyAliases.VideoAutoplay);
-    bool playsInline = Model.Settings.Value<bool>(TprPropertyAliases.VideoPlaysInline)!;
+    var autoplay = Model.Settings?.Value<bool>(TprPropertyAliases.VideoAutoplay) ?? false;
+    bool playsInline = Model.Settings?.Value<bool>(TprPropertyAliases.VideoPlaysInline) ?? true;
 }
 <tpr-youtube-video
     id="@id" 

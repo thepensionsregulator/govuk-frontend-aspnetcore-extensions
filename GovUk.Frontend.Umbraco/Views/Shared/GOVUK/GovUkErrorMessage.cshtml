@@ -9,9 +9,9 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var cssClass = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
     var showError = true;
-    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
     var id = Model.Content.Key.ToString();
     if (!string.IsNullOrEmpty(modelPropertyName))

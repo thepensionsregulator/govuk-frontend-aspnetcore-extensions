@@ -4,18 +4,13 @@ using Moq;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors.ValueConverters;
 using ThePensionsRegulator.Umbraco.Testing;
-using Umbraco.Cms.Core.Blocks;
 using Umbraco.Cms.Core.Configuration.Models;
-using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
-using Umbraco.Cms.Core.PublishedCache;
-using Umbraco.Cms.Core.Routing;
-using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Core.Templates;
 
@@ -30,7 +25,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.PropertyEditors.ValueConverter
             // Arrange
             var testContext = new UmbracoTestContext();
             var propertyType = UmbracoPropertyFactory.CreateRichTextProperty("myAlias", "contentTypeAlias", new HtmlEncodedString(string.Empty)).PropertyType;
-            var urlProvider = Mock.Of<IPublishedUrlProvider>();
+            var urlProvider = testContext.PublishedUrlProvider.Object;
 
             const string INITIAL_VALUE = "<p>Some html</p>";
             const string EXPECTED_VALUE = "<p>Expected</p>";
@@ -49,13 +44,13 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.PropertyEditors.ValueConverter
                 new HtmlUrlParser(contentSettings.Object, Mock.Of<ILogger<HtmlUrlParser>>(), Mock.Of<IProfilingLogger>(), Mock.Of<IIOHelper>()),
                 new HtmlImageSourceParser(urlProvider),
                 new List<IPropertyValueFormatter> { formatter.Object },
-                Mock.Of<IApiRichTextElementParser>(),
-                Mock.Of<IApiRichTextMarkupParser>(),
-                Mock.Of<IPartialViewBlockEngine>(),
-                new BlockEditorConverter(testContext.PublishedContentTypeCache.Object, Mock.Of<ICacheManager>(), testContext.PublishedModelFactory.Object, testContext.VariationContextAccessor.Object, blockEditorVarianceHandler), // TODO : Add types to UmbracoTestContext 
-                Mock.Of<IJsonSerializer>(),
-                Mock.Of<IApiElementBuilder>(),
-                Mock.Of<RichTextBlockPropertyValueConstructorCache>(),
+                testContext.ApiRichTextElementParser.Object,
+                testContext.ApiRichTextMarkupParser.Object,
+                testContext.PartialViewBlockEngine.Object,
+                new BlockEditorConverter(testContext.PublishedContentTypeCache.Object, testContext.CacheManager.Object, testContext.PublishedModelFactory.Object, testContext.VariationContextAccessor.Object, blockEditorVarianceHandler),
+                testContext.JsonSerializer,
+                testContext.ApiElementBuilder.Object,
+                testContext.RichTextBlockPropertyValueConstructorCache.Object,
                 Mock.Of<ILogger<RteBlockRenderingValueConverter>>(),
                 blockEditorVarianceHandler,
                 testContext.VariationContextAccessor.Object,

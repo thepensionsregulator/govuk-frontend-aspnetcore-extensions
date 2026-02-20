@@ -1,15 +1,13 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-using System.Threading.Tasks;
-
 namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
 
     public class UkPostcodeModelBinderTests
     {
         [Theory]
-        [InlineData(null!, "")]
+        [InlineData(null, "")]
         [InlineData("", "")]
         [InlineData("ab01aa", "AB0 1AA")]
         [InlineData("aa2 3aa", "AA2 3AA")]
@@ -33,13 +31,13 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         [InlineData("AA99AA", "AA9 9AA")]
         [InlineData("AA99 9AA", "AA99 9AA")]
         [InlineData("AA999AA", "AA99 9AA")]
-        public async Task Formats_Postcode(string input, string expected)
+        public async Task Formats_Postcode(string? input, string expected)
         {
             // Arrange
             var modelBinder = new UkPostcodeModelBinder();
             var valueProvider = new SimpleValueProvider();
             var propertyName = "test";
-            valueProvider.Add(propertyName, input);
+            valueProvider.Add(propertyName, input!);
 
             // Act
             var context = new DefaultModelBindingContext

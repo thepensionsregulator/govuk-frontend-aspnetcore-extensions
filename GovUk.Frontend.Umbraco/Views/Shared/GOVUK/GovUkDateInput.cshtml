@@ -16,7 +16,7 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
     int? attemptedDay = null, attemptedMonth = null, attemptedYear = null;
     string? errorMessage = null;
@@ -63,8 +63,8 @@
         }
     }
     var hasErrorMessage = !string.IsNullOrEmpty(errorMessage);
-    var cssClass = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
-    var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
+    var cssClass = (" " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
+    var legendIsPageHeading = Model.Settings?.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading) ?? false;
     var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-field";
     var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
@@ -78,13 +78,13 @@
     {
         fieldsetDescribedBy = $"{modelPropertyName}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
-    var readOnly = Model.Settings.Value<bool>(PropertyAliases.ReadOnly);
-    var showDay = Model.Settings.Value<bool?>(PropertyAliases.DateInputShowDay) ?? true;
-    var showYear = Model.Settings.Value<bool?>(PropertyAliases.DateInputShowYear) ?? true;
+    var readOnly = Model.Settings?.Value<bool>(PropertyAliases.ReadOnly) ?? false;
+    var showDay = Model.Settings?.Value<bool?>(PropertyAliases.DateInputShowDay) ?? true;
+    var showYear = Model.Settings?.Value<bool?>(PropertyAliases.DateInputShowYear) ?? true;
 }
 <div class="@(GovUkClassNames.FormGroup)@(invalidClass)@(cssClass)">
-    <govuk-client-side-validation error-message-required="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRequired))"
-                                  error-message-range="@(Model.Settings.Value<string>(PropertyAliases.ErrorMessageRange))">
+    <govuk-client-side-validation error-message-required="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageRequired))"
+                                  error-message-range="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageRange))">
         <govuk-fieldset described-by="@fieldsetDescribedBy" class="govuk-date-input__fieldset" role="group">
             <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</govuk-fieldset-legend>
             @if (blocks != null && blocks.Any())

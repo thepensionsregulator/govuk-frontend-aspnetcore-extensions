@@ -7,7 +7,7 @@
 @using ThePensionsRegulator.Umbraco.Core.Blocks
 @using Umbraco.Extensions
 @{
-    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
     if (!string.IsNullOrEmpty(modelPropertyName))
     {

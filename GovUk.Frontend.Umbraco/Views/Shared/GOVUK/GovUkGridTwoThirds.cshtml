@@ -7,8 +7,8 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @if (Model.Areas is not null && Model.Areas.Any())
 {
-    var breakpointClass = Model.Settings.Value<string>(PropertyAliases.StackColumns) == "Mobile and tablet" ? "-from-desktop" : string.Empty;
-    var rowClasses = $"{GovUkClassNames.Row} {Model.Settings.Value<string>(PropertyAliases.CssClassesForRow)}".TrimEnd();
+    var breakpointClass = Model.Settings?.Value<string>(PropertyAliases.StackColumns) == "Mobile and tablet" ? "-from-desktop" : string.Empty;
+    var rowClasses = $"{GovUkClassNames.Row} {Model.Settings?.Value<string>(PropertyAliases.CssClassesForRow)}".TrimEnd();
     <div class="@rowClasses">
         <div class="@GovUkClassNames.Column @GovUkClassNames.ColumnTwoThirds@(breakpointClass)">
             <partial name="GOVUK/BlockGrid" model="Model.Areas[0]" />

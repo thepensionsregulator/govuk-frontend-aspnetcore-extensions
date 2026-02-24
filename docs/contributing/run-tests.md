@@ -12,6 +12,7 @@ npm test
 To run unit tests on the .NET code:
 
 ```cmd
+npm run govuk
 dotnet test
 ```
 
@@ -24,3 +25,9 @@ To run unit tests on the PowerShell scripts:
 ```pwsh
 Invoke-Pester
 ```
+
+## Troubleshooting
+
+### UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+
+If you get an error `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` when running npm commands you need to click the padlock next to any site in the address bar of your browser, and download the CA certificate for your network in .PEM format. Then set the environment variable NODE_EXTRA_CA_CERTS to the path to that certificate, and restart Visual Studio.

@@ -18,16 +18,16 @@
         return;
     }
 
-    var nameFieldName = Model.Settings.Value<string>(TprPropertyAliases.SectionCardNameProperty);
-    var descFieldName = Model.Settings.Value<string>(TprPropertyAliases.SectionCardDescriptionProperty);
+    var nameFieldName = Model.Settings?.Value<string>(TprPropertyAliases.SectionCardNameProperty);
+    var descFieldName = Model.Settings?.Value<string>(TprPropertyAliases.SectionCardDescriptionProperty);
     if (string.IsNullOrWhiteSpace(descFieldName))
     {
         descFieldName = TprPropertyAliases.SectionCardDescriptionPropertyDefault;
     }
 
-    var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+    var cssClasses = Model.Settings?.Value<string>(GovUkPropertyAliases.CssClasses);
 
-    var headingClass = Model.Settings.Value<string?>(TprPropertyAliases.SectionCardsTitleHeadingClass);
+    var headingClass = Model.Settings?.Value<string?>(TprPropertyAliases.SectionCardsTitleHeadingClass);
     if (string.IsNullOrEmpty(headingClass))
     {
         headingClass = "govuk-heading-m";

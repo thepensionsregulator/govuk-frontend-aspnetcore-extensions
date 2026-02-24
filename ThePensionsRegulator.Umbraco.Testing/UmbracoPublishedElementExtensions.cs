@@ -72,7 +72,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {
-                overridablePublishedElement.Setup(x => x.Value<string?>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value.ToString());
+                overridablePublishedElement.Setup(x => x.Value<string?>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value?.ToString());
             }
 
             return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateRichTextProperty);

@@ -1,8 +1,6 @@
 ﻿using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Linq;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models.Blocks;
@@ -36,7 +34,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
 
             for (var i = 0; i < blocks.Count; i++)
             {
-                if (blocks[i]?.ContentUdi == null) { continue; }
+                if (blocks[i]?.ContentKey is null) { continue; }
 
                 var hasGridAreas = blocks[i].Areas.Any();
                 string rowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
@@ -162,7 +160,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
 
             for (var i = 0; i < blocks.Count; i++)
             {
-                if (blocks[i]?.ContentUdi == null) { continue; }
+                if (blocks[i]?.ContentKey is null) { continue; }
 
                 var isGridRowBlock = blocks[i].Content.ContentType.Alias == ElementTypeAliases.GridRow;
                 string rowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForRow));

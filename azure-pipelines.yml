@@ -36,7 +36,7 @@ steps:
 
   - task: NodeTool@0
     inputs:
-      versionSpec: "16.15.1"
+      versionSpec: "24.13.1"
     displayName: Set Node version
 
   - task: Cache@2

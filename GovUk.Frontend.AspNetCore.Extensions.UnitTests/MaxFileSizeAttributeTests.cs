@@ -1,6 +1,5 @@
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Http;
-using System.IO;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 {
@@ -13,7 +12,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         {
             var file = CreateFormFile(800);
             var result = _sut.IsValid(file);
-            Assert.Equal(true, result);
+            Assert.True(result);
         }
 
         [Fact]
@@ -21,7 +20,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
         {
             var file = CreateFormFile(20_000);
             var result = _sut.IsValid(file);
-            Assert.Equal(false, result);
+            Assert.False(result);
         }
 
         [Fact]

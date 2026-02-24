@@ -125,7 +125,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         {
             // Arrange
             var blockList = CreateBlockListWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
-            blockList.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings.Value<string>(PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
+            blockList.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings?.Value<string>(PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
@@ -145,7 +145,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         {
             // Arrange
             var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
-            blockGrid.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings.Value<string>(PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
+            blockGrid.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings?.Value<string>(PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockGridPropertyValue(nameof(ExampleModelsBuilderModel.BlockGrid), blockGrid);
@@ -173,7 +173,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
                     .Object
                 )
             });
-            blockListOfTasks[0].Settings.OverrideValue(PropertyAliases.TaskListTaskStatus, TaskListTaskStatus.NotStarted.ToString());
+            blockListOfTasks[0].Settings?.OverrideValue(PropertyAliases.TaskListTaskStatus, TaskListTaskStatus.NotStarted.ToString());
 
             var blockList = CreateBlockListWithTaskListSummaryAndTaskList(blockListOfTasks);
 

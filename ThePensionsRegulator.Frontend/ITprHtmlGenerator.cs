@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System.Collections.Generic;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend
@@ -18,7 +17,7 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprSectionCards(TprSectionCards tprSectionCards);
         TagBuilder GenerateTprAblePlayer(TprYouTubeVideo video);
         TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(TprYouTubeVideo video);
-        TagBuilder GenerateTprTimeline(AttributeDictionary? attributes, IEnumerable<TprTimelineItem> items, bool hideTail, int headingLevel, string ariaTitle);
+        TagBuilder GenerateTprTimeline(AttributeDictionary? attributes, IEnumerable<TprTimelineItem> items, bool hideTail, int headingLevel, string? ariaTitle);
         TagBuilder GenerateTprSearchResults(string popularContentUrl, string searchContentUrl, string contentByIdUrl);
         TagBuilder GenerateTprSearchResultsFooterLinks(TprSearchFooterLinks tprSearchFooterLinks);
         TagBuilder GenerateTprSearchResultsInput(int headingLevel, string headingClass, string? label = null);

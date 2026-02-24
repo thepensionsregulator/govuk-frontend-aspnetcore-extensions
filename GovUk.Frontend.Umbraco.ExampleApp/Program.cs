@@ -1,24 +1,68 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using GovUk.Frontend.Umbraco;
+using GovUk.Frontend.Umbraco.Blocks;
+using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
+using GovUk.Frontend.Umbraco.ExampleApp.PropertyEditors.ValueFormatters;
+using GovUk.Frontend.Umbraco.ExampleApp.Services;
+using GovUk.Frontend.Umbraco.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using ThePensionsRegulator.Frontend.Services;
+using ThePensionsRegulator.Frontend.Umbraco;
+using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
+using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Web;
 
-namespace GovUk.Frontend.Umbraco.ExampleApp
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+if (builder.Configuration.GetValue<bool>("TPRStyles"))
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-            => CreateHostBuilder(args)
-                .Build()
-                .Run();
-
-        public static IHostBuilder CreateHostBuilder(string[] args)
-            => Host.CreateDefaultBuilder(args)
-                .ConfigureUmbracoDefaults()
-                .ConfigureLogging(x => x.ClearProviders())
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStaticWebAssets();
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+    builder.Services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
 }
+else
+{
+    builder.Services.AddGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+    builder.Services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
+}
+
+builder.Services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServiceForExampleApp>();
+builder.Services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
+builder.Services.AddTransient<ITprSearchResultsEndpointUrlProvider, TprQueryBasedSearchResultsEndpointUrlProvider>();
+builder.Services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();
+builder.Services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
+
+builder.CreateUmbracoBuilder()
+    .AddBackOffice()
+    .AddWebsite()
+    .AddComposers()
+    .Build();
+
+WebApplication app = builder.Build();
+var mvcOptions = app.Services.GetRequiredService<IOptions<MvcOptions>>();
+var umbracoContextAccessor = app.Services.GetRequiredService<IUmbracoContextAccessor>();
+var publishedValueFallback = app.Services.GetRequiredService<IPublishedValueFallback>();
+app.UseTprFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseHttpsRedirection();
+app.UseSecurityHeaders();
+
+await app.BootUmbracoAsync();
+
+app.UseUmbraco()
+    .WithMiddleware(u =>
+    {
+        u.UseBackOffice();
+        u.UseWebsite();
+    })
+    .WithEndpoints(u =>
+    {
+        u.UseBackOfficeEndpoints();
+        u.UseWebsiteEndpoints();
+    });
+
+await app.RunAsync();

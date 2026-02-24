@@ -41,11 +41,11 @@ describe("validateElement", () => {
         const testSubject = govuk();
         mockCalledFunctions(testSubject);
 
-        expect(_mockValidator.methods["custom"]).toBeCalledWith(
+        expect(_mockValidator.methods["custom"]).toHaveBeenCalledWith(
             "",                     // element value
             expect.anything(),      // html element
             { "prop": "Banana" }    // custom prop
-        );        
+        );
 
     });
 });

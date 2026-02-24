@@ -46,14 +46,6 @@
 			<PackagePath>build</PackagePath>
 			<Pack>true</Pack>
 		</Content>
-		<Content Include="Styles\govuk-umbraco-backoffice.css">
-			<PackagePath>contentFiles\any\$(TargetFramework)\Content\css</PackagePath>
-			<Pack>true</Pack>
-		</Content>
-		<Content Include="Styles\govuk-umbraco-backoffice.css.map">
-			<PackagePath>contentFiles\any\$(TargetFramework)\Content\css</PackagePath>
-			<Pack>true</Pack>
-		</Content>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -97,10 +89,6 @@
 	  <None Update="Styles\govuk-umbraco-backoffice.scss">
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	  </None>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\govuk-umbraco-backoffice.scss" />
 	</ItemGroup>
 
 	<ItemGroup>

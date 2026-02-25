@@ -22,7 +22,7 @@
 			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
 			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.Frontend\css\</TargetFolder>
 		</PropertyGroup>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)tpr.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SourceFolder) $(TargetFolder)tpr.css"/>
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)tpr.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SourceFolder) $(TargetFolder)tpr.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 

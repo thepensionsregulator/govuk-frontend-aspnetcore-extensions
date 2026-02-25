@@ -1,4 +1,20 @@
 ﻿class AddressMapper {
+    constructor(config) {
+        this.config = config
+    }
+
+    mapFromInput(originalInputs) {
+        const get = (attribute) => originalInputs.find(x => x.dataAddressLookup === attribute)?.value || '';
+        return {
+            addressLine1: get(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_1),
+            addressLine2: get(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_2),
+            town: get(this.config.DATA_ATTRIBUTES.TOWN_OR_CITY),
+            county: get(this.config.DATA_ATTRIBUTES.COUNTY),
+            country: get(this.config.DATA_ATTRIBUTES.COUNTRY),
+            postcode: get(this.config.DATA_ATTRIBUTES.POSTCODE),
+        };
+    }
+
     mapFromApiResult(apiResults) {
         return {
             organisationName: apiResults.organisationName,

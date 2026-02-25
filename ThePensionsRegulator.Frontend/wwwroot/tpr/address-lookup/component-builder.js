@@ -150,6 +150,16 @@ class AddressLookupComponentBuilder {
         return option;
     }
 
+    createHiddenInput(name, id, value) {
+        const hiddenInput = document.createElement("input");
+        hiddenInput.setAttribute("type", "hidden");
+        hiddenInput.setAttribute("name", name);
+        hiddenInput.setAttribute("id", id);
+        hiddenInput.value = value || '';
+
+        return hiddenInput;
+    }
+
     #getWidthCssClass(inputWidth) {
         let inputClass = "";
         switch (inputWidth) {

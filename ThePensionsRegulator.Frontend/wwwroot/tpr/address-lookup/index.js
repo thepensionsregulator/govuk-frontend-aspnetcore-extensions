@@ -11,15 +11,21 @@ class TprAddressLookup {
         this.index = key;
         this.searchEndpoint = element.getAttribute("data-address-lookup-search-url");
         this.idEndpoint = element.getAttribute("data-address-lookup-id-url");
+        this.apiService = new AddressLookupApiService(this.searchEndpoint, this.idEndpoint);
+        this.validator = new AddressLookupValidator(element, this.index);
+        this.componentBuilder = new AddressLookupComponentBuilder(this.index, ADDRESS_LOOKUP_CONFIG);
+        this.addressMapper = new AddressMapper(ADDRESS_LOOKUP_CONFIG);
         this.stateMachine = new AddressLookupStateMachine();
         this.stateMachine.onChange((newState, data) => this.onStateChange(newState, data));
-        this.apiService = new AddressLookupApiService(this.searchEndpoint, this.idEndpoint);
-        this.validator = new AddressLookupValidator(element);
-        this.componentBuilder = new AddressLookupComponentBuilder(this.index, ADDRESS_LOOKUP_CONFIG);
-        this.addressMapper = new AddressMapper();
 
+        this.originalInputs = this.captureOriginalInputs();
 
-        this.renderSearchView();
+        const address = this.addressMapper.mapFromInput(this.originalInputs);
+        if (this.validator.validAddress(address)) { 
+            this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
+        } else {
+            this.stateMachine.transition(AddressLookupStateMachine.STATES.SEARCH);
+        }
     }
 
     JsonResults = [];
@@ -44,6 +50,16 @@ class TprAddressLookup {
         }
     }
 
+    captureOriginalInputs() {
+        const inputs = this.container.querySelectorAll("input");
+        return Array.from(inputs).map(input => ({
+            name: input.getAttribute("name"),
+            id: input.getAttribute("id"),
+            dataAddressLookup: input.getAttribute(ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE),
+            value: input.value
+        }));
+    }
+
     renderSearchView() {
         this.clearContainer();
 
@@ -62,13 +78,19 @@ class TprAddressLookup {
         enterInternationalAddressLink.addEventListener("click", (event) => { this.enterInternationalAddressOnClick(event); });
         const linkList = this.componentBuilder.createLinkList([ enterInternationalAddressLink ]);
 
-        fieldset.appendChild(buildingNameGroup);
-        fieldset.appendChild(postcodeGroup);
+
+        const fieldsetChildrenFormGroup = document.createElement("div");
+        fieldsetChildrenFormGroup.classList.add("govuk-form-group");
+
+        fieldsetChildrenFormGroup.appendChild(buildingNameGroup);
+        fieldsetChildrenFormGroup.appendChild(postcodeGroup);
+        fieldset.appendChild(fieldsetChildrenFormGroup);
 
         this.container.appendChild(fieldset);
         this.container.appendChild(findAddressButton);
         this.container.appendChild(linkList);
 
+        this.validator.govuk.updateErrorSummary();
         this.validator.reparse();
     }
 
@@ -95,6 +117,27 @@ class TprAddressLookup {
         this.container.appendChild(selectElement);
         this.container.appendChild(confirmAddressButton);
         this.container.appendChild(linkList);
+
+        this.validator.govuk.updateErrorSummary();
+    }
+
+    createHiddenInputsForAddress(address) {
+        const addressPropertyMap = {
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1]: address.addressLine1,
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2]: address.addressLine2,
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY]: address.town,
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY]: address.county,
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY]: address.country,
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE]: address.postcode
+        };
+
+        const fragment = document.createDocumentFragment();
+        this.originalInputs.forEach(original => {
+            const value = addressPropertyMap[original.dataAddressLookup];
+            const hiddenInput = this.componentBuilder.createHiddenInput(original.name, original.id, value);
+            fragment.appendChild(hiddenInput);
+        });
+        return fragment;
     }
 
     renderConfirmedView(address) {
@@ -116,8 +159,13 @@ class TprAddressLookup {
         const editAddressListItem = this.componentBuilder.createListItem(editLink);
         const linkList = this.componentBuilder.createLinkList([editAddressListItem]);
 
+        const hiddenInputs = this.createHiddenInputsForAddress(address);
+
         this.container.appendChild(confirmedAddress);
+        this.container.appendChild(hiddenInputs);
         this.container.appendChild(linkList);
+
+        this.validator.govuk.updateErrorSummary();
     }
 
     renderInternationalManualEntryView() {
@@ -169,6 +217,8 @@ class TprAddressLookup {
         this.container.appendChild(fieldset);
         this.container.appendChild(confirmAddressButton);
         this.container.appendChild(linkList);
+
+        this.validator.govuk.updateErrorSummary();
     }
 
     renderUKManualEntryView() {
@@ -217,6 +267,7 @@ class TprAddressLookup {
         this.container.appendChild(linkList);
 
         this.validator.reparse();
+        this.validator.govuk.updateErrorSummary();
     }
 
     getComponentByDataAddressAttribute(attributeValue) {
@@ -327,9 +378,40 @@ class TprAddressLookup {
     }
 }
 
+
+function submitOnClick(event, addressLookupObjects) {
+    const submittableStates = [
+        AddressLookupStateMachine.STATES.CONFIRMED
+    ];
+
+
+    addressLookupObjects.forEach((addressLookup) => {
+
+        if (!submittableStates.includes(addressLookup.stateMachine.currentState)) {
+            if (addressLookup.stateMachine.currentState === AddressLookupStateMachine.STATES.SELECT) {
+                const select = addressLookup.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS);
+                addressLookup.validator.addSelectError(select, "Select confirm address before saving this page");
+            } else {
+                const fieldset = addressLookup.container.querySelector("fieldset");
+                const errorMessage = addressLookup.stateMachine.currentState === AddressLookupStateMachine.STATES.SEARCH
+                    ? "Select 'find an address' and confrim your address before saving this page"
+                    : "Select confirm address before submitting this page";
+                addressLookup.validator.addOrUpdateCustomFieldsetError(fieldset, errorMessage);
+            }
+
+            event.preventDefault();
+        }
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const addressLookupComponents = document.querySelectorAll(ADDRESS_LOOKUP_CONFIG.COMPONENT_SELECTOR);
+    const addressLookupObjects = [];
     addressLookupComponents.forEach((element, key) => {
-        new TprAddressLookup(element, key);
+        const lookup = new TprAddressLookup(element, key);
+        addressLookupObjects.push(lookup);
     });
+
+    const formSubmitButton = document.querySelector("button.govuk-button:not(.govuk-button--secondary)[type='submit']");
+    formSubmitButton.addEventListener("click", (event) => { submitOnClick(event, addressLookupObjects); })
 });

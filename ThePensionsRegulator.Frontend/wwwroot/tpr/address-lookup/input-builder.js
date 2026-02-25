@@ -30,7 +30,6 @@
         return this;
     }
 
-
     build() {
         return this.formGroup;
     }

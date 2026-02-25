@@ -100,7 +100,7 @@
     <govuk-client-side-validation 
         error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ErrorMessageRequired))"
         error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ErrorMessageMaxLength))">
-        <govuk-input name=@addressLine1State.ModelPropertyName value="@addressLine1State.AttemptedValue" input-aria-invalid="@addressLine1State.InvalidAriaLabel" autocomplete="address-line1">
+        <govuk-input name=@addressLine1State.ModelPropertyName value="@addressLine1State.AttemptedValue" input-aria-invalid="@addressLine1State.InvalidAriaLabel" autocomplete="address-line1" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "address-line-1" }})">
             <govuk-input-label>@addressLine1State.Label</govuk-input-label>
             @if (addressLine1State.HasErrorMessage)
             {
@@ -111,7 +111,7 @@
 
     <govuk-client-side-validation 
         error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ErrorMessageMaxLength))">
-        <govuk-input name=@addressLine2State.ModelPropertyName value="@addressLine2State.AttemptedValue" input-aria-invalid="@addressLine2State.InvalidAriaLabel" autocomplete="address-line2">
+        <govuk-input name=@addressLine2State.ModelPropertyName value="@addressLine2State.AttemptedValue" input-aria-invalid="@addressLine2State.InvalidAriaLabel" autocomplete="address-line2" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "address-line-2" }})">
             <govuk-input-label>@addressLine2State.Label</govuk-input-label>
             @if (addressLine2State.HasErrorMessage)
             {
@@ -123,7 +123,7 @@
     <govuk-client-side-validation 
         error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.TownOrCityErrorMessageRequired))"
         error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.TownOrCityErrorMessageMaxLength))">
-        <govuk-input name=@townOrCityState.ModelPropertyName input-class="govuk-input--width-20" value="@townOrCityState.AttemptedValue" input-aria-invalid="@townOrCityState.InvalidAriaLabel" autocomplete="address-level2">
+        <govuk-input name=@townOrCityState.ModelPropertyName input-class="govuk-input--width-20" value="@townOrCityState.AttemptedValue" input-aria-invalid="@townOrCityState.InvalidAriaLabel" autocomplete="address-level2" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "town-or-city" }})">
             <govuk-input-label>@townOrCityState.Label</govuk-input-label>
             @if (townOrCityState.HasErrorMessage)
             {
@@ -134,7 +134,7 @@
 
     <govuk-client-side-validation 
         error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.CountyErrorMessageMaxLength))">
-        <govuk-input name=@countyState.ModelPropertyName input-class="govuk-input--width-20" value="@countyState.AttemptedValue" input-aria-invalid="@countyState.InvalidAriaLabel" autocomplete="address-level3">
+        <govuk-input name=@countyState.ModelPropertyName input-class="govuk-input--width-20" value="@countyState.AttemptedValue" input-aria-invalid="@countyState.InvalidAriaLabel" autocomplete="address-level3" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "county" }})">
             <govuk-input-label>@countyState.Label</govuk-input-label>
             @if (countyState.HasErrorMessage)
             {
@@ -145,7 +145,7 @@
 
     <govuk-client-side-validation 
         error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.CountryErrorMessageRequired))">
-        <govuk-input name=@countryState.ModelPropertyName input-class="govuk-input--width-20" value="@countryState.AttemptedValue" input-aria-invalid="@countryState.InvalidAriaLabel" autocomplete="country">
+        <govuk-input name=@countryState.ModelPropertyName input-class="govuk-input--width-20" value="@countryState.AttemptedValue" input-aria-invalid="@countryState.InvalidAriaLabel" autocomplete="country" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "country" }})">
             <govuk-input-label>@countryState.Label</govuk-input-label>
             @if (countryState.HasErrorMessage)
             {
@@ -157,7 +157,7 @@
     <govuk-client-side-validation 
         error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.PostcodeErrorMessageRequired))"
         error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.PostcodeErrorMessageMaxLength))">
-        <govuk-input name=@postcodeState.ModelPropertyName input-class="govuk-input--width-10" value="@postcodeState.AttemptedValue" input-aria-invalid="@postcodeState.InvalidAriaLabel" autocomplete="postal-code">
+        <govuk-input name=@postcodeState.ModelPropertyName input-class="govuk-input--width-10" value="@postcodeState.AttemptedValue" input-aria-invalid="@postcodeState.InvalidAriaLabel" autocomplete="postal-code" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "postcode" }})">
             <govuk-input-label>@postcodeState.Label</govuk-input-label>
             @if (postcodeState.HasErrorMessage)
             {

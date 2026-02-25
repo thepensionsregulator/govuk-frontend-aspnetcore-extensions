@@ -22,10 +22,18 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             var viewModel = new AddressLookupViewModel
             {
                 Page = new AddressLookup(CurrentPage, null),
-                ShippingAddressLine1 = "Shipping Address line 1"
+                ShippingAddressLine1 = "Shipping Address line 1",
+                ShippingAddressLine2 = "Shipping address line 2",
+                ShippingSomethingReallyRandom = "Shipping town",
+                ShippingCounty = "Shipping county",
+                ShippingPostcode = "CM12 0AG"
             };
 
             ModelState.SetInitialValue(nameof(viewModel.ShippingAddressLine1), viewModel.ShippingAddressLine1.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.ShippingAddressLine2), viewModel.ShippingAddressLine2.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.ShippingSomethingReallyRandom), viewModel.ShippingSomethingReallyRandom.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.ShippingCounty), viewModel.ShippingCounty.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.ShippingPostcode), viewModel.ShippingPostcode.ToString());
 
             return CurrentTemplate(viewModel);
         }

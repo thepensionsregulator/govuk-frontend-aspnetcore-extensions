@@ -10,12 +10,13 @@
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Cms.Web.Common
 @using Umbraco.Cms.Web.Common.PublishedModels;
-@inject IConfiguration Configuration
+@using GovUk.Frontend.ExampleSharedResource;
+@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
 @{
     Layout = null;
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
-    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var useTPRstyles = Configuration.Value.TPRStyles;
     var skipLink = string.IsNullOrEmpty(settings?.Value<string>("govukSkipLinkText")) ? "Skip to main content" : settings?.Value<string>("govukSkipLinkText");
     var headerLogoAlt = string.IsNullOrEmpty(settings?.Value<string>("tprHeaderLogoAlt")) ? "The Pensions Regulator home page" : settings?.Value<string>("tprHeaderLogoAlt");
     var showSearch = bool.Parse(settings?.Value<string>("tprHeaderShowSearch") ?? "false");

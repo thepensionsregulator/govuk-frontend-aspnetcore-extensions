@@ -1,8 +1,10 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<YouTubeVideo>
 @using Microsoft.Extensions.Configuration;
-@inject IConfiguration Configuration
+@using GovUk.Frontend.ExampleSharedResource;
+@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
+
 @{
-    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var useTPRstyles = Configuration.Value.TPRStyles;
 }
 @section head{
 	<title>@Model.PageHeadingOrName()</title>

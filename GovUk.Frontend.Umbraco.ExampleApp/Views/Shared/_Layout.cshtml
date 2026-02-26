@@ -2,18 +2,19 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Configuration;
+@using GovUk.Frontend.ExampleSharedResource;
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Models;
 @using ThePensionsRegulator.Frontend.Umbraco.Services
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
-@inject IConfiguration Configuration
+@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
 @inject ITprGlobalNavigationService navigationSerivce;
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
-    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var useTPRstyles = Configuration.Value.TPRStyles;
     var headerLockup = new UmbracoTprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
     var footerLockup = new UmbracoTprFooterLockupModel(settings!);
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();

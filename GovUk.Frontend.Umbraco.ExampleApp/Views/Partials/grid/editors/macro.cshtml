@@ -10,6 +10,7 @@
     }
 
     <text>
-        @await Umbraco.RenderMacroAsync(macroAlias, parameters)
+        @* this doesn't work in latest Umbraco *@
+         @* @await Umbraco.RenderMacroAsync(macroAlias, parameters) *@
     </text>
 }

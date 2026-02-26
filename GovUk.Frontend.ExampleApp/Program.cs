@@ -12,7 +12,11 @@ using ThePensionsRegulator.Frontend;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
-if (builder.Configuration.GetValue<bool>("TPRStyles"))
+
+builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));
+AppConfig? config = builder.Configuration.GetSection("AppConfig").Get<AppConfig>();
+
+if (config?.TPRStyles == true)
 {
     builder.Services.AddTprFrontend();
 }

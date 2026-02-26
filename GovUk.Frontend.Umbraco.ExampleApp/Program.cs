@@ -1,3 +1,4 @@
+using GovUk.Frontend.ExampleSharedResource;
 using GovUk.Frontend.Umbraco;
 using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
@@ -15,7 +16,10 @@ using Umbraco.Cms.Core.Web;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-if (builder.Configuration.GetValue<bool>("TPRStyles"))
+builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));
+AppConfig? config = builder.Configuration.GetSection("AppConfig").Get<AppConfig>();
+
+if (config?.TPRStyles == true)
 {
     builder.Services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
 }

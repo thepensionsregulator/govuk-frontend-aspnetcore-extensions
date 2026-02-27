@@ -24,15 +24,15 @@
 		<PropertyGroup>
 			<GovUkFrontendUmbraco_UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</GovUkFrontendUmbraco_UserProfile>
 			<GovUkFrontendUmbraco_UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</GovUkFrontendUmbraco_UserProfile>
-			<GovUkFrontendUmbraco_ContentFilesPath>$(GovUkFrontendUmbraco_UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend.umbraco\$(TprGovUkFrontendUmbracoPackageVersion)\contentFiles\any\$(TargetFramework)\</GovUkFrontendUmbraco_ContentFilesPath>
+			<GovUkFrontendUmbraco_uSyncFilesPath>$(GovUkFrontendUmbraco_UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend.umbraco\$(TprGovUkFrontendUmbracoPackageVersion)\uSync\</GovUkFrontendUmbraco_uSyncFilesPath>
 			<GovUkFrontendUmbraco_StaticWebAssetsPath>$(GovUkFrontendUmbraco_UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend.umbraco\$(TprGovUkFrontendUmbracoPackageVersion)\staticwebassets\ThePensionsRegulator.GovUk.Frontend.Umbraco\</GovUkFrontendUmbraco_StaticWebAssetsPath>
 		</PropertyGroup>
 		<ItemGroup>
-			<uSyncFilesFromGovUkFrontendUmbraco Include="$(GovUkFrontendUmbraco_ContentFilesPath)uSync\**" />
+			<uSyncFilesFromGovUkFrontendUmbraco Include="$(GovUkFrontendUmbraco_uSyncFilesPath)**" />
 			<GovUkFrontendUmbraco_BackofficeCss Include="$(GovUkFrontendUmbraco_StaticWebAssetsPath)css\govuk-umbraco-backoffice.*" />
 		</ItemGroup>
 
-		<Message Text="ThePensionsRegulator.GovUk.Frontend.Umbraco copying uSync files from $(GovUkFrontendUmbraco_ContentFilesPath) to $(ProjectDir)" Importance="high" />
+		<Message Text="ThePensionsRegulator.GovUk.Frontend.Umbraco copying uSync files from $(GovUkFrontendUmbraco_uSyncFilesPath) to $(ProjectDir)" Importance="high" />
 		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
 			  DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
 

@@ -30,6 +30,13 @@
 
 		<!-- Dont include the Backoffice folder as part of packaging nuget build -->
 		<Content Remove="Backoffice\**" />
+		
+		<!-- Dont include the uSync folder as part of packaging nuget build. Instead pack it in a different folder. -->
+		<Content Remove="uSync\**" />
+		<None Include="uSync\**\*">
+			<PackagePath>uSync</PackagePath>
+			<Pack>true</Pack>
+		</None>
 
 		<!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
 		<None Include="Backoffice\public\umbraco-package.json" Pack="false" />

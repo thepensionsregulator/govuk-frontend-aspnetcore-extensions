@@ -26,15 +26,15 @@
 		<PropertyGroup>
 			<TprFrontendUmbraco_UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</TprFrontendUmbraco_UserProfile>
 			<TprFrontendUmbraco_UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</TprFrontendUmbraco_UserProfile>
-			<TprFrontendUmbraco_ContentFilesPath>$(TprFrontendUmbraco_UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoPackageVersion)\contentFiles\any\$(TargetFramework)\</TprFrontendUmbraco_ContentFilesPath>
+			<TprFrontendUmbraco_uSyncFilesPath>$(TprFrontendUmbraco_UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoPackageVersion)\uSync\</TprFrontendUmbraco_uSyncFilesPath>
 			<TprFrontendUmbraco_StaticWebAssetsPath>$(TprFrontendUmbraco_UserProfile)\.nuget\packages\thepensionsregulator.frontend.umbraco\$(TprFrontendUmbracoPackageVersion)\staticwebassets\ThePensionsRegulator.Frontend.Umbraco\</TprFrontendUmbraco_StaticWebAssetsPath>
 		</PropertyGroup>
 		<ItemGroup>
-			<uSyncFilesFromTprFrontendUmbraco Include="$(TprFrontendUmbraco_ContentFilesPath)uSync\**" />
+			<uSyncFilesFromTprFrontendUmbraco Include="$(TprFrontendUmbraco_uSyncFilesPath)**" />
 			<TprFrontendUmbraco_BackofficeCss Include="$(TprFrontendUmbraco_StaticWebAssetsPath)css\govuk-umbraco-backoffice.*" />
 		</ItemGroup>
 		
-		<Message Text="ThePensionsRegulator.Frontend.Umbraco copying uSync files from $(TprFrontendUmbraco_ContentFilesPath) to $(ProjectDir)" Importance="high" />
+		<Message Text="ThePensionsRegulator.Frontend.Umbraco copying uSync files from $(TprFrontendUmbraco_uSyncFilesPath) to $(ProjectDir)" Importance="high" />
 		<Copy SourceFiles="@(uSyncFilesFromTprFrontendUmbraco)"
 			DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" />
 

@@ -12,7 +12,7 @@
 		</PropertyGroup>
 
 		<!-- Copy files from this project to the consuming project. -->
-		<Message Text="ThePensionsRegulator.GovUk.Frontend.Umbraco not copying uSync and CSS files from ThePensionsRegulator.GovUk.Frontend.Umbraco because the target project is not a web project." Condition="$(GovUkFrontendUmbraco_TargetProjectIsWebProject) != true" Importance="high" />
+		<Message Text="ThePensionsRegulator.GovUk.Frontend.Umbraco not copying uSync and CSS files because the target project is not a web project." Condition="$(GovUkFrontendUmbraco_TargetProjectIsWebProject) != true" Importance="high" />
 		<CallTarget Targets="GovUkFrontendUmbraco_CopyFiles" Condition="$(GovUkFrontendUmbraco_TargetProjectIsWebProject) == true" />
 
 		<!-- If the ModelsBuilder out-of-date flag is present, show a helpful warning. -->

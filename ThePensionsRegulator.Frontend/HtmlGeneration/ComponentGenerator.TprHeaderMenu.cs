@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Linq;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -104,7 +103,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             govContainer.InnerHtml.AppendHtml(navContainer);
 
             var headerMenuList = new TagBuilder("ul");
-          
+
             navContainer.InnerHtml.AppendHtml(headerMenuList);
 
             if (tprHeaderBar.ShowSearch)
@@ -124,28 +123,29 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 foreach (var item in headerMenu.HeaderMenuItems)
                 {
                     var mobileMenuItem = new TagBuilder("li");
-                    
+
                     if (headerMenu.HeaderMenuItems.Count >= currentTprMenuItems || item != headerMenu.HeaderMenuItems.Last())
                     {
                         mobileMenuItem.AddCssClass("tpr-header-menu__nav-menu-item");
                     }
-                    else 
+                    else
                     {
                         mobileMenuItem.AddCssClass("tpr-header-menu__nav-menu-item tpr-header-menu__nav-final-item");
                     }
-                    mobileMenuItem.Attributes.Add("aria-live", "polite");
+
                     headerMenuList.InnerHtml.AppendHtml(mobileMenuItem);
 
                     var arrowContainer = new TagBuilder("div");
-                    arrowContainer.AddCssClass("tpr-mobile-menu__arrow-container");
+                    arrowContainer.AddCssClass("tpr-header-menu__arrow-container");
 
-                    var arrow = new TagBuilder("i");
-                    arrow.AddCssClass("tpr-mobile-menu__arrow tpr-mobile-menu__arrow-right");
-                    arrow.Attributes.Add("aria-label", tprHeaderBar.HeaderMenuItemAriaLabel);
-                    arrow.Attributes.Add("role", "button");
+                    var arrow = new TagBuilder("button");
+                    arrow.AddCssClass("tpr-header-menu__arrow");
+                    if (tprHeaderBar.HeaderMenuItemAriaLabel != null)
+                    {
+                        arrow.Attributes.Add("aria-label", $"{item.LinkText}: {tprHeaderBar.HeaderMenuItemAriaLabel}");
+                    }
+                    arrow.Attributes.Add("aria-expanded", "true");
                     arrowContainer.InnerHtml.AppendHtml(arrow);
-
-                    mobileMenuItem.InnerHtml.AppendHtml(arrowContainer);
 
                     var anchorTag = new TagBuilder("a");
 
@@ -158,21 +158,20 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     {
                         anchorTag.Attributes.Add("href", item.LinkUrl);
                     }
-                   
-                    anchorTag.Attributes.Add("aria-expanded", "true");              
+
                     anchorTag.Attributes.Add("tabindex", "0");
-                    anchorTag.Attributes.Add("role", "button");
-                   
-                    
+
                     mobileMenuItem.InnerHtml.AppendHtml(anchorTag);
+
 
                     if (!string.IsNullOrWhiteSpace(item.LinkText))
                     {
                         anchorTag.InnerHtml.Append(item.LinkText);
                     }
-
                     if (item.HeaderMenuChildItems != null && item.HeaderMenuChildItems.Count > 0)
                     {
+                        mobileMenuItem.InnerHtml.AppendHtml(arrowContainer);
+
                         var headerMenuSubMenu = new TagBuilder("ul");
                         headerMenuSubMenu.AddCssClass("tpr-header-menu__nav-sub-menu");
                         mobileMenuItem.InnerHtml.AppendHtml(headerMenuSubMenu);
@@ -200,7 +199,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                             }
 
                             aTag.Attributes.Add("tabindex", "0");
-        
+
                             mobileMenuSubMenuItemTitle.InnerHtml.AppendHtml(aTag);
 
                             if (!string.IsNullOrWhiteSpace(subMenuItem.LinkText))
@@ -220,4 +219,3 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         }
     }
 }
-

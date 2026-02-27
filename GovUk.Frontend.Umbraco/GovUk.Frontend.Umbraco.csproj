@@ -30,15 +30,22 @@
 
 		<!-- Dont include the Backoffice folder as part of packaging nuget build -->
 		<Content Remove="Backoffice\**" />
+		
+		<!-- Dont include the uSync folder as part of packaging nuget build. Instead pack it in a different folder. -->
+		<Content Remove="uSync\**" />
+		<None Include="uSync\**\*">
+			<PackagePath>uSync</PackagePath>
+			<Pack>true</Pack>
+		</None>
 
 		<!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
 		<None Include="Backoffice\public\umbraco-package.json" Pack="false" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Styles\_backoffice-property-editors.scss" />
-		<Content Include="Styles\_govuk-spacing.scss" />
-		<Content Include="Styles\_govuk-list.scss" />
+		<None Include="Backoffice\package-lock.json" />
+		<None Include="Backoffice\package.json" />
+		<None Include="Backoffice\tsconfig.json" />
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
@@ -57,7 +64,6 @@
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
 		<PackageReference Include="TinyMCE.Umbraco" Version="17.0.0" />
 		<PackageReference Include="Umbraco.Cms.Api.Management" Version="17.0.2" />
-		<PackageReference Include="Umbraco.Cms.DevelopmentMode.Backoffice" Version="17.0.2" />
 		<PackageReference Include="Umbraco.Cms.Web.Website" Version="17.0.2" />
 	</ItemGroup>
 

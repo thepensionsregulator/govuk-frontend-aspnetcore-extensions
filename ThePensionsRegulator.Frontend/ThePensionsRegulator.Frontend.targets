@@ -12,7 +12,7 @@
 		</PropertyGroup>
 
 		<!-- Copy files from this project to the consuming project. -->
-		<Message Text="ThePensionsRegulator.Frontend not copying SASS files from ThePensionsRegulator.Frontend because the target project is not a web project or Razor class library." Condition="$(TprFrontend_TargetProjectIsWebOrRclProject) != true" Importance="high" />
+		<Message Text="ThePensionsRegulator.Frontend not copying SASS files because the target project is not a web project or Razor class library." Condition="$(TprFrontend_TargetProjectIsWebOrRclProject) != true" Importance="high" />
 		<CallTarget Targets="TprFrontend_CopyFiles" Condition="$(TprFrontend_TargetProjectIsWebOrRclProject) == true" />
 	</Target>
 
@@ -21,7 +21,7 @@
 		<PropertyGroup>
 			<TprFrontend_UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</TprFrontend_UserProfile>
 			<TprFrontend_UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</TprFrontend_UserProfile>
-			<TprFrontendSassFolder>$(TprFrontend_UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendPackageVersion)\contentFiles\any\$(TargetFramework)\Styles\</TprFrontendSassFolder>
+			<TprFrontendSassFolder>$(TprFrontend_UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendPackageVersion)\Styles\</TprFrontendSassFolder>
 			<TprFrontend_StylesFolderExists Condition="Exists('$(ProjectDir)Styles')">true</TprFrontend_StylesFolderExists>
 		</PropertyGroup>
 		<ItemGroup>

@@ -27,6 +27,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Include="bundleconfig.json" />
 		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
 		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\jquery.validate.min.js" />
 		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\dist\jquery.min.js" />
@@ -104,28 +105,29 @@
 	<ItemGroup>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\_base.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk</PackagePath>
+			<PackagePath>Styles\govuk</PackagePath>
 		</Content>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\helpers\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\helpers</PackagePath>
+			<PackagePath>Styles\govuk\helpers</PackagePath>
 		</Content>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\tools\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\tools</PackagePath>
+			<PackagePath>Styles\govuk\tools</PackagePath>
 		</Content>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\settings\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\settings</PackagePath>
+			<PackagePath>Styles\govuk\settings</PackagePath>
 		</Content>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\vendor\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\vendor</PackagePath>
+			<PackagePath>Styles\govuk\vendor</PackagePath>
 		</Content>
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\objects\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\govuk\objects</PackagePath>
+			<PackagePath>Styles\govuk\objects</PackagePath>
 		</Content>
+		<Content Remove="bundleconfig.json" />
 		<None Include="..\tpr-nuget.png">
 		  <Pack>True</Pack>
 		  <PackagePath>\</PackagePath>

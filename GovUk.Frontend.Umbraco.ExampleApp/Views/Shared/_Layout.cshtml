@@ -8,12 +8,12 @@
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
-@inject IConfiguration Configuration
+@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
 @inject ITprGlobalNavigationService navigationSerivce;
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
-    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var useTPRstyles = Configuration.Value.TPRStyles;
     var headerLockup = new UmbracoTprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
     var footerLockup = new UmbracoTprFooterLockupModel(settings!);
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
@@ -72,7 +72,7 @@
                 </div>
             }
         }
-        @if (currentPage?.ContentType.Alias == "sideNavigation")
+        @if (currentPage?.ContentType.Alias == "sideNavigation" && useTPRstyles)
         {
             <div class="govuk-width-container">
                 <div class="govuk-grid-row">

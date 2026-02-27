@@ -45,7 +45,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		/// <summary>Three column links</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-        global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks { get; }
+		global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks { get; }
 	}
 
 	/// <summary>TPR footer</summary>

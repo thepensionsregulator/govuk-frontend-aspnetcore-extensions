@@ -1,5 +1,6 @@
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.ExampleApp;
 using GovUk.Frontend.ExampleApp.Middleware;
 using GovUk.Frontend.ExampleApp.Models.Validators;
 using GovUk.Frontend.ExampleSharedResource;
@@ -12,7 +13,11 @@ using ThePensionsRegulator.Frontend;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
-if (builder.Configuration.GetValue<bool>("TPRStyles"))
+
+builder.Services.Configure<AppConfig>(builder.Configuration.GetSection("AppConfig"));
+AppConfig? config = builder.Configuration.GetSection("AppConfig").Get<AppConfig>();
+
+if (config?.TPRStyles == true)
 {
     builder.Services.AddTprFrontend();
 }

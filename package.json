@@ -33,7 +33,7 @@
     "json5": "2.2.2"
   },
   "overrides": {
-    "minimatch": ">=10.2.1"
+    "minimatch": ">=10.2.4"
   },
   "dependencies": {
     "brace-expansion": "1.1.12",

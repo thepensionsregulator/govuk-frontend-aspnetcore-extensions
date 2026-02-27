@@ -39,7 +39,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		/// <summary>Menu Items</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-        global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprHeaderMenuBlockList { get; }
+		global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprHeaderMenuBlockList { get; }
 
 		/// <summary>Menu item ARIA label</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

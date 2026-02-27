@@ -21,7 +21,7 @@
 		<PropertyGroup>
 			<TprFrontend_UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</TprFrontend_UserProfile>
 			<TprFrontend_UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</TprFrontend_UserProfile>
-			<TprFrontendSassFolder>$(TprFrontend_UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendPackageVersion)\contentFiles\any\$(TargetFramework)\Styles\</TprFrontendSassFolder>
+			<TprFrontendSassFolder>$(TprFrontend_UserProfile)\.nuget\packages\thepensionsregulator.frontend\$(TprFrontendPackageVersion)\Styles\</TprFrontendSassFolder>
 			<TprFrontend_StylesFolderExists Condition="Exists('$(ProjectDir)Styles')">true</TprFrontend_StylesFolderExists>
 		</PropertyGroup>
 		<ItemGroup>

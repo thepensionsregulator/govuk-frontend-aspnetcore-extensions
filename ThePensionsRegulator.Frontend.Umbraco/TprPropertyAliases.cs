@@ -54,5 +54,8 @@
         public const string VideoTranscriptUrl = "transcriptUrl";
         public const string VideoAutoplay = "autoplay";
         public const string VideoPlaysInline = "playsInline";
+        public const string VideoDescription = "description";
+        public const string VideoHeadingLevel = "headingLevel";
+        public const string VideoHeadingSize = "headingClass";
     }
 }

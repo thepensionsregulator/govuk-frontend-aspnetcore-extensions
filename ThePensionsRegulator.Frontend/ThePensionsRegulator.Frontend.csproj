@@ -95,7 +95,7 @@
 		</Content>
 		<Content Include="Styles\_tpr-variables.scss">
 			<Pack>true</Pack>
-			<PackagePath>contentFiles\any\$(TargetFramework)\Styles\tpr</PackagePath>
+			<PackagePath>Styles\tpr</PackagePath>
 		</Content>
 	</ItemGroup>
 

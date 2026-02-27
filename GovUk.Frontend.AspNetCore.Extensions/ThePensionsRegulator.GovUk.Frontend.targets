@@ -22,7 +22,7 @@
 			<TprGovUkFrontend_StylesFolderExists Condition="Exists('$(ProjectDir)Styles')">true</TprGovUkFrontend_StylesFolderExists>
 			<TprGovUkFrontend_UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</TprGovUkFrontend_UserProfile>
 			<TprGovUkFrontend_UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</TprGovUkFrontend_UserProfile>
-			<ThePensionsRegulatorGovUkFrontendSassFolder>$(TprGovUkFrontend_UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(TprGovUkFrontendPackageVersion)\contentFiles\any\$(TargetFramework)\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
+			<ThePensionsRegulatorGovUkFrontendSassFolder>$(TprGovUkFrontend_UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(TprGovUkFrontendPackageVersion)\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
 		</PropertyGroup>
 		<ItemGroup>
 			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(ThePensionsRegulatorGovUkFrontendSassFolder)**\*.scss" />

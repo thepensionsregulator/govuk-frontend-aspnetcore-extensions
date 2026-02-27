@@ -1,6 +1,6 @@
-using GovUk.Frontend.ExampleSharedResource;
 using GovUk.Frontend.Umbraco;
 using GovUk.Frontend.Umbraco.Blocks;
+using GovUk.Frontend.Umbraco.ExampleApp;
 using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
 using GovUk.Frontend.Umbraco.ExampleApp.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.ExampleApp.Services;

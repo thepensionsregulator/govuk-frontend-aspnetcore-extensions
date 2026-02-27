@@ -1,5 +1,4 @@
-﻿using GovUk.Frontend.ExampleSharedResource;
-using GovUk.Frontend.Umbraco.Blocks;
+﻿using GovUk.Frontend.Umbraco.Blocks;
 using Microsoft.Extensions.Options;
 using ThePensionsRegulator.Umbraco.Core;
 

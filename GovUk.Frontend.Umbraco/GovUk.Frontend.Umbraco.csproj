@@ -36,9 +36,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="Styles\_backoffice-property-editors.scss" />
-		<Content Include="Styles\_govuk-spacing.scss" />
-		<Content Include="Styles\_govuk-list.scss" />
+		<None Include="Backoffice\package-lock.json" />
+		<None Include="Backoffice\package.json" />
+		<None Include="Backoffice\tsconfig.json" />
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>

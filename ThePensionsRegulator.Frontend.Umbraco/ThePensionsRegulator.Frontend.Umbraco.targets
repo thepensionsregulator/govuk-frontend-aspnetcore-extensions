@@ -14,7 +14,7 @@
 		<!-- Copy files from this project to the consuming project. It's important to do this AFTER copying files for 
 		     ThePensionsRegulator.GovUk.Frontend.Umbraco so that we can overwrite them with TPR customisations.
 		-->
-		<Message Text="ThePensionsRegulator.Frontend.Umbraco not copying uSync and backoffice CSS files from ThePensionsRegulator.Frontend.Umbraco because the target project is not a web project." Condition="$(TprFrontendUmbraco_TargetProjectIsWebProject) != true" Importance="high" />
+		<Message Text="ThePensionsRegulator.Frontend.Umbraco not copying uSync and backoffice CSS files because the target project is not a web project." Condition="$(TprFrontendUmbraco_TargetProjectIsWebProject) != true" Importance="high" />
 		<CallTarget Targets="TprFrontendUmbraco_CopyFiles" Condition="$(TprFrontendUmbraco_TargetProjectIsWebProject) == true" />
 
 		<!-- Always clean up obsolete files from previous versions where they would cause a conflict. -->

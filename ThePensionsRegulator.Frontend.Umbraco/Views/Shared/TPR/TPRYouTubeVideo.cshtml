@@ -2,9 +2,11 @@
 @addTagHelper *, ThePensionsRegulator.Frontend
 @inject IYouTubeVideoIdParser videoIdParser
 @inject IConsentCookieReader consentCookie
+@inject IGovUkHeadingClassProvider headingClassProvider
 @using GovUk.Frontend.AspNetCore.Extensions.Security
 @using GovUk.Frontend.Umbraco.Models
 @using GovUk.Frontend.Umbraco;
+@using GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Frontend.Security
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Services
@@ -21,10 +23,10 @@
     var useAblePlayer = false;
     if (useAblePlayer)
     {
-        if (!consentCookie.HasConsent(TprConsentCookieReader.TPR_CONSENT_CATEGORY_FUNCTIONALITY)){ useAblePlayer = false; }
+        if (!consentCookie.HasConsent(TprConsentCookieReader.TPR_CONSENT_CATEGORY_FUNCTIONALITY)) { useAblePlayer = false; }
     }
     var videoUrl = Model.Content.Value<string>(TprPropertyAliases.VideoUrl);
-    if(string.IsNullOrWhiteSpace(videoUrl))
+    if (string.IsNullOrWhiteSpace(videoUrl))
     {
         return;
     }
@@ -33,7 +35,7 @@
         return;
     }
     string id = Model.Content.Key.ToString();
-    var title = Model.Content.Value<string>(TprPropertyAliases.VideoTitle);
+    var title = Model.Content.Value<string?>(TprPropertyAliases.VideoTitle) ?? string.Empty;
     var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var transcriptLink = Model.Content.Value<Link>(TprPropertyAliases.VideoTranscriptUrl);
     var transcriptUrl = string.Empty;
@@ -50,19 +52,47 @@
     }
     transcriptTitle = transcriptTitle.Replace("{{title}}", title);
 
-    var autoplay = Model.Settings.Value<bool>(TprPropertyAliases.VideoAutoplay);
-    bool playsInline = Model.Settings.Value<bool>(TprPropertyAliases.VideoPlaysInline)!;
+    var autoplay = Model.Settings.Value<bool?>(TprPropertyAliases.VideoAutoplay) ?? false;
+    bool playsInline = Model.Settings.Value<bool?>(TprPropertyAliases.VideoPlaysInline) ?? true;
+    var description = Model.Content.Value<string?>(TprPropertyAliases.VideoDescription) ?? string.Empty;
+
+    var headingLevelProperty = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingLevel) ?? string.Empty;
+    var headingLevelNumber = headingLevelProperty.Replace("heading ", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
+    if (!int.TryParse(headingLevelNumber, out int numericHeadingLevel) || numericHeadingLevel < 1 || numericHeadingLevel > 6)
+    {
+        numericHeadingLevel = 2;
+    }
+    var headingLevel = $"h{numericHeadingLevel}";
+
+    var headingClasses = headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem);
+    var headingClass = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingSize);
+    if (string.IsNullOrWhiteSpace(headingClass))
+    {
+        headingClass = numericHeadingLevel switch
+        {
+            1 => headingClasses.Heading1,
+            2 => headingClasses.Heading2,
+            3 => headingClasses.Heading3,
+            4 => headingClasses.Heading4,
+            _ => headingClasses.Heading2
+        };
+    }
+
+    var iframeTitle = Umbraco.GetDictionaryValue("Video title");
+    iframeTitle = iframeTitle?.Replace("{{VIDEO_TITLE}}", title);
 }
-<tpr-youtube-video
-    id="@id" 
-    class="@cssClasses"
-    title="@title"
-    youtube-video-id="@videoId"
-    use-able-player="@useAblePlayer"
-    autoplay="@autoplay"
-    plays-inline="@playsInline"
-    transcript-url="@transcriptUrl"
-    transcript-title="@transcriptTitle"
-    transcript-target="@transcriptTarget"
-    >
+<tpr-youtube-video id="@id"
+                   class="@cssClasses"
+                   title="@title"
+                   description="@description"
+                   youtube-video-id="@videoId"
+                   use-able-player="@useAblePlayer"
+                   autoplay="@autoplay"
+                   plays-inline="@playsInline"
+                   heading-level="@headingLevel"
+                   heading-size="@headingClass"
+                   transcript-url="@transcriptUrl"
+                   transcript-title="@transcriptTitle"
+                   transcript-target="@transcriptTarget"
+                   iframe-title="@iframeTitle">
 </tpr-youtube-video>

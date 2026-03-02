@@ -192,6 +192,11 @@
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
     }
 
+    .tpr-header-menu__nav-menu-item:focus-within button {
+        border: solid $tpr-colour-black;
+        border-width: 0 3px 3px 0;
+    }
+
     .tpr-header-menu__nav-sub-menu-item a {
         font-size: 0.9rem;
         width: 100%
@@ -216,8 +221,13 @@
         cursor: pointer;
     }
 
-    .tpr-header-menu_menu-item-arrow--active {
+    .tpr-header-menu_arrow-container--active {
         background-color: transparent;
+    }
+
+    .tpr-header-menu_arrow--active {
+        border: solid $tpr-colour-white;
+        border-width: 0 3px 3px 0;
     }
 }
 
@@ -418,7 +428,7 @@
     color: $tpr-colour-white;
 }
 
-.tpr-header-menu_menu-item-arrow--active {
+.tpr-header-menu_arrow-container--active {
     background: $tpr-colour-violet;
 }
 

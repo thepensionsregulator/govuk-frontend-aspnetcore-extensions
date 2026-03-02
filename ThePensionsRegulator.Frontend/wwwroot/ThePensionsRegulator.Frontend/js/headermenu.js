@@ -40,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     subMenu.style.display = "none";
                 }
                 m.removeEventListener("keydown", desktopKeyboardNavigation)
+                m.addEventListener("keydown", closeMobileMenuOnFocusLeave)
             });
             arrows.forEach(a => a.addEventListener("keydown", mobileKeyboardNavigation))
         } else {
@@ -60,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     subMenu.style.display = "none";
                 }
+                m.removeEventListener("keydown", closeMobileMenuOnFocusLeave)
                 m.addEventListener("keydown", desktopKeyboardNavigation)
             });
 
@@ -397,6 +399,21 @@ function mobileKeyboardNavigation(e) {
 
         expandMobileMenuSubMenu(e);
     }
+}
+
+function closeMobileMenuOnFocusLeave() {
+
+    setTimeout(() => {
+
+        const nav = document.querySelector(".tpr-header-menu__nav");
+        const toggle = document.querySelector(".tpr-header-menu__button");
+
+        const activeElement = document.activeElement;
+
+        if (activeElement !== toggle && !nav.contains(activeElement)) {
+            toggleMobileMenu();
+        }
+    }, 0);
 }
 
 function removeActiveClasses() {

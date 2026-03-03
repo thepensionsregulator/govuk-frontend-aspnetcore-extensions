@@ -10,6 +10,7 @@
 
 		<Message Text="Copying files from ThePensionsRegulator.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
 		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)wwwroot\css\%(RecursiveDir)%(Filename)%(Extension)" />
+			DestinationFiles="$(ProjectDir)wwwroot\css\%(RecursiveDir)%(Filename)%(Extension)" 
+			SkipUnchangedFiles="true"/>
 	</Target>
 </Project>

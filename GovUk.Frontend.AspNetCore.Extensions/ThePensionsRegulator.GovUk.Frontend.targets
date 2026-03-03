@@ -33,7 +33,8 @@
 
 		<Copy SourceFiles="@(ThePensionsRegulatorGovUkFrontendSassFiles)"
 			  DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
-			  Condition="$(TprGovUkFrontend_StylesFolderExists) == true" />
+			  Condition="$(TprGovUkFrontend_StylesFolderExists) == true"
+			  SkipUnchangedFiles="true"/>
 
 		<!-- Generate a .gitignore so that govuk-frontend SASS files copied from this package are not committed to the consuming project's source control.
 			 Only do that if the folder exists, otherwise they'll also get created in an projects with no interest in SASS. -->

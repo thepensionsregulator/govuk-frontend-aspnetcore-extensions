@@ -36,9 +36,11 @@
 			<ContentTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v17\ContentTypes\tpr*.config"></ContentTypes>
 		</ItemGroup>
 		<Copy SourceFiles="@(DataTypes)"
-			DestinationFiles="$(ProjectDir)uSync\v17\DataTypes\%(RecursiveDir)%(Filename)%(Extension)" />
+			DestinationFiles="$(ProjectDir)uSync\ThePensionsRegulator.Frontend.Umbraco\DataTypes\%(RecursiveDir)%(Filename)%(Extension)"
+			SkipUnchangedFiles="true"/>
 		<Copy SourceFiles="@(ContentTypes)"
-			DestinationFiles="$(ProjectDir)uSync\v17\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)" />
+			DestinationFiles="$(ProjectDir)uSync\ThePensionsRegulator.Frontend.Umbraco\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)"
+			SkipUnchangedFiles="true"/>
 	</Target>
 
 	<!-- Create a version to use as a cache-busting parameter for backoffice customisation -->

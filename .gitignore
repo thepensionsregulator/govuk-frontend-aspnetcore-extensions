@@ -425,10 +425,10 @@ junit.xml
 cobertura-coverage.xml
 
 # uSync files copied for packaging
-GovUk.Frontend.Umbraco/uSync/v17/ContentTypes/
-GovUk.Frontend.Umbraco/uSync/v17/DataTypes/
-ThePensionsRegulator.Frontend.Umbraco/uSync/v17/ContentTypes/
-ThePensionsRegulator.Frontend.Umbraco/uSync/v17/DataTypes/
+GovUk.Frontend.Umbraco/uSync/**/ContentTypes/
+GovUk.Frontend.Umbraco/uSync/**/DataTypes/
+ThePensionsRegulator.Frontend.Umbraco/uSync/**/ContentTypes/
+ThePensionsRegulator.Frontend.Umbraco/uSync/**/DataTypes/
 
 # Generated files with package version info
 *.generated.*

@@ -19,7 +19,7 @@
 			<SassCompilerPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassCompilerPath>
 			<SassPath>$(MsBuildThisFileDirectory)Styles\</SassPath>
 			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
-			<GovUkFrontEndExtensionsFolder>$(MsBuildThisFileDirectory)..\GovUk.Frontend.AspNetCore.Extensions\Styles\</GovUkFrontEndExtensionsFolder>
+			<GovUkFrontEndExtensionsFolder>$(MsBuildThisFileDirectory)..\ThePensionsRegulator.GovUk.Frontend\Styles\</GovUkFrontEndExtensionsFolder>
 			<WwwrootPath>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.Frontend.Umbraco\css\</WwwrootPath>
 		</PropertyGroup>
 		<!-- Do not minify backoffice CSS because umb_name comments need to be preserved for TinyMCE -->

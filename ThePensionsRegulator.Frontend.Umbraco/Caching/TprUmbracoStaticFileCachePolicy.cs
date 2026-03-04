@@ -1,5 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Caching;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using ThePensionsRegulator.GovUk.Frontend.Caching;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Caching
 {

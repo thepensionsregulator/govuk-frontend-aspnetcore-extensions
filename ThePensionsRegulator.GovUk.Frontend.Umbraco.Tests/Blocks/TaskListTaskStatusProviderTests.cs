@@ -1,5 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions;
-using NUnit.Framework;
+﻿using NUnit.Framework;
+using ThePensionsRegulator.GovUk.Frontend;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Core;

@@ -16,7 +16,7 @@
   "jest": {
     "testEnvironment": "jsdom",
     "roots": [
-      "GovUk.Frontend.AspNetCore.Extensions",
+      "ThePensionsRegulator.GovUk.Frontend",
       "ThePensionsRegulator.Frontend"
     ],
     "collectCoverage": true,

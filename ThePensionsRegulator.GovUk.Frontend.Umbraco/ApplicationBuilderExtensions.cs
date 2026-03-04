@@ -1,10 +1,9 @@
-using GovUk.Frontend.AspNetCore.Extensions;
-using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.ComponentModel.DataAnnotations;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation;
+using ThePensionsRegulator.GovUk.Frontend.Validation;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 
@@ -19,7 +18,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco
                 throw new ArgumentNullException(nameof(app));
             }
 
-            app.UseGovUkFrontendExtensions();
+            app.UseTprGovUkFrontend();
 
             mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockValidationMetadataProvider(umbracoContextAccessor,
                 publishedValueFallback,

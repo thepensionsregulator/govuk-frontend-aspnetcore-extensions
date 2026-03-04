@@ -1,8 +1,8 @@
 ﻿using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions.Configuration;
 using GovUk.Frontend.AspNetCore.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using ThePensionsRegulator.GovUk.Frontend.Configuration;
 using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;

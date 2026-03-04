@@ -1,4 +1,4 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Typography;
+﻿using ThePensionsRegulator.GovUk.Frontend.Typography;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 

@@ -1,5 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Typography;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
+using ThePensionsRegulator.GovUk.Frontend.Typography;
 using Umbraco.Cms.Core.Strings;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters

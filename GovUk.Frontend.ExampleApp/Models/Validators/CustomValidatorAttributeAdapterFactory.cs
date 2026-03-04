@@ -1,9 +1,9 @@
 ﻿namespace GovUk.Frontend.ExampleApp.Models.Validators
 {
-    using GovUk.Frontend.AspNetCore.Extensions.Validation;
     using Microsoft.AspNetCore.Mvc.DataAnnotations;
     using Microsoft.Extensions.Localization;
     using System.ComponentModel.DataAnnotations;
+    using ThePensionsRegulator.GovUk.Frontend.Validation;
 
     public class CustomValidatorAttributeAdapterFactory : ValidatorAttributeAdapterFactory<CustomValidatorAttribute>
     {

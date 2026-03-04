@@ -18,7 +18,7 @@
 			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
 			<SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
 			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
-			<GovUkFrontEndExtensionsFolder>$(MsBuildThisFileDirectory)..\GovUk.Frontend.AspNetCore.Extensions\Styles\</GovUkFrontEndExtensionsFolder>
+			<GovUkFrontEndExtensionsFolder>$(MsBuildThisFileDirectory)..\ThePensionsRegulator.GovUk.Frontend\Styles\</GovUkFrontEndExtensionsFolder>
 			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
 			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.Frontend\css\</TargetFolder>
 		</PropertyGroup>

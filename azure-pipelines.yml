@@ -114,9 +114,9 @@ steps:
       failIfCoverageEmpty: true
 
   - task: CopyFiles@2
-    displayName: Copy GovUk.Frontend package to staging folder
+    displayName: Copy ThePensionsRegulator.GovUk.Frontend package to staging folder
     inputs:
-      SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.AspNetCore.Extensions\bin\$(buildConfiguration)
+      SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.GovUk.Frontend\bin\$(buildConfiguration)
       Contents: |
         ThePensionsRegulator.GovUk.Frontend*.nupkg
         ThePensionsRegulator.GovUk.Frontend*.snupkg

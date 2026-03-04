@@ -79,7 +79,7 @@ public class ExampleViewModel
 
 ```csharp
 // Controller
-using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using ThePensionsRegulator.GovUk.Frontend.Validation;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;

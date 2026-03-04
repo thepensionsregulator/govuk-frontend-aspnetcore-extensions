@@ -1,3 +1,4 @@
+using GovUk.Frontend.Umbraco.ExampleApp;
 using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
 using GovUk.Frontend.Umbraco.ExampleApp.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.ExampleApp.Services;

@@ -1,5 +1,5 @@
 ﻿@using GovUk.Frontend.Umbraco;
-@using ThePensionsRegulator.Umbraco.Blocks;
+@using ThePensionsRegulator.Umbraco.Core.Blocks
 @using Umbraco.Cms.Core.Models.Blocks;
 @using Umbraco.Cms.Core.Models.PublishedContent;
 @using Umbraco.Extensions
@@ -7,8 +7,8 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @if (Model.Areas is not null && Model.Areas.Count() == 2)
 {
-    var breakpointClass = Model.Settings.Value<string>(PropertyAliases.StackColumns) == "Mobile and tablet" ? "-from-desktop" : string.Empty;
-    var rowClasses = $"{GovUkClassNames.Row} {Model.Settings.Value<string>(PropertyAliases.CssClassesForRow)}".TrimEnd();
+    var breakpointClass = Model.Settings?.Value<string>(PropertyAliases.StackColumns) == "Mobile and tablet" ? "-from-desktop" : string.Empty;
+    var rowClasses = $"{GovUkClassNames.Row} {Model.Settings?.Value<string>(PropertyAliases.CssClassesForRow)}".TrimEnd();
     <div class="@rowClasses">
         <div class="@GovUkClassNames.Column @GovUkClassNames.ColumnOneQuarter@(breakpointClass)">
             <partial name="GOVUK/BlockGrid" model="@(Model.Areas[0])" />

@@ -5,10 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Reflection;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.Validation
@@ -144,9 +141,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                 if (errorMessageAttributes != null)
                 {
                     var targetElementId = targetElement.Attributes["id"]?.Value;
-                    errorMessageAttributes.Add("data-valmsg-for", targetElementId);
-                    errorMessageAttributes.Add("data-valmsg-replace", "false");
-                    errorMessageAttributes.Add("id", targetElementId + "-error");
+                    if (!string.IsNullOrEmpty(targetElementId))
+                    {
+                        errorMessageAttributes.Add("data-valmsg-for", targetElementId);
+                        errorMessageAttributes.Add("data-valmsg-replace", "false");
+                        errorMessageAttributes.Add("id", targetElementId + "-error");
+                    }
                 }
 
                 var modelPropertyName = targetElement.Attributes["name"]?.Value;
@@ -193,88 +193,126 @@ namespace GovUk.Frontend.AspNetCore.Extensions.Validation
                     var compareAttr = modelProperty.GetCustomAttributes<CompareAttribute>().FirstOrDefault();
                     if (compareAttr != null)
                     {
-                        targetElement.Attributes.Add("data-val-equalto", SelectBestErrorMessage(errorMessageCompare, compareAttr.ErrorMessage, localizer));
-                        targetElement.Attributes.Add("data-val-equalto-other", compareAttr.OtherProperty);
-                        validateElement = true;
+                        var errorMessage = SelectBestErrorMessage(errorMessageCompare, compareAttr.ErrorMessage, localizer);
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            targetElement.Attributes.Add("data-val-equalto", errorMessage);
+                            targetElement.Attributes.Add("data-val-equalto-other", compareAttr.OtherProperty);
+                            validateElement = true;
+                        }
                     }
 
                     // Email Address
                     var emailAttr = modelProperty.GetCustomAttributes<EmailAddressAttribute>().FirstOrDefault();
                     if (emailAttr != null)
                     {
-                        targetElement.Attributes.Add("data-val-email", SelectBestErrorMessage(errorMessageEmail, emailAttr.ErrorMessage, localizer));
-                        AddOrUpdateHtmlAttribute(targetElement, "autocomplete", "email");
-                        AddOrUpdateHtmlAttribute(targetElement, "type", "email");
-                        validateElement = true;
+                        var errorMessage = SelectBestErrorMessage(errorMessageEmail, emailAttr.ErrorMessage, localizer);
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            targetElement.Attributes.Add("data-val-email", errorMessage);
+                            AddOrUpdateHtmlAttribute(targetElement, "autocomplete", "email");
+                            AddOrUpdateHtmlAttribute(targetElement, "type", "email");
+                            validateElement = true;
+                        }
                     }
 
                     // Phone
                     var phoneAttr = modelProperty.GetCustomAttributes<PhoneAttribute>().FirstOrDefault();
                     if (phoneAttr != null)
                     {
-                        targetElement.Attributes.Add("data-val-phone", SelectBestErrorMessage(errorMessagePhone, phoneAttr.ErrorMessage, localizer));
-                        AddOrUpdateHtmlAttribute(targetElement, "autocomplete", "tel");
-                        AddOrUpdateHtmlAttribute(targetElement, "type", "tel");
-                        validateElement = true;
+                        var errorMessage = SelectBestErrorMessage(errorMessagePhone, phoneAttr.ErrorMessage, localizer);
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            targetElement.Attributes.Add("data-val-phone", errorMessage);
+                            AddOrUpdateHtmlAttribute(targetElement, "autocomplete", "tel");
+                            AddOrUpdateHtmlAttribute(targetElement, "type", "tel");
+                            validateElement = true;
+                        }
                     }
 
                     // Max Length
                     var maxLengthAttr = modelProperty.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
                     if (maxLengthAttr != null)
                     {
-                        targetElement.Attributes.Add("data-val-maxlength", SelectBestErrorMessage(errorMessageMaxLength, maxLengthAttr.ErrorMessage, localizer));
-                        targetElement.Attributes.Add("data-val-maxlength-max", maxLengthAttr.Length.ToString());
-                        targetElement.Attributes.Add("maxlength", maxLengthAttr.Length.ToString());
-                        validateElement = true;
+                        var errorMessage = SelectBestErrorMessage(errorMessageMaxLength, maxLengthAttr.ErrorMessage, localizer);
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            targetElement.Attributes.Add("data-val-maxlength", errorMessage);
+                            targetElement.Attributes.Add("data-val-maxlength-max", maxLengthAttr.Length.ToString());
+                            targetElement.Attributes.Add("maxlength", maxLengthAttr.Length.ToString());
+                            validateElement = true;
+                        }
                     }
 
                     //// Min Length
                     var minLengthAttr = modelProperty.GetCustomAttributes<MinLengthAttribute>().FirstOrDefault();
                     if (minLengthAttr != null)
                     {
-                        targetElement.Attributes.Add("data-val-minlength", SelectBestErrorMessage(errorMessageMinLength, minLengthAttr.ErrorMessage, localizer));
-                        targetElement.Attributes.Add("data-val-minlength-min", minLengthAttr.Length.ToString());
-                        validateElement = true;
+                        var errorMessage = SelectBestErrorMessage(errorMessageMinLength, minLengthAttr.ErrorMessage, localizer);
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            targetElement.Attributes.Add("data-val-minlength", errorMessage);
+                            targetElement.Attributes.Add("data-val-minlength-min", minLengthAttr.Length.ToString());
+                            validateElement = true;
+                        }
                     }
 
                     // Range
                     var rangeAttr = modelProperty.GetCustomAttributes<RangeAttribute>().FirstOrDefault();
                     if (rangeAttr != null)
                     {
-                        targetElement.Attributes.Add("data-val-range", SelectBestErrorMessage(errorMessageRange, rangeAttr.ErrorMessage, localizer));
-                        targetElement.Attributes.Add("data-val-range-max", rangeAttr.Maximum.ToString());
-                        targetElement.Attributes.Add("data-val-range-min", rangeAttr.Minimum.ToString());
-                        validateElement = true;
+                        var errorMessage = SelectBestErrorMessage(errorMessageRange, rangeAttr.ErrorMessage, localizer);
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            var max = rangeAttr.Maximum.ToString();
+                            var min = rangeAttr.Minimum.ToString();
+                            targetElement.Attributes.Add("data-val-range", errorMessage);
+                            if (max is not null) { targetElement.Attributes.Add("data-val-range-max", max); }
+                            if (min is not null) { targetElement.Attributes.Add("data-val-range-min", min); }
+                            validateElement = true;
+                        }
                     }
 
                     // Regex
                     var regexAttr = modelProperty.GetCustomAttributes<RegularExpressionAttribute>().FirstOrDefault();
                     if (regexAttr != null)
                     {
-                        targetElement.Attributes.Add("data-val-regex", SelectBestErrorMessage(errorMessageRegex, regexAttr.ErrorMessage, localizer));
-                        targetElement.Attributes.Add("data-val-regex-pattern", regexAttr.Pattern);
-                        AddOrUpdateHtmlAttribute(targetElement, "pattern", regexAttr.Pattern);
-                        validateElement = true;
+                        var errorMessage = SelectBestErrorMessage(errorMessageRegex, regexAttr.ErrorMessage, localizer);
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            targetElement.Attributes.Add("data-val-regex", errorMessage);
+                            targetElement.Attributes.Add("data-val-regex-pattern", regexAttr.Pattern);
+                            AddOrUpdateHtmlAttribute(targetElement, "pattern", regexAttr.Pattern);
+                            validateElement = true;
+                        }
                     }
 
                     // Required
                     var reqdAttr = modelProperty.GetCustomAttributes<RequiredAttribute>().FirstOrDefault();
                     if (reqdAttr != null)
                     {
-                        targetElement.Attributes.Add("required", "required");
-                        targetElement.Attributes.Add("data-val-required", SelectBestErrorMessage(errorMessageRequired, reqdAttr.ErrorMessage, localizer));
-                        validateElement = true;
+                        var errorMessage = SelectBestErrorMessage(errorMessageRequired, reqdAttr.ErrorMessage, localizer);
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            targetElement.Attributes.Add("required", "required");
+                            targetElement.Attributes.Add("data-val-required", errorMessage);
+                            validateElement = true;
+                        }
                     }
 
                     // String Length
                     var strLenAttr = modelProperty.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
                     if (strLenAttr != null)
                     {
-                        targetElement.Attributes.Add("data-val-length", SelectBestErrorMessage(errorMessageLength, strLenAttr.ErrorMessage, localizer));
-                        targetElement.Attributes.Add("data-val-length-max", strLenAttr.MaximumLength.ToString());
-                        targetElement.Attributes.Add("data-val-length-min", strLenAttr.MinimumLength.ToString());
-                        targetElement.Attributes.Add("maxlength", strLenAttr.MaximumLength.ToString());
-                        validateElement = true;
+                        var errorMessage = SelectBestErrorMessage(errorMessageLength, strLenAttr.ErrorMessage, localizer);
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            targetElement.Attributes.Add("data-val-length", errorMessage);
+                            targetElement.Attributes.Add("data-val-length-max", strLenAttr.MaximumLength.ToString());
+                            targetElement.Attributes.Add("data-val-length-min", strLenAttr.MinimumLength.ToString());
+                            targetElement.Attributes.Add("maxlength", strLenAttr.MaximumLength.ToString());
+                            validateElement = true;
+                        }
                     }
 
                     // Get anything else that inherits from ValidationAttribute

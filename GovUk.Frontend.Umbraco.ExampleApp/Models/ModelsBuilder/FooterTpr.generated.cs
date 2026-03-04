@@ -30,12 +30,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public new static IPublishedContentType GetModelContentType(IPublishedSnapshotAccessor publishedSnapshotAccessor)
-			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
+		public new static IPublishedContentType GetModelContentType(IPublishedContentTypeCache contentTypeCache)
+			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<FooterTpr, TValue>> selector)
-			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<FooterTpr, TValue>> selector)
+			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
@@ -55,7 +55,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("description")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel Description => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "description");
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel Description => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "description");
 
 		///<summary>
 		/// Final blocks
@@ -63,7 +63,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("finalBlocks")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel FinalBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "finalBlocks");
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel FinalBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "finalBlocks");
 
 		///<summary>
 		/// Footer with content
@@ -71,7 +71,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("footerWithContent")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel FooterWithContent => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "footerWithContent");
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel FooterWithContent => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "footerWithContent");
 
 		///<summary>
 		/// Footer without content
@@ -79,7 +79,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("footerWithoutContent")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel FooterWithoutContent => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "footerWithoutContent");
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel FooterWithoutContent => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "footerWithoutContent");
 
 		///<summary>
 		/// Footer with three column links
@@ -87,7 +87,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("footerWithThreeColumnLinks")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel FooterWithThreeColumnLinks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "footerWithThreeColumnLinks");
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel FooterWithThreeColumnLinks => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "footerWithThreeColumnLinks");
 
 		///<summary>
 		/// Footer with three column links and content
@@ -95,7 +95,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("footerWithThreeColumnLinksAndContent")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel FooterWithThreeColumnLinksAndContent => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "footerWithThreeColumnLinksAndContent");
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel FooterWithThreeColumnLinksAndContent => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "footerWithThreeColumnLinksAndContent");
 
 		///<summary>
 		/// GOV.UK blocks
@@ -103,6 +103,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("govukBlocks")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel GovukBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "govukBlocks");
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel GovukBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "govukBlocks");
 	}
 }

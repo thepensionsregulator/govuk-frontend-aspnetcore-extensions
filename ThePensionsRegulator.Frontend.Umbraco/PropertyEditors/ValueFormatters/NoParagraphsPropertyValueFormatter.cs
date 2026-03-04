@@ -1,8 +1,8 @@
 ﻿using GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using HtmlAgilityPack;
 using System.Linq;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 
@@ -14,7 +14,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
     public class NoParagraphsPropertyValueFormatter : TinyMCEPropertyValueFormatterBase, IPropertyValueFormatter
     {
         /// <inheritdoc />
-        public bool IsFormatter(IPublishedPropertyType propertyType) => TprPropertyEditorAliases.TprHeaderFooterRichText.Equals(propertyType.EditorAlias);
+        public virtual bool IsFormatter(IPublishedPropertyType propertyType) {
+            return (propertyType.Alias == TprPropertyAliases.HeaderContent && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.Header) ?? false)) ||
+                (propertyType.Alias == TprPropertyAliases.HeaderContext1 && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.ContextBarContext1) ?? false)) ||
+                (propertyType.Alias == TprPropertyAliases.HeaderContext2 && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.ContextBarContext2) ?? false)) ||
+                (propertyType.Alias == TprPropertyAliases.HeaderContext3 && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.ContextBarContext3) ?? false)) ||
+                (propertyType.Alias == TprPropertyAliases.FooterContent && (propertyType.ContentType?.CompositionAliases.Contains(TprElementTypeAliases.Footer) ?? false));
+        }
 
         /// <inheritdoc />
         /// <remarks>
@@ -25,10 +31,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
 
         private static IHtmlEncodedString RemoveWrappingParagraphs(IHtmlEncodedString html)
         {
-            if (!string.IsNullOrWhiteSpace(html.ToHtmlString()))
+            var richTextHtml = html.ToHtmlString();
+            if (!string.IsNullOrWhiteSpace(richTextHtml))
             {
                 var document = new HtmlDocument();
-                document.LoadHtml(html.ToHtmlString());
+                document.LoadHtml(richTextHtml);
 
                 var paragraphs = document.DocumentNode.Elements("p").ToList();
                 for (var i = 0; i < paragraphs.Count; i++)

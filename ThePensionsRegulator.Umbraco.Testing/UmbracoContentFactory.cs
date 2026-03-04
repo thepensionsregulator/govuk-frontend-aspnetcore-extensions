@@ -1,4 +1,5 @@
 ﻿using Moq;
+using ThePensionsRegulator.Umbraco.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Testing

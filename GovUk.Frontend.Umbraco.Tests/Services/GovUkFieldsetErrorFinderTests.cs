@@ -4,8 +4,8 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Linq;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.Blocks;
@@ -104,7 +104,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
             fieldsetContent.Setup(x => x.ContentType).Returns(fieldsetContentType.Object);
 
             var fieldsetSettings = new Mock<IOverridablePublishedElement>();
-            fieldsetSettings.Setup(x => x.GetProperty(PropertyAliases.FieldsetErrorsEnabled)).Returns(UmbracoPropertyFactory.CreateBooleanProperty(PropertyAliases.FieldsetErrorsEnabled, fieldsetErrorsEnabled));
+            fieldsetSettings.Setup(x => x.GetProperty(PropertyAliases.FieldsetErrorsEnabled)).Returns(UmbracoPropertyFactory.CreateBooleanProperty(PropertyAliases.FieldsetErrorsEnabled, ElementTypeAliases.FieldsetSettings, fieldsetErrorsEnabled));
 
             var errorMessageContentType = new Mock<IPublishedContentType>();
             errorMessageContentType.Setup(x => x.Alias).Returns(aliasOfChildBlock);
@@ -113,7 +113,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
             errorMessageContent.Setup(x => x.ContentType).Returns(errorMessageContentType.Object);
 
             var errorMessageSettings = new Mock<IOverridablePublishedElement>();
-            errorMessageSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ModelProperty, modelPropertyBoundToErrorMessage));
+            errorMessageSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ModelProperty, ElementTypeAliases.ErrorMessageSettings, modelPropertyBoundToErrorMessage));
 
             var errorMessageBlock = new OverridableBlockListItem(
                 new BlockListItem(
@@ -124,7 +124,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Services
                 );
 
             var fieldsetBlocks = new OverridableBlockListModel(new[] { errorMessageBlock }, null, OverridableBlockListItem.NoopPublishedElementFactory);
-            var fieldsetContentProperties = new[] { UmbracoPropertyFactory.CreateBlockListProperty(PropertyAliases.FieldsetBlocks, fieldsetBlocks) };
+            var fieldsetContentProperties = new[] { UmbracoPropertyFactory.CreateBlockListProperty(PropertyAliases.FieldsetBlocks, ElementTypeAliases.Fieldset, fieldsetBlocks) };
             fieldsetContent.SetupGet(x => x.Properties).Returns(fieldsetContentProperties);
             fieldsetContent.Setup(x => x.GetProperty(PropertyAliases.FieldsetBlocks)).Returns(fieldsetContentProperties[0]);
             fieldsetContent.Setup(x => x.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks, null, null, It.IsAny<Fallback>(), null)).Returns(fieldsetBlocks);

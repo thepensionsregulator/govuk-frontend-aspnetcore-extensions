@@ -1,0 +1,15 @@
+{
+  "name": "thepensionsregulator-govuk-frontend-umbraco",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "watch": "tsc && vite build --watch",
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "@umbraco-cms/backoffice": "^*",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9"
+  }
+}

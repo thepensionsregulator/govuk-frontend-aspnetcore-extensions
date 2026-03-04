@@ -1,6 +1,7 @@
 ﻿using Moq;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
+using ThePensionsRegulator.Umbraco.Core;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -44,7 +45,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
         public static Mock<TModel> SetupUmbracoPropertyValue<TModel, TProperty>(this Mock<TModel> publishedElement, string alias, TProperty value) where TModel : class, IPublishedElement
         {
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, (alias, value) => UmbracoPropertyFactory.CreateProperty(alias, null, value));
+            return SetupUmbracoPropertyValue(publishedElement, alias, value, (alias, contentTypeAlias, value) => UmbracoPropertyFactory.CreateProperty(alias, null, value));
         }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {
-                overridablePublishedElement.Setup(x => x.Value<string?>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value.ToString());
+                overridablePublishedElement.Setup(x => x.Value<string?>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value?.ToString());
             }
 
             return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateRichTextProperty);
@@ -262,7 +263,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         where TModel : class, IPublishedElement
         where TBlockList : class, IEnumerable<BlockListItem>
         {
-            publishedElement.SetupUmbracoProperty(UmbracoPropertyFactory.CreateBlockListProperty(alias, value));
+            publishedElement.SetupUmbracoProperty(UmbracoPropertyFactory.CreateBlockListProperty(alias, publishedElement.Object.ContentType?.Alias ?? string.Empty, value));
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {
@@ -301,7 +302,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         where TModel : class, IPublishedElement
         where TBlockGrid : class, IEnumerable<BlockGridItem>
         {
-            publishedElement.SetupUmbracoProperty(UmbracoPropertyFactory.CreateBlockGridProperty(alias, value));
+            publishedElement.SetupUmbracoProperty(UmbracoPropertyFactory.CreateBlockGridProperty(alias, publishedElement.Object.ContentType?.Alias ?? string.Empty, value));
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {
@@ -317,10 +318,10 @@ namespace ThePensionsRegulator.Umbraco.Testing
             return publishedElement;
         }
 
-        private static Mock<TModel> SetupUmbracoPropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, TProperty?, IPublishedProperty> createPropertyWithPropertyType)
+        private static Mock<TModel> SetupUmbracoPropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, string, TProperty?, IPublishedProperty> createPropertyWithPropertyType)
             where TModel : class, IPublishedElement
         {
-            publishedElement.SetupUmbracoProperty(createPropertyWithPropertyType(alias, value));
+            publishedElement.SetupUmbracoProperty(createPropertyWithPropertyType(alias, publishedElement.Object.ContentType?.Alias ?? string.Empty, value));
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {

@@ -5,12 +5,10 @@ using GovUk.Frontend.Umbraco.Services;
 using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Globalization;
 using System.Web;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
@@ -91,11 +89,11 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 }
                 viewModel.Page.Blocks!.Filter = filter;
                 viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)?
-                    .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
+                    .Settings?.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
 
                 viewModel.Page.Grid!.Filter = filter;
                 viewModel.Page.Grid.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)?
-                    .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
+                    .Settings?.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
 
                 ModelState.SetInitialValue(nameof(viewModel.Items), pagination.TotalItems.ToString(CultureInfo.InvariantCulture));
 

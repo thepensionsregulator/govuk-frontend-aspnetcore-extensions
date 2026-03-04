@@ -4,7 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
@@ -20,10 +20,10 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
 
             var errorBlockContent = new Mock<IOverridablePublishedElement>();
             errorBlockContent.Setup(x => x.ContentType).Returns(errorMessageContentType.Object);
-            errorBlockContent.Setup(x => x.GetProperty(PropertyAliases.ErrorMessage)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ErrorMessage, "Custom required error"));
+            errorBlockContent.Setup(x => x.GetProperty(PropertyAliases.ErrorMessage)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ErrorMessage, ElementTypeAliases.ErrorMessage, "Custom required error"));
 
             var errorBlockSettings = new Mock<IOverridablePublishedElement>();
-            errorBlockSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ModelProperty, "Field1"));
+            errorBlockSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ModelProperty, ElementTypeAliases.ErrorMessageSettings, "Field1"));
 
             var errorBlock = UmbracoBlockListFactory.CreateOverridableBlock(errorBlockContent.Object, errorBlockSettings.Object);
 
@@ -45,8 +45,8 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
             textInputContent.Setup(x => x.ContentType).Returns(textInputContentType.Object);
 
             var textInputSettings = new Mock<IOverridablePublishedElement>();
-            textInputSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ModelProperty, "Field1"));
-            textInputSettings.Setup(x => x.GetProperty(PropertyAliases.ErrorMessageRequired)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ErrorMessageRequired, "Custom required error"));
+            textInputSettings.Setup(x => x.GetProperty(PropertyAliases.ModelProperty)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ModelProperty, ElementTypeAliases.TextInputSettings, "Field1"));
+            textInputSettings.Setup(x => x.GetProperty(PropertyAliases.ErrorMessageRequired)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(PropertyAliases.ErrorMessageRequired, ElementTypeAliases.TextInputSettings, "Custom required error"));
 
             var textInputBlock = UmbracoBlockListFactory.CreateOverridableBlock(textInputContent.Object, textInputSettings.Object);
 

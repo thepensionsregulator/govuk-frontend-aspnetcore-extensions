@@ -10,14 +10,13 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
     [TestFixture]
     public class GovUkTypographyPropertyValueFormatterTests
     {
-        [TestCase(Constants.PropertyEditors.Aliases.TinyMce, true)]
-        [TestCase(PropertyEditorAliases.GovUkInlineRichText, false)]
-        [TestCase(PropertyEditorAliases.GovUkInlineInverseRichText, false)]
+        [TestCase(Constants.PropertyEditors.Aliases.RichText, true)]
+        [TestCase("someOtherPropertyEditor", false)]
         public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)
         {
             // Arrange
             var formatter = new GovUkTypographyPropertyValueFormatter();
-            var propertyType = UmbracoPropertyFactory.CreatePropertyType(1, propertyEditorAlias, new RichTextConfiguration());
+            var propertyType = UmbracoPropertyFactory.CreatePropertyType(1, "someProperty", propertyEditorAlias, "someContentType", [], new RichTextConfiguration());
 
             // Act
             var result = formatter.IsFormatter(propertyType);

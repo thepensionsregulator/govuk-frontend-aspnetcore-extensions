@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ThePensionsRegulator.Frontend.Models;
 using ThePensionsRegulator.Frontend.Services;
-using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
@@ -21,7 +21,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
         public TprSideNavigationViewModel GetLinks()
         {
             var currentPage = _publishedContext.PublishedContent ?? throw new ArgumentNullException(nameof(_publishedContext.PublishedContent), "Published context is not initialised.");
-            var rootNode = currentPage.Root().Children.FirstOrDefault(x => x.Name == "Side navigation") ?? currentPage.Root();
+            var rootNode = currentPage.Root().Children().FirstOrDefault(x => x.Name == "Side navigation") ?? currentPage.Root();
             TprSideNavigationViewModel sideNavigationViewModel = new() {
                 TitleLink = new TprSideNavigationLink { Name = rootNode.Name, Url = rootNode.Url(), IsCurrentPage = (rootNode == currentPage) },
                 NavigationLinks = CreateSideNavigationLinkChildren(currentPage, null, rootNode)
@@ -33,9 +33,9 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
         {
             List<TprSideNavigationLink> children = new();
 
-            if (rootNode.Children is not null && rootNode.Children.Any())
+            if (rootNode.Children() is not null && rootNode.Children().Any())
             {
-                foreach (var child in rootNode.Children)
+                foreach (var child in rootNode.Children())
                 {
                     var childNavItem = new TprSideNavigationLink
                     {

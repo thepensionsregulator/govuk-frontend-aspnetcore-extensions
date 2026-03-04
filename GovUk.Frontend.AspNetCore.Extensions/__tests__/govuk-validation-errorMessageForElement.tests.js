@@ -1,4 +1,4 @@
-import { govuk } from "../wwwroot/govuk/govuk-validation";
+import { govuk } from "../wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-validation";
 import { jest } from '@jest/globals';
 
 describe("errorMessageForElement", () => {
@@ -242,7 +242,7 @@ describe("errorMessageForElement", () => {
             <label class="govuk-label"></label>
             <div class="govuk-hint"></div>
             <div class="govuk-input__wrapper" >
-              <div class="govuk-input__prefix">£</div>
+              <div class="govuk-input__prefix">Â£</div>
               <input class="govuk-input type="text" id="inner" />
             </div>
           </div>`;

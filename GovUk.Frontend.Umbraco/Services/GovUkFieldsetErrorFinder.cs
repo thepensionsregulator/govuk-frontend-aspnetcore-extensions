@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.Services
@@ -20,14 +17,14 @@ namespace GovUk.Frontend.Umbraco.Services
         {
             if (fieldsetBlock?.Content?.ContentType?.Alias != ElementTypeAliases.Fieldset) { return Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>(); }
 
-            bool.TryParse(fieldsetBlock.Settings.GetProperty(PropertyAliases.FieldsetErrorsEnabled)?.GetValue()?.ToString(), out var fieldsetErrorsEnabled);
+            bool.TryParse(fieldsetBlock.Settings?.GetProperty(PropertyAliases.FieldsetErrorsEnabled)?.GetValue()?.ToString(), out var fieldsetErrorsEnabled);
             var blocksWithinFieldset = fieldsetBlock.Content.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks);
             if (fieldsetErrorsEnabled && blocksWithinFieldset != null)
             {
                 var invalidFields = modelState.Where(x => x.Value?.ValidationState == ModelValidationState.Invalid && !string.IsNullOrEmpty(x.Key)).Select(x => x.Key);
                 return blocksWithinFieldset.Where(x => x.Content.ContentType.Alias == ElementTypeAliases.ErrorMessage
-                                                       && !string.IsNullOrEmpty(x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString())
-                                                       && invalidFields.Contains(x.Settings.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString()));
+                                                       && !string.IsNullOrEmpty(x.Settings?.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString())
+                                                       && invalidFields.Contains(x.Settings?.GetProperty(PropertyAliases.ModelProperty)?.GetValue()?.ToString()));
             }
             return Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
         }

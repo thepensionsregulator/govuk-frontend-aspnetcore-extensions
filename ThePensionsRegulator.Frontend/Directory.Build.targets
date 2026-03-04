@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+		 InitialTargets="TprFrontend_Clean">
 	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
 		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
@@ -19,10 +20,48 @@
 			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
 			<GovUkFrontEndExtensionsFolder>$(MsBuildThisFileDirectory)..\GovUk.Frontend.AspNetCore.Extensions\Styles\</GovUkFrontEndExtensionsFolder>
 			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
-			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\</TargetFolder>
+			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.Frontend\css\</TargetFolder>
 		</PropertyGroup>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)tpr.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SourceFolder) $(TargetFolder)tpr\tpr.css"/>
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)tpr.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SourceFolder) $(TargetFolder)tpr.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 
+	<!-- Create a version to use as a cache-busting parameter for images in SASS -->
+	<Target Name="TprFrontend_GenerateSassVersion" BeforeTargets="TprFrontend_BuildSass">
+		<WriteLinesToFile
+		  File="Styles/_tpr-frontend-version.generated.scss"
+		  Lines="$tpr-frontend-version: '$(Version)'"
+		  Overwrite="true" />
+	</Target>
+
+	<Target Name="TprFrontend_GenerateProps" BeforeTargets="BeforeBuild">
+		<!--Generate a .props file so that ThePensionsRegulator.Frontend.targets has access to the package version. -->
+		<Message Text="ThePensionsRegulator.Frontend generating $(ProjectDir)ThePensionsRegulator.Frontend.props" Importance="high" />
+		<ItemGroup>
+			<TprFrontendPropsText Include="TprFrontendPropsText">
+				<Text>
+					<![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<TprFrontendPackageVersion>$(Version)</TprFrontendPackageVersion>
+	</PropertyGroup>
+</Project>
+				]]>
+				</Text>
+			</TprFrontendPropsText>
+			<TprFrontendProps Include="%(TprFrontendPropsText.Text)" />
+		</ItemGroup>
+		<WriteLinesToFile File="$(ProjectDir)ThePensionsRegulator.Frontend.generated.props" Lines="@(TprFrontendProps)" Overwrite="True" />
+	</Target>
+
+	<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
+	<Target Name="TprFrontend_Clean" Condition="Exists('$(ProjectDir)wwwroot\tpr\')">
+		<ItemGroup>
+			<!-- Removed in v10.0.0 -->
+			<TprFrontend_DirsToRemove Include="$(ProjectDir)wwwroot\tpr\" />
+		</ItemGroup>
+		<Message Text="Deleting obsolete files: @(TprFrontend_DirsToRemove)" />
+		<RemoveDir Directories="@(TprFrontend_DirsToRemove)" />
+	</Target>
 </Project>

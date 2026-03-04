@@ -1,7 +1,6 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -22,7 +21,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             videoTag.Attributes.Add("data-able-player", null);
             videoTag.Attributes.Add("data-youtube-nocookie", null);
             videoTag.Attributes.Add("data-youtube-id", video.YouTubeVideoId);
-            videoTag.Attributes.Add("data-root-path", "/_content/ThePensionsRegulator.Frontend/lib/ableplayer/");
+            videoTag.Attributes.Add("data-root-path", "/ThePensionsRegulator.Frontend/lib/ableplayer/");
             if (video.Autoplay) { videoTag.Attributes.Add("autoplay", null); }
             if (video.PlaysInline) { videoTag.Attributes.Add("playsinline", null); }
             videoTag.Attributes.Add("preload", video.Preload);

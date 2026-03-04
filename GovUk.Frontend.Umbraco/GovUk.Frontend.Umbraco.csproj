@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -22,66 +22,36 @@
 		<PackageId>ThePensionsRegulator.$(AssemblyName)</PackageId>
 		<Product>ThePensionsRegulator.$(AssemblyName)</Product>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<Content Remove="sasscompiler.json" />
+
+		<!-- Dont include the Backoffice folder as part of packaging nuget build -->
+		<Content Remove="Backoffice\**" />
+		
+		<!-- Dont include the uSync folder as part of packaging nuget build. Instead pack it in a different folder. -->
+		<Content Remove="uSync\**" />
+		<None Include="uSync\**\*.config">
+			<PackagePath>uSync</PackagePath>
+			<Pack>true</Pack>
+		</None>
+
+		<!-- However make the Umbraco-package.json included for dotnet pack or nuget package and visible to the solution -->
+		<None Include="Backoffice\public\umbraco-package.json" Pack="false" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
-	  <None Remove="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
-	  <None Remove="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Content Include="App_Plugins\GOVUK\blocks\controllers\govukPageHeading.controller.js" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCaption.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkDetails.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorMessage.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorSummary.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkInsetTextPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBannerPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPageHeading.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSelectPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryCardPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryListPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextAreaPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTextInputPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypographyPreview.html" />
-		<Content Include="App_Plugins\GOVUK\blocks\views\GovUkWarningTextPreview.html" />
-		<Content Include="App_Plugins\GOVUK\govuk.controller.js" />
-		<Content Include="App_Plugins\GOVUK\govuk.css" />
-		<Content Include="App_Plugins\GOVUK\model-property.html" />
-		<Content Include="App_Plugins\GOVUK\package.manifest" />
-		<Content Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
-		<Content Include="Styles\_govuk-spacing.scss" />
-		<Content Include="Styles\_govuk-list.scss" />
+		<None Include="Backoffice\package-lock.json" />
+		<None Include="Backoffice\package.json" />
+		<None Include="Backoffice\tsconfig.json" />
 		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.targets">
 		  <PackagePath>build;buildTransitive</PackagePath>
 		  <Pack>true</Pack>
 		</Content>
-		<Content Include="Styles\govuk-umbraco-backoffice.css">
-			<PackagePath>contentFiles\any\$(TargetFramework)\Content\css</PackagePath>
-			<Pack>true</Pack>
-		</Content>
-		<Content Include="Styles\govuk-umbraco-backoffice.css.map">
-			<PackagePath>contentFiles\any\$(TargetFramework)\Content\css</PackagePath>
+		<Content Include="ThePensionsRegulator.GovUk.Frontend.Umbraco.generated.props">
+			<PackagePath>build</PackagePath>
 			<Pack>true</Pack>
 		</Content>
 	</ItemGroup>
@@ -92,12 +62,15 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.11.0" />
+		<PackageReference Include="TinyMCE.Umbraco" Version="17.0.0" />
+		<PackageReference Include="Umbraco.Cms.Api.Management" Version="17.0.2" />
+		<PackageReference Include="Umbraco.Cms.Web.Website" Version="17.0.2" />
+		<PackageReference Include="uSync.BackOffice" Version="17.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
-		<ProjectReference Include="..\ThePensionsRegulator.Umbraco\ThePensionsRegulator.Umbraco.csproj" />
+		<ProjectReference Include="..\ThePensionsRegulator.Umbraco.Core\ThePensionsRegulator.Umbraco.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -109,6 +82,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Update="Backoffice\src\blocks\helpers\checkboxes-helper.ts">
+	    <SubType>Code</SubType>
+	  </None>
+	  <None Update="Backoffice\src\blocks\helpers\radios-helper.ts">
+	    <SubType>Code</SubType>
+	  </None>
+	  <None Update="Backoffice\src\blocks\helpers\task-list-helper.ts">
+	    <SubType>Code</SubType>
+	  </None>
+	  <None Update="Backoffice\src\blocks\helpers\accordion-helper.ts">
+	    <SubType>Code</SubType>
+	  </None>
 	  <None Update="NuGetReadme.md">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>

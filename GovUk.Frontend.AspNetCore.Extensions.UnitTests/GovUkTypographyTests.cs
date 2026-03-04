@@ -23,7 +23,7 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//a[@class='govuk-link']").Count);
+            Assert.Single(doc.DocumentNode.SelectNodes("//a[@class='govuk-link']"));
         }
 
         [Fact]
@@ -35,8 +35,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link')]").Count);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link--inverse')]").Count);
+            Assert.Single(doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link')]"));
+            Assert.Single(doc.DocumentNode.SelectNodes("//a[contains(@class,'govuk-link--inverse')]"));
         }
 
         [Fact]
@@ -60,8 +60,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.UnitTests
 
             var doc = new HtmlDocument();
             doc.LoadHtml(result);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//h2[@class='govuk-heading-s']").Count);
-            Assert.Equal(1, doc.DocumentNode.SelectNodes("//h2[@class='govuk-heading-m']").Count);
+            Assert.Single(doc.DocumentNode.SelectNodes("//h2[@class='govuk-heading-s']"));
+            Assert.Single(doc.DocumentNode.SelectNodes("//h2[@class='govuk-heading-m']"));
         }
 
         [Fact]

@@ -1,7 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System.Threading.Tasks;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 {
@@ -30,6 +29,12 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
             _htmlGenerator = htmlGenerator ?? new ComponentGenerator();
         }
 
+        /// <summary>
+        /// Prefix added to the HTML id attributes of child elements in the task list. Defaults to "task-list".
+        /// </summary>
+        [HtmlAttributeName("id-prefix")]
+        public string? IdPrefix { get; set; }
+
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -44,7 +49,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.TagHelpers
 
             var tagBuilder = _htmlGenerator.GenerateTaskList(
                 output.Attributes.ToAttributeDictionary(),
-                taskListContext.Tasks);
+                taskListContext.Tasks,
+                IdPrefix);
 
             output.TagName = tagBuilder.TagName;
             output.TagMode = TagMode.StartTagAndEndTag;

@@ -1,15 +1,16 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco;
 @using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Models
-@using GovUk.Frontend.Umbraco;
-@using ThePensionsRegulator.Umbraco.Blocks;
 @using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    if (!Enum.TryParse(typeof(NotificationBannerType), Model.Settings.Value<string>(PropertyAliases.NotificationBannerType), out var bannerType))
+    if (!Enum.TryParse(typeof(NotificationBannerType), Model.Settings?.Value<string>(PropertyAliases.NotificationBannerType), out var bannerType))
     {
         bannerType = NotificationBannerType.Default;
     }
@@ -24,12 +25,12 @@
             RenderWidthContainer = false
         };
     }
-    var classNames = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var classNames = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
 }
 <govuk-notification-banner type="@((NotificationBannerType)bannerType!)" class="@classNames">
-    @if (!string.IsNullOrEmpty(Model.Settings.Value<string>(PropertyAliases.NotificationBannerTitle)))
+    @if (!string.IsNullOrEmpty(Model.Settings?.Value<string>(PropertyAliases.NotificationBannerTitle)))
     {
-        <govuk-notification-banner-title>@(Model.Settings.Value<string>(PropertyAliases.NotificationBannerTitle))</govuk-notification-banner-title>
+        <govuk-notification-banner-title>@(Model.Settings?.Value<string>(PropertyAliases.NotificationBannerTitle))</govuk-notification-banner-title>
     }
     @if (string.IsNullOrWhiteSpace(text?.ToHtmlString()) && !string.IsNullOrWhiteSpace(heading?.ToHtmlString()))
     {

@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Web;
 
 namespace GovUk.Frontend.Umbraco.Validation
@@ -66,7 +62,7 @@ namespace GovUk.Frontend.Umbraco.Validation
             foreach (var parentBlock in parentBlocks)
             {
                 // If the parent component (eg 'Radios') is not bound to a property, it's not ready for validation.
-                var parentBoundProperty = parentBlock.Settings.Value<string>(PropertyAliases.ModelProperty);
+                var parentBoundProperty = parentBlock.Settings?.Value<string>(PropertyAliases.ModelProperty);
                 if (string.IsNullOrEmpty(parentBoundProperty) || !modelState.ContainsKey(parentBoundProperty)) { continue; }
 
                 // Establish whether the parent component (eg 'Radios') is valid.
@@ -93,7 +89,7 @@ namespace GovUk.Frontend.Umbraco.Validation
                         {
                             foreach (var conditionalBlock in conditionalBlocks)
                             {
-                                var blockBoundProperty = conditionalBlock.Settings.Value<string>(PropertyAliases.ModelProperty);
+                                var blockBoundProperty = conditionalBlock.Settings?.Value<string>(PropertyAliases.ModelProperty);
                                 if (!string.IsNullOrEmpty(blockBoundProperty) && modelState.ContainsKey(blockBoundProperty))
                                 {
                                     modelState[blockBoundProperty]!.ValidationState = ModelValidationState.Skipped;

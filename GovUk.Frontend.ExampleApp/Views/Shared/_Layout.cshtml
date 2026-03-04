@@ -1,11 +1,12 @@
-﻿@using Microsoft.AspNetCore.Localization
+﻿@using GovUk.Frontend.ExampleSharedResource
+@using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Configuration;
 @using Microsoft.AspNetCore.Mvc.Localization
 
 @inject IViewLocalizer localizer;
-@inject IConfiguration Configuration
+@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
 @{
-    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var useTPRstyles = Configuration.Value.TPRStyles;
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
     var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
@@ -24,7 +25,7 @@
     {
         <partial name="GOVUK/Head" />
     }
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />

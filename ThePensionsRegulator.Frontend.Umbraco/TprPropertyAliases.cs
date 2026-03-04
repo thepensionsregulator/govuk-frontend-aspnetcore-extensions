@@ -20,6 +20,10 @@
         public const string FooterLogoAltText = "tprFooterLogoAlt";
         public const string FooterLogoHref = "tprFooterLogoHref";
         public const string FooterLinks = "tprFooterThreeColumnLinks";
+        public const string HeaderContent = "tprHeaderContent";
+        public const string HeaderContext1 = "tprContext1";
+        public const string HeaderContext2 = "tprContext2";
+        public const string HeaderContext3 = "tprContext3";
         public const string HeaderMenuAriaLabel = "tprHeaderMenuAriaLabel";
         public const string HeaderMenuItemAriaLabel = "tprHeaderMenuItemAriaLabel";
         public const string HeaderMenuLinkText = "linkText";

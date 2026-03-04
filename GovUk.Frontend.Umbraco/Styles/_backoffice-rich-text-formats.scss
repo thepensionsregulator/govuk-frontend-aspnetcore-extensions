@@ -43,7 +43,33 @@ h6.govuk-heading-s {
     position: static;
 }
 
-/**umb_name:Paragraph*/
-p.govuk-body {
-    position: static;
+/* Apply GOV.UK by default to elements in the rich text editor, even when GOV.UK classes are not yet applied. */
+p {
+    @extend .govuk-body;
+}
+
+ul {
+    @extend .govuk-list;
+    @extend .govuk-list--bullet;
+}
+
+ol {
+    @extend .govuk-list;
+    @extend .govuk-list--number;
+}
+
+table {
+    @extend .govuk-table;
+}
+
+caption {
+    @extend .govuk-table__caption;
+}
+
+th {
+    @extend .govuk-table__header;
+}
+
+td, td:last-child {
+    @extend .govuk-table__cell;
 }

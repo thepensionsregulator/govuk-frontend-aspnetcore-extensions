@@ -34,16 +34,16 @@
     cursor: pointer;
 }
 
-    .tpr-header-menu__button:focus {
-        color: $tpr-colour-black;
-        background-color: $tpr-colour-tangerine-yellow;
-        box-shadow: 0 -2px $tpr-colour-tangerine-yellow, 0 4px $tpr-colour-black;
-        text-decoration: none;
-    }
+.tpr-header-menu__button:focus {
+    color: $tpr-colour-black;
+    background-color: $tpr-colour-tangerine-yellow;
+    box-shadow: 0 -2px $tpr-colour-tangerine-yellow, 0 4px $tpr-colour-black;
+    text-decoration: none;
+}
 
-    .tpr-header-menu__button:focus-visible {
-        outline: transparent;
-    }
+.tpr-header-menu__button:focus-visible {
+    outline: transparent;
+}
 
 .tpr-header-menu__button--opened {
     color: $tpr-colour-royal-blue;
@@ -58,14 +58,14 @@
     padding-left: 0.3rem;
 }
 
-    .tpr-mobile-menu__toggle--open::before {
-        content: "x";
-        font-size: 1.5rem;
-        font-weight: 700;
-        font-family: $govuk-font-family;
-        color: $tpr-colour-royal-blue;
-        margin-left: 0.5rem;
-    }
+.tpr-mobile-menu__toggle--open::before {
+    content: "x";
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: $govuk-font-family;
+    color: $tpr-colour-royal-blue;
+    margin-left: 0.5rem;
+}
 
 .tpr-mobile-menu__svg {
     width: 1.5rem;
@@ -75,9 +75,9 @@
     display: flex;
 }
 
-    .tpr-mobile-menu__svg.tpr-mobile-menu__svg--hide {
-        display: none;
-    }
+.tpr-mobile-menu__svg.tpr-mobile-menu__svg--hide {
+    display: none;
+}
 
 .tpr-mobile-menu__toggle .tpr-header-menu__menu-icon {
     fill: $tpr-colour-white;
@@ -192,6 +192,11 @@
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
     }
 
+    .tpr-header-menu__nav-menu-item:focus-within button {
+        border: solid $tpr-colour-black;
+        border-width: 0 3px 3px 0;
+    }
+
     .tpr-header-menu__nav-sub-menu-item a {
         font-size: 0.9rem;
         width: 100%
@@ -216,8 +221,13 @@
         cursor: pointer;
     }
 
-    .tpr-header-menu_menu-item-arrow--active {
+    .tpr-header-menu_arrow-container--active {
         background-color: transparent;
+    }
+
+    .tpr-header-menu_arrow--active {
+        border: solid $tpr-colour-white;
+        border-width: 0 3px 3px 0;
     }
 }
 
@@ -329,10 +339,11 @@
         a {
             color: $tpr-colour-royal-blue;
         }
-            a:hover {
-                color: none;
-                background: none;
-            }
+
+        a:hover {
+            color: none;
+            background: none;
+        }
     }
 
     .tpr-header-menu__arrow:active .tpr-header-menu__nav-menu-item:hover .tpr-header-menu__nav-sub-menu-item, .tpr-header-menu__nav-menu-item:focus-within .tpr-header-menu__nav-sub-menu-item {
@@ -417,7 +428,7 @@
     color: $tpr-colour-white;
 }
 
-.tpr-header-menu_menu-item-arrow--active {
+.tpr-header-menu_arrow-container--active {
     background: $tpr-colour-violet;
 }
 

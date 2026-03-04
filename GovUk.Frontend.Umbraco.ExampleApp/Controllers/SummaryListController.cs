@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Core.Web;
@@ -16,15 +17,18 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 {
     public class SummaryListController : RenderController
     {
-        private readonly IPublishedSnapshotAccessor _publishedSnapshotAccessor;
+        private readonly IPublishedContentTypeCache _publishedContentTypeCache;
+        private readonly IVariationContextAccessor _variationContextAccessor;
 
         public SummaryListController(ILogger<RenderController> logger,
             ICompositeViewEngine compositeViewEngine,
             IUmbracoContextAccessor umbracoContextAccessor,
-            IPublishedSnapshotAccessor publishedSnapshotAccessor)
+            IPublishedContentTypeCache publishedContentTypeCache,
+            IVariationContextAccessor variationContextAccessor)
             : base(logger, compositeViewEngine, umbracoContextAccessor)
         {
-            _publishedSnapshotAccessor = publishedSnapshotAccessor ?? throw new System.ArgumentNullException(nameof(publishedSnapshotAccessor));
+            _publishedContentTypeCache = publishedContentTypeCache ?? throw new ArgumentNullException(nameof(publishedContentTypeCache));
+            _variationContextAccessor = variationContextAccessor ?? throw new ArgumentNullException(nameof(variationContextAccessor));
         }
 
         [ModelType(typeof(SummaryList))]
@@ -43,7 +47,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     summaryListItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
                     summaryListItems.Add(summaryListItem);
                 }
-                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedSnapshotAccessor);
+                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor);
             }
 
             return CurrentTemplate(viewModel);

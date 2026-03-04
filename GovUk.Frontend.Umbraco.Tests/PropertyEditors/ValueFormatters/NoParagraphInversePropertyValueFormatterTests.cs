@@ -10,14 +10,14 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
     [TestFixture]
     public class NoParagraphInversePropertyValueFormatterTests
     {
-        [TestCase(Constants.PropertyEditors.Aliases.TinyMce, false)]
-        [TestCase(PropertyEditorAliases.GovUkInlineRichText, false)]
-        [TestCase(PropertyEditorAliases.GovUkInlineInverseRichText, true)]
-        public void Applies_only_to_correct_rich_text_property_editor(string propertyEditorAlias, bool expected)
+        [TestCase(ElementTypeAliases.Panel, "someOtherProperty", false)]
+        [TestCase("someOtherElementType", PropertyAliases.PanelText, false)]
+        [TestCase(ElementTypeAliases.Panel, PropertyAliases.PanelText, true)]
+        public void Applies_only_to_correct_rich_text_property(string contentTypeAlias, string propertyAlias, bool expected)
         {
             // Arrange
             var formatter = new NoParagraphInversePropertyValueFormatter();
-            var propertyType = UmbracoPropertyFactory.CreatePropertyType(1, propertyEditorAlias, new RichTextConfiguration());
+            var propertyType = UmbracoPropertyFactory.CreatePropertyType(1, propertyAlias, Constants.PropertyEditors.Aliases.RichText, contentTypeAlias, [], new RichTextConfiguration());
 
             // Act
             var result = formatter.IsFormatter(propertyType);

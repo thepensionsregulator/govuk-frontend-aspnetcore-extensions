@@ -1,7 +1,7 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Models;
 using Microsoft.AspNetCore.Http;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 
 namespace GovUk.Frontend.Umbraco.Services
 {
@@ -47,7 +47,7 @@ namespace GovUk.Frontend.Umbraco.Services
 
         private static int FromUmbracoSettingsOrDefault(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block, string propertyName, int defaultValue)
         {
-            var value = block.Settings.Value<int?>(propertyName);
+            var value = block.Settings?.Value<int?>(propertyName);
             if (value.HasValue)
             {
                 return value.Value;
@@ -60,7 +60,7 @@ namespace GovUk.Frontend.Umbraco.Services
 
         private static string FromUmbracoSettingsOrDefault(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block, string propertyName, string defaultValue)
         {
-            var value = block.Settings.Value<string>(propertyName);
+            var value = block.Settings?.Value<string>(propertyName);
             if (!string.IsNullOrEmpty(value))
             {
                 return value;

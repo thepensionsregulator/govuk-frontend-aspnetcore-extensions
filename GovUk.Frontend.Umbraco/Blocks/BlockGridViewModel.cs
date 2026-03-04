@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models.Blocks;
 
 namespace GovUk.Frontend.Umbraco.Blocks

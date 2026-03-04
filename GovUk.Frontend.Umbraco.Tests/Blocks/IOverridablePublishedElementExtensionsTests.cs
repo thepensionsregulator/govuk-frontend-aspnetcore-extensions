@@ -1,15 +1,12 @@
 ﻿using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.Models;
-using Moq;
 using NUnit.Framework;
-using System;
-using System.Linq;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Blocks;
-using Umbraco.Cms.Core.PublishedCache;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.Tests.Blocks
@@ -21,15 +18,16 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         [TestCase(ElementTypeAliases.Radios, true)]
         public void OverrideCheckboxes_throws_ArgumentException_if_block_is_not_Checkboxes_component(string elementTypeAlias, bool exceptionExpected)
         {
+            var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.DoesNotThrow(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
         }
 
@@ -75,7 +73,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             // Act
-            content.OverrideCheckboxes(replacement, testContext.PublishedSnapshotAccessor.Object);
+            content.OverrideCheckboxes(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(PropertyAliases.Checkboxes);
@@ -96,15 +94,16 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         [TestCase(ElementTypeAliases.Radios, false)]
         public void OverrideRadioButtons_throws_ArgumentException_if_block_is_not_Radios_component(string elementTypeAlias, bool exceptionExpected)
         {
+            var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.DoesNotThrow(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
         }
 
@@ -149,7 +148,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             // Act
-            content.OverrideRadioButtons(replacement, testContext.PublishedSnapshotAccessor.Object);
+            content.OverrideRadioButtons(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(PropertyAliases.RadioButtons);
@@ -170,15 +169,16 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         [TestCase(ElementTypeAliases.Radios, true)]
         public void OverrideSelectOptions_throws_ArgumentException_if_block_is_not_Select_component(string elementTypeAlias, bool exceptionExpected)
         {
+            var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.DoesNotThrow(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
         }
 
@@ -215,7 +215,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             // Act
-            content.OverrideSelectOptions(replacement, testContext.PublishedSnapshotAccessor.Object);
+            content.OverrideSelectOptions(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(PropertyAliases.SelectOptions);
@@ -232,15 +232,16 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         [TestCase(ElementTypeAliases.SummaryList, true)]
         public void OverrideSummaryCardActions_throws_ArgumentException_if_block_is_not_Summary_card_component(string elementTypeAlias, bool exceptionExpected)
         {
+            var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.DoesNotThrow(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
         }
 
@@ -277,7 +278,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             // Act
-            content.OverrideSummaryCardActions(replacement, testContext.PublishedSnapshotAccessor.Object);
+            content.OverrideSummaryCardActions(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(PropertyAliases.SummaryCardActions);
@@ -296,15 +297,16 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
         [TestCase(ElementTypeAliases.Radios, true)]
         public void OverrideSummaryListItems_throws_ArgumentException_if_block_is_not_Summary_card_or_Summary_list_component(string elementTypeAlias, bool exceptionExpected)
         {
+            var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), Mock.Of<IPublishedSnapshotAccessor>()));
+                Assert.DoesNotThrow(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
             }
         }
 
@@ -345,7 +347,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
             replacement[0].Actions.Add(new SummaryListAction(new Link { Url = "https://example.org/test" }, "Example"));
 
             // Act
-            content.OverrideSummaryListItems(replacement, testContext.PublishedSnapshotAccessor.Object);
+            content.OverrideSummaryListItems(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(listItemsPropertyAlias);

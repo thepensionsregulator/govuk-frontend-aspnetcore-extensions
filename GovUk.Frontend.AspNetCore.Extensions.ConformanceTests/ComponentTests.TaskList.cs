@@ -2,13 +2,16 @@ using AngleSharp.Diffing.Extensions;
 using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Text.Encodings.Web;
+using Xunit;
 using TaskStatus = GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration.TaskStatus;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
 {
     public partial class ComponentTests
     {
-        [TestCaseSource(typeof(ComponentFixtureData), nameof(ComponentFixtureData.GetTaskListData))]
+        [Theory]
+        [ComponentFixtureData<OptionsJson.TaskList>("task-list",
+            exclude: "with falsy values")]
         public void TaskList(ComponentTestCaseData<OptionsJson.TaskList> data) =>
             CheckComponentHtmlMatchesExpectedHtml(
                 data,
@@ -49,9 +52,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.ConformanceTests
 
                     var taskListAttributes = options.Attributes.ToAttributeDictionary();
                     if (!string.IsNullOrEmpty(options.Classes)) { taskListAttributes.MergeAttribute("class", options.Classes); }
-                    if (!string.IsNullOrEmpty(options.IdPrefix)) { taskListAttributes.Add("id", options.IdPrefix); }
 
-                    return generator.GenerateTaskList(taskListAttributes, tasks).ToHtmlString(HtmlEncoder.Default);
+                    return generator.GenerateTaskList(taskListAttributes, tasks, options.IdPrefix).ToHtmlString(HtmlEncoder.Default);
                 });
 
         private static TaskStatus BuildStatus(OptionsJson.TaskListTask item)

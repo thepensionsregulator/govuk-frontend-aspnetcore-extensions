@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<Nullable>enable</Nullable>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -21,30 +21,32 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<PackageId>$(AssemblyName)</PackageId>
 		<Product>$(AssemblyName)</Product>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Content Remove="Backoffice\package-lock.json" />
+		<Content Remove="Backoffice\package.json" />
+		<Content Remove="Backoffice\public\umbraco-package.json" />
+		<Content Remove="Backoffice\tsconfig.json" />
 		<Content Remove="sasscompiler.json" />
+
+		<!-- Dont include the uSync folder as part of packaging nuget build. Instead pack it in a different folder. -->
+		<Content Remove="uSync\**" />
+		<None Include="uSync\**\*.config">
+			<PackagePath>uSync</PackagePath>
+			<Pack>true</Pack>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRBox.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRSearchResults.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRImage.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRYouTubeVideo.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRRelatedLinks.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRSectionCards.html" />
-		<Content Include="App_Plugins\ThePensionsRegulator.Frontend.Umbraco\blocks\views\TPRDocuments.html" />
 		<Content Include="ThePensionsRegulator.Frontend.Umbraco.targets">
-		  <PackagePath>build;buildTransitive</PackagePath>
-		  <Pack>true</Pack>
-		</Content>
-		<Content Include="Styles\govuk-umbraco-backoffice.css">
-			<PackagePath>contentFiles\any\$(TargetFramework)\Content\css</PackagePath>
+			<PackagePath>build;buildTransitive</PackagePath>
 			<Pack>true</Pack>
 		</Content>
-		<Content Include="Styles\govuk-umbraco-backoffice.css.map">
-			<PackagePath>contentFiles\any\$(TargetFramework)\Content\css</PackagePath>
+		<Content Include="ThePensionsRegulator.Frontend.Umbraco.generated.props">
+			<PackagePath>build</PackagePath>
 			<Pack>true</Pack>
 		</Content>
 	</ItemGroup>
@@ -55,42 +57,57 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
-		<PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.11.0" />
+		<PackageReference Include="uSync.BackOffice" Version="17.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
 		<ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
 		<ProjectReference Include="..\ThePensionsRegulator.Frontend\ThePensionsRegulator.Frontend.csproj" />
-		<ProjectReference Include="..\ThePensionsRegulator.Umbraco\ThePensionsRegulator.Umbraco.csproj" />
+		<ProjectReference Include="..\ThePensionsRegulator.Umbraco.Core\ThePensionsRegulator.Umbraco.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\tpr-nuget.png">
-		  <Pack>True</Pack>
-		  <PackagePath>\</PackagePath>
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
 		</None>
+		<None Include="Backoffice\package-lock.json" />
+		<None Include="Backoffice\package.json">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Include="Backoffice\public\umbraco-package.json">
+			<Pack>false</Pack>
+		</None>
+		<None Include="Backoffice\tsconfig.json" />
 		<None Include="sasscompiler.json" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="NuGetReadme.md">
-	    <Pack>True</Pack>
-	    <PackagePath>\</PackagePath>
-	  </None>
-	  <None Update="Styles\tpr.scss">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
-	  <None Update="Styles\govuk-umbraco-backoffice.scss">
-	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-	  </None>
+		<None Update="Backoffice\src\blocks\helpers\media-helper.ts">
+			<SubType>Code</SubType>
+		</None>
+		<None Update="NuGetReadme.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Update="Styles\tpr.scss">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="Styles\govuk-umbraco-backoffice.scss">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\govuk-umbraco-backoffice.scss" />
+		<UpToDateCheckInput Remove="Styles\tpr.scss" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
+		<UpToDateCheckInput Remove="Backoffice\node_modules\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="SyncFolder.cs" />
 	</ItemGroup>
 </Project>

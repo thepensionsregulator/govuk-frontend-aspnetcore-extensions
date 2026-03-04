@@ -1,11 +1,7 @@
 using GovUk.Frontend.AspNetCore.Extensions.TagHelpers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Encodings.Web;
-using System.Text.RegularExpressions;
 
 namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 {
@@ -19,7 +15,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
         public TagBuilder GenerateTaskList(
             AttributeDictionary? attributes,
-            IEnumerable<TaskListTask?> tasks)
+            IEnumerable<TaskListTask?> tasks,
+            string? idPrefix)
         {
             Guard.ArgumentNotNull(nameof(tasks), tasks);
             Guard.ArgumentValid(nameof(tasks), "A task list must contain at least one task", tasks.Any());
@@ -27,6 +24,8 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             var taskListTagBuilder = new TagBuilder(TaskListElement);
             if (attributes is not null) { taskListTagBuilder.MergeAttributes(attributes); }
             taskListTagBuilder.MergeCssClass("govuk-task-list");
+
+            if (string.IsNullOrEmpty(idPrefix)) { idPrefix = "task-list"; }
 
             var taskNumber = 0;
             foreach (var task in tasks)
@@ -36,13 +35,11 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
 
                 Guard.ArgumentValid(nameof(tasks), "Task name cannot be null or empty", task.Name.Content != null);
 
-                var taskId = BuildTaskId(attributes, taskNumber, task);
-                var hintId = BuildHintId(task, taskId);
-                var statusId = BuildStatusId(task, taskId);
+                var hintId = BuildHintId(task.Hint, taskNumber, idPrefix);
+                var statusId = BuildStatusId(task.Status, taskNumber, idPrefix);
 
                 var taskTagBuilder = new TagBuilder(TaskListTaskElement);
                 if (task.Attributes is not null) { taskTagBuilder.MergeAttributes(task.Attributes); }
-                if (!taskTagBuilder.Attributes.ContainsKey("id")) { taskTagBuilder.MergeAttribute("id", taskId); }
                 taskListTagBuilder.InnerHtml.AppendHtml(taskTagBuilder);
 
                 if (ShouldLinkToTask(task))
@@ -93,10 +90,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
         {
             var statusOuterTagBuilder = new TagBuilder(TaskListStatusElement);
 
-            if (task.Status.Status.HasValue)
-            {
-                statusOuterTagBuilder.MergeCssClass(TaskStatusCssClass(task.Status.Status.Value));
-            }
             if (task.Status.Attributes is not null)
             {
                 statusOuterTagBuilder.MergeAttributes(task.Status.Attributes);
@@ -132,35 +125,31 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             return hintTagBuilder;
         }
 
-        private static string? BuildStatusId(TaskListTask task, string taskId)
+        private static string? BuildStatusId(TaskStatus status, int taskNumber, string idPrefix)
         {
-            if (!task.Status.Status.HasValue && string.IsNullOrEmpty(task.Status.Content?.ToHtmlString(HtmlEncoder.Default))) { return null; }
+            if (!status.Status.HasValue && string.IsNullOrEmpty(status.Content?.ToHtmlString(HtmlEncoder.Default))) { return null; }
 
-            string statusId = string.Empty;
-            if (task.Status.Attributes.ContainsKey("id"))
+            string statusId = idPrefix;
+            if (status.Attributes.ContainsKey("id"))
             {
-                statusId = task.Status.Attributes["id"]!;
+                statusId = status.Attributes["id"]!;
             }
-            if (string.IsNullOrEmpty(statusId))
-            {
-                statusId = $"{taskId}-status";
-            }
+
+            statusId = $"{statusId}-{taskNumber}-status";
             return statusId;
         }
 
-        private static string? BuildHintId(TaskListTask task, string taskId)
+        private static string? BuildHintId(Hint? hint, int taskNumber, string idPrefix)
         {
-            if (task.Hint?.Content is null) { return null; }
+            if (hint?.Content is null) { return null; }
 
-            string hintId = string.Empty;
-            if (task.Hint.Attributes.ContainsKey("id"))
+            string hintId = idPrefix;
+            if (hint.Attributes.ContainsKey("id"))
             {
-                hintId = task.Hint.Attributes["id"]!;
+                hintId = hint.Attributes["id"]!;
             }
-            if (string.IsNullOrEmpty(hintId))
-            {
-                hintId = $"{taskId}-hint";
-            }
+
+            hintId = $"{hintId}-{taskNumber}-hint";
             return hintId;
         }
 
@@ -189,28 +178,6 @@ namespace GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
             if (linkDescribedBy.Any()) { taskLinkTagBuilder.MergeAttribute("aria-describedby", string.Join(' ', linkDescribedBy)); }
 
             return taskLinkTagBuilder;
-        }
-
-        private string TaskStatusCssClass(TaskListTaskStatus status)
-        {
-            return "govuk-task-list__status-" + Regex.Replace(status.ToString(), "([A-Z])", "-$1").ToLowerInvariant();
-        }
-
-
-        private static string BuildTaskId(AttributeDictionary? taskListAttributes, int taskNumber, TaskListTask task)
-        {
-            string taskId = string.Empty;
-            if (task.Attributes is not null && task.Attributes.ContainsKey("id"))
-            {
-                taskId = task.Attributes["id"]!;
-            }
-            if (string.IsNullOrEmpty(taskId) && taskListAttributes is not null && taskListAttributes.ContainsKey("id"))
-            {
-                taskId = taskListAttributes["id"] + "-" + taskNumber;
-            }
-            if (string.IsNullOrEmpty(taskId)) { taskId = "task-list-" + taskNumber; }
-
-            return taskId;
         }
     }
 }

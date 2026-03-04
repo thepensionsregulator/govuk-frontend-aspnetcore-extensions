@@ -1,5 +1,0 @@
-**/uSync/**/govuk*.config
-**/uSync/**/GOVUK*.config
-**/uSync/**/tpr*.config
-**/uSync/**/TPR*.config
-!.gitignore

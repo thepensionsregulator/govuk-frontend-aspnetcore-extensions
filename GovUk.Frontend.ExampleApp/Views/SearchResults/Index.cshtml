@@ -3,7 +3,7 @@
 @model TextInputViewModel
 
 @section scripts {
-    <script src="_Content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.js" type="module"></script>
+    <script src="/ThePensionsRegulator.Frontend/js/tpr-search-results.min.js" type="module" asp-append-version="true"></script>
 }
 
 @{
@@ -62,8 +62,15 @@
         </div>
 
         <p class="govuk-body">
-            The JavaScript file <strong>'tpr-search-results.js'</strong> is provided as part of the <strong>'ThePensionsRegulator.Frontend'</strong> nuget package. This will need to be included in any view that uses this component.
+            The JavaScript file <strong>'tpr-search-results.min.js'</strong> is provided as part of the <strong>'ThePensionsRegulator.Frontend'</strong> nuget package. This will need to be included in any view that uses this component.
         </p>
+        
+        <div class="tpr-box">
+            <p class="govuk-body">
+        @@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers<br />
+        &lt;script src="/ThePensionsRegulator.Frontend/js/tpr-search-results.min.js" type="module" asp-append-version="true"&gt;&lt;/script&gt;
+        </p>
+        </div>
 
         <div class="govuk-warning-text">
             <span class="govuk-warning-text__icon" aria-hidden="true">!</span>

@@ -1,17 +1,18 @@
 using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions.Caching;
 using GovUk.Frontend.AspNetCore.Extensions.Security;
 using GovUk.Frontend.Umbraco;
 using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System;
+using ThePensionsRegulator.Frontend.Caching;
 using ThePensionsRegulator.Frontend.Security;
 using ThePensionsRegulator.Frontend.Services;
-using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Frontend.Umbraco.Caching;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 namespace ThePensionsRegulator.Frontend.Umbraco
 {
@@ -81,6 +82,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             // ThePensionsRegulator.Frontend
             services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
+            services.AddTransient<IStaticFileCachePolicy, TprStaticFileCachePolicy>();
 
             var tprFrontendOptions = new TprFrontendOptions();
             if (configureTprOptions is not null) { configureTprOptions(tprFrontendOptions); }
@@ -91,12 +93,12 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
             services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
-            services.AddTransient<IRichTextPropertyEditorAliasProvider, TprRichTextPropertyEditorAliasProvider>();
             services.AddTransient<IBlockViewInterceptor, TprBoxViewInterceptor>();
             services.AddTransient<IBlockViewInterceptor, TprDividerViewInterceptor>();
             services.AddTransient<IDefaultColumnClassProvider, TprSectionCardsColumnClassProvider>();
             services.AddTransient<IYouTubeVideoIdParser, YouTubeVideoIdParser>();
             services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
+            services.AddTransient<IStaticFileCachePolicy, TprUmbracoStaticFileCachePolicy>();
 
             return services;
         }

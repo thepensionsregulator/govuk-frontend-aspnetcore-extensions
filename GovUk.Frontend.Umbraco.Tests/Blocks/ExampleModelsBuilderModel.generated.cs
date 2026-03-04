@@ -28,14 +28,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public new const string ModelTypeAlias = "exampleModelsBuilderModel";
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
-		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public new static IPublishedContentType GetModelContentType(IPublishedSnapshotAccessor publishedSnapshotAccessor)
-			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
-		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<ExampleModelsBuilderModel, TValue>> selector)
-			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
@@ -55,7 +47,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("blockList")]
-		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel BlockList => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel>(_publishedValueFallback, "blockList");
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel BlockList => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "blockList");
 
         ///<summary>
         /// BlockGrid
@@ -63,6 +55,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "10.6.1+82eae48")]
         [global::System.Diagnostics.CodeAnalysis.MaybeNull]
         [ImplementPropertyType("blockGrid")]
-        public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel BlockGrid=> this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel>(_publishedValueFallback, "blockGrid");
+        public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel BlockGrid=> this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel>(_publishedValueFallback, "blockGrid");
     }
 }

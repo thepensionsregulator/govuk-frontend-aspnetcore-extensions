@@ -1,5 +1,5 @@
-﻿using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+﻿using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
@@ -12,7 +12,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
     public class GovUkTypographyPropertyValueFormatter : TinyMCEPropertyValueFormatterBase, IPropertyValueFormatter
     {
         /// <inheritdoc />
-        public bool IsFormatter(IPublishedPropertyType propertyType) => Constants.PropertyEditors.Aliases.TinyMce.Equals(propertyType.EditorAlias);
+        public virtual bool IsFormatter(IPublishedPropertyType propertyType) => Constants.PropertyEditors.Aliases.RichText.Equals(propertyType.EditorAlias);
 
         /// <inheritdoc />
         /// <remarks>

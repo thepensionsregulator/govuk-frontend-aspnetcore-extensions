@@ -1,6 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Typography;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 
@@ -12,7 +12,7 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
     public class NoParagraphInversePropertyValueFormatter : TinyMCEPropertyValueFormatterBase, IPropertyValueFormatter
     {
         /// <inheritdoc />
-        public bool IsFormatter(IPublishedPropertyType propertyType) => PropertyEditorAliases.GovUkInlineInverseRichText.Equals(propertyType.EditorAlias);
+        public virtual bool IsFormatter(IPublishedPropertyType propertyType) => propertyType.Alias == PropertyAliases.PanelText && propertyType.ContentType?.Alias == ElementTypeAliases.Panel;
 
         /// <summary>Applies GOV.UK classes including inverse classes and removes a single wrapping paragraph if present.</summary>
         /// <returns>An <see cref="IHtmlEncodedString"/>.</returns>

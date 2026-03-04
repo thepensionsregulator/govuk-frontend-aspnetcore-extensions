@@ -8,12 +8,12 @@
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
-@inject IConfiguration Configuration
+@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
 @inject ITprGlobalNavigationService navigationSerivce;
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
-    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var useTPRstyles = Configuration.Value.TPRStyles;
     var headerLockup = new UmbracoTprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
     var footerLockup = new UmbracoTprFooterLockupModel(settings!);
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
@@ -53,7 +53,7 @@
     {
         <partial name="GOVUK/UmbracoHead" />
     }
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @RenderSection("head", required: false)
 </head>
 
@@ -72,12 +72,12 @@
                 </div>
             }
         }
-        @if (currentPage?.ContentType.Alias == "sideNavigation")
+        @if (currentPage?.ContentType.Alias == "sideNavigation" && useTPRstyles)
         {
             <div class="govuk-width-container">
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column govuk-grid-column-one-third">
-                        @await Component.InvokeAsync("TprSideNavigation")
+                        <partial name="TPR/TPRSideNavigation" />
                     </div>
                     <div class="govuk-grid-column govuk-grid-column-two-thirds">
                         <main id="main" class="govuk-main-wrapper">
@@ -98,12 +98,7 @@
     {
         <partial name="TPR/TPRFooterLockup" model="footerLockup" />
     }
-    <partial name="TPR/UmbracoBodyClosing" />
+    <partial name="TPR/BodyClosing" />
     @RenderSection("scripts", required: false)
 </body>
-@await SmidgeHelper.JsHereAsync(debug: true)
-
 </html>
-
-
-

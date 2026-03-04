@@ -1,5 +1,5 @@
-﻿using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+﻿using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 
@@ -11,7 +11,16 @@ namespace GovUk.Frontend.Umbraco.PropertyEditors.ValueFormatters
     public class NoParagraphPropertyValueFormatter : TinyMCEPropertyValueFormatterBase, IPropertyValueFormatter
     {
         /// <inheritdoc />
-        public bool IsFormatter(IPublishedPropertyType propertyType) => PropertyEditorAliases.GovUkInlineRichText.Equals(propertyType.EditorAlias);
+        public virtual bool IsFormatter(IPublishedPropertyType propertyType) {
+            return (propertyType.Alias == PropertyAliases.Hint && (propertyType.ContentType?.CompositionAliases.Contains(ElementTypeAliases.Hint) ?? false)) ||
+                (propertyType.Alias == PropertyAliases.Hint && propertyType.ContentType?.Alias == ElementTypeAliases.Task) ||
+                (propertyType.Alias == PropertyAliases.DetailsText && propertyType.ContentType?.Alias == ElementTypeAliases.Details) ||
+                (propertyType.Alias == PropertyAliases.InsetText && propertyType.ContentType?.Alias == ElementTypeAliases.InsetText) ||
+                (propertyType.Alias == PropertyAliases.WarningText && propertyType.ContentType?.Alias == ElementTypeAliases.WarningText) ||
+                (propertyType.Alias == PropertyAliases.PhaseBannerText && (propertyType.ContentType?.CompositionAliases.Contains(ElementTypeAliases.PhaseBanner) ?? false)) ||
+                (propertyType.Alias == PropertyAliases.NotificationBannerHeading && propertyType.ContentType?.Alias == ElementTypeAliases.NotificationBanner) ||
+                (propertyType.Alias == PropertyAliases.SummaryListItemValue && propertyType.ContentType?.Alias == ElementTypeAliases.SummaryListItem);
+        } 
 
         /// <summary>Applies GOV.UK classes and removes a single wrapping paragraph if present.</summary>
         /// <returns>An <see cref="IHtmlEncodedString"/>.</returns>

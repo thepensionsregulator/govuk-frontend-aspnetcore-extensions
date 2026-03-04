@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Dictionary;
@@ -27,34 +27,22 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
     {
 #nullable disable
         private UmbracoTestContext _testContext;
-        private Mock<ICultureDictionary> _cultureDictionary;
-        private Mock<IUmbracoHelperAccessor> _umbracoHelperAccessor;
-        private UmbracoHelper _umbracoHelper;
 #nullable enable
 
         [SetUp]
         public void SetUp()
         {
             _testContext = new();
-            _cultureDictionary = new Mock<ICultureDictionary>();
-
-            var cultureDictionaryFactory = new Mock<ICultureDictionaryFactory>();
-            cultureDictionaryFactory.Setup(x => x.CreateDictionary()).Returns(_cultureDictionary.Object);
-
-            _umbracoHelper = new UmbracoHelper(cultureDictionaryFactory.Object, Mock.Of<IUmbracoComponentRenderer>(), Mock.Of<IPublishedContentQuery>());
-
-            _umbracoHelperAccessor = new Mock<IUmbracoHelperAccessor>();
-            _umbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out _umbracoHelper)).Returns(true);
         }
 
         private UmbracoDateInputModelBinder CreateModelBinder(DateInputModelConverter converter)
             => new UmbracoDateInputModelBinder(
                     converter,
                     _testContext.UmbracoContextAccessor.Object,
-                    Mock.Of<ICultureDictionary>(),
+                    _testContext.CultureDictionaryForCurrentUICulture.Object,
                     _testContext.PublishedValueFallback.Object,
                     false,
-                    _umbracoHelperAccessor.Object
+                    _testContext.UmbracoHelperAccessor.Object
                 );
 
         [Test]
@@ -374,7 +362,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             var modelBinder = CreateModelBinder(converterMock.Object);
 
             UmbracoHelper? nullUmbracoHelper = null;
-            _umbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out nullUmbracoHelper)).Returns(false);
+            _testContext.UmbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out nullUmbracoHelper)).Returns(false);
 
             // Act / Assert
             Assert.Multiple(() =>
@@ -399,11 +387,11 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         public void GetModelStateErrorMessageReturnsDefaultErrorMessage(DateInputParseErrors parseErrors, string expectedMessage)
         {
             // Arrange
-            _cultureDictionary.Setup(x => x[It.IsAny<string>()]).Returns(string.Empty);
+            _testContext.CultureDictionaryForCurrentUICulture.Setup(x => x[It.IsAny<string>()]).Returns(string.Empty);
             var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
 
             // Act
-            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _cultureDictionary.Object, parseErrors, modelMetadata, _umbracoHelper);
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _testContext.CultureDictionaryForCurrentUICulture.Object, parseErrors, modelMetadata, _testContext.UmbracoHelper);
 
             // Assert
             Assert.AreEqual(expectedMessage, result);
@@ -424,13 +412,13 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         public void GetModelStateErrorMessageReturnsCustomErrorMessage(DateInputParseErrors parseErrors, string dictionaryConstant, string expectedMessage)
         {
             // Arrange
-            _cultureDictionary
+            _testContext.CultureDictionaryForCurrentUICulture
                 .Setup(x => x[dictionaryConstant])
                 .Returns("{0}: custom error message");
             var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
 
             // Act
-            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _cultureDictionary.Object, parseErrors, modelMetadata, _umbracoHelper);
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _testContext.CultureDictionaryForCurrentUICulture.Object, parseErrors, modelMetadata, _testContext.UmbracoHelper);
 
             // Assert
             Assert.AreEqual(expectedMessage, result);

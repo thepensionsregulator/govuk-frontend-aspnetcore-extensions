@@ -1,8 +1,12 @@
+@using Umbraco.Cms.Core
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Web.Common
 @using GovUk.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco
+@using Umbraco.Extensions
+@inject Umbraco.Cms.Core.PublishedCache.IPublishedMediaCache mediaCache
 @inject UmbracoHelper Umbraco
 @addTagHelper *, ThePensionsRegulator.Frontend
 
@@ -28,12 +32,15 @@
 
             if (docLinkType == LinkType.Media)
             {
-                var docKB = documentLink.Content.UmbracoBytes / 1024;
+                var media = mediaCache.GetById(documentLink.Udi.Guid) as IPublishedContent;
+                if (media is null)  { continue; }
+
+                var docKB = media.Value<int>(Constants.Conventions.Media.Bytes) / 1024;
                 var docTitle = "";
 
-                var mediaLinkDocName = documentLink.Content.Name;
+                var mediaLinkDocName = media.Name;
                 var mediaLinkTitle = documentLink.Name;
-                var mediaType = documentLink.Content?.ContentType?.Alias;
+                var mediaType = media.ContentType.Alias;
 
                 if (!string.Equals(mediaLinkDocName, mediaLinkTitle, StringComparison.OrdinalIgnoreCase))
                 {
@@ -41,27 +48,21 @@
                 }
                 else
                 {
-                    docTitle = (mediaType == "File" && !string.IsNullOrEmpty(documentLink.Content?.DocumentTitle))
-                        ? documentLink.Content.DocumentTitle
+                    docTitle = (mediaType == "File" && !string.IsNullOrEmpty(media.Value<string>(TprPropertyAliases.DocumentTitle)))
+                        ? media.Value<string>(TprPropertyAliases.DocumentTitle)
                         : mediaLinkDocName;
                 }
 
                 <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
-
                     <tpr-document-title>@docTitle</tpr-document-title>
-
                     <tpr-document-description>@docDescription</tpr-document-description>
-
                 </tpr-document>
             }
             else
             {
                 <tpr-document href="@docHref" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
-
                     <tpr-document-title>@documentLink.Name</tpr-document-title>
-
                     <tpr-document-description>@docDescription</tpr-document-description>
-
                 </tpr-document>
             }
         }

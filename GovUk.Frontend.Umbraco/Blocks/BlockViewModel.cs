@@ -1,5 +1,5 @@
-﻿using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+﻿using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 
 namespace GovUk.Frontend.Umbraco.Blocks
 {

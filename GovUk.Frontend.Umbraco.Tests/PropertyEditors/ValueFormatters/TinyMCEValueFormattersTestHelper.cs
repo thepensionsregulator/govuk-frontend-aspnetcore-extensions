@@ -1,6 +1,6 @@
 ﻿using HtmlAgilityPack;
 using NUnit.Framework;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.Strings;
 
 namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
@@ -32,7 +32,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
             Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
         }
 
@@ -43,7 +43,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
             Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//ol").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
         }
@@ -55,7 +55,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//ol").Count);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//ol[contains(@class,'govuk-list--{listStyleType}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
@@ -68,7 +68,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
             Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//ul").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ul[@style]"));
         }
@@ -80,7 +80,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//ul").Count);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//ul[contains(@class,'govuk-list--{listStyleType}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//ul[@style]"));
@@ -93,7 +93,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
             Assert.AreEqual(2, doc.DocumentNode.SelectNodes("//p").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
         }
@@ -105,7 +105,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//p").Count);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes($"//p[contains(@class,'{expectedClass}')]").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
@@ -118,7 +118,7 @@ namespace GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
             var result = (IHtmlEncodedString)formatter.FormatValue(html);
 
             var doc = new HtmlDocument();
-            doc.LoadHtml(result.ToHtmlString());
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//h2").Count);
             Assert.AreEqual(1, doc.DocumentNode.SelectNodes("//li").Count);
             Assert.Null(doc.DocumentNode.SelectNodes("//*[@style]"));

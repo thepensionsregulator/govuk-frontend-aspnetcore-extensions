@@ -1,9 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
@@ -44,7 +41,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
             var tasks = blocks.FindBlocksByContentTypeAlias(ElementTypeAliases.Task)
                 .Where(blockFilter).Select(blockSelector).OfType<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
             var taskStatuses = tasks
-                .Select(x => x.Settings.Value<string>(PropertyAliases.TaskListTaskStatus))
+                .Select(x => x.Settings?.Value<string>(PropertyAliases.TaskListTaskStatus))
                 .Where(x => !string.IsNullOrEmpty(x))
                 .Select(x => Enum.Parse<TaskListTaskStatus>(x!.Replace(" ", string.Empty), true));
 

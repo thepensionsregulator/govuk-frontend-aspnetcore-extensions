@@ -3,7 +3,7 @@
     const dismissButton1 = document.getElementsByClassName("dismiss-1")[0];
 
     if (dismissButton) {
-        dismissButton.addEventListener("click", () => dismissBanner("govuk-notification-banner"));
+        dismissButton.addEventListener("click", () => dismissBanner("notification-banner-first"));
         dismissButton.classList.remove("govuk-!-display-none");
     }
 

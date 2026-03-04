@@ -4,13 +4,14 @@
 @using GovUk.Frontend.Umbraco.Models
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using ThePensionsRegulator.Umbraco;
-@using ThePensionsRegulator.Umbraco.Blocks;
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
-    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var cssClass = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
     var showError = true;
-    var modelPropertyName = Model.Settings.Value<string>(PropertyAliases.ModelProperty);
+    var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
     ModelStateEntry? modelStateEntry = null;
     var id = Model.Content.Key.ToString();
     if (!string.IsNullOrEmpty(modelPropertyName))

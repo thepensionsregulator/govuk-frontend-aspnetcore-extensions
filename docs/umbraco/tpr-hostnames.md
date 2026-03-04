@@ -4,7 +4,7 @@ TPR deploys its web applications to a series of non-production environments befo
 
 When using `ThePensionsRegulator.Frontend` you can inject an instance of `IContextAwareHostUpdater`, pass it the HTML containing the link, and get back the updated HTML. When using `ThePensionsRegulator.Frontend.Umbraco` this happens automatically for Umbraco content.
 
-You can disable this behaviour or configure it to apply for a specific allow list of hosts. This is useful in case of false positives, such as an application hosted by a third party on a TPR domain, which does not exist in our non-production environments. Modify your `Startup.cs` or `Program.cs` as follows:
+You can disable this behaviour or configure it to apply for a specific allow list of hosts. This is useful in case of false positives, such as an application hosted by a third party on a TPR domain, which does not exist in our non-production environments. Modify your `Program.cs` as follows:
 
 ```csharp
 // Update all TPR hostnames

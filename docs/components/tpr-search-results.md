@@ -79,7 +79,7 @@ The JavaScript file `tpr-search-results.min.js` is provided as part of the `TheP
 ```razor
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <script
-  src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-search-results.min.js"
+  src="/ThePensionsRegulator.Frontend/js/tpr-search-results.min.js"
   type="module"
   asp-append-version="true"
 ></script>

@@ -1,6 +1,6 @@
 # Select
 
-For examples see [ASP.NET syntax for the Select component](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/select.md).
+For examples see [ASP.NET syntax for the Select component](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/select.md).
 
 ## Umbraco
 
@@ -20,17 +20,20 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 public class ExampleController : RenderController
 {
     private readonly IPublishedValueFallback _publishedValueFallback;
-    private readonly IPublishedSnapshotAccessor _publishedSnapshotAccessor;
+    private readonly IPublishedContentTypeCache _publishedContentTypeCache;
+    private readonly IVariationContextAccessor _variationContextAccessor;
 
     public ExampleController(ILogger<RenderController> logger,
         ICompositeViewEngine compositeViewEngine,
         IUmbracoContextAccessor umbracoContextAccessor,
         IPublishedValueFallback publishedValueFallback,
-        IPublishedSnapshotAccessor publishedSnapshotAccessor
+        IPublishedContentTypeCache publishedContentTypeCache,
+        IVariationContextAccessor variationContextAccessor
         ) : base(logger, compositeViewEngine, umbracoContextAccessor)
     {
         _publishedValueFallback = publishedValueFallback;
-        _publishedSnapshotAccessor = publishedSnapshotAccessor;
+        _publishedContentTypeCache = publishedContentTypeCache;
+        _variationContextAccessor = variationContextAccessor;
     }
 
     [ModelType(typeof(ExampleViewModel))]
@@ -42,7 +45,7 @@ public class ExampleController : RenderController
         };
 
         var block = viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukSelect.ModelTypeAlias);
-        block.Content.OverrideSelectOptions(new[] { new SelectOption("1", "Hello world") }, _publishedSnapshotAccessor);
+        block.Content.OverrideSelectOptions(new[] { new SelectOption("1", "Hello world") }, _publishedContentTypeCache, _variationContextAccessor);
 
         return CurrentTemplate(viewModel);
     }

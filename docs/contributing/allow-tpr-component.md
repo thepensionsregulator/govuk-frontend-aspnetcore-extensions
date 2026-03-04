@@ -19,7 +19,7 @@ The solution to this is to create a TPR version of the GOV.UK component. For exa
 
    - In the Umbraco backoffice in 'Settings > Data Types > GOV.UK' copy the data type(s) for any block grids or block lists that allow child components to be added to your component from the 'GOV.UK' folder to the 'TPR' folder. Rename the copy to begin with `TPR` instead of `GOV.UK`, and remove `(copy)` from the name. For example, copy 'GOV.UK Accordion block list' to 'TPR Accordion block list'.
    - Update the new TPR data type(s) to allow the additional child component(s) you need.
-   - On the 'TPR Block grid', 'TPR Block list' and 'TPR No forms block list' data types remove the GOV.UK component and replace it with the new TPR version of the component. Select your new document types and data types, but otherwise configure all settings as before.
+   - On the 'TPR Block grid' and 'TPR Block list' data types remove the GOV.UK component and replace it with the new TPR version of the component. Select your new document types and data types, but otherwise configure all settings as before.
 
 4. Create a view in `ThePensionsRegulator.Frontend.Umbraco\Views\Shared\TPR`. The name of the view must match the document type alias (for example `TPRAccordion.cshtml`). The `TprPartialViewPathProvider` class configures any components with an alias starting with `tpr` to look for a view in this folder. To avoid duplicating code the view can reference the GOV.UK version:
 
@@ -30,6 +30,5 @@ The solution to this is to create a TPR version of the GOV.UK component. For exa
 
 5. In the Umbraco backoffice select 'Settings > Models Builder > Generate models'.
 6. In the Umbraco backoffice select 'Settings > uSync > Everything > Export > Clean Export'. Run this twice as it doesn't always export everything the first time.
-7. Copy any new or updated document types and data types from `GovUk.Frontend.Umbraco.ExampleApp\uSync\v9` to `ThePensionsRegulator.Frontend.Umbraco\uSync\v9`. In Solution Explorer set 'Copy to output directory: Do not copy' in the Properties dialog for any new files.
-8. Add an example of the allowed component on a page in the example app.
-9. Increment the version of `ThePensionsRegulator.Frontend.Umbraco` and create a pull request.
+7. Add an example of the allowed component on a page in the example app.
+8. Increment the version in `Solution Items/Directory.Build.props` and create a pull request.

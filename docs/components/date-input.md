@@ -1,10 +1,10 @@
 # Date input
 
-For examples see [ASP.NET syntax for the Date input component](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/date-input.md).
+For examples see [ASP.NET syntax for the Date input component](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/date-input.md).
 
 ## Validating date ranges
 
-Use the `[DateRange]` attribute to validate dates using the Date Input component.
+Use the `[DateRange]` attribute from the `ThePensionsRegulator.GovUk.Frontend` NuGet package to validate dates using the Date Input component.
 
 For an example of this in use, see the 'Date input' page in either the ASP.NET and Umbraco example apps.
 
@@ -33,5 +33,13 @@ To use a display name instead of the name of the field on the view model, config
 You can choose to not show the day field on the settings for the date input component. Only the month and year fields will show, and the submitted date will be the 1st of the submitted month.
 
 ![Month and year only](/docs/images/date-input-month-year.png)
+
+This is not available outside Umbraco because the default `DateInputModelBinder` expects the day to be present. Umbraco is using a custom `UmbracoDateInputModelBinder`.
+
+### Day and month only
+
+You can choose to not show the year field on the settings for the date input component. Only the day and month fields will show, and the submitted date will be in the year 1900.
+
+![Day and month only](/docs/images/date-input-day-month.png)
 
 This is not available outside Umbraco because the default `DateInputModelBinder` expects the day to be present. Umbraco is using a custom `UmbracoDateInputModelBinder`.

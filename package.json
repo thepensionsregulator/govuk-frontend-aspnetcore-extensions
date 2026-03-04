@@ -1,7 +1,7 @@
 {
   "name": "govuk-frontend-aspnetcore-extensions",
   "version": "1.0.0",
-  "description": "Adds client-side validation and editing in Umbraco to https://github.com/gunndabad/govuk-frontend-aspnetcore",
+  "description": "Adds client-side validation and editing in Umbraco to https://github.com/x-govuk/govuk-frontend-aspnetcore",
   "main": "index.js",
   "repository": "https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions.git",
   "author": "The Pensions Regulator <no-reply@tpr.gov.uk>",
@@ -41,7 +41,7 @@
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
-    "govuk": "cd GovUk.Frontend.AspNetCore.Extensions.ConformanceTests && npm install",
+    "govuk": "npm install && cd GovUk.Frontend.AspNetCore.Extensions.ConformanceTests && npm install",
     "backoffice": "cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm install && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm install && npm run build"
   }
 }

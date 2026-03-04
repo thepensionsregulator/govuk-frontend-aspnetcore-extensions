@@ -66,7 +66,7 @@
 
    > JQuery is included to support the standard ASP.NET validation. We recommend using vanilla JavaScript for everything else.
 
-10. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `ThePensionsRegulator.GovUk.Frontend`.
+10. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/x-govuk/govuk-frontend-aspnetcore), but with wrapper tags from `ThePensionsRegulator.GovUk.Frontend`.
 
     ```csharp
     <form asp-controller="Home" asp-action="Post" method="post" novalidate>

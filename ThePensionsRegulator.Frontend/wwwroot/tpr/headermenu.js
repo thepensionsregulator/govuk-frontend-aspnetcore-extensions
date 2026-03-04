@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const toggles = document.querySelectorAll(".tpr-mobile-menu__toggle");
         const overlay = document.querySelectorAll(".tpr-header-menu__nav-overlay");
         const menuItems = document.querySelectorAll(".tpr-header-menu__nav-menu-item");
+        const arrowContainers = document.querySelectorAll(".tpr-header-menu__arrow-container");
         const arrows = document.querySelectorAll(".tpr-header-menu__arrow");
         const nav = document.querySelector(".tpr-header-menu__nav");
 
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             overlay.forEach(o => o.addEventListener("click", toggleMobileMenu));
 
-            arrows.forEach(a => a.removeEventListener("click", onClickDisplaySubMenuDesktop));
+            arrowContainers.forEach(a => a.removeEventListener("click", onClickDisplaySubMenuDesktop));
 
             arrows.forEach(a => a.addEventListener("click", expandMobileMenuSubMenu));
             arrows.forEach(a => a.classList.toggle("tpr-header-menu__arrow-right"));
@@ -49,7 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
             toggles.forEach(t => t.removeEventListener("click", toggleMobileMenu))
             overlay.forEach(o => o.removeEventListener("click", toggleMobileMenu));
             nav.addEventListener("focusin", restoreDefaultMenuState);
-            arrows.forEach(a => a.addEventListener("click", onClickDisplaySubMenuDesktop));
+            arrowContainers.forEach(a => a.addEventListener("click", onClickDisplaySubMenuDesktop));
+            arrowContainers.forEach(a => a.classList.add("js"));
             arrows.forEach(a => a.removeEventListener("click", expandMobileMenuSubMenu));
 
             menuItems.forEach(m => {
@@ -114,11 +116,15 @@ function highlightCurrentSection() {
 }
 
 function onClickDisplaySubMenuDesktop(e) {
-    const item = e.currentTarget;
+
+    const container = e.currentTarget;
+    const item = container.querySelector(".tpr-header-menu__arrow")
     const isExpanded = item.getAttribute("aria-expanded") === "true";
     const menuItem = item.closest(".tpr-header-menu__nav-menu-item");
     const subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
     const overlay = document.querySelector(".tpr-header-menu__nav-overlay");
+
+    item.focus();
 
     if (isExpanded) {
         closeSubMenuDesktop(item, subMenu, overlay);

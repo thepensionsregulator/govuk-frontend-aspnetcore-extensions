@@ -5,7 +5,7 @@ pool:
 
 variables:
   - name: solution
-    value: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.sln"
+    value: "$(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/GovUk.Frontend.slnx"
   - name: buildPlatform
     value: "Any CPU"
   - name: buildConfiguration

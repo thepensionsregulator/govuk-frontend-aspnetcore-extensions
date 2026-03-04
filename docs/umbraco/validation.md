@@ -2,7 +2,7 @@
 
 > JQuery is included to support the standard ASP.NET validation. We recommend using vanilla JavaScript for everything else.
 
-To use validation, in `Startup.cs` add the following to the `Configure` method:
+To use validation, modify your `Program.cs` as follows:
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -94,18 +94,29 @@ If you need an 'Error message' block inside a 'Fieldset' block without this beha
 
 You can create new attributes using a standard ASP.NET approach to implement custom validation - see [Localisation and validation in ASP.NET projects](../aspnet/localisation-and-validation.md).
 
-To configure a custom validator to read its error message from an Umbraco property, add the following code in `Startup.cs` or `Program.cs`:
+To configure a custom validator to read its error message from an Umbraco property, add the following code in `Program.cs`:
 
 ```csharp
-public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback)
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Umbraco.Cms.Core.Models.PublishedContent;
+using Umbraco.Cms.Core.Web;
+
+// other code here
+
+WebApplication app = builder.Build();
+var mvcOptions = app.Services.GetRequiredService<IOptions<MvcOptions>>();
+var umbracoContextAccessor = app.Services.GetRequiredService<IUmbracoContextAccessor>();
+var publishedValueFallback = app.Services.GetRequiredService<IPublishedValueFallback>();
+
+mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockValidationMetadataProvider(umbracoContextAccessor,
+    publishedValueFallback,
+    new Dictionary<Type, string>
 {
-  mvcOptions.Value.ModelMetadataDetailsProviders.Add(new UmbracoBlockValidationMetadataProvider(umbracoContextAccessor,
-      publishedValueFallback,
-      new Dictionary<Type, string>
-  {
-      { typeof(MyCustomValidationAttribute), "aliasOfPropertyOnBlockSettings" },
-  }));
-}
+    { typeof(MyCustomValidationAttribute), "aliasOfPropertyOnBlockSettings" },
+}));
+
+// other code here
 ```
 
 `"aliasOfPropertyOnBlockSettings"` can be any text string property on the settings document type of the block for the field you're validating. This can be:

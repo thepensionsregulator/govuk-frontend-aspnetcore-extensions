@@ -40,7 +40,7 @@ If the tag helpers are arranged like the example above, then it should render th
 
 ## Umbraco
 
-The 'TPR Related Links' block which is supported on the 'TPR Block Grid' component is used to implement this component in Umbraco. The related links component should only be used in the right-side column of the 'Two thirds / One third' column layout.
+The 'TPR Related Links' block which is supported on the 'TPR Block Grid' data type is used to implement this component in Umbraco. The related links component should only be used in the right-side column of the 'Two thirds / One third' column layout.
 
 ![TPR related links Umbraco example](../images/tpr-related-links-umbraco-example.png)
 

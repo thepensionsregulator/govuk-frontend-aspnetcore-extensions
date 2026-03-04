@@ -1,10 +1,8 @@
-﻿using HtmlAgilityPack;
-using NUnit.Framework;
+using HtmlAgilityPack;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.HtmlGeneration;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.HtmlGeneration
 {
-    [TestFixture]
     public class DateInputHtmlEnhancerTests
     {
         private const string DATE_INPUT_HTML = @"
@@ -31,7 +29,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.HtmlGeneration
                 </div>
             </div>";
 
-        [Test]
+        [Fact]
         public void When_DayEnabled_Is_True_And_YearEnabled_Is_True_Html_Is_Unchanged()
         {
             // Arrange
@@ -41,10 +39,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.HtmlGeneration
             var result = enhancer.EnhanceHtml(DATE_INPUT_HTML, true, true);
 
             // Assert
-            Assert.That(result, Is.EqualTo(DATE_INPUT_HTML));
+            Assert.Equal(DATE_INPUT_HTML, result);
         }
 
-        [Test]
+        [Fact]
         public void When_DayEnabled_Is_False_Day_Field_Is_Removed()
         {
             // Arrange
@@ -57,13 +55,13 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.HtmlGeneration
             var doc = new HtmlDocument();
             doc.LoadHtml(result);
 
-            Assert.That(doc.DocumentNode.SelectNodes("//div[@class='govuk-date-input__item']").Count, Is.EqualTo(2));
-            Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Day']"), Is.Null);
-            Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Month']").Count, Is.EqualTo(1));
-            Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Year']").Count, Is.EqualTo(1));
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//div[@class='govuk-date-input__item']").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//input[@id='Example.Day']"));
+            Assert.Single(doc.DocumentNode.SelectNodes("//input[@id='Example.Month']"));
+            Assert.Single(doc.DocumentNode.SelectNodes("//input[@id='Example.Year']"));
         }
 
-        [Test]
+        [Fact]
         public void When_YearEnabled_Is_False_Year_Field_Is_Removed()
         {
             // Arrange
@@ -76,10 +74,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.HtmlGeneration
             var doc = new HtmlDocument();
             doc.LoadHtml(result);
 
-            Assert.That(doc.DocumentNode.SelectNodes("//div[@class='govuk-date-input__item']").Count, Is.EqualTo(2));
-            Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Day']").Count, Is.EqualTo(1));
-            Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Month']").Count, Is.EqualTo(1));
-            Assert.That(doc.DocumentNode.SelectNodes("//input[@id='Example.Year']"), Is.Null);
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//div[@class='govuk-date-input__item']").Count);
+            Assert.Single(doc.DocumentNode.SelectNodes("//input[@id='Example.Day']"));
+            Assert.Single(doc.DocumentNode.SelectNodes("//input[@id='Example.Month']"));
+            Assert.Null(doc.DocumentNode.SelectNodes("//input[@id='Example.Year']"));
         }
     }
 }

@@ -1,12 +1,10 @@
 # TPR side navigation
 
-A design component that is used to display a navigational menu on the left-hand side of a page. This component is implemented using a view component and allows you to customise how the navigational links are rendered within the menu via a dedicated service class within your project.
+A design component that is used to display a navigational menu on the left-hand side of a page.
 
 ## How it's implemented
 
-The `govuk-frontend-aspnetcore-extensions` project supplies you with a service interface named `ITprSideNavigationLinksService` in the `ThePensionsRegulator.Frontend.Services` namespace, located within the `ThePensionsRegulator.Frontend` package.
-
-Create your own implementation of the `ITprSideNavigationLinksService` interface by inheriting from it in your own custom service class. For example:
+Create your own implementation of the `ThePensionsRegulator.Frontend.Services.ITprSideNavigationLinksService` interface, which is part of the `ThePensionsRegulator.Frontend` NuGet package:
 
 ```csharp
 public class SideNavigationLinksServiceForExampleApp : ITprSideNavigationLinksService
@@ -78,7 +76,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
 
 ## Register your service
 
-You should register your service class within your Program/Startup file (or wherever you keep your services declarations) with code such as the following:
+Modify your `Program.cs` as follows:
 
 ```csharp
 services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();

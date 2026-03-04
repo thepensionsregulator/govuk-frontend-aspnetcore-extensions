@@ -1,6 +1,6 @@
 # Run the Umbraco example application
 
-This repository includes an example application which demonstrates the validation working both client-side and server-side with messages configured in Umbraco.
+This repository includes an example application which demonstrates all of our components, with validation working both client-side and server-side with messages configured in Umbraco. It includes further guidance on how code and components should be used.
 
 1. Ensure you have .NET 10 installed.
 2. Clone this repo.

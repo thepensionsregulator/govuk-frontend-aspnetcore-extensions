@@ -1,6 +1,6 @@
 # Summary card
 
-[GDS Summary card component](https://design-system.service.gov.uk/components/summary-list/#summary-cards)
+This implements the [GOV.UK Summary card component](https://design-system.service.gov.uk/components/summary-list/#summary-cards) from the GOV.UK Design System.
 
 ## Example - with actions
 
@@ -141,7 +141,7 @@ Must be inside a `<govuk-summary-card-actions>` element.
 
 _Required_
 
-See [Summary list](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/summary-list.md) for details.
+See [Summary list](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/summary-list.md) for details.
 
 ## Umbraco
 
@@ -163,17 +163,20 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 public class ExampleController : RenderController
 {
     private readonly IPublishedValueFallback _publishedValueFallback;
-    private readonly IPublishedSnapshotAccessor _publishedSnapshotAccessor;
+    private readonly IPublishedContentTypeCache _publishedContentTypeCache;
+    private readonly IVariationContextAccessor _variationContextAccessor;
 
     public ExampleController(ILogger<RenderController> logger,
         ICompositeViewEngine compositeViewEngine,
         IUmbracoContextAccessor umbracoContextAccessor,
         IPublishedValueFallback publishedValueFallback,
-        IPublishedSnapshotAccessor publishedSnapshotAccessor
+        IPublishedContentTypeCache publishedContentTypeCache,
+        IVariationContextAccessor variationContextAccessor
         ) : base(logger, compositeViewEngine, umbracoContextAccessor)
     {
         _publishedValueFallback = publishedValueFallback;
-        _publishedSnapshotAccessor = publishedSnapshotAccessor;
+        _publishedContentTypeCache = publishedContentTypeCache;
+        _variationContextAccessor = variationContextAccessor;
     }
 
     [ModelType(typeof(ExampleViewModel))]
@@ -190,8 +193,8 @@ public class ExampleController : RenderController
         listItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org/change-the-thing" }, "Change"));
 
         var block = viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukSummaryList.ModelTypeAlias);
-        block.Content.OverrideSummaryCardActions(new[] { cardAction }, _publishedSnapshotAccessor);
-        block.Content.OverrideSummaryListItems(new[] { listItem }, _publishedSnapshotAccessor);
+        block.Content.OverrideSummaryCardActions(new[] { cardAction }, _publishedContentTypeCache, _variationContextAccessor);
+        block.Content.OverrideSummaryListItems(new[] { listItem }, _publishedContentTypeCache, _variationContextAccessor);
 
         return CurrentTemplate(viewModel);
     }

@@ -1,0 +1,50 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Extensions
+@{
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+    var hidden = Model.Settings?.Value("hidden");
+    var size = Model.Settings?.Value("size");
+}
+
+@if (hidden is true)
+{
+    switch (size)
+    {
+        case "Extra large":
+            <hr class="govuk-section-break govuk-section-break--xl @cssClasses" />
+            break;
+        case "Medium":
+            <hr class="govuk-section-break govuk-section-break--m @cssClasses" />
+            break;
+        case "Small":
+            <hr class="govuk-section-break @cssClasses" />
+            break;
+        default:
+            <hr class="govuk-section-break govuk-section-break--l @cssClasses" />
+            break;
+    }
+}
+else
+{
+    switch (size)
+    {
+        case "Extra large":
+            <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--xl @cssClasses" />
+            break;
+        case "Medium":
+            <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m @cssClasses" />
+            break;
+        case "Small":
+            <hr class="govuk-section-break govuk-section-break--visible @cssClasses" />
+            break;
+        default:
+            <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--l @cssClasses" />
+            break;
+    }
+}

@@ -11,9 +11,9 @@ See [Validation](/docs/umbraco/validation.md) for how to validate a select compo
 You can configure a fixed set of options in the Umbraco backoffice, or you can supply options at runtime from a database or other data source.
 
 ```csharp
-using ThePensionsRegulator.Umbraco.BlockLists;
-using GovUk.Frontend.Umbraco.BlockLists;
-using GovUk.Frontend.Umbraco.Models;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Web.Common.PublishedModels;
 

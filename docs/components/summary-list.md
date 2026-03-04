@@ -9,9 +9,9 @@ You can add a summary list component to a block grid or block list in Umbraco. F
 You can configure a fixed set of summary list items in the Umbraco backoffice, or you can supply summary list items at runtime from a database or other data source.
 
 ```csharp
-using ThePensionsRegulator.Umbraco.BlockLists;
-using GovUk.Frontend.Umbraco.BlockLists;
-using GovUk.Frontend.Umbraco.Models;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Web.Common.PublishedModels;
 

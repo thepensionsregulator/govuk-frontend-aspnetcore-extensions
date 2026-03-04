@@ -4,14 +4,14 @@ The [breadcrumbs component](https://design-system.service.gov.uk/components/brea
 
 ## How it's implemented
 
-The `govuk-frontend-aspnetcore-extensions` project supplies you with a service interface named `IGovUkBreadcrumbLinksService` in namespace `GovUk.Frontend.Umbraco.Services`, located inside the `ThePensionsRegulator.Govuk.Frontend.Umbraco` package.
+The `govuk-frontend-aspnetcore-extensions` project supplies you with a service interface named `IGovUkBreadcrumbLinksService` in namespace `ThePensionsRegulator.GovUk.Frontend.Umbraco.Services`, located inside the `ThePensionsRegulator.Govuk.Frontend.Umbraco` package.
 
 Create your own implementation of the `IGovUkBreadcrumbLinksService` interface by inheriting from it in your own custom service class e.g `public class BreadcrumbLinksServiceForExampleApp : IGovUkBreadcrumbLinksService`. This allows you to provide your own links to the GovUkBreadcrumb component. You can then have full control over the breadcrumb links in your project. You may benefit by:
 
 - Having different logic for generating breadcrumb links based on the page type.
 - Implementing custom logic for how to populate the link text of each link.
 
-You simply need to implement the `public BreadcrumbViewModel GetLinks(IPublishedContent Page)` method in your custom service class and return a populated `GovUk.Frontend.Umbraco.Models.BreadcrumbViewModel` object.
+You simply need to implement the `public BreadcrumbViewModel GetLinks(IPublishedContent Page)` method in your custom service class and return a populated `ThePensionsRegulator.GovUk.Frontend.Umbraco.Models.BreadcrumbViewModel` object.
 
 ## Create your IGovUkBreadcrumbLinksService implementation
 
@@ -19,8 +19,8 @@ Here is an example of this implementation from within the `GovUk.Frontend.Umbrac
 
 ```csharp
 using System.Linq;
-using GovUk.Frontend.Umbraco.Models;
-using GovUk.Frontend.Umbraco.Services;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 

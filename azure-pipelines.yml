@@ -83,7 +83,7 @@ steps:
     parameters:
       path: "$(solution)"
 
-  # Build this project first to avoid a race condition with SASS compilation, where GovUk.Frontend.Umbraco depends upon this project completing first
+  # Build this project first to avoid a race condition with SASS compilation, where ThePensionsRegulator.GovUk.Frontend.Umbraco depends upon this project completing first
   - task: DotNetCoreCLI@2
     displayName: Build ThePensionsRegulator.Frontend
     inputs:
@@ -144,9 +144,9 @@ steps:
       flattenFolders: true
 
   - task: CopyFiles@2
-    displayName: Copy GovUk.Frontend.Umbraco package to staging folder
+    displayName: Copy ThePensionsRegulator.GovUk.Frontend.Umbraco package to staging folder
     inputs:
-      SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\GovUk.Frontend.Umbraco\bin\$(buildConfiguration)
+      SourceFolder: $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.GovUk.Frontend.Umbraco\bin\$(buildConfiguration)
       Contents: |
         ThePensionsRegulator.GovUk.Frontend*.nupkg
         ThePensionsRegulator.GovUk.Frontend*.snupkg

@@ -1,4 +1,3 @@
-﻿using NUnit.Framework;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using ThePensionsRegulator.Umbraco.Core;
@@ -11,11 +10,11 @@ using Umbraco.Cms.Core.Strings;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 {
-    [TestFixture]
     public class IOverridablePublishedElementExtensionsTests
     {
-        [TestCase(ElementTypeAliases.Checkboxes, false)]
-        [TestCase(ElementTypeAliases.Radios, true)]
+        [Theory]
+        [InlineData(ElementTypeAliases.Checkboxes, false)]
+        [InlineData(ElementTypeAliases.Radios, true)]
         public void OverrideCheckboxes_throws_ArgumentException_if_block_is_not_Checkboxes_component(string elementTypeAlias, bool exceptionExpected)
         {
             var testContext = new UmbracoTestContext();
@@ -27,11 +26,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                var exception = Record.Exception(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                Assert.Null(exception);
             }
         }
 
-        [Test]
+        [Fact]
         public void OverrideCheckboxes_replaces_checkboxes()
         {
             // Arrange
@@ -78,20 +78,21 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             var options = content.Value<OverridableBlockListModel>(PropertyAliases.Checkboxes);
 
-            Assert.That(options, Is.Not.Null);
-            Assert.That(options!.Count(), Is.EqualTo(replacement.Count()));
-            Assert.That(options![0].Content.Value<string>(PropertyAliases.CheckboxValue), Is.EqualTo("3"));
-            Assert.That(options![0].Content.Value<string>(PropertyAliases.CheckboxLabel), Is.EqualTo("Item 3"));
-            Assert.That(options![0].Content.Value<IHtmlEncodedString>(PropertyAliases.Hint)?.ToHtmlString(), Is.EqualTo("<i>Hint 3</i>"));
-            Assert.That(options![0].Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxConditionalBlocks), Is.Not.Null);
-            Assert.That(options![0].Settings?.Value<string>(PropertyAliases.CssClasses), Is.EqualTo("item-3"));
-            Assert.That(options[1].Content.Value<string>(PropertyAliases.CheckboxesDividerText), Is.EqualTo("divider"));
-            Assert.That(options[2].Content.Value<string>(PropertyAliases.CheckboxValue), Is.EqualTo("4"));
-            Assert.That(options[2].Content.Value<string>(PropertyAliases.CheckboxLabel), Is.EqualTo("Item 4"));
+            Assert.NotNull(options);
+            Assert.Equal(replacement.Count(), options!.Count());
+            Assert.Equal("3", options![0].Content.Value<string>(PropertyAliases.CheckboxValue));
+            Assert.Equal("Item 3", options![0].Content.Value<string>(PropertyAliases.CheckboxLabel));
+            Assert.Equal("<i>Hint 3</i>", options![0].Content.Value<IHtmlEncodedString>(PropertyAliases.Hint)?.ToHtmlString());
+            Assert.NotNull(options![0].Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxConditionalBlocks));
+            Assert.Equal("item-3", options![0].Settings?.Value<string>(PropertyAliases.CssClasses));
+            Assert.Equal("divider", options[1].Content.Value<string>(PropertyAliases.CheckboxesDividerText));
+            Assert.Equal("4", options[2].Content.Value<string>(PropertyAliases.CheckboxValue));
+            Assert.Equal("Item 4", options[2].Content.Value<string>(PropertyAliases.CheckboxLabel));
         }
 
-        [TestCase(ElementTypeAliases.Checkboxes, true)]
-        [TestCase(ElementTypeAliases.Radios, false)]
+        [Theory]
+        [InlineData(ElementTypeAliases.Checkboxes, true)]
+        [InlineData(ElementTypeAliases.Radios, false)]
         public void OverrideRadioButtons_throws_ArgumentException_if_block_is_not_Radios_component(string elementTypeAlias, bool exceptionExpected)
         {
             var testContext = new UmbracoTestContext();
@@ -103,11 +104,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                var exception = Record.Exception(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                Assert.Null(exception);
             }
         }
 
-        [Test]
+        [Fact]
         public void OverrideRadioButtons_replaces_radio_buttons()
         {
             // Arrange
@@ -153,20 +155,21 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             var options = content.Value<OverridableBlockListModel>(PropertyAliases.RadioButtons);
 
-            Assert.That(options, Is.Not.Null);
-            Assert.That(options!.Count(), Is.EqualTo(replacement.Count()));
-            Assert.That(options![0].Content.Value<string>(PropertyAliases.RadioButtonValue), Is.EqualTo("3"));
-            Assert.That(options![0].Content.Value<string>(PropertyAliases.RadioButtonLabel), Is.EqualTo("Item 3"));
-            Assert.That(options![0].Content.Value<IHtmlEncodedString>(PropertyAliases.Hint)?.ToHtmlString(), Is.EqualTo("<i>Hint 3</i>"));
-            Assert.That(options![0].Content.Value<OverridableBlockListModel>(PropertyAliases.RadioConditionalBlocks), Is.Not.Null);
-            Assert.That(options![0].Settings?.Value<string>(PropertyAliases.CssClasses), Is.EqualTo("item-3"));
-            Assert.That(options[1].Content.Value<string>(PropertyAliases.RadiosDividerText), Is.EqualTo("divider"));
-            Assert.That(options[2].Content.Value<string>(PropertyAliases.RadioButtonValue), Is.EqualTo("4"));
-            Assert.That(options[2].Content.Value<string>(PropertyAliases.RadioButtonLabel), Is.EqualTo("Item 4"));
+            Assert.NotNull(options);
+            Assert.Equal(replacement.Count(), options!.Count());
+            Assert.Equal("3", options![0].Content.Value<string>(PropertyAliases.RadioButtonValue));
+            Assert.Equal("Item 3", options![0].Content.Value<string>(PropertyAliases.RadioButtonLabel));
+            Assert.Equal("<i>Hint 3</i>", options![0].Content.Value<IHtmlEncodedString>(PropertyAliases.Hint)?.ToHtmlString());
+            Assert.NotNull(options![0].Content.Value<OverridableBlockListModel>(PropertyAliases.RadioConditionalBlocks));
+            Assert.Equal("item-3", options![0].Settings?.Value<string>(PropertyAliases.CssClasses));
+            Assert.Equal("divider", options[1].Content.Value<string>(PropertyAliases.RadiosDividerText));
+            Assert.Equal("4", options[2].Content.Value<string>(PropertyAliases.RadioButtonValue));
+            Assert.Equal("Item 4", options[2].Content.Value<string>(PropertyAliases.RadioButtonLabel));
         }
 
-        [TestCase(ElementTypeAliases.Select, false)]
-        [TestCase(ElementTypeAliases.Radios, true)]
+        [Theory]
+        [InlineData(ElementTypeAliases.Select, false)]
+        [InlineData(ElementTypeAliases.Radios, true)]
         public void OverrideSelectOptions_throws_ArgumentException_if_block_is_not_Select_component(string elementTypeAlias, bool exceptionExpected)
         {
             var testContext = new UmbracoTestContext();
@@ -178,11 +181,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                var exception = Record.Exception(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                Assert.Null(exception);
             }
         }
 
-        [Test]
+        [Fact]
         public void OverrideSelectOptions_replaces_options()
         {
             // Arrange
@@ -220,16 +224,17 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             var options = content.Value<OverridableBlockListModel>(PropertyAliases.SelectOptions);
 
-            Assert.That(options, Is.Not.Null);
-            Assert.That(options!.Count(), Is.EqualTo(replacement.Count()));
-            Assert.That(options![0].Content.Value<string>(PropertyAliases.SelectOptionValue), Is.EqualTo("3"));
-            Assert.That(options![0].Content.Value<string>(PropertyAliases.SelectOptionLabel), Is.EqualTo("Item 3"));
-            Assert.That(options[1].Content.Value<string>(PropertyAliases.SelectOptionValue), Is.EqualTo("4"));
-            Assert.That(options[1].Content.Value<string>(PropertyAliases.SelectOptionLabel), Is.EqualTo("Item 4"));
+            Assert.NotNull(options);
+            Assert.Equal(replacement.Count(), options!.Count());
+            Assert.Equal("3", options![0].Content.Value<string>(PropertyAliases.SelectOptionValue));
+            Assert.Equal("Item 3", options![0].Content.Value<string>(PropertyAliases.SelectOptionLabel));
+            Assert.Equal("4", options[1].Content.Value<string>(PropertyAliases.SelectOptionValue));
+            Assert.Equal("Item 4", options[1].Content.Value<string>(PropertyAliases.SelectOptionLabel));
         }
 
-        [TestCase(ElementTypeAliases.SummaryCard, false)]
-        [TestCase(ElementTypeAliases.SummaryList, true)]
+        [Theory]
+        [InlineData(ElementTypeAliases.SummaryCard, false)]
+        [InlineData(ElementTypeAliases.SummaryList, true)]
         public void OverrideSummaryCardActions_throws_ArgumentException_if_block_is_not_Summary_card_component(string elementTypeAlias, bool exceptionExpected)
         {
             var testContext = new UmbracoTestContext();
@@ -241,11 +246,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                var exception = Record.Exception(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                Assert.Null(exception);
             }
         }
 
-        [Test]
+        [Fact]
         public void OverrideSummaryCardActions_replaces_actions()
         {
             // Arrange
@@ -283,18 +289,19 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             var options = content.Value<OverridableBlockListModel>(PropertyAliases.SummaryCardActions);
 
-            Assert.That(options, Is.Not.Null);
-            Assert.That(options!.Count(), Is.EqualTo(replacement.Count()));
-            Assert.That(options![0].Content.Value<Link>(PropertyAliases.SummaryListActionLink)?.Url, Is.EqualTo("https://example.org/three"));
-            Assert.That(options![0].Content.Value<string>(PropertyAliases.SummaryListActionLinkText), Is.EqualTo("Item 3"));
-            Assert.That(options[1].Content.Value<Link>(PropertyAliases.SummaryListActionLink)?.Url, Is.EqualTo("https://example.org/four"));
-            Assert.That(options[1].Content.Value<string>(PropertyAliases.SummaryListActionLinkText), Is.EqualTo("Item 4"));
+            Assert.NotNull(options);
+            Assert.Equal(replacement.Count(), options!.Count());
+            Assert.Equal("https://example.org/three", options![0].Content.Value<Link>(PropertyAliases.SummaryListActionLink)?.Url);
+            Assert.Equal("Item 3", options![0].Content.Value<string>(PropertyAliases.SummaryListActionLinkText));
+            Assert.Equal("https://example.org/four", options[1].Content.Value<Link>(PropertyAliases.SummaryListActionLink)?.Url);
+            Assert.Equal("Item 4", options[1].Content.Value<string>(PropertyAliases.SummaryListActionLinkText));
         }
 
 
-        [TestCase(ElementTypeAliases.SummaryCard, false)]
-        [TestCase(ElementTypeAliases.SummaryList, false)]
-        [TestCase(ElementTypeAliases.Radios, true)]
+        [Theory]
+        [InlineData(ElementTypeAliases.SummaryCard, false)]
+        [InlineData(ElementTypeAliases.SummaryList, false)]
+        [InlineData(ElementTypeAliases.Radios, true)]
         public void OverrideSummaryListItems_throws_ArgumentException_if_block_is_not_Summary_card_or_Summary_list_component(string elementTypeAlias, bool exceptionExpected)
         {
             var testContext = new UmbracoTestContext();
@@ -306,12 +313,14 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             }
             else
             {
-                Assert.DoesNotThrow(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                var exception = Record.Exception(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object));
+                Assert.Null(exception);
             }
         }
 
-        [TestCase(ElementTypeAliases.SummaryList, PropertyAliases.SummaryListItems)]
-        [TestCase(ElementTypeAliases.SummaryCard, PropertyAliases.SummaryCardListItems)]
+        [Theory]
+        [InlineData(ElementTypeAliases.SummaryList, PropertyAliases.SummaryListItems)]
+        [InlineData(ElementTypeAliases.SummaryCard, PropertyAliases.SummaryCardListItems)]
         public void OverrideSummaryListItems_replaces_items(string componentAlias, string listItemsPropertyAlias)
         {
             // Arrange
@@ -352,19 +361,19 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             var options = content.Value<OverridableBlockListModel>(listItemsPropertyAlias);
 
-            Assert.That(options, Is.Not.Null);
-            Assert.That(options!.Count(), Is.EqualTo(replacement.Count()));
-            Assert.That(options![0].Content.Value<string>(PropertyAliases.SummaryListItemKey), Is.EqualTo("3"));
-            Assert.That(options![0].Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue)?.ToHtmlString(), Is.EqualTo("Item 3"));
+            Assert.NotNull(options);
+            Assert.Equal(replacement.Count(), options!.Count());
+            Assert.Equal("3", options![0].Content.Value<string>(PropertyAliases.SummaryListItemKey));
+            Assert.Equal("Item 3", options![0].Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue)?.ToHtmlString());
 
             var actions = options[0].Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions);
-            Assert.That(actions, Is.Not.Null);
-            Assert.That(actions!.Count(), Is.EqualTo(replacement[0].Actions.Count));
-            Assert.That(actions![0].Content.Value<Link>(PropertyAliases.SummaryListActionLink)?.Url, Is.EqualTo("https://example.org/test"));
-            Assert.That(actions![0].Content.Value<string>(PropertyAliases.SummaryListActionLinkText), Is.EqualTo("Example"));
+            Assert.NotNull(actions);
+            Assert.Equal(replacement[0].Actions.Count, actions!.Count());
+            Assert.Equal("https://example.org/test", actions![0].Content.Value<Link>(PropertyAliases.SummaryListActionLink)?.Url);
+            Assert.Equal("Example", actions![0].Content.Value<string>(PropertyAliases.SummaryListActionLinkText));
 
-            Assert.That(options[1].Content.Value<string>(PropertyAliases.SummaryListItemKey), Is.EqualTo("4"));
-            Assert.That(options[1].Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue)?.ToHtmlString(), Is.EqualTo("Item 4"));
+            Assert.Equal("4", options[1].Content.Value<string>(PropertyAliases.SummaryListItemKey));
+            Assert.Equal("Item 4", options[1].Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue)?.ToHtmlString());
         }
     }
 }

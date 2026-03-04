@@ -1,4 +1,3 @@
-﻿using NUnit.Framework;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 
@@ -6,8 +5,9 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 {
     public class OverridableBlockModelExtensionsTests
     {
-        [TestCase("Field1", true)]
-        [TestCase("Field2", false)]
+        [Theory]
+        [InlineData("Field1", true)]
+        [InlineData("Field2", false)]
         public void Block_is_matched_by_model_property(string propertyName, bool expected)
         {
             var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -25,7 +25,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             if (expected)
             {
-                Assert.AreEqual(blockList.First(), result);
+                Assert.Equal(blockList.First(), result);
             }
             else
             {
@@ -33,8 +33,9 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             }
         }
 
-        [TestCase("example-b", true)]
-        [TestCase("example-c", false)]
+        [Theory]
+        [InlineData("example-b", true)]
+        [InlineData("example-c", false)]
         public void Block_is_matched_by_class(string className, bool expected)
         {
             var blockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -52,7 +53,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Assert
             if (expected)
             {
-                Assert.AreEqual(blockList.First(), result);
+                Assert.Equal(blockList.First(), result);
             }
             else
             {
@@ -60,9 +61,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             }
         }
 
-        [TestCase("example-b", true)]
-        [TestCase("example-c", true)]
-        [TestCase("example-f", false)]
+        [Theory]
+        [InlineData("example-b", true)]
+        [InlineData("example-c", true)]
+        [InlineData("example-f", false)]
         public void Block_is_matched_by_class_from_multiple_block_lists(string className, bool expected)
         {
             var blockList1 = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -98,8 +100,9 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             }
         }
 
-        [TestCase("example-b", 2)]
-        [TestCase("example-f", 0)]
+        [Theory]
+        [InlineData("example-b", 2)]
+        [InlineData("example-f", 0)]
         public void Multiple_blocks_are_matched_by_class_from_multiple_block_lists(string className, int expected)
         {
             var blockList1 = UmbracoBlockListFactory.CreateOverridableBlockListModel(
@@ -125,7 +128,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             var result = blockLists.FindBlocksByClass(className);
 
             // Assert
-            Assert.That(result.Count(), Is.EqualTo(expected));
+            Assert.Equal(expected, result.Count());
         }
     }
 }

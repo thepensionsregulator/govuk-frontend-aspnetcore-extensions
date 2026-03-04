@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Moq;
-using NUnit.Framework;
 using ThePensionsRegulator.GovUk.Frontend.Models;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Testing;
@@ -16,8 +15,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         private int _pageNumberInQueryString = 33;
 #nullable enable
 
-        [SetUp]
-        public void Setup()
+        public UmbracoPaginationFactoryTests()
         {
             _httpContextAccessor = new();
 
@@ -31,7 +29,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
             request.SetupGet(x => x.Query).Returns(query);
         }
 
-        [Test]
+        [Fact]
         public void Uses_PaginationModel_defaults_if_settings_empty()
         {
             var factory = new UmbracoPaginationFactory(_httpContextAccessor.Object);
@@ -45,19 +43,19 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
                 );
 
 
-            Assert.AreEqual(defaults.PageNumber, pagination.PageNumber);
-            Assert.AreEqual(defaults.PageSize, pagination.PageSize);
-            Assert.AreEqual(defaults.TotalItems, pagination.TotalItems);
-            Assert.AreEqual(string.IsNullOrEmpty(defaults.CssClasses), string.IsNullOrEmpty(pagination.CssClasses));
-            Assert.AreEqual(defaults.LandmarkLabel, pagination.LandmarkLabel);
-            Assert.AreEqual(defaults.PreviousPageLabel, pagination.PreviousPageLabel);
-            Assert.AreEqual(defaults.NextPageLabel, pagination.NextPageLabel);
-            Assert.AreEqual(defaults.PageVisuallyHiddenText, pagination.PageVisuallyHiddenText);
-            Assert.AreEqual(defaults.QueryStringParameter, pagination.QueryStringParameter);
-            Assert.AreEqual(defaults.LargeNumberOfPagesThreshold, pagination.LargeNumberOfPagesThreshold);
+            Assert.Equal(defaults.PageNumber, pagination.PageNumber);
+            Assert.Equal(defaults.PageSize, pagination.PageSize);
+            Assert.Equal(defaults.TotalItems, pagination.TotalItems);
+            Assert.Equal(string.IsNullOrEmpty(defaults.CssClasses), string.IsNullOrEmpty(pagination.CssClasses));
+            Assert.Equal(defaults.LandmarkLabel, pagination.LandmarkLabel);
+            Assert.Equal(defaults.PreviousPageLabel, pagination.PreviousPageLabel);
+            Assert.Equal(defaults.NextPageLabel, pagination.NextPageLabel);
+            Assert.Equal(defaults.PageVisuallyHiddenText, pagination.PageVisuallyHiddenText);
+            Assert.Equal(defaults.QueryStringParameter, pagination.QueryStringParameter);
+            Assert.Equal(defaults.LargeNumberOfPagesThreshold, pagination.LargeNumberOfPagesThreshold);
         }
 
-        [Test]
+        [Fact]
         public void Uses_properties_from_settings()
         {
             var factory = new UmbracoPaginationFactory(_httpContextAccessor.Object);
@@ -88,18 +86,18 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
                 );
 
 
-            Assert.AreEqual(pageSize, pagination.PageSize);
-            Assert.AreEqual(totalItems, pagination.TotalItems);
-            Assert.AreEqual(cssClasses, pagination.CssClasses);
-            Assert.AreEqual(landmarkLabel, pagination.LandmarkLabel);
-            Assert.AreEqual(previousPageLabel, pagination.PreviousPageLabel);
-            Assert.AreEqual(nextPageLabel, pagination.NextPageLabel);
-            Assert.AreEqual(pageVisuallyHiddenText, pagination.PageVisuallyHiddenText);
-            Assert.AreEqual(_queryStringParameter, pagination.QueryStringParameter);
-            Assert.AreEqual(largeNumberOfPagesThreshold, pagination.LargeNumberOfPagesThreshold);
+            Assert.Equal(pageSize, pagination.PageSize);
+            Assert.Equal(totalItems, pagination.TotalItems);
+            Assert.Equal(cssClasses, pagination.CssClasses);
+            Assert.Equal(landmarkLabel, pagination.LandmarkLabel);
+            Assert.Equal(previousPageLabel, pagination.PreviousPageLabel);
+            Assert.Equal(nextPageLabel, pagination.NextPageLabel);
+            Assert.Equal(pageVisuallyHiddenText, pagination.PageVisuallyHiddenText);
+            Assert.Equal(_queryStringParameter, pagination.QueryStringParameter);
+            Assert.Equal(largeNumberOfPagesThreshold, pagination.LargeNumberOfPagesThreshold);
         }
 
-        [Test]
+        [Fact]
         public void Page_number_from_querystring_respects_setting()
         {
             var factory = new UmbracoPaginationFactory(_httpContextAccessor.Object);
@@ -114,7 +112,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
                 );
 
 
-            Assert.AreEqual(_pageNumberInQueryString, pagination.PageNumber);
+            Assert.Equal(_pageNumberInQueryString, pagination.PageNumber);
         }
     }
 }

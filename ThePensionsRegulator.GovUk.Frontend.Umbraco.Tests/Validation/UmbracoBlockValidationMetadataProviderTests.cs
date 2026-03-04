@@ -1,5 +1,4 @@
-﻿using Moq;
-using NUnit.Framework;
+using Moq;
 using System.ComponentModel.DataAnnotations;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation;
 using ThePensionsRegulator.Umbraco.Core;
@@ -10,7 +9,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
 {
     public class UmbracoBlockValidationMetadataProviderTests
     {
-        [Test]
+        [Fact]
         public void Attribute_error_message_is_updated_from_display_text_when_block_is_error_message()
         {
             var errorMessageContentType = new Mock<IPublishedContentType>();
@@ -30,10 +29,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
                 new List<ValidationAttribute> { attribute },
                 new Dictionary<Type, string> { { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired } });
 
-            Assert.AreEqual("Custom required error", attribute.ErrorMessage);
+            Assert.Equal("Custom required error", attribute.ErrorMessage);
         }
 
-        [Test]
+        [Fact]
         public void Attribute_error_message_is_updated_from_settings_when_modelProperty_matches()
         {
             var textInputContentType = new Mock<IPublishedContentType>();
@@ -53,10 +52,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
                 new List<ValidationAttribute> { attribute },
                 new Dictionary<Type, string> { { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired } });
 
-            Assert.AreEqual("Custom required error", attribute.ErrorMessage);
+            Assert.Equal("Custom required error", attribute.ErrorMessage);
         }
 
-        [Test]
+        [Fact]
         public void Attribute_error_message_is_not_updated_from_settings_when_modelProperty_does_not_match()
         {
             var block = UmbracoBlockListFactory.CreateOverridableBlock(
@@ -72,7 +71,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
                 new List<ValidationAttribute> { attribute },
                 new Dictionary<Type, string> { { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired } });
 
-            Assert.AreEqual("Original error", attribute.ErrorMessage);
+            Assert.Equal("Original error", attribute.ErrorMessage);
         }
     }
 }

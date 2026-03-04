@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http;
-using NUnit.Framework;
 using System.Web;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Caching;
 
@@ -9,30 +8,30 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Caching
     {
         private readonly GovUkUmbracoStaticFileCachePolicy _policy = new();
 
-        [Test]
-        [TestCase("/App_Plugins/ThePensionsRegulator.GovUk.Frontend.Umbraco/govuk-component-hfdksfhks.js", true)]
-        [TestCase("/App_Plugins/ThePensionsRegulator.GovUk.Frontend.Umbraco/package-version.generated-hjrkehwrk.js", true)]
-        [TestCase("/App_Plugins/ThePensionsRegulator.GovUk.Frontend.Umbraco/example-helper-code-hdjskhfjds.js", true)]
-        [TestCase("/ThePensionsRegulator.GovUk.Frontend.Umbraco/css/govuk-frontend.css?v=1.0.0", true)]
-        [TestCase("/css/govuk-umbraco-backoffice.css?v=1.0.0", true)]
-        [TestCase("/THEPENSIONSREGULATOR.GOVUK.FRONTEND.UMBRACO/CSS/GOVUK-FRONTEND.CSS?v=1.0.0", true)]
+        [Theory]
+        [InlineData("/App_Plugins/ThePensionsRegulator.GovUk.Frontend.Umbraco/govuk-component-hfdksfhks.js", true)]
+        [InlineData("/App_Plugins/ThePensionsRegulator.GovUk.Frontend.Umbraco/package-version.generated-hjrkehwrk.js", true)]
+        [InlineData("/App_Plugins/ThePensionsRegulator.GovUk.Frontend.Umbraco/example-helper-code-hdjskhfjds.js", true)]
+        [InlineData("/ThePensionsRegulator.GovUk.Frontend.Umbraco/css/govuk-frontend.css?v=1.0.0", true)]
+        [InlineData("/css/govuk-umbraco-backoffice.css?v=1.0.0", true)]
+        [InlineData("/THEPENSIONSREGULATOR.GOVUK.FRONTEND.UMBRACO/CSS/GOVUK-FRONTEND.CSS?v=1.0.0", true)]
 
         // no path
-        [TestCase("?v=1.0.0", false)]
+        [InlineData("?v=1.0.0", false)]
 
         // wrong path
-        [TestCase("/_content/OtherPackage/style.css?v=1.0.0", false)]
-        [TestCase("/_content/ThePensionsRegulator/style.css?v=1.0.0", false)]
-        [TestCase("/other-content/ThePensionsRegulator.GovUk.Frontend.Umbraco/govuk-component-hfjdkfs.js", false)]
+        [InlineData("/_content/OtherPackage/style.css?v=1.0.0", false)]
+        [InlineData("/_content/ThePensionsRegulator/style.css?v=1.0.0", false)]
+        [InlineData("/other-content/ThePensionsRegulator.GovUk.Frontend.Umbraco/govuk-component-hfjdkfs.js", false)]
 
         // no querystring
-        [TestCase("/ThePensionsRegulator.GovUk.Frontend.Umbraco/css/govuk-frontend.css", false)]
-        [TestCase("/css/govuk-umbraco-backoffice.css", false)]
-        [TestCase("/other/file.js", false)]
+        [InlineData("/ThePensionsRegulator.GovUk.Frontend.Umbraco/css/govuk-frontend.css", false)]
+        [InlineData("/css/govuk-umbraco-backoffice.css", false)]
+        [InlineData("/other/file.js", false)]
 
         // wrong querystring
-        [TestCase("/ThePensionsRegulator.GovUk.Frontend.Umbraco/css/govuk-frontend.css?other=value", false)]
-        [TestCase("/css/govuk-umbraco-backoffice.css?v=", false)]
+        [InlineData("/ThePensionsRegulator.GovUk.Frontend.Umbraco/css/govuk-frontend.css?other=value", false)]
+        [InlineData("/css/govuk-umbraco-backoffice.css?v=", false)]
         public void IsImmutable_ReturnsExpectedResult(string path, bool expected)
         {
             // Arrange
@@ -44,7 +43,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Caching
             var result = _policy.IsImmutable(path, new QueryCollection(dict));
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
     }
 }

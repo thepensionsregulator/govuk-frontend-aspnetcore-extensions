@@ -16,3 +16,13 @@ For anything other than an alpha release, add details of the release to the [Rel
 To publish to nuget.org, run the `govuk-frontend-aspnetcore-extensions` pipeline in Azure DevOps. In the 'Run pipeline' dialog for the pipeline specify your tag in the format `refs/tags/<tag-name>`.
 
 ![Specify a tag in the run pipeline dialog](/docs/images/run-pipeline-from-tag.png)
+
+## Updating the API key
+
+Publishing uses an API key generated on nuget.org by an individual developer. This has an expiry date. If the pipeline breaks due to an expired API key, generate a new one on nuget.org using the following settings:
+
+- Scope: `Push new packages and package versions`
+- Package owner: `ThePensionsRegulator`
+- Glob pattern: `ThePensionsRegulator.*`
+
+In Azure DevOps go to Project Settings > Service Connections and edit the `NUGET` service connection which is named in our pipeline. Enter the new API key.

@@ -49,7 +49,7 @@
     },
 
     LABELS: {
-        BUILDING_NAME: "Building name",
+        BUILDING_NAME: "Building or house number",
         CHOOSE_AN_ADDRESS: "Choose an address",
         CONFIRM_ADDRESS_BUTTON: "Confirm address",
         ENTER_NEW_INTERNATIONAL_ADDRESS: "Enter new international address",
@@ -83,7 +83,8 @@
         INVALID_COUNTRY: "This is not a valid country",
         COUNTRY_NOT_UK: "This page is for international addresses",
         REQUIRED: "This field must be populated",
-        INVALID_POSTCODE: "Enter a valid UK postcode"
+        INVALID_POSTCODE: "Enter a valid UK postcode",
+        ADDRESS_NOT_FOUND: "We couldn’t find any addresses matching the building name or number and postcode you entered. Please check the details for any errors and try again"
     },
 
     FIELD_NAMES: {

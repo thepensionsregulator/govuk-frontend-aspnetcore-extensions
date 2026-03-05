@@ -373,7 +373,8 @@ class TprAddressLookup {
         } else if (searchResults.results.length > 1) {
             this.stateMachine.transition(AddressLookupStateMachine.STATES.SELECT, { results: searchResults.results });
         } else {
-            // no results found, show error message? Confirm with UX designer
+            const fieldset = this.container.querySelector("fieldset");
+            this.validator.addOrUpdateCustomFieldsetError(fieldset, config.ERROR_MESSAGES.ADDRESS_NOT_FOUND);
         }
     }
 }

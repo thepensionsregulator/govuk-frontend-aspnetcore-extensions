@@ -325,7 +325,7 @@ class TprAddressLookup {
 
         const selectedUPRN = selectInput.value;
         const addressResult = await this.apiService.getAddressById(selectedUPRN);
-        const address = this.addressMapper.mapFromApiResult(addressResult);
+        const address = this.addressMapper.mapFromDpaResult(addressResult[0]);
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 

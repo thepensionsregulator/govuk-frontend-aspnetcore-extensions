@@ -1,5 +1,4 @@
-﻿
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
     var sideNav = document.querySelector(".tpr-side-nav");
     if (!sideNav) {
         return;
@@ -8,6 +7,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const id = sideNav.getAttribute("id") || "tpr-side-nav";
     const expand = sideNav.getAttribute("data-expand-text") || "Expand {0}";
     const collapse = sideNav.getAttribute("data-collapse-text") || "Collapse {0}";
+
+    var collapseButton = sideNav.querySelector(".tpr-side-nav__collapse-all");
+    if (collapseButton != null) {
+        collapseButton.addEventListener("click", function (e) {
+            e.preventDefault();
+            collapseAll();
+        });
+    }
 
     var noJsMobileLink = document.getElementsByClassName("tpr-side-nav__mobile-expand-toggle");
 
@@ -24,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     mobileToggle.addEventListener("click", expandOrCollapseMobileNav);
     noJsMobileLink[0].parentNode.replaceChild(mobileToggle, noJsMobileLink[0]);
 
-   
+
     // list item expand/collapse handling
     var sideNavListItemToggles = document.getElementsByClassName("tpr-side-nav__list-item-arrow");
     for (var i = 0; i < sideNavListItemToggles.length; i++) {
@@ -81,6 +88,40 @@ document.addEventListener("DOMContentLoaded", function () {
         button.firstElementChild.classList.remove("tpr-side-nav__list-item-arrow--up");
         button.closest("li").classList.remove("tpr-side-nav__list-item--expanded");
     }
+
+    function collapseAll() {
+        // collapse mobile first-level nav if expanded
+        const mobileToggleBtn = sideNav.querySelector(".tpr-side-nav__mobile-expand-toggle[aria-expanded='true']");
+        if (mobileToggleBtn) {
+            const firstLevelNav = sideNav.querySelector("ul");
+            if (firstLevelNav) {
+                firstLevelNav.classList.remove("tpr-side-nav__list--expanded");
+            }
+            mobileToggleBtn.setAttribute("aria-expanded", "false");
+            const img = mobileToggleBtn.querySelector("img");
+            if (img) {
+                img.classList.remove("tpr-side-nav__list-item-arrow--up");
+                img.setAttribute("alt", expand.replace("{0}", ""));
+            }
+        }
+
+        // collapse all expanded list-item toggles
+        const expandedToggles = sideNav.querySelectorAll(".tpr-side-nav__list-item__expand-toggle[aria-expanded='true']");
+        expandedToggles.forEach(function (btn) {
+            collapseListItem(btn);
+        });
+
+        // ensure top-level list items also lose the expanded class (in case some were expanded without toggles)
+        const expandedNodes = sideNav.querySelectorAll(".tpr-side-nav__list-item--expanded");
+        expandedNodes.forEach(function (node) {
+            node.classList.remove("tpr-side-nav__list-item--expanded");
+            const nodeArrow = node.querySelector(".tpr-side-nav__list-item-arrow");
+            if (nodeArrow) { nodeArrow.classList.remove("tpr-side-nav__list-item-arrow--up"); }
+            const toggle = node.querySelector(".tpr-side-nav__list-item__expand-toggle");
+            if (toggle) { toggle.setAttribute("aria-expanded", "false"); }
+        });
+    }
+
     function clearExpandedBranches(el) {
         if (el.closest("li").classList.contains("tpr-side-nav__list-item--expanded")) {
             return;
@@ -89,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (parent.dataset.level > 1 && parent.closest("li").classList.contains("tpr-side-nav__list-item--expanded")) {
             return;
         }
-        for(let node of el.closest("ul[data-level='1']").children){
+        for (let node of el.closest("ul[data-level='1']").children) {
             node.classList.remove("tpr-side-nav__list-item--expanded");
             const toggle = node.querySelector(".tpr-side-nav__list-item__expand-toggle");
             if (toggle) { toggle.setAttribute("aria-expanded", "false"); }

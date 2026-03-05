@@ -28,7 +28,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var builder = new HtmlContentBuilder();
             builder.Append(DefaultShowMoreQuestionsContent);
 
-            var li = CreateLink(showMoreQuestionsAttributes, builder);
+            var li = CreateButton(showMoreQuestionsAttributes, builder);
 
             list.InnerHtml.AppendHtml(li);
 
@@ -49,6 +49,17 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             a.MergeCssClass("govuk-link");
             a.InnerHtml.AppendHtml(content);
             li.InnerHtml.AppendHtml(a);
+
+            return li;
+        }
+        private TagBuilder CreateButton(AttributeDictionary dictionary, IHtmlContent content)
+        {
+            var li = new TagBuilder("li");
+            var button = new TagBuilder("button");
+            button.MergeAttributes(dictionary);
+            button.MergeCssClass("govuk-link");
+            button.InnerHtml.AppendHtml(content);
+            li.InnerHtml.AppendHtml(button);
 
             return li;
         }

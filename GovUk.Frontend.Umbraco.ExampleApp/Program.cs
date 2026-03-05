@@ -3,6 +3,7 @@ using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
 using GovUk.Frontend.Umbraco.ExampleApp.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.ExampleApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
 using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco;
@@ -26,7 +27,7 @@ if (config?.TPRStyles == true)
 else
 {
     builder.Services.AddTprGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
-    builder.Services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
+    builder.Services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/TPR/{0}.cshtml"));
     builder.Services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
 }
 

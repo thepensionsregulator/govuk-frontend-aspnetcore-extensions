@@ -1,5 +1,6 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.Umbraco.Services;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using ThePensionsRegulator.Frontend.Caching;
@@ -90,10 +91,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient((services) => Options.Create(tprFrontendOptions));
 
             // ThePensionsRegulator.Frontend.Umbraco
+            services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/TPR/{0}.cshtml"));
             services.AddTransient<IPropertyValueFormatter, HostNameInRichTextEditorPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
-            services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
             services.AddTransient<IBlockViewInterceptor, TprBoxViewInterceptor>();
             services.AddTransient<IBlockViewInterceptor, TprDividerViewInterceptor>();
             services.AddTransient<IDefaultColumnClassProvider, TprSectionCardsColumnClassProvider>();

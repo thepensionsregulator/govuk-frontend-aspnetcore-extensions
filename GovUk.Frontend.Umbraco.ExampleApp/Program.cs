@@ -35,7 +35,7 @@ builder.Services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServi
 builder.Services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
 builder.Services.AddTransient<ITprSearchResultsEndpointUrlProvider, TprQueryBasedSearchResultsEndpointUrlProvider>();
 builder.Services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();
-builder.Services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
+builder.Services.AddTransient<IPropertyValueFormatter, ExampleAppNoParagraphsPropertyValueFormatter>();
 
 builder.CreateUmbracoBuilder()
     .AddBackOffice()

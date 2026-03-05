@@ -97,7 +97,7 @@ class TprAddressLookup {
     renderSelectView(addressResults) {
         this.clearContainer();
 
-        const addressOptions = addressResults.map(result => this.componentBuilder.createOption(result.id, result.address));
+        const addressOptions = addressResults.map(result => this.componentBuilder.createOption(result.UPRN, result.ADDRESS));
         const selectElement = this.componentBuilder.createAddressSelect(ADDRESS_LOOKUP_CONFIG.LABELS.CHOOSE_AN_ADDRESS, addressOptions)
             .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_REQUIRED)
             .build();
@@ -368,10 +368,11 @@ class TprAddressLookup {
         const searchResults = await this.apiService.searchAddresses(postcode, building);
         this.JsonResults = searchResults.results;
 
-        if (searchResults.results.length === 1) {
-            this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address: searchResults.results[0] });
-        } else if (searchResults.results.length > 1) {
-            this.stateMachine.transition(AddressLookupStateMachine.STATES.SELECT, { results: searchResults.results });
+        if (searchResults.length === 1) {
+            const address = this.addressMapper.mapFromDpaResult(searchResults[0]);
+            this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
+        } else if (searchResults.length > 1) {
+            this.stateMachine.transition(AddressLookupStateMachine.STATES.SELECT, { results: searchResults });
         } else {
             const fieldset = this.container.querySelector("fieldset");
             this.validator.addOrUpdateCustomFieldsetError(fieldset, config.ERROR_MESSAGES.ADDRESS_NOT_FOUND);

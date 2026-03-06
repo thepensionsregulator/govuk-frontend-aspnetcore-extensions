@@ -1,5 +1,6 @@
 using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using ThePensionsRegulator.GovUk.Frontend.Caching;
@@ -51,6 +52,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco
             if (configureGovUkUmbracoOptions is not null) { configureGovUkUmbracoOptions(govukUmbracoOptions); }
             services.AddTransient((services) => Options.Create(govukUmbracoOptions));
 
+            services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/GOVUK/{0}.cshtml"));
             services.AddTransient<IUmbracoPublishedContentAccessor, UmbracoPublishedContentAccessor>();
             services.AddTransient<IUmbracoPaginationFactory, UmbracoPaginationFactory>();
             services.AddSingleton<IConfigureOptions<MvcOptions>, ModelBindingMvcConfiguration>();
@@ -59,7 +61,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco
             services.AddTransient<IPropertyValueFormatter, GovUkTypographyPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphInversePropertyValueFormatter>();
-            services.AddTransient<IPartialViewPathProvider, GovUkPartialViewPathProvider>();
             services.AddTransient<IDateInputHtmlEnhancer, DateInputHtmlEnhancer>();
             services.AddTransient<IGovUkFieldsetErrorFinder, GovUkFieldsetErrorFinder>();
             services.AddTransient<IGovUkGridClassBuilder, GovUkGridClassBuilder>();

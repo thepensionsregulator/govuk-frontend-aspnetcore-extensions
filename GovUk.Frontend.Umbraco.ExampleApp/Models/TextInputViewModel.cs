@@ -6,6 +6,12 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 {
     public class TextInputViewModel
     {
+        public TextInputViewModel()
+        {
+            SchemeAddress = new Address();
+            SchemeBillingAddress = new Address();
+        }
+
         public TextInput? Page { get; set; }
 
         public string? Field1 { get; set; }
@@ -40,5 +46,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         [RegisteredCharityNumber(ErrorMessage = nameof(Field10))]
         public string? Field10 { get; set; }
         public string? Field11 { get; set; }
+        public IAddress SchemeAddress { get; set; }
+
+        public IAddress SchemeBillingAddress { get; set; }
     }
 }

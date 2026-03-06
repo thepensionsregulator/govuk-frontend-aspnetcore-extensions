@@ -38,7 +38,12 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 Page = new TextInput(CurrentPage, null)
             };
 
+            // This doesn't work.  Control always empty???
+            // If you populate control once form rendered and post back, value is posted back and corectly bound in the surface controller.
+            viewModel.SchemeAddress.AddressLine1 = "Address Line1";
+
             ModelState.SetInitialValue(nameof(TextInputViewModel.Field7), "Hidden field value");
+            ModelState.SetInitialValue(nameof(TextInputViewModel.Field1), viewModel.SchemeAddress?.AddressLine1.ToString() ?? string.Empty);
 
             return CurrentTemplate(viewModel);
         }

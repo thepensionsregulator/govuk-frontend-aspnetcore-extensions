@@ -1,10 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -44,10 +39,23 @@ namespace GovUk.Frontend.Umbraco.Validation
                     var modelType = (method?.GetCustomAttributes(typeof(ModelTypeAttribute), false).SingleOrDefault() as ModelTypeAttribute)?.ModelType;
                     if (modelType != null)
                     {
-                        return modelType.GetProperties().Where(x =>
-                            !x.PropertyType.IsSubclassOf(typeof(PublishedContentModel)) &&
-                            !x.PropertyType.IsAssignableTo(typeof(OverridableBlockListModel))
-                            ).Select(x => x.Name);
+                        List<string> propNames = new List<string>();
+                        foreach (PropertyInfo property in modelType.GetProperties().Where(x => !x.PropertyType.IsSubclassOf(typeof(PublishedContentModel)) && !x.PropertyType.IsAssignableTo(typeof(OverridableBlockListModel))))
+                        {
+                            if (property.PropertyType.IsInterface)
+                            {
+                                foreach (PropertyInfo subProperty in property.PropertyType.GetProperties())
+                                {
+                                    propNames.Add($"{property.Name}.{subProperty.Name}");
+                                }
+                            }
+                            else
+                            {
+                                propNames.Add(property.Name);
+                            }
+                        }
+
+                        return propNames;
                     }
                 }
             }

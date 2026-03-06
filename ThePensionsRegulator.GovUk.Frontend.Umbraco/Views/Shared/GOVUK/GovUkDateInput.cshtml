@@ -99,81 +99,39 @@
             }
             @if (dateValue.HasValue)
             {
-                if (readOnly)
-                {
-                    <govuk-date-input-options show-day="@showDay" show-year="@showYear">
-                        <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
-                            @if (hasHint)
-                            {
-                                <govuk-date-input-hint>@hint</govuk-date-input-hint>
-                            }
-                            @if (hasErrorMessage)
-                            {
-                                <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
-                            }
-                            <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" readonly="readonly" />
-                            <govuk-date-input-month aria-invalid="@ariaInvalid" readonly="readonly" />
-                            <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" readonly="readonly" />
-                        </govuk-date-input>
-                    </govuk-date-input-options>
-                }
-                else
-                {
-                    <govuk-date-input-options show-day="@showDay" show-year="@showYear">
-                        <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue">
-                            @if (hasHint)
-                            {
-                                <govuk-date-input-hint>@hint</govuk-date-input-hint>
-                            }
-                            @if (hasErrorMessage)
-                            {
-                                <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
-                            }
-                            <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" />
-                            <govuk-date-input-month aria-invalid="@ariaInvalid" />
-                            <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" />
-                        </govuk-date-input>
-                    </govuk-date-input-options>
-                }
+                <govuk-date-input-options show-day="@showDay" show-year="@showYear">
+                    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" value="@dateValue" readonly="@readOnly">
+                        @if (hasHint)
+                        {
+                            <govuk-date-input-hint>@hint</govuk-date-input-hint>
+                        }
+                        @if (hasErrorMessage)
+                        {
+                            <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
+                        }
+                        <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" />
+                        <govuk-date-input-month aria-invalid="@ariaInvalid" />
+                        <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" />
+                    </govuk-date-input>
+                </govuk-date-input-options>
             }
             else
             {
-                if (readOnly)
-                {
-                    <govuk-date-input-options show-day="@showDay" show-year="@showYear">
-                        <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName">
-                            @if (hasHint)
-                            {
-                                <govuk-date-input-hint>@hint</govuk-date-input-hint>
-                            }
-                            @if (hasErrorMessage)
-                            {
-                                <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
-                            }
-                            <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedDay" readonly="readonly" />
-                            <govuk-date-input-month aria-invalid="@ariaInvalid" value="@attemptedMonth" readonly="readonly" />
-                            <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" value="@attemptedYear" readonly="readonly" />
-                        </govuk-date-input>
-                    </govuk-date-input-options>
-                }
-                else
-                {
-                    <govuk-date-input-options show-day="@showDay" show-year="@showYear">
-                        <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName">
-                            @if (hasHint)
-                            {
-                                <govuk-date-input-hint>@hint</govuk-date-input-hint>
-                            }
-                            @if (hasErrorMessage)
-                            {
-                                <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
-                            }
-                            <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedDay" />
-                            <govuk-date-input-month aria-invalid="@ariaInvalid" value="@attemptedMonth" />
-                            <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" value="@attemptedYear" />
-                        </govuk-date-input>
-                    </govuk-date-input-options>
-                }
+                <govuk-date-input-options show-day="@showDay" show-year="@showYear">
+                    <govuk-date-input name-prefix="@modelPropertyName" id="@modelPropertyName" readonly="@readOnly">
+                        @if (hasHint)
+                        {
+                            <govuk-date-input-hint>@hint</govuk-date-input-hint>
+                        }
+                        @if (hasErrorMessage)
+                        {
+                            <govuk-date-input-error-message>@errorMessage</govuk-date-input-error-message>
+                        }
+                        <govuk-date-input-day maxlength="2" aria-invalid="@ariaInvalid" value="@attemptedDay" />
+                        <govuk-date-input-month aria-invalid="@ariaInvalid" value="@attemptedMonth" />
+                        <govuk-date-input-year maxlength="4" aria-invalid="@ariaInvalid" value="@attemptedYear" />
+                    </govuk-date-input>
+                </govuk-date-input-options>
             }
         </govuk-fieldset>
     </govuk-client-side-validation>

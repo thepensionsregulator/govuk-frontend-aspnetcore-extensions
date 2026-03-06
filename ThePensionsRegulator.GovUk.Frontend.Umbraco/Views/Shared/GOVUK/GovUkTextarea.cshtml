@@ -67,35 +67,17 @@
     }
     else
     {
-        if (readOnly)
-        {
-            <govuk-textarea name="@modelPropertyName" class="@cssClasses" rows="@rows" textarea-aria-invalid="@invalid" textarea-readonly="readonly">
-                <govuk-textarea-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-textarea-label>
-                @if (hasHint)
-                {
-                    <govuk-textarea-hint>@hint</govuk-textarea-hint>
-                }
-                @if (hasErrorMessage)
-                {
-                    <govuk-textarea-error-message>@errorMessage</govuk-textarea-error-message>
-                }
-                <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>
-            </govuk-textarea>
-        }
-        else
-        {
-            <govuk-textarea name="@modelPropertyName" class="@cssClasses" rows="@rows" textarea-aria-invalid="@invalid">
-                <govuk-textarea-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-textarea-label>
-                @if (hasHint)
-                {
-                    <govuk-textarea-hint>@hint</govuk-textarea-hint>
-                }
-                @if (hasErrorMessage)
-                {
-                    <govuk-textarea-error-message>@errorMessage</govuk-textarea-error-message>
-                }
-                <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>
-            </govuk-textarea>
-        }
+        <govuk-textarea name="@modelPropertyName" class="@cssClasses" rows="@rows" textarea-aria-invalid="@invalid" readonly="@readOnly">
+            <govuk-textarea-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-textarea-label>
+            @if (hasHint)
+            {
+                <govuk-textarea-hint>@hint</govuk-textarea-hint>
+            }
+            @if (hasErrorMessage)
+            {
+                <govuk-textarea-error-message>@errorMessage</govuk-textarea-error-message>
+            }
+            <govuk-textarea-value>@modelStateEntry?.AttemptedValue</govuk-textarea-value>
+        </govuk-textarea>
     }
 </govuk-client-side-validation>

@@ -1,7 +1,6 @@
 ﻿using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Models.ContentTypeEditing;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Strings;
 
@@ -21,11 +20,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
         {
             // Arrange
             var formatter = new NoParagraphsPropertyValueFormatter();
-            var propertyType = UmbracoPropertyFactory.CreatePropertyType(1, 
-                propertyAlias, 
+            var propertyType = UmbracoPropertyFactory.CreatePropertyType(1,
+                propertyAlias,
                 Constants.PropertyEditors.Aliases.RichText,
                 "someContentType",
-                [compositionAlias], 
+                [compositionAlias],
                 new RichTextConfiguration());
 
             // Act

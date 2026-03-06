@@ -1,11 +1,11 @@
-﻿using GovUk.Frontend.Umbraco;
-using GovUk.Frontend.Umbraco.Blocks;
-using Moq;
+﻿using Moq;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
-using GovUkElementTypeAliases = GovUk.Frontend.Umbraco.ElementTypeAliases;
-using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases;
+using GovUkElementTypeAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.ElementTypeAliases;
+using GovUkPropertyAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyAliases;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {

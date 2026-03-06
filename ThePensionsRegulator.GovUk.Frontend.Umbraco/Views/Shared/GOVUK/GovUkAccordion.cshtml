@@ -1,0 +1,41 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Strings;
+@using Umbraco.Extensions
+@{
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+    var sections = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.AccordionSections)!;
+    if (!Int32.TryParse(Model.Settings?.Value<string>(PropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out var headingLevel))
+    {
+        headingLevel = 2;
+    }
+
+}
+<govuk-accordion id="@Model.Content.Key" class="@cssClasses" heading-level="@headingLevel">
+    @foreach (var section in sections.FilteredBlocks())
+    {
+        var grid = section.Content.Value<OverridableBlockGridModel>(PropertyAliases.AccordionSectionBlocks)!;
+        var childBlocks = new BlockGridViewModel(grid)
+        {
+            ChildColumnsDefaultToFullWidth = true,
+            RenderWidthContainer = false        
+        };
+
+        <govuk-accordion-item class="@(section.Settings?.Value<string>(PropertyAliases.CssClasses))" expanded="@(section.Settings?.Value<bool>(PropertyAliases.AccordionSectionExpanded) ?? false)">
+            <govuk-accordion-item-heading>@(section.Content.Value<string>(PropertyAliases.AccordionSectionHeading))</govuk-accordion-item-heading>
+            @if (!string.IsNullOrWhiteSpace(section.Content.Value<string>(PropertyAliases.AccordionSectionSummary)))
+            {
+                <govuk-accordion-item-summary>@(section.Content.Value<string>(PropertyAliases.AccordionSectionSummary))</govuk-accordion-item-summary>
+            }
+            <govuk-accordion-item-content>
+                @await Html.PartialAsync("GOVUK/BlockGrid", childBlocks)
+            </govuk-accordion-item-content>
+        </govuk-accordion-item>
+    }
+</govuk-accordion>

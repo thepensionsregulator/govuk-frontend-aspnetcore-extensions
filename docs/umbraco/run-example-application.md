@@ -1,11 +1,11 @@
 # Run the Umbraco example application
 
-This repository includes an example application which demonstrates the validation working both client-side and server-side with messages configured in Umbraco.
+This repository includes an example application which demonstrates all of our components, with validation working both client-side and server-side with messages configured in Umbraco. It includes further guidance on how code and components should be used.
 
 1. Ensure you have .NET 10 installed.
 2. Clone this repo.
 3. Run `npm run govuk` to install the `govuk-frontend` npm package.
-4. Open `GovUk.Frontend.sln` in Visual Studio 2026 or better.
+4. Open `GovUk.Frontend.slnx` in Visual Studio 2026 or better.
 5. Delete the `ConnectionStrings` section from `appsettings.json` in the `GovUk.Frontend.Umbraco.ExampleApp` project (it will get re-generated).
 6. Click on the `GovUk.Frontend.Umbraco.ExampleApp` project, and run it.
 7. When you see the Umbraco installer enter your name, email address and a new password and click 'Next'. Accept the defaults for other settings.

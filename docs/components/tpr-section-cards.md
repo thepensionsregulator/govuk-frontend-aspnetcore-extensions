@@ -19,12 +19,12 @@ In TPR pages you can add cards that can display a linked heading and description
 
 ### `<tpr-section-cards>`
 
-| Attribute    | Type     | Required | Description                                                                                                                                                           |
-| ------------ | -------- | ---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `new-tab-text`        | `string` | `True` | For title links that open in a new tab, this text will be appended to the end of title link to inform users that a new tab will open when the link is clicked. e.g. '(opens in a new tab)'                                                                                                                                                  |
-| `card-titles-heading-level` | `string` | `False`   | Sets the heading level for all the card titles. Default is `2`.
-| `card-titles-heading-class` | `string` | `False`   | Sets the heading class for all the card titles. Default is `govuk-heading-m`.
-| `navigation-aria-label`     | `string` | `False`   | Sets the `aria-label` attribute on the outermost `nav` element. If left empty, no aria-label attribute will be rendered.                                                                 |
+| Attribute                   | Type     | Required | Description                                                                                                                                                                                |
+| --------------------------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `new-tab-text`              | `string` | `True`   | For title links that open in a new tab, this text will be appended to the end of title link to inform users that a new tab will open when the link is clicked. e.g. '(opens in a new tab)' |
+| `card-titles-heading-level` | `string` | `False`  | Sets the heading level for all the card titles. Default is `2`.                                                                                                                            |
+| `card-titles-heading-class` | `string` | `False`  | Sets the heading class for all the card titles. Default is `govuk-heading-m`.                                                                                                              |
+| `navigation-aria-label`     | `string` | `False`  | Sets the `aria-label` attribute on the outermost `nav` element. If left empty, no aria-label attribute will be rendered.                                                                   |
 
 ### `<tpr-section-card>`
 

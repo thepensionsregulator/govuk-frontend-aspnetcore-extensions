@@ -1,8 +1,8 @@
-﻿using GovUk.Frontend.Umbraco.Blocks;
+﻿using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
-using GovUkElementTypeAliases = GovUk.Frontend.Umbraco.ElementTypeAliases;
-using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases;
+using GovUkElementTypeAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.ElementTypeAliases;
+using GovUkPropertyAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyAliases;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {

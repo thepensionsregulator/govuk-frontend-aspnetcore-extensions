@@ -29,7 +29,7 @@
 
    ```razor
    @addTagHelper *, GovUk.Frontend.AspNetCore
-   @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+   @addTagHelper *, ThePensionsRegulator.GovUk.Frontend
    ```
 
 9. Create `Views/Shared/_Layout.cshtml` with the code shown below.
@@ -107,14 +107,14 @@
 16. In `Program.cs` add the following:
 
     ```csharp
-    using GovUk.Frontend.Umbraco;
+    using ThePensionsRegulator.GovUk.Frontend.Umbraco;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
     using Umbraco.Cms.Core.Models.PublishedContent;
     using Umbraco.Cms.Core.Web;
 
     WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-    builder.Services.AddGovUkFrontendUmbraco();
+    builder.Services.AddTprGovUkFrontendUmbraco();
 
     // builder.CreateUmbracoBuilder() goes here
 
@@ -122,7 +122,7 @@
     var mvcOptions = app.Services.GetRequiredService<IOptions<MvcOptions>>();
     var umbracoContextAccessor = app.Services.GetRequiredService<IUmbracoContextAccessor>();
     var publishedValueFallback = app.Services.GetRequiredService<IPublishedValueFallback>();
-    app.UseGovUkFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
+    app.UseTprGovUkFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
 
     // await app.BootUmbracoAsync() and app.UseUmbraco() go here
 

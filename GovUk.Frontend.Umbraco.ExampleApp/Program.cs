@@ -1,15 +1,16 @@
-using GovUk.Frontend.Umbraco;
-using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.ExampleApp;
 using GovUk.Frontend.Umbraco.ExampleApp.Middleware;
 using GovUk.Frontend.Umbraco.ExampleApp.PropertyEditors.ValueFormatters;
 using GovUk.Frontend.Umbraco.ExampleApp.Services;
-using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
 using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
@@ -25,8 +26,8 @@ if (config?.TPRStyles == true)
 }
 else
 {
-    builder.Services.AddGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
-    builder.Services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
+    builder.Services.AddTprGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+    builder.Services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/TPR/{0}.cshtml"));
     builder.Services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
 }
 
@@ -34,7 +35,7 @@ builder.Services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServi
 builder.Services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
 builder.Services.AddTransient<ITprSearchResultsEndpointUrlProvider, TprQueryBasedSearchResultsEndpointUrlProvider>();
 builder.Services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();
-builder.Services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
+builder.Services.AddTransient<IPropertyValueFormatter, ExampleAppNoParagraphsPropertyValueFormatter>();
 
 builder.CreateUmbracoBuilder()
     .AddBackOffice()

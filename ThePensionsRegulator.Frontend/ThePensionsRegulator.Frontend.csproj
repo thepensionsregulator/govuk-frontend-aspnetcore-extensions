@@ -290,7 +290,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
+	  <ProjectReference Include="..\ThePensionsRegulator.GovUk.Frontend\ThePensionsRegulator.GovUk.Frontend.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

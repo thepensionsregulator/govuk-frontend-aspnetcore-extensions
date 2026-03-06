@@ -6,7 +6,7 @@ If enabled, the extension library automatically generates localised strings for 
 
 This repository includes an example application which demonstrates the validation working both client-side and server-side.
 
-1. In Startup.cs, add localization to `ConfigureServices`
+1. Modify your `Program.cs` as follows:
 
    ```csharp
    services.AddLocalization(p => p.ResourcesPath = "Resources");
@@ -175,7 +175,7 @@ To implement Custom Validation Attributes _and_ Client Side Validation, you need
        }
    ```
 
-4. Register this Adapter Provider in `Startup.cs`
+4. Register this Adapter Provider in `Program.cs` as follows:
 
    ```csharp
    services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
@@ -191,6 +191,7 @@ To implement Custom Validation Attributes _and_ Client Side Validation, you need
 6. In the `.cshtml` file that uses the model, you will need to write a client-side validator that hooks into jquery validate, and can be set up with unobtrusive.
 
    ```javascript
+   @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
    <partial name="GOVUK/Validation" />
    <script type="text/javascript">
        const govuk = createGovUkValidator();
@@ -242,13 +243,13 @@ services.AddMvc()
 
 The _downside_ to this is that it only supports one resource file per model. For example, if a project contains multiple address fields, the same error message will need to be copied throughout the project.
 
-One solution to this is to use a custom Localizer that allows for a (graceful) fallback to some other resource file. This localizer is part of the `GovUk.Frontend.AspNetCore.Extensions` library, called `DataAnnotationStringLocalizer`
+One solution to this is to use a custom Localizer that allows for a (graceful) fallback to some other resource file. This localizer is part of the `ThePensionsRegulator.GovUk.Frontend` library, called `DataAnnotationStringLocalizer`
 
 Setup is simple
 
 1. Create an empty class (for example `SharedResource.cs`) in the root of your project - this can be a shared project elsewhere
 2. Add a `Resources` folder in the same project, and create resource files with the same name as your empty class - for example `SharedResource.es.resx`, `SharedResource.fr.resx`
-3. In `Startup.cs`, instead of the default `AddDataAnnotationsLocalization`, we use `DataAnnotationStringLocalizer` and provide SharedResource as a fallback.
+3. In `Program.cs`, instead of the default `AddDataAnnotationsLocalization`, we use `DataAnnotationStringLocalizer` and provide SharedResource as a fallback.
 
    ```csharp
    services.AddMvc()

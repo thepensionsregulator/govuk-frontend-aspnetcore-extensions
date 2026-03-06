@@ -1,0 +1,12 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Strings;
+@using Umbraco.Extensions
+@{
+    var cssClass = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+}
+<govuk-inset-text id="@Model.Content.Key" class="@cssClass">@(Model.Content.Value<IHtmlEncodedString>(PropertyAliases.InsetText))</govuk-inset-text>

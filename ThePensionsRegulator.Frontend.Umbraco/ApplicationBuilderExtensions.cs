@@ -1,7 +1,7 @@
-using GovUk.Frontend.Umbraco;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 
@@ -15,7 +15,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             IUmbracoContextAccessor umbracoContextAccessor,
             IPublishedValueFallback publishedValueFallback)
         {
-            app.UseGovUkFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
+            app.UseTprGovUkFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
 
             return app;
         }

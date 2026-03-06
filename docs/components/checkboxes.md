@@ -1,6 +1,6 @@
 # Checkboxes
 
-For examples see [ASP.NET syntax for the Checkboxes component](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/checkboxes.md).
+For examples see [ASP.NET syntax for the Checkboxes component](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/checkboxes.md).
 
 ## Umbraco
 
@@ -13,26 +13,29 @@ See [Validation](/docs/umbraco/validation.md) for how to validate a checkboxes c
 You can configure a fixed set of checkboxes in the Umbraco backoffice, or you can supply checkboxes at runtime from a database or other data source.
 
 ```csharp
-using ThePensionsRegulator.Umbraco.BlockLists;
-using GovUk.Frontend.Umbraco.BlockLists;
-using GovUk.Frontend.Umbraco.Models;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Web.Common.PublishedModels;
 
 public class ExampleController : RenderController
 {
     private readonly IPublishedValueFallback _publishedValueFallback;
-    private readonly IPublishedSnapshotAccessor _publishedSnapshotAccessor;
+    private readonly IPublishedContentTypeCache _publishedContentTypeCache;
+    private readonly IVariationContextAccessor _variationContextAccessor;
 
     public ExampleController(ILogger<RenderController> logger,
         ICompositeViewEngine compositeViewEngine,
         IUmbracoContextAccessor umbracoContextAccessor,
         IPublishedValueFallback publishedValueFallback,
-        IPublishedSnapshotAccessor publishedSnapshotAccessor
+        IPublishedContentTypeCache publishedContentTypeCache,
+        IVariationContextAccessor variationContextAccessor
         ) : base(logger, compositeViewEngine, umbracoContextAccessor)
     {
         _publishedValueFallback = publishedValueFallback;
-        _publishedSnapshotAccessor = publishedSnapshotAccessor;
+        _publishedContentTypeCache = publishedContentTypeCache;
+        _variationContextAccessor = variationContextAccessor;
     }
 
     [ModelType(typeof(ExampleViewModel))]
@@ -49,7 +52,7 @@ public class ExampleController : RenderController
                 new Checkbox ("2", "Item 2"),
                 new CheckboxesDivider(),
                 new Checkbox("3", "Item 3")
-            }, _publishedSnapshotAccessor);
+            }, _publishedContentTypeCache, _variationContextAccessor);
 
         return CurrentTemplate(viewModel);
     }
@@ -79,8 +82,8 @@ public class ExampleViewModel
 
 ```csharp
 // Controller
-using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.Umbraco.Validation;
+using ThePensionsRegulator.GovUk.Frontend.Validation;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Umbraco.Cms.Web.Common.Controllers;

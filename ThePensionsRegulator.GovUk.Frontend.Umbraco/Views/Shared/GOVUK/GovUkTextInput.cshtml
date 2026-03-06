@@ -1,0 +1,128 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, ThePensionsRegulator.GovUk.Frontend
+@inject IGovUkHeadingClassProvider headingClassProvider
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Strings;
+@using Umbraco.Extensions
+@{
+    var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
+    var elementName = modelPropertyName;
+    ModelStateEntry? modelStateEntry = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName, out modelStateEntry);
+    }
+    var prefix = Model.Settings?.Value<string>(PropertyAliases.TextInputPrefix);
+    var suffix = Model.Settings?.Value<string>(PropertyAliases.TextInputSuffix);
+    var label = Model.Content.Value<string>(PropertyAliases.TextInputLabel)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    var labelIsPageHeading = Model.Settings?.Value<bool>(PropertyAliases.LabelIsPageHeading) ?? false;
+    var labelClass = labelIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LabelAsHeading1 : null;
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+    string? inputClass = null;
+    var inputWidth = Model.Settings?.Value<string>(PropertyAliases.TextInputWidth);
+    if (!string.IsNullOrEmpty(inputWidth))
+    {
+        switch (inputWidth)
+        {
+            case "xx-small":
+                inputClass = "govuk-input--width-2";
+                break;
+            case "x-small":
+                inputClass = "govuk-input--width-3";
+                break;
+            case "small":
+                inputClass = "govuk-input--width-4";
+                break;
+            case "medium":
+                inputClass = "govuk-input--width-5";
+                break;
+            case "large":
+                inputClass = "govuk-input--width-10";
+                break;
+            case "x-large":
+                inputClass = "govuk-input--width-20";
+                break;
+            case "xx-large":
+                inputClass = "govuk-input--width-30";
+                break;
+        }
+    }
+
+    var extraLetterSpacing = Model.Settings?.Value<bool>(PropertyAliases.ExtraLetterSpacing) ?? false;
+    if (extraLetterSpacing)
+    {
+        inputClass = (inputClass + " govuk-input--extra-letter-spacing").TrimStart();
+    }
+    var hint = Model.Content.Value<IHtmlEncodedString>(PropertyAliases.Hint);
+    var hasHint = !string.IsNullOrWhiteSpace(hint?.ToHtmlString());
+    var invalid = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any()).ToString().ToLowerInvariant();
+    var hasErrorMessage = (modelStateEntry is not null && modelStateEntry.ValidationState == ModelValidationState.Invalid && modelStateEntry.Errors.Any(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR));
+    var errorMessage = hasErrorMessage ? string.Join(". ", modelStateEntry!.Errors.Where(x => x.ErrorMessage != ValidationConstants.FIELDSET_ERROR).Select(x => x.ErrorMessage)) : null;
+    var readOnly = Model.Settings?.Value<bool>(PropertyAliases.ReadOnly) ?? false;
+    var hasPrefix = !string.IsNullOrEmpty(prefix);
+    var hasSuffix = !string.IsNullOrEmpty(suffix);
+}
+<govuk-client-side-validation
+    error-message-required="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageRequired))"
+    error-message-regex="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageRegex))"
+    error-message-email="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageEmail))"
+    error-message-phone="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessagePhone))"
+    error-message-length="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageLength))"
+    error-message-minlength="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageMinLength))"
+    error-message-maxlength="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageMaxLength))"
+    error-message-range="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageRange))"
+    error-message-compare="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageCompare))"
+>
+    @if (readOnly)
+    {
+        <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" class="@cssClasses" input-class="@inputClass" input-aria-invalid="@invalid" input-readonly="readonly">
+            <govuk-input-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-input-label>
+            @if (hasHint)
+            {
+                <govuk-input-hint>@hint</govuk-input-hint>
+            }
+            @if (hasErrorMessage)
+            {
+                <govuk-input-error-message>@errorMessage</govuk-input-error-message>
+            }
+            @if (hasPrefix)
+            {
+                <govuk-input-prefix class="govuk-input__prefix--readonly">@prefix</govuk-input-prefix>
+            }
+            @if (hasSuffix)
+            {
+                <govuk-input-suffix class="govuk-input__suffix--readonly">@suffix</govuk-input-suffix>
+            }
+        </govuk-input>
+    }
+    else
+    {       
+        <govuk-input name="@modelPropertyName" value="@modelStateEntry?.AttemptedValue" class="@cssClasses" input-class="@inputClass" input-aria-invalid="@invalid">
+            <govuk-input-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-input-label>
+            @if (hasHint)
+            {
+                <govuk-input-hint>@hint</govuk-input-hint>
+            }
+            @if (hasErrorMessage)
+            {
+                <govuk-input-error-message>@errorMessage</govuk-input-error-message>
+            }
+            @if (hasPrefix)
+            {
+                <govuk-input-prefix>@prefix</govuk-input-prefix>
+            }
+            @if (hasSuffix)
+            {
+                <govuk-input-suffix>@suffix</govuk-input-suffix>
+            }
+        </govuk-input>
+    }
+
+</govuk-client-side-validation>

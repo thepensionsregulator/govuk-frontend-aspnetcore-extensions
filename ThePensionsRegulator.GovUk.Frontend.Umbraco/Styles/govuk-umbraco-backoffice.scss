@@ -1,0 +1,5 @@
+﻿/* Import the govuk-frontend stylesheet so that the rich text editor can look like the GOV.UK Design System.*/
+@import "../../ThePensionsRegulator.GovUk.Frontend/Styles/govuk-frontend.scss";
+@import "_backoffice-block-views.scss";
+@import "_backoffice-rich-text-formats.scss";
+@import "_backoffice-property-editors.scss";

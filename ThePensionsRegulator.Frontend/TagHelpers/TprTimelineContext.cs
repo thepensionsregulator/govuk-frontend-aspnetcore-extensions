@@ -1,6 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions;
-using ThePensionsRegulator.Frontend.HtmlGeneration;
+﻿using ThePensionsRegulator.Frontend.HtmlGeneration;
+using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {

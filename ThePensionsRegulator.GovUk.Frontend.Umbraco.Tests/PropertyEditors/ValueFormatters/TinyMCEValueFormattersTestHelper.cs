@@ -1,0 +1,126 @@
+using HtmlAgilityPack;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
+using Umbraco.Cms.Core.Strings;
+
+namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
+{
+    internal class TinyMCEValueFormattersTestHelper
+    {
+        internal static void SingleWrappingParagraphWithNoClassIsRemoved(IPropertyValueFormatter formatter)
+        {
+            var html = "<p>Some content</p>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            Assert.Equal("Some content", result.ToHtmlString());
+        }
+
+        internal static void SingleWrappingParagraphWithClassIsLeftAlone(IPropertyValueFormatter formatter)
+        {
+            var html = "<p class=\"some-class\">Some content</p>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            Assert.Equal("<p class=\"some-class govuk-body\">Some content</p>", result.ToHtmlString());
+        }
+
+        internal static void MultipleWrappingParagraphsAreLeftAlone(IPropertyValueFormatter formatter)
+        {
+            var html = "<p>Some content</p><p>Some content</p>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//p").Count);
+        }
+
+        internal static void TestStyleAttributeIsRemovedFromOrderedLists(IPropertyValueFormatter formatter)
+        {
+            var html = "<ol style=\"list-style-type: lower-alpha;\"><li>Item 1</li><li>Item 2</li></ol><ol style=\"color: red;\"><li>Item 3</li><li>Item 4</li></ol>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//ol").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
+        }
+
+        internal static void TestPermittedStyleAttributeIsConvertedToClassOnOrderedLists(IPropertyValueFormatter formatter, string listStyleType)
+        {
+            var html = $"<ol style=\"list-style-type: {listStyleType};\"><li>Item 1</li><li>Item 2</li></ol>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
+            Assert.Single(doc.DocumentNode.SelectNodes("//ol"));
+            Assert.Single(doc.DocumentNode.SelectNodes($"//ol[contains(@class,'govuk-list--{listStyleType}')]"));
+            Assert.Null(doc.DocumentNode.SelectNodes("//ol[@style]"));
+        }
+
+        internal static void TestStyleAttributeIsRemovedFromUnorderedLists(IPropertyValueFormatter formatter)
+        {
+            var html = "<ul style=\"list-style-type: circle;\"><li>Item 1</li><li>Item 2</li></ul><ul style=\"color: red;\"><li>Item 3</li><li>Item 4</li></ul>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//ul").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//ul[@style]"));
+        }
+
+        internal static void TestPermittedStyleAttributeIsConvertedToClassOnUnorderedLists(IPropertyValueFormatter formatter, string listStyleType)
+        {
+            var html = $"<ul style=\"list-style-type: {listStyleType};\"><li>Item 1</li><li>Item 2</li></ul>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
+            Assert.Single(doc.DocumentNode.SelectNodes("//ul"));
+            Assert.Single(doc.DocumentNode.SelectNodes($"//ul[contains(@class,'govuk-list--{listStyleType}')]"));
+            Assert.Null(doc.DocumentNode.SelectNodes("//ul[@style]"));
+        }
+
+        internal static void TestStyleAttributeIsRemovedFromParagraphs(IPropertyValueFormatter formatter)
+        {
+            var html = "<p style=\"text-align: center;\">Example text</p><p style=\"color: red;\">Example text</p>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
+            Assert.Equal(2, doc.DocumentNode.SelectNodes("//p").Count);
+            Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
+        }
+
+        internal static void TestPermittedStyleAttributeIsConvertedToClassOnParagraphs(IPropertyValueFormatter formatter, string styleAttribute, string expectedClass)
+        {
+            var html = $"<p style=\"{styleAttribute};\">Example text</p>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
+            Assert.Single(doc.DocumentNode.SelectNodes("//p"));
+            Assert.Single(doc.DocumentNode.SelectNodes($"//p[contains(@class,'{expectedClass}')]"));
+            Assert.Null(doc.DocumentNode.SelectNodes("//p[@style]"));
+        }
+
+        internal static void TestStyleAttributeIsRemovedFromOtherElements(IPropertyValueFormatter formatter)
+        {
+            var html = "<h2 style=\"text-align: center;\">Example text</h2><ul><li style=\"color: red;\">Example text</li></ul>";
+
+            var result = (IHtmlEncodedString)formatter.FormatValue(html);
+
+            var doc = new HtmlDocument();
+            doc.LoadHtml(result.ToHtmlString() ?? string.Empty);
+            Assert.Single(doc.DocumentNode.SelectNodes("//h2"));
+            Assert.Single(doc.DocumentNode.SelectNodes("//li"));
+            Assert.Null(doc.DocumentNode.SelectNodes("//*[@style]"));
+        }
+    }
+}

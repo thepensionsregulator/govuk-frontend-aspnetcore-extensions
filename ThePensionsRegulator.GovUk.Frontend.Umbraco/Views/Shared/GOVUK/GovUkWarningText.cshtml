@@ -1,0 +1,14 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Strings;
+@using Umbraco.Extensions
+@{
+    var iconFallbackText = Model.Content.Value<string>(PropertyAliases.WarningIconFallbackText);
+    if (string.IsNullOrWhiteSpace(iconFallbackText)) { iconFallbackText = "Warning"; }
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+}
+<govuk-warning-text icon-fallback-text="@iconFallbackText" id="@Model.Content.Key" class="@cssClasses">@(Model.Content.Value<IHtmlEncodedString>(PropertyAliases.WarningText))</govuk-warning-text>

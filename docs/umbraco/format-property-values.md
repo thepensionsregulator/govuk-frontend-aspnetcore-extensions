@@ -12,7 +12,7 @@ The property value converter for the property type needs to inject `IEnumerable<
 
 ```csharp
 using Umbraco.Cms.Core.PropertyEditors;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 public class ExamplePropertyValueConverter : PropertyValueConverterBase
 {
@@ -40,7 +40,7 @@ public class ExamplePropertyValueConverter : PropertyValueConverterBase
 Implement the `IPropertyValueFormatter` interface, specifying the alias of the property editor or specific properties whose value can be formatted.
 
 ```csharp
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 public class ExamplePropertyValueFormatter : IPropertyValueFormatter
 {
@@ -59,7 +59,7 @@ public class ExamplePropertyValueFormatter : IPropertyValueFormatter
 Register the `IPropertyValueFormatter` with dependency injection in `Program.cs`. You can register multiple formatters by mapping `IPropertyValueFormatter` to each one as shown below.
 
 ```csharp
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 builder.Services.AddTransient<IPropertyValueFormatter, ExamplePropertyValueFormatter>();
 builder.Services.AddTransient<IPropertyValueFormatter, AnotherExamplePropertyValueFormatter>();

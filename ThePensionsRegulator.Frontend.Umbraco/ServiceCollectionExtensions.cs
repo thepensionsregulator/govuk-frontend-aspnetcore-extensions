@@ -1,9 +1,6 @@
 using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions.Caching;
-using GovUk.Frontend.AspNetCore.Extensions.Security;
-using GovUk.Frontend.Umbraco;
-using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.Services;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using ThePensionsRegulator.Frontend.Caching;
@@ -12,6 +9,11 @@ using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco.Caching;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.GovUk.Frontend.Caching;
+using ThePensionsRegulator.GovUk.Frontend.Security;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 namespace ThePensionsRegulator.Frontend.Umbraco
@@ -77,7 +79,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             }
 
             // GovUk.Frontend.Umbraco
-            services.AddGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
+            services.AddTprGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
 
             // ThePensionsRegulator.Frontend
             services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
@@ -89,10 +91,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient((services) => Options.Create(tprFrontendOptions));
 
             // ThePensionsRegulator.Frontend.Umbraco
+            services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/TPR/{0}.cshtml"));
             services.AddTransient<IPropertyValueFormatter, HostNameInRichTextEditorPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
-            services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
             services.AddTransient<IBlockViewInterceptor, TprBoxViewInterceptor>();
             services.AddTransient<IBlockViewInterceptor, TprDividerViewInterceptor>();
             services.AddTransient<IDefaultColumnClassProvider, TprSectionCardsColumnClassProvider>();

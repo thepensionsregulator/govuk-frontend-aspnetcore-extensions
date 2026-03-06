@@ -21,6 +21,7 @@
         POSTCODE_INTERNATIONAL: "postcode-international",
         COUNTRY: "country",
         LINK_LIST: "link-list",
+        UPRN: "UPRN",
         EDIT_ADDRESS: "edit-address"
     },
 

@@ -68,14 +68,21 @@
             Model.Content.Value<string?>(TprPropertyAliases.PostcodeLabel),
             "Postcode",
             ViewContext.ModelState
-		);
+        );
 
     var countryState = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.CountryModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.CountryLabel),
             "Country",
             ViewContext.ModelState
-		);
+        );
+
+    var uprnState = addressFieldStateHelper.GetFieldState(
+        Model.Settings.Value<string>(TprPropertyAliases.UPRNModelProperty),
+        string.Empty,
+        string.Empty,
+        ViewContext.ModelState
+    );
 }
 
 <tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" data-address-lookup-search-url=@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint() data-address-lookup-id-url=@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()>
@@ -165,4 +172,6 @@
             }
         </govuk-input>
     </govuk-client-side-validation>
+
+    <input type="hidden" id="@uprnState.ModelPropertyName" name="@uprnState.ModelPropertyName" value="@uprnState.AttemptedValue" data-address-lookup="UPRN"/>
 </tpr-address-lookup>

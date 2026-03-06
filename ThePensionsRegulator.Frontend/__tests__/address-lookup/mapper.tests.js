@@ -133,6 +133,20 @@ describe("Address mapper", () => {
             expect(result.town).toMatch(buildingNumberRangeInBuildingName.POST_TOWN);
             expect(result.postcode).toMatch(buildingNumberRangeInBuildingName.POSTCODE);
         });
+        const uprnDpaResult = {
+            "UPRN": "1234567",
+            "SUB_BUILDING_NAME": "618",
+            "BUILDING_NAME": "THE HACIENDA 11-15",
+            "THOROUGHFARE_NAME": "WHITWORTH STREET WEST",
+            "POST_TOWN": "MANCHESTER",
+            "POSTCODE": "M1 5DD",
+        };
+
+        it("result contains UPRN", () => {
+            const result = mapper.mapFromDpaResult(uprnDpaResult);
+
+            expect(result.UPRN).toMatch(uprnDpaResult.UPRN);
+        });
     });
 
     describe("mapFromManualUKEntry", () => {

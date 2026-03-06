@@ -128,7 +128,8 @@ class TprAddressLookup {
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY]: address.town,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY]: address.county,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY]: address.country,
-            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE]: address.postcode
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE]: address.postcode,
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.UPRN]: address.UPRN
         };
 
         const fragment = document.createDocumentFragment();
@@ -150,7 +151,7 @@ class TprAddressLookup {
             address.town,
             address.county || address.region,
             address.country,
-            address.postcode].filter(Boolean).join(", ");
+            address.postcode].filter(Boolean);
 
         const confirmedAddress = this.componentBuilder.createConfirmedAddressParagraph(fullAddress, address.postcode);
 

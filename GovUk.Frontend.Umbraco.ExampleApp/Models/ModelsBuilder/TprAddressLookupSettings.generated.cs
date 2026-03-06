@@ -170,6 +170,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string TownOrCityModelProperty => this.Value<string>(_publishedValueFallback, "townOrCityModelProperty");
 
 		///<summary>
+		/// UPRN model property: The name of the property on the view model being vound to UPRN in the code.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("uPRNModelProperty")]
+		public virtual string UPrnmodelProperty => this.Value<string>(_publishedValueFallback, "uPRNModelProperty");
+
+		///<summary>
 		/// CSS classes: Applied to the outermost HTML element of the component.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

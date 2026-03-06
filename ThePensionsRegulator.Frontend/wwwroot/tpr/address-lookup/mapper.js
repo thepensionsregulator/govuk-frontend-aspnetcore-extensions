@@ -24,6 +24,7 @@
             town: dpaResult.POST_TOWN,
             postcode: dpaResult.POSTCODE,
             county: '',
+            UPRN: dpaResult.UPRN
         };
 
         return address;

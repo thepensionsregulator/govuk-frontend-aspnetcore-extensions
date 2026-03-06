@@ -29,6 +29,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         [MaxLength(20, ErrorMessage = nameof(ShippingPostcode))]
         public string? ShippingPostcode { get; set; }
 
+        public string? ShippingUPRN { get; set; }
+
         [Required(ErrorMessage = nameof(BillingAddressLine1))]
         [MaxLength(500, ErrorMessage = nameof(BillingAddressLine1))]
         public string? BillingAddressLine1 { get; set; }
@@ -49,5 +51,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         [Required(ErrorMessage = nameof(BillingPostcode))]
         [MaxLength(20, ErrorMessage = nameof(BillingPostcode))]
         public string? BillingPostcode { get; set; }
+
+        public string? BillingUPRN { get; set; }
     }
 }

@@ -47,9 +47,8 @@ class AddressLookupComponentBuilder {
     createConfirmedAddressParagraph(address, postcode) {
         const selectedAddressParagraph = document.createElement("p");
         selectedAddressParagraph.classList = this.config.CSS_CLASSES.BODY;
-        const addressArray = address.split(",");
 
-        addressArray.forEach((addressLine) => {
+        address.forEach((addressLine) => {
             addressLine = addressLine.trim();
             if (addressLine === postcode) {
                 selectedAddressParagraph.appendChild(document.createTextNode(addressLine));

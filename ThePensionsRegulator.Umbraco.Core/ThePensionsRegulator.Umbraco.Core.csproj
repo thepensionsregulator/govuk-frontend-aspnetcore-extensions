@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Web.Common" Version="17.0.2" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="17.2.1" />
   </ItemGroup>
 
 </Project>

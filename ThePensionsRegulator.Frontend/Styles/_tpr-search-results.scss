@@ -68,6 +68,20 @@
     #tpr-search-results-show-more-questions {
         cursor: pointer;
         color: $govuk-link-colour;
+        background: none;
+        border: none;
+        padding: 0 !important;
+        text-decoration: underline;
+        font-size: inherit;
+        line-height: inherit;
+
+        &:hover {
+            @include govuk-link-hover-decoration;
+        }
+
+        &:focus {
+            @include govuk-focused-text;
+        }
     }
 }
 

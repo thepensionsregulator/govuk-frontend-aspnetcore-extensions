@@ -1,10 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.Collections;
 using System.Reflection;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -44,15 +40,102 @@ namespace GovUk.Frontend.Umbraco.Validation
                     var modelType = (method?.GetCustomAttributes(typeof(ModelTypeAttribute), false).SingleOrDefault() as ModelTypeAttribute)?.ModelType;
                     if (modelType != null)
                     {
-                        return modelType.GetProperties().Where(x =>
-                            !x.PropertyType.IsSubclassOf(typeof(PublishedContentModel)) &&
-                            !x.PropertyType.IsAssignableTo(typeof(OverridableBlockListModel))
-                            ).Select(x => x.Name);
+                        var propNames = new List<string>();
+                        const int maxDepth = 5;
+
+                        // Track visited types on the current recursion path to avoid infinite loops.
+                        var pathStack = new Stack<Type>();
+
+                        void CollectProperties(Type type, string prefix, int depth)
+                        {
+                            if (type == null) return;
+                            if (depth >= maxDepth) return;
+                            if (pathStack.Contains(type)) return; // avoid cycles
+
+                            pathStack.Push(type);
+
+                            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                            {
+                                var propType = property.PropertyType;
+
+                                // Skip Umbraco published content and blocklist model types
+                                if (propType.IsSubclassOf(typeof(PublishedContentModel)) || propType.IsAssignableTo(typeof(OverridableBlockListModel)))
+                                {
+                                    continue;
+                                }
+
+                                var fullName = string.IsNullOrEmpty(prefix) ? property.Name : $"{prefix}.{property.Name}";
+
+                                // Primitive-ish types and string: add the property and stop recursing
+                                if (propType.IsPrimitive || propType.IsEnum || propType == typeof(string) || propType == typeof(decimal))
+                                {
+                                    propNames.Add(fullName);
+                                    continue;
+                                }
+
+                                // Handle enumerable types (arrays, IList<T>, IEnumerable<T>, etc.)
+                                if (typeof(IEnumerable).IsAssignableFrom(propType) && propType != typeof(string))
+                                {
+                                    var elementType = GetEnumerableElementType(propType);
+                                    if (elementType == null || elementType == typeof(string) || elementType.IsPrimitive || elementType.IsEnum)
+                                    {
+                                        // no further exploration possible - surface the collection property
+                                        propNames.Add(fullName);
+                                    }
+                                    else
+                                    {
+                                        // recurse into element type
+                                        CollectProperties(elementType, fullName, depth + 1);
+                                    }
+
+                                    continue;
+                                }
+
+                                // Interfaces and user-defined classes: recurse into them
+                                if (propType.IsInterface || (propType.IsClass && !propType.FullName!.StartsWith("System.", StringComparison.Ordinal)))
+                                {
+                                    CollectProperties(propType, fullName, depth + 1);
+                                    continue;
+                                }
+
+                                // Fallback: add the property name
+                                propNames.Add(fullName);
+                            }
+
+                            pathStack.Pop();
+                        }
+
+                        CollectProperties(modelType, string.Empty, 0);
+
+                        return propNames;
                     }
                 }
+            
             }
 
             return Array.Empty<string>();
+        }
+
+        Type? GetEnumerableElementType(Type enumerableType)
+        {
+            if (enumerableType.IsArray)
+            {
+                return enumerableType.GetElementType();
+            }
+
+            if (enumerableType.IsGenericType)
+            {
+                var args = enumerableType.GetGenericArguments();
+                if (args.Length == 1) return args[0];
+            }
+
+            // Look for IEnumerable<T> on implemented interfaces
+            var ienum = enumerableType.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                .Select(i => i.GetGenericArguments().FirstOrDefault())
+                .FirstOrDefault();
+
+            return ienum;
         }
     }
 }

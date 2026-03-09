@@ -159,6 +159,33 @@ class AddressLookupComponentBuilder {
         return hiddenInput;
     }
 
+    createCheckbox(labelText) {
+        const id = `${this.config.DATA_ATTRIBUTES.SAME_AS}-${this.index}`;
+        const div = document.createElement("div");
+        div.classList = "govuk-checkboxes";
+
+        const checkboxes = document.createElement("div");
+        checkboxes.classList = "govuk-checkboxes__item";
+
+        const checkbox = document.createElement("input");
+        checkbox.setAttribute("type", "checkbox");
+        checkbox.setAttribute("name", id);
+        checkbox.setAttribute("id", id);
+        checkbox.classList = "govuk-checkboxes__input";
+
+        const label = document.createElement("label");
+        label.innerText = labelText;
+        label.setAttribute("for", id);
+        label.classList = "govuk-checkboxes__label govuk-label";
+
+        checkboxes.appendChild(checkbox);
+        checkboxes.appendChild(label);
+
+        div.appendChild(checkboxes);
+
+        return div;
+    }
+
     #getWidthCssClass(inputWidth) {
         let inputClass = "";
         switch (inputWidth) {

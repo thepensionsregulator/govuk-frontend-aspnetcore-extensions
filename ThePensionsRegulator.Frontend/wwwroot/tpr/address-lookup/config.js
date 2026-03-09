@@ -22,7 +22,8 @@
         COUNTRY: "country",
         LINK_LIST: "link-list",
         UPRN: "UPRN",
-        EDIT_ADDRESS: "edit-address"
+        EDIT_ADDRESS: "edit-address",
+        SAME_AS: "same-as"
     },
 
     CSS_CLASSES: {
@@ -36,7 +37,7 @@
         LINK_LIST: "govuk-list tpr-address-lookup__links",
         BODY: "govuk-body",
         FIELDSET: "govuk-fieldset",
-        LEGEND: "govuk-fieldset__legend govuk-fieldset__legend--for-fieldset"
+        LEGEND: "govuk-fieldset__legend govuk-fieldset__legend--for-fieldset",
     },
 
     INPUT_WIDTHS: {

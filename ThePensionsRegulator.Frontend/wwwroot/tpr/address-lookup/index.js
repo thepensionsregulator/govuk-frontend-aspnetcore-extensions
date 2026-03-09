@@ -6,9 +6,10 @@ import { AddressLookupValidator } from "./validator.js";
 import { AddressMapper } from "./mapper.js";
 
 class TprAddressLookup {
-    constructor(element, key) {
+    constructor(element, key, role) {
         this.container = element;
         this.index = key;
+        this.role = role;
         this.searchEndpoint = element.getAttribute("data-address-lookup-search-url");
         this.idEndpoint = element.getAttribute("data-address-lookup-id-url");
         this.apiService = new AddressLookupApiService(this.searchEndpoint, this.idEndpoint);
@@ -21,6 +22,21 @@ class TprAddressLookup {
         this.originalInputs = this.captureOriginalInputs();
 
         const address = this.addressMapper.mapFromInput(this.originalInputs);
+
+        while (this.container.firstChild) {
+            this.container.removeChild(this.container.firstChild);
+        }
+
+        // Create a persistent checkbox for secondary lookups
+        if (this.role === "secondary") {
+            this.sameAsCheckbox = this.componentBuilder.createCheckbox("Same as primary address");
+            this.container.appendChild(this.sameAsCheckbox);
+        }
+
+        // State-managed content lives in a sub-container so the checkbox is not cleared
+        this.stateContainer = document.createElement("div");
+        this.container.appendChild(this.stateContainer);
+
         if (this.validator.validAddress(address)) { 
             this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
         } else {
@@ -86,9 +102,9 @@ class TprAddressLookup {
         fieldsetChildrenFormGroup.appendChild(postcodeGroup);
         fieldset.appendChild(fieldsetChildrenFormGroup);
 
-        this.container.appendChild(fieldset);
-        this.container.appendChild(findAddressButton);
-        this.container.appendChild(linkList);
+        this.stateContainer.appendChild(fieldset);
+        this.stateContainer.appendChild(findAddressButton);
+        this.stateContainer.appendChild(linkList);
 
         this.validator.govuk.updateErrorSummary();
         this.validator.reparse();
@@ -114,9 +130,9 @@ class TprAddressLookup {
 
         const linkList = this.componentBuilder.createLinkList([enterAddressNotOnListLinkItem, returnToAddressLookupLinkItem]);
 
-        this.container.appendChild(selectElement);
-        this.container.appendChild(confirmAddressButton);
-        this.container.appendChild(linkList);
+        this.stateContainer.appendChild(selectElement);
+        this.stateContainer.appendChild(confirmAddressButton);
+        this.stateContainer.appendChild(linkList);
 
         this.validator.govuk.updateErrorSummary();
     }
@@ -162,9 +178,9 @@ class TprAddressLookup {
 
         const hiddenInputs = this.createHiddenInputsForAddress(address);
 
-        this.container.appendChild(confirmedAddress);
-        this.container.appendChild(hiddenInputs);
-        this.container.appendChild(linkList);
+        this.stateContainer.appendChild(confirmedAddress);
+        this.stateContainer.appendChild(hiddenInputs);
+        this.stateContainer.appendChild(linkList);
 
         this.validator.govuk.updateErrorSummary();
     }
@@ -215,9 +231,9 @@ class TprAddressLookup {
         fieldset.appendChild(countryInput);
         fieldset.appendChild(postcodeInput);
 
-        this.container.appendChild(fieldset);
-        this.container.appendChild(confirmAddressButton);
-        this.container.appendChild(linkList);
+        this.stateContainer.appendChild(fieldset);
+        this.stateContainer.appendChild(confirmAddressButton);
+        this.stateContainer.appendChild(linkList);
 
         this.validator.govuk.updateErrorSummary();
     }
@@ -263,16 +279,16 @@ class TprAddressLookup {
         fieldset.appendChild(countyInput);
         fieldset.appendChild(postcodeInput);
 
-        this.container.appendChild(fieldset);
-        this.container.appendChild(confirmAddressButton);
-        this.container.appendChild(linkList);
+        this.stateContainer.appendChild(fieldset);
+        this.stateContainer.appendChild(confirmAddressButton);
+        this.stateContainer.appendChild(linkList);
 
         this.validator.reparse();
         this.validator.govuk.updateErrorSummary();
     }
 
     getComponentByDataAddressAttribute(attributeValue) {
-        return this.container.querySelector(`[data-address-lookup='${attributeValue}']`);
+        return this.stateContainer.querySelector(`[data-address-lookup='${attributeValue}']`);
     }
 
     confirmManualInternationalAddressOnClick(event) {
@@ -347,8 +363,8 @@ class TprAddressLookup {
 
     clearContainer() {
         this.validator.clearErrors();
-        while (this.container.firstChild) {
-            this.container.removeChild(this.container.firstChild);
+        while (this.stateContainer.firstChild) {
+            this.stateContainer.removeChild(this.stateContainer.firstChild);
         }
     }
 
@@ -375,7 +391,7 @@ class TprAddressLookup {
         } else if (searchResults.length > 1) {
             this.stateMachine.transition(AddressLookupStateMachine.STATES.SELECT, { results: searchResults });
         } else {
-            const fieldset = this.container.querySelector("fieldset");
+            const fieldset = this.stateContainer.querySelector("fieldset");
             this.validator.addOrUpdateCustomFieldsetError(fieldset, config.ERROR_MESSAGES.ADDRESS_NOT_FOUND);
         }
     }
@@ -411,7 +427,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const addressLookupComponents = document.querySelectorAll(ADDRESS_LOOKUP_CONFIG.COMPONENT_SELECTOR);
     const addressLookupObjects = [];
     addressLookupComponents.forEach((element, key) => {
-        const lookup = new TprAddressLookup(element, key);
+        // TODO: get if the element is a primary or seconday lookup pass this to to the constructor
+
+        // if the element is a secondary it needs to know the state of the primary lookup
+
+        // if secondary render a checkbox and hide the edit link button
+
+
+
+        const lookup = new TprAddressLookup(element, key, "secondary");
         addressLookupObjects.push(lookup);
     });
 

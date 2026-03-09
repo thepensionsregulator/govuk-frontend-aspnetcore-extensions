@@ -117,8 +117,8 @@ async function initialiseAccordion() {
 }
 
 async function searchWithTerm(searchValue) {
-    searchValue = sanitizeString(searchValue?.trim()) || '';
-
+    searchValue = (searchValue || '').trim();
+    searchValue = sanitizeString(searchValue);
     showErrorTextVisibility(false);
     hideShowMoreQuestionsButton(true);
 
@@ -275,7 +275,7 @@ async function searchButtonOnClick(event) {
         return;
     }
 
-    const searchValue = searchInput.value?.trim() || '';
+    const searchValue = (searchInput.value || '').trim() || '';
     if (!searchValue) {
         setErrorText('Please enter a question or phrase.');
         return;

@@ -1,32 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections;
 using System.Reflection;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Validation
 {
-    public class ModelPropertyResolver : IModelPropertyResolver
+    public abstract class ModelPropertyResolverBase
     {
         private const int maxDepth = 5;
 
-        /// <inheritdoc/>
-        public Type ResolveModelType(ViewContext viewContext)
-        {
-            var actionMethod = (viewContext.ActionDescriptor as ControllerActionDescriptor)?.MethodInfo;
-            var modelType = (actionMethod?.GetCustomAttributes(typeof(ModelTypeAttribute), false).SingleOrDefault() as ModelTypeAttribute)?.ModelType;
-            if (modelType == null) { modelType = viewContext.ViewData?.ModelMetadata?.ModelType; }
-            if (modelType == null) { throw new InvalidOperationException($"Unable to detect the model type for the page to support client-side validation. To specify the model type you can decorate {(actionMethod != null ? actionMethod.DeclaringType?.FullName + "." + actionMethod.Name : "your controller action")} with a {nameof(ModelTypeAttribute)} identifying the type of your view model."); }
-            return modelType;
-        }
+        /// <summary>
+        /// The order in which this resolver should be executed relative to other resolvers. Resolvers with a lower order will be executed first.
+        /// </summary>
+        public abstract int Order { get; }
 
-        /// <inheritdoc/>
-        public PropertyInfo ResolveModelProperty(Type modelType, string modelPropertyName)
-        {
-            var modelProperty = IterateOverProperties(modelType, modelPropertyName);
-            if (modelProperty == null) { throw new InvalidOperationException($"To support client-side validation add a property named {modelPropertyName} to type {modelType!.FullName}, or decorate your controller action with {nameof(ModelTypeAttribute)} to specify a different model type."); }
+        /// <summary>
+        /// Resolves the view model type for the current page
+        /// </summary>
+        /// <param name="viewContext">The view context for the current request.</param>
+        /// <returns>The type of the model, or <c>null</c> if the model type could not be resolved.</returns>
+        public abstract Type? ResolveModelType(ViewContext viewContext);
 
-            return modelProperty;
-        }
+        /// <summary>
+        /// Resolves a property name to a <see cref="PropertyInfo"/> instance on specified type
+        /// </summary>
+        /// <param name="modelType">The type of the model expected to contain the property.</param>
+        /// <param name="modelPropertyName">The name of the property to resolve.</param>
+        /// <returns>A <see cref="PropertyInfo"/> instance representing the resolved property, or null if not found.</returns>
+        public virtual PropertyInfo? ResolveModelProperty(Type modelType, string modelPropertyName) => IterateOverProperties(modelType, modelPropertyName);
 
         private PropertyInfo? IterateOverProperties(Type modelType, string modelPropertyName, string parentPropertyName = "", int depth = 0)
         {
@@ -91,7 +91,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Validation
             }
 
             return modelProperty;
-
         }
     }
 }

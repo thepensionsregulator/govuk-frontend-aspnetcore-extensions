@@ -7,11 +7,10 @@ using Microsoft.Extensions.Options;
 using Moq;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using ThePensionsRegulator.GovUk.Frontend.UnitTests.CustomValidation;
 using ThePensionsRegulator.GovUk.Frontend.Validation;
 using RangeAttribute = System.ComponentModel.DataAnnotations.RangeAttribute;
 
-namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
+namespace ThePensionsRegulator.GovUk.Frontend.UnitTests.Validation
 {
     public class ClientSideValidationHtmlEnhancerTests
     {
@@ -86,7 +85,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         public void Validation_attributes_added_to_error_message_placeholder()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(Mock.Of<IModelPropertyResolver>(), Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml(@$"<p class=""govuk-error-message""></p>
                                                     <input id=""{nameof(ExampleClass.RequiredField)}"" 
@@ -114,7 +114,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         public void If_error_message_is_empty_error_classes_are_removed()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(Mock.Of<IModelPropertyResolver>(), Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml(@$"<div class=""govuk-form-group govuk-form-group--error"">
                                                     <p class=""govuk-error-message""></p>
@@ -146,7 +147,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         public void If_error_message_is_rendered_error_classes_remain()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(Mock.Of<IModelPropertyResolver>(), Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml(@$"<div class=""govuk-form-group govuk-form-group--error"">
                                                     <p class=""govuk-error-message"">Something went wrong</p>
@@ -178,10 +180,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         public void Input_is_unchanged_if_validation_disabled()
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = false };
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), Mock.Of<IOptions<MvcDataAnnotationsLocalizationOptions>>(), Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RequiredField)}\">",
                 viewContext,
@@ -203,10 +203,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.UnvalidatedField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.UnvalidatedField))!);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.UnvalidatedField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.UnvalidatedField)}\">",
                 viewContext,
@@ -228,10 +226,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             // Check support for multiple inputs with the same name, because the required attribute
             // has to support a group of radio buttons or checkboxes
@@ -262,9 +258,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField))!;
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
 
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CustomField))).Returns(property);
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField))!);
 
             var metadataProvider = new EmptyModelMetadataProvider();
             var metadata = metadataProvider.GetMetadataForProperty(containerType: typeof(ExampleClass), propertyName: nameof(ExampleClass.CustomField));
@@ -277,7 +271,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
             validationAttributeAdapterProvider.Setup(x => x.GetAttributeAdapter(It.IsAny<ValidationAttribute>(), It.IsAny<IStringLocalizer>())).Returns(
                 new CustomTestValidatorAttributeAdapter(baseValidationAttribute, null));
 
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, mockMetaDataProvider.Object, options,
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, mockMetaDataProvider.Object, options,
                 validationAttributeAdapterProvider.Object);
 
             // Check support for multiple inputs with the same name, because the required attribute
@@ -306,10 +300,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<select name=\"{nameof(ExampleClass.RequiredField)}\"></select>",
                 viewContext,
@@ -337,10 +329,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<textarea name=\"{nameof(ExampleClass.RequiredField)}\"></textarea>",
                 viewContext,
@@ -367,12 +357,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.RegexField))!;
             var pattern = ((RegularExpressionAttribute)property.GetCustomAttributes(typeof(RegularExpressionAttribute), false)[0]).Pattern;
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RegexField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RegexField)}\">",
                 viewContext,
@@ -400,10 +388,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.EmailField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.EmailField))!);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.EmailField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.EmailField)}\">",
                 viewContext,
@@ -431,10 +417,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.PhoneField))).Returns(typeof(ExampleClass).GetProperty(nameof(ExampleClass.PhoneField))!);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => typeof(ExampleClass).GetProperty(nameof(ExampleClass.PhoneField))!);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.PhoneField)}\">",
                 viewContext,
@@ -462,13 +446,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.LengthField))!;
             var minLength = ((StringLengthAttribute)property.GetCustomAttributes(typeof(StringLengthAttribute), false)[0]).MinimumLength;
             var maxLength = ((StringLengthAttribute)property.GetCustomAttributes(typeof(StringLengthAttribute), false)[0]).MaximumLength;
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.LengthField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.LengthField)}\">",
                 viewContext,
@@ -497,12 +479,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.MinLengthField))!;
             var minLength = ((MinLengthAttribute)property.GetCustomAttributes(typeof(MinLengthAttribute), false)[0]).Length;
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.MinLengthField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.MinLengthField)}\">",
                 viewContext,
@@ -530,12 +510,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.MaxLengthField))!;
             var maxLength = ((MaxLengthAttribute)property.GetCustomAttributes(typeof(MaxLengthAttribute), false)[0]).Length;
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.MaxLengthField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.MaxLengthField)}\">",
                 viewContext,
@@ -563,13 +541,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumericRangeField))!;
             var min = ((RangeAttribute)property.GetCustomAttributes(typeof(RangeAttribute), false)[0]).Minimum;
             var max = ((RangeAttribute)property.GetCustomAttributes(typeof(RangeAttribute), false)[0]).Maximum;
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumericRangeField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumericRangeField)}\">",
                 viewContext,
@@ -600,13 +576,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.DateRangeField))!;
             var min = ((RangeAttribute)property.GetCustomAttributes(typeof(RangeAttribute), false)[0]).Minimum;
             var max = ((RangeAttribute)property.GetCustomAttributes(typeof(RangeAttribute), false)[0]).Maximum;
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.DateRangeField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.DateRangeField)}\">",
                 viewContext,
@@ -637,11 +611,9 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(propertyName)!;
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), propertyName)).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{propertyName}\">",
                 viewContext,
@@ -669,11 +641,9 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.NumberFieldWithRegex))!;
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.NumberFieldWithRegex))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.NumberFieldWithRegex)}\">",
                 viewContext,
@@ -698,12 +668,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.CompareField))!;
             var other = ((CompareAttribute)property.GetCustomAttributes(typeof(CompareAttribute), false)[0]).OtherProperty;
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CompareField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.CompareField)}\">",
                 viewContext,
@@ -731,14 +699,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!;
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(property);
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
             var localiserFactory = new Mock<IStringLocalizerFactory>();
             var localiser = new Mock<IStringLocalizer>();
             localiserFactory.Setup(x => x.Create(property.DeclaringType!)).Returns(localiser.Object);
             localiser.Setup(x => x[errorMessageRequired]).Returns(new LocalizedString(errorMessageRequired, "Error from localiser"));
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>(), localiserFactory.Object);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>(), localiserFactory.Object);
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RequiredField)}\">",
                 viewContext,
@@ -764,9 +730,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
         {
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!;
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(property);
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
             var localiserFactory = new Mock<IStringLocalizerFactory>();
             var localiser = new Mock<IStringLocalizer>();
             localiserFactory.Setup(x => x.Create(property.DeclaringType!)).Returns(localiser.Object);
@@ -781,7 +745,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
             });
 
             var htmlUpdater = new ClientSideValidationHtmlEnhancer(
-                propertyResolver.Object,
+                propertyResolvers,
                 Mock.Of<IModelMetadataProvider>(),
                 options,
                 Mock.Of<IValidationAttributeAdapterProvider>(),
@@ -811,10 +775,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.RequiredField))!;
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.RequiredField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.RequiredField)}\">",
                 viewContext,
@@ -841,10 +803,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var options = Options.Create(new MvcDataAnnotationsLocalizationOptions());
             var property = typeof(ChildClass).GetProperty(nameof(ChildClass.RequiredChildField))!;
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.ChildField.RequiredChildField))).Returns(property);
-            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolver.Object, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
+            var htmlUpdater = new ClientSideValidationHtmlEnhancer(propertyResolvers, Mock.Of<IModelMetadataProvider>(), options, Mock.Of<IValidationAttributeAdapterProvider>());
 
             var result = htmlUpdater.EnhanceHtml($"<input name=\"{nameof(ExampleClass.ChildField.RequiredChildField)}\">",
                 viewContext,
@@ -872,10 +832,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
             var viewContext = new ViewContext() { ClientValidationEnabled = true };
             var property = typeof(ExampleClass).GetProperty(nameof(ExampleClass.CustomField))!;
 
-            var propertyResolver = new Mock<IModelPropertyResolver>();
-            propertyResolver.Setup(x => x.ResolveModelType(viewContext)).Returns(typeof(ExampleClass));
-            propertyResolver.Setup(x => x.ResolveModelProperty(typeof(ExampleClass), nameof(ExampleClass.CustomField))).Returns(property);
-
+            var propertyResolvers = new FakeModelPropertyResolverCollection((viewContext, propertyName) => property);
 
             var localiser = new Mock<IStringLocalizer>(MockBehavior.Loose);
 
@@ -903,7 +860,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests
                 new CustomTestValidatorAttributeAdapter(baseValidationAttribute, localiser.Object));
 
             var htmlUpdater = new ClientSideValidationHtmlEnhancer(
-                propertyResolver.Object,
+                propertyResolvers,
                 mockMetaDataProvider.Object,
                 options,
                 validationAttributeAdapterProvider.Object,

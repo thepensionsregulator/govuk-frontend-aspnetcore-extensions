@@ -2,21 +2,7 @@
 
 > JQuery is included to support the standard ASP.NET validation. We recommend using vanilla JavaScript for everything else.
 
-To use validation, modify your `Program.cs` as follows:
-
-```csharp
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Umbraco.Cms.Core.Web;
-
-public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<MvcOptions> mvcOptions, IUmbracoContextAccessor umbracoContextAccessor)
-{
-    // Other code here, including app.UseUmbraco()...
-
-    // Note: two extra services are being injected to the Configure method and used here
-    app.UseTprGovUkFrontendUmbraco(mvcOptions, umbracoContextAccessor);
-}
-```
+To use validation, ensure your `Program.cs` calls `UseTprGovUkFrontendUmbraco()` or `UseTprFrontendUmbraco()` as shown in [Configure a new Umbraco project (GOV.UK)](new-umbraco-project-govuk.md) or [Configure a new Umbraco project (TPR)](new-umbraco-project-tpr.md).
 
 On your controller and surface controller, add a `ModelType` attribute identifying the type of your view model.
 
@@ -45,6 +31,8 @@ public class MyDocumentTypeController : RenderController
     }
 }
 ```
+
+Read more about [how [ModelType] binds form components to view model properties](model-type-attribute.md).
 
 In your shared layout, or just the views where you need it, add the following partial view just before the closing `body` tag.
 

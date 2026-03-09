@@ -63,10 +63,10 @@
 	<ItemGroup>
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
 		<PackageReference Include="MimeKit" Version="4.15.1" />
-		<PackageReference Include="TinyMCE.Umbraco" Version="17.0.0" />
-		<PackageReference Include="Umbraco.Cms.Api.Management" Version="17.0.2" />
-		<PackageReference Include="Umbraco.Cms.Web.Website" Version="17.0.2" />
-		<PackageReference Include="uSync.BackOffice" Version="17.0.1" />
+		<PackageReference Include="TinyMCE.Umbraco" Version="17.2.0" />
+		<PackageReference Include="Umbraco.Cms.Api.Management" Version="17.2.1" />
+		<PackageReference Include="Umbraco.Cms.Web.Website" Version="17.2.1" />
+		<PackageReference Include="uSync.BackOffice" Version="17.0.4" />
 	</ItemGroup>
 
 	<ItemGroup>

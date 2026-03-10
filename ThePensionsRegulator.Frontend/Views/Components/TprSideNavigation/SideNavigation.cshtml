@@ -23,7 +23,7 @@
                 <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
             </h2>
         }
-        <a href="#" class="tpr-side-nav__collapse-all govuk-link">Collapse all</a>
+        @* Removed collapse-all placeholder/button - collapse-all is now triggered by Escape key *@
         await RenderNavListLayer(Model.NavigationLinks, null, level, isMobileExpanded ? "tpr-side-nav__list--expanded" : null);
     }
 </nav>

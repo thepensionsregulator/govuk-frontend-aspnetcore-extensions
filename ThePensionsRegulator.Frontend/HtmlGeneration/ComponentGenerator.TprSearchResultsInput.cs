@@ -40,7 +40,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var input = new TagBuilder("input");
             input.Attributes.Add("type", "text");
             input.Attributes.Add("id", "tpr-search-results-ask-input");
-            input.Attributes.Add("aria-describedby", "tpr-search-results-error-text");
             input.Attributes.Add("required", "");
             input.AddCssClass("govuk-input");
 

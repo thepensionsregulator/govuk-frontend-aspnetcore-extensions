@@ -49,6 +49,7 @@
 .tpr-footer__links a:visited {
     color: $tpr-colour-steel;
     margin-bottom: govuk-px-to-rem(20);
+    display: block;
 }
 
 .tpr-footer__links a:focus,

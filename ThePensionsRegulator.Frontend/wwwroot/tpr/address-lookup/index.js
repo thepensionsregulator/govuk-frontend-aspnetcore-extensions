@@ -51,7 +51,7 @@ class TprAddressLookup {
 
     onPrimaryStateChange(newState, data) {
         if (newState === AddressLookupStateMachine.STATES.CONFIRMED && this.isSameAsChecked()) {
-            this.confirmWithAddress(data.address);
+            this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED,  data);
         }
     }
 

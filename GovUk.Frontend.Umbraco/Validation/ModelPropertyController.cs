@@ -46,66 +46,7 @@ namespace GovUk.Frontend.Umbraco.Validation
                         // Track visited types on the current recursion path to avoid infinite loops.
                         var pathStack = new Stack<Type>();
 
-                        void CollectProperties(Type type, string prefix, int depth)
-                        {
-                            if (type == null) return;
-                            if (depth >= maxDepth) return;
-                            if (pathStack.Contains(type)) return; // avoid cycles
-
-                            pathStack.Push(type);
-
-                            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
-                            {
-                                var propType = property.PropertyType;
-
-                                // Skip Umbraco published content and blocklist model types
-                                if (propType.IsSubclassOf(typeof(PublishedContentModel)) || propType.IsAssignableTo(typeof(OverridableBlockListModel)))
-                                {
-                                    continue;
-                                }
-
-                                var fullName = string.IsNullOrEmpty(prefix) ? property.Name : $"{prefix}.{property.Name}";
-
-                                // Primitive-ish types and string: add the property and stop recursing
-                                if (propType.IsPrimitive || propType.IsEnum || propType == typeof(string) || propType == typeof(decimal))
-                                {
-                                    propNames.Add(fullName);
-                                    continue;
-                                }
-
-                                // Handle enumerable types (arrays, IList<T>, IEnumerable<T>, etc.)
-                                if (typeof(IEnumerable).IsAssignableFrom(propType) && propType != typeof(string))
-                                {
-                                    var elementType = GetEnumerableElementType(propType);
-                                    if (elementType == null || elementType == typeof(string) || elementType.IsPrimitive || elementType.IsEnum)
-                                    {
-                                        // no further exploration possible - surface the collection property
-                                        propNames.Add(fullName);
-                                    }
-                                    else
-                                    {
-                                        // recurse into element type
-                                        CollectProperties(elementType, fullName, depth + 1);
-                                    }
-
-                                    continue;
-                                }
-
-                                // Interfaces and user-defined classes: recurse into them
-                                if (propType.IsInterface || (propType.IsClass && !propType.FullName!.StartsWith("System.", StringComparison.Ordinal)))
-                                {
-                                    CollectProperties(propType, fullName, depth + 1);
-                                    continue;
-                                }
-
-                                // Fallback: add the property name
-                                propNames.Add(fullName);
-                            }
-
-                            pathStack.Pop();
-                        }
-
-                        CollectProperties(modelType, string.Empty, 0);
+                        CollectProperties(modelType, string.Empty, 0, maxDepth, pathStack, propNames);
 
                         return propNames;
                     }
@@ -116,7 +57,66 @@ namespace GovUk.Frontend.Umbraco.Validation
             return Array.Empty<string>();
         }
 
-        Type? GetEnumerableElementType(Type enumerableType)
+        public void CollectProperties(Type type, string prefix, int depth, int maxDepth, Stack<Type> pathStack, List<string> propNames)
+        {
+            if (type == null) return;
+            if (depth >= maxDepth) return;
+            if (pathStack.Contains(type)) return; // avoid cycles
+
+            pathStack.Push(type);
+
+            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var propType = property.PropertyType;
+
+                // Skip Umbraco published content and blocklist model types
+                if (propType.IsSubclassOf(typeof(PublishedContentModel)) || propType.IsAssignableTo(typeof(OverridableBlockListModel)) || propType.IsAssignableTo(typeof(OverridableBlockGridModel)))
+                {
+                    continue;
+                }
+
+                var fullName = string.IsNullOrEmpty(prefix) ? property.Name : $"{prefix}.{property.Name}";
+
+                // Primitive-ish types and string: add the property and stop recursing
+                if (propType.IsPrimitive || propType.IsEnum || propType == typeof(string) || propType == typeof(decimal))
+                {
+                    propNames.Add(fullName);
+                    continue;
+                }
+
+                // Handle enumerable types (arrays, IList<T>, IEnumerable<T>, etc.)
+                if (typeof(IEnumerable).IsAssignableFrom(propType) && propType != typeof(string))
+                {
+                    var elementType = GetEnumerableElementType(propType);
+                    if (elementType == null || elementType == typeof(string) || elementType.IsPrimitive || elementType.IsEnum)
+                    {
+                        // no further exploration possible - surface the collection property
+                        propNames.Add(fullName);
+                    }
+                    else
+                    {
+                        // recurse into element type
+                        CollectProperties(elementType, fullName, depth + 1, maxDepth, pathStack, propNames);
+                    }
+
+                    continue;
+                }
+
+                // Interfaces and user-defined classes: recurse into them
+                if (propType.IsInterface || (propType.IsClass && !propType.FullName!.StartsWith("System.", StringComparison.Ordinal)))
+                {
+                    CollectProperties(propType, fullName, depth + 1, maxDepth, pathStack, propNames);
+                    continue;
+                }
+
+                // Fallback: add the property name
+                propNames.Add(fullName);
+            }
+
+            pathStack.Pop();
+        }
+
+        public Type? GetEnumerableElementType(Type enumerableType)
         {
             if (enumerableType.IsArray)
             {
@@ -138,4 +138,4 @@ namespace GovUk.Frontend.Umbraco.Validation
             return ienum;
         }
     }
-}
+} 

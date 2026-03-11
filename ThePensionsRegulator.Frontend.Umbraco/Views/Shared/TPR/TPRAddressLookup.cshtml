@@ -34,6 +34,8 @@
     {
         fieldsetDescribedBy = $"{addressLine1ModelProperty}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
+    var isPrimary = Model.Settings.Value<bool>(TprPropertyAliases.AddressLookupIsPrimary);
+    var role = isPrimary ? "primary" : "secondary";
 
     var addressLine1State = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty),
@@ -85,7 +87,7 @@
     );
 }
 
-<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" data-address-lookup-search-url=@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint() data-address-lookup-id-url=@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()>
+<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" data-address-lookup-search-url=@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint() data-address-lookup-id-url=@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint() data-address-lookup-role=@role>
     <tpr-address-lookup-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</tpr-address-lookup-legend>
 
     @if (hintTextBlocks is not null && hintTextBlocks.Any())

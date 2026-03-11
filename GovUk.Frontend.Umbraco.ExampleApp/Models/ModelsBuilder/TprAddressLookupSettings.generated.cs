@@ -90,6 +90,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string AddressLine2ModelProperty => this.Value<string>(_publishedValueFallback, "addressLine2ModelProperty");
 
 		///<summary>
+		/// Address lookup is primary
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[ImplementPropertyType("addressLookupIsPrimary")]
+		public virtual bool AddressLookupIsPrimary => this.Value<bool>(_publishedValueFallback, "addressLookupIsPrimary");
+
+		///<summary>
 		/// Country error message required: Sets the message displayed if country is set by the code to be required.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

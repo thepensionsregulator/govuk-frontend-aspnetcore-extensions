@@ -6,10 +6,11 @@ import { AddressLookupValidator } from "./validator.js";
 import { AddressMapper } from "./mapper.js";
 
 class TprAddressLookup {
-    constructor(element, key, role) {
+    constructor(element, key, role, primaryStateMachine) {
         this.container = element;
         this.index = key;
         this.role = role;
+        this.primaryStateMachine = primaryStateMachine;
         this.searchEndpoint = element.getAttribute("data-address-lookup-search-url");
         this.idEndpoint = element.getAttribute("data-address-lookup-id-url");
         this.apiService = new AddressLookupApiService(this.searchEndpoint, this.idEndpoint);
@@ -27,13 +28,15 @@ class TprAddressLookup {
             this.container.removeChild(this.container.firstChild);
         }
 
-        // Create a persistent checkbox for secondary lookups
         if (this.role === "secondary") {
             this.sameAsCheckbox = this.componentBuilder.createCheckbox("Same as primary address");
+            this.sameAsCheckbox.querySelector("input[type='checkbox']")
+                .addEventListener("change", (event) => this.onSameAsCheckboxChange(event));
             this.container.appendChild(this.sameAsCheckbox);
+
+            this.primaryStateMachine.onChange((newState, data) => this.onPrimaryStateChange(newState, data));
         }
 
-        // State-managed content lives in a sub-container so the checkbox is not cleared
         this.stateContainer = document.createElement("div");
         this.container.appendChild(this.stateContainer);
 
@@ -45,6 +48,12 @@ class TprAddressLookup {
     }
 
     JsonResults = [];
+
+    onPrimaryStateChange(newState, data) {
+        if (newState === AddressLookupStateMachine.STATES.CONFIRMED && this.isSameAsChecked()) {
+            this.confirmWithAddress(data.address);
+        }
+    }
 
     onStateChange(newState, data) {
         switch (newState) {
@@ -171,16 +180,24 @@ class TprAddressLookup {
 
         const confirmedAddress = this.componentBuilder.createConfirmedAddressParagraph(fullAddress, address.postcode);
 
-        const editLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.EDIT_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.EDIT_ADDRESS);
-        editLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
-        const editAddressListItem = this.componentBuilder.createListItem(editLink);
-        const linkList = this.componentBuilder.createLinkList([editAddressListItem]);
+        let linkList = null;
+        if (!this.isSameAsChecked()) {
+            const editLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.EDIT_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.EDIT_ADDRESS);
+            editLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
+            const editAddressListItem = this.componentBuilder.createListItem(editLink);
+            linkList = this.componentBuilder.createLinkList([editAddressListItem]);
+        }
+
 
         const hiddenInputs = this.createHiddenInputsForAddress(address);
 
         this.stateContainer.appendChild(confirmedAddress);
         this.stateContainer.appendChild(hiddenInputs);
-        this.stateContainer.appendChild(linkList);
+
+        if (linkList) {
+            this.stateContainer.appendChild(linkList);
+        }
+
 
         this.validator.govuk.updateErrorSummary();
     }
@@ -368,6 +385,31 @@ class TprAddressLookup {
         }
     }
 
+    onSameAsCheckboxChange(event) {
+        if (event.target.checked) {
+            const primaryAddress = this.primaryStateMachine?.confirmedAddress;
+            if (!primaryAddress) {
+                return;
+            }
+            this.confirmWithAddress(primaryAddress);
+        } else {
+            //TODO: I think I just want to show the edit link
+            //this.stateMachine.transition(AddressLookupStateMachine.STATES.SEARCH);
+        }
+    }
+
+    confirmWithAddress(address) {
+        this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
+    }
+
+    isSameAsChecked() {
+        if (!this.sameAsCheckbox) {
+            return false;
+        }
+        const checkbox = this.sameAsCheckbox.querySelector("input[type='checkbox']");
+        return checkbox && checkbox.checked;
+    }
+
     async findAddressButtonOnClick(event) {
         event.preventDefault();
 
@@ -392,7 +434,7 @@ class TprAddressLookup {
             this.stateMachine.transition(AddressLookupStateMachine.STATES.SELECT, { results: searchResults });
         } else {
             const fieldset = this.stateContainer.querySelector("fieldset");
-            this.validator.addOrUpdateCustomFieldsetError(fieldset, config.ERROR_MESSAGES.ADDRESS_NOT_FOUND);
+            this.validator.addOrUpdateCustomFieldsetError(fieldset, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.ADDRESS_NOT_FOUND);
         }
     }
 }
@@ -426,16 +468,16 @@ function submitOnClick(event, addressLookupObjects) {
 document.addEventListener("DOMContentLoaded", function () {
     const addressLookupComponents = document.querySelectorAll(ADDRESS_LOOKUP_CONFIG.COMPONENT_SELECTOR);
     const addressLookupObjects = [];
+    let primaryStateMachine = null;
     addressLookupComponents.forEach((element, key) => {
-        // TODO: get if the element is a primary or seconday lookup pass this to to the constructor
-
-        // if the element is a secondary it needs to know the state of the primary lookup
-
-        // if secondary render a checkbox and hide the edit link button
-
-
-
-        const lookup = new TprAddressLookup(element, key, "secondary");
+        const role = element.getAttribute("data-address-lookup-role") || "primary";
+        let lookup = null;
+        if (role === "primary") {
+            lookup = new TprAddressLookup(element, key, role);
+            primaryStateMachine = lookup.stateMachine;
+        } else {
+            lookup = new TprAddressLookup(element, key, role, primaryStateMachine);
+        }
         addressLookupObjects.push(lookup);
     });
 

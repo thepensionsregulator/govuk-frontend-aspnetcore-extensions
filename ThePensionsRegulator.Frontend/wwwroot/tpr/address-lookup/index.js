@@ -170,7 +170,7 @@ class TprAddressLookup {
         this.clearContainer();
 
         const fullAddress = [
-            address.organisationName,
+            address.organisationName || "",
             address.addressLine1,
             address.addressLine2,
             address.town,
@@ -386,19 +386,11 @@ class TprAddressLookup {
     }
 
     onSameAsCheckboxChange(event) {
-        if (event.target.checked) {
-            const primaryAddress = this.primaryStateMachine?.confirmedAddress;
-            if (!primaryAddress) {
-                return;
-            }
-            this.confirmWithAddress(primaryAddress);
-        } else {
-            //TODO: I think I just want to show the edit link
-            //this.stateMachine.transition(AddressLookupStateMachine.STATES.SEARCH);
+        const address = this.primaryStateMachine?.confirmedAddress;
+        if (!address) {
+            return;
         }
-    }
 
-    confirmWithAddress(address) {
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 

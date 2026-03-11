@@ -95,4 +95,8 @@
 	  <UpToDateCheckInput Remove="Styles\tpr.scss" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\css\" />
+	</ItemGroup>
+
 </Project>

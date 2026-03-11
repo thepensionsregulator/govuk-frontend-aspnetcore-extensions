@@ -434,7 +434,14 @@ class TprAddressLookup {
             this.stateMachine.transition(AddressLookupStateMachine.STATES.SELECT, { results: searchResults });
         } else {
             const fieldset = this.stateContainer.querySelector("fieldset");
-            this.validator.addOrUpdateCustomFieldsetError(fieldset, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.ADDRESS_NOT_FOUND);
+            let errorMessage = "";
+            if (building && postcode) {
+                errorMessage = ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.ADDRESS_POSTCODE_DONT_MATCH;
+            } else {
+                errorMessage = ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.NO_ADDRESS_AT_POSTCODE;
+            }
+
+            this.validator.addOrUpdateCustomFieldsetError(fieldset, errorMessage);
         }
     }
 }

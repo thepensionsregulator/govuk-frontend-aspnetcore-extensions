@@ -17,6 +17,11 @@
         });
 
         const results = await response.json();
+
+        if (!results.results) {
+            return [];
+        }
+
         let filteredResults = results.results.map(result => result.DPA);
 
         if (building && building !== '') {

@@ -86,7 +86,8 @@
         COUNTRY_NOT_UK: "This page is for international addresses",
         REQUIRED: "This field must be populated",
         INVALID_POSTCODE: "Enter a valid UK postcode",
-        ADDRESS_NOT_FOUND: "We couldn’t find any addresses matching the building name or number and postcode you entered. Please check the details for any errors and try again"
+        ADDRESS_POSTCODE_DONT_MATCH: "The address and postcode do not match",
+        NO_ADDRESS_AT_POSTCODE: "There are no addresses registered at this postcode"
     },
 
     FIELD_NAMES: {

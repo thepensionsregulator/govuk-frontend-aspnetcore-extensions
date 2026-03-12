@@ -1,4 +1,4 @@
-﻿using GovUk.Frontend.Umbraco.Validation;
+using GovUk.Frontend.Umbraco.Validation;
 using NUnit.Framework;
 using System;
 using System.Collections;
@@ -136,7 +136,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
             var pathStack = new Stack<Type>();
 
             // Act
-            _controller.CollectProperties(null!, string.Empty, 0, 5, pathStack, propNames);
+            _controller.CollectProperties(null, string.Empty, 0, 5, pathStack, propNames);
 
             // Assert
             Assert.That(propNames, Is.Empty);
@@ -274,7 +274,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
         }
 
         [Test]
-        public void CollectProperties_MultipleNestedLevels_ExplorerAllPaths()
+        public void CollectProperties_MultipleNestedLevels_ExploresAllPaths()
         {
             // Arrange
             var propNames = new List<string>();
@@ -432,7 +432,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
         }
 
         [Test]
-        public void GetEnumerableElementType_NullableInt_ReturnsNull()
+        public void GetEnumerableElementType_NullableInt_ReturnsNullableInt()
         {
             // Arrange - IEnumerable<int?> would have Nullable<int> as element type
             // Act

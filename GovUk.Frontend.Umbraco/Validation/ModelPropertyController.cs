@@ -23,12 +23,32 @@ namespace GovUk.Frontend.Umbraco.Validation
 
             var files = Directory.GetFiles(filepath, "*.dll").ToList();
 
-            files.RemoveAll(x => x.Contains(@"\System.") || x.Contains(@"\Microsoft.")); // Don't load dlls where there won't be any custom code. This list is not exhaustive
+            var sep = Path.DirectorySeparatorChar;
+            files.RemoveAll(x => x.Contains(sep + "System.") || x.Contains(sep + "Microsoft.")); // Don't load dlls where there won't be any custom code. This list is not exhaustive
             
             foreach(var file in files) 
-            { 
-                Assembly assembly = Assembly.LoadFrom(file);
-                List<Type> controllersToAdd = assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(RenderController))).ToList();
+            {
+                Assembly assembly;
+                try
+                {
+                    assembly = Assembly.LoadFrom(file);
+                }
+                catch (BadImageFormatException) { continue; }
+                catch (FileLoadException) { continue; }
+
+                Type[] types;
+                try
+                {
+                    types = assembly.GetTypes();
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    types = ex.Types.OfType<Type>().ToArray();
+                }
+
+                List<Type> controllersToAdd = types
+                    .Where(x => x != typeof(RenderController) && x.IsAssignableTo(typeof(RenderController)))
+                    .ToList();
                 controllers.AddRange(controllersToAdd);
             }
             var controllerType = controllers?.FirstOrDefault(x => x.Name.ToUpperInvariant() == $"{alias.ToUpperInvariant()}CONTROLLER");
@@ -57,7 +77,8 @@ namespace GovUk.Frontend.Umbraco.Validation
             return Array.Empty<string>();
         }
 
-        public void CollectProperties(Type type, string prefix, int depth, int maxDepth, Stack<Type> pathStack, List<string> propNames)
+        [NonAction]
+        internal void CollectProperties(Type? type, string prefix, int depth, int maxDepth, Stack<Type> pathStack, List<string> propNames)
         {
             if (type == null) return;
             if (depth >= maxDepth) return;
@@ -70,7 +91,7 @@ namespace GovUk.Frontend.Umbraco.Validation
                 var propType = property.PropertyType;
 
                 // Skip Umbraco published content and blocklist model types
-                if (propType.IsSubclassOf(typeof(PublishedContentModel)) || propType.IsAssignableTo(typeof(OverridableBlockListModel)) || propType.IsAssignableTo(typeof(OverridableBlockGridModel)))
+                if (propType.IsAssignableTo(typeof(PublishedContentModel)) || propType.IsAssignableTo(typeof(OverridableBlockListModel)) || propType.IsAssignableTo(typeof(OverridableBlockGridModel)))
                 {
                     continue;
                 }
@@ -116,7 +137,8 @@ namespace GovUk.Frontend.Umbraco.Validation
             pathStack.Pop();
         }
 
-        public Type? GetEnumerableElementType(Type enumerableType)
+        [NonAction]
+        internal Type? GetEnumerableElementType(Type enumerableType)
         {
             if (enumerableType.IsArray)
             {

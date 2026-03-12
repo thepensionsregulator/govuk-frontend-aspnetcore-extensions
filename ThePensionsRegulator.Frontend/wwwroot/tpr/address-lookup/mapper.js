@@ -41,7 +41,7 @@
         let buildingNumber = dpaResult.BUILDING_NUMBER || '';
 
         if (!buildingNumber && buildingName) {
-            if (this.#buildingNameIsNumberWithSuffix(buildingName) || this.#buidingNameIsNumberRange(buildingName) || this.#buildingNameIsNumber(buildingName)) {
+            if (this.#buildingNameIsNumberWithSuffix(buildingName) || this.#buildingNameIsNumberRange(buildingName) || this.#buildingNameIsNumber(buildingName)) {
                 buildingNumber = buildingName;
                 buildingName = '';
             } else {
@@ -55,7 +55,7 @@
 
         if (buildingName) {
             if (dpaResult.SUB_BUILDING_NAME) {
-                if (this.#buildingNameIsNumber(dpaResult.SUB_BUILDING_NAME) || this.#buidingNameIsNumberRange(dpaResult.SUB_BUILDING_NAME)) {
+                if (this.#buildingNameIsNumber(dpaResult.SUB_BUILDING_NAME) || this.#buildingNameIsNumberRange(dpaResult.SUB_BUILDING_NAME)) {
                     addressLines.push(`${dpaResult.SUB_BUILDING_NAME} ${buildingName}`);
                 } else {
                     addressLines.push(`${dpaResult.SUB_BUILDING_NAME}, ${buildingName}`);
@@ -83,7 +83,7 @@
         return lastChar >= 'a' && lastChar <= 'z' && prefix.split('').every(ch => ch >= '0' && ch <= '9');
     }
 
-    #buidingNameIsNumberRange(buildingName) {
+    #buildingNameIsNumberRange(buildingName) {
         const parts = buildingName.split('-');
         if (parts.length !== 2) return false;
 
@@ -112,7 +112,7 @@
 
         if (this.#buildingNameIsNumber(numberPart) ||
             this.#buildingNameIsNumberWithSuffix(numberPart) ||
-            this.#buidingNameIsNumberRange(numberPart)) {
+            this.#buildingNameIsNumberRange(numberPart)) {
             return [namePart, numberPart];
         }
 

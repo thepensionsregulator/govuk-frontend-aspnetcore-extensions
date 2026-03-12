@@ -53,8 +53,8 @@ class AddressLookupComponentBuilder {
             if (addressLine === postcode) {
                 selectedAddressParagraph.appendChild(document.createTextNode(addressLine));
             } else {
-                const sentanceCase = toSentenceCase(addressLine);
-                selectedAddressParagraph.appendChild(document.createTextNode(sentanceCase));
+                const sentenceCase = toSentenceCase(addressLine);
+                selectedAddressParagraph.appendChild(document.createTextNode(sentenceCase));
             }
             selectedAddressParagraph.appendChild(document.createElement("br"));
         });

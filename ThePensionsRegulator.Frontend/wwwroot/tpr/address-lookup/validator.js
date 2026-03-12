@@ -121,7 +121,7 @@ class AddressLookupValidator {
 
     addSelectError(selectElement, message) {
         const formgroup = this.govuk.formGroupForElement(selectElement);
-        formgroup.classList.add("govuk-form-group-- error");
+        formgroup.classList.add("govuk-form-group--error");
 
         selectElement.classList.add("govuk-select--error");
 

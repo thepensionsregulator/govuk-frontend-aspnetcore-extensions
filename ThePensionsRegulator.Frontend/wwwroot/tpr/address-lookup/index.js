@@ -68,10 +68,10 @@ class TprAddressLookup {
             case AddressLookupStateMachine.STATES.CONFIRMED:
                 this.renderConfirmedView(data.address);
                 break;
-            case AddressLookupStateMachine.STATES.MANNUAL_INTERNATIONAL_ENTRY:
+            case AddressLookupStateMachine.STATES.MANUAL_INTERNATIONAL_ENTRY:
                 this.renderInternationalManualEntryView();
                 break;
-            case AddressLookupStateMachine.STATES.MANNUAL_UK_ENTRY:
+            case AddressLookupStateMachine.STATES.MANUAL_UK_ENTRY:
                 this.renderUKManualEntryView();
                 break;
         }
@@ -372,12 +372,12 @@ class TprAddressLookup {
 
     enterInternationalAddressOnClick(event) {
         event.preventDefault();
-        this.stateMachine.transition(AddressLookupStateMachine.STATES.MANNUAL_INTERNATIONAL_ENTRY);
+        this.stateMachine.transition(AddressLookupStateMachine.STATES.MANUAL_INTERNATIONAL_ENTRY);
     }
 
     enterAddressNotOnListOnClick(event) {
         event.preventDefault();
-        this.stateMachine.transition(AddressLookupStateMachine.STATES.MANNUAL_UK_ENTRY);
+        this.stateMachine.transition(AddressLookupStateMachine.STATES.MANUAL_UK_ENTRY);
     }
 
     clearContainer() {

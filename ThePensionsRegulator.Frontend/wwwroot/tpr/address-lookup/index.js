@@ -454,12 +454,12 @@ function submitOnClick(event, addressLookupObjects) {
         if (!submittableStates.includes(addressLookup.stateMachine.currentState)) {
             if (addressLookup.stateMachine.currentState === AddressLookupStateMachine.STATES.SELECT) {
                 const select = addressLookup.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS);
-                addressLookup.validator.addSelectError(select, "Select confirm address before saving this page");
+                addressLookup.validator.addSelectError(select, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_CONFIRM);
             } else {
                 const fieldset = addressLookup.container.querySelector("fieldset");
                 const errorMessage = addressLookup.stateMachine.currentState === AddressLookupStateMachine.STATES.SEARCH
-                    ? "Select 'find an address' and confrim your address before saving this page"
-                    : "Select confirm address before submitting this page";
+                    ? ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_FIND_ADDRESS
+                    : ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_CONFIRM;
                 addressLookup.validator.addOrUpdateCustomFieldsetError(fieldset, errorMessage);
             }
 

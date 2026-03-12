@@ -87,7 +87,9 @@
         REQUIRED: "This field must be populated",
         INVALID_POSTCODE: "Enter a valid UK postcode",
         ADDRESS_POSTCODE_DONT_MATCH: "The address and postcode do not match",
-        NO_ADDRESS_AT_POSTCODE: "There are no addresses registered at this postcode"
+        NO_ADDRESS_AT_POSTCODE: "There are no addresses registered at this postcode",
+        SELECT_CONFIRM: "Select confirm address before saving this page",
+        SELECT_FIND_ADDRESS: "Select 'find an address' and confirm your address before saving this page"
     },
 
     FIELD_NAMES: {

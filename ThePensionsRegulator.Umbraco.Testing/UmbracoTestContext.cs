@@ -519,7 +519,6 @@ namespace ThePensionsRegulator.Umbraco.Testing
 
         private void SetupServices()
         {
-            DI.StaticServiceProvider.Instance = ServiceProvider.Object;
             HttpContext.Setup(x => x.RequestServices).Returns(ServiceProvider.Object);
             SetupService(ApiElementBuilder.Object);
             SetupService(ApiRichTextElementParser.Object);
@@ -581,6 +580,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(UserService.Object);
             SetupService(VariationContextAccessor.Object);
             SetupService(Options.Create(WebRoutingSettings));
+            DI.StaticServiceProvider.Instance = ServiceProvider.Object;
         }
 
         private void SetupService<T>(T implementation)

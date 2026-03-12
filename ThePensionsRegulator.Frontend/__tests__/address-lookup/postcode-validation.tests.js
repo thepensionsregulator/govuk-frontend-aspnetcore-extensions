@@ -1,7 +1,7 @@
 ﻿import '@testing-library/jest-dom';
 
 import { jest } from '@jest/globals';
-import { ADDRESS_LOOKUP_CONFIG } from "../wwwroot/tpr/address-lookup/config.js";
+import { ADDRESS_LOOKUP_CONFIG } from "../../wwwroot/tpr/address-lookup/config.js";
 
 describe('UK postcode validation', () => {
     const postcodeRegex = new RegExp(ADDRESS_LOOKUP_CONFIG.PATTERNS.POSTCODE);

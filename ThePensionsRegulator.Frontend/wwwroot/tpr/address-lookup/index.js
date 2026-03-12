@@ -4,6 +4,7 @@ import { AddressLookupStateMachine } from "./state-machine.js";
 import { AddressLookupComponentBuilder } from "./component-builder.js";
 import { AddressLookupValidator } from "./validator.js";
 import { AddressMapper } from "./mapper.js";
+import { PostcodeSanitiser } from "./postcode-sanitiser.js";
 
 class TprAddressLookup {
     constructor(element, key, role, primaryStateMachine) {
@@ -19,6 +20,7 @@ class TprAddressLookup {
         this.addressMapper = new AddressMapper(ADDRESS_LOOKUP_CONFIG);
         this.stateMachine = new AddressLookupStateMachine();
         this.stateMachine.onChange((newState, data) => this.onStateChange(newState, data));
+        this.postcodeSanitiser = new PostcodeSanitiser();
 
         this.originalInputs = this.captureOriginalInputs();
 
@@ -413,8 +415,10 @@ class TprAddressLookup {
             return;
         }
 
-        const postcode = postcodeInput.value;
+        let postcode = postcodeInput.value;
         const building = buildingInput.value;
+
+        postcode = this.postcodeSanitiser.sanitise(postcode);
 
         const searchResults = await this.apiService.searchAddresses(postcode, building);
         this.JsonResults = searchResults.results;

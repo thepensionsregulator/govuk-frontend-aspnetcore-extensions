@@ -160,12 +160,15 @@ class AddressLookupComponentBuilder {
     }
 
     createCheckbox(labelText) {
-        const id = `${this.config.DATA_ATTRIBUTES.SAME_AS}-${this.index}`;
-        const div = document.createElement("div");
-        div.classList = "govuk-checkboxes";
+        const formGroup = document.createElement("div");
+        formGroup.classList = this.config.CSS_CLASSES.FORM_GROUP;
 
+        const id = `${this.config.DATA_ATTRIBUTES.SAME_AS}-${this.index}`;
         const checkboxes = document.createElement("div");
-        checkboxes.classList = "govuk-checkboxes__item";
+        checkboxes.classList = "govuk-checkboxes";
+
+        const checkboxesItem = document.createElement("div");
+        checkboxesItem.classList = "govuk-checkboxes__item";
 
         const checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
@@ -178,12 +181,14 @@ class AddressLookupComponentBuilder {
         label.setAttribute("for", id);
         label.classList = "govuk-checkboxes__label govuk-label";
 
-        checkboxes.appendChild(checkbox);
-        checkboxes.appendChild(label);
+        checkboxesItem.appendChild(checkbox);
+        checkboxesItem.appendChild(label);
 
-        div.appendChild(checkboxes);
+        checkboxes.appendChild(checkboxesItem);
 
-        return div;
+        formGroup.appendChild(checkboxes);
+
+        return formGroup;
     }
 
     #getWidthCssClass(inputWidth) {

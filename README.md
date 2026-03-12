@@ -7,7 +7,6 @@ We add support for:
 - ASP.NET client-side validation using [jQuery Unobtrusive Validation](https://github.com/aspnet/jquery-validation-unobtrusive)
 
 - Adding the following non-interactive components entirely in Umbraco:
-
   - [Accordion](/docs/components/accordion.md)
   - [Details](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/details.md)
   - [Error summary](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/error-summary.md)
@@ -21,7 +20,6 @@ We add support for:
   - [Warning text](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/warning-text.md)
 
 - Configuring the text for the following components in Umbraco:
-
   - [Button](/docs/components/button.md)
   - [Checkboxes](/docs/components/checkboxes.md)
   - [Character count](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/character-count.md)
@@ -37,7 +35,6 @@ We add support for:
   - [Text input](/docs/components/text-input.md)
 
 - Additional components:
-
   - [Task list summary](/docs/components/task-list-summary.md)
   - [Task list](/docs/components/task-list.md)
   - [TPR back to menu](/docs/components/tpr-back-to-menu.md)
@@ -104,6 +101,7 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 - [Configure a new Umbraco project (TPR)](docs/umbraco/new-umbraco-project-tpr.md)
 - [Populate initial values](docs/umbraco/populate-initial-values.md)
 - [Validation](docs/umbraco/validation.md)
+- [How [ModelType] binds form components to view model properties](docs/umbraco/model-type-attribute.md)
 - [Change how blocks are rendered](docs/umbraco/block-rendering.md)
 - [Support full-width content](docs/umbraco/full-width-content.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)

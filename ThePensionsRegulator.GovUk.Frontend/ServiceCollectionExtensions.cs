@@ -33,7 +33,9 @@ namespace ThePensionsRegulator.GovUk.Frontend
 
             services.AddGovUkFrontend(configureOptionsWithDefaults);
             services.AddTransient<IClientSideValidationHtmlEnhancer, ClientSideValidationHtmlEnhancer>();
-            services.AddTransient<IModelPropertyResolver, ModelPropertyResolver>();
+            services.AddTransient<ModelPropertyResolverBase, ModelTypeAttributeModelPropertyResolver>();
+            services.AddTransient<ModelPropertyResolverBase, DefaultModelPropertyResolver>();
+            services.AddTransient<IModelPropertyResolverCollection, ModelPropertyResolverCollection>();
             services.AddScoped<INonceProvider, NonceProvider>();
             services.AddMvc(options =>
             {

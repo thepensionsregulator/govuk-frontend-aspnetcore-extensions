@@ -13,15 +13,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyEditors.ModelPrope
         [ProducesResponseType<IEnumerable<string>>(StatusCodes.Status200OK)]
         public IEnumerable<string> ForDocumentType(string alias)
         {
+            var propertyNames = new List<string>();
             foreach (var provider in _modelPropertyProviders)
             {
-                var propertyNames = provider.GetPropertyNames(alias);
-                if (propertyNames?.Any() == true)
-                {
-                    return propertyNames;
-                }
+                propertyNames.AddRange(provider.GetPropertyNames(alias));
             }
-            return Array.Empty<string>();
+            return propertyNames;
         }
     }
 }

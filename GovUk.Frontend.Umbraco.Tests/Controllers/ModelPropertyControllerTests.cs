@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GovUk.Frontend.Umbraco.Tests.Validation
+namespace GovUk.Frontend.Umbraco.Tests.Controllers
 {
     public class ModelPropertyControllerTests
     {
@@ -274,7 +274,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
         }
 
         [Test]
-        public void CollectProperties_MultipleNestedLevels_ExplorerAllPaths()
+        public void CollectProperties_MultipleNestedLevels_ExploresAllPaths()
         {
             // Arrange
             var propNames = new List<string>();
@@ -432,7 +432,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Validation
         }
 
         [Test]
-        public void GetEnumerableElementType_NullableInt_ReturnsNull()
+        public void GetEnumerableElementType_NullableInt_ReturnsNullableInt()
         {
             // Arrange - IEnumerable<int?> would have Nullable<int> as element type
             // Act

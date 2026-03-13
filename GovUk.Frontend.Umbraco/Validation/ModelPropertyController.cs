@@ -2,12 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
+[assembly: InternalsVisibleTo("GovUk.Frontend.Umbraco.Tests.ModelPropertyControllerTests")]
 
 namespace GovUk.Frontend.Umbraco.Validation
 {
@@ -28,7 +30,13 @@ namespace GovUk.Frontend.Umbraco.Validation
             foreach(var file in files) 
             { 
                 Assembly assembly = Assembly.LoadFrom(file);
-                List<Type> controllersToAdd = assembly.GetTypes().Where(x => x.IsSubclassOf(typeof(RenderController))).ToList();
+                Type[] types;
+                try { types = assembly.GetTypes(); }
+                catch (ReflectionTypeLoadException ex) { types = ex.Types.OfType<Type>().ToArray(); }
+
+                List<Type> controllersToAdd = types
+                    .Where(x => x != typeof(RenderController) && x.IsAssignableTo(typeof(RenderController)))
+                    .ToList();
                 controllers.AddRange(controllersToAdd);
             }
             var controllerType = controllers?.FirstOrDefault(x => x.Name.ToUpperInvariant() == $"{alias.ToUpperInvariant()}CONTROLLER");
@@ -57,7 +65,7 @@ namespace GovUk.Frontend.Umbraco.Validation
             return Array.Empty<string>();
         }
 
-        public void CollectProperties(Type type, string prefix, int depth, int maxDepth, Stack<Type> pathStack, List<string> propNames)
+        internal void CollectProperties(Type type, string prefix, int depth, int maxDepth, Stack<Type> pathStack, List<string> propNames)
         {
             if (type == null) return;
             if (depth >= maxDepth) return;
@@ -65,12 +73,12 @@ namespace GovUk.Frontend.Umbraco.Validation
 
             pathStack.Push(type);
 
-            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(prop => prop.CanRead))
             {
                 var propType = property.PropertyType;
 
                 // Skip Umbraco published content and blocklist model types
-                if (propType.IsSubclassOf(typeof(PublishedContentModel)) || propType.IsAssignableTo(typeof(OverridableBlockListModel)) || propType.IsAssignableTo(typeof(OverridableBlockGridModel)))
+                if (propType.IsAssignableTo(typeof(PublishedContentModel)) || propType.IsAssignableTo(typeof(OverridableBlockListModel)) || propType.IsAssignableTo(typeof(OverridableBlockGridModel)))
                 {
                     continue;
                 }
@@ -109,6 +117,17 @@ namespace GovUk.Frontend.Umbraco.Validation
                     continue;
                 }
 
+                // Handle tuples: expand tuple element names
+                if (IsTupleType(propType))
+                {
+                    var tupleElementNames = GetTupleElementNames(propType);
+                    foreach (var elementName in tupleElementNames)
+                    {
+                        propNames.Add($"{fullName}.{elementName}");
+                    }
+                    continue;
+                }
+
                 // Fallback: add the property name
                 propNames.Add(fullName);
             }
@@ -116,7 +135,7 @@ namespace GovUk.Frontend.Umbraco.Validation
             pathStack.Pop();
         }
 
-        public Type? GetEnumerableElementType(Type enumerableType)
+        internal Type? GetEnumerableElementType(Type enumerableType)
         {
             if (enumerableType.IsArray)
             {
@@ -136,6 +155,46 @@ namespace GovUk.Frontend.Umbraco.Validation
                 .FirstOrDefault();
 
             return ienum;
+        }
+
+        internal bool IsTupleType(Type type)
+        {
+            if (type == null) return false;
+
+            // Check for ValueTuple (preferred in modern .NET)
+            if (type.IsGenericType)
+            {
+                var genericDefinition = type.GetGenericTypeDefinition();
+                if (genericDefinition == typeof(ValueTuple) ||
+                    genericDefinition == typeof((object, object)) ||
+                    genericDefinition.Name.StartsWith("ValueTuple`"))
+                {
+                    return true;
+                }
+            }
+
+            // Check for System.Tuple (older .NET)
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Tuple<>);
+        }
+
+        internal IEnumerable<string> GetTupleElementNames(Type tupleType)
+        {
+            if (tupleType == null || !IsTupleType(tupleType))
+            {
+                return Enumerable.Empty<string>();
+            }
+
+            var genericArgs = tupleType.GetGenericArguments();
+
+            // Try to get custom tuple element names from TupleElementNamesAttribute
+            var tupleAttr = tupleType.GetCustomAttribute<TupleElementNamesAttribute>();
+            if (tupleAttr?.TransformNames != null && tupleAttr.TransformNames.Count > 0)
+            {
+                return tupleAttr.TransformNames;
+            }
+
+            // Fallback: generate default names (Item1, Item2, etc.)
+            return Enumerable.Range(1, genericArgs.Length).Select(i => $"Item{i}");
         }
     }
 } 

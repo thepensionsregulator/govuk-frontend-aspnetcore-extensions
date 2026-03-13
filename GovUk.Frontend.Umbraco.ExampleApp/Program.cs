@@ -22,11 +22,11 @@ AppConfig? config = builder.Configuration.GetSection("AppConfig").Get<AppConfig>
 
 if (config?.TPRStyles == true)
 {
-    builder.Services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+    builder.Services.AddTprFrontendUmbraco(options => { options.RenderWidthContainerForBlocks = true; options.EnableTableCsvDownload = true; });
 }
 else
 {
-    builder.Services.AddTprGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+    builder.Services.AddTprGovUkFrontendUmbraco(options => { options.RenderWidthContainerForBlocks = true; options.EnableTableCsvDownload = true; });
     builder.Services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/TPR/{0}.cshtml"));
     builder.Services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
 }

@@ -12,20 +12,20 @@ namespace ThePensionsRegulator.GovUk.Frontend.Validation
 {
     public class ClientSideValidationHtmlEnhancer : IClientSideValidationHtmlEnhancer
     {
-        private readonly IModelPropertyResolver _modelPropertyResolver;
+        private readonly IModelPropertyResolverCollection _modelPropertyResolvers;
         private readonly IStringLocalizerFactory? _factory;
         private readonly IModelMetadataProvider _metadataProvider;
         private readonly IOptions<MvcDataAnnotationsLocalizationOptions> _options;
         private readonly IValidationAttributeAdapterProvider _validationAttributeAdapterProvider;
 
         public ClientSideValidationHtmlEnhancer(
-            IModelPropertyResolver modelPropertyResolver,
+            IModelPropertyResolverCollection modelPropertyResolvers,
             IModelMetadataProvider metadataProvider,
             IOptions<MvcDataAnnotationsLocalizationOptions> options,
             IValidationAttributeAdapterProvider validationAttributeAdapterProvider,
-        IStringLocalizerFactory? factory = null)
+            IStringLocalizerFactory? factory = null)
         {
-            _modelPropertyResolver = modelPropertyResolver ?? throw new ArgumentNullException(nameof(modelPropertyResolver));
+            _modelPropertyResolvers = modelPropertyResolvers ?? throw new ArgumentNullException(nameof(modelPropertyResolvers));
 
             _factory = factory;
             _metadataProvider = metadataProvider;
@@ -68,7 +68,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Validation
                 }
 
                 // Add the data-val-* attributes for ASP.NET / jQuery validation to pick up
-                AddClientSideValidationAttributes(viewContext, _modelPropertyResolver, _metadataProvider, _factory,
+                AddClientSideValidationAttributes(viewContext, _modelPropertyResolvers, _metadataProvider, _factory,
                     _validationAttributeAdapterProvider,
                     _options, inputs, errorMessage?.Attributes,
                     errorMessageRequired,
@@ -114,7 +114,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Validation
         }
 
         private static void AddClientSideValidationAttributes(ViewContext viewContext,
-            IModelPropertyResolver propertyResolver,
+            IModelPropertyResolverCollection modelPropertyResolvers,
             IModelMetadataProvider metadataProvider,
             IStringLocalizerFactory? stringLocalizerFactory,
             IValidationAttributeAdapterProvider validationAttributeAdapterProvider,
@@ -134,7 +134,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Validation
             if (viewContext == null || !viewContext.ClientValidationEnabled) { return; }
 
             IStringLocalizer? localizer = null;
-            var modelType = propertyResolver.ResolveModelType(viewContext);
 
             foreach (var targetElement in targetElements)
             {
@@ -151,25 +150,22 @@ namespace ThePensionsRegulator.GovUk.Frontend.Validation
 
                 var modelPropertyName = targetElement.Attributes["name"]?.Value;
                 if (string.IsNullOrEmpty(modelPropertyName) || modelPropertyName == ".Day" || modelPropertyName == ".Month" || modelPropertyName == ".Year") { continue; }
-                PropertyInfo? modelProperty;
                 if (modelPropertyName.EndsWith(".Day") || modelPropertyName.EndsWith(".Month") || modelPropertyName.EndsWith(".Year"))
                 {
                     // Dates are a special case because we have collect child properties but they should all resolve to the one parent property.
-                    modelProperty = propertyResolver.ResolveModelProperty(modelType, modelPropertyName.Substring(0, modelPropertyName.LastIndexOf(".")));
-                }
-                else
-                {
-                    modelProperty = propertyResolver.ResolveModelProperty(modelType, modelPropertyName);
+                    modelPropertyName = modelPropertyName.Substring(0, modelPropertyName.LastIndexOf("."));
                 }
 
-                if (modelProperty != null)
+                var modelProperty = modelPropertyResolvers.ResolveModelProperty(viewContext, modelPropertyName);
+
+                if (modelProperty.DeclaringType is not null)
                 {
-                    if (options!.Value.DataAnnotationLocalizerProvider != null && stringLocalizerFactory != null)
+                    if (options?.Value?.DataAnnotationLocalizerProvider != null && stringLocalizerFactory != null)
                     {
                         // This will pass first non-null type (either containerType or modelType) to delegate.
                         // Pass the root model type(container type) if it is non null, else pass the model type.
                         localizer = options.Value.DataAnnotationLocalizerProvider(
-                            modelType,
+                            modelProperty.DeclaringType,
                             stringLocalizerFactory);
                     }
 
@@ -337,7 +333,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Validation
                                 }
 
                                 // Get metadata
-                                var metadata = metadataProvider.GetMetadataForType(modelType);
+                                var metadata = metadataProvider.GetMetadataForType(modelProperty.DeclaringType);
 
                                 // Now call the Adapter's AddValidation method. This merges existing attributes with anything already present
                                 adapter!.AddValidation(
@@ -366,6 +362,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Validation
                         }
                     }
 
+                }
+                else
+                {
+                    throw new InvalidOperationException($"To support client-side validation decorate your controller action with {nameof(ModelTypeAttribute)} to specify a different model type with a property named {modelPropertyName}.");
                 }
             }
         }

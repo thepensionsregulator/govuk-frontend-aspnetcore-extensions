@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.Localization;
 
-namespace ThePensionsRegulator.GovUk.Frontend.UnitTests.CustomValidation
+namespace ThePensionsRegulator.GovUk.Frontend.UnitTests.Validation
 {
     public class CustomTestValidatorAttributeAdapter : AttributeAdapterBase<CustomTestValidatorAttribute>
     {

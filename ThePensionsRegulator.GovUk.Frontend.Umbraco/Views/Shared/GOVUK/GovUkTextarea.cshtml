@@ -1,7 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @addTagHelper *, ThePensionsRegulator.GovUk.Frontend
-@inject IModelPropertyResolver propertyResolver
+@inject IModelPropertyResolverCollection propertyResolvers
 @inject IGovUkHeadingClassProvider headingClassProvider
 @using System.ComponentModel.DataAnnotations
 @using System.Reflection
@@ -47,7 +47,12 @@
 >
     @if (Model.Settings?.Value<bool>(PropertyAliases.TextareaShowCharacterCount) ?? false)
     {
-        var modelProperty = !string.IsNullOrEmpty(modelPropertyName) ? propertyResolver.ResolveModelProperty(propertyResolver.ResolveModelType(ViewContext), modelPropertyName) : null;
+        PropertyInfo? modelProperty = null;
+        if (!string.IsNullOrEmpty(modelPropertyName))
+        {
+            modelProperty = propertyResolvers.ResolveModelProperty(ViewContext, modelPropertyName);
+        }
+
         var maxLengthAttr = modelProperty?.GetCustomAttributes<MaxLengthAttribute>().FirstOrDefault();
         var stringLengthAttr = modelProperty?.GetCustomAttributes<StringLengthAttribute>().FirstOrDefault();
         int? maxLength = maxLengthAttr != null ? maxLengthAttr.Length : stringLengthAttr != null ? stringLengthAttr.MaximumLength : null;

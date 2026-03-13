@@ -2,12 +2,12 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @section head{
-	<title>@Model.PageHeadingOrName()</title>
+	<title>@Model.Page.PageHeadingOrName()</title>
 }
 
 @using (Html.BeginUmbracoForm<AddressLookupPrimaryDataProvidedSurfaceController>(nameof(AddressLookupPrimaryDataProvidedSurfaceController.Index), new {}, new { novalidate="novalidate" }))
 {
-	<partial name="GOVUK/BlockList" model="Model.Pages.Blocks" />
+	<partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
 } 
 
 @section scripts {

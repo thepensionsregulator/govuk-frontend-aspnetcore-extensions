@@ -1,5 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
+using GovUk.Frontend.Umbraco.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
@@ -21,7 +22,24 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             var viewModel = new AddressLookupPrimaryAndSecondaryDataProvidedViewModel
             {
                 Page = new AddressLookupPrimaryAndSecondaryDataProvided(CurrentPage, null),
+                ShippingAddressLine1 = "Telecom House",
+                ShippingAddressLine2 = "125-135 Preston Road",
+                ShippingSomethingReallyRandom = "Brighton",
+                ShippingPostcode = "BN1 6AF",
+                BillingAddressLine1 = "Telecom House",
+                BillingAddressLine2 = "125-135 Preston Road",
+                BillingSomethingReallyRandom = "Brighton",
+                BillingPostcode = "BN1 6AF",
             };
+
+            ModelState.SetInitialValue(nameof(viewModel.ShippingAddressLine1), viewModel.ShippingAddressLine1.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.ShippingAddressLine2), viewModel.ShippingAddressLine2.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.ShippingSomethingReallyRandom), viewModel.ShippingSomethingReallyRandom.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.ShippingPostcode), viewModel.ShippingPostcode.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.BillingAddressLine1), viewModel.BillingAddressLine1.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.BillingAddressLine2), viewModel.BillingAddressLine2.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.BillingSomethingReallyRandom), viewModel.BillingSomethingReallyRandom.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.BillingPostcode), viewModel.BillingPostcode.ToString());
 
             return CurrentTemplate(viewModel);
         }

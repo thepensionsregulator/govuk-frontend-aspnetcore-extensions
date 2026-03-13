@@ -1,4 +1,4 @@
-﻿import { Accordion } from '/govuk-frontend.min.js?v=5.13.0';
+﻿import { Accordion } from '/govuk-frontend.min.js?v=5.14.0';
 
 let searchResults = [];
 let popularContentApiUrl = "";

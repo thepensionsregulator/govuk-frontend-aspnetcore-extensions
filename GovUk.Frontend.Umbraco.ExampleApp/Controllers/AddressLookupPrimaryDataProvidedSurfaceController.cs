@@ -3,25 +3,21 @@ using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
-using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.Filters;
-using Umbraco.Cms.Web.Common.PublishedModels;
 using Umbraco.Cms.Web.Website.Controllers;
 using Umbraco.Extensions;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 {
-    public class AddressLookupSurfaceController : SurfaceController
+    public class AddressLookupPrimaryDataProvidedSurfaceController : SurfaceController
     {
-        public AddressLookupSurfaceController(IUmbracoDatabaseFactory umbracoDatabaseFactory,
+        public AddressLookupPrimaryDataProvidedSurfaceController(IUmbracoDatabaseFactory umbracoDatabaseFactory,
             IUmbracoContextAccessor umbracoContextAccessor,
             ServiceContext context,
             AppCaches appCaches,
@@ -36,8 +32,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateUmbracoFormRouteString]
-        [ModelType(typeof(AddressLookupViewModel))]
-        public IActionResult Index(AddressLookupViewModel viewModel)
+        [ModelType(typeof(AddressLookupPrimaryDataProvidedViewModel))]
+        public IActionResult Index(AddressLookupPrimaryDataProvidedViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -48,7 +44,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 }
             }
 
-            return View("AddressLookup", viewModel);
+            return View("AddressLookupPrimaryDataProvided", viewModel);
         }
     }
 }

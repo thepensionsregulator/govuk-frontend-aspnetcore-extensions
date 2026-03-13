@@ -1,0 +1,16 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<AddressLookupPrimaryAndSecondaryDataProvidedViewModel>
+@using GovUk.Frontend.Umbraco.ExampleApp.Controllers
+@using GovUk.Frontend.Umbraco.ExampleApp.Models
+@section head{
+	<title>@Model.Page.PageHeadingOrName()</title>
+}
+
+@using (Html.BeginUmbracoForm<AddressLookupPrimaryAndSecondaryDataProvidedSurfaceController>(nameof(AddressLookupPrimaryAndSecondaryDataProvidedSurfaceController.Index), new {}, new { novalidate="novalidate" }))
+{
+	<partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
+}
+
+@section scripts {
+    <partial name="GOVUK/UmbracoValidation" />
+	<script src="/_Content/ThePensionsRegulator.Frontend/tpr/address-lookup/index.js" type="module"></script>
+}

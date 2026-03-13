@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 {
-    public class AddressLookupViewModel
+    public class AddressLookupPrimaryAndSecondaryDataProvidedViewModel
     {
-        public AddressLookup? Page { get; set; }
+        public AddressLookupPrimaryAndSecondaryDataProvided? Page { get; set; }
 
         [Required(ErrorMessage = nameof(ShippingAddressLine1))]
         [MaxLength(500, ErrorMessage = nameof(ShippingAddressLine1))]

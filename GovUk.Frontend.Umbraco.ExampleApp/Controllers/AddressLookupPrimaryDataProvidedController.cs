@@ -10,18 +10,18 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 {
-    public class AddressLookupController : RenderController
+    public class AddressLookupPrimaryDataProvidedController : RenderController
     {
-        public AddressLookupController(ILogger<AddressLookupController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor) : base(logger, compositeViewEngine, umbracoContextAccessor)
+        public AddressLookupPrimaryDataProvidedController(ILogger<AddressLookupPrimaryDataProvidedController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor) : base(logger, compositeViewEngine, umbracoContextAccessor)
         {
         }
 
-        [ModelType(typeof(AddressLookupViewModel))]
+        [ModelType(typeof(AddressLookupPrimaryDataProvidedViewModel))]
         public override IActionResult Index()
         {
-            var viewModel = new AddressLookupViewModel
+            var viewModel = new AddressLookupPrimaryDataProvidedViewModel
             {
-                Page = new AddressLookup(CurrentPage, null),
+                Page = new AddressLookupPrimaryDataProvided(CurrentPage, null),
                 ShippingAddressLine1 = "Shipping Address line 1",
                 ShippingAddressLine2 = "Shipping address line 2",
                 ShippingSomethingReallyRandom = "Shipping town",

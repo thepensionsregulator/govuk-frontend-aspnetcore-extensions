@@ -52,6 +52,9 @@ namespace GovUk.Frontend.Umbraco
                   "/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery-validation/dist/jquery.validate.min.js",
                   "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-validation.js",
                   "/_content/ThePensionsRegulator.GovUk.Frontend/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js");
+
+                bundles.CreateJs("govuk-table-csv-download",
+                  "/_content/ThePensionsRegulator.GovUk.Frontend.Umbraco/govuk/table-csv-download.js");
             });
 
             return app;

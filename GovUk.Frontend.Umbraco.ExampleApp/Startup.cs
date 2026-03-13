@@ -57,11 +57,11 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
 
             if (_config.GetValue<bool>("TPRStyles"))
             {
-                services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+                services.AddTprFrontendUmbraco(options => { options.RenderWidthContainerForBlocks = true; options.EnableTableCsvDownload = true; });
             }
             else
             {
-                services.AddGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+                services.AddGovUkFrontendUmbraco(options => { options.RenderWidthContainerForBlocks = true; options.EnableTableCsvDownload = true; });
                 services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
             }
 

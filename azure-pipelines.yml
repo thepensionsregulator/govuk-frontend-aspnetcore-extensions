@@ -83,13 +83,6 @@ steps:
 
   - task: Npm@1
     inputs:
-      command: custom
-      customCommand: run build
-      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.GovUk.Frontend.Umbraco\Backoffice'
-    displayName: npm run build GOV.UK backoffice
-
-  - task: Npm@1
-    inputs:
       command: ci
       workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\Backoffice'
     displayName: npm ci TPR backoffice
@@ -98,9 +91,9 @@ steps:
   - task: Npm@1
     inputs:
       command: custom
-      customCommand: run build
-      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\Backoffice'
-    displayName: npm run build TPR backoffice
+      customCommand: run backoffice:ci
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
+    displayName: npm run backoffice:ci
 
   - script: |
       cd $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions

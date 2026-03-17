@@ -318,17 +318,17 @@
         outline: 3px solid transparent;
     }
 
-     
-        .js.tpr-header-menu__arrow-container:hover {
-            background: $tpr-colour-white;
-            cursor: pointer;
 
-            .tpr-header-menu__arrow {
-                border-right: $govuk-focus-width solid $tpr-colour-black;
-                border-bottom: $govuk-focus-width solid $tpr-colour-black;
-            }
+    .js.tpr-header-menu__arrow-container:hover {
+        background: $tpr-colour-white;
+        cursor: pointer;
+
+        .tpr-header-menu__arrow {
+            border-right: $govuk-focus-width solid $tpr-colour-black;
+            border-bottom: $govuk-focus-width solid $tpr-colour-black;
         }
-    
+    }
+
 
     .tpr-header-menu__arrow:focus {
         border-right: $govuk-focus-width solid $tpr-colour-black;
@@ -458,5 +458,20 @@
 @media(max-width: 993px) {
     .tpr-header-menu__nav-menu-item--active:focus {
         color: $tpr-colour-black;
+    }
+}
+
+@media(max-width: 315px) {
+
+    .tpr-mobile-menu__container {
+        display: inline;
+        margin-top: 0;
+        margin-left: 0;
+    }
+
+    .tpr-mobile-menu__toggle {
+        justify-content: flex-start;
+        margin-left: 0;
+        margin-top: 0;
     }
 }

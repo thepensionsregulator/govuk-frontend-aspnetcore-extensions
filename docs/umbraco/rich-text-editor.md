@@ -27,4 +27,9 @@ p.custom-format {
 
 It is often useful to create a new rich text editor data type, so that only the formatting options relevant to the specific context can be offered. For example, you might want to offer only bold text and bulleted lists rather than all of the possible formatting options.
 
+When creating a new TinyMCE rich text editor data type in the Umbraco backoffice, add the following stylesheets:
+
+- `/govuk-umbraco-backoffice.css`
+- `/site.css`
+
 This project adds the ability to [format Umbraco property values](./format-property-values.md), including rich text editor values, at the time they are rendered on the page.

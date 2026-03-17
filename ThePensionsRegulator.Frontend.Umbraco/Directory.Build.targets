@@ -51,6 +51,15 @@
 		  Overwrite="true" />
 	</Target>
 
+	<!-- Build the backoffice TypeScript using Vite so that App_Plugins files exist to be included in the NuGet package -->
+	<Target Name="TprFrontendUmbraco_BuildTypeScript" AfterTargets="TprFrontendUmbraco_GenerateTypeScriptVersion">
+		<Exec Command="npm install"
+			  WorkingDirectory="$(MsBuildThisFileDirectory)Backoffice"
+			  Condition="!Exists('$(MsBuildThisFileDirectory)Backoffice\node_modules')" />
+		<Exec Command="npm run build"
+			  WorkingDirectory="$(MsBuildThisFileDirectory)Backoffice" />
+	</Target>
+
 	<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
 	<Target Name="TprFrontendUmbraco_Clean" Condition="Exists('$(ProjectDir)wwwroot\tpr\')">
 		<ItemGroup>

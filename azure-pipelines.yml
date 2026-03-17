@@ -46,6 +46,20 @@ steps:
       path: $(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/node_modules
       cacheHitVar: CACHE_RESTORED
 
+  - task: Cache@2
+    displayName: Cache GovUk.Frontend.Umbraco Backoffice node_modules
+    inputs:
+      key: 'npm | "$(Agent.OS)" | $(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice/package-lock.json'
+      path: $(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice/node_modules
+      cacheHitVar: GOVUK_UMBRACO_BACKOFFICE_CACHE_RESTORED
+
+  - task: Cache@2
+    displayName: Cache Frontend.Umbraco Backoffice node_modules
+    inputs:
+      key: 'npm | "$(Agent.OS)" | $(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/ThePensionsRegulator.Frontend.Umbraco/Backoffice/package-lock.json'
+      path: $(Build.SourcesDirectory)/govuk-frontend-aspnetcore-extensions/ThePensionsRegulator.Frontend.Umbraco/Backoffice/node_modules
+      cacheHitVar: TPR_UMBRACO_BACKOFFICE_CACHE_RESTORED
+
   - task: Npm@1
     inputs:
       command: custom
@@ -59,6 +73,20 @@ steps:
       workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
     displayName: npm ci
     condition: ne(variables.CACHE_RESTORED, 'true')
+
+  - task: Npm@1
+    inputs:
+      command: ci
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.GovUk.Frontend.Umbraco\Backoffice'
+    displayName: npm ci (GovUk.Frontend.Umbraco Backoffice)
+    condition: ne(variables.GOVUK_UMBRACO_BACKOFFICE_CACHE_RESTORED, 'true')
+
+  - task: Npm@1
+    inputs:
+      command: ci
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\Backoffice'
+    displayName: npm ci (Frontend.Umbraco Backoffice)
+    condition: ne(variables.TPR_UMBRACO_BACKOFFICE_CACHE_RESTORED, 'true')
 
   - script: |
       cd $(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions

@@ -129,4 +129,4 @@
    }
    ```
 
-3. In `appsettings.Development.json` delete the `ConnectionStrings:umbracoDbDSN` and `ConnectionStrings:umbracoDbDSN_ProviderName` settings (these will be re-instated when you run the application).
+3. In `appsettings.json` delete the `ConnectionStrings:umbracoDbDSN` and `ConnectionStrings:umbracoDbDSN_ProviderName` settings (these will be re-instated when you run the application).

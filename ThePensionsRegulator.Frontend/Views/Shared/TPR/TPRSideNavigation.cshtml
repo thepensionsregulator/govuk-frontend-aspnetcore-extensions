@@ -22,7 +22,7 @@
             <h2 class="govuk-heading-m">
                 <a href="@expandMobileUrl" class="govuk-link govuk-link--no-visited-state tpr-side-nav__mobile-expand-toggle">
                     @viewModel.TitleLink.Name
-                    <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" width="25" height="25" alt="@(string.Format(isMobileExpanded ? viewModel.CollapseItemLabel : viewModel.ExpandItemLabel, string.Empty))" class="tpr-side-nav__mobile-expand-toggle__arrow" />
+                    <img src="/ThePensionsRegulator.Frontend/img/tpr-arrow-down.svg" asp-append-version="true" width="25" height="25" alt="@(string.Format(isMobileExpanded ? viewModel.CollapseItemLabel : viewModel.ExpandItemLabel, string.Empty))" class="tpr-side-nav__mobile-expand-toggle__arrow" />
                 </a>
                 <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@viewModel.TitleLink.Url">@viewModel.TitleLink.Name</a>
             </h2>
@@ -46,7 +46,7 @@
                         {
                             var arrowNoJsAlternative = string.Format(child.IsExpanded ? viewModel.ExpandedItemLabel : viewModel.CollapsedItemLabel, child.Name);
                             var arrowClass = child.IsExpanded ? "tpr-side-nav__list-item-arrow tpr-side-nav__list-item-arrow--up" : "tpr-side-nav__list-item-arrow";
-                            <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" width="25" height="25" alt="@arrowNoJsAlternative" class="@arrowClass" />
+                            <img src="/ThePensionsRegulator.Frontend/img/tpr-arrow-down.svg" asp-append-version="true" width="25" height="25" alt="@arrowNoJsAlternative" class="@arrowClass" />
                         }
                     </div>
                     @if (child.Children is not null && child.Children.Any())

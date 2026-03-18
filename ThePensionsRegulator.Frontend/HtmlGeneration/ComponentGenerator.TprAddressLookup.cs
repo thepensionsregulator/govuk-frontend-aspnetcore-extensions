@@ -10,10 +10,15 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         internal const string TprAddressLookupElement = "div";
         internal const bool AddressLookupIsPageHeadingByDefault = false;
 
-        public virtual TagBuilder GenerateTprAddressLookup(bool isLegendPageHeading, AttributeDictionary? legendAttributes, IHtmlContent? legendContent, IHtmlContent? childContent, string? fieldsetDescribedBy)
+        public virtual TagBuilder GenerateTprAddressLookup(bool isLegendPageHeading, AttributeDictionary? legendAttributes, IHtmlContent? legendContent, IHtmlContent? childContent, string? fieldsetDescribedBy, string? sameAsPrimaryCheckboxLabel)
         {
             var container = new TagBuilder(TprAddressLookupElement);
             container.AddCssClass("tpr-address-lookup");
+
+            if (!string.IsNullOrEmpty(sameAsPrimaryCheckboxLabel))
+            {
+                container.Attributes.Add("data-address-lookup-same-as-primary-checkbox-label", sameAsPrimaryCheckboxLabel);
+            }
 
             var fieldSet = new TagBuilder("fieldset");
             fieldSet.AddCssClass("govuk-fieldset");

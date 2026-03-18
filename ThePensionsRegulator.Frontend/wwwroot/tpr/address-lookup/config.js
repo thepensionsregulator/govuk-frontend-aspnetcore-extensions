@@ -23,7 +23,8 @@
         LINK_LIST: "link-list",
         UPRN: "UPRN",
         EDIT_ADDRESS: "edit-address",
-        SAME_AS: "same-as"
+        SAME_AS: "same-as",
+        CHECKBOX_LABEL: "same-as-primary-checkbox-label"
     },
 
     CSS_CLASSES: {

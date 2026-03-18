@@ -9,6 +9,7 @@
         public const string AddressLine2ModelProperty = "addressLine2ModelProperty";
         public const string AddressLine2ErrorMessageMaxLength = "addressLine2ErrorMessageMaxLength";
         public const string AddressLine2Label = "addressLine2Label";
+        public const string AddressLookupCheckboxLabel = "addressLookupCheckboxLabel";
         public const string AddressLookupFieldsetBlocks = "fieldsetBlocks";
         public const string AddressLookupIsPrimary = "addressLookupIsPrimary";
         public const string BackToMenuText = "text";

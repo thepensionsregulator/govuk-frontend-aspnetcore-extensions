@@ -1,8 +1,9 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions;
+﻿using System.Threading.Tasks;
+using GovUk.Frontend.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System.Threading.Tasks;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -13,6 +14,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-address-lookup";
         internal const string DescribedByAttributeName = "described-by";
+        internal const string SameAsPrimaryCheckboxLabelAttributeName = "same-as-primary-checkbox-label";
 
         private readonly ITprHtmlGenerator _htmlGenerator;
 
@@ -28,6 +30,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         [HtmlAttributeName(DescribedByAttributeName)]
         public string? DescribedBy { get; set; }
+
+        [EditorRequired()]
+        [HtmlAttributeName(SameAsPrimaryCheckboxLabelAttributeName)]
+        public string SameAsPrimaryCheckboxLabel { get; set; } = null!;
 
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
@@ -48,7 +54,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 addressLookupContext.LegendAttributes,
                 addressLookupContext.Legend,
                 childContent,
-                DescribedBy);
+                DescribedBy,
+                SameAsPrimaryCheckboxLabel);
 
             output.TagName = tagBuilder.TagName;
             output.MergeAttributes(tagBuilder);

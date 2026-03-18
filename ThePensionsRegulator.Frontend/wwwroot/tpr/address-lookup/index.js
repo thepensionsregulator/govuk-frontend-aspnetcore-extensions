@@ -14,6 +14,7 @@ class TprAddressLookup {
         this.primaryStateMachine = primaryStateMachine;
         this.searchEndpoint = element.getAttribute("data-address-lookup-search-url");
         this.idEndpoint = element.getAttribute("data-address-lookup-id-url");
+        this.checkboxLabel = role === "secondary" ? element.getAttribute(`${ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE}-${ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.CHECKBOX_LABEL}`) : null;
         this.apiService = new AddressLookupApiService(this.searchEndpoint, this.idEndpoint);
         this.validator = new AddressLookupValidator(element, this.index);
         this.componentBuilder = new AddressLookupComponentBuilder(this.index, ADDRESS_LOOKUP_CONFIG);
@@ -31,7 +32,7 @@ class TprAddressLookup {
         }
 
         if (this.role === "secondary") {
-            this.sameAsCheckbox = this.componentBuilder.createCheckbox("Same as primary address");
+            this.sameAsCheckbox = this.componentBuilder.createCheckbox(this.checkboxLabel);
             this.sameAsCheckbox.querySelector("input[type='checkbox']")
                 .addEventListener("change", (event) => this.onSameAsCheckboxChange(event));
             this.container.appendChild(this.sameAsCheckbox);

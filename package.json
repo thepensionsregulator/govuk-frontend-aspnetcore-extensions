@@ -42,6 +42,8 @@
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
     "govuk": "npm install && cd GovUk.Frontend.AspNetCore.Extensions.ConformanceTests && npm install",
-    "backoffice": "cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm install && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm install && npm run build"
+    "generate-version": "node scripts/generate-version.js",
+    "backoffice": "npm run generate-version && cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm install && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm install && npm run build",
+    "backoffice:ci": "npm run generate-version && cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm run build"
   }
 }

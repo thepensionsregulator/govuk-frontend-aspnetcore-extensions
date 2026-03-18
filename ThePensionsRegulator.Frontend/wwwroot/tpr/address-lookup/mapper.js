@@ -140,6 +140,15 @@
             postcode: postcode
         };
     }
+
+    addressesMatch(a, b) {
+        return (a.addressLine1 || '') === (b.addressLine1 || '')
+            && (a.addressLine2 || '') === (b.addressLine2 || '')
+            && (a.town || '') === (b.town || '')
+            && (a.county || '') === (b.county || '')
+            && (a.country || '') === (b.country || '')
+            && (a.postcode || '') === (b.postcode || '');
+    }
 }
 
 

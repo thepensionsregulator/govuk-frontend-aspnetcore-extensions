@@ -197,4 +197,43 @@ describe("Address mapper", () => {
             expect(result.county).toEqual("");
         });
     });
+
+    describe("addressesMatch", () => {
+        const address = { addressLine1: "10 Downing Street", addressLine2: "Westminster", town: "London", county: "Greater London", country: "England", postcode: "SW1A 2AA" };
+
+        it("returns true for identical addresses", () => {
+            expect(mapper.addressesMatch(address, { ...address })).toBe(true);
+        });
+
+        it("returns false when addressLine1 differs", () => {
+            expect(mapper.addressesMatch(address, { ...address, addressLine1: "11 Downing Street" })).toBe(false);
+        });
+
+        it("returns false when addressLine2 differs", () => {
+            expect(mapper.addressesMatch(address, { ...address, addressLine2: "Whitehall" })).toBe(false);
+        });
+
+        it("returns false when town differs", () => {
+            expect(mapper.addressesMatch(address, { ...address, town: "Manchester" })).toBe(false);
+        });
+
+        it("returns false when county differs", () => {
+            expect(mapper.addressesMatch(address, { ...address, county: "West Midlands" })).toBe(false);
+        });
+
+        it("returns false when country differs", () => {
+            expect(mapper.addressesMatch(address, { ...address, country: "Wales" })).toBe(false);
+        });
+
+        it("returns false when postcode differs", () => {
+            expect(mapper.addressesMatch(address, { ...address, postcode: "SW1A 2AB" })).toBe(false);
+        });
+
+        it("treats undefined and empty string as equal", () => {
+            const a = { addressLine1: "10 Downing Street", addressLine2: undefined, town: "London", county: "", country: undefined, postcode: "SW1A 2AA" };
+            const b = { addressLine1: "10 Downing Street", addressLine2: "", town: "London", county: undefined, country: "", postcode: "SW1A 2AA" };
+
+            expect(mapper.addressesMatch(a, b)).toBe(true);
+        });
+    });
 });

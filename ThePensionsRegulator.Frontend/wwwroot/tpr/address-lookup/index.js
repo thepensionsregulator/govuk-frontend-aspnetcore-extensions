@@ -36,6 +36,11 @@ class TprAddressLookup {
                 .addEventListener("change", (event) => this.onSameAsCheckboxChange(event));
             this.container.appendChild(this.sameAsCheckbox);
 
+            const primaryAddress = this.primaryStateMachine?.confirmedAddress;
+            if (primaryAddress && this.addressMapper.addressesMatch(primaryAddress, address)) {
+                this.sameAsCheckbox.querySelector("input[type='checkbox']").checked = true;
+            }
+
             this.primaryStateMachine.onChange((newState, data) => this.onPrimaryStateChange(newState, data));
         }
 

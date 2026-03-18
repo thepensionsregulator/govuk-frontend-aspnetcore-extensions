@@ -14,20 +14,21 @@
 
     var id = "tpr-side-nav__" + Guid.NewGuid().ToString().Substring(0,8);
 }
-<nav class="tpr-side-nav" id="@id" aria-label="@viewModel.AriaNavigationLabel" data-expand-text="@viewModel.ExpandItemLabel" data-collapse-text="@viewModel.CollapseItemLabel">
+<nav class="tpr-side-nav" id="@id" aria-label="@Model.AriaNavigationLabel" data-expand-text="@Model.ExpandItemLabel" data-collapse-text="@Model.CollapseItemLabel">
     @{
         var level = 1;
-        if (viewModel.TitleLink is not null)
+        if (Model.TitleLink is not null)
         {
             <h2 class="govuk-heading-m">
                 <a href="@expandMobileUrl" class="govuk-link govuk-link--no-visited-state tpr-side-nav__mobile-expand-toggle">
-                    @viewModel.TitleLink.Name
-                    <img src="/ThePensionsRegulator.Frontend/img/tpr-arrow-down.svg" asp-append-version="true" width="25" height="25" alt="@(string.Format(isMobileExpanded ? viewModel.CollapseItemLabel : viewModel.ExpandItemLabel, string.Empty))" class="tpr-side-nav__mobile-expand-toggle__arrow" />
+                    @Model.TitleLink.Name
+                    <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" width="25" height="25" alt="@(string.Format(isMobileExpanded ? Model.CollapseItemLabel : Model.ExpandItemLabel, string.Empty))" class="tpr-side-nav__mobile-expand-toggle__arrow" />
                 </a>
-                <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@viewModel.TitleLink.Url">@viewModel.TitleLink.Name</a>
+                <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
             </h2>
         }
-        await RenderNavListLayer(viewModel.NavigationLinks, null, level, isMobileExpanded ? "tpr-side-nav__list--expanded" : null);
+        @* Removed collapse-all placeholder/button - collapse-all is now triggered by Escape key *@
+        await RenderNavListLayer(Model.NavigationLinks, null, level, isMobileExpanded ? "tpr-side-nav__list--expanded" : null);
     }
 </nav>
 @{
@@ -43,9 +44,9 @@
                         <a id="@(childLinkId)" class="govuk-link govuk-link--no-visited-state" @(child.IsCurrentPage ? "aria-current=page" : string.Empty) href="@child.Url">@child.Name</a>
                         @if (child.Children is not null && child.Children.Any())
                         {
-                            var arrowNoJsAlternative = string.Format(child.IsExpanded ? viewModel.ExpandedItemLabel : viewModel.CollapsedItemLabel, child.Name);
+                            var arrowNoJsAlternative = string.Format(child.IsExpanded ? Model.ExpandedItemLabel : Model.CollapsedItemLabel, child.Name);
                             var arrowClass = child.IsExpanded ? "tpr-side-nav__list-item-arrow tpr-side-nav__list-item-arrow--up" : "tpr-side-nav__list-item-arrow";
-                            <img src="/ThePensionsRegulator.Frontend/img/tpr-arrow-down.svg" asp-append-version="true" width="25" height="25" alt="@arrowNoJsAlternative" class="@arrowClass" />
+                            <img src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-arrow-down.svg" width="25" height="25" alt="@arrowNoJsAlternative" class="@arrowClass" />
                         }
                     </div>
                     @if (child.Children is not null && child.Children.Any())

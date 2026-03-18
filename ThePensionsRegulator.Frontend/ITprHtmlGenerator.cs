@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
+using ThePensionsRegulator.Frontend.TagHelpers;
 
 namespace ThePensionsRegulator.Frontend
 {
@@ -22,6 +23,6 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprSearchResults(string popularContentUrl, string searchContentUrl, string contentByIdUrl);
         TagBuilder GenerateTprSearchResultsFooterLinks(TprSearchFooterLinks tprSearchFooterLinks);
         TagBuilder GenerateTprSearchResultsInput(int headingLevel, string headingClass, string? label = null);
-        TagBuilder GenerateTprAddressLookup(bool isLegendPageHeading, AttributeDictionary? legendAttributes, IHtmlContent? legend, IHtmlContent? childContent, string? fieldsetDescribedBy, string? sameAsPrimaryCheckboxLabel);
+        TagBuilder GenerateTprAddressLookup(bool isLegendPageHeading, AttributeDictionary? legendAttributes, IHtmlContent? legend, IHtmlContent? childContent, string? fieldsetDescribedBy, AddressLookupRole role, string? sameAsPrimaryCheckboxLabel);
     }
 }

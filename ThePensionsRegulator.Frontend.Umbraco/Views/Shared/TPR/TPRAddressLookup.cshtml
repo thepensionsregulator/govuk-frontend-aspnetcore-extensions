@@ -6,6 +6,7 @@
 @using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
+@using ThePensionsRegulator.Frontend.TagHelpers
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco
@@ -35,7 +36,7 @@
         fieldsetDescribedBy = $"{addressLine1ModelProperty}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
     var isPrimary = Model.Settings.Value<bool>(TprPropertyAliases.AddressLookupIsPrimary);
-    var role = isPrimary ? "primary" : "secondary";
+    var role = isPrimary ? AddressLookupRole.Primary : AddressLookupRole.Secondary;
 	var checkboxLabel = Model.Content.Value<string?>(TprPropertyAliases.AddressLookupCheckboxLabel);
 
     var addressLine1State = addressFieldStateHelper.GetFieldState(
@@ -88,7 +89,7 @@
     );
 }
 
-<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" same-as-primary-checkbox-label=@checkboxLabel data-address-lookup-search-url=@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint() data-address-lookup-id-url=@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint() data-address-lookup-role=@role>
+<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" same-as-primary-checkbox-label=@checkboxLabel role=@role data-address-lookup-search-url =@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint() data-address-lookup-id-url=@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()>
     <tpr-address-lookup-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</tpr-address-lookup-legend>
 
     @if (hintTextBlocks is not null && hintTextBlocks.Any())

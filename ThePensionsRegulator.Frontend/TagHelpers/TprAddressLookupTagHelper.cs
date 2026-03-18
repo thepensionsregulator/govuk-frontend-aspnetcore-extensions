@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Html;
@@ -15,6 +16,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         internal const string TagName = "tpr-address-lookup";
         internal const string DescribedByAttributeName = "described-by";
         internal const string SameAsPrimaryCheckboxLabelAttributeName = "same-as-primary-checkbox-label";
+        internal const string RoleAttributeName = "role";
 
         private readonly ITprHtmlGenerator _htmlGenerator;
 
@@ -35,9 +37,23 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName(SameAsPrimaryCheckboxLabelAttributeName)]
         public string SameAsPrimaryCheckboxLabel { get; set; } = null!;
 
+
+        /// <summary>
+        /// The role of this address lookup component. Defaults to <see cref="AddressLookupRole.Primary"/>
+        /// </summary>
+        [HtmlAttributeName(RoleAttributeName)]
+        public AddressLookupRole Role { get; set; } = AddressLookupRole.Primary;
+
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+
+            if (Role == AddressLookupRole.Secondary && string.IsNullOrEmpty(SameAsPrimaryCheckboxLabel))
+            {
+                throw new InvalidOperationException(
+                    $"The '{SameAsPrimaryCheckboxLabelAttributeName}' attribute must be provided when '{RoleAttributeName}' is '{nameof(AddressLookupRole.Secondary)}'.");
+            }
+
             var addressLookupContext = new TprAddressLookupContext();
 
             IHtmlContent childContent;
@@ -55,6 +71,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 addressLookupContext.Legend,
                 childContent,
                 DescribedBy,
+                Role,
                 SameAsPrimaryCheckboxLabel);
 
             output.TagName = tagBuilder.TagName;

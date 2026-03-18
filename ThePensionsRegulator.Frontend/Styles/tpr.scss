@@ -35,6 +35,7 @@
 @import "govuk/components/breadcrumbs";
 @import "govuk/utilities";
 @import "govuk/overrides";
+@import "_govuk-breadcrumb.scss";
 @import "_govuk-checkboxes.scss";
 @import "_govuk-input.scss";
 @import "_govuk-pagination.scss";
@@ -49,7 +50,6 @@
 // Override compiled GOV.UK styles to apply differences from the TPR UI Kit
 @import '_tpr-accordion.scss';
 @import '_tpr-back.scss';
-@import '_tpr-breadcrumb.scss';
 @import '_tpr-button.scss';
 @import '_tpr-button-group.scss';
 @import '_tpr-caption.scss';

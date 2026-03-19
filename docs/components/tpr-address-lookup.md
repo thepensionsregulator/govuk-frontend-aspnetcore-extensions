@@ -47,7 +47,7 @@ Without JavaScript, the original address input fields remain visible and usable.
 
 @section scripts {
     <partial name="GOVUK/Validation" />
-    <script src="_Content/ThePensionsRegulator.Frontend/tpr/address-lookup/index.js" type="module"></script>
+    <script src="~/_Content/ThePensionsRegulator.Frontend/tpr/address-lookup/index.js" type="module"></script>
 }
 ```
 
@@ -92,10 +92,6 @@ _Required_
 ### `<tpr-address-lookup-legend>`
 
 _Required._ Must be a direct child of `<tpr-address-lookup>`. Only one legend is permitted.
-
-| Attribute         | Type   | Default | Description                                                                 |
-| ----------------- | ------ | ------- | --------------------------------------------------------------------------- |
-| `is-page-heading` | `bool` | `false` | When `true`, the legend text is wrapped in an `<h1>` inside the `<legend>`. |
 
 ### Child inputs
 

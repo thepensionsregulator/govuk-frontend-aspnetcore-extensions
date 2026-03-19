@@ -3,8 +3,9 @@
 @{
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
     var text = Model.Content.Value<string>(TprPropertyAliases.NavigationalLinksText);
+    var label = string.IsNullOrWhiteSpace(Model.Content.Value<string>(TprPropertyAliases.NavigationalLinksLabel)) ? "List of in-page anchor links" : Model.Content.Value<string>(TprPropertyAliases.NavigationalLinksLabel);
 }
 
-<nav @(string.IsNullOrWhiteSpace(cssClasses) ? string.Empty : "class=" + cssClasses) aria-label="List of in-page anchor links">
+<nav @(string.IsNullOrWhiteSpace(cssClasses) ? string.Empty : "class=" + cssClasses) aria-label="@label">
     @Html.Raw(text)
 </nav>

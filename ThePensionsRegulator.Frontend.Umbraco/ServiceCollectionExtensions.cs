@@ -81,6 +81,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             // ThePensionsRegulator.Frontend
             services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
+            services.AddTransient<ITprAddressLookupEndpointUrlProvider, TprAddressLookupEndpointUrlProvider>();
 
             var tprFrontendOptions = new TprFrontendOptions();
             if (configureTprOptions is not null) { configureTprOptions(tprFrontendOptions); }
@@ -98,7 +99,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<IYouTubeVideoIdParser, YouTubeVideoIdParser>();
             services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
             services.AddTransient<IAddressFieldStateHelper, AddressFieldStateHelper>();
-            services.AddTransient<ITprAddressLookupEndpointUrlProvider, TprAddressLookupEndpointUrlProvider>();
 
             return services;
         }

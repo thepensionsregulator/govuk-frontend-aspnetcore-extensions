@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
 using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.ExampleApp.Middleware;
@@ -11,10 +14,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Reflection;
 using ThePensionsRegulator.Frontend;
+using ThePensionsRegulator.Frontend.Services;
 
 namespace GovUk.Frontend.ExampleApp
 {
@@ -74,6 +75,8 @@ namespace GovUk.Frontend.ExampleApp
             services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
 
             services.AddSingleton<IValidatorAttributeAdapterFactory, CustomValidatorAttributeAdapterFactory>();
+
+            services.AddTransient<ITprAddressLookupEndpointUrlProvider, TprAddressLookupEndpointUrlProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

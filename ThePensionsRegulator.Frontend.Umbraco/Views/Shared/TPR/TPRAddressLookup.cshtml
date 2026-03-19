@@ -25,8 +25,6 @@
 
 @{
     var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
-    var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
-    var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : string.Empty;
     var hintText = Model.Content.Value<IHtmlEncodedString?>(PropertyAliases.Hint);
     var hintTextBlocks = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.AddressLookupFieldsetBlocks);
     var addressLine1ModelProperty = Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty);
@@ -91,7 +89,7 @@
 }
 
 <tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" same-as-primary-checkbox-label=@checkboxLabel role=@role data-address-lookup-search-url =@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint() data-address-lookup-id-url=@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()>
-    <tpr-address-lookup-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</tpr-address-lookup-legend>
+    <tpr-address-lookup-legend>@legend</tpr-address-lookup-legend>
 
     @if (hintTextBlocks is not null && hintTextBlocks.Any())
     {

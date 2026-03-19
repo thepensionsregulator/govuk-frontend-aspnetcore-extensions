@@ -64,9 +64,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             addressLookupContext.ThrowIfNotComplete();
 
-
             var tagBuilder = _htmlGenerator.GenerateTprAddressLookup(
-                addressLookupContext.IsLegendPageHeading,
                 addressLookupContext.LegendAttributes,
                 addressLookupContext.Legend,
                 childContent,

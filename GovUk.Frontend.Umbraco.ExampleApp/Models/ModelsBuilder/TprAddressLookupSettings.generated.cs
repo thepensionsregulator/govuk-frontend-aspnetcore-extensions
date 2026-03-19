@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Address lookup settings</summary>
 	[PublishedModel("tprAddressLookupSettings")]
-	public partial class TprAddressLookupSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses, IGovukLegendIsPageHeading
+	public partial class TprAddressLookupSettings : PublishedElementModel, IGovukCssClasses, IGovukGrid, IGovukGridColumnClasses
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -223,12 +223,5 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("cssClassesForColumn")]
 		public virtual string CssClassesForColumn => global::Umbraco.Cms.Web.Common.PublishedModels.GovukGridColumnClasses.GetCssClassesForColumn(this, _publishedValueFallback);
-
-		///<summary>
-		/// The legend is the page heading
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[ImplementPropertyType("legendIsPageHeading")]
-		public virtual bool LegendIsPageHeading => global::Umbraco.Cms.Web.Common.PublishedModels.GovukLegendIsPageHeading.GetLegendIsPageHeading(this, _publishedValueFallback);
 	}
 }

@@ -10,11 +10,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     {
         internal const string TagName = "tpr-address-lookup-legend";
 
-        private const string IsPageHeadingAttributeName = "is-page-heading";
-
-        [HtmlAttributeName(IsPageHeadingAttributeName)]
-        public bool? IsPageHeading { get; set; }
-
         /// <inheritdoc/>
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
@@ -23,7 +18,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var childContent = await output.GetChildContentAsync();
 
             addressLookupContext.SetLegend(
-                IsPageHeading ?? ComponentGenerator.AddressLookupIsPageHeadingByDefault,
                 output.Attributes.ToAttributeDictionary(), 
                 childContent);
 

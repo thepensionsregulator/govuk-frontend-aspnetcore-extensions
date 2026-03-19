@@ -6,13 +6,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     internal class TprAddressLookupContext
     {
-        private (bool IsPageHeading, AttributeDictionary Attributes, IHtmlContent Content)? _legend;
+        private (AttributeDictionary Attributes, IHtmlContent Content)? _legend;
 
         public AttributeDictionary? LegendAttributes => _legend?.Attributes;
         public IHtmlContent? Legend => _legend?.Content;
-        public bool IsLegendPageHeading => _legend?.IsPageHeading ?? false;
 
-        public void SetLegend(bool isPageHeading, AttributeDictionary attributes, IHtmlContent content)
+        public void SetLegend(AttributeDictionary attributes, IHtmlContent content)
         {
             if (Legend is not null)
             {
@@ -21,7 +20,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     TprAddressLookupTagHelper.TagName);
             }
 
-            _legend = (isPageHeading, attributes, content);
+            _legend = (attributes, content);
         }
 
         public void ThrowIfNotComplete()

@@ -9,9 +9,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     public partial class ComponentGenerator
     {
         internal const string TprAddressLookupElement = "div";
-        internal const bool AddressLookupIsPageHeadingByDefault = false;
 
-        public virtual TagBuilder GenerateTprAddressLookup(bool isLegendPageHeading, AttributeDictionary? legendAttributes, IHtmlContent? legendContent, IHtmlContent? childContent, string? fieldsetDescribedBy, AddressLookupRole role, string? sameAsPrimaryCheckboxLabel)
+        public virtual TagBuilder GenerateTprAddressLookup(AttributeDictionary? legendAttributes, IHtmlContent? legendContent, IHtmlContent? childContent, string? fieldsetDescribedBy, AddressLookupRole role, string? sameAsPrimaryCheckboxLabel)
         {
             var container = new TagBuilder(TprAddressLookupElement);
             container.AddCssClass("tpr-address-lookup");
@@ -39,19 +38,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 }
                 legendTag.MergeCssClass("govuk-fieldset__legend");
 
-                if (isLegendPageHeading)
-                {
-                    var h1 = new TagBuilder("h1");
-                    h1.MergeCssClass("govuk-fieldset__heading");
-                    h1.InnerHtml.AppendHtml(legendContent);
-                    legendTag.InnerHtml.AppendHtml(h1);
-                }
-                else
-                {
-                    legendTag.InnerHtml.AppendHtml(legendContent);
-                    legendTag.MergeCssClass("govuk-fieldset__legend--for-fieldset");
-                }
-                               
+                legendTag.InnerHtml.AppendHtml(legendContent);
+                legendTag.MergeCssClass("govuk-fieldset__legend--for-fieldset");
 
                 fieldSet.InnerHtml.AppendHtml(legendTag);
             }

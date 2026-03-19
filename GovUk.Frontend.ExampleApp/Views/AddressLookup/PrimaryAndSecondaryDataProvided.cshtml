@@ -1,0 +1,32 @@
+@model AddressLookupViewModel
+@{
+    ViewData["Title"] = "Address lookup primary and secondary data provided";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">
+            If the viewmodel for a page contains data for both the primary and secondary addresses, both are rendered
+            in the &lsquo;confirmed&rsquo; view. If the addresses are the same, the checkbox for the secondary address is checked.
+        </p>
+
+        <h2 class="govuk-heading-l">Address</h2>
+
+        <form asp-controller="AddressLookup" asp-action="PostPrimaryAndSecondaryDataProvided" method="post" novalidate>
+            <partial name="_AddressLookupForm" model="Model" />
+        </form>
+    </div>
+</div>
+
+@section scripts {
+    <partial name="GOVUK/Validation" />
+    <script src="~/_Content/ThePensionsRegulator.Frontend/tpr/address-lookup/index.js" type="module"></script>
+}

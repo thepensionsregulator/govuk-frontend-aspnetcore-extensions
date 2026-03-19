@@ -1,5 +1,4 @@
-﻿@model AddressLookupViewModel
-@{
+﻿@{
     ViewData["Title"] = "Address lookup";
 }
 
@@ -15,72 +14,22 @@
     <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
         <p class="govuk-body">
             The address lookup component wraps address input fields in a fieldset element, applying TPR styling and structure.
+            It supports a primary and secondary address with a &ldquo;same as primary&rdquo; checkbox.
         </p>
 
-        <p class="govuk-body">
-            Use the <strong>'tpr-address-lookup-legend'</strong> tag helper to add an optional legend to the fieldset.
-            The legend will be rendered as a proper <code>&lt;legend&gt;</code> element with the <code>govuk-fieldset__legend</code> class applied.
-        </p>
-
-        <p class="govuk-body">
-            Any child content (such as <code>govuk-input</code> components) will be rendered inside the fieldset after the legend.
-        </p>
-
-        <form asp-controller="AddressLookup" asp-action="Post" method="post" novalidate>
-            <tpr-address-lookup data-address-lookup-url="/AddressLookupData/results.json">
-                <tpr-address-lookup-legend>Enter shipping address</tpr-address-lookup-legend>
-                <govuk-client-side-validation>
-                    <govuk-input for="ShippingAddressLine1" input-class="govuk-input--width-30" autocomplete="address-line1">
-                        <govuk-input-label>Address line 1</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="ShippingAddressLine2" input-class="govuk-input--width-30" autocomplete="address-line2">
-                        <govuk-input-label>Address line 2 (optional)</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="ShippingTownOrCity" input-class="govuk-input--width-20" autocomplete="address-level2">
-                        <govuk-input-label>Town or city</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="ShippingCounty" input-class="govuk-input--width-20" autocomplete="address-level3">
-                        <govuk-input-label>County (optional)</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="ShippingCountry" input-class="govuk-input--width-20" autocomplete="country">
-                        <govuk-input-label>Country</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="ShippingPostcode" input-class="govuk-input--width-10" autocomplete="postal-code">
-                        <govuk-input-label>Postcode</govuk-input-label>
-                    </govuk-input>
-                </govuk-client-side-validation>
-            </tpr-address-lookup>
-
-            <tpr-address-lookup>
-                <tpr-address-lookup-legend>Enter billing address</tpr-address-lookup-legend>
-                <govuk-client-side-validation>
-                    <govuk-input for="BillingAddressLine1" input-class="govuk-input--width-30" autocomplete="address-line1">
-                        <govuk-input-label>Address line 1</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="BillingAddressLine2" input-class="govuk-input--width-30" autocomplete="address-line2">
-                        <govuk-input-label>Address line 2 (optional)</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="BillingTownOrCity" input-class="govuk-input--width-20" autocomplete="address-level2">
-                        <govuk-input-label>Town or city</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="BillingCounty" input-class="govuk-input--width-20"  autocomplete="address-level3">
-                        <govuk-input-label>County (optional)</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="BillingCountry" input-class="govuk-input--width-20" autocomplete="country">
-                        <govuk-input-label>Country</govuk-input-label>
-                    </govuk-input>
-                    <govuk-input for="BillingPostcode" input-class="govuk-input--width-10" autocomplete="postal-code">
-                        <govuk-input-label>Postcode</govuk-input-label>
-                    </govuk-input>
-                </govuk-client-side-validation>
-            </tpr-address-lookup>
-
-            <govuk-button type="submit">Submit</govuk-button>
-        </form>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>
+                <a class="govuk-link" asp-controller="AddressLookup" asp-action="NoDataProvided">No data provided</a>
+            </li>
+            <li>
+                <a class="govuk-link" asp-controller="AddressLookup" asp-action="PrimaryDataProvided">Primary address data provided</a>
+            </li>
+            <li>
+                <a class="govuk-link" asp-controller="AddressLookup" asp-action="PrimaryAndSecondaryDataProvided">Primary and secondary data provided</a>
+            </li>
+            <li>
+                <a class="govuk-link" asp-controller="AddressLookup" asp-action="JavaScriptDisabled">JavaScript disabled</a>
+            </li>
+        </ul>
     </div>
 </div>
-
-@section scripts {
-    <partial name="GOVUK/Validation" />
-    <script src="_Content/ThePensionsRegulator.Frontend/tpr/address-lookup/index.js" type="module"></script>
-}

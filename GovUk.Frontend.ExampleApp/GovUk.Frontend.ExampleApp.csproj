@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <Nullable>enable</Nullable>
+    <UserSecretsId>66153eb9-d3ab-45dc-871d-f9dde7a4d767</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,10 +31,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\AddressLookupData\" />
   </ItemGroup>
 
 </Project>

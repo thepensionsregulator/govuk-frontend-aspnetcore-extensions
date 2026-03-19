@@ -1,0 +1,28 @@
+@model AddressLookupViewModel
+@{
+    ViewData["Title"] = "Address lookup JavaScript disabled";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <p class="govuk-body">
+            If JavaScript is disabled, the address component shows text inputs that would accept an international address.
+            If data is provided, the relevant fields are populated with this data. When a user saves an address, the
+            configured API is not queried.
+        </p>
+
+        <h2 class="govuk-heading-l">Address</h2>
+
+        <form asp-controller="AddressLookup" asp-action="PostJavaScriptDisabled" method="post" novalidate>
+            <partial name="_AddressLookupForm" model="Model" />
+        </form>
+    </div>
+</div>

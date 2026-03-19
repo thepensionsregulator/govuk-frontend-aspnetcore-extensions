@@ -12,10 +12,92 @@
 
 <div class="govuk-grid-row">
     <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
+        <govuk-warning-text icon-fallback-text="Warning">
+            This component relies on JavaScript to allow it's full functionality.
+        </govuk-warning-text>
         <p class="govuk-body">
-            The address lookup component wraps address input fields in a fieldset element, applying TPR styling and structure.
-            It supports a primary and secondary address with a &ldquo;same as primary&rdquo; checkbox.
+            The address lookup component can be added to any page where you want the user to be able to search for an address.
         </p>
+        <p class="govuk-body">
+            Given a postcode and a building name or number the <a class="govuk-link" href="https://www.ordnancesurvey.co.uk/products/os-places-api" target="_blank">Ordnance Survey Places API</a> is 
+            queried using the postcode endpoint. Results are then filtered by the building name or number. If an exact match is found, the user is taken to the 'confirmed' view. If more than one result is found, 
+            the user must select an address and is then taken to the 'confirmed' view.
+        </p>
+        <p class="govuk-body">
+            The 'confirmed' view populates hidden inputs with values, including the UPRN.
+        </p>
+        <p class="govuk-body">
+            The user also has the option to manually enter a UK or international address.
+        </p>
+        <p class="govuk-body">
+            The JavaScript file <strong>'address-lookup/index.js'</strong> is provided as part of the <strong>'ThePensionsRegulator.Frontend'</strong> NuGet package. This must be included in any view that uses this component.
+        </p>
+
+        <govuk-inset-text>
+            &ltscript src="~/_Content/ThePensionsRegulator.Frontend/tpr/address-lookup/index.js" type="module"&gt;&lt;script&gt;
+        </govuk-inset-text>
+
+        <p class="govuk-body">
+            If JavaScript is not available then the component will display input fields for entering an international address. The labels
+            for these fields can be customised.
+        </p>
+
+        <h2 class="govuk-heading-m">
+            Primary and secondary address lookup components
+        </h2>
+
+        <p class="govuk-body">
+            An address lookup component can be configured to be a primary or secondary component. It defaults to primary.
+        </p>
+
+        <p class="govuk-body">
+            If the component is configured to be secondary, a checkbox is displayed which, when checked, puts that component in the 'confirmed' view with the same address as the primary component.
+        </p>
+
+        <p class="govuk-body">
+            The secondary component expects the primary component to appear first on the page.
+        </p>
+
+        <h2 class="govuk-heading-m">
+            Configuration
+        </h2>
+
+        <p class="govuk-body">
+            Two URLs are required to be configured to allow this component to search for addresses.
+        </p>
+
+        <h3 class="govuk-heading-s">
+            SearchEndpoint
+        </h3>
+
+        <p class="govuk-body">
+            This should be the URL for the <a class="govuk-link" href="https://docs.os.uk/os-apis/accessing-os-apis/os-places-api/technical-specification/postcode" target="_blank">postcode endpoint</a> of the Ordnance Survey API,
+            or an equivalent service.
+        </p>
+
+        <h3 class="govuk-heading-s">
+            AddressByIdEndpoint
+        </h3>
+
+        <p class="govuk-body">
+            This should be the URL for the <a class="govuk-link" href="https://docs.os.uk/os-apis/accessing-os-apis/os-places-api/technical-specification/uprn" target="_blank">postcode endpoint</a> of the Ordnance Survey API,
+            or an equivalent service.
+        </p>
+
+        <p class="govuk-body">
+            These are configured via <strong>appsettings.json</strong> under a section name <strong>AddressLookup</strong>.
+        </p>
+
+        <govuk-inset-text>
+<pre><code>"AddressLookup": { 
+    "SearchEndpoint": "https://api.os.uk/search/places/v1/postcode",
+    "AddressByIdEndpoint": "https://api.os.uk/search/places/v1/uprn"
+}</code></pre>
+        </govuk-inset-text>
+
+        <hr class="govuk-section-break govuk-section-break--visible govuk-section-break--m" />
+
+        <h2 class="govuk-heading-m">Address lookup examples</h2>
 
         <ul class="govuk-list govuk-list--bullet">
             <li>

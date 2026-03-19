@@ -6,7 +6,7 @@
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
-    var cssClasses = Model.Settings.Value<bool>(TprPropertyAliases.RelatedLinksBlueBar) ? "blue-bar" : string.Empty;
+    var cssClasses = Model.Settings.Value<bool>(TprPropertyAliases.RelatedLinksBar) ? string.Empty : "tpr-related-links--no-bar";
     var additionalCssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
     if (!string.IsNullOrWhiteSpace(additionalCssClasses)) { cssClasses += " " + additionalCssClasses; }
 
@@ -17,7 +17,7 @@
     var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.RelatedLinksLinks);
 }
 
-<tpr-related-links class="@cssClasses">
+<tpr-related-links class="@cssClasses" aria-label="List of related links">
 
     <tpr-related-links-heading id="@headingId">@heading</tpr-related-links-heading>
 

@@ -11,12 +11,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             Guard.ArgumentNotNull(nameof(tprRelatedLinks), tprRelatedLinks);
             Guard.ArgumentValid(nameof(tprRelatedLinks), $"{nameof(tprRelatedLinks.HeadingContent)} cannot be null", tprRelatedLinks.HeadingContent != null);
 
-            var nav = new TagBuilder("nav");
-
-            var outer = new TagBuilder("div");
+            var outer = new TagBuilder("nav");
             if (tprRelatedLinks.RelatedLinksAttributes != null) { outer.MergeAttributes(tprRelatedLinks.RelatedLinksAttributes); }
             outer.MergeCssClass("tpr-related-links");
-            nav.InnerHtml.AppendHtml(outer);
 
             var heading = new TagBuilder("h2");
             if (tprRelatedLinks.HeadingAttributes != null) { heading.MergeAttributes(tprRelatedLinks.HeadingAttributes); }
@@ -39,7 +36,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 list.InnerHtml.AppendHtml(li);
             }
 
-            return nav;
+            return outer;
         }
     }
 }

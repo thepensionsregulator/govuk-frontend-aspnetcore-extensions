@@ -1,0 +1,10 @@
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
+@using ThePensionsRegulator.Frontend.Umbraco
+@{
+    var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+    var text = Model.Content.Value<string>(TprPropertyAliases.NavigationalLinksText);
+}
+
+<nav @(string.IsNullOrWhiteSpace(cssClasses) ? string.Empty : "class=" + cssClasses) aria-label="List of in-page anchor links">
+    @Html.Raw(text)
+</nav>

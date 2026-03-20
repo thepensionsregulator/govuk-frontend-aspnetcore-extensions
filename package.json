@@ -21,7 +21,8 @@
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "wwwroot/govuk/**/*.js"
+      "wwwroot/govuk/**/*.js",
+      "wwwroot/tpr/**/*.js"
     ],
     "transform": {},
     "moduleNameMapper": {

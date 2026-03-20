@@ -42,6 +42,7 @@
 @import "_govuk-radios.scss";
 @import "_govuk-select.scss";
 @import "_govuk-textarea.scss";
+@import "_govuk-typography.scss";
 
 // Load our custom font (we are not allowed to use 'GDS Transport' https://design-system.service.gov.uk/styles/typography/)
 @import '_open-sans.scss';
@@ -71,7 +72,6 @@
 @import '_tpr-table.scss';
 @import '_tpr-tag.scss';
 @import '_tpr-textarea.scss';
-@import '_tpr-typography.scss';
 @import '_tpr-warning-text.scss';
 
 // Add different components and customisations that are not part of the GOV.UK Design System (or are in a later version than the one we're targeting)

@@ -50,6 +50,9 @@ class AddressLookupComponentBuilder {
 
         address.forEach((addressLine) => {
             addressLine = addressLine.trim();
+            if (addressLine === this.config.DEFAULTS.COUNTRY) {
+                return;
+            }
             if (addressLine === postcode) {
                 selectedAddressParagraph.appendChild(document.createTextNode(addressLine));
             } else {

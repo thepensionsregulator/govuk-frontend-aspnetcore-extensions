@@ -12,10 +12,10 @@ namespace ThePensionsRegulator.GovUk.Frontend
     {
         public static IServiceCollection AddTprGovUkFrontend(this IServiceCollection services)
         {
-            return services.AddGovUkFrontendExtensions(options => { });
+            return services.AddTprGovUkFrontend(options => { });
         }
 
-        public static IServiceCollection AddGovUkFrontendExtensions(
+        public static IServiceCollection AddTprGovUkFrontend(
             this IServiceCollection services,
             Action<GovUkFrontendOptions> configureOptions)
         {

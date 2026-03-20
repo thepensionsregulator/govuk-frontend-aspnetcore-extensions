@@ -10,7 +10,6 @@ using ThePensionsRegulator.Frontend.Umbraco;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
@@ -31,7 +30,6 @@ else
     builder.Services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
 }
 
-builder.Services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServiceForExampleApp>();
 builder.Services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
 builder.Services.AddTransient<ITprSearchResultsEndpointUrlProvider, TprQueryBasedSearchResultsEndpointUrlProvider>();
 builder.Services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();

@@ -61,15 +61,12 @@
     <partial name="TPR/TPRHeaderLockup" model="headerLockup" />
     <div class="tpr-main-wrapper">
         @RenderSection("language", required: false)
-        @if (Context.Request.Path != home?.Url())
+        @RenderSection("secondary_navigation", required: false)
+        @if (!IsSectionDefined("secondary_navigation"))
         {
-            @RenderSection("secondary_navigation", required: false)
-            @if (!IsSectionDefined("secondary_navigation"))
-            {
-                <div class="govuk-width-container">
-                    <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
-                </div>
-            }
+            <div class="govuk-width-container">
+                <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
+            </div>
         }
         @if (currentPage?.ContentType.Alias == "sideNavigation" && useTPRstyles)
         {

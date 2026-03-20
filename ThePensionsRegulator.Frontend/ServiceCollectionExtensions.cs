@@ -36,7 +36,7 @@ namespace ThePensionsRegulator.Frontend
             services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
             services.AddTransient<IStaticFileCachePolicy, TprStaticFileCachePolicy>();
 
-            services.AddGovUkFrontendExtensions(configureGovUkOptions);
+            services.AddTprGovUkFrontend(configureGovUkOptions);
 
             var tprFrontendOptions = new TprFrontendOptions();
             if (configureTprOptions is not null) { configureTprOptions(tprFrontendOptions); }

@@ -103,6 +103,9 @@
     },
     PATTERNS: {
         POSTCODE: "^\\s*[A-Za-z]{1,2}[0-9]{1,2}[A-Za-z]?[\\s\\-]*[0-9][ABDEFGHJLNPQRSTUWXYZabdefghjlnpqrstuwxyz]{2}\\s*$"
+    },
+    DEFAULTS: {
+        COUNTRY: 'United Kingdom'
     }
 };
 

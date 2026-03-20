@@ -62,6 +62,12 @@ describe("Address mapper", () => {
             expect(result.county).toMatch('');
         });
 
+        it("country is always the default value", () => {
+            const result = mapper.mapFromDpaResult(typicalResidentialDPAResult);
+
+            expect(result.country).toMatch(ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY);
+        });
+
         const subBuildingBuildingNameBuildingNumberDPAResult = {
             "SUB_BUILDING_NAME": "FLAT 14",
             "BUILDING_NAME": "DA VINCI HOUSE",

@@ -24,6 +24,7 @@
             town: dpaResult.POST_TOWN,
             postcode: dpaResult.POSTCODE,
             county: '',
+            country: this.config.DEFAULTS.COUNTRY,
             UPRN: dpaResult.UPRN
         };
 

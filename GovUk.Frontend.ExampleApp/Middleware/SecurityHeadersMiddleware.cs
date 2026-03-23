@@ -29,7 +29,7 @@ namespace GovUk.Frontend.ExampleApp.Middleware
                     $"style-src 'self' {styleSrcForAblePlayer};" +
                     "img-src 'self' https://i.ytimg.com; " +
                     "frame-src youtube.com www.youtube.com www.youtube-nocookie.com; " +
-                    $"connect-src https://api.os.uk; {connectSrcForHotReload}");
+                    $"connect-src 'self' https://api.os.uk; {connectSrcForHotReload}");
 
             await _next(context);
         }

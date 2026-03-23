@@ -8,7 +8,6 @@
     async searchAddresses(postcode, building) {
         const url = new URL(this.searchEndpoint, window.location.origin);
         if (!this.exampleMode) {
-            //TODO: the postcode must be 'AA11 1AA' but GDS says we must accept 'AA11-1AA' so we will need to sanitise the postcode
             url.searchParams.set('postcode', postcode);
         }
 
@@ -42,7 +41,7 @@
                 headers: { 'Content-Type': 'application/json' }
             });
             const addresses = await response.json();
-            return addresses.results.map(result => result.DPA).find(address => address.UPRN === id);
+            return [ addresses.results.map(result => result.DPA).find(address => address.UPRN === id) ];
         }
 
         const url = new URL(this.idEndpoint, window.location.origin);

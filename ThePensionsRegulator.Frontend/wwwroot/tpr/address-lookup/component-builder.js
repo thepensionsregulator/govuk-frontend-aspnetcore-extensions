@@ -38,7 +38,6 @@ class AddressLookupComponentBuilder {
         const legend = document.createElement("legend");
         legend.classList = this.config.CSS_CLASSES.LEGEND;
         legend.innerText = legendText;
-        legend.setAttribute("tabindex", "-1");
 
         fieldset.appendChild(legend);
 

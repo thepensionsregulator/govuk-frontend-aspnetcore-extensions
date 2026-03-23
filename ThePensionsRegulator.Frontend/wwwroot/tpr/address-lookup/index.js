@@ -48,11 +48,15 @@ class TprAddressLookup {
         this.stateContainer = document.createElement("div");
         this.container.appendChild(this.stateContainer);
 
+        this.initialised = false;
+
         if (this.validator.validAddress(address)) { 
             this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
         } else {
             this.stateMachine.transition(AddressLookupStateMachine.STATES.SEARCH);
         }
+
+        this.initialised = true;
     }
 
     JsonResults = [];
@@ -81,16 +85,21 @@ class TprAddressLookup {
                 this.renderUKManualEntryView();
                 break;
         }
-        this.focusHeading();
+
+        if (this.initialised) {
+            this.focusFirstInteractiveElement();
+        }
     }
 
-    focusHeading() {
-        requestAnimationFrame(() => {
-            const heading = this.stateContainer.querySelector("legend[tabindex], h4[tabindex], label[tabindex]");
-            if (heading) {
-                heading.focus();
+    focusFirstInteractiveElement() {
+        setTimeout(() => {
+            const focusTarget = this.stateContainer.querySelector(
+                "h4.govuk-visually-hidden[tabindex], select, input:not([type='hidden']), a.govuk-link"
+            );
+            if (focusTarget) {
+                focusTarget.focus();
             }
-        });
+        }, 200);
     }
 
     captureOriginalInputs() {
@@ -144,12 +153,6 @@ class TprAddressLookup {
         const selectElement = this.componentBuilder.createAddressSelect(ADDRESS_LOOKUP_CONFIG.LABELS.CHOOSE_AN_ADDRESS, addressOptions)
             .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_REQUIRED)
             .build();
-
-        const selectLabel = selectElement.querySelector("label");
-        if (selectLabel) {
-            selectLabel.setAttribute("tabindex", "-1");
-        }
-
 
         const confirmAddressButton = this.componentBuilder.createConfirmAddressButton((event) => this.confirmAddressOnClick(event));
 

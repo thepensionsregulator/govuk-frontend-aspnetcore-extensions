@@ -12,8 +12,6 @@
 
     const mobileToggle = document.createElement("button");
     mobileToggle.type = "button";
-    mobileToggle.classList.add("govuk-link");
-    mobileToggle.classList.add("govuk-link--no-visited-state");
     mobileToggle.classList.add("tpr-side-nav__mobile-expand-toggle");
     mobileToggle.setAttribute("aria-expanded", "false");
     mobileToggle.setAttribute("aria-controls", id + "__list");

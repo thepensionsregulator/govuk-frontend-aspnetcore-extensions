@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Collections.Generic;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -28,7 +29,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var builder = new HtmlContentBuilder();
             builder.Append(DefaultShowMoreQuestionsContent);
 
-            var li = CreateLink(showMoreQuestionsAttributes, builder);
+            var li = CreateButton(showMoreQuestionsAttributes, builder);
 
             list.InnerHtml.AppendHtml(li);
 
@@ -49,6 +50,18 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             a.MergeCssClass("govuk-link");
             a.InnerHtml.AppendHtml(content);
             li.InnerHtml.AppendHtml(a);
+
+            return li;
+        }
+        private TagBuilder CreateButton(AttributeDictionary dictionary, IHtmlContent content)
+        {
+            var li = new TagBuilder("li");
+            var button = new TagBuilder("button");
+            button.Attributes.Add(new KeyValuePair<string, string?>("data-module", "govuk-button"));
+            button.MergeAttributes(dictionary);
+            button.MergeCssClass("govuk-link");
+            button.InnerHtml.AppendHtml(content);
+            li.InnerHtml.AppendHtml(button);
 
             return li;
         }

@@ -426,3 +426,9 @@ $tpr-header-left-width-xl: 200px;
         margin-top: 0;
     }
 }
+
+@media(max-width: 315px) {
+    .tpr-header__logo {
+        margin-bottom: 0.5rem;
+    }   
+}

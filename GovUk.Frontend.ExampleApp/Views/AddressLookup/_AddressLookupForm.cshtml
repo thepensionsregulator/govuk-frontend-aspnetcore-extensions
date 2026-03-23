@@ -86,8 +86,8 @@
 
 <tpr-address-lookup role="Secondary"
                     same-as-primary-checkbox-label="Same as shipping address"
-                    data-address-lookup-search-url="/AddressLookupData/results.json"
-                    data-address-lookup-id-url="/AddressLookupData/results.json">
+                    data-address-lookup-search-url=@urlProvider.GetAddressLookupSearchEndpoint()
+                    data-address-lookup-id-url=@urlProvider.GetAddressLookupIdEndpoint()>
     <tpr-address-lookup-legend>Billing address</tpr-address-lookup-legend>
 
     <govuk-client-side-validation error-message-required="This field is required"

@@ -5,7 +5,7 @@ import { AddressLookupComponentBuilder } from "./component-builder.js";
 import { AddressLookupValidator } from "./validator.js";
 import { AddressMapper } from "./mapper.js";
 import { PostcodeSanitiser } from "./postcode-sanitiser.js";
-
+    
 class TprAddressLookup {
     constructor(element, key, role, primaryStateMachine) {
         this.container = element;
@@ -81,6 +81,16 @@ class TprAddressLookup {
                 this.renderUKManualEntryView();
                 break;
         }
+        this.focusHeading();
+    }
+
+    focusHeading() {
+        requestAnimationFrame(() => {
+            const heading = this.stateContainer.querySelector("legend[tabindex], h4[tabindex], label[tabindex]");
+            if (heading) {
+                heading.focus();
+            }
+        });
     }
 
     captureOriginalInputs() {
@@ -135,6 +145,12 @@ class TprAddressLookup {
             .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_REQUIRED)
             .build();
 
+        const selectLabel = selectElement.querySelector("label");
+        if (selectLabel) {
+            selectLabel.setAttribute("tabindex", "-1");
+        }
+
+
         const confirmAddressButton = this.componentBuilder.createConfirmAddressButton((event) => this.confirmAddressOnClick(event));
 
         const enterAddressNotOnListLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.ENTER_ADDRESS_NOT_ON_LIST, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_NOT_ON_LIST);
@@ -177,6 +193,11 @@ class TprAddressLookup {
     renderConfirmedView(address) {
         this.clearContainer();
 
+        const heading = document.createElement("h4");
+        heading.classList.add("govuk-visually-hidden");
+        heading.setAttribute("tabindex", "-1");
+        heading.innerText = ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_CONFIRMED;
+
         const fullAddress = [
             address.organisationName || "",
             address.addressLine1,
@@ -199,6 +220,7 @@ class TprAddressLookup {
 
         const hiddenInputs = this.createHiddenInputsForAddress(address);
 
+        this.stateContainer.appendChild(heading);
         this.stateContainer.appendChild(confirmedAddress);
         this.stateContainer.appendChild(hiddenInputs);
 

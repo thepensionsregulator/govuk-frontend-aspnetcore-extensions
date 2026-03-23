@@ -52,6 +52,7 @@
     },
 
     LABELS: {
+        ADDRESS_CONFIRMED: "Confirmed address",
         BUILDING_NAME: "Building or house number",
         CHOOSE_AN_ADDRESS: "Choose an address",
         CONFIRM_ADDRESS_BUTTON: "Confirm address",

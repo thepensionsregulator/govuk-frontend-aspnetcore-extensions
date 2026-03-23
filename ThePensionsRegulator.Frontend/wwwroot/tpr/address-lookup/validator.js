@@ -125,7 +125,7 @@ class AddressLookupValidator {
 
         selectElement.classList.add("govuk-select--error");
 
-        this.govuk.updateError(selectElement, "Select confirm address before saving this page");
+        this.govuk.updateError(selectElement, message);
     }
 }
 

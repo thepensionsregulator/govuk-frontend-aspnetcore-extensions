@@ -231,7 +231,7 @@ class TprAddressLookup {
             this.stateContainer.appendChild(linkList);
         }
 
-
+        this.validator.reparse();
         this.validator.govuk.updateErrorSummary();
     }
 
@@ -285,6 +285,7 @@ class TprAddressLookup {
         this.stateContainer.appendChild(confirmAddressButton);
         this.stateContainer.appendChild(linkList);
 
+        this.validator.reparse();
         this.validator.govuk.updateErrorSummary();
     }
 
@@ -358,7 +359,7 @@ class TprAddressLookup {
             return;
         }
 
-        var address = this.addressMapper.mapFromManualInternationalEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, regionInput.value, countryInput.value, postcodeInput.value);
+        const address = this.addressMapper.mapFromManualInternationalEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, regionInput.value, countryInput.value, postcodeInput.value);
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 
@@ -377,7 +378,7 @@ class TprAddressLookup {
             return;
         }
 
-        var address = this.addressMapper.mapFromManualUKEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, countyInput.value, postcodeInput.value);
+        const address = this.addressMapper.mapFromManualUKEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, countyInput.value, postcodeInput.value);
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 

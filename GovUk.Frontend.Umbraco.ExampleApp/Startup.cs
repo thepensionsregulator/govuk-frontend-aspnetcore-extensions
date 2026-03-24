@@ -69,6 +69,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
             services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
             services.AddTransient<ITprSearchResultsEndpointUrlProvider, TprQueryBasedSearchResultsEndpointUrlProvider>();
             services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();
+            services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
         }
 
         /// <summary>

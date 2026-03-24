@@ -4,17 +4,22 @@ This repository includes an example application which demonstrates the validatio
 
 1. Ensure you have .NET 6.0.5 (SDK version 6.0.300) or better installed. Run `dotnet --list-sdks` to check.
 2. Clone this repo.
-3. Open `GovUk.Frontend.sln` in Visual Studio 2022 or better.
-4. Delete the `ConnectionStrings` section from `appsettings.json` (it will get re-generated).
-5. Click on the `GovUk.Frontend.Umbraco.ExampleApp` project, and run it.
-6. When you see the Umbraco installer enter your name, email address and a new password and click 'Install'.
-7. When you see the Umbraco login screen, enter the email address and password you just configured and click 'Login'.
-8. When you are taken to the Umbraco backoffice go to 'Settings > uSync > Everything > Import'
-9. View the example application at https://localhost:44350.
+3. Run `npm run govuk` to install the `govuk-frontend` npm package.
+4. Open `GovUk.Frontend.sln` in Visual Studio 2022 or better.
+5. Delete the `ConnectionStrings` section from `appsettings.json` (it will get re-generated).
+6. Click on the `GovUk.Frontend.Umbraco.ExampleApp` project, and run it.
+7. When you see the Umbraco installer enter your name, email address and a new password and click 'Install'.
+8. When you see the Umbraco login screen, enter the email address and password you just configured and click 'Login'.
+9. When you are taken to the Umbraco backoffice go to 'Settings > uSync > Everything > Import'
+10. View the example application at https://localhost:44350.
 
 By default the example application uses The Pensions Regulator (TPR) branding. To see the GOV.UK branded version set `TPRStyles: false` in `appsettings.json` and re-run the application.
 
 ## Troubleshooting
+
+### UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+
+If you get an error `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` when running npm commands you need to click the padlock next to any site in the address bar of your browser, and download the CA certificate for your network in .PEM format. Then set the environment variable NODE_EXTRA_CA_CERTS to the path to that certificate, and restart Visual Studio.
 
 ### Error during installation: Already initialized
 

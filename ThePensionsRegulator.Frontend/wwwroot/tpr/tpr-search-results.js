@@ -53,6 +53,8 @@ function sanitizeString(input) {
 function resetSearchInput(){
     const searchInput = getSearchInput();
     if (searchInput != null) {
+        searchInput.removeAttribute("aria-describedby");
+        searchInput.removeAttribute("aria-invalid");
         searchInput.value = '';
     }
 }
@@ -245,11 +247,15 @@ function showErrorTextVisibility(showErrorText, errorTextContent = '') {
             errorText.classList.remove("govuk-visually-hidden");
             errorText.textContent = errorTextContent;
             searchInput.classList.add("govuk-input--error");
+            searchInput.setAttribute("aria-describedby","tpr-search-results-error-text");
+            searchInput.setAttribute("aria-invalid","true");
             formGroup.classList.add("govuk-form-group--error");
         } else {
             errorText.classList.add("govuk-visually-hidden");
             searchInput.classList.remove("govuk-input--error");
             formGroup.classList.remove("govuk-form-group--error");
+            searchInput.removeAttribute("aria-describedby");
+            searchInput.removeAttribute("aria-invalid");
         }
     }
 }

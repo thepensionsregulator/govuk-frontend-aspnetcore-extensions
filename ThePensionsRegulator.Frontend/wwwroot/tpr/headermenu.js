@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const toggles = document.querySelectorAll(".tpr-mobile-menu__toggle");
         const overlay = document.querySelectorAll(".tpr-header-menu__nav-overlay");
         const menuItems = document.querySelectorAll(".tpr-header-menu__nav-menu-item");
+        const arrowContainers = document.querySelectorAll(".tpr-header-menu__arrow-container");
         const arrows = document.querySelectorAll(".tpr-header-menu__arrow");
         const nav = document.querySelector(".tpr-header-menu__nav");
 
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             overlay.forEach(o => o.addEventListener("click", toggleMobileMenu));
 
-            arrows.forEach(a => a.removeEventListener("click", onClickDisplaySubMenuDesktop));
+            arrowContainers.forEach(a => a.removeEventListener("click", onClickDisplaySubMenuDesktop));
 
             arrows.forEach(a => a.addEventListener("click", expandMobileMenuSubMenu));
             arrows.forEach(a => a.classList.toggle("tpr-header-menu__arrow-right"));
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     subMenu.style.display = "none";
                 }
                 m.removeEventListener("keydown", desktopKeyboardNavigation)
+                m.addEventListener("keydown", closeMobileMenuOnFocusLeave)
             });
             arrows.forEach(a => a.addEventListener("keydown", mobileKeyboardNavigation))
         } else {
@@ -48,7 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
             toggles.forEach(t => t.removeEventListener("click", toggleMobileMenu))
             overlay.forEach(o => o.removeEventListener("click", toggleMobileMenu));
             nav.addEventListener("focusin", restoreDefaultMenuState);
-            arrows.forEach(a => a.addEventListener("click", onClickDisplaySubMenuDesktop));
+            arrowContainers.forEach(a => a.addEventListener("click", onClickDisplaySubMenuDesktop));
+            arrowContainers.forEach(a => a.classList.add("js"));
             arrows.forEach(a => a.removeEventListener("click", expandMobileMenuSubMenu));
 
             menuItems.forEach(m => {
@@ -60,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     subMenu.style.display = "none";
                 }
+                m.removeEventListener("keydown", closeMobileMenuOnFocusLeave)
                 m.addEventListener("keydown", desktopKeyboardNavigation)
             });
 
@@ -100,21 +104,27 @@ function highlightCurrentSection() {
         const anchor = item.querySelector('a');
         let anchorText = anchor.innerHTML.toLowerCase();
 
-        const arrow = item.querySelector(".tpr-header-menu__arrow-container")
+        const arrowContainer = item.querySelector(".tpr-header-menu__arrow-container")
+        const arrow = item.querySelector(".tpr-header-menu__arrow")
 
         if (anchorText.includes(section.toLowerCase())) {
             anchor.classList.toggle("tpr-header-menu__nav-menu-item--active")
-            arrow.classList.toggle("tpr-header-menu_menu-item-arrow--active")
+            arrowContainer.classList.toggle("tpr-header-menu_arrow-container--active")
+            arrow.classList.toggle("tpr-header-menu_arrow--active")
         }
     });
 }
 
 function onClickDisplaySubMenuDesktop(e) {
-    const item = e.currentTarget;
+
+    const container = e.currentTarget;
+    const item = container.querySelector(".tpr-header-menu__arrow")
     const isExpanded = item.getAttribute("aria-expanded") === "true";
     const menuItem = item.closest(".tpr-header-menu__nav-menu-item");
     const subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
     const overlay = document.querySelector(".tpr-header-menu__nav-overlay");
+
+    item.focus();
 
     if (isExpanded) {
         closeSubMenuDesktop(item, subMenu, overlay);
@@ -159,8 +169,8 @@ function observeSubMenuVisibility(item, subMenu, overlay) {
         {
             root: null,
             threshold: 0
-       }
-     
+        }
+
     );
     desktopSubMenuObserver.observe(subMenu);
 }
@@ -395,6 +405,21 @@ function mobileKeyboardNavigation(e) {
 
         expandMobileMenuSubMenu(e);
     }
+}
+
+function closeMobileMenuOnFocusLeave() {
+
+    setTimeout(() => {
+
+        const nav = document.querySelector(".tpr-header-menu__nav");
+        const toggle = document.querySelector(".tpr-header-menu__button");
+
+        const activeElement = document.activeElement;
+
+        if (activeElement !== toggle && !nav.contains(activeElement)) {
+            toggleMobileMenu();
+        }
+    }, 0);
 }
 
 function removeActiveClasses() {

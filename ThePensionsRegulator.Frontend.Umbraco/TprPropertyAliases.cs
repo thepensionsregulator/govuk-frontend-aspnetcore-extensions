@@ -19,6 +19,7 @@
         public const string CountyErrorMessageMaxLength = "countyErrorMessageMaxLength";
         public const string CountyLabel = "countyLabel";
         public const string Image = "image";
+        public const string RelatedLinksBar = "bar";
         public const string RelatedLinksHeading = "heading";
         public const string RelatedLinksLinks = "links";
         public const string BoxStyle = "styleOfBox";
@@ -52,6 +53,8 @@
         public const string PostcodeErrorMessageRequired = "postcodeErrorMessageRequired";
         public const string PostcodeErrorMessageMaxLength = "postcodeErrorMessageMaxLength";
         public const string PostcodeLabel = "postcodeLabel";
+        public const string NavigationalLinksText = "text";
+        public const string NavigationalLinksLabel = "label";
         public const string SearchResultsHeading = "heading";
         public const string SearchResultsFooterLinks = "footerlinks";
         public const string SearchResultsHeadingClass = "headingClass";
@@ -76,5 +79,8 @@
         public const string VideoTranscriptUrl = "transcriptUrl";
         public const string VideoAutoplay = "autoplay";
         public const string VideoPlaysInline = "playsInline";
+        public const string VideoDescription = "description";
+        public const string VideoHeadingLevel = "headingLevel";
+        public const string VideoHeadingSize = "headingClass";
     }
 }

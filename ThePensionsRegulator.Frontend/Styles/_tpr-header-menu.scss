@@ -18,8 +18,9 @@
     margin-bottom: -0.6rem;
     cursor: pointer;
 
-    &:focus {
-        outline: $govuk-focus-width solid govuk-functional-colour(focus);
+    &:focus-within {
+        box-shadow: 0 0 0 4px $tpr-colour-tangerine-yellow, 0 0 0 8px $tpr-colour-black;
+        outline: 3px solid transparent;
     }
 }
 
@@ -34,16 +35,9 @@
     cursor: pointer;
 }
 
-.tpr-header-menu__button:focus {
-    color: $tpr-colour-black;
-    background-color: $tpr-colour-tangerine-yellow;
-    box-shadow: 0 -2px $tpr-colour-tangerine-yellow, 0 4px $tpr-colour-black;
-    text-decoration: none;
-}
-
-.tpr-header-menu__button:focus-visible {
-    outline: transparent;
-}
+    .tpr-header-menu__button:focus-visible {
+        outline: transparent;
+    }
 
 .tpr-header-menu__button--opened {
     color: $tpr-colour-royal-blue;

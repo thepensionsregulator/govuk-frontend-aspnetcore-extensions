@@ -31,6 +31,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             }
             logoElement.MergeCssClass("tpr-header__logo");
 
+            var pictureElement = new TagBuilder("picture");
+
+            var sourceElement = new TagBuilder("source");
+            sourceElement.Attributes.Add("srcset", "/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-footer.svg");
+            sourceElement.Attributes.Add("media", "(forced-colors: active) and (prefers-color-scheme: light)");
+            pictureElement.InnerHtml.AppendHtml(sourceElement);
+
             var screenLogo = new TagBuilder("img");
             screenLogo.TagRenderMode = TagRenderMode.SelfClosing;
             if (tprHeaderBar.LogoAttributes != null) { screenLogo.MergeAttributes(tprHeaderBar.LogoAttributes); }
@@ -39,7 +46,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             screenLogo.Attributes.Add("width", "180");
             screenLogo.Attributes.Add("height", "75");
             screenLogo.MergeCssClass("tpr-header__logo-img--screen");
-            logoElement.InnerHtml.AppendHtml(screenLogo);
+
+            pictureElement.InnerHtml.AppendHtml(screenLogo);
+            logoElement.InnerHtml.AppendHtml(pictureElement);
 
             var printLogo = new TagBuilder("img");
             printLogo.TagRenderMode = TagRenderMode.SelfClosing;

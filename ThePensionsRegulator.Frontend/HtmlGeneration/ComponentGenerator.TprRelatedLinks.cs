@@ -11,7 +11,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             Guard.ArgumentNotNull(nameof(tprRelatedLinks), tprRelatedLinks);
             Guard.ArgumentValid(nameof(tprRelatedLinks), $"{nameof(tprRelatedLinks.HeadingContent)} cannot be null", tprRelatedLinks.HeadingContent != null);
 
-            var outer = new TagBuilder("div");
+            var outer = new TagBuilder("nav");
             if (tprRelatedLinks.RelatedLinksAttributes != null) { outer.MergeAttributes(tprRelatedLinks.RelatedLinksAttributes); }
             outer.MergeCssClass("tpr-related-links");
 

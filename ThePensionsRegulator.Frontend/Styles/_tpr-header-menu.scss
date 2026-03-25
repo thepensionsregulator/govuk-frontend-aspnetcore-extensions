@@ -73,8 +73,14 @@
     display: none;
 }
 
-.tpr-mobile-menu__toggle .tpr-header-menu__menu-icon {
+ .tpr-header-menu__menu-icon {
     fill: $tpr-colour-white;
+}
+
+@media (prefers-color-scheme: light) {
+    .tpr-header-menu__menu-icon {
+        fill: $tpr-colour-black;
+    }
 }
 
 .tpr-header-menu__nav-container {

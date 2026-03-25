@@ -511,6 +511,552 @@ namespace GovUk.Frontend.Umbraco.Tests.Controllers
             // Assert
             Assert.That(result, Is.EqualTo(typeof(CustomClass)));
         }
+
+        [Test]
+        public void CollectProperties_ModelWithSimpleTuple_ExpandsTupleElementNames()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+            var expected = new[] { "Id", "Pair.Item1", "Pair.Item2" };
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithSimpleTuple), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames.OrderBy(x => x), Is.EqualTo(expected.OrderBy(x => x)));
+        }
+
+        [Test]
+        public void CollectProperties_ModelWithNamedTuple_ExpandsNamedTupleElements()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+            var expected = new[] { "FirstName", "LastName", "Person.First", "Person.Last" };
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithNamedTuple), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames.OrderBy(x => x), Is.EqualTo(expected.OrderBy(x => x)));
+        }
+
+        [Test]
+        public void CollectProperties_ModelWithTupleOfPrimitives_ExpandsTupleElements()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+            var expected = new[] { "Coordinates.Item1", "Coordinates.Item2", "Coordinates.Item3" };
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithTupleOfPrimitives), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames.OrderBy(x => x), Is.EqualTo(expected.OrderBy(x => x)));
+        }
+
+        [Test]
+        public void CollectProperties_ModelWithNestedTuple_ExpandsAllLevels()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+            var expected = new[] { "Name", "Nested.Item1", "Nested.Item2" };
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithNestedTuple), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames.OrderBy(x => x), Is.EqualTo(expected.OrderBy(x => x)));
+        }
+
+        [Test]
+        public void CollectProperties_ModelWithTupleList_ExpandsTupleElements()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+            var expected = new[] { "Title", "Pairs.Item1", "Pairs.Item2" };
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithTupleList), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames.OrderBy(x => x), Is.EqualTo(expected.OrderBy(x => x)));
+        }
+
+        [Test]
+        public void GetEnumerableElementType_TupleArray_ReturnsTupleType()
+        {
+            // Arrange
+            var tupleType = typeof((string, int)[]);
+
+            // Act
+            var result = _controller.GetEnumerableElementType(tupleType);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(typeof((string, int))));
+        }
+
+        [Test]
+        public void GetEnumerableElementType_ListOfTuple_ReturnsTupleType()
+        {
+            // Arrange
+            var tupleType = typeof(List<(string, int)>);
+
+            // Act
+            var result = _controller.GetEnumerableElementType(tupleType);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(typeof((string, int))));
+        }
+
+        [Test]
+        public void IsTupleType_ValueTupleOfTwoElements_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsTupleType(typeof((string, int)));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsTupleType_ValueTupleOfThreeElements_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsTupleType(typeof((string, int, bool)));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsTupleType_ValueTupleOfOneElement_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsTupleType(typeof(ValueTuple<string>));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsTupleType_NonTupleType_ReturnsFalse()
+        {
+            // Act
+            var result = _controller.IsTupleType(typeof(SimpleModel));
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void GetTupleElementNames_ValueTupleWithoutNames_ReturnsDefaultItemNames()
+        {
+            // Arrange
+            var tupleType = typeof((string, int));
+
+            // Act
+            var result = _controller.GetTupleElementNames(tupleType).ToList();
+
+            // Assert
+            Assert.That(result, Is.EqualTo(new[] { "Item1", "Item2" }));
+        }
+
+        [Test]
+        public void GetTupleElementNames_ValueTupleWithNames_ReturnsActualNames()
+        {
+            // Arrange
+            var modelType = typeof(ModelWithNamedTuple);
+            var property = modelType.GetProperty("Person");
+
+            // Act
+            var result = _controller.GetTupleElementNames(property!.PropertyType, property).ToList();
+
+            // Assert
+            Assert.That(result, Does.Contain("First").And.Contain("Last"));
+        }
+
+        [Test]
+        public void GetTupleElementNames_ValueTupleOfThreeElements_ReturnsThreeNames()
+        {
+            // Arrange
+            var tupleType = typeof((string, int, bool));
+
+            // Act
+            var result = _controller.GetTupleElementNames(tupleType).ToList();
+
+            // Assert
+            Assert.That(result, Has.Count.EqualTo(3));
+        }
+
+        [Test]
+        public void CollectProperties_NullableInt_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithNullableInt), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("Count"));
+        }
+
+        [Test]
+        public void CollectProperties_NullableDecimal_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithNullableDecimal), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("Price"));
+        }
+
+        [Test]
+        public void CollectProperties_DateTime_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithDateTime), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("CreatedOn"));
+        }
+
+        [Test]
+        public void CollectProperties_NullableDateTime_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithNullableDateTime), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("ModifiedOn"));
+        }
+
+        [Test]
+        public void CollectProperties_DateOnly_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithDateOnly), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("BirthDate"));
+        }
+
+        [Test]
+        public void CollectProperties_NullableDateOnly_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithNullableDateOnly), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("AnniversaryDate"));
+        }
+
+        [Test]
+        public void CollectProperties_DateTimeOffset_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithDateTimeOffset), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("PublishedAt"));
+        }
+
+        [Test]
+        public void CollectProperties_NullableDateTimeOffset_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithNullableDateTimeOffset), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("ScheduledAt"));
+        }
+
+        [Test]
+        public void CollectProperties_Guid_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithGuid), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("Id"));
+        }
+
+        [Test]
+        public void CollectProperties_NullableGuid_IsAddedAsTerminal()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithNullableGuid), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames, Contains.Item("CorrelationId"));
+        }
+
+        [Test]
+        public void CollectProperties_ModelWithMultipleTerminalTypes_ReturnsAll()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+            var expected = new[] { "IntValue", "DecimalValue", "DateTimeValue", "DateOnlyValue", "GuidValue" };
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithMultipleTerminalTypes), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames.OrderBy(x => x), Is.EqualTo(expected.OrderBy(x => x)));
+        }
+
+        [Test]
+        public void CollectProperties_ArrayOfTuples_ExpandsTupleElements()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+            var expected = new[] { "Title", "Items.Item1", "Items.Item2" };
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithTupleArray), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames.OrderBy(x => x), Is.EqualTo(expected.OrderBy(x => x)));
+        }
+
+        [Test]
+        public void CollectProperties_NullableTuple_ExpandsTupleElements()
+        {
+            // Arrange
+            var propNames = new List<string>();
+            var pathStack = new Stack<Type>();
+            var expected = new[] { "Name", "Location.Item1", "Location.Item2" };
+
+            // Act
+            _controller.CollectProperties(typeof(ModelWithNullableTuple), string.Empty, 0, 5, pathStack, propNames);
+
+            // Assert
+            Assert.That(propNames.OrderBy(x => x), Is.EqualTo(expected.OrderBy(x => x)));
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableInt_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(int?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableByte_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(byte?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableShort_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(short?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableLong_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(long?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableFloat_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(float?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableDouble_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(double?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableDecimal_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(decimal?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableDateTime_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(DateTime?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableDateOnly_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(DateOnly?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableDateTimeOffset_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(DateTimeOffset?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableGuid_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(Guid?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableBool_ReturnsTrue()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(bool?));
+
+            // Assert
+            Assert.That(result, Is.True);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NonGenericType_ReturnsFalse()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(string));
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NonNullableInt_ReturnsFalse()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(int));
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableClass_ReturnsFalse()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(SimpleModel));
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_NullableTuple_ReturnsFalse()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof((string, int)?));
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_List_ReturnsFalse()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(List<int>));
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
+
+        [Test]
+        public void IsNullableTerminalType_Array_ReturnsFalse()
+        {
+            // Act
+            var result = _controller.IsNullableTerminalType(typeof(int[]));
+
+            // Assert
+            Assert.That(result, Is.False);
+        }
     }
 
     // ============ Test Helper Classes and Interfaces ============
@@ -698,5 +1244,106 @@ namespace GovUk.Frontend.Umbraco.Tests.Controllers
     public class ItemModel
     {
         public string? Description { get; set; }
+    }
+
+    public class ModelWithSimpleTuple
+    {
+        public int Id { get; set; }
+        public (string, int) Pair { get; set; }
+    }
+
+    public class ModelWithNamedTuple
+    {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public (string First, string Last) Person { get; set; }
+    }
+
+    public class ModelWithTupleOfPrimitives
+    {
+        public (double, double, double) Coordinates { get; set; }
+    }
+
+    public class ModelWithNestedTuple
+    {
+        public string? Name { get; set; }
+        public (int, string) Nested { get; set; }
+    }
+
+    public class ModelWithTupleList
+    {
+        public string? Title { get; set; }
+        public List<(string, int)>? Pairs { get; set; }
+    }
+
+    public class ModelWithNullableInt
+    {
+        public int? Count { get; set; }
+    }
+
+    public class ModelWithNullableDecimal
+    {
+        public decimal? Price { get; set; }
+    }
+
+    public class ModelWithDateTime
+    {
+        public DateTime CreatedOn { get; set; }
+    }
+
+    public class ModelWithNullableDateTime
+    {
+        public DateTime? ModifiedOn { get; set; }
+    }
+
+    public class ModelWithDateOnly
+    {
+        public DateOnly BirthDate { get; set; }
+    }
+
+    public class ModelWithNullableDateOnly
+    {
+        public DateOnly? AnniversaryDate { get; set; }
+    }
+
+    public class ModelWithDateTimeOffset
+    {
+        public DateTimeOffset PublishedAt { get; set; }
+    }
+
+    public class ModelWithNullableDateTimeOffset
+    {
+        public DateTimeOffset? ScheduledAt { get; set; }
+    }
+
+    public class ModelWithGuid
+    {
+        public Guid Id { get; set; }
+    }
+
+    public class ModelWithNullableGuid
+    {
+        public Guid? CorrelationId { get; set; }
+    }
+
+    public class ModelWithMultipleTerminalTypes
+    {
+        public int IntValue { get; set; }
+        public decimal DecimalValue { get; set; }
+        public DateTime DateTimeValue { get; set; }
+        public DateOnly DateOnlyValue { get; set; }
+        public Guid GuidValue { get; set; }
+    }
+
+    public class ModelWithTupleArray
+    {
+        public string? Title { get; set; }
+        public (string, int)[]? Items { get; set; }
+    }
+
+    public class ModelWithNullableTuple
+    {
+        public string? Name { get; set; }
+        public (double, double)? Location { get; set; }
     }
 }

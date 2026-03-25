@@ -9,7 +9,6 @@ using Umbraco.Cms.Web.BackOffice.Controllers;
 using Umbraco.Cms.Web.Common.Attributes;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
-[assembly: InternalsVisibleTo("GovUk.Frontend.Umbraco.Tests.ModelPropertyControllerTests")]
 
 namespace GovUk.Frontend.Umbraco.Validation
 {
@@ -25,7 +24,7 @@ namespace GovUk.Frontend.Umbraco.Validation
 
             var files = Directory.GetFiles(filepath, "*.dll").ToList();
 
-            files.RemoveAll(x => x.Contains(@"\System.") || x.Contains(@"\Microsoft.")); // Don't load dlls where there won't be any custom code. This list is not exhaustive
+            files.RemoveAll(x => x.Contains($"{Path.DirectorySeparatorChar}System.") || x.Contains($"{Path.DirectorySeparatorChar}Microsoft.")); // Don't load dlls where there won't be any custom code. This list is not exhaustive
             
             foreach(var file in files) 
             { 
@@ -59,7 +58,6 @@ namespace GovUk.Frontend.Umbraco.Validation
                         return propNames;
                     }
                 }
-            
             }
 
             return Array.Empty<string>();
@@ -86,9 +84,22 @@ namespace GovUk.Frontend.Umbraco.Validation
                 var fullName = string.IsNullOrEmpty(prefix) ? property.Name : $"{prefix}.{property.Name}";
 
                 // Primitive-ish types and string: add the property and stop recursing
-                if (propType.IsPrimitive || propType.IsEnum || propType == typeof(string) || propType == typeof(decimal))
+                if (propType.IsPrimitive || propType.IsEnum || propType == typeof(string) || propType == typeof(decimal) ||
+                    propType == typeof(DateTime) || propType == typeof(DateOnly) || propType == typeof(DateTimeOffset) ||
+                    propType == typeof(Guid) || IsNullableTerminalType(propType))
                 {
                     propNames.Add(fullName);
+                    continue;
+                }
+
+                // Handle tuples: expand tuple element names
+                if (IsTupleType(propType))
+                {
+                    var tupleElementNames = GetTupleElementNames(propType, property);
+                    foreach (var elementName in tupleElementNames)
+                    {
+                        propNames.Add($"{fullName}.{elementName}");
+                    }
                     continue;
                 }
 
@@ -100,6 +111,15 @@ namespace GovUk.Frontend.Umbraco.Validation
                     {
                         // no further exploration possible - surface the collection property
                         propNames.Add(fullName);
+                    }
+                    else if (IsTupleType(elementType))
+                    {
+                        // Element type is a tuple: expand tuple elements
+                        var tupleElementNames = GetTupleElementNames(elementType);
+                        foreach (var elementName in tupleElementNames)
+                        {
+                            propNames.Add($"{fullName}.{elementName}");
+                        }
                     }
                     else
                     {
@@ -117,22 +137,27 @@ namespace GovUk.Frontend.Umbraco.Validation
                     continue;
                 }
 
-                // Handle tuples: expand tuple element names
-                if (IsTupleType(propType))
-                {
-                    var tupleElementNames = GetTupleElementNames(propType);
-                    foreach (var elementName in tupleElementNames)
-                    {
-                        propNames.Add($"{fullName}.{elementName}");
-                    }
-                    continue;
-                }
-
                 // Fallback: add the property name
                 propNames.Add(fullName);
             }
 
             pathStack.Pop();
+        }
+
+        internal bool IsNullableTerminalType(Type type)
+        {
+            if (!type.IsGenericType) return false;
+
+            var genericDefinition = type.GetGenericTypeDefinition();
+            if (genericDefinition != typeof(Nullable<>)) return false;
+
+            var underlyingType = Nullable.GetUnderlyingType(type);
+            return underlyingType!.IsPrimitive ||
+                   underlyingType == typeof(decimal) ||
+                   underlyingType == typeof(DateTime) ||
+                   underlyingType == typeof(DateOnly) ||
+                   underlyingType == typeof(DateTimeOffset) ||
+                   underlyingType == typeof(Guid);
         }
 
         internal Type? GetEnumerableElementType(Type enumerableType)
@@ -161,10 +186,17 @@ namespace GovUk.Frontend.Umbraco.Validation
         {
             if (type == null) return false;
 
-            // Check for ValueTuple (preferred in modern .NET)
-            if (type.IsGenericType)
+            // Unwrap Nullable<T> to check the underlying type
+            var typeToCheck = type;
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                var genericDefinition = type.GetGenericTypeDefinition();
+                typeToCheck = Nullable.GetUnderlyingType(type)!;
+            }
+
+            // Check for ValueTuple (preferred in modern .NET)
+            if (typeToCheck.IsGenericType)
+            {
+                var genericDefinition = typeToCheck.GetGenericTypeDefinition();
                 if (genericDefinition == typeof(ValueTuple) ||
                     genericDefinition == typeof((object, object)) ||
                     genericDefinition.Name.StartsWith("ValueTuple`"))
@@ -174,23 +206,41 @@ namespace GovUk.Frontend.Umbraco.Validation
             }
 
             // Check for System.Tuple (older .NET)
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Tuple<>);
+            return typeToCheck.IsGenericType && typeToCheck.GetGenericTypeDefinition() == typeof(Tuple<>);
         }
 
-        internal IEnumerable<string> GetTupleElementNames(Type tupleType)
+        internal IEnumerable<string> GetTupleElementNames(Type tupleType, PropertyInfo? property = null)
         {
             if (tupleType == null || !IsTupleType(tupleType))
             {
                 return Enumerable.Empty<string>();
             }
 
-            var genericArgs = tupleType.GetGenericArguments();
+            // Unwrap Nullable<T> to get the actual tuple type
+            var actualTupleType = tupleType;
+            if (tupleType.IsGenericType && tupleType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                actualTupleType = Nullable.GetUnderlyingType(tupleType)!;
+            }
 
-            // Try to get custom tuple element names from TupleElementNamesAttribute
-            var tupleAttr = tupleType.GetCustomAttribute<TupleElementNamesAttribute>();
+            var genericArgs = actualTupleType.GetGenericArguments();
+
+            // Try to get custom tuple element names from TupleElementNamesAttribute on the property
+            if (property != null)
+            {
+                var propertyAttr = property.GetCustomAttribute<TupleElementNamesAttribute>();
+                if (propertyAttr?.TransformNames != null && propertyAttr.TransformNames.Count > 0)
+                {
+                    return propertyAttr.TransformNames;
+                }
+            }
+
+            // Try to get custom tuple element names from TupleElementNamesAttribute on the type itself
+            var tupleAttr = actualTupleType.GetCustomAttribute<TupleElementNamesAttribute>();
             if (tupleAttr?.TransformNames != null && tupleAttr.TransformNames.Count > 0)
             {
-                return tupleAttr.TransformNames;
+                // Filter to only return names for actual tuple elements (skip any synthetic names)
+                return tupleAttr.TransformNames.Take(genericArgs.Length);
             }
 
             // Fallback: generate default names (Item1, Item2, etc.)

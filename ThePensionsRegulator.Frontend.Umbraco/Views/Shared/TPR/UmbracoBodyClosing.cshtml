@@ -1,8 +1,0 @@
-﻿@using ThePensionsRegulator.GovUk.Frontend.Umbraco
-@using Microsoft.Extensions.Options
-@inject IOptions<GovUkFrontendUmbracoOptions> govUkUmbracoOptions
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@if (govUkUmbracoOptions.Value.EnableTableCsvDownload)
-{
-    <script src="/ThePensionsRegulator.GovUk.Frontend.Umbraco/js/table-csv-download.js" asp-append-version="true"></script>
-}

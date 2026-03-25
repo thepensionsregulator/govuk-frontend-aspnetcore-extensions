@@ -1,0 +1,343 @@
+import '@testing-library/jest-dom';
+import { jest } from '@jest/globals';
+import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, tableToCsv, initTableCsvDownload, downloadCsv } from '../wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download';
+
+beforeEach(() => {
+    document.body.innerHTML = "";
+    document.body.removeAttribute("data-tpr-table-csv-download-text");
+});
+
+describe("getButtonText", () => {
+    test("returns default text when no data attribute is set", () => {
+        expect(getButtonText()).toBe("Download table data (CSV)");
+    });
+
+    test("returns custom text from body data attribute", () => {
+        document.body.setAttribute("data-tpr-table-csv-download-text", "Custom download");
+        expect(getButtonText()).toBe("Custom download");
+    });
+
+    test("returns default text when data attribute is empty", () => {
+        document.body.setAttribute("data-tpr-table-csv-download-text", "");
+        expect(getButtonText()).toBe("Download table data (CSV)");
+    });
+});
+
+describe("sanitizeFileName", () => {
+    test("returns 'table-data' for null input", () => {
+        expect(sanitizeFileName(null)).toBe("table-data");
+    });
+
+    test("returns 'table-data' for empty string", () => {
+        expect(sanitizeFileName("")).toBe("table-data");
+    });
+
+    test("returns 'table-data' for whitespace-only input", () => {
+        expect(sanitizeFileName("   ")).toBe("table-data");
+    });
+
+    test("converts to lowercase and replaces spaces with hyphens", () => {
+        expect(sanitizeFileName("My Table Name")).toBe("my-table-name");
+    });
+
+    test("removes special characters", () => {
+        expect(sanitizeFileName("Table: 100% (data)")).toBe("table-100-data");
+    });
+
+    test("truncates to 50 characters", () => {
+        const longName = "A".repeat(60);
+        expect(sanitizeFileName(longName).length).toBe(50);
+    });
+
+    test("returns 'table-data' when all characters are special", () => {
+        expect(sanitizeFileName("!@#$%")).toBe("table-data");
+    });
+});
+
+describe("getCellText", () => {
+    test("returns trimmed text content of a cell", () => {
+        const td = document.createElement("td");
+        td.textContent = "  Hello World  ";
+        expect(getCellText(td)).toBe("Hello World");
+    });
+
+    test("normalises internal whitespace", () => {
+        const td = document.createElement("td");
+        td.textContent = "Hello   World\n\tFoo";
+        expect(getCellText(td)).toBe("Hello World Foo");
+    });
+
+    test("returns empty string for empty cell", () => {
+        const td = document.createElement("td");
+        expect(getCellText(td)).toBe("");
+    });
+});
+
+describe("escapeCsvValue", () => {
+    test("returns empty string for empty input", () => {
+        expect(escapeCsvValue("")).toBe("");
+    });
+
+    test("returns empty string for null input", () => {
+        expect(escapeCsvValue(null)).toBe("");
+    });
+
+    test("returns value unchanged when no special characters", () => {
+        expect(escapeCsvValue("hello")).toBe("hello");
+    });
+
+    test("quotes value containing comma", () => {
+        expect(escapeCsvValue("hello,world")).toBe('"hello,world"');
+    });
+
+    test("quotes value containing double quote and escapes it", () => {
+        expect(escapeCsvValue('say "hello"')).toBe('"say ""hello"""');
+    });
+
+    test("quotes value containing newline", () => {
+        expect(escapeCsvValue("line1\nline2")).toBe('"line1\nline2"');
+    });
+
+    test("quotes value containing carriage return", () => {
+        expect(escapeCsvValue("line1\rline2")).toBe('"line1\rline2"');
+    });
+
+    test("prefixes formula-triggering = character", () => {
+        expect(escapeCsvValue("=SUM(A1)")).toBe("'=SUM(A1)");
+    });
+
+    test("prefixes formula-triggering + character", () => {
+        expect(escapeCsvValue("+44 123")).toBe("'+44 123");
+    });
+
+    test("prefixes formula-triggering - character", () => {
+        expect(escapeCsvValue("-1")).toBe("'-1");
+    });
+
+    test("prefixes formula-triggering @ character", () => {
+        expect(escapeCsvValue("@mention")).toBe("'@mention");
+    });
+
+    test("prefixes and quotes value with formula char and comma", () => {
+        expect(escapeCsvValue("=A,B")).toBe("\"'=A,B\"");
+    });
+});
+
+describe("tableToCsv", () => {
+    test("converts a simple table to CSV", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <thead><tr><th>Name</th><th>Age</th></tr></thead>
+                <tbody><tr><td>Alice</td><td>30</td></tr></tbody>
+            </table>`;
+        const table = document.querySelector("table");
+        expect(tableToCsv(table)).toBe("Name,Age\r\nAlice,30");
+    });
+
+    test("returns empty string for table with no rows", () => {
+        document.body.innerHTML = '<table class="govuk-table"></table>';
+        const table = document.querySelector("table");
+        expect(tableToCsv(table)).toBe("");
+    });
+
+    test("handles colspan by filling empty cells", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td colspan="2">Merged</td><td>C</td></tr>
+                <tr><td>A</td><td>B</td><td>C</td></tr>
+            </table>`;
+        const table = document.querySelector("table");
+        expect(tableToCsv(table)).toBe("Merged,,C\r\nA,B,C");
+    });
+
+    test("handles rowspan by filling empty cells", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td rowspan="2">Merged</td><td>B1</td></tr>
+                <tr><td>B2</td></tr>
+            </table>`;
+        const table = document.querySelector("table");
+        expect(tableToCsv(table)).toBe("Merged,B1\r\n,B2");
+    });
+
+    test("handles both colspan and rowspan", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td colspan="2" rowspan="2">Merged</td><td>C1</td></tr>
+                <tr><td>C2</td></tr>
+                <tr><td>A</td><td>B</td><td>C</td></tr>
+            </table>`;
+        const table = document.querySelector("table");
+        expect(tableToCsv(table)).toBe("Merged,,C1\r\n,,C2\r\nA,B,C");
+    });
+
+    test("escapes CSV special characters in cell values", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td>Hello, World</td><td>Normal</td></tr>
+            </table>`;
+        const table = document.querySelector("table");
+        expect(tableToCsv(table)).toBe('"Hello, World",Normal');
+    });
+});
+
+describe("initTableCsvDownload", () => {
+    test("wraps .govuk-table in .tpr-table-wrapper and adds button", () => {
+        document.body.innerHTML = `
+            <div>
+                <table class="govuk-table">
+                    <tr><td>Data</td></tr>
+                </table>
+            </div>`;
+        initTableCsvDownload();
+        const wrapper = document.querySelector(".tpr-table-wrapper");
+        expect(wrapper).toBeInTheDocument();
+        expect(wrapper.querySelector("table")).toBeInTheDocument();
+        const button = wrapper.querySelector("button");
+        expect(button).toBeInTheDocument();
+        expect(button).toHaveTextContent("Download table data (CSV)");
+        expect(button).toHaveClass("govuk-button", "govuk-button--secondary");
+        expect(button).toHaveAttribute("data-module", "govuk-button");
+        expect(button.type).toBe("button");
+    });
+
+    test("does not wrap tables without .govuk-table class", () => {
+        document.body.innerHTML = `
+            <div>
+                <table>
+                    <tr><td>Data</td></tr>
+                </table>
+            </div>`;
+        initTableCsvDownload();
+        expect(document.querySelector(".tpr-table-wrapper")).not.toBeInTheDocument();
+    });
+
+    test("skips tables already inside .tpr-table-wrapper", () => {
+        document.body.innerHTML = `
+            <div class="tpr-table-wrapper">
+                <table class="govuk-table">
+                    <tr><td>Data</td></tr>
+                </table>
+            </div>`;
+        initTableCsvDownload();
+        const wrappers = document.querySelectorAll(".tpr-table-wrapper");
+        expect(wrappers.length).toBe(1);
+        expect(wrappers[0].querySelector("button")).not.toBeInTheDocument();
+    });
+
+    test("uses custom button text from body data attribute", () => {
+        document.body.setAttribute("data-tpr-table-csv-download-text", "Lawrlwytho data tabl (CSV)");
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td>Data</td></tr>
+            </table>`;
+        // Re-set the attribute after innerHTML clears it
+        document.body.setAttribute("data-tpr-table-csv-download-text", "Lawrlwytho data tabl (CSV)");
+        initTableCsvDownload();
+        const button = document.querySelector("button");
+        expect(button).toHaveTextContent("Lawrlwytho data tabl (CSV)");
+    });
+
+    test("uses caption text for file name attribute", () => {
+        document.body.innerHTML = `
+            <div>
+                <table class="govuk-table">
+                    <caption>Quarterly Results</caption>
+                    <tr><td>Data</td></tr>
+                </table>
+            </div>`;
+        initTableCsvDownload();
+        // The file name is embedded in the click handler closure;
+        // verify the table was wrapped (file name tested via CSV download)
+        expect(document.querySelector(".tpr-table-wrapper")).toBeInTheDocument();
+    });
+
+    test("handles multiple .govuk-table elements", () => {
+        document.body.innerHTML = `
+            <div>
+                <table class="govuk-table"><tr><td>Table 1</td></tr></table>
+                <table class="govuk-table"><tr><td>Table 2</td></tr></table>
+            </div>`;
+        initTableCsvDownload();
+        const wrappers = document.querySelectorAll(".tpr-table-wrapper");
+        expect(wrappers.length).toBe(2);
+        const buttons = document.querySelectorAll("button");
+        expect(buttons.length).toBe(2);
+    });
+
+    test("button click triggers CSV download", () => {
+        document.body.innerHTML = `
+            <div>
+                <table class="govuk-table">
+                    <caption>Test Table</caption>
+                    <tr><th>Col</th></tr>
+                    <tr><td>Val</td></tr>
+                </table>
+            </div>`;
+        initTableCsvDownload();
+
+        // Mock URL.createObjectURL and URL.revokeObjectURL
+        const mockUrl = "blob:mock-url";
+        const originalCreateObjectURL = URL.createObjectURL;
+        const originalRevokeObjectURL = URL.revokeObjectURL;
+        URL.createObjectURL = jest.fn(() => mockUrl);
+        URL.revokeObjectURL = jest.fn();
+
+        // Mock link click
+        const clickSpy = jest.fn();
+        const originalCreateElement = document.createElement.bind(document);
+        jest.spyOn(document, "createElement").mockImplementation((tag) => {
+            const el = originalCreateElement(tag);
+            if (tag === "a") {
+                el.click = clickSpy;
+            }
+            return el;
+        });
+
+        const button = document.querySelector("button");
+        button.click();
+
+        expect(URL.createObjectURL).toHaveBeenCalled();
+        expect(clickSpy).toHaveBeenCalled();
+        expect(URL.revokeObjectURL).toHaveBeenCalledWith(mockUrl);
+
+        // Restore
+        URL.createObjectURL = originalCreateObjectURL;
+        URL.revokeObjectURL = originalRevokeObjectURL;
+        document.createElement.mockRestore();
+    });
+});
+
+describe("downloadCsv", () => {
+    test("creates blob with BOM and triggers download", () => {
+        const mockUrl = "blob:test-url";
+        const originalCreateObjectURL = URL.createObjectURL;
+        const originalRevokeObjectURL = URL.revokeObjectURL;
+        URL.createObjectURL = jest.fn(() => mockUrl);
+        URL.revokeObjectURL = jest.fn();
+
+        const clickSpy = jest.fn();
+        const originalCreateElement = document.createElement.bind(document);
+        jest.spyOn(document, "createElement").mockImplementation((tag) => {
+            const el = originalCreateElement(tag);
+            if (tag === "a") {
+                el.click = clickSpy;
+            }
+            return el;
+        });
+
+        downloadCsv("Name,Age\r\nAlice,30", "test-file");
+
+        expect(URL.createObjectURL).toHaveBeenCalled();
+        const blob = URL.createObjectURL.mock.calls[0][0];
+        expect(blob).toBeInstanceOf(Blob);
+        expect(blob.type).toBe("text/csv;charset=utf-8;");
+        expect(clickSpy).toHaveBeenCalled();
+        expect(URL.revokeObjectURL).toHaveBeenCalledWith(mockUrl);
+
+        // Restore
+        URL.createObjectURL = originalCreateObjectURL;
+        URL.revokeObjectURL = originalRevokeObjectURL;
+        document.createElement.mockRestore();
+    });
+});

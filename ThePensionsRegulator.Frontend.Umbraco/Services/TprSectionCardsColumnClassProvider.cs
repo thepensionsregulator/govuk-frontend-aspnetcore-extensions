@@ -3,9 +3,6 @@ using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 
 namespace GovUk.Frontend.Umbraco.Services
 {
-    [Obsolete("Use TprSectionCardsColumnClassProvider")]
-    public class TPRSectionCardsColumnClassProvider : TprSectionCardsColumnClassProvider { }
-
     /// <inheritdoc />
     public class TprSectionCardsColumnClassProvider : IDefaultColumnClassProvider
     {

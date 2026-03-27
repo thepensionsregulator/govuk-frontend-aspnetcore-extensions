@@ -267,6 +267,11 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IDocumentNavigationQueryService> DocumentNavigationQueryService { get; private init; } = new();
 
         /// <summary>
+        /// Service to filter published content by status.
+        /// </summary>
+        public Mock<IPublishedContentStatusFilteringService> PublishedContentStatusFilteringService { get; private init; } = new();
+
+        /// <summary>
         /// Provides utilities to handle site domains.
         /// </summary>
         public Mock<ISiteDomainMapper> SiteDomainMapper { get; private init; } = new();
@@ -440,7 +445,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public UmbracoTestContext()
         {
 #pragma warning restore CS8618
-            CurrentPage = UmbracoContentFactory.CreateContent<IPublishedContent>("MockDocumentType");
+            CurrentPage = UmbracoContentFactory.CreateContent<IPublishedContent>("MockDocumentType", "Current page");
 
             SetupHttpContext();
 
@@ -564,6 +569,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(PublishedMemberCache.Object);
             SetupService(PublishedModelFactory.Object);
             SetupService(PublishedContentQuery.Object);
+            SetupService(PublishedContentStatusFilteringService.Object);
             SetupService(PublishedContentTypeCache.Object);
             SetupService(PublishedUrlProvider.Object);
             SetupService(PublishedValueFallback.Object);

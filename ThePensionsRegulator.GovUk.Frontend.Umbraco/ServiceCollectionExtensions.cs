@@ -46,7 +46,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddGovUkFrontendExtensions(configureGovUkOptions);
+            services.AddTprGovUkFrontend(configureGovUkOptions);
 
             var govukUmbracoOptions = new GovUkFrontendUmbracoOptions();
             if (configureGovUkUmbracoOptions is not null) { configureGovUkUmbracoOptions(govukUmbracoOptions); }
@@ -70,6 +70,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco
             services.AddTransient<BlockViewService>();
             services.AddTransient<IModelPropertyProvider, ModelTypeAttributeModelPropertyProvider>();
             services.AddTransient<IStaticFileCachePolicy, GovUkUmbracoStaticFileCachePolicy>();
+            services.AddTransient<IGovUkBreadcrumbLinksService, DefaultBreadcrumbLinksService>();
 
             return services;
         }

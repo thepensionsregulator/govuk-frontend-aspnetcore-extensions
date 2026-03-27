@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Yet more breadcrumbs";
+}
+@section secondary_navigation {
+    <div class="govuk-width-container">
+        <govuk-breadcrumbs collapse-on-mobile="true">
+            <govuk-breadcrumbs-item href="/">Home</govuk-breadcrumbs-item>
+            <govuk-breadcrumbs-item href="/breadcrumbs">Breadcrumbs</govuk-breadcrumbs-item>
+            <govuk-breadcrumbs-item href="/breadcrumbs/more-breadcrumbs">More breadcrumbs</govuk-breadcrumbs-item>
+            <govuk-breadcrumbs-item>Yet more breadcrumbs</govuk-breadcrumbs-item>
+        </govuk-breadcrumbs>
+    </div>
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds">
+        <p class="govuk-body">The <a href="https://design-system.service.gov.uk/components/breadcrumbs/" class="govuk-link">breadcrumbs component</a>
+        helps users to understand where they are within a website's structure and move between levels.</p>
+    </div>
+</div>

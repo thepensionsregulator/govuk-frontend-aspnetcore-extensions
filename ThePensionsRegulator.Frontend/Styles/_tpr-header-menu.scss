@@ -77,7 +77,7 @@
     fill: $tpr-colour-white;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: light) and (forced-colors: active) {
     .tpr-header-menu__menu-icon {
         fill: $tpr-colour-black;
     }

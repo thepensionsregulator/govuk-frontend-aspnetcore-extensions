@@ -45,6 +45,15 @@
     vertical-align: bottom;
 }
 
+.tpr-header-search__button-icon {
+    fill: $tpr-colour-steel;
+}
+
+@media(prefers-color-scheme: dark ) and (forced-colors: active) {
+    .tpr-header-search__button-image-icon {
+        fill: $tpr-colour-white;
+    }
+}
 
 .tpr-header-search__mobile {
     display: inline;

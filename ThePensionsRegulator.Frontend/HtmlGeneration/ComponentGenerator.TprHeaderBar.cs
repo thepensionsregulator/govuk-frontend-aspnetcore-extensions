@@ -199,7 +199,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var svgTag2 = new TagBuilder("g");
             svgTag2.Attributes.Add("transform", "translate(1.000000, -6.000000)");
-            svgTag2.Attributes.Add("fill", "#434343");
+            svgTag2.AddCssClass("tpr-header-search__button-icon");
             svgTag1.InnerHtml.AppendHtml(svgTag2);
 
             var path1 = new TagBuilder("path");

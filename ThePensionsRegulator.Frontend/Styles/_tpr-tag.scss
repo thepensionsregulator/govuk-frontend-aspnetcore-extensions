@@ -3,6 +3,6 @@
 
 // Change GOV.UK panel styles where the TPR brand diverges from the GOV.UK Design System.
 .govuk-tag {
-    color: govuk-shade($tpr-colour-royal-blue, 60);
-    background-color: govuk-tint($tpr-colour-royal-blue, 70);
+    color: $tpr-colour-royal-blue-shade-60;
+    background-color: $tpr-colour-royal-blue-tint-70;
 }

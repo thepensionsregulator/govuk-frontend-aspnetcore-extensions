@@ -61,7 +61,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.SassCompiler" Version="1.86.2" />
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.98.0" />
 		<PackageReference Include="MimeKit" Version="4.15.1" />
 		<PackageReference Include="TinyMCE.Umbraco" Version="17.2.0" />
 		<PackageReference Include="Umbraco.Cms.Api.Management" Version="17.2.2" />

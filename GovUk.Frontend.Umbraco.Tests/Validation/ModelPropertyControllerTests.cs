@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GovUk.Frontend.Umbraco.Tests.Controllers
+namespace GovUk.Frontend.Umbraco.Tests.Validation
 {
     public class ModelPropertyControllerTests
     {
@@ -126,20 +126,6 @@ namespace GovUk.Frontend.Umbraco.Tests.Controllers
             // Check that we have at most 3 levels of nesting
             var maxLevels = propNames.Any() ? propNames.Max(r => r.Split('.').Length) : 0;
             Assert.That(maxLevels, Is.LessThanOrEqualTo(3));
-        }
-
-        [Test]
-        public void CollectProperties_NullType_ReturnsWithoutAddingProperties()
-        {
-            // Arrange
-            var propNames = new List<string>();
-            var pathStack = new Stack<Type>();
-
-            // Act
-            _controller.CollectProperties(null!, string.Empty, 0, 5, pathStack, propNames);
-
-            // Assert
-            Assert.That(propNames, Is.Empty);
         }
 
         [Test]

@@ -65,7 +65,6 @@ namespace GovUk.Frontend.Umbraco.Validation
 
         internal void CollectProperties(Type type, string prefix, int depth, int maxDepth, Stack<Type> pathStack, List<string> propNames)
         {
-            if (type == null) return;
             if (depth >= maxDepth) return;
             if (pathStack.Contains(type)) return; // avoid cycles
 

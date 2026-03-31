@@ -7,10 +7,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public TagBuilder GenerateTprHeaderMenu(TprHeaderMenu tprMobileMenu, TprHeaderBar tprHeaderBar)
         {
 
-            var mobileMenuToggle = new TagBuilder("a");
-            mobileMenuToggle.AddCssClass("tpr-mobile-menu__toggle");
-            mobileMenuToggle.Attributes.Add("href", tprHeaderBar.MobileMenuNoJsNavPage);
-            mobileMenuToggle.Attributes.Add("aria-live", "polite");
+            var mobileMenuToggle = new TagBuilder("button");
+            mobileMenuToggle.AddCssClass("tpr-header-menu__button");
+            //mobileMenuToggle.Attributes.Add("href", tprHeaderBar.MobileMenuNoJsNavPage);
+            mobileMenuToggle.Attributes.Add("aria-expanded", "false");
 
             if (tprMobileMenu.Attributes != null)
             {
@@ -52,11 +52,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             path3.AddCssClass("tpr-header-menu__menu-icon");
             svg2.InnerHtml.AppendHtml(path3);
 
-            var closeButton = new TagBuilder("button");
-            closeButton.AddCssClass("tpr-header-menu__button");
-            closeButton.Attributes.Add("aria-haspopup", "true");
-            closeButton.Attributes.Add("aria-expanded", "false");
-            closeButton.Attributes.Add("type", "button");
+            var closeButton = new TagBuilder("span");
+            closeButton.AddCssClass("tpr-header-menu__button-inner");
 
             if (!string.IsNullOrEmpty(tprHeaderBar.HeaderMenuToggleOpen))
             {

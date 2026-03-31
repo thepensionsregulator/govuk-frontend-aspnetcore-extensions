@@ -6,9 +6,7 @@
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
-    var cssClasses = Model.Settings.Value<bool>(TprPropertyAliases.RelatedLinksBar) ? string.Empty : "tpr-related-links--no-bar";
-    var additionalCssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-    if (!string.IsNullOrWhiteSpace(additionalCssClasses)) { cssClasses += " " + additionalCssClasses; }
+    var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
 
     var heading = Model.Content.Value<string>(TprPropertyAliases.RelatedLinksHeading);
     if (string.IsNullOrWhiteSpace(heading)) { heading = Umbraco.GetDictionaryValueOrDefault("TPR Related links heading", "Related"); }

@@ -27,8 +27,14 @@ namespace GovUk.Frontend.Umbraco.Validation
             files.RemoveAll(x => x.Contains($"{Path.DirectorySeparatorChar}System.") || x.Contains($"{Path.DirectorySeparatorChar}Microsoft.")); // Don't load dlls where there won't be any custom code. This list is not exhaustive
             
             foreach(var file in files) 
-            { 
-                Assembly assembly = Assembly.LoadFrom(file);
+            {
+                Assembly assembly;
+
+                try
+                { assembly = Assembly.LoadFrom(file); }
+                catch (BadImageFormatException) { continue; }
+                catch (FileLoadException) { continue; }
+                
                 Type[] types;
                 try { types = assembly.GetTypes(); }
                 catch (ReflectionTypeLoadException ex) { types = ex.Types.OfType<Type>().ToArray(); }
@@ -38,7 +44,9 @@ namespace GovUk.Frontend.Umbraco.Validation
                     .ToList();
                 controllers.AddRange(controllersToAdd);
             }
+
             var controllerType = controllers?.FirstOrDefault(x => x.Name.ToUpperInvariant() == $"{alias.ToUpperInvariant()}CONTROLLER");
+            
             if (controllerType != null)
             {
                 var actionMethods = controllerType.GetMethods().Where(x => x.Name == "Index");

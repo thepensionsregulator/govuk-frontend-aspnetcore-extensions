@@ -6,6 +6,7 @@
         public const string BackToMenuLink = "link";
         public const string Image = "image";
         public const string RelatedLinksHeading = "heading";
+        public const string RelatedLinksLabel = "label";
         public const string RelatedLinksLinks = "links";
         public const string BoxStyle = "styleOfBox";
         public const string BoxBackgroundColour = "backgroundColour";

@@ -13,9 +13,11 @@
     var headingId = heading.Replace(" ", "_");
 
     var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.RelatedLinksLinks);
+
+    var label = string.IsNullOrWhiteSpace(Model.Content.Value<string>(TprPropertyAliases.RelatedLinksLabel)) ? "List of related links" : Model.Content.Value<string>(TprPropertyAliases.RelatedLinksLabel);
 }
 
-<tpr-related-links class="@cssClasses" aria-label="List of related links">
+<tpr-related-links class="@cssClasses" aria-label="@label">
 
     <tpr-related-links-heading id="@headingId">@heading</tpr-related-links-heading>
 

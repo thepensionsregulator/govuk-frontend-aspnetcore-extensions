@@ -68,7 +68,7 @@ p.tpr-add-link {
 }
 
 .backoffice-block-view .is-trashed {
-    background: $govuk-error-colour;
+    background: govuk-functional-colour(error);
     color: $tpr-colour-white;
     padding: govuk-spacing(1)
 }

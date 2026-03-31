@@ -10,15 +10,23 @@ $govuk-font-weight-bold: $tpr-font-weight-bold;
 // TPR brand colours
 $tpr-colour-lime: #cdd500;
 $tpr-colour-violet: #483b8b;
+$tpr-colour-violet-shade-16: #3c3275;
+$tpr-colour-violet-tint-20: #6d62a2;
+$tpr-colour-violet-tint-75: #d1cee2;
 $tpr-colour-blue-marguerite: #7469ba;
 $tpr-colour-tolopea: #0b0030;
 $tpr-colour-eastern-blue: #0381a2;
 $tpr-colour-regent-st-blue: #99ccd9;
+$tpr-colour-regent-st-blue-tint-75: #e6f2f6;
 $tpr-colour-royal-blue: #006ebc;
+$tpr-colour-royal-blue-shade-60: #002c4b;
+$tpr-colour-royal-blue-tint-70: #b3d4eb;
 $tpr-colour-kashmir-blue: #557b97;
 $tpr-colour-cornflower: #98c4e4;
 $tpr-colour-camarone: #1e7e34;
 $tpr-colour-fire-brick: #a91717;
+$tpr-colour-fire-brick-shade-30: #761010;
+$tpr-colour-fire-brick-tint-75: #eac5c5;
 $tpr-colour-brick: #cd2e25;
 $tpr-colour-petite-orchid: #dca1a1;
 $tpr-colour-tawny: #ca5002;
@@ -35,21 +43,24 @@ $tpr-colour-steel: #54616c;
 $tpr-colour-eclipse: #3d3d3d;
 $tpr-colour-zambezi: #585858;
 $tpr-colour-black: #000000;
+$tpr-colour-black-tint-44: #707070;
 
-// Change the colours on GOV.UK components where TPR brand colours diverge from 
+// Change the colours on GOV.UK components where TPR brand colours diverge from
 // the GOV.UK Design System. Colours are changed in two ways:
 // - here, before GOV.UK classes are compiled, targeting situations where GOV.UK source
 //   defines a variable for the specific situation
 // - in _tpr-*.scss for individual components, after GOV.UK classes are compiled
-$govuk-text-colour: $tpr-colour-eclipse;
-$govuk-link-colour: $tpr-colour-royal-blue;
-$govuk-link-visited-colour: $tpr-colour-violet;
-$govuk-link-hover-colour: $tpr-colour-kashmir-blue;
-$govuk-link-active-colour: $tpr-colour-kashmir-blue;
-$govuk-secondary-text-colour: $tpr-colour-zambezi;
-$govuk-input-border-colour: $tpr-colour-eclipse;
-$govuk-focus-colour: $tpr-colour-tangerine-yellow;
-$govuk-error-colour: $tpr-colour-fire-brick;
+$govuk-functional-colours: (
+    error: $tpr-colour-fire-brick,
+    focus: $tpr-colour-tangerine-yellow,
+    input-border: $tpr-colour-eclipse,
+    link: $tpr-colour-royal-blue,
+    link-active: $tpr-colour-kashmir-blue,
+    link-hover: $tpr-colour-kashmir-blue,
+    link-visited: $tpr-colour-violet,
+    text: $tpr-colour-eclipse,
+    secondary-text: $tpr-colour-zambezi
+);
 $govuk-button-text-colour: $tpr-colour-white;
 $govuk-button-background-colour: $tpr-colour-eastern-blue;
 $govuk-inverse-button-text-colour: $govuk-button-text-colour;
@@ -164,26 +175,12 @@ $govuk-typography-scale: (
       font-size: 14pt,
       line-height: 1.2
     )
-  ),
-  14: (
-    null: (
-      font-size: 12px,
-      line-height: 15px
-    ),
-    tablet: (
-      font-size: 14px,
-      line-height: 20px
-    ),
-    print: (
-      font-size: 12pt,
-      line-height: 1.2
-    )
   )
 ) !default;
 
 @mixin tpr-read-only {
     opacity: 1;
     background-color: $tpr-colour-white-smoke;
-    border-color: govuk-tint(black, 44);
-    color: govuk-tint(black, 44);
+    border-color: $tpr-colour-black-tint-44;
+    color: $tpr-colour-black-tint-44;
 }

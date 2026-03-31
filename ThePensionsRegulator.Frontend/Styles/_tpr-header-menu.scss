@@ -19,7 +19,7 @@
     cursor: pointer;
 
     &:focus {
-        outline: $govuk-focus-width solid $govuk-focus-colour;
+        outline: $govuk-focus-width solid govuk-functional-colour(focus);
     }
 }
 
@@ -187,7 +187,7 @@
     }
 
     .tpr-header-menu__arrow:focus-visible {
-        outline: $govuk-focus-width solid $govuk-focus-colour;
+        outline: $govuk-focus-width solid govuk-functional-colour(focus);
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
     }

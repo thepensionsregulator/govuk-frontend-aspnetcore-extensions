@@ -49,8 +49,8 @@
     fill: $tpr-colour-steel;
 }
 
-@media(prefers-color-scheme: dark ) and (forced-colors: active) {
-    .tpr-header-search__button-image-icon {
+@media (prefers-color-scheme: dark ) and (forced-colors: active) {
+    .tpr-header-search__button-icon {
         fill: $tpr-colour-white;
     }
 }

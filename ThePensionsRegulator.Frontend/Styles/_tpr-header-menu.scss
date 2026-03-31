@@ -5,7 +5,7 @@
     display: none;
 }
 
-.tpr-mobile-menu__toggle {
+.tpr-header-menu__button {
     display: flex;
     justify-content: flex-end;
     background-color: $tpr-colour-tolopea;
@@ -23,7 +23,7 @@
     }
 }
 
-.tpr-header-menu__button {
+.tpr-header-menu__button-inner {
     display: inline;
     padding-left: 0.6rem;
     background: 0 0;
@@ -34,23 +34,23 @@
     cursor: pointer;
 }
 
-    .tpr-header-menu__button:focus {
+    .tpr-header-menu__button-inner:focus {
         color: $tpr-colour-black;
         background-color: $tpr-colour-tangerine-yellow;
         box-shadow: 0 -2px $tpr-colour-tangerine-yellow, 0 4px $tpr-colour-black;
         text-decoration: none;
     }
 
-    .tpr-header-menu__button:focus-visible {
+    .tpr-header-menu__button-inner:focus-visible {
         outline: transparent;
     }
 
-.tpr-header-menu__button--opened {
+.tpr-header-menu__button-inner--opened {
     color: $tpr-colour-royal-blue;
     margin-right: 0.5rem;
 }
 
-.tpr-mobile-menu__toggle--open {
+.tpr-header-menu__button--open {
     background-color: $tpr-colour-whisper;
     align-items: baseline;
     padding: 1.8rem;
@@ -58,7 +58,7 @@
     padding-left: 0.3rem;
 }
 
-    .tpr-mobile-menu__toggle--open::before {
+    .tpr-header-menu__button--open::before {
         content: "x";
         font-size: 1.5rem;
         font-weight: 700;
@@ -79,7 +79,7 @@
         display: none;
     }
 
-.tpr-mobile-menu__toggle .tpr-header-menu__menu-icon {
+.tpr-header-menu__button .tpr-header-menu__menu-icon {
     fill: $tpr-colour-white;
 }
 
@@ -232,7 +232,7 @@
 }
 
 @media(min-width: 993px) {
-    .tpr-mobile-menu__toggle {
+    .tpr-header-menu__button {
         display: none;
     }
 
@@ -445,7 +445,7 @@
 
 @media(min-width: 672px) {
 
-    .tpr-mobile-menu__toggle {
+    .tpr-header-menu__button {
         margin-top: -2.95rem;
         margin-bottom: -2.96rem;
     }
@@ -469,7 +469,7 @@
         margin-left: 0;
     }
 
-    .tpr-mobile-menu__toggle {
+    .tpr-header-menu__button {
         justify-content: flex-start;
         margin-left: 0;
         margin-top: 0;

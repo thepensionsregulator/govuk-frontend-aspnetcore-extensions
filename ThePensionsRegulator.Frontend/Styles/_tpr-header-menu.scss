@@ -20,7 +20,7 @@
 
     &:focus-within {
         box-shadow: 0 0 0 4px $tpr-colour-tangerine-yellow, 0 0 0 8px $tpr-colour-black;
-        outline: 3px solid transparent;
+        outline: $govuk-focus-width solid transparent;
     }
 }
 

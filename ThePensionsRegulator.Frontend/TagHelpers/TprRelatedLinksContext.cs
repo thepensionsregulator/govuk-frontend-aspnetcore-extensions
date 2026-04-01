@@ -1,7 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System;
 using System.Collections.Generic;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -16,11 +15,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public void AddLink(AttributeDictionary attributes, IHtmlContent htmlContent)
         {
-            if (!attributes.ContainsKey("aria-labelledby") && HeadingAttributes.ContainsKey("id"))
-            {
-                attributes.Add("aria-labelledby", HeadingAttributes["id"]);
-            }
-
             Links.Add((attributes, htmlContent));
         }
 
@@ -31,13 +25,6 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 throw ExceptionHelper.OnlyOneElementIsPermittedIn(
                     TprRelatedLinksHeadingTagHelper.TagName,
                     TprRelatedLinksTagHelper.TagName);
-            }
-
-            if (!attributes.ContainsKey("id"))
-            {
-                var headingId = new KeyValuePair<string, string?>("id", Guid.NewGuid().ToString());
-                attributes.Add(headingId);
-                HeadingAttributes.Add(headingId);
             }
 
             _heading = (attributes, htmlContent);

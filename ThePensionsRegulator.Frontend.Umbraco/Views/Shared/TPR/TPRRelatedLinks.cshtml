@@ -10,6 +10,7 @@
 
     var heading = Model.Content.Value<string>(TprPropertyAliases.RelatedLinksHeading);
     if (string.IsNullOrWhiteSpace(heading)) { heading = Umbraco.GetDictionaryValueOrDefault("TPR Related links heading", "Related"); }
+    var headingId = heading.Replace(" ", "_");
 
     var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.RelatedLinksLinks);
 
@@ -18,10 +19,10 @@
 
 <tpr-related-links class="@cssClasses" aria-label="@label">
 
-    <tpr-related-links-heading>@heading</tpr-related-links-heading>
+    <tpr-related-links-heading id="@headingId">@heading</tpr-related-links-heading>
 
     @foreach (var link in links) {
-        <tpr-related-link href="@link.Url">@link.Name</tpr-related-link>
+        <tpr-related-link href="@link.Url" aria-labelledby="@headingId">@link.Name</tpr-related-link>
     }
 
 </tpr-related-links>

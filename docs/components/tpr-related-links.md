@@ -7,7 +7,7 @@ A design component for the related links column which can be re-used on TPR site
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
 
-<tpr-related-links>
+<tpr-related-links aria-label="List of related links">
     <tpr-related-links-heading>Related links example heading</tpr-related-links-heading>
     <tpr-related-link href="/">Example link 1</tpr-related-link>
     <tpr-related-link href="/">Example link 2</tpr-related-link>
@@ -21,16 +21,16 @@ If the tag helpers are arranged like the example above, then it should render th
 
 ```html
 <nav class="tpr-related-links" aria-label="List of related links">
-    <h2 class="govuk-heading-m" id="related_links_heading">Related links example heading</h2>
+    <h2 class="govuk-heading-m">Related links example heading</h2>
     <ul class="govuk-list">
         <li>
-            <a href="/" class="govuk-link" aria-labelledby="related_links_heading">Example link 1</a>
+            <a href="/" class="govuk-link">Example link 1</a>
         </li>
         <li>
-            <a href="/" class="govuk-link" aria-labelledby="related_links_heading">Example link 2</a>
+            <a href="/" class="govuk-link">Example link 2</a>
         </li>
         <li>
-            <a href="/" class="govuk-link" aria-labelledby="related_links_heading">Example link 3</a>
+            <a href="/" class="govuk-link">Example link 3</a>
         </li>
     </ul>
 </nav>

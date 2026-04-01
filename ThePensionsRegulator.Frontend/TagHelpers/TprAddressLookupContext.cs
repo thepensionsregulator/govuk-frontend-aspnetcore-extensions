@@ -1,4 +1,6 @@
-﻿using GovUk.Frontend.AspNetCore;
+﻿using System.IO;
+using System.Text.Encodings.Web;
+using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
@@ -26,10 +28,17 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public void ThrowIfNotComplete()
         {
-            if (Legend is null)
+            if (Legend is null || string.IsNullOrEmpty(GetHtmlString(Legend)))
             {
                 throw ExceptionHelper.AChildElementMustBeProvided(TprAddressLookupLegendTagHelper.TagName);
             }
+        }
+
+        private static string GetHtmlString(IHtmlContent content)
+        {
+            using var writer = new StringWriter();
+            content.WriteTo(writer, HtmlEncoder.Default);
+            return writer.ToString();
         }
     }
 }

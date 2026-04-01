@@ -38,7 +38,7 @@
         LINK_LIST: "govuk-list tpr-address-lookup__links",
         BODY: "govuk-body",
         FIELDSET: "govuk-fieldset",
-        LEGEND: "govuk-fieldset__legend govuk-fieldset__legend--for-fieldset",
+        LEGEND: "govuk-fieldset__legend govuk-fieldset__legend--s",
     },
 
     INPUT_WIDTHS: {
@@ -53,7 +53,7 @@
 
     LABELS: {
         ADDRESS_CONFIRMED: "Confirmed address",
-        BUILDING_NAME: "Building or house number",
+        BUILDING_NAME: "Building or house number (optional)",
         CHOOSE_AN_ADDRESS: "Choose an address",
         CONFIRM_ADDRESS_BUTTON: "Confirm address",
         ENTER_NEW_INTERNATIONAL_ADDRESS: "Enter new international address",

@@ -170,6 +170,7 @@ class TprAddressLookup {
         this.stateContainer.appendChild(confirmAddressButton);
         this.stateContainer.appendChild(linkList);
 
+        this.validator.reparse();
         this.validator.govuk.updateErrorSummary();
     }
 

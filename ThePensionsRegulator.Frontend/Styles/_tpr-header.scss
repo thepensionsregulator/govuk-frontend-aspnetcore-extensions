@@ -155,7 +155,7 @@ $tpr-header-left-width-xl: 200px;
 }
 
 .tpr-header__content a:focus {
-    color: $govuk-focus-text-colour;
+    color: govuk-functional-colour(focus-text);
 }
 
 .tpr-header__content a:active {
@@ -199,8 +199,8 @@ $tpr-header-left-width-xl: 200px;
 }
 
 .tpr-context .govuk-link:focus {
-    color: $govuk-focus-text-colour;
-    box-shadow: 0 -2px $govuk-focus-colour, 0 4px $tpr-colour-blue-marguerite;
+    color: govuk-functional-colour(focus-text);
+    box-shadow: 0 -2px govuk-functional-colour(focus), 0 4px $tpr-colour-blue-marguerite;
 }
 // Required when the text inside .tpr-context__context-2 is short.
 .tpr-context__container {
@@ -399,7 +399,7 @@ $tpr-header-left-width-xl: 200px;
 
     .tpr-header__content > a:link,
     .tpr-header__content > a:visited {
-        color: $govuk-link-colour;
+        color: govuk-functional-colour(link);
     }
 
     .tpr-context {
@@ -407,7 +407,7 @@ $tpr-header-left-width-xl: 200px;
     }
 
     .tpr-context .govuk-body {
-        color: $govuk-text-colour;
+        color: govuk-functional-colour(text);
     }
 
     .tpr-context__context-1 {

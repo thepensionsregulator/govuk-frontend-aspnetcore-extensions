@@ -1,8 +1,6 @@
-﻿using GovUk.Frontend.AspNetCore;
-using Microsoft.AspNetCore.Html;
+﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System.Collections.Generic;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -33,7 +31,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             list.InnerHtml.AppendHtml(li);
 
-            foreach(var link in footerLinks.Links)
+            foreach (var link in footerLinks.Links)
             {
                 var anchorListItem = CreateLink(link.Attributes, link.Content);
                 list.InnerHtml.AppendHtml(anchorListItem);
@@ -47,7 +45,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var li = new TagBuilder("li");
             var a = new TagBuilder("a");
             a.MergeAttributes(dictionary);
-            a.MergeCssClass("govuk-link");
+            a.AddCssClass("govuk-link");
             a.InnerHtml.AppendHtml(content);
             li.InnerHtml.AppendHtml(a);
 
@@ -59,7 +57,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var button = new TagBuilder("button");
             button.Attributes.Add(new KeyValuePair<string, string?>("data-module", "govuk-button"));
             button.MergeAttributes(dictionary);
-            button.MergeCssClass("govuk-link");
+            button.AddCssClass("govuk-link");
             button.InnerHtml.AppendHtml(content);
             li.InnerHtml.AppendHtml(button);
 

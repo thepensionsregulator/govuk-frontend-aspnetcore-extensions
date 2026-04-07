@@ -7,7 +7,7 @@
     padding-top: .1px;
     display: block;
     cursor: pointer;
-    color: $govuk-text-colour;
+    color: govuk-functional-colour(text);
 }
 
 .backoffice-block-view:link, .backoffice-block-view:visited {
@@ -90,7 +90,7 @@
     margin-bottom: 0;
 }
 .backoffice-block-view .govuk-task-list__link {
-    color: $govuk-link-colour;
+    color: govuk-functional-colour(link);
 }
 
 .backoffice-block-view .govuk-textarea {
@@ -115,11 +115,11 @@
 
 /* Links are disabled by converting them to span, but should still look like links. */
 .backoffice-block-view span.govuk-link {
-    color: $govuk-link-colour;
+    color: govuk-functional-colour(link);
     cursor: pointer;
 }
 .backoffice-block-view .govuk-error-summary span.govuk-link {
-    color: $govuk-error-colour;
+    color: govuk-functional-colour(error);
 }
 
 /* If govuk-\!-display-none is applied the preview could disappear entirely, leaving no backoffice UI,

@@ -1,4 +1,3 @@
-using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ThePensionsRegulator.GovUk.Frontend;
@@ -23,7 +22,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var timelineTagBuilder = new TagBuilder(TimelineElement);
             if (attributes is not null) { timelineTagBuilder.MergeAttributes(attributes); }
-            timelineTagBuilder.MergeCssClass("tpr-timeline");
+            timelineTagBuilder.AddCssClass("tpr-timeline");
             var accessibleTitle = "Timeline";
             if (!string.IsNullOrWhiteSpace(ariaTitle))
             {
@@ -47,7 +46,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                 if (item.Attributes is not null) { itemBuilder.MergeAttributes(item.Attributes); }
 
-                itemBuilder.MergeCssClass("tpr-timeline__item");
+                itemBuilder.AddCssClass("tpr-timeline__item");
                 itemBuilder.InnerHtml.AppendHtml(itemContentBuilder);
                 timelineTagBuilder.InnerHtml.AppendHtml(itemBuilder);
 
@@ -69,7 +68,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         private static TagBuilder BuildDateTime(TprTimelineItem item)
         {
             var timelineItemDateTime = new TagBuilder("p");
-            timelineItemDateTime.MergeCssClass("tpr-timeline__datetime");
+            timelineItemDateTime.AddCssClass("tpr-timeline__datetime");
             timelineItemDateTime.InnerHtml.AppendHtml(item.DateTime!.ToString());
             return timelineItemDateTime;
         }
@@ -77,7 +76,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         private static TagBuilder BuildHeading(TprTimelineItem item, int headingLevel)
         {
             var timelineItemHeading = new TagBuilder($"h{headingLevel}");
-            timelineItemHeading.MergeCssClass("tpr-timeline__heading");
+            timelineItemHeading.AddCssClass("tpr-timeline__heading");
             timelineItemHeading.InnerHtml.AppendHtml(item.Heading!.ToString());
             return timelineItemHeading;
         }

@@ -1,4 +1,4 @@
-﻿import { initAll } from '/govuk-frontend.min.js?v=5.14.0';
+﻿import { initAll } from '/govuk-frontend.min.js?v=6.0.0';
 const [html] = document.getElementsByTagName("html");
 const lang = html.getAttribute("lang");
 const config = lang === 'cy' || lang === 'cy-GB' ? {

@@ -53,7 +53,20 @@ context.CurrentPage.Setup(x => x.Level).Returns(3);
 context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [parent.Object, grandparent.Object]);
 ```
 
-When working with hierarchy methods like `.Parent()` and `.Ancestors()` be sure to use overloads that take instances of `IDocumentNavigationQueryService` and `IPublishedContentStatusFilteringService` to avoid side effects in other tests.
+You can also setup child pages:
+
+```csharp
+var context = new UmbracoTestContext();
+
+var child = UmbracoContentFactory.CreateContent<IPublishedContent>();
+child.Setup(x => x.Level).Returns(2);
+
+context.CurrentPage.Setup(x => x.Level).Returns(1);
+context.CurrentPage.SetupChildren(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [child.Object]);
+
+```
+
+When working with hierarchy methods like `.Root()`, `.Children()`, `.Parent()` and `.Ancestors()` be sure to use overloads that take instances of `IDocumentNavigationQueryService` and `IPublishedContentStatusFilteringService` to avoid side effects in other tests.
 
 ## Mock Umbraco content types
 

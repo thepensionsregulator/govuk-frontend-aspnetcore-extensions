@@ -22,6 +22,8 @@ AppConfig? config = builder.Configuration.GetSection("AppConfig").Get<AppConfig>
 if (config?.TPRStyles == true)
 {
     builder.Services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+    builder.Services.Remove(builder.Services.First(builder => builder.ServiceType == typeof(ITprSideNavigationLinksService)));
+    builder.Services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
 }
 else
 {
@@ -30,7 +32,6 @@ else
     builder.Services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
 }
 
-builder.Services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
 builder.Services.AddTransient<ITprSearchResultsEndpointUrlProvider, TprQueryBasedSearchResultsEndpointUrlProvider>();
 builder.Services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();
 builder.Services.AddTransient<IPropertyValueFormatter, ExampleAppNoParagraphsPropertyValueFormatter>();

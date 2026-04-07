@@ -8,6 +8,6 @@
         public string CollapseItemLabel { get; set; } = "{0} toggle button";
         public string ExpandedItemLabel { get; set; } = "{0} is expanded";
         public string CollapsedItemLabel { get; set; } = "{0} is collapsed";
-        public List<TprSideNavigationLink> NavigationLinks { get; set; } = new();
+        public IList<TprSideNavigationLink> NavigationLinks { get; set; } = new List<TprSideNavigationLink>();
     }
 }

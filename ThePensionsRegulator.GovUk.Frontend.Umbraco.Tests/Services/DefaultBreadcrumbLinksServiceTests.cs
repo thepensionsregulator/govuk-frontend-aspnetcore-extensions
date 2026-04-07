@@ -28,20 +28,20 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
             var context = new UmbracoTestContext();
 
             var greatGrandparent = UmbracoContentFactory.CreateContent<IPublishedContent>("example", "great grandparent");
-            greatGrandparent.Setup(x => x.Level).Returns(0);
+            greatGrandparent.Setup(x => x.Level).Returns(1);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(greatGrandparent.Object, UrlMode.Default, null)).Returns($"/{greatGrandparent.Object.Name.Kebaberize()}");
 
             var grandparent = UmbracoContentFactory.CreateContent<IPublishedContent>("example", "grandparent");
-            grandparent.Setup(x => x.Level).Returns(1);
+            grandparent.Setup(x => x.Level).Returns(2);
             grandparent.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [greatGrandparent.Object]);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(grandparent.Object, UrlMode.Default, null)).Returns($"/{grandparent.Object.Name.Kebaberize()}");
 
             var parent = UmbracoContentFactory.CreateContent<IPublishedContent>("example", "parent");
-            parent.Setup(x => x.Level).Returns(2);
+            parent.Setup(x => x.Level).Returns(3);
             parent.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [grandparent.Object, greatGrandparent.Object]);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(parent.Object, UrlMode.Default, null)).Returns($"/{parent.Object.Name.Kebaberize()}");
 
-            context.CurrentPage.Setup(x => x.Level).Returns(3);
+            context.CurrentPage.Setup(x => x.Level).Returns(4);
             context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [parent.Object, grandparent.Object, greatGrandparent.Object]);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(context.CurrentPage.Object, UrlMode.Default, null)).Returns($"/{context.CurrentPage.Object.Name.Kebaberize()}");
 

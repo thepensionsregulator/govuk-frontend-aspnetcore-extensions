@@ -31,14 +31,33 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var logoElement = new TagBuilder(logoIsLinked ? "a" : "span");
             if (logoIsLinked) { logoElement.Attributes.Add("href", tprFooterBar.LogoHref); }
 
-            var logo = new TagBuilder("img");
-            logo.TagRenderMode = TagRenderMode.SelfClosing;
-            if (tprFooterBar.LogoAttributes != null) { logo.MergeAttributes(tprFooterBar.LogoAttributes); }
-            logo.Attributes.Add("src", $"/ThePensionsRegulator.Frontend/img/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
-            logo.Attributes.Add("alt", tprFooterBar.LogoAlternativeText);
-            logo.Attributes.Add("width", "126");
-            logo.Attributes.Add("height", "47");
-            logoElement.InnerHtml.AppendHtml(logo);
+            var pictureElement = new TagBuilder("picture");
+
+            var sourceElement = new TagBuilder("source");
+            sourceElement.Attributes.Add("srcset", $"/ThePensionsRegulator.Frontend/img/tpr-logo-header.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
+            sourceElement.Attributes.Add("media", "(forced-colors: active) and (prefers-color-scheme: dark)");
+            pictureElement.InnerHtml.AppendHtml(sourceElement);
+
+            var screenLogo = new TagBuilder("img");
+            screenLogo.TagRenderMode = TagRenderMode.SelfClosing;
+            if (tprFooterBar.LogoAttributes != null) { screenLogo.MergeAttributes(tprFooterBar.LogoAttributes); }
+            screenLogo.Attributes.Add("src", $"/ThePensionsRegulator.Frontend/img/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
+            screenLogo.Attributes.Add("alt", tprFooterBar.LogoAlternativeText);
+            screenLogo.Attributes.Add("width", "126");
+            screenLogo.Attributes.Add("height", "47");
+            screenLogo.AddCssClass("tpr-footer__footer-logo-img--screen");
+            pictureElement.InnerHtml.AppendHtml(screenLogo);
+
+            logoElement.InnerHtml.AppendHtml(pictureElement);
+
+            var printLogo = new TagBuilder("img");
+            printLogo.TagRenderMode = TagRenderMode.SelfClosing;
+            printLogo.Attributes.Add("src", $"/ThePensionsRegulator.Frontend/img/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
+            printLogo.Attributes.Add("alt", tprFooterBar.LogoAlternativeText);
+            printLogo.Attributes.Add("width", "126");
+            printLogo.Attributes.Add("height", "47");
+            printLogo.AddCssClass("tpr-footer__footer-logo-img--print");
+            logoElement.InnerHtml.AppendHtml(printLogo);
 
             logoContainer.InnerHtml.AppendHtml(logoElement);
             upperFooterContainer.InnerHtml.AppendHtml(logoContainer);

@@ -41,8 +41,8 @@
          "table_row_advtab": false,
          "table_class_list": [
            {
-             "title": "None",
-             "value": ""
+             "title": "Width: full",
+             "value": "govuk-!-width-full"
            },
            {
              "title": "Width: three-quarters",

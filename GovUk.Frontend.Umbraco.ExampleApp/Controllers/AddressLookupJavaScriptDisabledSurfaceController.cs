@@ -44,6 +44,19 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 }
             }
 
+            ModelState.SetModelValue(nameof(viewModel.ShippingAddressLine1), new(viewModel?.ShippingAddressLine1?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.ShippingAddressLine2), new(viewModel?.ShippingAddressLine2?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.ShippingSomethingReallyRandom), new(viewModel?.ShippingSomethingReallyRandom?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.ShippingCounty), new(viewModel?.ShippingCounty?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.ShippingCountry), new(viewModel?.ShippingCountry?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.ShippingPostcode), new(viewModel?.ShippingPostcode?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.BillingAddressLine1), new(viewModel?.BillingAddressLine1?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.BillingAddressLine2), new(viewModel?.BillingAddressLine2?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.BillingSomethingReallyRandom), new(viewModel?.BillingSomethingReallyRandom?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.BillingCounty), new(viewModel?.BillingCounty?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.BillingCountry), new(viewModel?.BillingCountry?.ToString()));
+            ModelState.SetModelValue(nameof(viewModel.BillingPostcode), new(viewModel?.BillingPostcode?.ToString()));
+
             return View("AddressLookupJavaScriptDisabled", viewModel);
         }
     }

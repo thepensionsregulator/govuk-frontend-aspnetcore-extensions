@@ -34,14 +34,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var pictureElement = new TagBuilder("picture");
 
             var sourceElement = new TagBuilder("source");
-            sourceElement.Attributes.Add("srcset", "/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-header.svg");
+            sourceElement.Attributes.Add("srcset", $"/ThePensionsRegulator.Frontend/img/tpr-logo-header.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
             sourceElement.Attributes.Add("media", "(forced-colors: active) and (prefers-color-scheme: dark)");
             pictureElement.InnerHtml.AppendHtml(sourceElement);
 
             var screenLogo = new TagBuilder("img");
             screenLogo.TagRenderMode = TagRenderMode.SelfClosing;
             if (tprFooterBar.LogoAttributes != null) { screenLogo.MergeAttributes(tprFooterBar.LogoAttributes); }
-            screenLogo.Attributes.Add("src", "/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-footer.svg");
+            screenLogo.Attributes.Add("src", $"/ThePensionsRegulator.Frontend/img/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
             screenLogo.Attributes.Add("alt", tprFooterBar.LogoAlternativeText);
             screenLogo.Attributes.Add("width", "126");
             screenLogo.Attributes.Add("height", "47");
@@ -52,11 +52,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var printLogo = new TagBuilder("img");
             printLogo.TagRenderMode = TagRenderMode.SelfClosing;
-            printLogo.Attributes.Add("src", "/_content/ThePensionsRegulator.Frontend/tpr/tpr-logo-footer.svg");
+            printLogo.Attributes.Add("src", $"/ThePensionsRegulator.Frontend/img/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
             printLogo.Attributes.Add("alt", tprFooterBar.LogoAlternativeText);
             printLogo.Attributes.Add("width", "126");
             printLogo.Attributes.Add("height", "47");
-            printLogo.MergeCssClass("tpr-footer__footer-logo-img--print");
+            printLogo.AddCssClass("tpr-footer__footer-logo-img--print");
             logoElement.InnerHtml.AppendHtml(printLogo);
 
             logoContainer.InnerHtml.AppendHtml(logoElement);

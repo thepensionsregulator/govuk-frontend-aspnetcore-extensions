@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function SelectNavOption(e) {
 
+        const mobileMenuInnerContainers = document.querySelectorAll(".tpr-mobile-menu__container-inner");
         const toggles = document.querySelectorAll(".tpr-header-menu__button");
+        const noJsLinks = document.querySelectorAll(".tpr-mobile-menu__no-js-link");
         const overlay = document.querySelectorAll(".tpr-header-menu__nav-overlay");
         const menuItems = document.querySelectorAll(".tpr-header-menu__nav-menu-item");
         const arrowContainers = document.querySelectorAll(".tpr-header-menu__arrow-container");
@@ -19,7 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (isMobile) {
 
-            toggles.forEach(t => t.removeAttribute("href"));
+            mobileMenuInnerContainers.forEach(m => m.classList.add("tpr-mobile-menu__container-inner--hidden"));
+            toggles.forEach(t => t.classList.remove("tpr-header-menu__button--hidden"));
+            noJsLinks.forEach(l => l.classList.add("tpr-mobile-menu__no-js-link--hidden"))
             toggles.forEach(t => t.addEventListener("click", toggleMobileMenu));
             toggles.forEach(t => t.addEventListener("keydown", keyboardToggleMobileMenu));
 

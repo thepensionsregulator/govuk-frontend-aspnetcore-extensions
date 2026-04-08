@@ -26,7 +26,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             fieldSet.AddCssClass("govuk-fieldset");
             if (!string.IsNullOrEmpty(fieldsetDescribedBy))
             {
-                fieldSet.Attributes.Add("described-by", fieldsetDescribedBy);
+                fieldSet.Attributes.Add("aria-describedby", fieldsetDescribedBy);
             }
 
             if (legendContent is not null)

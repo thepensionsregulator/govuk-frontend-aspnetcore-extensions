@@ -3,7 +3,7 @@
 import { jest } from '@jest/globals';
 import { PostcodeSanitiser } from "../../wwwroot/tpr/address-lookup/postcode-sanitiser.js";
 
-describe("Postcode sanitisier", () => {
+describe("Postcode sanitiser", () => {
     const sanitiser = new PostcodeSanitiser();
 
     it.each([
@@ -26,7 +26,7 @@ describe("Postcode sanitisier", () => {
 
     it.each([
         ["BN1-4DW", "BN14DW"]
-    ])("removes hypen", (userInput, expected) => {
+    ])("removes hyphen", (userInput, expected) => {
         const result = sanitiser.sanitise(userInput);
         expect(result).toBe(expected);
     });

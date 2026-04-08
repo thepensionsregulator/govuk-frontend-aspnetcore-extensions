@@ -71,6 +71,7 @@
 .tpr-mobile-menu__no-js-link-inner {
     font-family: $govuk-font-family;
     color: $tpr-colour-white;
+    text-decoration: underline;
 }
 
 .tpr-mobile-menu__no-js-link:focus .tpr-mobile-menu__no-js-link-inner {
@@ -512,7 +513,7 @@
     background: $tpr-colour-violet;
 }
 
-@media(max-width: 315px) {
+@media(max-width: 350px) {
 
     .tpr-mobile-menu__container {
         display: inline;

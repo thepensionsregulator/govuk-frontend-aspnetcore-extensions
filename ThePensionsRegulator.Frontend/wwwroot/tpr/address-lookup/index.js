@@ -518,5 +518,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     const formSubmitButton = document.querySelector("button.govuk-button:not(.govuk-button--secondary)[type='submit']");
-    formSubmitButton.addEventListener("click", (event) => { submitOnClick(event, addressLookupObjects); })
+    if (formSubmitButton != null) {
+        formSubmitButton.addEventListener("click", (event) => { submitOnClick(event, addressLookupObjects); })
+    }
 });

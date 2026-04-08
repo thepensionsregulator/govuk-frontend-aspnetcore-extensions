@@ -83,7 +83,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var svg2 = new TagBuilder("g");
             svg2.Attributes.Add("transform", "translate(1.000000, 1.000000)");
-            svg2.Attributes.Add("fill", "#ffffff");
+            svg2.AddCssClass("tpr-header-menu__menu-icon");
 
             var path1 = new TagBuilder("path");
             path1.Attributes.Add("d", "M16,0.938 C16,1.456 15.58,1.876 15.062,1.876 L0.98,1.876 C0.462,1.876 0.042,1.456 0.042,0.938 L0.042,0.938 C0.042,0.42 0.462,0 0.98,0 L15.062,0 C15.58,0 16,0.42 16,0.938 L16,0.938 L16,0.938 Z");

@@ -22,7 +22,6 @@
         };
 
         if (this.currentState !== undefined && !validTransitions[this.currentState].includes(newState)) {
-            console.error(`Invalid state transition from ${this.currentState} to ${newState}`);
             return false;
         }
 
@@ -30,7 +29,6 @@
             this.confirmedAddress = data.address;
         }
 
-        console.log(`Transitioning from ${this.currentState} to ${newState}`);
         this.notifyListeners(newState, data);
         this.currentState = newState;
         return true;

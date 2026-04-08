@@ -6,10 +6,30 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         public TagBuilder GenerateTprHeaderMenu(TprHeaderMenu tprMobileMenu, TprHeaderBar tprHeaderBar)
         {
+            var mobileMenuContainer = new TagBuilder("div");
+            mobileMenuContainer.AddCssClass("tpr-mobile-menu__container-inner");
+
+            var icon = GenerateTprMobileMenuIcon();
+
+            var mobileMenuLink = new TagBuilder("a");
+            mobileMenuLink.AddCssClass("tpr-mobile-menu__no-js-link");
+            mobileMenuLink.Attributes.Add("href", tprHeaderBar.MobileMenuNoJsNavPage);
+
+            var noJsIcon = new TagBuilder("div");
+            noJsIcon.AddCssClass("tpr-mobile-menu__icon-no-js");
+
+            var mobileMenuLinkInner = new TagBuilder("span");
+            mobileMenuLinkInner.AddCssClass("tpr-mobile-menu__no-js-link-inner");
+
+            if (!string.IsNullOrEmpty((tprHeaderBar.HeaderMenuToggleClosed)))
+            {
+                mobileMenuLinkInner.Attributes.Add("data-close-label", tprHeaderBar.HeaderMenuToggleClosed);
+                mobileMenuLinkInner.InnerHtml.Append(tprHeaderBar.HeaderMenuToggleClosed);
+            }
 
             var mobileMenuToggle = new TagBuilder("button");
             mobileMenuToggle.AddCssClass("tpr-header-menu__button");
-            //mobileMenuToggle.Attributes.Add("href", tprHeaderBar.MobileMenuNoJsNavPage);
+            mobileMenuToggle.AddCssClass("tpr-header-menu__button--hidden");
             mobileMenuToggle.Attributes.Add("aria-expanded", "false");
 
             if (tprMobileMenu.Attributes != null)
@@ -17,6 +37,33 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 mobileMenuToggle.MergeAttributes(mobileMenuToggle.Attributes);
             }
 
+            var closeButton = new TagBuilder("span");
+            closeButton.AddCssClass("tpr-header-menu__button-inner");
+
+            if (!string.IsNullOrEmpty(tprHeaderBar.HeaderMenuToggleOpen))
+            {
+                closeButton.Attributes.Add("data-open-label", tprHeaderBar.HeaderMenuToggleOpen);
+            }
+            if (!string.IsNullOrEmpty((tprHeaderBar.HeaderMenuToggleClosed)))
+            {
+                closeButton.Attributes.Add("data-close-label", tprHeaderBar.HeaderMenuToggleClosed);
+                closeButton.InnerHtml.Append(tprHeaderBar.HeaderMenuToggleClosed);
+            }
+
+            mobileMenuToggle.InnerHtml.AppendHtml(icon);
+            mobileMenuToggle.InnerHtml.AppendHtml(closeButton);
+
+            mobileMenuLink.InnerHtml.AppendHtml(noJsIcon); //issue with before metric
+            mobileMenuLink.InnerHtml.AppendHtml(mobileMenuLinkInner);
+
+            mobileMenuContainer.InnerHtml.AppendHtml(mobileMenuLink);
+            mobileMenuContainer.InnerHtml.AppendHtml(mobileMenuToggle);
+
+            return mobileMenuContainer;
+        }
+
+        public TagBuilder GenerateTprMobileMenuIcon()
+        {
             var icon = new TagBuilder("div");
             icon.AddCssClass("tpr-mobile-menu__icon");
 
@@ -52,29 +99,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             path3.AddCssClass("tpr-header-menu__menu-icon");
             svg2.InnerHtml.AppendHtml(path3);
 
-            var closeButton = new TagBuilder("span");
-            closeButton.AddCssClass("tpr-header-menu__button-inner");
-
-            if (!string.IsNullOrEmpty(tprHeaderBar.HeaderMenuToggleOpen))
-            {
-                closeButton.Attributes.Add("data-open-label", tprHeaderBar.HeaderMenuToggleOpen);
-            }
-            if (!string.IsNullOrEmpty((tprHeaderBar.HeaderMenuToggleClosed)))
-            {
-                closeButton.Attributes.Add("data-close-label", tprHeaderBar.HeaderMenuToggleClosed);
-                closeButton.InnerHtml.Append(tprHeaderBar.HeaderMenuToggleClosed);
-            }
-
             svg1.InnerHtml.AppendHtml(svg2);
 
             svgContainer.InnerHtml.AppendHtml(svg1);
 
             icon.InnerHtml.AppendHtml(svgContainer);
 
-            mobileMenuToggle.InnerHtml.AppendHtml(icon);
-            mobileMenuToggle.InnerHtml.AppendHtml(closeButton);
-
-            return mobileMenuToggle;
+            return icon;
         }
 
         public TagBuilder GenerateTprHeaderNav(TprHeaderMenu headerMenu, TprHeaderBar tprHeaderBar)

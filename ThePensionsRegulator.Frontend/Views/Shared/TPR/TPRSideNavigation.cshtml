@@ -21,11 +21,10 @@
         if (viewModel.TitleLink is not null)
         {
             <h2 class="govuk-heading-m">
-                <a href="@expandMobileUrl" class="govuk-link govuk-link--no-visited-state tpr-side-nav__mobile-expand-toggle">
-                    @viewModel.TitleLink.Name
+                <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__title-link" href="@Model.TitleLink.Url">@Model.TitleLink.Name</a>
+                <a href="@expandMobileUrl" class="tpr-side-nav__mobile-expand-toggle">
                     <img src="/ThePensionsRegulator.Frontend/img/tpr-arrow-down.svg" asp-append-version="true" width="25" height="25" alt="@(string.Format(isMobileExpanded ? viewModel.CollapseItemLabel : viewModel.ExpandItemLabel, string.Empty))" class="tpr-side-nav__mobile-expand-toggle__arrow" />
                 </a>
-                <a class="govuk-link govuk-link--no-visited-state tpr-side-nav__desktop-link" href="@viewModel.TitleLink.Url">@viewModel.TitleLink.Name</a>
             </h2>
         }
         @* Removed collapse-all placeholder/button - collapse-all is now triggered by Escape key *@

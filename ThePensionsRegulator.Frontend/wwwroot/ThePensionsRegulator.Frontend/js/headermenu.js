@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isMobile) {
 
             mobileMenuInnerContainers.forEach(m => m.classList.add("tpr-mobile-menu__container-inner--hidden"));
-            toggles.forEach(t => t.classList.remove("tpr-header-menu__button--hidden"));
+            toggles.forEach(t => t.classList.remove("tpr-header-menu__button--hidden")); 
             noJsLinks.forEach(l => l.classList.add("tpr-mobile-menu__no-js-link--hidden"))
             toggles.forEach(t => t.addEventListener("click", toggleMobileMenu));
             toggles.forEach(t => t.addEventListener("keydown", keyboardToggleMobileMenu));
@@ -366,8 +366,8 @@ function toggleMobileMenu() {
     const toggle = document.querySelector(".tpr-header-menu__button");
     toggle.classList.toggle("tpr-header-menu__button--open");
 
-    const svg = document.querySelector(".tpr-mobile-menu__svg");
-    svg.classList.toggle("tpr-mobile-menu__svg--hide");
+    const svgs = document.querySelectorAll(".tpr-mobile-menu__svg");
+    svgs.forEach(s => s.classList.toggle("tpr-mobile-menu__svg--hide"));
 
     const button = document.querySelector(".tpr-header-menu__button-inner");
     if (button) {

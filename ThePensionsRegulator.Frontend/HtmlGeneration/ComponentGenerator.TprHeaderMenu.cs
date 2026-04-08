@@ -67,7 +67,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public TagBuilder GenerateTprMobileMenuIcon()
         {
             var icon = new TagBuilder("div");
-            icon.AddCssClass("tpr-mobile-menu__icon");
 
             var svgContainer = new TagBuilder("svg");
             svgContainer.Attributes.Add("viewBox", "0 0 17 16");
@@ -93,12 +92,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var path2 = new TagBuilder("path");
             path2.Attributes.Add("d", "M16,12.938 C16,13.456 15.58,13.876 15.062,13.876 L0.98,13.876 C0.462,13.876 0.042,13.456 0.042,12.938 L0.042,12.938 C0.042,12.42 0.462,12 0.98,12 L15.062,12 C15.58,12 16,12.42 16,12.938 L16,12.938 L16,12.938 Z");
-            path2.AddCssClass("tpr-header-menu__menu-icon");
             svg2.InnerHtml.AppendHtml(path2);
 
             var path3 = new TagBuilder("path");
             path3.Attributes.Add("d", "M16,6.938 C16,7.456 15.58,7.876 15.062,7.876 L0.98,7.876 C0.462,7.876 0.042,7.456 0.042,6.938 L0.042,6.938 C0.042,6.42 0.462,6 0.98,6 L15.062,6 C15.58,6 16,6.42 16,6.938 L16,6.938 L16,6.938 Z");
-            path3.AddCssClass("tpr-header-menu__menu-icon");
             svg2.InnerHtml.AppendHtml(path3);
 
             svg1.InnerHtml.AppendHtml(svg2);

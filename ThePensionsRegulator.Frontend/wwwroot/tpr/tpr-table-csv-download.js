@@ -120,6 +120,7 @@ function initTableCsvDownload() {
     button.className = "govuk-button govuk-button--secondary";
     button.setAttribute("data-module", "govuk-button");
     button.setAttribute("data-tpr-table-csv-button", "true");
+    button.setAttribute("data-tpr-table-csv-filename", fileName);
     button.textContent = buttonText;
 
     button.addEventListener("click", function () {

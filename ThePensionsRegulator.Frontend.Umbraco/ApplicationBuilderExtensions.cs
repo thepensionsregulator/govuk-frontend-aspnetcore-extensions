@@ -26,7 +26,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco
                     "/_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-js-init.js",
                     "/_content/ThePensionsRegulator.Frontend/tpr/tpr-back-to-top.js",
                     "/_content/ThePensionsRegulator.Frontend/tpr/tpr-side-navigation.js",
-                    "/_content/ThePensionsRegulator.Frontend/tpr/headermenu.js");
+                    "/_content/ThePensionsRegulator.Frontend/tpr/headermenu.js",
+                    "/_content/ThePensionsRegulator.Frontend/tpr/tpr-table-csv-download.js");
             });
 
             return app;

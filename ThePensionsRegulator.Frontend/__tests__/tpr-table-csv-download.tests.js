@@ -27,7 +27,6 @@ const createTable = ({
     .map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`)
     .join("");
 
-  let mergedAttr = "";
   if (mergedCells) {
     return `<table class="${className}">
       ${caption ? `<caption>${caption}</caption>` : ""}
@@ -281,9 +280,10 @@ describe("initTableCsvDownload", () => {
     const button = document.querySelector(
       'button[data-tpr-table-csv-button="true"]'
     );
-    // Trigger click and verify downloadCsv is called via the button's event
-    // The button exists and is wired up — file name testing is covered by sanitizeFileName tests
     expect(button).not.toBeNull();
+    expect(button.getAttribute("data-tpr-table-csv-filename")).toBe(
+      "my-report-2024"
+    );
   });
 
   it("should skip tables with merged cells but still process simple tables", () => {

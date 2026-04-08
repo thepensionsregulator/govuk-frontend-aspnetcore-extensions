@@ -1,63 +1,56 @@
 @{
-    ViewData["Title"] = "Table CSV download";
+    ViewData["Title"] = "Table";
 }
 @section Back {
     <div class="govuk-width-container">
         <govuk-back-link href="/">Back</govuk-back-link>
     </div>
 }
-<div class="govuk-width-container">
-    <span class="govuk-caption-xl">Example application</span>
-    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
-        <div class="govuk-grid-column govuk-grid-column-full">
-            <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
-        </div>
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
     </div>
+</div>
 
-    <p class="govuk-body">
-        A CSV download button is automatically added below each <code>.govuk-table</code> element on the page.
-        The button text can be customised using a <code>data-tpr-table-csv-download-text</code> attribute on
-        the <code>&lt;body&gt;</code> element.
-    </p>
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <p class="govuk-body">
+            A CSV download button is automatically added below each <code>.govuk-table</code> element on the page.
+            The button text can be customised using a <code>data-tpr-table-csv-download-text</code> attribute on
+            the <code>&lt;body&gt;</code> element.
+        </p>
 
-    <h2 class="govuk-heading-m">Simple table</h2>
-    <p class="govuk-body">This table has a caption and straightforward data.</p>
-
-    <table class="govuk-table">
-        <caption class="govuk-table__caption govuk-table__caption--m">Quarterly revenue</caption>
-        <thead class="govuk-table__header">
-            <tr class="govuk-table__row">
-                <th scope="col" class="govuk-table__header">Quarter</th>
-                <th scope="col" class="govuk-table__header">Revenue</th>
-                <th scope="col" class="govuk-table__header">Expenses</th>
-                <th scope="col" class="govuk-table__header govuk-table__header--numeric">Profit</th>
-            </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">Q1 2025</th>
-                <td class="govuk-table__cell">£12,500</td>
-                <td class="govuk-table__cell">£8,200</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£4,300</td>
-            </tr>
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">Q2 2025</th>
-                <td class="govuk-table__cell">£15,000</td>
-                <td class="govuk-table__cell">£9,100</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£5,900</td>
-            </tr>
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">Q3 2025</th>
-                <td class="govuk-table__cell">£13,750</td>
-                <td class="govuk-table__cell">£8,800</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£4,950</td>
-            </tr>
-            <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">Q4 2025</th>
-                <td class="govuk-table__cell">£18,200</td>
-                <td class="govuk-table__cell">£10,500</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">£7,700</td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="govuk-table">
+            <caption class="govuk-table__caption govuk-table__caption--m">Table caption</caption>
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Column header 1</th>
+                    <th scope="col" class="govuk-table__header">Column header 2</th>
+                    <th scope="col" class="govuk-table__header">Column header 3</th>
+                    <th scope="col" class="govuk-table__header govuk-table__header--numeric">Numeric data</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Row header 1</th>
+                    <td class="govuk-table__cell">Data cell 1</td>
+                    <td class="govuk-table__cell">Data cell 2</td>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Row header 2</th>
+                    <td class="govuk-table__cell">Data cell 3</td>
+                    <td class="govuk-table__cell">Data cell 4</td>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Row header 3</th>
+                    <td class="govuk-table__cell">Data cell 5</td>
+                    <td class="govuk-table__cell">Data cell 6</td>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -1,8 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using GovUk.Frontend.Umbraco;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Smidge;
+using ThePensionsRegulator.Frontend.Umbraco.Validation;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 
@@ -17,6 +21,15 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             IPublishedValueFallback publishedValueFallback)
         {
             app.UseGovUkFrontendUmbraco(mvcOptions, umbracoContextAccessor, publishedValueFallback);
+
+            mvcOptions.Value.ModelMetadataDetailsProviders.Add(new AddressLookupValidationMetadataProvider(
+                umbracoContextAccessor,
+                publishedValueFallback,
+                new Dictionary<Type, string>
+                {
+                    { typeof(RequiredAttribute), PropertyAliases.ErrorMessageRequired },
+                    { typeof(MaxLengthAttribute), PropertyAliases.ErrorMessageMaxLength },
+                }));
 
             app.UseSmidge(bundles =>
             {

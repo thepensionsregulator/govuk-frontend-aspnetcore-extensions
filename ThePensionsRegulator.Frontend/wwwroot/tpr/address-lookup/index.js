@@ -59,8 +59,6 @@ class TprAddressLookup {
         this.initialised = true;
     }
 
-    JsonResults = [];
-
     onPrimaryStateChange(newState, data) {
         if (newState === AddressLookupStateMachine.STATES.CONFIRMED && this.isSameAsChecked()) {
             this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED,  data);
@@ -114,8 +112,6 @@ class TprAddressLookup {
 
     renderSearchView() {
         this.clearContainer();
-
-        this.JsonResults = [];
 
         const fieldset = this.componentBuilder.createFieldset(ADDRESS_LOOKUP_CONFIG.LABELS.SEARCH_BY_POSTCODE);
         const buildingNameGroup = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.BUILDING_NAME, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.BUILDING_INPUT, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE)
@@ -454,7 +450,6 @@ class TprAddressLookup {
         postcode = this.postcodeSanitiser.sanitise(postcode);
 
         const searchResults = await this.apiService.searchAddresses(postcode, building);
-        this.JsonResults = searchResults.results;
 
         if (searchResults.length === 1) {
             const address = this.addressMapper.mapFromDpaResult(searchResults[0]);

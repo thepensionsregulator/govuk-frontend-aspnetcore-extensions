@@ -23,6 +23,6 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprSearchResults(string popularContentUrl, string searchContentUrl, string contentByIdUrl);
         TagBuilder GenerateTprSearchResultsFooterLinks(TprSearchFooterLinks tprSearchFooterLinks);
         TagBuilder GenerateTprSearchResultsInput(int headingLevel, string headingClass, string? label = null);
-        TagBuilder GenerateTprAddressLookup(AttributeDictionary? legendAttributes, IHtmlContent? legend, IHtmlContent? childContent, string? fieldsetDescribedBy, AddressLookupRole role, string? sameAsPrimaryCheckboxLabel);
+        TagBuilder GenerateTprAddressLookup(AttributeDictionary? legendAttributes, IHtmlContent? legend, AttributeDictionary? hintAttributes, IHtmlContent? hint, IHtmlContent? childContent, string? fieldsetDescribedBy, AddressLookupRole role, string? sameAsPrimaryCheckboxLabel);
     }
 }

@@ -81,30 +81,34 @@ When `role="Secondary"`, the component renders a checkbox with the label from `s
 
 _Required_
 
-| Attribute                          | Type                | Default   | Description                                                                                                           |
-| ---------------------------------- | ------------------- | --------- | --------------------------------------------------------------------------------------------------------------------- |
-| `data-address-lookup-search-url`   | `string`            |           | API endpoint for postcode search. Receives `postcode` query parameter.                                                |
-| `data-address-lookup-id-url`       | `string`            |           | API endpoint for looking up a single address by UPRN. Receives `uprn` query parameter.                                |
-| `role`                             | `AddressLookupRole` | `Primary` | The role of this address lookup. Set to `Secondary` for a dependent address that can copy the primary.                |
-| `same-as-primary-checkbox-label`   | `string`            |           | Label for the "same as primary" checkbox. **Required** when `role` is `Secondary`.                                    |
-| `described-by`                     | `string`            |           | ID(s) to set on the fieldset's `aria-describedby` attribute.                                                          |
+| Attribute                        | Type                | Default   | Description                                                                                            |
+| -------------------------------- | ------------------- | --------- | ------------------------------------------------------------------------------------------------------ |
+| `data-address-lookup-search-url` | `string`            |           | API endpoint for postcode search. Receives `postcode` query parameter.                                 |
+| `data-address-lookup-id-url`     | `string`            |           | API endpoint for looking up a single address by UPRN. Receives `uprn` query parameter.                 |
+| `role`                           | `AddressLookupRole` | `Primary` | The role of this address lookup. Set to `Secondary` for a dependent address that can copy the primary. |
+| `same-as-primary-checkbox-label` | `string`            |           | Label for the "same as primary" checkbox. **Required** when `role` is `Secondary`.                     |
+| `described-by`                   | `string`            |           | ID(s) to set on the fieldset's `aria-describedby` attribute.                                           |
 
 ### `<tpr-address-lookup-legend>`
 
 _Required._ Must be a direct child of `<tpr-address-lookup>`. Only one legend is permitted.
 
+### `<tpr-address-lookup-hint>`
+
+Must be a direct child of `<tpr-address-lookup>`. Only one hint is permitted.
+
 ### Child inputs
 
 Each `<input>` inside the component must have a `data-address-lookup` attribute set to one of the following values so the JavaScript can capture and restore field values across state transitions:
 
-| `data-address-lookup` value | Description          |
-| --------------------------- | -------------------- |
-| `address-line-1`            | Address line 1       |
-| `address-line-2`            | Address line 2       |
-| `town-or-city`              | Town or city         |
-| `county`                    | County               |
-| `country`                   | Country              |
-| `postcode`                  | Postcode             |
+| `data-address-lookup` value | Description                               |
+| --------------------------- | ----------------------------------------- |
+| `address-line-1`            | Address line 1                            |
+| `address-line-2`            | Address line 2                            |
+| `town-or-city`              | Town or city                              |
+| `county`                    | County                                    |
+| `country`                   | Country                                   |
+| `postcode`                  | Postcode                                  |
 | `UPRN`                      | Unique Property Reference Number (hidden) |
 
 ## View model
@@ -141,13 +145,13 @@ public class AddressViewModel
 
 The JavaScript component is driven by a state machine with the following states:
 
-| State                        | Description                                                                                                  |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `SEARCH`                     | User enters a building name/number and postcode, then clicks "Find address".                                 |
-| `SELECT`                     | A dropdown of matching addresses is shown. User picks one and clicks "Confirm address".                      |
-| `CONFIRMED`                  | The confirmed address is displayed as text. Hidden inputs preserve the values for form submission.            |
-| `MANUAL_UK_ENTRY`            | Manual entry form for UK addresses (line 1, line 2, town, county, postcode).                                 |
-| `MANUAL_INTERNATIONAL_ENTRY` | Manual entry form for international addresses (line 1, line 2, town, region, country, postal code).          |
+| State                        | Description                                                                                         |
+| ---------------------------- | --------------------------------------------------------------------------------------------------- |
+| `SEARCH`                     | User enters a building name/number and postcode, then clicks "Find address".                        |
+| `SELECT`                     | A dropdown of matching addresses is shown. User picks one and clicks "Confirm address".             |
+| `CONFIRMED`                  | The confirmed address is displayed as text. Hidden inputs preserve the values for form submission.  |
+| `MANUAL_UK_ENTRY`            | Manual entry form for UK addresses (line 1, line 2, town, county, postcode).                        |
+| `MANUAL_INTERNATIONAL_ENTRY` | Manual entry form for international addresses (line 1, line 2, town, region, country, postal code). |
 
 ### State transitions
 
@@ -169,17 +173,17 @@ MANUAL_INTERNATIONAL_ENTRY ──────────→ CONFIRMED
 
 The component uses jQuery Validation Unobtrusive and GOV.UK-styled error messages. Validation rules include:
 
-| Field               | Rules                                                                 |
-| ------------------- | --------------------------------------------------------------------- |
-| Postcode (search)   | Required, UK postcode pattern                                         |
-| Building name       | Max length 100                                                        |
-| Address line 1      | Required, max length 500                                              |
-| Address line 2      | Max length 500                                                        |
-| Town or city        | Required, max length 500                                              |
-| County / Region     | Max length 500                                                        |
-| Country             | Required, max length 500                                              |
-| Postal code (intl.) | Required, max length 20                                               |
-| Address select      | Required ("Select an address")                                        |
+| Field               | Rules                          |
+| ------------------- | ------------------------------ |
+| Postcode (search)   | Required, UK postcode pattern  |
+| Building name       | Max length 100                 |
+| Address line 1      | Required, max length 500       |
+| Address line 2      | Max length 500                 |
+| Town or city        | Required, max length 500       |
+| County / Region     | Max length 500                 |
+| Country             | Required, max length 500       |
+| Postal code (intl.) | Required, max length 20        |
+| Address select      | Required ("Select an address") |
 
 On form submission, the component checks that all address lookups are in the `CONFIRMED` state. If not, it prevents submission and displays an appropriate error.
 
@@ -227,7 +231,10 @@ If a building name or number is provided, results are filtered client-side: nume
 Include the JavaScript module in any view that uses this component:
 
 ```html
-<script src="_Content/ThePensionsRegulator.Frontend/tpr/address-lookup/index.js" type="module"></script>
+<script
+  src="_Content/ThePensionsRegulator.Frontend/tpr/address-lookup/index.js"
+  type="module"
+></script>
 ```
 
 Also include the GOV.UK client-side validation partial:
@@ -256,10 +263,12 @@ These values are read by `TprAddressLookupEndpointUrlProvider`, which implements
 The tag helper produces the following server-rendered HTML. The JavaScript then replaces the fieldset contents on page load.
 
 ```html
-<div class="tpr-address-lookup"
-     data-address-lookup-role="primary"
-     data-address-lookup-search-url="/api/address/search"
-     data-address-lookup-id-url="/api/address/byid">
+<div
+  class="tpr-address-lookup"
+  data-address-lookup-role="primary"
+  data-address-lookup-search-url="/api/address/search"
+  data-address-lookup-id-url="/api/address/byid"
+>
   <fieldset class="govuk-fieldset">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--for-fieldset">
       Enter your address
@@ -272,11 +281,13 @@ The tag helper produces the following server-rendered HTML. The JavaScript then 
 For a secondary address, additional attributes are rendered:
 
 ```html
-<div class="tpr-address-lookup"
-     data-address-lookup-role="secondary"
-     data-address-lookup-same-as-primary-checkbox-label="Billing address is the same as shipping address"
-     data-address-lookup-search-url="/api/address/search"
-     data-address-lookup-id-url="/api/address/byid">
+<div
+  class="tpr-address-lookup"
+  data-address-lookup-role="secondary"
+  data-address-lookup-same-as-primary-checkbox-label="Billing address is the same as shipping address"
+  data-address-lookup-search-url="/api/address/search"
+  data-address-lookup-id-url="/api/address/byid"
+>
   <!-- ... -->
 </div>
 ```
@@ -285,15 +296,15 @@ For a secondary address, additional attributes are rendered:
 
 The client-side code is structured as ES modules:
 
-| Module              | Responsibility                                                                 |
-| ------------------- | ------------------------------------------------------------------------------ |
-| `index.js`          | Entry point. Bootstraps `TprAddressLookup` instances on `DOMContentLoaded`.    |
-| `config.js`         | Central configuration: selectors, labels, error messages, patterns.            |
-| `state-machine.js`  | `AddressLookupStateMachine` — manages states and valid transitions.            |
-| `api-service.js`    | `AddressLookupApiService` — fetches addresses from search and ID endpoints.    |
-| `component-builder.js` | `AddressLookupComponentBuilder` — creates GOV.UK-styled DOM elements.       |
-| `mapper.js`         | `AddressMapper` — maps between DPA results, form inputs, and internal address objects. |
-| `validator.js`      | `AddressLookupValidator` — integrates with jQuery Validation Unobtrusive.      |
-| `input-builder.js`  | `InputBuilder` — fluent API for adding validation attributes to inputs.        |
-| `postcode-sanitiser.js` | `PostcodeSanitiser` — trims, uppercases, and removes hyphens from postcodes. |
-| `utils.js`          | Utility functions (e.g. `toSentenceCase`).                                     |
+| Module                  | Responsibility                                                                         |
+| ----------------------- | -------------------------------------------------------------------------------------- |
+| `index.js`              | Entry point. Bootstraps `TprAddressLookup` instances on `DOMContentLoaded`.            |
+| `config.js`             | Central configuration: selectors, labels, error messages, patterns.                    |
+| `state-machine.js`      | `AddressLookupStateMachine` — manages states and valid transitions.                    |
+| `api-service.js`        | `AddressLookupApiService` — fetches addresses from search and ID endpoints.            |
+| `component-builder.js`  | `AddressLookupComponentBuilder` — creates GOV.UK-styled DOM elements.                  |
+| `mapper.js`             | `AddressMapper` — maps between DPA results, form inputs, and internal address objects. |
+| `validator.js`          | `AddressLookupValidator` — integrates with jQuery Validation Unobtrusive.              |
+| `input-builder.js`      | `InputBuilder` — fluent API for adding validation attributes to inputs.                |
+| `postcode-sanitiser.js` | `PostcodeSanitiser` — trims, uppercases, and removes hyphens from postcodes.           |
+| `utils.js`              | Utility functions (e.g. `toSentenceCase`).                                             |

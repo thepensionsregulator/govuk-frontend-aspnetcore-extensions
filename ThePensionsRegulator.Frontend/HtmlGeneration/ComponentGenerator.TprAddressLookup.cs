@@ -10,7 +10,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         internal const string TprAddressLookupElement = "div";
 
-        public virtual TagBuilder GenerateTprAddressLookup(AttributeDictionary? legendAttributes, IHtmlContent? legendContent, IHtmlContent? childContent, string? fieldsetDescribedBy, AddressLookupRole role, string? sameAsPrimaryCheckboxLabel)
+        public virtual TagBuilder GenerateTprAddressLookup(AttributeDictionary? legendAttributes, IHtmlContent? legendContent, AttributeDictionary? hintAttributes, IHtmlContent? hintContent, IHtmlContent? childContent, string? fieldsetDescribedBy, AddressLookupRole role, string? sameAsPrimaryCheckboxLabel)
         {
             var container = new TagBuilder(TprAddressLookupElement);
             container.AddCssClass("tpr-address-lookup");
@@ -42,6 +42,20 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 legendTag.MergeCssClass("govuk-fieldset__legend--for-fieldset");
 
                 fieldSet.InnerHtml.AppendHtml(legendTag);
+            }
+
+            if (hintContent is not null)
+            {
+                var hintTag = new TagBuilder("div");
+                if (hintAttributes is not null)
+                {
+                    hintTag.MergeAttributes(hintAttributes);
+                }
+                hintTag.MergeCssClass("govuk-hint");
+
+                hintTag.InnerHtml.AppendHtml(hintContent);
+
+                fieldSet.InnerHtml.AppendHtml(hintTag);
             }
 
             if (childContent is not null)

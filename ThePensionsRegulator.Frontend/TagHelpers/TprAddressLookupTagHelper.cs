@@ -67,6 +67,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var tagBuilder = _htmlGenerator.GenerateTprAddressLookup(
                 addressLookupContext.LegendAttributes,
                 addressLookupContext.Legend,
+                addressLookupContext.HintAttributes,
+                addressLookupContext.Hint,
                 childContent,
                 DescribedBy,
                 Role,

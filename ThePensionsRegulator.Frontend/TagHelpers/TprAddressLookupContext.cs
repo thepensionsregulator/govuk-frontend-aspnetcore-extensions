@@ -1,17 +1,21 @@
-﻿using System.IO;
-using System.Text.Encodings.Web;
-using GovUk.Frontend.AspNetCore;
+﻿using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.IO;
+using System.Text.Encodings.Web;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
     internal class TprAddressLookupContext
     {
         private (AttributeDictionary Attributes, IHtmlContent Content)? _legend;
+        private (AttributeDictionary Attributes, IHtmlContent Content)? _hint;
 
         public AttributeDictionary? LegendAttributes => _legend?.Attributes;
         public IHtmlContent? Legend => _legend?.Content;
+
+        public AttributeDictionary? HintAttributes => _hint?.Attributes;
+        public IHtmlContent? Hint => _hint?.Content;
 
         public void SetLegend(AttributeDictionary attributes, IHtmlContent content)
         {
@@ -23,6 +27,18 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             }
 
             _legend = (attributes, content);
+        }
+
+        public void SetHint(AttributeDictionary attributes, IHtmlContent content)
+        {
+            if (Hint is not null)
+            {
+                throw ExceptionHelper.OnlyOneElementIsPermittedIn(
+                    TprAddressLookupHintTagHelper.TagName,
+                    TprAddressLookupTagHelper.TagName);
+            }
+
+            _hint = (attributes, content);
         }
 
         public void ThrowIfNotComplete()

@@ -102,9 +102,9 @@
             @await Html.PartialAsync("GOVUK/BlockList", childBlocks)
         </div>
     }
-    @if (!string.IsNullOrEmpty(hintText?.ToString()))
+    @if (!string.IsNullOrEmpty(hintText?.ToString()))   
     {
-        <div class="govuk-hint" id="@addressLine1ModelProperty-hint">@hintText</div>
+        <tpr-address-lookup-hint id="@addressLine1ModelProperty-hint">@hintText</tpr-address-lookup-hint>
     }
 
     <govuk-client-side-validation 

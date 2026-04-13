@@ -92,6 +92,7 @@ class AddressLookupComponentBuilder {
         link.setAttribute(this.config.ATTRIBUTES.BASE, dataAddressLookupValue);
         link.classList = this.config.CSS_CLASSES.LINK;
         link.innerText = linkText;
+        link.href = "#";
 
         return link;
     }

@@ -25,7 +25,8 @@
     ],
     "transform": {},
     "moduleNameMapper": {
-      "/govuk-frontend.min.js$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js"
+      "/govuk-frontend.min.js$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js",
+      "_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-validation.js$": "<rootDir>/GovUk.Frontend.AspNetCore.Extensions/wwwroot/govuk/govuk-validation.js"
     }
   },
   "type": "module",

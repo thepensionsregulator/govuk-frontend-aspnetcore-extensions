@@ -322,4 +322,8 @@
 	<ItemGroup>
 	  <UpToDateCheckInput Remove="styles\_tpr-section-cards.scss" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="__mocks__\_content\ThePensionsRegulator.GovUk.Frontend\govuk\" />
+	</ItemGroup>
 </Project>

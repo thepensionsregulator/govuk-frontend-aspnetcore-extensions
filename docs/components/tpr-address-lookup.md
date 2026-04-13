@@ -308,3 +308,18 @@ The client-side code is structured as ES modules:
 | `input-builder.js`      | `InputBuilder` — fluent API for adding validation attributes to inputs.                |
 | `postcode-sanitiser.js` | `PostcodeSanitiser` — trims, uppercases, and removes hyphens from postcodes.           |
 | `utils.js`              | Utility functions (e.g. `toSentenceCase`).                                             |
+
+## Umbraco
+
+You can add an 'Address lookup' block to a block list or block grid in Umbraco.
+
+You can configure the sitewide default labels for fields by setting the following dictionary entries:
+
+- `TPR address lookup line 1 label`
+- `TPR address lookup line 2 label`
+- `TPR address lookup town or city label`
+- `TPR address lookup county label`
+- `TPR address lookup postcode label`
+- `TPR address lookup country label`
+
+These in turn can be overridden by setting label text on the settings for each address lookup block.

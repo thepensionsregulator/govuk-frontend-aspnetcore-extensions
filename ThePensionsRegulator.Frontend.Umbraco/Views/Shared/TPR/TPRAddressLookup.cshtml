@@ -41,42 +41,42 @@
     var addressLine1State = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.AddressLine1Label),
-            "Address line 1",
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup line 1 label", "Address line 1"),
             ViewContext.ModelState
         );
 
     var addressLine2State = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.AddressLine2Label),
-            "Address line 2 (optional)",
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup line 2 label", "Address line 2 (optional)"),
             ViewContext.ModelState
         );
 
     var townOrCityState = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.TownOrCityModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.TownOrCityLabel),
-            "Town or city",
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup town or city label", "Town or city"),
             ViewContext.ModelState
         );
 
     var countyState = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.CountyModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.CountyLabel),
-            "County (optional)",
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup county label", "County (optional)"),
             ViewContext.ModelState
         );
 
     var postcodeState = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.PostcodeModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.PostcodeLabel),
-            "Postcode",
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup postcode label", "Postcode"),
             ViewContext.ModelState
         );
 
     var countryState = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.CountryModelProperty),
             Model.Content.Value<string?>(TprPropertyAliases.CountryLabel),
-            "Country",
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup country label", "Country"),
             ViewContext.ModelState
         );
 

@@ -1,4 +1,4 @@
-﻿import { toSentenceCase } from "./utils.js";
+﻿import { toTitleCase } from "./utils.js";
 import { InputBuilder } from "./input-builder.js";
 
 class AddressLookupComponentBuilder {
@@ -56,8 +56,8 @@ class AddressLookupComponentBuilder {
             if (addressLine === postcode) {
                 selectedAddressParagraph.appendChild(document.createTextNode(addressLine));
             } else {
-                const sentenceCase = toSentenceCase(addressLine);
-                selectedAddressParagraph.appendChild(document.createTextNode(sentenceCase));
+                const titleCase = toTitleCase(addressLine);
+                selectedAddressParagraph.appendChild(document.createTextNode(titleCase));
             }
             selectedAddressParagraph.appendChild(document.createElement("br"));
         });

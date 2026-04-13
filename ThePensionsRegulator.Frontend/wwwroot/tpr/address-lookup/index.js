@@ -154,13 +154,11 @@ class TprAddressLookup {
 
         const enterAddressNotOnListLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.ENTER_ADDRESS_NOT_ON_LIST, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_NOT_ON_LIST);
         enterAddressNotOnListLink.addEventListener("click", event => { this.enterAddressNotOnListOnClick(event); });
-        const enterAddressNotOnListLinkItem = this.componentBuilder.createListItem(enterAddressNotOnListLink);
 
         const returnToAddressLookupLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.RETURN_TO_POSTCODE_SEARCH, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.RETURN_TO_POSTCODE);
         returnToAddressLookupLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
-        const returnToAddressLookupLinkItem = this.componentBuilder.createListItem(returnToAddressLookupLink);
 
-        const linkList = this.componentBuilder.createLinkList([enterAddressNotOnListLinkItem, returnToAddressLookupLinkItem]);
+        const linkList = this.componentBuilder.createLinkList([enterAddressNotOnListLink, returnToAddressLookupLink]);
 
         this.stateContainer.appendChild(selectElement);
         this.stateContainer.appendChild(confirmAddressButton);
@@ -213,8 +211,7 @@ class TprAddressLookup {
         if (!this.isSameAsChecked()) {
             const editLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.EDIT_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.EDIT_ADDRESS);
             editLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
-            const editAddressListItem = this.componentBuilder.createListItem(editLink);
-            linkList = this.componentBuilder.createLinkList([editAddressListItem]);
+            linkList = this.componentBuilder.createLinkList([editLink]);
         }
 
 

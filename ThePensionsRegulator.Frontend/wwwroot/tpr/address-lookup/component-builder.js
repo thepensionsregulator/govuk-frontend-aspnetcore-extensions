@@ -103,10 +103,9 @@ class AddressLookupComponentBuilder {
         linkList.className = this.config.CSS_CLASSES.LINK_LIST;
         if (links !== undefined && links.length !== 0) {
             links.forEach(link => {
-                linkList.appendChild(link);
+                linkList.appendChild(this.createListItem(link));
             });
         }
-
         return linkList;
     }
 

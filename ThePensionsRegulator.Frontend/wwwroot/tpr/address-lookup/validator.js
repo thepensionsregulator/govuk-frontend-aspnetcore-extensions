@@ -114,7 +114,11 @@ class AddressLookupValidator {
             fieldset.setAttribute("aria-describedby", errorElementId);
         }
 
-        errorElement.innerText = message;
+        const hiddenSpan = errorElement.querySelector(".govuk-visually-hidden");
+        if (hiddenSpan.nextSibling) {
+            hiddenSpan.nextSibling.remove();
+        }
+        errorElement.appendChild(document.createTextNode(message));
 
         this.govuk.updateErrorSummary();
     }

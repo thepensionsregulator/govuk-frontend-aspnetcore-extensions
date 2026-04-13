@@ -1,4 +1,3 @@
-using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ThePensionsRegulator.GovUk.Frontend.Caching;
 
@@ -17,20 +16,27 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var tagBuilder = new TagBuilder(TprHeaderBarElement);
             if (tprHeaderBar.HeaderBarAttributes != null) { tagBuilder.MergeAttributes(tprHeaderBar.HeaderBarAttributes); }
-            tagBuilder.MergeCssClass("tpr-header");
+            tagBuilder.AddCssClass("tpr-header");
 
             var headerContent = new TagBuilder("div");
-            headerContent.MergeCssClass("govuk-width-container");
-            headerContent.MergeCssClass("tpr-header__inner");
+            headerContent.AddCssClass("govuk-width-container");
+            headerContent.AddCssClass("tpr-header__inner");
 
             var logoIsLinked = !string.IsNullOrEmpty(tprHeaderBar.LogoHref);
             var logoElement = new TagBuilder(logoIsLinked ? "a" : "span");
             if (logoIsLinked)
             {
-                logoElement.MergeCssClass("govuk-link-image");
+                logoElement.AddCssClass("govuk-link-image");
                 logoElement.Attributes.Add("href", tprHeaderBar.LogoHref);
             }
-            logoElement.MergeCssClass("tpr-header__logo");
+            logoElement.AddCssClass("tpr-header__logo");
+
+            var pictureElement = new TagBuilder("picture");
+
+            var sourceElement = new TagBuilder("source");
+            sourceElement.Attributes.Add("srcset", $"/ThePensionsRegulator.Frontend/img/tpr-logo-footer.svg?{CachingConstants.StaticAssetVersionQueryParamName}={TprFrontendVersion}");
+            sourceElement.Attributes.Add("media", "(forced-colors: active) and (prefers-color-scheme: light)");
+            pictureElement.InnerHtml.AppendHtml(sourceElement);
 
             var screenLogo = new TagBuilder("img");
             screenLogo.TagRenderMode = TagRenderMode.SelfClosing;
@@ -39,8 +45,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             screenLogo.Attributes.Add("alt", tprHeaderBar.LogoAlternativeText);
             screenLogo.Attributes.Add("width", "180");
             screenLogo.Attributes.Add("height", "75");
-            screenLogo.MergeCssClass("tpr-header__logo-img--screen");
-            logoElement.InnerHtml.AppendHtml(screenLogo);
+            screenLogo.AddCssClass("tpr-header__logo-img--screen");
+
+            pictureElement.InnerHtml.AppendHtml(screenLogo);
+            logoElement.InnerHtml.AppendHtml(pictureElement);
 
             var printLogo = new TagBuilder("img");
             printLogo.TagRenderMode = TagRenderMode.SelfClosing;
@@ -48,7 +56,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             printLogo.Attributes.Add("alt", tprHeaderBar.LogoAlternativeText);
             printLogo.Attributes.Add("width", "180");
             printLogo.Attributes.Add("height", "75");
-            printLogo.MergeCssClass("tpr-header__logo-img--print");
+            printLogo.AddCssClass("tpr-header__logo-img--print");
             logoElement.InnerHtml.AppendHtml(printLogo);
 
             headerContent.InnerHtml.AppendHtml(logoElement);
@@ -57,8 +65,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             {
                 var labelElement = new TagBuilder("p");
                 if (tprHeaderBar.LabelAttributes != null) { labelElement.MergeAttributes(tprHeaderBar.LabelAttributes); }
-                labelElement.MergeCssClass("govuk-body");
-                labelElement.MergeCssClass("tpr-header__label");
+                labelElement.AddCssClass("govuk-body");
+                labelElement.AddCssClass("tpr-header__label");
                 if (tprHeaderBar.LabelAllowHtml)
                 {
                     labelElement.InnerHtml.AppendHtml(tprHeaderBar.Label);
@@ -74,8 +82,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             {
                 var contentElement = new TagBuilder("div");
                 if (tprHeaderBar.ContentAttributes != null) { contentElement.MergeAttributes(tprHeaderBar.ContentAttributes); }
-                contentElement.MergeCssClass("govuk-body");
-                contentElement.MergeCssClass("tpr-header__content");
+                contentElement.AddCssClass("govuk-body");
+                contentElement.AddCssClass("tpr-header__content");
                 headerContent.InnerHtml.AppendHtml(contentElement);
                 if (tprHeaderBar.ContentAllowHtml)
                 {
@@ -191,7 +199,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var svgTag2 = new TagBuilder("g");
             svgTag2.Attributes.Add("transform", "translate(1.000000, -6.000000)");
-            svgTag2.Attributes.Add("fill", "#434343");
+            svgTag2.AddCssClass("tpr-header-search__button-icon");
             svgTag1.InnerHtml.AppendHtml(svgTag2);
 
             var path1 = new TagBuilder("path");

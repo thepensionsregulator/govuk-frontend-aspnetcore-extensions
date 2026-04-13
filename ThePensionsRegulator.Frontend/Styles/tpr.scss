@@ -33,6 +33,7 @@
 @import "govuk/components/service-navigation";
 @import "govuk/components/skip-link";
 @import "govuk/components/summary-list";
+@import "govuk/components/tabs";
 @import "govuk/components/table";
 @import "govuk/components/task-list";
 @import "govuk/components/textarea";
@@ -47,6 +48,7 @@
 @import "_govuk-radios.scss";
 @import "_govuk-select.scss";
 @import "_govuk-textarea.scss";
+@import "_govuk-typography.scss";
 
 // Load our custom font (we are not allowed to use 'GDS Transport' https://design-system.service.gov.uk/styles/typography/)
 @import '_open-sans.scss';

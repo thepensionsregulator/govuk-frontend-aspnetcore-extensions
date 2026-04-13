@@ -1,4 +1,3 @@
-using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ThePensionsRegulator.GovUk.Frontend;
 
@@ -35,9 +34,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var containerTag = new TagBuilder("div");
             containerTag.MergeAttributes(video.Attributes);
-            containerTag.MergeCssClass("tpr-video-wrapper-no-cookies");
+            containerTag.AddCssClass("tpr-video-wrapper-no-cookies");
             var wrapperTag = new TagBuilder("div");
-            wrapperTag.MergeCssClass("tpr-video-wrapper-no-cookies__video-container");
+            wrapperTag.AddCssClass("tpr-video-wrapper-no-cookies__video-container");
 
             var iFrame = new TagBuilder("iframe");
             var src = "https://www.youtube-nocookie.com/embed/" + video.YouTubeVideoId;
@@ -61,7 +60,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             if (!string.IsNullOrWhiteSpace(video.TranscriptUrl))
             {
                 var transcriptLink = new TagBuilder("a");
-                transcriptLink.MergeCssClass("tpr-video-wrapper-no-cookies__transcript-link");
+                transcriptLink.AddCssClass("tpr-video-wrapper-no-cookies__transcript-link");
                 transcriptLink.Attributes.Add("href", video.TranscriptUrl);
                 if (!string.IsNullOrWhiteSpace(video.TranscriptTarget))
                 {

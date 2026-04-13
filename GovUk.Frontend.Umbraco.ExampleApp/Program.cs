@@ -11,7 +11,6 @@ using ThePensionsRegulator.Frontend.Umbraco;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
@@ -23,6 +22,9 @@ AppConfig? config = builder.Configuration.GetSection("AppConfig").Get<AppConfig>
 
 if (config?.TPRStyles == true)
 {
+    builder.Services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+    builder.Services.Remove(builder.Services.First(builder => builder.ServiceType == typeof(ITprSideNavigationLinksService)));
+    builder.Services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
     builder.Services.AddTprFrontendUmbraco(
         umbracoOptions => { umbracoOptions.RenderWidthContainerForBlocks = true; },
         tprOptions => { tprOptions.EnableTableCsvDownload = true; }
@@ -36,8 +38,6 @@ else
     builder.Services.Configure<TprFrontendOptions>(options => { options.EnableTableCsvDownload = true; });
 }
 
-builder.Services.AddTransient<IGovUkBreadcrumbLinksService, BreadcrumbLinksServiceForExampleApp>();
-builder.Services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
 builder.Services.AddTransient<ITprSearchResultsEndpointUrlProvider, TprQueryBasedSearchResultsEndpointUrlProvider>();
 builder.Services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();
 builder.Services.AddTransient<IPropertyValueFormatter, ExampleAppNoParagraphsPropertyValueFormatter>();

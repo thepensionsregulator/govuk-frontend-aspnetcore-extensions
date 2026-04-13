@@ -73,7 +73,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Validation
                 {
                     var propertyValue = block.Settings.GetProperty(key.Alias)?.GetValue();
 
-                    if (propertyValue is not null && propertyValue.Equals(attribute?.ErrorMessage))
+
+                    if (propertyValue is not null && propertyValue is string propertyValueString && propertyValueString.Contains(attribute?.ErrorMessage))
                     {
                         var keySplit = key.Alias.Split($"{char.ToUpperInvariant(PropertyAliases.ModelProperty[0])}{PropertyAliases.ModelProperty[1..]}");
                         var firstBit = keySplit[0];

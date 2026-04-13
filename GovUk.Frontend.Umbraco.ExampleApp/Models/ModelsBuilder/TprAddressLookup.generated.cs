@@ -90,7 +90,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string CountyLabel => this.Value<string>(_publishedValueFallback, "countyLabel");
 
 		///<summary>
-		/// fieldsetBlocks: Help specific to the address lookup.
+		/// Blocks: Help specific to the address lookup.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

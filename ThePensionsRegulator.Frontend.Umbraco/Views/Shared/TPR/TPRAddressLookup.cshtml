@@ -104,7 +104,7 @@
     }
     @if (!string.IsNullOrEmpty(hintText?.ToString()))
     {
-            <div class="govuk-hint">@hintText</div>
+        <div class="govuk-hint" id="@addressLine1ModelProperty-hint">@hintText</div>
     }
 
     <govuk-client-side-validation 

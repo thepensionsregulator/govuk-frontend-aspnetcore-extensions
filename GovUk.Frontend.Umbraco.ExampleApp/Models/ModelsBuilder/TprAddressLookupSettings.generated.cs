@@ -97,6 +97,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual bool AddressLookupIsPrimary => this.Value<bool>(_publishedValueFallback, "addressLookupIsPrimary");
 
 		///<summary>
+		/// Country custom error message: Sets the message displayed by a custom validator.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countryCustomErrorMessage")]
+		public virtual string CountryCustomErrorMessage => this.Value<string>(_publishedValueFallback, "countryCustomErrorMessage");
+
+		///<summary>
 		/// Country error message required: Sets the message displayed if country is set by the code to be required.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

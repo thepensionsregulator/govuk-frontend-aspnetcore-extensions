@@ -1,6 +1,7 @@
 ﻿// Import and compile govuk-frontend, adding fixes and styles for the components we've added from later versions
 $govuk-new-organisation-colours: true; // Recommended in release notes for GOV.UK Frontend v5.5.0
 @import 'govuk';
+@import "_govuk-accordion.scss";
 @import "_govuk-breadcrumb.scss";
 @import "_govuk-checkboxes.scss";
 @import "_govuk-input.scss";

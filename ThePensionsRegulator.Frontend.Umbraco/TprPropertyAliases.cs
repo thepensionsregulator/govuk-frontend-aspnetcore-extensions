@@ -38,6 +38,8 @@
                 public const string ImageDecorative = "decorativeImage";
                 public const string ImageSize = "imageSize";
                 public const string ImageSpaceAfter = "spaceAfter";
+                public const string NavigationalLinksText = "text";
+                public const string NavigationalLinksLabel = "label";
                 public const string SearchResultsHeading = "heading";
                 public const string SearchResultsFooterLinks = "footerlinks";
                 public const string SearchResultsHeadingClass = "headingClass";

@@ -58,6 +58,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string Heading => this.Value<string>(_publishedValueFallback, "heading");
 
 		///<summary>
+		/// Label: Sets the aria-label property for the nav element surrounding the component. Defaults to "List of related links" if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("label")]
+		public virtual string Label => this.Value<string>(_publishedValueFallback, "label");
+
+		///<summary>
 		/// Links
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

@@ -334,9 +334,9 @@ describe("AddressLookupComponentBuilder", () => {
         });
     });
 
-    describe("createAddressSelect", () => {
+    describe("createGovukSelect", () => {
         it("should create a form group with correct CSS class", () => {
-            const inputBuilder = builder.createAddressSelect("Choose address", []);
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", []);
             const formGroup = inputBuilder.build();
 
             expect(formGroup.classList.contains("govuk-form-group")).toBe(true);
@@ -344,31 +344,35 @@ describe("AddressLookupComponentBuilder", () => {
 
         it("should create a label with correct text and attributes", () => {
             const labelText = "Choose address";
-            const inputBuilder = builder.createAddressSelect(labelText, []);
+            const dataValue = "select-address";
+            const inputBuilder = builder.createGovukSelect(labelText, dataValue, []);
             const formGroup = inputBuilder.build();
             const label = formGroup.querySelector("label");
 
             expect(label).not.toBeNull();
+            
             expect(label.innerText).toBe(labelText);
-            expect(label.getAttribute("for")).toBe(`${ADDRESS_LOOKUP_CONFIG.FIELD_NAMES.SELECT_ADDRESS}-${testIndex}`);
+            expect(label.getAttribute("for")).toBe(`${dataValue}-${testIndex}`);
             expect(label.classList.contains("govuk-label")).toBe(true);
             expect(label.classList.contains("govuk-label--l")).toBe(true);
         });
 
         it("should create a select element with correct attributes", () => {
-            const inputBuilder = builder.createAddressSelect("Choose address", []);
+            const dataValue = "select-address";
+            const inputBuilder = builder.createGovukSelect("Choose address", dataValue, []);
             const formGroup = inputBuilder.build();
             const select = formGroup.querySelector("select");
 
             expect(select).not.toBeNull();
+            expect(select.getAttribute("data-address-lookup")).toBe(dataValue);
             expect(select.getAttribute("data-address-lookup")).toBe(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS);
             expect(select.classList.contains("govuk-select")).toBe(true);
-            expect(select.name).toBe(`${ADDRESS_LOOKUP_CONFIG.FIELD_NAMES.SELECT_ADDRESS}-${testIndex}`);
-            expect(select.id).toBe(`${ADDRESS_LOOKUP_CONFIG.FIELD_NAMES.SELECT_ADDRESS}-${testIndex}`);
+            expect(select.name).toBe(`${dataValue}-${testIndex}`);
+            expect(select.id).toBe(`${dataValue}-${testIndex}`);
         });
 
         it("should create a blank option as the first option", () => {
-            const inputBuilder = builder.createAddressSelect("Choose address", []);
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", []);
             const formGroup = inputBuilder.build();
             const select = formGroup.querySelector("select");
 
@@ -379,7 +383,7 @@ describe("AddressLookupComponentBuilder", () => {
         });
 
         it("should handle empty address options array", () => {
-            const inputBuilder = builder.createAddressSelect("Choose address", []);
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", []);
             const formGroup = inputBuilder.build();
             const select = formGroup.querySelector("select");
 
@@ -387,7 +391,7 @@ describe("AddressLookupComponentBuilder", () => {
         });
 
         it("should handle undefined address options", () => {
-            const inputBuilder = builder.createAddressSelect("Choose address", undefined);
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", undefined);
             const formGroup = inputBuilder.build();
             const select = formGroup.querySelector("select");
 
@@ -397,7 +401,7 @@ describe("AddressLookupComponentBuilder", () => {
         it("should add all provided address options", () => {
             const option1 = builder.createOption("1", "Address 1");
             const option2 = builder.createOption("2", "Address 2");
-            const inputBuilder = builder.createAddressSelect("Choose address", [option1, option2]);
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", [option1, option2]);
             const formGroup = inputBuilder.build();
             const select = formGroup.querySelector("select");
 
@@ -409,7 +413,7 @@ describe("AddressLookupComponentBuilder", () => {
         });
 
         it("should return an InputBuilder instance", () => {
-            const inputBuilder = builder.createAddressSelect("Choose address", []);
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", []);
 
             expect(inputBuilder.constructor.name).toBe("InputBuilder");
         });

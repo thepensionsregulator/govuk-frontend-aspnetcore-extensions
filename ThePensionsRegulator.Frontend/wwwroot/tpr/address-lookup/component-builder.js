@@ -115,18 +115,18 @@ class AddressLookupComponentBuilder {
         return listItem;
     }
 
-    createAddressSelect(labelText, addressOptions) {
+    createGovukSelect(labelText, dataAddressLookupValue, options) {
         const formGroupContainer = document.createElement("div");
         formGroupContainer.classList = this.config.CSS_CLASSES.FORM_GROUP;
 
-        const inputId = `${this.config.FIELD_NAMES.SELECT_ADDRESS}-${this.index}`;
+        const inputId = `${dataAddressLookupValue}-${this.index}`;
         const label = document.createElement("label");
         label.classList = `${this.config.CSS_CLASSES.LABEL} govuk-label--l`;
         label.innerText = labelText;
         label.setAttribute("for", inputId);
 
         const select = document.createElement("select");
-        select.setAttribute(this.config.ATTRIBUTES.BASE, this.config.DATA_ATTRIBUTES.SELECT_ADDRESS);
+        select.setAttribute(this.config.ATTRIBUTES.BASE, dataAddressLookupValue);
         select.classList = this.config.CSS_CLASSES.SELECT;
         select.name = inputId;
         select.id = inputId;
@@ -135,9 +135,9 @@ class AddressLookupComponentBuilder {
         blankOption.selected = "selected";
         select.appendChild(blankOption);
 
-        if (addressOptions !== undefined && addressOptions.length !== 0) {
-            addressOptions.forEach(addressOption => {
-                select.appendChild(addressOption);
+        if (options !== undefined && options.length !== 0) {
+            options.forEach(option => {
+                select.appendChild(option);
             });
         }
 

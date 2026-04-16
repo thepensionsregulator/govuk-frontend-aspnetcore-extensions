@@ -14,16 +14,25 @@ namespace GovUk.Frontend.ExampleApp.Middleware
 
         public async Task InvokeAsync(HttpContext context, INonceProvider nonceProvider)
         {
-            var connectSrcForHotReload = _webHostEnvironment.IsDevelopment() ? "'self' ws://localhost:* http://localhost:64300" : string.Empty;
-            var styleSrcForAblePlayer = "'sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f' 'sha384-ETDm/j6COkRSUfVFsGNM5WYE4WjyRgfDhy4Pf4Fsc8eNw/eYEMqYZWuxTzMX6FBa'";
+            var connectSrcForVisualStudioBrowserLink = _webHostEnvironment.IsDevelopment() ? "'self' ws://localhost:* http://localhost:*" : string.Empty;
+
+            const string styleSrcForAblePlayer = "'sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f' 'sha384-ETDm/j6COkRSUfVFsGNM5WYE4WjyRgfDhy4Pf4Fsc8eNw/eYEMqYZWuxTzMX6FBa'";
+            const string scriptSrcForYouTube = "https://youtube.com https://www.youtube.com https://www.youtube-nocookie.com";
+            const string imgSrcForYouTube = "https://i.ytimg.com";
+            const string frameSrcForYouTube = "https://youtube.com https://www.youtube.com https://www.youtube-nocookie.com";
+            const string pictureInPictureForYouTube = "\"https://www.youtube.com\"  \"https://www.youtube-nocookie.com\"";
+            const string fullscreenSrcYouTube = "\"https://www.youtube.com\"  \"https://www.youtube-nocookie.com\"";
+
             var nonce = nonceProvider.GetNonce();
+            context.Response.Headers.Append("Permissions-Policy", $"accelerometer=(),autoplay=(),camera=(),cross-origin-isolated=(),display-capture=(),encrypted-media=(),fullscreen=(self {fullscreenSrcYouTube}),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),midi=(),payment=(),picture-in-picture=(self {pictureInPictureForYouTube}),publickey-credentials-get=(),screen-wake-lock=(),sync-xhr=(),usb=(),web-share=(),xr-spatial-tracking=()");
             context.Response.Headers.Append("Content-Security-Policy",
-                    "default-src 'self'; " +
-                    $"script-src 'self' 'nonce-{nonce}' youtube.com www.youtube.com www.youtube-nocookie.com;" +
+                    "default-src 'self';" +
+                    "require-trusted-types-for 'script';" +
+                    $"script-src 'self' 'nonce-{nonce}' {scriptSrcForYouTube};" +
                     $"style-src 'self' {styleSrcForAblePlayer};" +
-                    "img-src 'self' https://i.ytimg.com; " +
-                    "frame-src youtube.com www.youtube.com www.youtube-nocookie.com; " +
-                    $"connect-src {connectSrcForHotReload}");
+                    $"img-src 'self' {imgSrcForYouTube};" +
+                    $"frame-src {frameSrcForYouTube}; " +
+                    $"connect-src 'self' {connectSrcForVisualStudioBrowserLink}");
 
             await _next(context);
         }

@@ -5,6 +5,7 @@ using GovUk.Frontend.AspNetCore.Extensions;
 using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.ExampleApp.Middleware;
 using GovUk.Frontend.ExampleApp.Models.Validators;
+using GovUk.Frontend.ExampleApp.Services;
 using GovUk.Frontend.ExampleSharedResource;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -77,6 +78,8 @@ namespace GovUk.Frontend.ExampleApp
             services.AddSingleton<IValidatorAttributeAdapterFactory, CustomValidatorAttributeAdapterFactory>();
 
             services.AddTransient<ITprAddressLookupEndpointUrlProvider, TprAddressLookupEndpointUrlProvider>();
+
+            services.AddTransient<ITprCountryRepository, CountryRepositoryForExampleApp>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

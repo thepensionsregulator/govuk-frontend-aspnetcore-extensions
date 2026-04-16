@@ -44,13 +44,16 @@ class AddressLookupComponentBuilder {
         return fieldset;    
     }
 
-    createConfirmedAddressParagraph(address, postcode) {
+    createConfirmedAddressParagraph(address, postcode, countryCode) {
         const selectedAddressParagraph = document.createElement("p");
         selectedAddressParagraph.classList = this.config.CSS_CLASSES.BODY;
 
         address.forEach((addressLine) => {
             addressLine = addressLine.trim();
             if (addressLine === this.config.DEFAULTS.COUNTRY) {
+                return;
+            }
+            if (addressLine === countryCode) {
                 return;
             }
             if (addressLine === postcode) {
@@ -115,13 +118,15 @@ class AddressLookupComponentBuilder {
         return listItem;
     }
 
-    createGovukSelect(labelText, dataAddressLookupValue, options) {
+    createGovukSelect(labelText, dataAddressLookupValue, options, labelSize) {
         const formGroupContainer = document.createElement("div");
         formGroupContainer.classList = this.config.CSS_CLASSES.FORM_GROUP;
 
         const inputId = `${dataAddressLookupValue}-${this.index}`;
         const label = document.createElement("label");
-        label.classList = `${this.config.CSS_CLASSES.LABEL} govuk-label--l`;
+        label.classList = labelSize
+            ? `${this.config.CSS_CLASSES.LABEL} ${labelSize}`
+            : this.config.CSS_CLASSES.LABEL;
         label.innerText = labelText;
         label.setAttribute("for", inputId);
 

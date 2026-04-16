@@ -74,7 +74,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string AddressLine1ModelProperty => this.Value<string>(_publishedValueFallback, "addressLine1ModelProperty");
 
 		///<summary>
-		/// Address line 2 error message maximum length: Sets the message displayed if address line 2 is set by the code to require text of a maximum length.
+		/// Address line 2 error message maximum length: Sets the message displayed if address line is set by the code to require text of a maximum length.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -82,7 +82,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string AddressLine2ErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "addressLine2ErrorMessageMaxLength");
 
 		///<summary>
-		/// Address line 2 model property: The name of the property on the view model being bound to address line 2 in the code.
+		/// Address line 2 model: The name of the property on the view model being bound to address line 2 in the code.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -95,6 +95,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[ImplementPropertyType("addressLookupIsPrimary")]
 		public virtual bool AddressLookupIsPrimary => this.Value<bool>(_publishedValueFallback, "addressLookupIsPrimary");
+
+		///<summary>
+		/// Country code model property: The name of the property on the view model being bound to the country code in the code.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countryCodeModelProperty")]
+		public virtual string CountryCodeModelProperty => this.Value<string>(_publishedValueFallback, "countryCodeModelProperty");
 
 		///<summary>
 		/// Country custom error message: Sets the message displayed by a custom validator.

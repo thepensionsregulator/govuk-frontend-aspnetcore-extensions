@@ -2,10 +2,12 @@
 @inject IGovUkHeadingClassProvider headingClassProvider
 @inject IAddressFieldStateHelper addressFieldStateHelper
 @inject ITprAddressLookupEndpointUrlProvider addressLookupEndpointUrlProvider
+@inject ITprCountryRepository countryRepository 
 @using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Services
 @using GovUk.Frontend.Umbraco.Validation
 @using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Text.Json
 @using ThePensionsRegulator.Frontend.Services
 @using ThePensionsRegulator.Frontend.TagHelpers
 @using ThePensionsRegulator.Frontend.Umbraco
@@ -36,7 +38,7 @@
     }
     var isPrimary = Model.Settings.Value<bool>(TprPropertyAliases.AddressLookupIsPrimary);
     var role = isPrimary ? AddressLookupRole.Primary : AddressLookupRole.Secondary;
-	var checkboxLabel = Model.Content.Value<string?>(TprPropertyAliases.AddressLookupCheckboxLabel);
+    var checkboxLabel = Model.Content.Value<string?>(TprPropertyAliases.AddressLookupCheckboxLabel);
 
     var addressLine1State = addressFieldStateHelper.GetFieldState(
             Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty),
@@ -80,15 +82,22 @@
             ViewContext.ModelState
         );
 
+    var countryCodeState = addressFieldStateHelper.GetFieldState(
+            Model.Settings.Value<string>(TprPropertyAliases.CountryCodeModelProperty),
+            string.Empty,
+            string.Empty,
+            ViewContext.ModelState
+        );
+
     var uprnState = addressFieldStateHelper.GetFieldState(
         Model.Settings.Value<string>(TprPropertyAliases.UPRNModelProperty),
         string.Empty,
         string.Empty,
         ViewContext.ModelState
-    );
+        );
 }
 
-<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" same-as-primary-checkbox-label="@checkboxLabel" role="@role" data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()" data-address-lookup-id-url="@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()">
+<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" same-as-primary-checkbox-label="@checkboxLabel" role="@role" data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()" data-address-lookup-id-url="@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()" data-address-lookup-countries="@JsonSerializer.Serialize(countryRepository.GetCountries())">
     <tpr-address-lookup-legend>@legend</tpr-address-lookup-legend>
 
     @if (hintTextBlocks is not null && hintTextBlocks.Any())
@@ -177,4 +186,5 @@
     </govuk-client-side-validation>
 
     <input type="hidden" id="@uprnState.ModelPropertyName" name="@uprnState.ModelPropertyName" value="@uprnState.AttemptedValue" data-address-lookup="UPRN"/>
+    <input type="hidden" id="@countryCodeState.ModelPropertyName" name="@countryCodeState.ModelPropertyName" value="@countryCodeState?.AttemptedValue" data-address-lookup="country-code"/>
 </tpr-address-lookup>

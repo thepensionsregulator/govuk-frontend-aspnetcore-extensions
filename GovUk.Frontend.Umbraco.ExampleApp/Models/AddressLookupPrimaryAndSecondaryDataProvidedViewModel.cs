@@ -21,6 +21,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
         [MaxLength(500, ErrorMessage = nameof(ShippingCounty))]
         public string? ShippingCounty { get; set; }
 
+        public int? ShippingCountryCode { get; set; }
+
         [Required(ErrorMessage = nameof(ShippingCountry))]
         public string? ShippingCountry { get; set; }
 
@@ -46,6 +48,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Models
 
         [Required(ErrorMessage = nameof(BillingCountry))]
         public string? BillingCountry { get; set; }
+
+        public int? BillingCountryCode { get; set; }
 
         [Required(ErrorMessage = nameof(BillingPostcode))]
         [MaxLength(20, ErrorMessage = nameof(BillingPostcode))]

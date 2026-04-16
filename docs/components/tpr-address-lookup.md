@@ -258,6 +258,26 @@ When using the Umbraco integration (`ThePensionsRegulator.Frontend.Umbraco`), co
 
 These values are read by `TprAddressLookupEndpointUrlProvider`, which implements `ITprAddressLookupEndpointUrlProvider`. You can register a custom implementation if you need to resolve endpoints differently.
 
+### Country repository
+
+You must register an implementation of `ITprCountryRepository` in the dependency injection container. The view injects this service and serialises the result of `GetCountries()` into the `data-address-lookup-countries` attribute on the component element. The JavaScript reads this attribute to populate the country dropdown in the manual international address entry view.
+
+```csharp
+public interface ITprCountryRepository
+{
+    /// <summary>
+    /// Returns a dictionary of country names to country codes.
+    /// </summary>
+    IDictionary<string, int> GetCountries();
+}
+```
+
+Register your implementation at startup:
+
+```csharp
+services.AddSingleton<ITprCountryRepository, MyCountryRepository>();
+```
+
 ## Generated HTML
 
 The tag helper produces the following server-rendered HTML. The JavaScript then replaces the fieldset contents on page load.

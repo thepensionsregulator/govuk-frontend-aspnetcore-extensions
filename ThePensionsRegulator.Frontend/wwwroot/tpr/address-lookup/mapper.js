@@ -131,13 +131,14 @@
         };
     }
 
-    mapFromManualInternationalEntry(addressLine1, addressLine2, town, region, country, postcode) {
+    mapFromManualInternationalEntry(addressLine1, addressLine2, town, region, country, countryCode, postcode) {
         return {
             addressLine1: addressLine1,
             addressLine2: addressLine2 || '',
             town: town,
             county: region || '',
             country: country,
+            countryCode: countryCode,
             postcode: postcode
         };
     }

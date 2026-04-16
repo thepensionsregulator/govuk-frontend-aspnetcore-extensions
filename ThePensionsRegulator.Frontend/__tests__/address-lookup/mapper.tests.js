@@ -181,13 +181,14 @@ describe("Address mapper", () => {
 
     describe("mapFromManualInternationalEntry", () => {
         it("all fields are populated", () => {
-            const result = mapper.mapFromManualInternationalEntry("1600 Pennsylvania Avenue", "Suite 1", "Washington", "DC", "United States", "20500");
+            const result = mapper.mapFromManualInternationalEntry("1600 Pennsylvania Avenue", "Suite 1", "Washington", "DC", "United States", "US", "20500");
 
             expect(result.addressLine1).toEqual("1600 Pennsylvania Avenue");
             expect(result.addressLine2).toEqual("Suite 1");
             expect(result.town).toEqual("Washington");
             expect(result.county).toEqual("DC");
             expect(result.country).toEqual("United States");
+            expect(result.countryCode).toEqual("US");
             expect(result.postcode).toEqual("20500");
         });
 

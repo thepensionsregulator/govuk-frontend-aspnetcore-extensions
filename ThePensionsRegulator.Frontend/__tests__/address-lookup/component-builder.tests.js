@@ -350,11 +350,40 @@ describe("AddressLookupComponentBuilder", () => {
             const label = formGroup.querySelector("label");
 
             expect(label).not.toBeNull();
-            
             expect(label.innerText).toBe(labelText);
             expect(label.getAttribute("for")).toBe(`${dataValue}-${testIndex}`);
             expect(label.classList.contains("govuk-label")).toBe(true);
+        });
+
+        it("should not add a label size class when labelSize is not provided", () => {
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", []);
+            const formGroup = inputBuilder.build();
+            const label = formGroup.querySelector("label");
+
+            expect(label.classList.contains("govuk-label")).toBe(true);
+            expect(label.classList.length).toBe(1);
+        });
+
+        it("should add the label size class when labelSize is provided", () => {
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", [], "govuk-label--l");
+            const formGroup = inputBuilder.build();
+            const label = formGroup.querySelector("label");
+
+            expect(label.classList.contains("govuk-label")).toBe(true);
             expect(label.classList.contains("govuk-label--l")).toBe(true);
+        });
+
+        it.each([
+            ["govuk-label--s"],
+            ["govuk-label--m"],
+            ["govuk-label--l"],
+            ["govuk-label--xl"]
+        ])("should apply '%s' label size class when provided", (labelSize) => {
+            const inputBuilder = builder.createGovukSelect("Label", "select", [], labelSize);
+            const formGroup = inputBuilder.build();
+            const label = formGroup.querySelector("label");
+
+            expect(label.classList.contains(labelSize)).toBe(true);
         });
 
         it("should create a select element with correct attributes", () => {

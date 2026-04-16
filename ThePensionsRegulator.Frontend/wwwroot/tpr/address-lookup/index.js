@@ -146,7 +146,7 @@ class TprAddressLookup {
         this.clearContainer();
 
         const addressOptions = addressResults.map(result => this.componentBuilder.createOption(result.UPRN, result.ADDRESS));
-        const selectElement = this.componentBuilder.createGovukSelect(ADDRESS_LOOKUP_CONFIG.LABELS.CHOOSE_AN_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS, addressOptions)
+        const selectElement = this.componentBuilder.createGovukSelect(ADDRESS_LOOKUP_CONFIG.LABELS.CHOOSE_AN_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS, addressOptions, "govuk-label--l")
             .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_REQUIRED)
             .build();
 
@@ -175,6 +175,7 @@ class TprAddressLookup {
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY]: address.town,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY]: address.county,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY]: address.country,
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY_CODE]: address.countryCode,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE]: address.postcode,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.UPRN]: address.UPRN
         };
@@ -203,9 +204,10 @@ class TprAddressLookup {
             address.town,
             address.county || address.region,
             address.country,
+            address.countryCode,
             address.postcode].filter(Boolean);
 
-        const confirmedAddress = this.componentBuilder.createConfirmedAddressParagraph(fullAddress, address.postcode);
+        const confirmedAddress = this.componentBuilder.createConfirmedAddressParagraph(fullAddress, address.postcode, address.countryCode || '');
 
         let linkList = null;
         if (!this.isSameAsChecked()) {
@@ -253,9 +255,10 @@ class TprAddressLookup {
             .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
             .build();
 
-        const countryInput = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.COUNTRY, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE)
+        const countries = JSON.parse(this.container.getAttribute(`${ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE}-${ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRIES}`));
+        const countryOptions = Object.entries(countries).map(([name, value]) => this.componentBuilder.createOption(value, name));
+        const countryInput = this.componentBuilder.createGovukSelect(ADDRESS_LOOKUP_CONFIG.LABELS.COUNTRY, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY, countryOptions)
             .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED)
-            .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
             .build();
 
         const postcodeInput = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.POSTCODE_INTERNATIONAL, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.LARGE)
@@ -353,7 +356,10 @@ class TprAddressLookup {
             return;
         }
 
-        const address = this.addressMapper.mapFromManualInternationalEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, regionInput.value, countryInput.value, postcodeInput.value);
+        const selectedCountry = countryInput.selectedOptions[0];
+        const selectedCountryText = selectedCountry.text;
+
+        const address = this.addressMapper.mapFromManualInternationalEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, regionInput.value, selectedCountryText, countryInput.value, postcodeInput.value);
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 

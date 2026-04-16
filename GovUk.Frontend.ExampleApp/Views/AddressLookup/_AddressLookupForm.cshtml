@@ -1,12 +1,15 @@
-﻿@model AddressLookupViewModel
+﻿@using System.Text.Json
+@model AddressLookupViewModel
 @inject ITprAddressLookupEndpointUrlProvider urlProvider
+@inject ITprCountryRepository countryRepository
 
 <h3 class="govuk-heading-m">Shipping address</h3>
 <p class="govuk-body">Tell us where you would like your order shipped to.</p>
 
 <tpr-address-lookup role="Primary"
-                    data-address-lookup-search-url=@urlProvider.GetAddressLookupSearchEndpoint()
-                    data-address-lookup-id-url=@urlProvider.GetAddressLookupIdEndpoint()>
+                    data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
+                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
+                    data-address-lookup-countries="@JsonSerializer.Serialize(countryRepository.GetCountries())">
     <tpr-address-lookup-legend>Shipping address</tpr-address-lookup-legend>
 
     <govuk-client-side-validation error-message-required="This field is required"
@@ -79,6 +82,7 @@
     </govuk-client-side-validation>
 
     <input type="hidden" id="ShippingUPRN" name="ShippingUPRN" value="@Model?.ShippingUPRN" data-address-lookup="UPRN" />
+    <input type="hidden" id="ShippingCountryCode" name="ShippingCountryCode" value="@Model?.ShippingCountryCode" data-address-lookup="country-code" />
 </tpr-address-lookup>
 
 <h3 class="govuk-heading-m">Billing address</h3>
@@ -86,8 +90,10 @@
 
 <tpr-address-lookup role="Secondary"
                     same-as-primary-checkbox-label="Same as shipping address"
-                    data-address-lookup-search-url=@urlProvider.GetAddressLookupSearchEndpoint()
-                    data-address-lookup-id-url=@urlProvider.GetAddressLookupIdEndpoint()>
+                    data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
+                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
+                    data-address-lookup-countries="@JsonSerializer.Serialize(countryRepository.GetCountries())">
+    
     <tpr-address-lookup-legend>Billing address</tpr-address-lookup-legend>
 
     <govuk-client-side-validation error-message-required="This field is required"
@@ -160,6 +166,7 @@
     </govuk-client-side-validation>
 
     <input type="hidden" id="BillingUPRN" name="BillingUPRN" value="@Model?.BillingUPRN" data-address-lookup="UPRN" />
+    <input type="hidden" id="BillingCountryCode" name="BillingCountryCode" value="@Model?.BillingCountryCode" data-address-lookup="country-code" />
 </tpr-address-lookup>
 
 <govuk-button type="submit">Save</govuk-button>

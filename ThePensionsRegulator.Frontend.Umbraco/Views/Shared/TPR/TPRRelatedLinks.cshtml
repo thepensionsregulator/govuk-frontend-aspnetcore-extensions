@@ -9,13 +9,14 @@
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
     var heading = Model.Content.Value<string>(TprPropertyAliases.RelatedLinksHeading);
     var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.RelatedLinksLinks);
+    var label = string.IsNullOrWhiteSpace(Model.Content.Value<string>(TprPropertyAliases.RelatedLinksLabel)) ? "List of related links" : Model.Content.Value<string>(TprPropertyAliases.RelatedLinksLabel);
 
     if (string.IsNullOrEmpty(heading)) {
         heading = Umbraco.GetDictionaryValueOrDefault("TPR Related links heading", "Related");
     }
 }
 
-<tpr-related-links class="@cssClasses">
+<tpr-related-links class="@cssClasses" aria-label="@label">
 
     <tpr-related-links-heading>@heading</tpr-related-links-heading>
 

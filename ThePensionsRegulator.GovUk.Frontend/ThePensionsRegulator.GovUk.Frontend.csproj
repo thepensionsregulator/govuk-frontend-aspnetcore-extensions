@@ -127,6 +127,10 @@
 			<Pack>true</Pack>
 			<PackagePath>Styles\govuk\objects</PackagePath>
 		</Content>
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\custom-properties\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>Styles\govuk\custom-properties</PackagePath>
+		</Content>
 		<Content Remove="bundleconfig.json" />
 		<None Include="..\tpr-nuget.png">
 		  <Pack>True</Pack>

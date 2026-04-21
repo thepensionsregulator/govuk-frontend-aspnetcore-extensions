@@ -22,6 +22,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 	/// <summary>Accordion settings (shared)</summary>
 	public partial interface IGovukAccordionSettingsShared : IPublishedElement
 	{
+		/// <summary>Heading class</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string HeadingClass { get; }
+
 		/// <summary>Heading level</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -60,7 +65,20 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Heading level: Defaults to 2 if left blank.
+		/// Heading class: Defaults to "govuk-heading-m" if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingClass")]
+		public virtual string HeadingClass => GetHeadingClass(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Heading class</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetHeadingClass(IGovukAccordionSettingsShared that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "headingClass");
+
+		///<summary>
+		/// Heading level: Defaults to "Heading 2" if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

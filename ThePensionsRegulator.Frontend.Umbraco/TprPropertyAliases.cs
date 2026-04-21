@@ -78,7 +78,7 @@
         public const string TownOrCityErrorMessageRequired = "townOrCityErrorMessageRequired";
         public const string TownOrCityErrorMessageMaxLength = "townOrCityErrorMessageMaxLength";
         public const string TownOrCityLabel = "townOrCityLabel";
-        public const string UPRNModelProperty = "uPRNModelProperty";
+        public const string UprnModelProperty = "uprnModelProperty";
         public const string VideoUrl = "url";
         public const string VideoTitle = "title";
         public const string VideoTranscriptUrl = "transcriptUrl";

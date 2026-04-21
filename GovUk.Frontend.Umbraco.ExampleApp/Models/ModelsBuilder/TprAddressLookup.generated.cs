@@ -66,7 +66,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string AddressLine2Label => this.Value<string>(_publishedValueFallback, "addressLine2Label");
 
 		///<summary>
-		/// Address lookup checkbox label: Label for 'same as' checbox for a seconday address lookup component.
+		/// Address lookup checkbox label: Label for 'same as' checkbox for a secondary address lookup component.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

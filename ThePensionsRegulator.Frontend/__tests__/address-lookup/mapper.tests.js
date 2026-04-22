@@ -243,4 +243,69 @@ describe("Address mapper", () => {
             expect(mapper.addressesMatch(a, b)).toBe(true);
         });
     });
+
+    describe("mapFromInputs", () => {
+        const originalInputs = [
+            {
+                "name": "BillingAddressLine1",
+                "id": "BillingAddressLine1",
+                "dataAddressLookup": "address-line-1",
+                "value": "Telecom House"
+            },
+            {
+                "name": "BillingAddressLine2",
+                "id": "BillingAddressLine2",
+                "dataAddressLookup": "address-line-2",
+                "value": "125-135 Preston Road"
+            },
+            {
+                "name": "BillingSomethingReallyRandom",
+                "id": "BillingSomethingReallyRandom",
+                "dataAddressLookup": "town-or-city",
+                "value": "Brighton"
+            },
+            {
+                "name": "BillingCounty",
+                "id": "BillingCounty",
+                "dataAddressLookup": "county",
+                "value": ""
+            },
+            {
+                "name": "BillingCountry",
+                "id": "BillingCountry",
+                "dataAddressLookup": "country",
+                "value": ""
+            },
+            {
+                "name": "BillingPostcode",
+                "id": "BillingPostcode",
+                "dataAddressLookup": "postcode",
+                "value": "BN1 6AF"
+            },
+            {
+                "name": "BillingUPRN",
+                "id": "BillingUPRN",
+                "dataAddressLookup": "UPRN",
+                "value": "22275623"
+            },
+            {
+                "name": "BillingCountryCode",
+                "id": "BillingCountryCode",
+                "dataAddressLookup": "country-code",
+                "value": ""
+            }
+        ]
+
+        it("maps input values to address fields based on data attributes", () => {
+            const result = mapper.mapFromInput(originalInputs);
+
+            expect(result.addressLine1).toEqual("Telecom House");
+            expect(result.addressLine2).toEqual("125-135 Preston Road");
+            expect(result.town).toEqual("Brighton");
+            expect(result.county).toEqual("");
+            expect(result.country).toEqual("");
+            expect(result.postcode).toEqual("BN1 6AF");
+            expect(result.UPRN).toEqual("22275623");
+        });
+    });
 });

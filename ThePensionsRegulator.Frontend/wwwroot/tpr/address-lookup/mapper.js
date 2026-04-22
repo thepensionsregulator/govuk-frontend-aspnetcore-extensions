@@ -12,6 +12,7 @@
             county: get(this.config.DATA_ATTRIBUTES.COUNTY),
             country: get(this.config.DATA_ATTRIBUTES.COUNTRY),
             postcode: get(this.config.DATA_ATTRIBUTES.POSTCODE),
+            UPRN: get(this.config.DATA_ATTRIBUTES.UPRN)
         };
     }
 

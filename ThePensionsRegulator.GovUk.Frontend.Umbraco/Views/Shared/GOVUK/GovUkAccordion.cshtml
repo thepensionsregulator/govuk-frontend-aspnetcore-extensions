@@ -28,11 +28,11 @@
             _ => headingClasses.Heading2
         };
     }
-    var showAllSectionsText = Umbraco.GetDictionaryValueOrDefault("Hide all sections", "Hide all sections");
-    var showSectionText = Umbraco.GetDictionaryValueOrDefault("Hide", "Hide");
+    var showAllSectionsText = Umbraco.GetDictionaryValueOrDefault("Show all sections", "Show all sections");
+    var showSectionText = Umbraco.GetDictionaryValueOrDefault("Show", "Show");
 
-    var hideAllSectionsText = Umbraco.GetDictionaryValueOrDefault("Show all sections", "Show all sections");
-    var hideSectionText = Umbraco.GetDictionaryValueOrDefault("Show", "Show");
+    var hideAllSectionsText = Umbraco.GetDictionaryValueOrDefault("Hide all sections", "Hide all sections");
+    var hideSectionText = Umbraco.GetDictionaryValueOrDefault("Hide", "Hide");
     cssClasses = string.IsNullOrWhiteSpace(cssClasses) ? headingClass : headingClass + " " + cssClasses;
 }
 <govuk-accordion id="@Model.Content.Key" class="@cssClasses" heading-level="@headingLevel" hide-all-sections-text="@hideAllSectionsText" hide-section-text="@hideSectionText" show-all-sections-text="@showAllSectionsText" show-section-text="@showSectionText">

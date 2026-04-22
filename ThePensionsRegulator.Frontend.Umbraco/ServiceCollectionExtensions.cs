@@ -95,12 +95,14 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<IPropertyValueFormatter, HostNameInRichTextEditorPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
+            services.AddTransient<IPropertyValueFormatter, TprTablePropertyValueFormatter>();
             services.AddTransient<IBlockViewInterceptor, TprBoxViewInterceptor>();
             services.AddTransient<IBlockViewInterceptor, TprDividerViewInterceptor>();
             services.AddTransient<IDefaultColumnClassProvider, TprSectionCardsColumnClassProvider>();
             services.AddTransient<IYouTubeVideoIdParser, YouTubeVideoIdParser>();
             services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
             services.AddTransient<IStaticFileCachePolicy, TprUmbracoStaticFileCachePolicy>();
+            services.AddTransient<ITprSideNavigationLinksService, UmbracoSideNavigationLinksService>();
 
             return services;
         }

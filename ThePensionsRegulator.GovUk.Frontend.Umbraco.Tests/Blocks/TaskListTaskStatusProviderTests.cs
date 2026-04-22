@@ -1,5 +1,3 @@
-using ThePensionsRegulator.GovUk.Frontend;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
@@ -7,7 +5,7 @@ using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.Common.PublishedModels;
 
-namespace GovUk.Frontend.Umbraco.Tests.Blocks
+namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 {
     public class TaskListTaskStatusProviderTests
     {

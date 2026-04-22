@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using ThePensionsRegulator.GovUk.Frontend.Validation;
-using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
@@ -40,8 +39,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyEditors.ModelPrope
                     if (modelType != null)
                     {
                         return modelType.GetProperties().Where(x =>
-                            !x.PropertyType.IsSubclassOf(typeof(PublishedContentModel)) &&
-                            !x.PropertyType.IsAssignableTo(typeof(OverridableBlockListModel))
+                            !x.PropertyType.IsSubclassOf(typeof(PublishedContentModel))
                             ).Select(x => x.Name);
                     }
                 }

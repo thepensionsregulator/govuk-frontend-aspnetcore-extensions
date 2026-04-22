@@ -1,4 +1,3 @@
-using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ThePensionsRegulator.GovUk.Frontend;
 
@@ -36,28 +35,28 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var containerTag = new TagBuilder("div");
             containerTag.MergeAttributes(video.Attributes);
-            containerTag.MergeCssClass("tpr-video-wrapper-no-cookies");
+            containerTag.AddCssClass("tpr-video-wrapper-no-cookies");
 
             var heading = new TagBuilder(video.HeadingLevel);
             if (!string.IsNullOrWhiteSpace(video.HeadingSize))
             {
-                heading.MergeCssClass(video.HeadingSize);
+                heading.AddCssClass(video.HeadingSize);
             }
-            heading.MergeCssClass("tpr-video-wrapper-no-cookies__heading");
+            heading.AddCssClass("tpr-video-wrapper-no-cookies__heading");
             heading.InnerHtml.AppendHtml(video.IframeTitle);
             containerTag.InnerHtml.AppendHtml(heading);
 
             if (!string.IsNullOrWhiteSpace(video.Description))
             {
                 var description = new TagBuilder("div");
-                description.MergeCssClass("govuk-body");
-                description.MergeCssClass("tpr-video-wrapper-no-cookies__description");
+                description.AddCssClass("govuk-body");
+                description.AddCssClass("tpr-video-wrapper-no-cookies__description");
                 description.InnerHtml.AppendHtml(video.Description);
                 containerTag.InnerHtml.AppendHtml(description);
             }
 
             var wrapperTag = new TagBuilder("div");
-            wrapperTag.MergeCssClass("tpr-video-wrapper-no-cookies__video-container");
+            wrapperTag.AddCssClass("tpr-video-wrapper-no-cookies__video-container");
 
             var iFrame = new TagBuilder("iframe");
             var src = "https://www.youtube-nocookie.com/embed/" + video.YouTubeVideoId;
@@ -81,10 +80,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             if (!string.IsNullOrWhiteSpace(video.TranscriptUrl))
             {
                 var transcriptContainer = new TagBuilder("div");
-                transcriptContainer.MergeCssClass("tpr-video-wrapper-no-cookies__transcript-container");
+                transcriptContainer.AddCssClass("tpr-video-wrapper-no-cookies__transcript-container");
 
                 var transcriptLink = new TagBuilder("a");
-                transcriptLink.MergeCssClass("tpr-video-wrapper-no-cookies__transcript-link");
+                transcriptLink.AddCssClass("tpr-video-wrapper-no-cookies__transcript-link");
                 transcriptLink.Attributes.Add("href", video.TranscriptUrl);
                 if (!string.IsNullOrWhiteSpace(video.TranscriptTarget))
                 {

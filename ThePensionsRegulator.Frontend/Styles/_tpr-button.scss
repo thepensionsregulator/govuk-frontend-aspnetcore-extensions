@@ -8,6 +8,11 @@
 // defining a specific variable.
 $tpr-button-padding: 20px;
 
+// Reset GOV.UK opacity change, as TPR colours were chosen at opacity: 1
+.govuk-button[disabled] {
+    opacity: 1;
+}
+
 .govuk-button, .govuk-file-upload::file-selector-button {
     color: $govuk-button-text-colour;
     border-width: 1px;

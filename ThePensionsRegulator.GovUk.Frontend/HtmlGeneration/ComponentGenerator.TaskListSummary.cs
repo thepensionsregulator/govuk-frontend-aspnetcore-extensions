@@ -1,7 +1,5 @@
-using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Web;
-using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
 {
@@ -30,17 +28,17 @@ namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
 
             var tagBuilder = new TagBuilder(TaskListSummaryElement);
             if (taskListSummary.Attributes != null) { tagBuilder.MergeAttributes(taskListSummary.Attributes); }
-            tagBuilder.MergeCssClass("govuk-task-list-summary");
+            tagBuilder.AddCssClass("govuk-task-list-summary");
 
             var statusTagBuilder = new TagBuilder($"h{taskListSummary.HeadingLevel}");
-            statusTagBuilder.MergeCssClass("govuk-heading-s");
-            statusTagBuilder.MergeCssClass("govuk-task-list-summary__heading");
+            statusTagBuilder.AddCssClass("govuk-heading-s");
+            statusTagBuilder.AddCssClass("govuk-task-list-summary__heading");
             statusTagBuilder.InnerHtml.Append(taskListSummary.CompletedTasks == taskListSummary.TotalTasks ? taskListSummary.CompletedStatus : taskListSummary.IncompleteStatus);
             tagBuilder.InnerHtml.AppendHtml(statusTagBuilder);
 
             var trackerTagBuilder = new TagBuilder("p");
-            trackerTagBuilder.MergeCssClass("govuk-body");
-            trackerTagBuilder.MergeCssClass("govuk-task-list-summary__tracker");
+            trackerTagBuilder.AddCssClass("govuk-body");
+            trackerTagBuilder.AddCssClass("govuk-task-list-summary__tracker");
             trackerTagBuilder.InnerHtml.AppendHtml(string.Format(HttpUtility.HtmlEncode(taskListSummary.Tracker),
                 "<span class=\"govuk-task-list-summary__completed-tasks\">" + taskListSummary.CompletedTasks + "</span>",
                 "<span class=\"govuk-task-list-summary__total-tasks\">" + taskListSummary.TotalTasks + "</span>"));

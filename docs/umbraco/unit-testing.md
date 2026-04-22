@@ -37,6 +37,37 @@ public MyTestClass()
 var otherPage = UmbracoContentFactory.CreateContent<IPublishedContent>();
 ```
 
+If you need to mock a content hierarchy you can do this by starting with the child page and setting one or more ancestors. These will be ordered by their `Level` property.
+
+```csharp
+var context = new UmbracoTestContext();
+
+var grandparent = UmbracoContentFactory.CreateContent<IPublishedContent>();
+grandparent.Setup(x => x.Level).Returns(1);
+
+var parent = UmbracoContentFactory.CreateContent<IPublishedContent>();
+parent.Setup(x => x.Level).Returns(2);
+parent.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [grandparent.Object]);
+
+context.CurrentPage.Setup(x => x.Level).Returns(3);
+context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [parent.Object, grandparent.Object]);
+```
+
+You can also setup child pages:
+
+```csharp
+var context = new UmbracoTestContext();
+
+var child = UmbracoContentFactory.CreateContent<IPublishedContent>();
+child.Setup(x => x.Level).Returns(2);
+
+context.CurrentPage.Setup(x => x.Level).Returns(1);
+context.CurrentPage.SetupChildren(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [child.Object]);
+
+```
+
+When working with hierarchy methods like `.Root()`, `.Children()`, `.Parent()` and `.Ancestors()` be sure to use overloads that take instances of `IDocumentNavigationQueryService` and `IPublishedContentStatusFilteringService` to avoid side effects in other tests.
+
 ## Mock Umbraco content types
 
 Mock Umbraco content types by adding them to the `UmbracoTestContext` using a fluent interface.
@@ -205,3 +236,11 @@ UmbracoContentFactory.CreateContent<IPublishedElement>();
 // Works, because the mock is the expected type
 UmbracoContentFactory.CreateContent<IOverridablePublishedElement>();
 ```
+
+### Tests pass on their own but fail when others are run
+
+Umbraco uses internally a static service locator at `Umbraco.Cms.Core.DependencyInjection.StaticServiceProvider.Instance`.
+
+`UmbracoTestContext` registers implementations with this service locator to support Umbraco methods that expect it. However, because it's static, this instance is shared across all tests in a run. In some cases this is fine, but in cases where you update the mocks this can cause problems in other tests.
+
+The best solution is to look into the Umbraco code to find out which services are using the static service locator, and then look for overloads that avoid it. For example `IPublishedContent.Parent()` uses the static service locator and is difficult to test, but `IPublishedContent.Parent<T>(IDocumentNavigationQueryService, IPublishedContentStatusFilteringService)` does not and can be tested.

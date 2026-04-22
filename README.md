@@ -7,7 +7,6 @@ We add support for:
 - ASP.NET client-side validation using [jQuery Unobtrusive Validation](https://github.com/aspnet/jquery-validation-unobtrusive)
 
 - Adding the following non-interactive components entirely in Umbraco:
-
   - [Accordion](/docs/components/accordion.md)
   - [Details](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/details.md)
   - [Error summary](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/error-summary.md)
@@ -21,7 +20,6 @@ We add support for:
   - [Warning text](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/warning-text.md)
 
 - Configuring the text for the following components in Umbraco:
-
   - [Button](/docs/components/button.md)
   - [Checkboxes](/docs/components/checkboxes.md)
   - [Character count](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/character-count.md)
@@ -37,7 +35,6 @@ We add support for:
   - [Text input](/docs/components/text-input.md)
 
 - Additional components:
-
   - [Task list summary](/docs/components/task-list-summary.md)
   - [Task list](/docs/components/task-list.md)
   - [TPR back to menu](/docs/components/tpr-back-to-menu.md)
@@ -49,6 +46,7 @@ We add support for:
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
   - [TPR related links](/docs/components/tpr-related-links.md)
+  - [TPR navigational links](/docs/components/tpr-navigational-links.md)
   - [TPR search results](/docs/components/tpr-search-results.md)
   - [TPR section cards](/docs/components/tpr-section-cards.md)
   - [TPR side navigation](/docs/components/tpr-side-navigation.md)
@@ -57,9 +55,9 @@ We add support for:
 
 - The Pensions Regulator (TPR) styling for all of the above components, and:
   - [Back link](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/back-link.md)
-  - [Breadcrumbs](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/breadcrumbs.md)
+  - [Breadcrumbs](/docs/components/breadcrumbs.md)
 
-We target [GOV.UK Frontend v5.13.0](https://github.com/alphagov/govuk-frontend/releases/tag/v5.13.0) in line with James Gunn's base project.
+We target [GOV.UK Frontend v6.0.0](https://github.com/alphagov/govuk-frontend/releases/tag/v6.0.0) in line with James Gunn's base project.
 
 ## ASP.NET projects without Umbraco
 
@@ -104,6 +102,7 @@ Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbr
 - [Configure a new Umbraco project (TPR)](docs/umbraco/new-umbraco-project-tpr.md)
 - [Populate initial values](docs/umbraco/populate-initial-values.md)
 - [Validation](docs/umbraco/validation.md)
+- [How [ModelType] binds form components to view model properties](docs/umbraco/model-type-attribute.md)
 - [Change how blocks are rendered](docs/umbraco/block-rendering.md)
 - [Support full-width content](docs/umbraco/full-width-content.md)
 - [Use SASS for CSS](docs/aspnet/sass.md)

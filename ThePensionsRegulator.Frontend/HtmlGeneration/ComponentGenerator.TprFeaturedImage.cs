@@ -1,4 +1,3 @@
-using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -27,17 +26,17 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var featuredImageTagHelper = new TagBuilder(FeaturedImageElement);
             if (attributes is not null) { featuredImageTagHelper.MergeAttributes(attributes); }
-            featuredImageTagHelper.MergeCssClass("tpr-featured-image");
+            featuredImageTagHelper.AddCssClass("tpr-featured-image");
 
             if (horizontal)
             {
-                featuredImageTagHelper.MergeCssClass("tpr-featured-image--horizontal");
+                featuredImageTagHelper.AddCssClass("tpr-featured-image--horizontal");
             }
 
 
             var featuredImageThumbnailTagHelper = new TagBuilder(FeaturedImageThumbnailElement);
 
-            featuredImageThumbnailTagHelper.MergeCssClass("tpr-featured-image_thumbnail");
+            featuredImageThumbnailTagHelper.AddCssClass("tpr-featured-image_thumbnail");
 
 
             var imageTagHelper = new TagBuilder("img");
@@ -55,8 +54,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var featuredImageInfoTagHelper = new TagBuilder(FeaturedImageInfoElement);
 
-            featuredImageInfoTagHelper.MergeCssClass("tpr-featured-image_info");
-            featuredImageInfoTagHelper.MergeCssClass("tpr-box");
+            featuredImageInfoTagHelper.AddCssClass("tpr-featured-image_info");
+            featuredImageInfoTagHelper.AddCssClass("tpr-box");
 
 
             featuredImageInfoTagHelper.InnerHtml.AppendHtml(htmlContent);

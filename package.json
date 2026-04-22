@@ -36,12 +36,14 @@
     "minimatch": ">=10.2.4"
   },
   "dependencies": {
-    "brace-expansion": "1.1.12",
-    "govuk-frontend": "^5.13.0"
+    "brace-expansion": "^5.0.5",
+    "govuk-frontend": "^6.0.0"
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
     "govuk": "npm install && cd GovUk.Frontend.AspNetCore.Extensions.ConformanceTests && npm install",
-    "backoffice": "cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm install && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm install && npm run build"
+    "generate-version": "node scripts/generate-version.js",
+    "backoffice": "npm run generate-version && cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm install && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm install && npm run build",
+    "backoffice:ci": "npm run generate-version && cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm run build"
   }
 }

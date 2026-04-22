@@ -18,8 +18,9 @@
     margin-bottom: -0.6rem;
     cursor: pointer;
 
-    &:focus {
-        outline: $govuk-focus-width solid $govuk-focus-colour;
+    &:focus-within {
+        box-shadow: 0 0 0 4px $tpr-colour-tangerine-yellow, 0 0 0 8px $tpr-colour-black;
+        outline: $govuk-focus-width solid transparent;
     }
 }
 
@@ -34,16 +35,9 @@
     cursor: pointer;
 }
 
-.tpr-header-menu__button:focus {
-    color: $tpr-colour-black;
-    background-color: $tpr-colour-tangerine-yellow;
-    box-shadow: 0 -2px $tpr-colour-tangerine-yellow, 0 4px $tpr-colour-black;
-    text-decoration: none;
-}
-
-.tpr-header-menu__button:focus-visible {
-    outline: transparent;
-}
+    .tpr-header-menu__button:focus-visible {
+        outline: transparent;
+    }
 
 .tpr-header-menu__button--opened {
     color: $tpr-colour-royal-blue;
@@ -79,8 +73,14 @@
     display: none;
 }
 
-.tpr-mobile-menu__toggle .tpr-header-menu__menu-icon {
+ .tpr-header-menu__menu-icon {
     fill: $tpr-colour-white;
+}
+
+@media (prefers-color-scheme: light) and (forced-colors: active) {
+    .tpr-header-menu__menu-icon {
+        fill: $tpr-colour-black;
+    }
 }
 
 .tpr-header-menu__nav-container {
@@ -187,7 +187,7 @@
     }
 
     .tpr-header-menu__arrow:focus-visible {
-        outline: $govuk-focus-width solid $govuk-focus-colour;
+        outline: $govuk-focus-width solid govuk-functional-colour(focus);
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
     }
@@ -318,17 +318,17 @@
         outline: 3px solid transparent;
     }
 
-     
-        .js.tpr-header-menu__arrow-container:hover {
-            background: $tpr-colour-white;
-            cursor: pointer;
 
-            .tpr-header-menu__arrow {
-                border-right: $govuk-focus-width solid $tpr-colour-black;
-                border-bottom: $govuk-focus-width solid $tpr-colour-black;
-            }
+    .js.tpr-header-menu__arrow-container:hover {
+        background: $tpr-colour-white;
+        cursor: pointer;
+
+        .tpr-header-menu__arrow {
+            border-right: $govuk-focus-width solid $tpr-colour-black;
+            border-bottom: $govuk-focus-width solid $tpr-colour-black;
         }
-    
+    }
+
 
     .tpr-header-menu__arrow:focus {
         border-right: $govuk-focus-width solid $tpr-colour-black;
@@ -459,5 +459,20 @@
 @media(max-width: 993px) {
     .tpr-header-menu__nav-menu-item--active:focus {
         color: $tpr-colour-black;
+    }
+}
+
+@media(max-width: 315px) {
+
+    .tpr-mobile-menu__container {
+        display: inline;
+        margin-top: 0;
+        margin-left: 0;
+    }
+
+    .tpr-mobile-menu__toggle {
+        justify-content: flex-start;
+        margin-left: 0;
+        margin-top: 0;
     }
 }

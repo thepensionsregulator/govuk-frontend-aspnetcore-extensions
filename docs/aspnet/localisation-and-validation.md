@@ -29,12 +29,11 @@ This repository includes an example application which demonstrates the validatio
    ```
 
    This code does three things:
-
    - Instructs the Localization service to look in the "Resources" folder.
    - Tells Resource lookup to use suffixes to distinguish different languages (eg `TextInputViewModel.es.resx`)
    - Tells the Resource lookup which languages it should support
 
-2. Add the following to the `Configure` method:
+2. Add the following in `Program.cs`:
 
    ```csharp
    var supportedCultures = new[] {

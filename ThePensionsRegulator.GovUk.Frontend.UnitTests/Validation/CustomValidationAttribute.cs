@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ThePensionsRegulator.GovUk.Frontend.UnitTests.CustomValidation
+namespace ThePensionsRegulator.GovUk.Frontend.UnitTests.Validation
 {
     [AttributeUsage(AttributeTargets.Property)]
     public class CustomTestValidatorAttribute : ValidationAttribute

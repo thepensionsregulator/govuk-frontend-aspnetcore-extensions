@@ -1,4 +1,3 @@
-using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ThePensionsRegulator.GovUk.Frontend;
 
@@ -11,18 +10,18 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             Guard.ArgumentNotNull(nameof(tprRelatedLinks), tprRelatedLinks);
             Guard.ArgumentValid(nameof(tprRelatedLinks), $"{nameof(tprRelatedLinks.HeadingContent)} cannot be null", tprRelatedLinks.HeadingContent != null);
 
-            var outer = new TagBuilder("div");
+            var outer = new TagBuilder("nav");
             if (tprRelatedLinks.RelatedLinksAttributes != null) { outer.MergeAttributes(tprRelatedLinks.RelatedLinksAttributes); }
-            outer.MergeCssClass("tpr-related-links");
+            outer.AddCssClass("tpr-related-links");
 
             var heading = new TagBuilder("h2");
             if (tprRelatedLinks.HeadingAttributes != null) { heading.MergeAttributes(tprRelatedLinks.HeadingAttributes); }
-            heading.MergeCssClass("govuk-heading-m");
+            heading.AddCssClass("govuk-heading-m");
             heading.InnerHtml.AppendHtml(tprRelatedLinks.HeadingContent!);
             outer.InnerHtml.AppendHtml(heading);
 
             var list = new TagBuilder("ul");
-            list.MergeCssClass("govuk-list");
+            list.AddCssClass("govuk-list");
             outer.InnerHtml.AppendHtml(list);
 
             foreach (var link in tprRelatedLinks.Links)
@@ -30,7 +29,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 var li = new TagBuilder("li");
                 var a = new TagBuilder("a");
                 a.MergeAttributes(link.Attributes);
-                a.MergeCssClass("govuk-link");
+                a.AddCssClass("govuk-link");
                 a.InnerHtml.AppendHtml(link.Content);
                 li.InnerHtml.AppendHtml(a);
                 list.InnerHtml.AppendHtml(li);

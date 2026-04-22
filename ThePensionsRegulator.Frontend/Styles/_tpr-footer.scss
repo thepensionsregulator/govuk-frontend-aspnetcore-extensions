@@ -12,9 +12,13 @@
     padding-bottom: govuk-px-to-rem(20);
 }
 
-.tpr-footer__footer-logo img {
+.tpr-footer__footer-logo-img--screen {
     width: govuk-px-to-rem(126);
     height: govuk-px-to-rem(47);
+}
+
+.tpr-footer__footer-logo-img--print {
+    display: none;
 }
 
 .tpr-footer__links { 
@@ -49,6 +53,7 @@
 .tpr-footer__links a:visited {
     color: $tpr-colour-steel;
     margin-bottom: govuk-px-to-rem(20);
+    display: block;
 }
 
 .tpr-footer__links a:focus,
@@ -78,5 +83,15 @@
     .tpr-footer__content > a {
         margin-bottom: 0;
         margin-right: govuk-px-to-rem(29);
+    }
+}
+
+@media print{
+    .tpr-footer__footer-logo-img--print {
+        display: block;
+    }
+
+    .tpr-footer__footer-logo-img--screen {
+        display: none;
     }
 }

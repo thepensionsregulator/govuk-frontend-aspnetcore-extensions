@@ -2,7 +2,6 @@ using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Text.Encodings.Web;
-using ThePensionsRegulator.GovUk.Frontend;
 using ThePensionsRegulator.GovUk.Frontend.TagHelpers;
 
 namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
@@ -25,7 +24,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
 
             var taskListTagBuilder = new TagBuilder(TaskListElement);
             if (attributes is not null) { taskListTagBuilder.MergeAttributes(attributes); }
-            taskListTagBuilder.MergeCssClass("govuk-task-list");
+            taskListTagBuilder.AddCssClass("govuk-task-list");
 
             if (string.IsNullOrEmpty(idPrefix)) { idPrefix = "task-list"; }
 
@@ -46,9 +45,9 @@ namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
 
                 if (ShouldLinkToTask(task))
                 {
-                    taskTagBuilder.MergeCssClass("govuk-task-list__item--with-link");
+                    taskTagBuilder.AddCssClass("govuk-task-list__item--with-link");
                 }
-                taskTagBuilder.MergeCssClass("govuk-task-list__item");
+                taskTagBuilder.AddCssClass("govuk-task-list__item");
 
                 taskTagBuilder.InnerHtml.AppendHtml(BuildNameAndHint(task, hintId, statusId));
 
@@ -64,7 +63,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
         private static TagBuilder BuildNameAndHint(TaskListTask task, string? hintId, string? statusId)
         {
             var taskNameAndHintTagBuilder = new TagBuilder(TaskListTaskNameElement);
-            taskNameAndHintTagBuilder.MergeCssClass("govuk-task-list__name-and-hint");
+            taskNameAndHintTagBuilder.AddCssClass("govuk-task-list__name-and-hint");
 
             if (ShouldLinkToTask(task))
             {
@@ -96,7 +95,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
             {
                 statusOuterTagBuilder.MergeAttributes(task.Status.Attributes);
             }
-            statusOuterTagBuilder.MergeCssClass("govuk-task-list__status");
+            statusOuterTagBuilder.AddCssClass("govuk-task-list__status");
             if (!statusOuterTagBuilder.Attributes.ContainsKey("id")) { statusOuterTagBuilder.MergeAttribute("id", statusId); }
 
             var statusText = task.Status.Status.AsText(task.Status.Content);
@@ -104,7 +103,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
             {
                 var statusInnerTagBuilder = new TagBuilder(TaskListTaskStatusTagHelper.StatusTagElement);
                 statusInnerTagBuilder.MergeAttributes(task.Status.Tag.Attributes);
-                statusInnerTagBuilder.MergeCssClass("govuk-tag");
+                statusInnerTagBuilder.AddCssClass("govuk-tag");
 
                 statusInnerTagBuilder.InnerHtml.AppendHtml(statusText);
                 statusOuterTagBuilder.InnerHtml.AppendHtml(statusInnerTagBuilder);
@@ -122,7 +121,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
             var hintTagBuilder = new TagBuilder(TaskListHintElement);
             hintTagBuilder.Attributes.Add("id", hintId);
             hintTagBuilder.MergeAttributes(task.Hint!.Attributes);
-            hintTagBuilder.MergeCssClass("govuk-task-list__hint");
+            hintTagBuilder.AddCssClass("govuk-task-list__hint");
             hintTagBuilder.InnerHtml.AppendHtml(task.Hint.Content!);
             return hintTagBuilder;
         }
@@ -170,8 +169,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
             var taskLinkTagBuilder = new TagBuilder("a");
             taskLinkTagBuilder.MergeAttribute("href", task.Link.Href);
             taskLinkTagBuilder.MergeAttributes(task.Link.Attributes);
-            taskLinkTagBuilder.MergeCssClass("govuk-task-list__link");
-            taskLinkTagBuilder.MergeCssClass("govuk-link");
+            taskLinkTagBuilder.AddCssClass("govuk-task-list__link");
+            taskLinkTagBuilder.AddCssClass("govuk-link");
             taskLinkTagBuilder.InnerHtml.AppendHtml(task.Name.Content!);
 
             var linkDescribedBy = new List<string>();

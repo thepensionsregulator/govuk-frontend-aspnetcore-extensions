@@ -30,7 +30,7 @@ describe("Address lookup API service", () => {
         });
 
         it("should return an empty array if no results are returned", async () => {
-            global.fetch.mockReturnValue(mockFetchResponse({results: []}));
+            global.fetch.mockReturnValue(mockFetchResponse({ results: [] }));
 
             const service = new AddressLookupApiService('/search', '/id');
             const results = await service.searchAddresses('BN1 4DW', '');
@@ -47,7 +47,8 @@ describe("Address lookup API service", () => {
                 results: [
                     { DPA: address1 },
                     { DPA: address2 }
-            ]};
+                ]
+            };
             global.fetch.mockReturnValue(mockFetchResponse(apiResponse));
 
             const service = new AddressLookupApiService('/search', '/id');
@@ -70,7 +71,7 @@ describe("Address lookup API service", () => {
             const service = new AddressLookupApiService('/api/search', '/api/id');
             const results = await service.searchAddresses('BN1 4DW', '2');
 
-            expect(results).toEqual([ address2 ]);
+            expect(results).toEqual([address2]);
         });
 
         it('should filter by building name when building is not numeric', async () => {
@@ -86,9 +87,28 @@ describe("Address lookup API service", () => {
             const service = new AddressLookupApiService('/api/search', '/api/id');
             const results = await service.searchAddresses('BN1 4DW', 'rose');
 
-            expect(results).toEqual([ address1 ]);
+            expect(results).toEqual([address1]);
         });
-    })
+
+        it('should filter by sub-building name when building number or buiding name do not match', async () => {
+            const address1 = { SUB_BUILDING_NAME: 'Flat 8' }
+            const address2 = { SUB_BUILDING_NAME: 'Flat 7' }
+            global.fetch.mockReturnValue(mockFetchResponse({
+                results: [
+                    { DPA: address1 },
+                    { DPA: address2 }
+                ]
+            }));
+
+            const service = new AddressLookupApiService('/api/search', '/api/id');
+
+            const searchByFlatNoResult = await service.searchAddresses('BN1 4DW', '8');
+            const searchByFlatNameResult = await service.searchAddresses('BN1 4DW', 'Flat');
+
+            expect(searchByFlatNoResult).toEqual([address1]);
+            expect(searchByFlatNameResult).toEqual([address1, address2]);
+        });
+    });
 
     describe("getAddressById", () => {
         it('should call fetch with uprn query parameter', async () => {

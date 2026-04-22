@@ -25,14 +25,20 @@
 
         if (building && building !== '') {
             building = building.trim();
-            if (Number.isInteger(Number(building))) {
-                filteredResults = filteredResults.filter(result => result.BUILDING_NUMBER === building);
-            } else {
-                filteredResults = filteredResults.filter(result => result.BUILDING_NAME?.toLowerCase().includes(building.toLowerCase()));
-            }
+            filteredResults = filteredResults.filter(result => this.#searchByBuilding(result, building));
         }
 
         return filteredResults;
+    }
+
+    #searchByBuilding(dpaResult, buildingName) {
+        const building = buildingName.toLowerCase();
+
+        const matchesBuildingNumber = dpaResult.BUILDING_NUMBER?.toLowerCase() == buildingName;
+        const inBuildingName = dpaResult.BUILDING_NAME?.toLowerCase().includes(building);
+        const inSubBuildingName = dpaResult.SUB_BUILDING_NAME?.toLowerCase().includes(building);
+
+        return matchesBuildingNumber || inBuildingName || inSubBuildingName;
     }
 
     async getAddressById(id) {

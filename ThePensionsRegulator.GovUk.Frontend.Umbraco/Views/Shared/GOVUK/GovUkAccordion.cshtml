@@ -28,9 +28,14 @@
             _ => headingClasses.Heading2
         };
     }
+    var showAllSectionsText = Umbraco.GetDictionaryValueOrDefault("Hide all sections", "Hide all sections");
+    var showSectionText = Umbraco.GetDictionaryValueOrDefault("Hide", "Hide");
+
+    var hideAllSectionsText = Umbraco.GetDictionaryValueOrDefault("Show all sections", "Show all sections");
+    var hideSectionText = Umbraco.GetDictionaryValueOrDefault("Show", "Show");
     cssClasses = string.IsNullOrWhiteSpace(cssClasses) ? headingClass : headingClass + " " + cssClasses;
 }
-<govuk-accordion id="@Model.Content.Key" class="@cssClasses" heading-level="@headingLevel">
+<govuk-accordion id="@Model.Content.Key" class="@cssClasses" heading-level="@headingLevel" hide-all-sections-text="@hideAllSectionsText" hide-section-text="@hideSectionText" show-all-sections-text="@showAllSectionsText" show-section-text="@showSectionText">
     @foreach (var section in sections.FilteredBlocks())
     {
         var grid = section.Content.Value<OverridableBlockGridModel>(PropertyAliases.AccordionSectionBlocks)!;

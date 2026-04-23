@@ -42,7 +42,7 @@
 		<PackageReference Include="AspNetCore.SassCompiler" Version="1.98.0" />
 		<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
 		<PackageReference Include="FileSignatures" Version="5.0.2" />
-		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.0.0" />
+		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.0.1" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
 	</ItemGroup>
 
@@ -126,6 +126,10 @@
 		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\objects\*.scss" Link="$(MsBuildThisFileDirectory)">
 			<Pack>true</Pack>
 			<PackagePath>Styles\govuk\objects</PackagePath>
+		</Content>
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\custom-properties\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>Styles\govuk\custom-properties</PackagePath>
 		</Content>
 		<Content Remove="bundleconfig.json" />
 		<None Include="..\tpr-nuget.png">

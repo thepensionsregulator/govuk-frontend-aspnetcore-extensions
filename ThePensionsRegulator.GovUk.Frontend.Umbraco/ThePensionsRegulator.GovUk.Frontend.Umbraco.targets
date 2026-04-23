@@ -87,7 +87,7 @@ govuk-umbraco-backoffice.css.map
 		<WriteLinesToFile File="$(ProjectDir)uSync\ThePensionsRegulator.GovUk.Frontend.Umbraco\.gitignore" Lines="@(GovUkFrontendUmbracoUSyncGitIgnore)" Overwrite="True" />
 	</Target>
 
-	<Target Name="GovUkFrontendUmbraco_Cleanup" BeforeTargets="CoreClean">
+	<Target Name="GovUkFrontendUmbraco_Cleanup" BeforeTargets="BeforeBuild">
 		<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
 		<ItemGroup>
 			<GovUkFrontendUmbraco_uSyncVersion Include="v9"/>
@@ -241,6 +241,7 @@ govuk-umbraco-backoffice.css.map
 		<Delete Files="$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKPhase.config" Condition="Exists('$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKPhase.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRadioButtons.config" Condition="Exists('$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRadioButtons.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRadiosLayout.config" Condition="Exists('$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRadiosLayout.config')" />
+		<Delete Files="$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRichTextEditor.config" Condition="Exists('$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRichTextEditor.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRichTextEditorInline.config" Condition="Exists('$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRichTextEditorInline.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRichTextEditorInlineAndInverse.config" Condition="Exists('$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRichTextEditorInlineAndInverse.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRichTextEditorNotificationBanner.config" Condition="Exists('$(ProjectDir)uSync\%(GovUkFrontendUmbraco_uSyncVersion.Identity)\DataTypes\GOVUKRichTextEditorNotificationBanner.config')" />

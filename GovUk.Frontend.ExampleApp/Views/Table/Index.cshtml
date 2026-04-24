@@ -1,0 +1,56 @@
+@{
+    ViewData["Title"] = "Table";
+}
+@section Back {
+    <div class="govuk-width-container">
+        <govuk-back-link href="/">Back</govuk-back-link>
+    </div>
+}
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <p class="govuk-body">
+            A CSV download button is automatically added below each <code>.govuk-table</code> element on the page.
+            The button text can be customised using a <code>data-tpr-table-csv-download-text</code> attribute on
+            the <code>&lt;body&gt;</code> element.
+        </p>
+
+        <table class="govuk-table">
+            <caption class="govuk-table__caption govuk-table__caption--m">Table caption</caption>
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Column header 1</th>
+                    <th scope="col" class="govuk-table__header">Column header 2</th>
+                    <th scope="col" class="govuk-table__header">Column header 3</th>
+                    <th scope="col" class="govuk-table__header govuk-table__header--numeric">Numeric data</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Row header 1</th>
+                    <td class="govuk-table__cell">Data cell 1</td>
+                    <td class="govuk-table__cell">Data cell 2</td>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">1</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Row header 2</th>
+                    <td class="govuk-table__cell">Data cell 3</td>
+                    <td class="govuk-table__cell">Data cell 4</td>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">2</td>
+                </tr>
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">Row header 3</th>
+                    <td class="govuk-table__cell">Data cell 5</td>
+                    <td class="govuk-table__cell">Data cell 6</td>
+                    <td class="govuk-table__cell govuk-table__cell--numeric">3</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

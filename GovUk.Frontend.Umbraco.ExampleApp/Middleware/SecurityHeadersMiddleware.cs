@@ -23,17 +23,26 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Middleware
             string path = context.Request.Path;
             if (databaseBuilder.IsDatabaseConfigured && path.StartsWith("/umbraco", StringComparison.OrdinalIgnoreCase) == false)
             {
-                var connectSrcForHotReload = _webHostEnvironment.IsDevelopment() ? "'self' ws://localhost:* http://localhost:64300" : string.Empty;
-                var scriptSrcForAblePlayer = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js";
-                var styleSrcForAblePlayer = "'sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f' 'sha384-ETDm/j6COkRSUfVFsGNM5WYE4WjyRgfDhy4Pf4Fsc8eNw/eYEMqYZWuxTzMX6FBa'";
+                var connectSrcForLocalhost = _webHostEnvironment.IsDevelopment() ? "'self' ws://localhost:* http://localhost:*" : string.Empty; // Allows Visual Studio Browser Link for hot reload
+
+                const string scriptSrcForAblePlayer = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js";
+                const string styleSrcForAblePlayer = "'sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f' 'sha384-ETDm/j6COkRSUfVFsGNM5WYE4WjyRgfDhy4Pf4Fsc8eNw/eYEMqYZWuxTzMX6FBa'";
+                const string scriptSrcForYouTube = "https://youtube.com https://www.youtube.com https://www.youtube-nocookie.com";
+                const string imgSrcForYouTube = "https://i.ytimg.com";
+                const string frameSrcForYouTube = "https://youtube.com https://www.youtube.com https://www.youtube-nocookie.com";
+                const string pictureInPictureForYouTube = "\"https://www.youtube.com\"  \"https://www.youtube-nocookie.com\"";
+                const string fullscreenSrcYouTube = "\"https://www.youtube.com\"  \"https://www.youtube-nocookie.com\"";
+
                 var nonce = nonceProvider.GetNonce();
+                context.Response.Headers.Append("Permissions-Policy", $"accelerometer=(),autoplay=(),camera=(),cross-origin-isolated=(),display-capture=(),encrypted-media=(),fullscreen=(self {fullscreenSrcYouTube}),geolocation=(),gyroscope=(),magnetometer=(),microphone=(),midi=(),payment=(),picture-in-picture=(self {pictureInPictureForYouTube}),publickey-credentials-get=(),screen-wake-lock=(),sync-xhr=(),usb=(),web-share=(),xr-spatial-tracking=()");
                 context.Response.Headers.Append("Content-Security-Policy",
-                        "default-src 'self'; " +
-                        $"script-src 'self' 'nonce-{nonce}' {scriptSrcForAblePlayer} youtube.com www.youtube.com www.youtube-nocookie.com;" +
+                        "default-src 'self';" +
+                        "require-trusted-types-for 'script';" +
+                        $"script-src 'self' 'nonce-{nonce}' {scriptSrcForAblePlayer} {scriptSrcForYouTube};" +
                         $"style-src 'self' {styleSrcForAblePlayer};" +
-                        "img-src 'self' https://i.ytimg.com; " +
-                        "frame-src youtube.com www.youtube.com www.youtube-nocookie.com; " +
-                        $"connect-src {connectSrcForHotReload}");
+                        $"img-src 'self' {imgSrcForYouTube};" +
+                        $"frame-src {frameSrcForYouTube}; " +
+                        $"connect-src 'self' {connectSrcForLocalhost}");
             }
 
             await _next(context);

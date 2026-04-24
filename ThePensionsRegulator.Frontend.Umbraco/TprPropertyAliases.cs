@@ -23,8 +23,8 @@
         public const string CountyErrorMessageMaxLength = "countyErrorMessageMaxLength";
         public const string CountyLabel = "countyLabel";
         public const string Image = "image";
-        public const string RelatedLinksBar = "bar";
         public const string RelatedLinksHeading = "heading";
+        public const string RelatedLinksLabel = "label";
         public const string RelatedLinksLinks = "links";
         public const string BoxStyle = "styleOfBox";
         public const string BoxBackgroundColour = "backgroundColour";

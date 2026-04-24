@@ -36,7 +36,7 @@ namespace GovUk.Frontend.ExampleApp
             services.AddHttpContextAccessor();
             if (Configuration.GetValue<bool>("TPRStyles"))
             {
-                services.AddTprFrontend();
+                services.AddTprFrontend(options => options.EnableTableCsvDownload = true);
             }
             else
             {

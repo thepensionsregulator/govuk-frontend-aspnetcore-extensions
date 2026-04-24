@@ -14,6 +14,7 @@
   },
   "overrides": {
     "dompurify": "^3.3.3",
-    "handlebars": "^4.7.9"
+    "handlebars": "^4.7.9",
+    "uuid": "^14.0.0"
   }
 }

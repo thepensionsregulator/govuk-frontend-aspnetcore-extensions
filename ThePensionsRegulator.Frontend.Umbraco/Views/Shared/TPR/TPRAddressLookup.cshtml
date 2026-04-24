@@ -97,7 +97,7 @@
         );
 }
 
-<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" same-as-primary-checkbox-label="@checkboxLabel" role="@role" data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()" data-address-lookup-id-url="@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()" data-address-lookup-countries="@JsonSerializer.Serialize(countryRepository.GetCountries())">
+<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" same-as-primary-checkbox-label="@checkboxLabel" role="@role" data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()" data-address-lookup-id-url="@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()">
     <tpr-address-lookup-legend>@legend</tpr-address-lookup-legend>
 
     @if (hintTextBlocks is not null && hintTextBlocks.Any())
@@ -164,13 +164,23 @@
 
     <govuk-client-side-validation 
         error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.CountryErrorMessageRequired))">
-        <govuk-input name="@countryState.ModelPropertyName" input-class="govuk-input--width-20" value="@countryState.AttemptedValue" input-aria-invalid="@countryState.InvalidAriaLabel" autocomplete="country" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "country" }})">
-            <govuk-input-label>@countryState.Label</govuk-input-label>
+        <govuk-select name="@countryState.ModelPropertyName" input-class="govuk-input--width-20" select-aria-invalid="@countryState.InvalidAriaLabel" select-autocomplete="country" select-data-address-lookup="country">
+            <govuk-select-label>@countryState.Label</govuk-select-label>
             @if (countryState.HasErrorMessage)
             {
-                <govuk-input-error-message>@countryState.ErrorMessage</govuk-input-error-message>
+                <govuk-select-error-message>@countryState.ErrorMessage</govuk-select-error-message>
             }
-        </govuk-input>
+            @{
+                var countries = countryRepository.GetCountries();
+                var selectEmpty = !countries.ContainsKey(countryState.AttemptedValue?.ToString() ?? string.Empty);
+                <govuk-select-item selected="@(selectEmpty)"></govuk-select-item>
+                foreach (var country in countries)
+                {
+                    var selected = country.Key.ToString() == countryState.AttemptedValue;
+                    <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
+                }
+            }
+        </govuk-select>
     </govuk-client-side-validation>
 
     <govuk-client-side-validation 

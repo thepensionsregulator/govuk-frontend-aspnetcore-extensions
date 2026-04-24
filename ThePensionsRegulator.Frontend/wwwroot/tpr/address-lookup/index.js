@@ -24,6 +24,7 @@ class TprAddressLookup {
         this.postcodeSanitiser = new PostcodeSanitiser();
 
         this.originalInputs = this.captureOriginalInputs();
+        this.countryOptions = this.captureCountryOptions();
 
         const address = this.addressMapper.mapFromInput(this.originalInputs);
 
@@ -108,6 +109,13 @@ class TprAddressLookup {
             dataAddressLookup: input.getAttribute(ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE),
             value: input.value
         }));
+    }
+
+    captureCountryOptions() {
+        const countrySelect = this.container.querySelector(`select[${ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE}="${ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY}"]`);
+        const options = Array.from(countrySelect.querySelectorAll("option"));
+        options.forEach(option => option.removeAttribute("selected"));
+        return options;
     }
 
     renderSearchView() {
@@ -255,9 +263,7 @@ class TprAddressLookup {
             .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
             .build();
 
-        const countries = JSON.parse(this.container.getAttribute(`${ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE}-${ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRIES}`));
-        const countryOptions = Object.entries(countries).map(([name, value]) => this.componentBuilder.createOption(value, name));
-        const countryInput = this.componentBuilder.createGovukSelect(ADDRESS_LOOKUP_CONFIG.LABELS.COUNTRY, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY, countryOptions)
+        const countryInput = this.componentBuilder.createGovukSelect(ADDRESS_LOOKUP_CONFIG.LABELS.COUNTRY, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY, this.countryOptions)
             .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED)
             .build();
 

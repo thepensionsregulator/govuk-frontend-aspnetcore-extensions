@@ -136,14 +136,18 @@ class AddressLookupComponentBuilder {
         select.name = inputId;
         select.id = inputId;
 
-        const blankOption = new Option("", "", true, true);
-        blankOption.selected = "selected";
-        select.appendChild(blankOption);
-
         if (options !== undefined && options.length !== 0) {
+            let blankOption = options.find(option => option.value === "" || option.value == null);
+            if (!blankOption) {
+                blankOption = new Option();
+                select.appendChild(blankOption);
+            }
             options.forEach(option => {
                 select.appendChild(option);
             });
+            blankOption.setAttribute("selected", "selected");
+            blankOption.selected = true;
+            select.selectedIndex = Array.prototype.indexOf.call(select.options, blankOption);
         }
 
         formGroupContainer.appendChild(label);

@@ -400,8 +400,9 @@ describe("AddressLookupComponentBuilder", () => {
             expect(select.id).toBe(`${dataValue}-${testIndex}`);
         });
 
-        it("should create a blank option as the first option", () => {
-            const inputBuilder = builder.createGovukSelect("Choose address", "select", []);
+        it("should create a blank option as the first option if options doesnt provide one", () => {
+            const option = builder.createOption("1", "Address 1");
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", [ option ]);
             const formGroup = inputBuilder.build();
             const select = formGroup.querySelector("select");
 
@@ -416,7 +417,7 @@ describe("AddressLookupComponentBuilder", () => {
             const formGroup = inputBuilder.build();
             const select = formGroup.querySelector("select");
 
-            expect(select.options.length).toBe(1);
+            expect(select.options.length).toBe(0);
         });
 
         it("should handle undefined address options", () => {
@@ -424,7 +425,7 @@ describe("AddressLookupComponentBuilder", () => {
             const formGroup = inputBuilder.build();
             const select = formGroup.querySelector("select");
 
-            expect(select.options.length).toBe(1);
+            expect(select.options.length).toBe(0);
         });
 
         it("should add all provided address options", () => {

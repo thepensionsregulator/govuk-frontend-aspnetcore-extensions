@@ -1,34 +1,50 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
-@addTagHelper *, GovUk.Frontend.AspNetCore
-@using GovUk.Frontend.Umbraco
+﻿@using GovUk.Frontend.Umbraco
 @using GovUk.Frontend.Umbraco.Blocks
-@using GovUk.Frontend.Umbraco.Models
-@using ThePensionsRegulator.Umbraco;
-@using ThePensionsRegulator.Umbraco.Blocks;
-@using Umbraco.Cms.Core.Models
-@using Umbraco.Cms.Core.Strings;
-@using Umbraco.Extensions
+@using GovUk.Frontend.Umbraco.Services
+@using ThePensionsRegulator.Umbraco
+@using ThePensionsRegulator.Umbraco.Blocks
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@inject IGovUkHeadingClassProvider headingClassProvider
+
 @{
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
     var sections = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.AccordionSections)!;
+    var headingClass = Model.Settings?.Value<string>(PropertyAliases.AccordionHeadingSize);
     if (!Int32.TryParse(Model.Settings?.Value<string>(PropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out var headingLevel))
     {
         headingLevel = 2;
     }
+    if (string.IsNullOrWhiteSpace(headingClass))
+    {
+        var headingClasses = headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem);
+        headingClass = headingLevel switch
+        {
+            2 => headingClasses.Heading2,
+            3 => headingClasses.Heading3,
+            4 => headingClasses.Heading4,
+            5 => headingClasses.Heading5,
+            _ => headingClasses.Heading2
+        };
+    }
+    var showAllSectionsText = Umbraco.GetDictionaryValueOrDefault("Hide all sections", "Hide all sections");
+    var showSectionText = Umbraco.GetDictionaryValueOrDefault("Hide", "Hide");
 
+    var hideAllSectionsText = Umbraco.GetDictionaryValueOrDefault("Show all sections", "Show all sections");
+    var hideSectionText = Umbraco.GetDictionaryValueOrDefault("Show", "Show");
 }
-<govuk-accordion id="@Model.Content.Key" class="@cssClasses" heading-level="@headingLevel">
+<govuk-accordion id="@Model.Content.Key" class="@cssClasses" heading-level="@headingLevel" hide-all-sections-text="@hideAllSectionsText" hide-section-text="@hideSectionText" show-all-sections-text="@showAllSectionsText" show-section-text="@showSectionText">
     @foreach (var section in sections.FilteredBlocks())
     {
         var grid = section.Content.Value<OverridableBlockGridModel>(PropertyAliases.AccordionSectionBlocks)!;
         var childBlocks = new BlockGridViewModel(grid)
         {
             ChildColumnsDefaultToFullWidth = true,
-            RenderWidthContainer = false        
+            RenderWidthContainer = false
         };
 
         <govuk-accordion-item class="@(section.Settings.Value<string>(PropertyAliases.CssClasses))" expanded="@(section.Settings.Value<bool>(PropertyAliases.AccordionSectionExpanded))">
-            <govuk-accordion-item-heading>@(section.Content.Value<string>(PropertyAliases.AccordionSectionHeading))</govuk-accordion-item-heading>
+            <govuk-accordion-item-heading class="@headingClass">@(section.Content.Value<string>(PropertyAliases.AccordionSectionHeading))</govuk-accordion-item-heading>
             @if (!string.IsNullOrWhiteSpace(section.Content.Value<string>(PropertyAliases.AccordionSectionSummary)))
             {
                 <govuk-accordion-item-summary>@(section.Content.Value<string>(PropertyAliases.AccordionSectionSummary))</govuk-accordion-item-summary>

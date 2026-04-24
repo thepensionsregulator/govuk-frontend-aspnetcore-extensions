@@ -7,7 +7,7 @@ A design component for the related links column which can be re-used on TPR site
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
 
-<tpr-related-links>
+<tpr-related-links aria-label="List of related links">
     <tpr-related-links-heading>Related links example heading</tpr-related-links-heading>
     <tpr-related-link href="/">Example link 1</tpr-related-link>
     <tpr-related-link href="/">Example link 2</tpr-related-link>
@@ -20,7 +20,7 @@ In ASP.NET applications the related links component is structured like so, repla
 If the tag helpers are arranged like the example above, then it should render the following html code:
 
 ```html
-<nav class="tpr-related-links">
+<nav class="tpr-related-links" aria-label="List of related links">
     <h2 class="govuk-heading-m">Related links example heading</h2>
     <ul class="govuk-list">
         <li>
@@ -51,9 +51,5 @@ To implement this component you should select the 'TPR related links' block:
 Then you can add a relevant heading as well as whatever related links are needed for the page:
 
 ![TPR related links Umbraco block content](../images/tpr-related-links-umbraco-block-content.png)
-
-You can toggle the decorative bar for the related links component as well as include any additional css changes under the settings tab, the decorative bar is enabled by default.
-
-![TPR related links Umbraco block settings](../images/tpr-related-links-umbraco-block-settings.png)
 
 If the heading is left empty then it will search for a dictionary entry under the 'Translation' tab in Umbraco called 'TPR Related links heading', if there is no dictionary entry under that name then the heading will default to 'Related'.

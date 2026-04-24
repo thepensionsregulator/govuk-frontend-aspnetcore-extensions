@@ -102,12 +102,17 @@ class TprAddressLookup {
     }
 
     captureOriginalInputs() {
-        const inputs = this.container.querySelectorAll("input");
+        const inputs = this.container.querySelectorAll("input, select");
+        //TODO: Should also capture error messages so if they are customised in Umbraco/ ASP.NET we respect the customisation
         return Array.from(inputs).map(input => ({
             name: input.getAttribute("name"),
             id: input.getAttribute("id"),
             dataAddressLookup: input.getAttribute(ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE),
-            value: input.value
+            value: input.value,
+            label: input.labels?.[0]?.textContent.trim() || undefined, 
+            requiredMessage: input.dataset.valRequired,
+            maxLengthMessage: input.dataset.valMaxlength,
+            patternMessage: input.dataset.valRegex
         }));
     }
 
@@ -242,34 +247,53 @@ class TprAddressLookup {
     renderInternationalManualEntryView() {
         this.clearContainer();
 
+        const findInput = attribute => this.originalInputs.find(x => x.dataAddressLookup == attribute)
+        const findLabel = attribute => findInput(attribute)?.label; // TODO should have a better way of getting the 'default' value out of the config. May need to restructure the config. Then this kind of method could be reused to get error messages from an input
+        const findRequiredMessage = attribute => findInput(attribute)?.requiredMessage;
+        const findMaxLengthMessage = attribute => findInput(attribute)?.maxLengthMessage;
+
         const fieldset = this.componentBuilder.createFieldset(ADDRESS_LOOKUP_CONFIG.LABELS.ENTER_NEW_INTERNATIONAL_ADDRESS);
 
-        const addressLine1Input = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_1, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.XX_LARGE)
-            .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED)
-            .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
+        const addressLine1Label = findLabel(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
+        const addressLine1RequiredMessage = findRequiredMessage(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
+        const addressLine1MaxLengthMessage = findMaxLengthMessage(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
+        const addressLine1Input = this.componentBuilder.createGovukTextInput(addressLine1Label, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.XX_LARGE)
+            .addRequiredValidation(addressLine1RequiredMessage)
+            .addMaxLengthValidation(500, addressLine1MaxLengthMessage)
             .build();
             
-
-        const addressLine2Input = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_LINE_2, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.XX_LARGE)
+        const addressLine2Label = findLabel(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2);
+        const addressLine2MaxLengthMessage = findMaxLengthMessage(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2);
+        const addressLine2Input = this.componentBuilder.createGovukTextInput(addressLine2Label, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.XX_LARGE)
             .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
             .build();
 
-        const townOrCityInput = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.TOWN_OR_CITY, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE)
-            .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED)
-            .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
+        const townOrCityLabel = findLabel(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY);
+        const townOrCityRequiredMessage = findRequiredMessage(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY);
+        const townOrCityMaxLengthMessage = findMaxLengthMessage(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY);
+        const townOrCityInput = this.componentBuilder.createGovukTextInput(townOrCityLabel, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE)
+            .addRequiredValidation(townOrCityRequiredMessage)
+            .addMaxLengthValidation(500, townOrCityMaxLengthMessage)
             .build();
 
-        const regionInput = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.REGION_INTERNATIONAL, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE)
-            .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
+        const regionLabel = findLabel(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL)
+        const regionMaxLengthMessage = findLabel(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL);
+        const regionInput = this.componentBuilder.createGovukTextInput(regionLabel, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE)
+            .addMaxLengthValidation(500, regionMaxLengthMessage)
             .build();
 
-        const countryInput = this.componentBuilder.createGovukSelect(ADDRESS_LOOKUP_CONFIG.LABELS.COUNTRY, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY, this.countryOptions)
-            .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED)
+        const countryLabel = findLabel(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY);
+        const countryRequiredMessage = findMaxLengthMessage(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY);
+        const countryInput = this.componentBuilder.createGovukSelect(countryLabel, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY, this.countryOptions)
+            .addRequiredValidation(countryRequiredMessage)
             .build();
 
-        const postcodeInput = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.POSTCODE_INTERNATIONAL, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.LARGE)
-            .addRequiredValidation(ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.REQUIRED)
-            .addMaxLengthValidation(20, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_20)
+        const postcodeLabel = findLabel(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE);
+        const postcodeRequiredMessage = findLabel(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE);
+        const postcodeMaxLengthMessage = findLabel(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE);
+        const postcodeInput = this.componentBuilder.createGovukTextInput(postcodeLabel, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.LARGE)
+            .addRequiredValidation(postcodeRequiredMessage)
+            .addMaxLengthValidation(20, postcodeMaxLengthMessage)
             .build();
 
         const confirmAddressButton = this.componentBuilder.createConfirmAddressButton((event) => this.confirmManualInternationalAddressOnClick(event));
@@ -311,6 +335,7 @@ class TprAddressLookup {
             .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
             .build();
 
+        // This needs to come from a data-* attribute or a 'defaults' object 
         const countyInput = this.componentBuilder.createGovukTextInput(ADDRESS_LOOKUP_CONFIG.LABELS.COUNTY, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY, ADDRESS_LOOKUP_CONFIG.INPUT_WIDTHS.X_LARGE)
             .addMaxLengthValidation(500, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.MAX_LENGTH_500)
             .build();

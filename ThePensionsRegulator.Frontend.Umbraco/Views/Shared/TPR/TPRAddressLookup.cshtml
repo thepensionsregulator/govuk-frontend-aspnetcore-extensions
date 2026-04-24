@@ -153,7 +153,7 @@
 
     <govuk-client-side-validation 
         error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.CountyErrorMessageMaxLength))">
-        <govuk-input name="@countyState.ModelPropertyName" input-class="govuk-input--width-20" value="@countyState.AttemptedValue" input-aria-invalid="@countyState.InvalidAriaLabel" autocomplete="address-level3" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "county" }})">
+        <govuk-input name="@countyState.ModelPropertyName" input-class="govuk-input--width-20" value="@countyState.AttemptedValue" input-aria-invalid="@countyState.InvalidAriaLabel" autocomplete="address-level3" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "region-international" }})">
             <govuk-input-label>@countyState.Label</govuk-input-label>
             @if (countyState.HasErrorMessage)
             {

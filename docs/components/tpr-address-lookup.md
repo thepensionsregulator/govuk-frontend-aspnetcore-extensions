@@ -43,8 +43,8 @@ Without JavaScript, the original address input fields remain visible and usable.
 
         <govuk-client-side-validation error-message-maxlength="Cannot exceed the maximum length">
             <govuk-input for="County" input-class="govuk-input--width-20" autocomplete="address-level3"
-                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "county"}})'>
-                <govuk-input-label>County (optional)</govuk-input-label>
+                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "region-international"}})'>
+                <govuk-input-label>Province/ region/ state (optional)</govuk-input-label>
             </govuk-input>
         </govuk-client-side-validation>
 

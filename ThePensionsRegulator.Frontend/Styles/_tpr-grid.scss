@@ -68,17 +68,24 @@
 .tpr-box--royal-blue {
     background-color: $tpr-colour-royal-blue;
     color: $tpr-colour-white;
-    
-    /* When used in the Umbraco backoffice the elements that need to be inverted are blocks that are descendants 
-       of the box block. Each block has its own shadow root, so we need styles in a descendant shadow root to adapt 
-       to a class applied in an ancestor shadow root. CSS variables are the only method that can cross this 
-       boundary and work in the backoffice as well as on the final rendered component. 
+}
 
-       Each element that needs to update has its colour(s) set to the variables defined here, with a fallback to the
-       default colour for that element. These variables are normally undefined, so the fallback default is used.
-       When this selector defines the variables, the variable value is used instead of the fallback and the colours 
-       are inverted.
-    */ 
+.tpr-box--green {
+    background-color: $tpr-colour-camarone;
+    color: $tpr-colour-white;
+}
+
+/*  When used in the Umbraco backoffice the elements that need to be inverted are blocks that are descendants 
+    of the box block. Each block has its own shadow root, so we need styles in a descendant shadow root to adapt 
+    to a class applied in an ancestor shadow root. CSS variables are the only method that can cross this 
+    boundary and work in the backoffice as well as on the final rendered component. 
+
+    Each element that needs to update has its colour(s) set to the variables defined here, with a fallback to the
+    default colour for that element. These variables are normally undefined, so the fallback default is used.
+    When this selector defines the variables, the variable value is used instead of the fallback and the colours 
+    are inverted.
+*/
+.tpr-box--royal-blue, .tpr-box--green {
     --tpr-text-colour--inverse: $tpr-colour-white;
     --tpr-secondary-text-colour--inverse: $tpr-colour-white;
     --tpr-link-colour--inverse: $tpr-colour-white;

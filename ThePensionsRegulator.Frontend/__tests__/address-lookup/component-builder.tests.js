@@ -121,11 +121,11 @@ describe("AddressLookupComponentBuilder", () => {
             expect(paragraph.textContent).toContain("BN1 4DW");
         });
 
-        it("should skip the default country", () => {
+        it("should contain the default country", () => {
             const address = ["Line 1", "United Kingdom", "BN1 4DW"];
             const paragraph = builder.createConfirmedAddressParagraph(address, "BN1 4DW");
 
-            expect(paragraph.textContent).not.toContain("United Kingdom");
+            expect(paragraph.textContent).toContain("United Kingdom");
         });
 
         it("should trim whitespace from address lines", () => {

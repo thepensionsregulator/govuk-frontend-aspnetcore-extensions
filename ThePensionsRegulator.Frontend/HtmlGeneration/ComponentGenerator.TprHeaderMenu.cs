@@ -169,6 +169,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     arrowContainer.InnerHtml.AppendHtml(arrow);
 
                     var anchorTag = new TagBuilder("a");
+                    anchorTag.AddCssClass("tpr-header-menu__nav-menu-item-link");
 
                     if (item.Attributes != null)
                     {

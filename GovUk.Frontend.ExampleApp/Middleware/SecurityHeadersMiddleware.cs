@@ -14,7 +14,7 @@ namespace GovUk.Frontend.ExampleApp.Middleware
 
         public async Task InvokeAsync(HttpContext context, INonceProvider nonceProvider)
         {
-            var connectSrcForVisualStudioBrowserLink = _webHostEnvironment.IsDevelopment() ? "'self' ws://localhost:* http://localhost:*" : string.Empty;
+            var connectSrcForLocalhost = _webHostEnvironment.IsDevelopment() ? "'self' ws://localhost:* http://localhost:*" : string.Empty; // Allows Visual Studio Browser Link for hot reload
 
             const string styleSrcForAblePlayer = "'sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f' 'sha384-ETDm/j6COkRSUfVFsGNM5WYE4WjyRgfDhy4Pf4Fsc8eNw/eYEMqYZWuxTzMX6FBa'";
             const string scriptSrcForYouTube = "https://youtube.com https://www.youtube.com https://www.youtube-nocookie.com";
@@ -32,7 +32,7 @@ namespace GovUk.Frontend.ExampleApp.Middleware
                     $"style-src 'self' {styleSrcForAblePlayer};" +
                     $"img-src 'self' {imgSrcForYouTube};" +
                     $"frame-src {frameSrcForYouTube}; " +
-                    $"connect-src 'self' {connectSrcForVisualStudioBrowserLink}");
+                    $"connect-src 'self' {connectSrcForLocalhost}");
 
             await _next(context);
         }

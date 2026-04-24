@@ -1,4 +1,4 @@
-﻿if (typeof(trustedTypes) != undefined && trustedTypes.createPolicy && typeof (DOMPurify) !== 'undefined') {
+﻿if (typeof(trustedTypes) !== 'undefined' && trustedTypes.createPolicy && typeof (DOMPurify) !== 'undefined') {
     const trustedURLs = [];
     trustedTypes.createPolicy('default', {
         createHTML: (html) => DOMPurify.sanitize(html, { RETURN_TRUSTED_TYPE: true }),

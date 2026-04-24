@@ -434,10 +434,10 @@ function removeActiveClasses() {
 
     document.querySelectorAll(".tpr-header-menu__button").forEach((toggle) => {
         toggle.classList.remove("tpr-header-menu__button--open");
+        toggle.setAttribute("aria-expanded", "false");
 
         var toggleText = toggle.querySelector(".tpr-header-menu__button-inner")
         toggleText.classList.remove("tpr-header-menu__button-inner--opened")
-        toggleText.setAttribute("aria-expanded", "false");
 
         var svg = toggle.querySelector(".tpr-mobile-menu__svg")
         svg.classList.remove("tpr-mobile-menu__svg--hide")

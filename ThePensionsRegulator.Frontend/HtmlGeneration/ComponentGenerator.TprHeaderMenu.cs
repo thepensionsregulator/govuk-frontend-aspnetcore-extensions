@@ -42,16 +42,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var closeButton = new TagBuilder("span");
             closeButton.AddCssClass("tpr-header-menu__button-inner");
 
-            if (!string.IsNullOrEmpty(tprHeaderBar.HeaderMenuToggleOpen))
-            {
-                closeButton.Attributes.Add("data-open-label", tprHeaderBar.HeaderMenuToggleOpen);
-            }
-            if (!string.IsNullOrEmpty((tprHeaderBar.HeaderMenuToggleClosed)))
-            {
-                closeButton.Attributes.Add("data-close-label", tprHeaderBar.HeaderMenuToggleClosed);
-                closeButton.InnerHtml.Append(tprHeaderBar.HeaderMenuToggleClosed);
-            }
-
+            var openText = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuToggleOpen) ? "Close" : tprHeaderBar.HeaderMenuToggleOpen;
+            closeButton.Attributes.Add("data-open-label", openText);
+           
+            var closeText = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuToggleClosed) ? "Menu" : tprHeaderBar.HeaderMenuToggleClosed;
+            closeButton.Attributes.Add("data-close-label", closeText);
+            closeButton.InnerHtml.Append(closeText);
+            
             mobileMenuToggle.InnerHtml.AppendHtml(icon);
             mobileMenuToggle.InnerHtml.AppendHtml(closeButton);
 
@@ -112,11 +109,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var headerMenuNav = new TagBuilder("nav");
             headerMenuNav.AddCssClass("tpr-header-menu__nav-container");
 
-            if (!string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuAriaLabel))
-            {
-                headerMenuNav.Attributes.Add("aria-label", tprHeaderBar.HeaderMenuAriaLabel);
-            }
-
+            var navAriaLabel = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuAriaLabel) ? "Main navigation" : tprHeaderBar.HeaderMenuAriaLabel;
+            headerMenuNav.Attributes.Add("aria-label", navAriaLabel);
+            
             var tprWrapper = new TagBuilder("div");
             tprWrapper.AddCssClass("tpr-header-menu__nav-inner-container");
             headerMenuNav.InnerHtml.AppendHtml(tprWrapper);
@@ -167,10 +162,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                     var arrow = new TagBuilder("button");
                     arrow.AddCssClass("tpr-header-menu__arrow");
-                    if (tprHeaderBar.HeaderMenuItemAriaLabel != null)
-                    {
-                        arrow.Attributes.Add("aria-label", $"{item.LinkText}: {tprHeaderBar.HeaderMenuItemAriaLabel}"); 
-                    }
+
+                    var menuItemAriaLabel = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuItemAriaLabel) ? "Click to expand the sub menu" : tprHeaderBar.HeaderMenuItemAriaLabel;                 
+                    arrow.Attributes.Add("aria-label", $"{item.LinkText}: {menuItemAriaLabel}"); 
+                    
                     arrow.Attributes.Add("aria-expanded", "true");
                     arrowContainer.InnerHtml.AppendHtml(arrow);
 

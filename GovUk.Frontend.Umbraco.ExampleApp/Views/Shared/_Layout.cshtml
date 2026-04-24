@@ -52,7 +52,9 @@
     {
         <partial name="GOVUK/UmbracoHead" />
     }
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="/js/purify.js" type="module" asp-append-version="true"></script>
+    <script src="/js/trusted-types-policy.js" type="module" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     @RenderSection("head", required: false)
 </head>
 

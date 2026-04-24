@@ -44,7 +44,6 @@
 		<PackageReference Include="FileSignatures" Version="5.0.2" />
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.0.1" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
-		<PackageReference Include="OpenMcdf" Version="3.1.3" />
 	</ItemGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">

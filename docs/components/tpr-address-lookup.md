@@ -327,7 +327,7 @@ The client-side code is structured as ES modules:
 | `validator.js`          | `AddressLookupValidator` — integrates with jQuery Validation Unobtrusive.              |
 | `input-builder.js`      | `InputBuilder` — fluent API for adding validation attributes to inputs.                |
 | `postcode-sanitiser.js` | `PostcodeSanitiser` — trims, uppercases, and removes hyphens from postcodes.           |
-| `utils.js`              | Utility functions (e.g. `toSentenceCase`).                                             |
+| `utils.js`              | Utility functions (e.g. `toTitleCase`).                                             |
 
 ## Umbraco
 

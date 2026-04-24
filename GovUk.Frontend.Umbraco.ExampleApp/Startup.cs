@@ -57,7 +57,9 @@ namespace GovUk.Frontend.Umbraco.ExampleApp
 
             if (_config.GetValue<bool>("TPRStyles"))
             {
-                services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+                services.AddTprFrontendUmbraco(
+                    umbracoOptions => umbracoOptions.RenderWidthContainerForBlocks = true,
+                    tprOptions => tprOptions.EnableTableCsvDownload = true);
             }
             else
             {

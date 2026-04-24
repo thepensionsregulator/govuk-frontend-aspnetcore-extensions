@@ -52,7 +52,7 @@ steps:
     inputs:
       command: custom
       workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
-      customCommand: "audit --level moderate --groups dependencies"
+      customCommand: "audit --audit-level=moderate --omit=dev"
     displayName: npm audit
 
   - task: Npm@1

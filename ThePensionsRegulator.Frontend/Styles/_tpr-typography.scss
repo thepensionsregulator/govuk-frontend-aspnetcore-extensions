@@ -1,12 +1,15 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
-// Change GOV.UK styles where the TPR brand diverges from the GOV.UK Design System.
-.govuk-summary-list__key {
-    font-weight: $tpr-font-weight-semi-bold;
-}
-
 // Display in inverse colours on a dark background, otherwise use the default colours.
-.govuk-summary-list {
+.govuk-heading-xl,
+.govuk-heading-l,
+.govuk-heading-m,
+.govuk-heading-s,
+.govuk-body,
+.govuk-body-l,
+.govuk-body-m,
+.govuk-body-s,
+.govuk-list {
     color: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
 }

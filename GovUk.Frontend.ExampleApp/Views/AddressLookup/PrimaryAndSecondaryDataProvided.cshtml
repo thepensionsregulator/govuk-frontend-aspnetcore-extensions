@@ -18,8 +18,6 @@
             in the &lsquo;confirmed&rsquo; view. If the addresses are the same, the checkbox for the secondary address is checked.
         </p>
 
-        <h2 class="govuk-heading-l">Address</h2>
-
         <form asp-controller="AddressLookup" asp-action="PostPrimaryAndSecondaryDataProvided" method="post" novalidate>
             <partial name="_AddressLookupForm" model="Model" />
         </form>

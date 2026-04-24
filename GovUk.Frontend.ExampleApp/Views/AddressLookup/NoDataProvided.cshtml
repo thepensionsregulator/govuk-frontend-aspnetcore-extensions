@@ -17,8 +17,6 @@
             If the viewmodel for a page does not contain data for an address, the address lookup component is rendered in the &lsquo;search&rsquo; view.
         </p>
 
-        <h2 class="govuk-heading-l">Address</h2>
-
         <form asp-controller="AddressLookup" asp-action="PostNoDataProvided" method="post" novalidate>
             <partial name="_AddressLookupForm" model="Model" />
         </form>

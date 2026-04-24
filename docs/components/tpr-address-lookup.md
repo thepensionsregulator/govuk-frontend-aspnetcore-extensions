@@ -8,38 +8,71 @@ Without JavaScript, the original address input fields remain visible and usable.
 
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
+@model AddressLookupViewModel
+@inject ITprAddressLookupEndpointUrlProvider urlProvider
+@inject ITprCountryRepository countryRepository
 
 <form method="post" novalidate>
-    <tpr-address-lookup
-        data-address-lookup-search-url="/api/address/search"
-        data-address-lookup-id-url="/api/address/byid">
+    <tpr-address-lookup role="Primary"
+                        data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
+                        data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()">
         <tpr-address-lookup-legend>Enter your address</tpr-address-lookup-legend>
-        <govuk-client-side-validation>
-            <govuk-input for="AddressLine1" input-class="govuk-input--width-30" autocomplete="address-line1"
-                         data-address-lookup="address-line-1">
+        <tpr-address-lookup-hint id="address-lookup-hint">This should be your primary address</tpr-address-lookup-hint>
+        <govuk-client-side-validation error-message-required="This field is required"
+                                      error-message-maxlength="Cannot exceed the maximum length">
+            <govuk-input for="AddressLine1" autocomplete="address-line1"
+                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-1"}})'>
                 <govuk-input-label>Address line 1</govuk-input-label>
             </govuk-input>
-            <govuk-input for="AddressLine2" input-class="govuk-input--width-30" autocomplete="address-line2"
-                         data-address-lookup="address-line-2">
+        </govuk-client-side-validation>
+
+        <govuk-client-side-validation error-message-maxlength="Cannot exceed the maximum length">
+            <govuk-input for="AddressLine2" autocomplete="address-line2"
+                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-2"}})'>
                 <govuk-input-label>Address line 2 (optional)</govuk-input-label>
             </govuk-input>
+        </govuk-client-side-validation>
+
+        <govuk-client-side-validation error-message-required="This field is required"
+                                      error-message-maxlength="Cannot exceed the maximum length">
             <govuk-input for="TownOrCity" input-class="govuk-input--width-20" autocomplete="address-level2"
-                         data-address-lookup="town-or-city">
+                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "town-or-city"}})'>
                 <govuk-input-label>Town or city</govuk-input-label>
             </govuk-input>
+        </govuk-client-side-validation>
+
+        <govuk-client-side-validation error-message-maxlength="Cannot exceed the maximum length">
             <govuk-input for="County" input-class="govuk-input--width-20" autocomplete="address-level3"
-                         data-address-lookup="county">
+                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "county"}})'>
                 <govuk-input-label>County (optional)</govuk-input-label>
             </govuk-input>
-            <govuk-input for="Country" input-class="govuk-input--width-20" autocomplete="country"
-                         data-address-lookup="country">
-                <govuk-input-label>Country</govuk-input-label>
-            </govuk-input>
+        </govuk-client-side-validation>
+
+        <govuk-client-side-validation error-message-required="This field is required">
+            <govuk-select for="Country" input-class="govuk-input--width-20" select-autocomplete="country"
+                         select-data-address-lookup="country">
+                <govuk-select-label>Country</govuk-select-label>
+                @{
+                    var countries = countryRepository.GetCountries();
+                    <govuk-select-item selected="true"></govuk-select-item>
+                    foreach (var country in countries)
+                    {
+                        <govuk-select-item value="@country.Value">@country.Key</govuk-select-item>
+                    }
+                }
+            </govuk-select>
+        </govuk-client-side-validation>
+
+        <govuk-client-side-validation error-message-required="This field is required"
+                                      error-message-maxlength="Cannot exceed the maximum length">
             <govuk-input for="Postcode" input-class="govuk-input--width-10" autocomplete="postal-code"
-                         data-address-lookup="postcode">
+                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "postcode"}})'>
                 <govuk-input-label>Postcode</govuk-input-label>
             </govuk-input>
         </govuk-client-side-validation>
+
+        <input type="hidden" id="UPRN" name="UPRN" value="@Model?.UPRN" data-address-lookup="UPRN" />
+        <input type="hidden" id="CountryCode" name="CountryCode" value="@Model?.CountryCode" data-address-lookup="country-code" />
     </tpr-address-lookup>
 
     <govuk-button type="submit">Submit</govuk-button>
@@ -110,6 +143,7 @@ Each `<input>` inside the component must have a `data-address-lookup` attribute 
 | `country`                   | Country                                   |
 | `postcode`                  | Postcode                                  |
 | `UPRN`                      | Unique Property Reference Number (hidden) |
+| `country-code`              | Country code (hidden)                     |
 
 ## View model
 
@@ -118,26 +152,30 @@ The backing view model should have properties for each address field. Apply stan
 ```csharp
 public class AddressViewModel
 {
-    [Required]
-    [MaxLength(500)]
+    [Required(ErrorMessage = "Enter address line 1")]
+    [MaxLength(500, ErrorMessage = "Address line 1 must not exceed 500 characters")]
     public string? AddressLine1 { get; set; }
 
-    [MaxLength(500)]
+    [MaxLength(500, ErrorMessage = "Address line 2 must not exceed 500 characters")]
     public string? AddressLine2 { get; set; }
 
-    [Required]
-    [MaxLength(500)]
+    [Required(ErrorMessage = "Enter a town or city")]
+    [MaxLength(500, ErrorMessage = "Town or city must not exceed 500 characters")]
     public string? TownOrCity { get; set; }
 
-    [MaxLength(500)]
+    [MaxLength(500, ErrorMessage = "County must not exceed 500 characters")]
     public string? County { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Enter a country")]
     public string? Country { get; set; }
 
-    [Required]
-    [MaxLength(20)]
+    public int? CountryCode { get; set; }
+
+    [Required(ErrorMessage = "Enter a postcode")]
+    [MaxLength(20, ErrorMessage = "Postcode must not exceed 20 characters")]
     public string? Postcode { get; set; }
+
+    public string? UPRN { get; set; }
 }
 ```
 
@@ -216,7 +254,9 @@ The component calls two endpoints configured via `data-address-lookup-search-url
 }
 ```
 
-If a building name or number is provided, results are filtered client-side: numeric values match `BUILDING_NUMBER` exactly, non-numeric values match `BUILDING_NAME` (case-insensitive substring).
+If a building name or number is provided, results are filtered client-side: 
+- numeric values (e.g `1`) match `BUILDING_NUMBER` exactly
+- non-numeric values match `BUILDING_NAME` or `SUB_BUILDING_NAME` (case-insensitive substring). This includes values with suffixes (e.g `12a`), ranges (e.g. `110-112`) or prefixes (e.g `Flat 8`) .
 
 ### Address-by-ID endpoint
 

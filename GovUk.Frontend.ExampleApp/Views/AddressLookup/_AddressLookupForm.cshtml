@@ -3,13 +3,12 @@
 @inject ITprAddressLookupEndpointUrlProvider urlProvider
 @inject ITprCountryRepository countryRepository
 
-<h3 class="govuk-heading-m">Shipping address</h3>
+<h2 class="govuk-heading-m">Shipping address</h2>
 <p class="govuk-body">Tell us where you would like your order shipped to.</p>
 
 <tpr-address-lookup role="Primary"
                     data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
-                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
-                    data-address-lookup-countries="@JsonSerializer.Serialize(countryRepository.GetCountries())">
+                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()">
     <tpr-address-lookup-legend>Shipping address</tpr-address-lookup-legend>
 
     <govuk-client-side-validation error-message-required="This field is required"
@@ -59,14 +58,24 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="This field is required">
-        <govuk-input for="ShippingCountry" input-class="govuk-input--width-20" autocomplete="country"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "country"}})">
-            <govuk-input-label>Country</govuk-input-label>
+        <govuk-select for="ShippingCountry" input-class="govuk-input--width-20" select-autocomplete="country"
+                     select-data-address-lookup="country">
+            <govuk-select-label>Country</govuk-select-label>
             @if (ViewContext.ModelState.ContainsKey("ShippingCountry") && ViewContext.ModelState["ShippingCountry"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["ShippingCountry"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-select-error-message>@ViewContext.ModelState["ShippingCountry"]!.Errors[0].ErrorMessage</govuk-select-error-message>
             }
-        </govuk-input>
+            @{
+                var countries = countryRepository.GetCountries();
+                var selectEmpty = !countries.ContainsKey(ViewContext.ModelState["ShippingCountry"]?.AttemptedValue?.ToString() ?? string.Empty);
+                <govuk-select-item selected="@(selectEmpty)"></govuk-select-item>
+                foreach (var country in countries)
+                {
+                    var selected = country.Key.ToString() == ViewContext.ModelState["ShippingCountry"]?.AttemptedValue;
+                    <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
+                }
+            }
+        </govuk-select>
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="This field is required"
@@ -85,7 +94,7 @@
     <input type="hidden" id="ShippingCountryCode" name="ShippingCountryCode" value="@Model?.ShippingCountryCode" data-address-lookup="country-code" />
 </tpr-address-lookup>
 
-<h3 class="govuk-heading-m">Billing address</h3>
+<h2 class="govuk-heading-m">Billing address</h2>
 <p class="govuk-body">Tell us where we should bill your order to.</p>
 
 <tpr-address-lookup role="Secondary"
@@ -143,14 +152,24 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="This field is required">
-        <govuk-input for="BillingCountry" input-class="govuk-input--width-20" autocomplete="country"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "country"}})">
-            <govuk-input-label>Country</govuk-input-label>
+        <govuk-select for="BillingCountry" input-class="govuk-input--width-20" select-autocomplete="country"
+                      select-data-address-lookup="country">
+            <govuk-select-label>Country</govuk-select-label>
             @if (ViewContext.ModelState.ContainsKey("BillingCountry") && ViewContext.ModelState["BillingCountry"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["BillingCountry"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-select-error-message>@ViewContext.ModelState["BillingCountry"]!.Errors[0].ErrorMessage</govuk-select-error-message>
             }
-        </govuk-input>
+            @{
+                var countries = countryRepository.GetCountries();
+                var selectEmpty = !countries.ContainsKey(ViewContext.ModelState["BillingCountry"]?.AttemptedValue?.ToString() ?? string.Empty);
+                <govuk-select-item selected="@(selectEmpty)"></govuk-select-item>
+                foreach (var country in countries)
+                {
+                    var selected = country.Key.ToString() == ViewContext.ModelState["BillingCountry"]?.AttemptedValue;
+                    <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
+                }
+            }
+        </govuk-select>
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="This field is required"

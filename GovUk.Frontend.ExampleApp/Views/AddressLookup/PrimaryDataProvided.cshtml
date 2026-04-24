@@ -18,8 +18,6 @@
             will be rendered in the &lsquo;confirmed&rsquo; view. The other will be rendered in the &lsquo;search&rsquo; view.
         </p>
 
-        <h2 class="govuk-heading-l">Address</h2>
-
         <form asp-controller="AddressLookup" asp-action="PostPrimaryDataProvided" method="post" novalidate>
             <partial name="_AddressLookupForm" model="Model" />
         </form>

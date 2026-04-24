@@ -26,6 +26,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 ShippingAddressLine2 = "Shipping address line 2",
                 ShippingSomethingReallyRandom = "Shipping town",
                 ShippingCounty = "Shipping county",
+                ShippingCountry = "United Kingdom",
                 ShippingPostcode = "CM12 0AG"
             };
 
@@ -33,6 +34,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             ModelState.SetInitialValue(nameof(viewModel.ShippingAddressLine2), viewModel.ShippingAddressLine2.ToString());
             ModelState.SetInitialValue(nameof(viewModel.ShippingSomethingReallyRandom), viewModel.ShippingSomethingReallyRandom.ToString());
             ModelState.SetInitialValue(nameof(viewModel.ShippingCounty), viewModel.ShippingCounty.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.ShippingCountry), viewModel.ShippingCountry.ToString());
             ModelState.SetInitialValue(nameof(viewModel.ShippingPostcode), viewModel.ShippingPostcode.ToString());
 
             return CurrentTemplate(viewModel);

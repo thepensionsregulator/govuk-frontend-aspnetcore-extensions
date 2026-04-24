@@ -3,6 +3,7 @@
     public static class PropertyAliases
     {
         public const string ModelProperty = "modelProperty";
+        public const string AccordionHeadingSize = "headingClass";
         public const string AccordionSections = "sections";
         public const string AccordionSectionHeading = "heading";
         public const string AccordionSectionSummary = "summary";

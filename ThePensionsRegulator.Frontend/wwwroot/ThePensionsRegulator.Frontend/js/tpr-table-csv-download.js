@@ -54,51 +54,37 @@ export function escapeCsvValue(value) {
 }
 
 /**
- * Converts a table to CSV content, expanding merged cells (colspan/rowspan).
+ * Returns true if the table has any cells with colspan or rowspan greater than 1.
+ * @param {HTMLTableElement} table
+ * @returns {boolean}
+ */
+export function hasMergedCells(table) {
+    const cells = table.querySelectorAll("th, td");
+    for (let i = 0; i < cells.length; i++) {
+        const colspan = parseInt(cells[i].getAttribute("colspan"), 10);
+        const rowspan = parseInt(cells[i].getAttribute("rowspan"), 10);
+        if ((colspan && colspan > 1) || (rowspan && rowspan > 1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Converts a table to CSV content.
  * @param {HTMLTableElement} table
  * @returns {string}
  */
 export function tableToCsv(table) {
     const rows = table.querySelectorAll("tr");
-    if (rows.length === 0) return "";
-
-    // Build a grid to handle colspan and rowspan
-    const grid = [];
-    for (let i = 0; i < rows.length; i++) {
-        if (!grid[i]) grid[i] = [];
-        const cells = rows[i].querySelectorAll("th, td");
-        let colIndex = 0;
-
-        for (let j = 0; j < cells.length; j++) {
-            // Find the next available column
-            while (grid[i][colIndex] !== undefined) colIndex++;
-
-            const cell = cells[j];
-            const text = getCellText(cell);
-            const colspan = parseInt(cell.getAttribute("colspan"), 10) || 1;
-            const rowspan = parseInt(cell.getAttribute("rowspan"), 10) || 1;
-
-            // Fill the grid for the colspan/rowspan area
-            for (let r = 0; r < rowspan; r++) {
-                for (let c = 0; c < colspan; c++) {
-                    if (!grid[i + r]) grid[i + r] = [];
-                    // Only the first cell gets the text; spanned cells are empty
-                    grid[i + r][colIndex + c] = (r === 0 && c === 0) ? text : "";
-                }
-            }
-            colIndex += colspan;
-        }
-    }
-
-    // Convert grid to CSV
     const csvRows = [];
-    for (let i = 0; i < grid.length; i++) {
-        const row = grid[i] || [];
-        const values = [];
-        for (let j = 0; j < row.length; j++) {
-            values.push(escapeCsvValue(row[j] !== undefined ? row[j] : ""));
+    for (let i = 0; i < rows.length; i++) {
+        const cells = rows[i].querySelectorAll("th, td");
+        const rowData = [];
+        for (let j = 0; j < cells.length; j++) {
+            rowData.push(escapeCsvValue(getCellText(cells[j])));
         }
-        csvRows.push(values.join(","));
+        csvRows.push(rowData.join(","));
     }
     return csvRows.join("\r\n");
 }
@@ -115,10 +101,7 @@ export function downloadCsv(csvContent, fileName) {
     const link = document.createElement("a");
     link.setAttribute("href", url);
     link.setAttribute("download", fileName + ".csv");
-    link.style.display = "none";
-    document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
     URL.revokeObjectURL(url);
 }
 
@@ -136,6 +119,9 @@ export function initTableCsvDownload() {
         // Skip tables already wrapped
         if (table.closest(".tpr-table-wrapper")) continue;
 
+        // Skip tables with merged cells — CSV cannot represent them reliably
+        if (hasMergedCells(table)) continue;
+
         const caption = table.querySelector("caption");
         const fileName = sanitizeFileName(caption ? (caption.innerText || caption.textContent) : null);
 
@@ -148,6 +134,7 @@ export function initTableCsvDownload() {
         button.type = "button";
         button.className = "govuk-button govuk-button--secondary";
         button.setAttribute("data-module", "govuk-button");
+        button.setAttribute("data-tpr-table-csv-filename", fileName);
         button.textContent = buttonText;
 
         button.addEventListener("click", () => {

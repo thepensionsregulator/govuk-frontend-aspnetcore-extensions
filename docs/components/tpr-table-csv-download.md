@@ -11,10 +11,7 @@ Set `EnableTableCsvDownload = true` on `TprFrontendOptions`:
 builder.Services.AddTprFrontend(options => { options.EnableTableCsvDownload = true; });
 
 // When using ThePensionsRegulator.Frontend.Umbraco
-builder.Services.AddTprFrontendUmbraco(
-    umbracoOptions => { umbracoOptions.RenderWidthContainerForBlocks = true; },
-    tprOptions => { tprOptions.EnableTableCsvDownload = true; }
-);
+builder.Services.AddTprFrontendUmbraco(tprOptions => { tprOptions.EnableTableCsvDownload = true; });
 ```
 
 When enabled, a `<script>` tag is added to the `TPR/BodyClosing` partial with `type="module"`.

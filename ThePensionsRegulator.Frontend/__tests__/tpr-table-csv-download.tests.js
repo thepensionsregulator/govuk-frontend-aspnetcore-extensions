@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { jest } from '@jest/globals';
-import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, tableToCsv, initTableCsvDownload, downloadCsv } from '../wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download';
+import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, hasMergedCells, tableToCsv, initTableCsvDownload, downloadCsv } from '../wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download';
 
 beforeEach(() => {
     document.body.innerHTML = "";
@@ -140,37 +140,6 @@ describe("tableToCsv", () => {
         expect(tableToCsv(table)).toBe("");
     });
 
-    test("handles colspan by filling empty cells", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <tr><td colspan="2">Merged</td><td>C</td></tr>
-                <tr><td>A</td><td>B</td><td>C</td></tr>
-            </table>`;
-        const table = document.querySelector("table");
-        expect(tableToCsv(table)).toBe("Merged,,C\r\nA,B,C");
-    });
-
-    test("handles rowspan by filling empty cells", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <tr><td rowspan="2">Merged</td><td>B1</td></tr>
-                <tr><td>B2</td></tr>
-            </table>`;
-        const table = document.querySelector("table");
-        expect(tableToCsv(table)).toBe("Merged,B1\r\n,B2");
-    });
-
-    test("handles both colspan and rowspan", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <tr><td colspan="2" rowspan="2">Merged</td><td>C1</td></tr>
-                <tr><td>C2</td></tr>
-                <tr><td>A</td><td>B</td><td>C</td></tr>
-            </table>`;
-        const table = document.querySelector("table");
-        expect(tableToCsv(table)).toBe("Merged,,C1\r\n,,C2\r\nA,B,C");
-    });
-
     test("escapes CSV special characters in cell values", () => {
         document.body.innerHTML = `
             <table class="govuk-table">
@@ -178,6 +147,41 @@ describe("tableToCsv", () => {
             </table>`;
         const table = document.querySelector("table");
         expect(tableToCsv(table)).toBe('"Hello, World",Normal');
+    });
+});
+
+describe("hasMergedCells", () => {
+    test("returns false for a table with no merged cells", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td>A</td><td>B</td></tr>
+            </table>`;
+        expect(hasMergedCells(document.querySelector("table"))).toBe(false);
+    });
+
+    test("returns true when a cell has colspan > 1", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td colspan="2">Merged</td></tr>
+            </table>`;
+        expect(hasMergedCells(document.querySelector("table"))).toBe(true);
+    });
+
+    test("returns true when a cell has rowspan > 1", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td rowspan="2">Merged</td><td>B1</td></tr>
+                <tr><td>B2</td></tr>
+            </table>`;
+        expect(hasMergedCells(document.querySelector("table"))).toBe(true);
+    });
+
+    test("returns false when colspan and rowspan are 1", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td colspan="1" rowspan="1">Cell</td></tr>
+            </table>`;
+        expect(hasMergedCells(document.querySelector("table"))).toBe(false);
     });
 });
 
@@ -247,9 +251,21 @@ describe("initTableCsvDownload", () => {
                 </table>
             </div>`;
         initTableCsvDownload();
-        // The file name is embedded in the click handler closure;
-        // verify the table was wrapped (file name tested via CSV download)
-        expect(document.querySelector(".tpr-table-wrapper")).toBeInTheDocument();
+        const button = document.querySelector("button");
+        expect(button).toHaveAttribute("data-tpr-table-csv-filename", "quarterly-results");
+    });
+
+    test("skips tables with merged cells", () => {
+        document.body.innerHTML = `
+            <div>
+                <table class="govuk-table">
+                    <tr><td colspan="2">Merged</td></tr>
+                    <tr><td>A</td><td>B</td></tr>
+                </table>
+            </div>`;
+        initTableCsvDownload();
+        expect(document.querySelector(".tpr-table-wrapper")).not.toBeInTheDocument();
+        expect(document.querySelector("button")).not.toBeInTheDocument();
     });
 
     test("handles multiple .govuk-table elements", () => {

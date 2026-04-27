@@ -32,11 +32,15 @@ export class GovUkButtonView extends UmbElementMixin(LitElement) implements UmbB
     override render() {
         let buttonClass = "";
         let blockViewClass = "";
-        if (this.settings?.styleOfButton.indexOf("Secondary") !== -1) { buttonClass += " govuk-button--secondary"; }
-        if (this.settings?.styleOfButton.indexOf("Warning") !== -1) { buttonClass += " govuk-button--warning"; }
-        if (this.settings?.styleOfButton.indexOf("Reversed") !== -1) {
-            buttonClass += " govuk-button--inverse";
-            blockViewClass = " backoffice-block-view-inverse";
+        const styleOfButton = this.settings?.styleOfButton ?? "";
+
+        if (styleOfButton !== "") {
+            if (styleOfButton.indexOf("Secondary") !== -1) { buttonClass += " govuk-button--secondary"; }
+            if (styleOfButton.indexOf("Warning") !== -1) { buttonClass += " govuk-button--warning"; }
+            if (styleOfButton.indexOf("Reversed") !== -1) {
+                buttonClass += " govuk-button--inverse";
+                blockViewClass = " backoffice-block-view-inverse";
+            }
         }
 
         return html`

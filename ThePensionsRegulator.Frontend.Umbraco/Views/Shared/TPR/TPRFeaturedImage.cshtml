@@ -1,4 +1,4 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, ThePensionsRegulator.Frontend
 @using System.Web;
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco;
@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.Html
 @using ThePensionsRegulator.Frontend.TagHelpers
 @using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco.Core
 @using ThePensionsRegulator.Umbraco.Core.Blocks
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common.PublishedModels

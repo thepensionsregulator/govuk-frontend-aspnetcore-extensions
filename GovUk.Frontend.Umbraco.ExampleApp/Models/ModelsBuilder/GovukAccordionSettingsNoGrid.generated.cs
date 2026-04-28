@@ -50,7 +50,15 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Heading level: Defaults to 2 if left blank.
+		/// Heading class: Defaults to "govuk-heading-m" if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("headingClass")]
+		public virtual string HeadingClass => global::Umbraco.Cms.Web.Common.PublishedModels.GovukAccordionSettingsShared.GetHeadingClass(this, _publishedValueFallback);
+
+		///<summary>
+		/// Heading level: Defaults to "Heading 2" if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

@@ -14,9 +14,9 @@
 
     addMaxLengthValidation(maxLength, errorMessage) {
         this.input.setAttribute("data-val", "true");
-        this.input.setAttribute("data-val-length-max", maxLength);
+        this.input.setAttribute("data-val-maxlength-max", maxLength);
         this.input.setAttribute("maxlength", maxLength);
-        this.input.setAttribute("data-val-length", errorMessage);
+        this.input.setAttribute("data-val-maxlength", errorMessage);
 
         return this;
     }

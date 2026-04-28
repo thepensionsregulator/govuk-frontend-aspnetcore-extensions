@@ -1,4 +1,6 @@
-﻿namespace ThePensionsRegulator.Frontend.Umbraco
+﻿using Umbraco.Cms.Core.Models;
+
+namespace ThePensionsRegulator.Frontend.Umbraco
 {
     public static class TprPropertyAliases
     {
@@ -19,7 +21,6 @@
         public const string CountryModelProperty = "countryModelProperty";
         public const string CountryErrorMessageRequired = "countryErrorMessageRequired";
         public const string CountryLabel = "countryLabel";
-        public const string CountyModelProperty = "countyModelProperty";
         public const string CountyErrorMessageMaxLength = "countyErrorMessageMaxLength";
         public const string CountyLabel = "countyLabel";
         public const string Image = "image";
@@ -28,6 +29,8 @@
         public const string RelatedLinksLinks = "links";
         public const string BoxStyle = "styleOfBox";
         public const string BoxBackgroundColour = "backgroundColour";
+        public const string BuildingLabel = "buildingLabel";
+        public const string BuildingErrorMessageMaxLength = "buildingErrorMessageMaxLength";
         public const string Document = "document";
         public const string DocumentDatePublished = "datePublished";
         public const string DocumentDescription = "description";
@@ -53,10 +56,18 @@
         public const string ImageDecorative = "decorativeImage";
         public const string ImageSize = "imageSize";
         public const string ImageSpaceAfter = "spaceAfter";
-        public const string PostcodeModelProperty = "postcodeModelProperty";
-        public const string PostcodeErrorMessageRequired = "postcodeErrorMessageRequired";
+        public const string InternationalCountyErrorMessageMaxLength = "internationalCountyErrorMessageMaxLength";
+        public const string InternationalCountyLabel = "internationalCountyLabel";
+        public const string InternationalCountyModelProperty = "internationalCountyModelProperty";
+        public const string InternationalPostcodeLabel = "internationalPostcodeLabel";
+        public const string InternationalPostcodeModelProperty = "internationalPostcodeModelProperty";
+        public const string InternationalPostcodeErrorMessageRequired = "internationalPostcodeErrorMessageRequired";
+        public const string InternationalPostcodeErrorMessageMaxLength = "internationalPostcodeErrorMessageMaxLength";
         public const string PostcodeErrorMessageMaxLength = "postcodeErrorMessageMaxLength";
+        public const string PostcodeErrorMessagePattern = "postcodeErrorMessagePattern";
+        public const string PostcodeErrorMessageRequired = "postcodeErrorMessageRequired";
         public const string PostcodeLabel = "postcodeLabel";
+        public const string PostcodeModelProperty = "postcodeModelProperty";
         public const string NavigationalLinksText = "text";
         public const string NavigationalLinksLabel = "label";
         public const string SearchResultsHeading = "heading";
@@ -72,6 +83,8 @@
         public const string SectionCardNameProperty = "titleFieldName";
         public const string SectionCardDescriptionProperty = "descriptionFieldName";
         public const string SectionCardDescriptionPropertyDefault = "description";
+        public const string SelectAddressErrorMessageRequired = "selectAddressErrorMessageRequired";
+        public const string SelectAddressLabel = "selectAddressLabel";
         public const string SideNavigationRoot = "navigationRoot";
         public const string SideNavigationBlacklistedPages = "blacklistedPages";
         public const string TownOrCityModelProperty = "townOrCityModelProperty";

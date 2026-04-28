@@ -26,78 +26,98 @@
 @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
 
 @{
-    var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+    string? content(string alias) => Model.Content.Value<string?>(alias);
+    string? settings(string alias) => Model.Settings.Value<string?>(alias);
+
+    var legend = content(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
     var hintText = Model.Content.Value<IHtmlEncodedString?>(PropertyAliases.Hint);
     var hintTextBlocks = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.AddressLookupFieldsetBlocks);
-    var addressLine1ModelProperty = Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty);
+    var addressLine1ModelProperty = settings(TprPropertyAliases.AddressLine1ModelProperty);
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hintText?.ToHtmlString()) ? null : $"{addressLine1ModelProperty}-hint";
-    var cssClasses = (" " + Model.Settings.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
+    var cssClasses = (" " + settings(PropertyAliases.CssClasses)).TrimEnd();
     if (hintTextBlocks is not null && hintTextBlocks.Any())
     {
         fieldsetDescribedBy = $"{addressLine1ModelProperty}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
     var isPrimary = Model.Settings.Value<bool>(TprPropertyAliases.AddressLookupIsPrimary);
     var role = isPrimary ? AddressLookupRole.Primary : AddressLookupRole.Secondary;
-    var checkboxLabel = Model.Content.Value<string?>(TprPropertyAliases.AddressLookupCheckboxLabel);
+    var checkboxLabel = content(TprPropertyAliases.AddressLookupCheckboxLabel);
 
     var addressLine1State = addressFieldStateHelper.GetFieldState(
-            Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ModelProperty),
-            Model.Content.Value<string?>(TprPropertyAliases.AddressLine1Label),
+            addressLine1ModelProperty,
+            content(TprPropertyAliases.AddressLine1Label),
             Umbraco.GetDictionaryValueOrDefault("TPR address lookup line 1 label", "Address line 1"),
             ViewContext.ModelState
         );
 
     var addressLine2State = addressFieldStateHelper.GetFieldState(
-            Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ModelProperty),
-            Model.Content.Value<string?>(TprPropertyAliases.AddressLine2Label),
+            settings(TprPropertyAliases.AddressLine2ModelProperty),
+            content(TprPropertyAliases.AddressLine2Label),
             Umbraco.GetDictionaryValueOrDefault("TPR address lookup line 2 label", "Address line 2 (optional)"),
             ViewContext.ModelState
         );
 
     var townOrCityState = addressFieldStateHelper.GetFieldState(
-            Model.Settings.Value<string>(TprPropertyAliases.TownOrCityModelProperty),
-            Model.Content.Value<string?>(TprPropertyAliases.TownOrCityLabel),
+            settings(TprPropertyAliases.TownOrCityModelProperty),
+            content(TprPropertyAliases.TownOrCityLabel),
             Umbraco.GetDictionaryValueOrDefault("TPR address lookup town or city label", "Town or city"),
             ViewContext.ModelState
         );
 
     var countyState = addressFieldStateHelper.GetFieldState(
-            Model.Settings.Value<string>(TprPropertyAliases.CountyModelProperty),
-            Model.Content.Value<string?>(TprPropertyAliases.CountyLabel),
-            Umbraco.GetDictionaryValueOrDefault("TPR address lookup county label", "County (optional)"),
+            settings(TprPropertyAliases.InternationalCountyModelProperty),
+            content(TprPropertyAliases.InternationalCountyLabel),
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup international county label", "Province/region/state (optional)"),
             ViewContext.ModelState
         );
 
     var postcodeState = addressFieldStateHelper.GetFieldState(
-            Model.Settings.Value<string>(TprPropertyAliases.PostcodeModelProperty),
-            Model.Content.Value<string?>(TprPropertyAliases.PostcodeLabel),
-            Umbraco.GetDictionaryValueOrDefault("TPR address lookup postcode label", "Postcode"),
+            settings(TprPropertyAliases.InternationalPostcodeModelProperty),
+            content(TprPropertyAliases.InternationalPostcodeLabel),
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup international postcode label", "Postal code/ zip code"),
             ViewContext.ModelState
         );
 
     var countryState = addressFieldStateHelper.GetFieldState(
-            Model.Settings.Value<string>(TprPropertyAliases.CountryModelProperty),
-            Model.Content.Value<string?>(TprPropertyAliases.CountryLabel),
+            settings(TprPropertyAliases.CountryModelProperty),
+            content(TprPropertyAliases.CountryLabel),
             Umbraco.GetDictionaryValueOrDefault("TPR address lookup country label", "Country"),
             ViewContext.ModelState
         );
 
     var countryCodeState = addressFieldStateHelper.GetFieldState(
-            Model.Settings.Value<string>(TprPropertyAliases.CountryCodeModelProperty),
+            settings(TprPropertyAliases.CountryCodeModelProperty),
             string.Empty,
             string.Empty,
             ViewContext.ModelState
         );
 
     var uprnState = addressFieldStateHelper.GetFieldState(
-        Model.Settings.Value<string>(TprPropertyAliases.UprnModelProperty),
+        settings(TprPropertyAliases.UprnModelProperty),
         string.Empty,
         string.Empty,
         ViewContext.ModelState
         );
 }
 
-<tpr-address-lookup class="@cssClasses" described-by="@fieldsetDescribedBy" same-as-primary-checkbox-label="@checkboxLabel" role="@role" data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()" data-address-lookup-id-url="@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()">
+<tpr-address-lookup 
+    class="@cssClasses" 
+    described-by="@fieldsetDescribedBy" 
+    same-as-primary-checkbox-label="@checkboxLabel" 
+    role="@role" data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()" 
+    data-address-lookup-id-url="@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()"
+    data-address-lookup-postcode-label="@content(TprPropertyAliases.PostcodeLabel)"
+    data-address-lookup-postcode-required="@settings(TprPropertyAliases.PostcodeErrorMessageRequired)"
+    data-address-lookup-postcode-maxlength="@settings(TprPropertyAliases.PostcodeErrorMessageMaxLength)"
+    data-address-lookup-postcode-pattern="@settings(TprPropertyAliases.PostcodeErrorMessagePattern)"
+    data-address-lookup-county-label="@content(TprPropertyAliases.CountyLabel)"
+    data-address-lookup-county-maxlength="@settings(TprPropertyAliases.CountyErrorMessageMaxLength)"
+    data-address-lookup-building-label="@content(TprPropertyAliases.BuildingLabel)"
+    data-address-lookup-building-maxlength="@settings(TprPropertyAliases.BuildingErrorMessageMaxLength)"
+    data-address-lookup-select-address-label="@content(TprPropertyAliases.SelectAddressLabel)"
+    data-address-lookup-select-address-required="@settings(TprPropertyAliases.SelectAddressErrorMessageRequired)">
+    
+    
     <tpr-address-lookup-legend>@legend</tpr-address-lookup-legend>
 
     @if (hintTextBlocks is not null && hintTextBlocks.Any())
@@ -117,8 +137,8 @@
     }
 
     <govuk-client-side-validation 
-        error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ErrorMessageRequired))"
-        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine1ErrorMessageMaxLength))">
+        error-message-required="@settings(TprPropertyAliases.AddressLine1ErrorMessageRequired)"
+        error-message-maxlength="@settings(TprPropertyAliases.AddressLine1ErrorMessageMaxLength)">
         <govuk-input name="@addressLine1State.ModelPropertyName" value="@addressLine1State.AttemptedValue" input-aria-invalid="@addressLine1State.InvalidAriaLabel" autocomplete="address-line1" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "address-line-1" }})">
             <govuk-input-label>@addressLine1State.Label</govuk-input-label>
             @if (addressLine1State.HasErrorMessage)
@@ -129,7 +149,7 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation 
-        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.AddressLine2ErrorMessageMaxLength))">
+        error-message-maxlength="@settings(TprPropertyAliases.AddressLine2ErrorMessageMaxLength)">
         <govuk-input name="@addressLine2State.ModelPropertyName" value="@addressLine2State.AttemptedValue" input-aria-invalid="@addressLine2State.InvalidAriaLabel" autocomplete="address-line2" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "address-line-2" }})">
             <govuk-input-label>@addressLine2State.Label</govuk-input-label>
             @if (addressLine2State.HasErrorMessage)
@@ -140,8 +160,8 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation 
-        error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.TownOrCityErrorMessageRequired))"
-        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.TownOrCityErrorMessageMaxLength))">
+        error-message-required="@settings(TprPropertyAliases.TownOrCityErrorMessageRequired)"
+        error-message-maxlength="@settings(TprPropertyAliases.TownOrCityErrorMessageMaxLength)">
         <govuk-input name="@townOrCityState.ModelPropertyName" input-class="govuk-input--width-20" value="@townOrCityState.AttemptedValue" input-aria-invalid="@townOrCityState.InvalidAriaLabel" autocomplete="address-level2" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "town-or-city" }})">
             <govuk-input-label>@townOrCityState.Label</govuk-input-label>
             @if (townOrCityState.HasErrorMessage)
@@ -152,7 +172,7 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation 
-        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.CountyErrorMessageMaxLength))">
+        error-message-maxlength="@settings(TprPropertyAliases.InternationalCountyErrorMessageMaxLength)">
         <govuk-input name="@countyState.ModelPropertyName" input-class="govuk-input--width-20" value="@countyState.AttemptedValue" input-aria-invalid="@countyState.InvalidAriaLabel" autocomplete="address-level3" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "region-international" }})">
             <govuk-input-label>@countyState.Label</govuk-input-label>
             @if (countyState.HasErrorMessage)
@@ -163,7 +183,7 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation 
-        error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.CountryErrorMessageRequired))">
+        error-message-required="@settings(TprPropertyAliases.CountryErrorMessageRequired)">
         <govuk-select name="@countryState.ModelPropertyName" input-class="govuk-input--width-20" select-aria-invalid="@countryState.InvalidAriaLabel" select-autocomplete="country" select-data-address-lookup="country">
             <govuk-select-label>@countryState.Label</govuk-select-label>
             @if (countryState.HasErrorMessage)
@@ -183,10 +203,10 @@
         </govuk-select>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation 
-        error-message-required="@(Model.Settings.Value<string>(TprPropertyAliases.PostcodeErrorMessageRequired))"
-        error-message-maxlength="@(Model.Settings.Value<string>(TprPropertyAliases.PostcodeErrorMessageMaxLength))">
-        <govuk-input name="@postcodeState.ModelPropertyName" input-class="govuk-input--width-10" value="@postcodeState.AttemptedValue" input-aria-invalid="@postcodeState.InvalidAriaLabel" autocomplete="postal-code" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "postcode" }})">
+    <govuk-client-side-validation
+        error-message-required="@settings(TprPropertyAliases.InternationalPostcodeErrorMessageRequired)"
+        error-message-maxlength="@settings(TprPropertyAliases.InternationalPostcodeErrorMessageMaxLength)"> 
+        <govuk-input name="@postcodeState.ModelPropertyName" input-class="govuk-input--width-10" value="@postcodeState.AttemptedValue" input-aria-invalid="@postcodeState.InvalidAriaLabel" autocomplete="postal-code" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "postcode-international" }})">
             <govuk-input-label>@postcodeState.Label</govuk-input-label>
             @if (postcodeState.HasErrorMessage)
             {

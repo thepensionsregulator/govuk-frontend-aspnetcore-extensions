@@ -74,6 +74,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string AddressLookupCheckboxLabel => this.Value<string>(_publishedValueFallback, "addressLookupCheckboxLabel");
 
 		///<summary>
+		/// Building label: Defaults to 'Building or house number (optional)' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("buildingLabel")]
+		public virtual string BuildingLabel => this.Value<string>(_publishedValueFallback, "buildingLabel");
+
+		///<summary>
 		/// Country label: Defaults to 'Country' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
@@ -106,6 +114,22 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString Hint => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "hint");
 
 		///<summary>
+		/// International county label: Defaults to 'Province/region/state (optional)' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("internationalLabel")]
+		public virtual string InternationalLabel => this.Value<string>(_publishedValueFallback, "internationalLabel");
+
+		///<summary>
+		/// International postcode label: Defaults to 'Postal code/ zip code' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("internationalPostcodeLabel")]
+		public virtual string InternationalPostcodeLabel => this.Value<string>(_publishedValueFallback, "internationalPostcodeLabel");
+
+		///<summary>
 		/// Legend: Use {{name}} to include the page name.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
@@ -120,6 +144,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("postcodeLabel")]
 		public virtual string PostcodeLabel => this.Value<string>(_publishedValueFallback, "postcodeLabel");
+
+		///<summary>
+		/// Select address label: Defaults to 'Select address' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("selectAddressLabel")]
+		public virtual string SelectAddressLabel => this.Value<string>(_publishedValueFallback, "selectAddressLabel");
 
 		///<summary>
 		/// Town or city label: Defaults to 'Town or city' if left blank.

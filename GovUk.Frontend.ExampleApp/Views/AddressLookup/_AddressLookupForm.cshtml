@@ -67,7 +67,7 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="Select a country">
-        <govuk-select for="ShippingCountry" input-class="govuk-input--width-20" select-autocomplete="country"
+        <govuk-select for="ShippingCountry" select-class="govuk-input--width-20" select-autocomplete="country"
                      select-data-address-lookup="country">
             <govuk-select-label>Country</govuk-select-label>
             @if (ViewContext.ModelState.ContainsKey("ShippingCountry") && ViewContext.ModelState["ShippingCountry"]!.Errors.Count > 0)
@@ -89,7 +89,7 @@
 
     <govuk-client-side-validation error-message-required="Enter a postal code or zip code"
                                   error-message-maxlength="Postal code or zip code must be 20 characters or less">
-        <govuk-input for="ShippingPostcode" input-class="govuk-input--width-10" autocomplete="postal-code"
+        <govuk-input for="ShippingPostcode" class="govuk-input--width-10" autocomplete="postal-code"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "postcode-international"}})">
             <govuk-input-label>Postal code/ zip code</govuk-input-label>
             @if (ViewContext.ModelState.ContainsKey("ShippingPostcode") && ViewContext.ModelState["ShippingPostcode"]!.Errors.Count > 0)
@@ -170,7 +170,7 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="Select a country">
-        <govuk-select for="BillingCountry" input-class="govuk-input--width-20" select-autocomplete="country"
+        <govuk-select for="BillingCountry" select-class="govuk-input--width-20" select-autocomplete="country"
                       select-data-address-lookup="country">
             <govuk-select-label>Country</govuk-select-label>
             @if (ViewContext.ModelState.ContainsKey("BillingCountry") && ViewContext.ModelState["BillingCountry"]!.Errors.Count > 0)
@@ -192,7 +192,7 @@
 
     <govuk-client-side-validation error-message-required="Enter a postal code or zip code"
                                   error-message-maxlength="Postal code or zip code must be 20 characters or less">
-        <govuk-input for="BillingPostcode" input-class="govuk-input--width-10" autocomplete="postal-code"
+        <govuk-input for="BillingPostcode" class="govuk-input--width-10" autocomplete="postal-code"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "postcode-international"}})">
             <govuk-input-label>Postal code/ zip code</govuk-input-label>
             @if (ViewContext.ModelState.ContainsKey("BillingPostcode") && ViewContext.ModelState["BillingPostcode"]!.Errors.Count > 0)

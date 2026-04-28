@@ -145,7 +145,7 @@
         },
         "postcode": {
             label: "Postcode",
-            width: "x-large",
+            width: "large",
             validation: {
                 required: { message: "Enter a postcode" },
                 maxLength: { value: 20, message: "Postcode must be 20 characters or less" },

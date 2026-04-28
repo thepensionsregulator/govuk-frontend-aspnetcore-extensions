@@ -43,12 +43,12 @@
 
 .govuk-task-list__status--not-started > .govuk-tag {
     color: $tpr-colour-white;
-    background-color: $tpr-colour-violet-tint-20;
+    background-color: $tpr-colour-violet-tint-80;
 }
 
 .govuk-task-list__status--incomplete > .govuk-tag {
-    color: $tpr-colour-violet-shade-16;
-    background-color: $tpr-colour-violet-tint-75;
+    color: $tpr-colour-violet-shade-20;
+    background-color: $tpr-colour-violet-tint-25;
 }
 
 .govuk-task-list__status--completed > .govuk-tag {
@@ -57,6 +57,6 @@
 }
 
 .govuk-task-list__status--error > .govuk-tag {
-    color: $tpr-colour-fire-brick-shade-30;
-    background-color: $tpr-colour-fire-brick-tint-75;
+    color: $tpr-colour-fire-brick-shade-35;
+    background-color: $tpr-colour-fire-brick-tint-25;
 }

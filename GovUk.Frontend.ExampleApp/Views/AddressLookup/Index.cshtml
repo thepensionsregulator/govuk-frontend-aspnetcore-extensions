@@ -48,6 +48,54 @@
         </p>
 
         <h2 class="govuk-heading-m">
+            Customising labels and error messages
+        </h2>
+
+        <p class="govuk-body">
+            Labels and validation error messages can be customised in three ways, listed here in priority order:
+        </p>
+
+        <ol class="govuk-list govuk-list--number">
+            <li>
+                <strong>Server-rendered inputs</strong> &ndash; The component captures the label text, required message, max length,
+                and pattern message from any <code>&lt;input&gt;</code> or <code>&lt;select&gt;</code> elements rendered inside the
+                <code>&lt;tpr-address-lookup&gt;</code> element. These are used when JavaScript rebuilds the component.
+            </li>
+            <li>
+                <strong><code>data-*</code> attributes on the container</strong> &ndash; For fields that only exist in JavaScript
+                (building name, UK postcode for the search view, county, and select address), you can set <code>data-address-lookup-{field}-{property}</code>
+                attributes on the <code>&lt;tpr-address-lookup&gt;</code> element. For example,
+                <code>data-address-lookup-postcode-label</code> or <code>data-address-lookup-building-maxlength</code>.
+            </li>
+            <li>
+                <strong>Built-in defaults</strong> &ndash; If no value is provided by either of the above methods, the component
+                falls back to default values defined in <code>config.js</code>.
+            </li>
+        </ol>
+
+        <p class="govuk-body">
+            The available <code>data-*</code> attributes for JavaScript-only fields are:
+        </p>
+
+        <govuk-details>
+            <govuk-details-summary>data-* attributes for JavaScript-only fields</govuk-details-summary>
+            <govuk-details-text>
+                <ul class="govuk-list govuk-list--bullet">
+                    <li><code>data-address-lookup-postcode-label</code></li>
+                    <li><code>data-address-lookup-postcode-required</code></li>
+                    <li><code>data-address-lookup-postcode-maxlength</code></li>
+                    <li><code>data-address-lookup-postcode-pattern</code></li>
+                    <li><code>data-address-lookup-building-label</code></li>
+                    <li><code>data-address-lookup-building-maxlength</code></li>
+                    <li><code>data-address-lookup-county-label</code></li>
+                    <li><code>data-address-lookup-county-maxlength</code></li>
+                    <li><code>data-address-lookup-select-address-label</code></li>
+                    <li><code>data-address-lookup-select-address-required</code></li>
+                </ul>
+            </govuk-details-text>
+        </govuk-details>
+
+        <h2 class="govuk-heading-m">
             Primary and secondary address lookup components
         </h2>
 

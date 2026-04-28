@@ -1,5 +1,4 @@
-﻿@using System.Text.Json
-@model AddressLookupViewModel
+﻿@model AddressLookupViewModel
 @inject ITprAddressLookupEndpointUrlProvider urlProvider
 @inject ITprCountryRepository countryRepository
 
@@ -8,14 +7,24 @@
 
 <tpr-address-lookup role="Primary"
                     data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
-                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()">
+                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
+                    data-address-lookup-postcode-label="Postcode"
+                    data-address-lookup-postcode-required="Enter a postcode"
+                    data-address-lookup-postcode-maxlength="Postcode must be 20 characters or less"
+                    data-address-lookup-postcode-pattern="Enter a valid UK postcode"
+                    data-address-lookup-county-label="County (optional)"
+                    data-address-lookup-county-maxlength="County must be 100 characters or less"
+                    data-address-lookup-building-label="Building or house number (optional)"
+                    data-address-lookup-building-maxlength="Building or house number must be 100 characters or less"
+                    data-address-lookup-select-address-label="Select address"
+                    data-address-lookup-select-address-required="Select an address">
     <tpr-address-lookup-legend>Shipping address</tpr-address-lookup-legend>
 
-    <govuk-client-side-validation error-message-required="This field is required CHANGED"
-                                  error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-required="Enter address line 1"
+                                  error-message-maxlength="Address line 1 must be 200 characters or less">
         <govuk-input for="ShippingAddressLine1" autocomplete="address-line1"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-1"}})">
-            <govuk-input-label>Address line 1 TEST</govuk-input-label>
+            <govuk-input-label>Address line 1</govuk-input-label>
             @if (ViewContext.ModelState.ContainsKey("ShippingAddressLine1") && ViewContext.ModelState["ShippingAddressLine1"]!.Errors.Count > 0)
             {
                 <govuk-input-error-message>@ViewContext.ModelState["ShippingAddressLine1"]!.Errors[0].ErrorMessage</govuk-input-error-message>
@@ -23,10 +32,10 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-maxlength="Address line 2 must be 200 characters or less">
         <govuk-input for="ShippingAddressLine2" autocomplete="address-line2"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-2"}})">
-            <govuk-input-label>Address line 2 (optional) TEST</govuk-input-label>
+            <govuk-input-label>Address line 2 (optional)</govuk-input-label>
             @if (ViewContext.ModelState.ContainsKey("ShippingAddressLine2") && ViewContext.ModelState["ShippingAddressLine2"]!.Errors.Count > 0)
             {
                 <govuk-input-error-message>@ViewContext.ModelState["ShippingAddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
@@ -34,11 +43,11 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-required="This field is required"
-                                  error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-required="Enter a town or city"
+                                  error-message-maxlength="Town or city must be 100 characters or less">
         <govuk-input for="ShippingTownOrCity" input-class="govuk-input--width-20" autocomplete="address-level2"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "town-or-city"}})">
-            <govuk-input-label>Town or city TEST</govuk-input-label>
+            <govuk-input-label>Town or city</govuk-input-label>
             @if (ViewContext.ModelState.ContainsKey("ShippingTownOrCity") && ViewContext.ModelState["ShippingTownOrCity"]!.Errors.Count > 0)
             {
                 <govuk-input-error-message>@ViewContext.ModelState["ShippingTownOrCity"]!.Errors[0].ErrorMessage</govuk-input-error-message>
@@ -46,10 +55,10 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-maxlength="Province, region or state must be 100 characters or less">
         <govuk-input for="ShippingCounty" input-class="govuk-input--width-20" autocomplete="address-level3"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "region-international"}})">
-            <govuk-input-label>Province/ region/ state (optional) TEST</govuk-input-label>
+            <govuk-input-label>Province/ region/ state (optional)</govuk-input-label>
             @if (ViewContext.ModelState.ContainsKey("ShippingCounty") && ViewContext.ModelState["ShippingCounty"]!.Errors.Count > 0)
             {
                 <govuk-input-error-message>@ViewContext.ModelState["ShippingCounty"]!.Errors[0].ErrorMessage</govuk-input-error-message>
@@ -57,10 +66,10 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-required="This field is required">
+    <govuk-client-side-validation error-message-required="Select a country">
         <govuk-select for="ShippingCountry" input-class="govuk-input--width-20" select-autocomplete="country"
                      select-data-address-lookup="country">
-            <govuk-select-label>Country TEST</govuk-select-label>
+            <govuk-select-label>Country</govuk-select-label>
             @if (ViewContext.ModelState.ContainsKey("ShippingCountry") && ViewContext.ModelState["ShippingCountry"]!.Errors.Count > 0)
             {
                 <govuk-select-error-message>@ViewContext.ModelState["ShippingCountry"]!.Errors[0].ErrorMessage</govuk-select-error-message>
@@ -78,11 +87,11 @@
         </govuk-select>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-required="This field is required"
-                                  error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-required="Enter a postal code or zip code"
+                                  error-message-maxlength="Postal code or zip code must be 20 characters or less">
         <govuk-input for="ShippingPostcode" input-class="govuk-input--width-10" autocomplete="postal-code"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "postcode"}})">
-            <govuk-input-label>Postcode TEST</govuk-input-label>
+                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "postcode-international"}})">
+            <govuk-input-label>Postal code/ zip code</govuk-input-label>
             @if (ViewContext.ModelState.ContainsKey("ShippingPostcode") && ViewContext.ModelState["ShippingPostcode"]!.Errors.Count > 0)
             {
                 <govuk-input-error-message>@ViewContext.ModelState["ShippingPostcode"]!.Errors[0].ErrorMessage</govuk-input-error-message>
@@ -101,12 +110,21 @@
                     same-as-primary-checkbox-label="Same as shipping address"
                     data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
                     data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
-                    data-address-lookup-countries="@JsonSerializer.Serialize(countryRepository.GetCountries())">
-    
+                    data-address-lookup-postcode-label="Postcode"
+                    data-address-lookup-postcode-required="Enter a postcode"
+                    data-address-lookup-postcode-maxlength="Postcode must be 20 characters or less"
+                    data-address-lookup-postcode-pattern="Enter a valid UK postcode"
+                    data-address-lookup-county-label="County (optional)"
+                    data-address-lookup-county-maxlength="County must be 100 characters or less"
+                    data-address-lookup-building-label="Building or house number (optional)"
+                    data-address-lookup-building-maxlength="Building or house number must be 100 characters or less"
+                    data-address-lookup-select-address-label="Select address"
+                    data-address-lookup-select-address-required="Select an address">
+
     <tpr-address-lookup-legend>Billing address</tpr-address-lookup-legend>
 
-    <govuk-client-side-validation error-message-required="This field is required"
-                                  error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-required="Enter address line 1"
+                                  error-message-maxlength="Address line 1 must be 200 characters or less">
         <govuk-input for="BillingAddressLine1" autocomplete="address-line1"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-1"}})">
             <govuk-input-label>Address line 1</govuk-input-label>
@@ -117,7 +135,7 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-maxlength="Address line 2 must be 200 characters or less">
         <govuk-input for="BillingAddressLine2" autocomplete="address-line2"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-2"}})">
             <govuk-input-label>Address line 2 (optional)</govuk-input-label>
@@ -128,8 +146,8 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-required="This field is required"
-                                  error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-required="Enter a town or city"
+                                  error-message-maxlength="Town or city must be 100 characters or less">
         <govuk-input for="BillingTownOrCity" input-class="govuk-input--width-20" autocomplete="address-level2"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "town-or-city"}})">
             <govuk-input-label>Town or city</govuk-input-label>
@@ -140,10 +158,10 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-maxlength="Province, region or state must be 100 characters or less">
         <govuk-input for="BillingCounty" input-class="govuk-input--width-20" autocomplete="address-level3"
                      input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "region-international"}})">
-            <govuk-input-label>Province/ region/ state (optional) TEST</govuk-input-label>
+            <govuk-input-label>Province/ region/ state (optional)</govuk-input-label>
             @if (ViewContext.ModelState.ContainsKey("BillingCounty") && ViewContext.ModelState["BillingCounty"]!.Errors.Count > 0)
             {
                 <govuk-input-error-message>@ViewContext.ModelState["BillingCounty"]!.Errors[0].ErrorMessage</govuk-input-error-message>
@@ -151,7 +169,7 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-required="This field is required">
+    <govuk-client-side-validation error-message-required="Select a country">
         <govuk-select for="BillingCountry" input-class="govuk-input--width-20" select-autocomplete="country"
                       select-data-address-lookup="country">
             <govuk-select-label>Country</govuk-select-label>
@@ -172,11 +190,11 @@
         </govuk-select>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-required="This field is required"
-                                  error-message-maxlength="Cannot exceed the maximum length">
+    <govuk-client-side-validation error-message-required="Enter a postal code or zip code"
+                                  error-message-maxlength="Postal code or zip code must be 20 characters or less">
         <govuk-input for="BillingPostcode" input-class="govuk-input--width-10" autocomplete="postal-code"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "postcode"}})">
-            <govuk-input-label>Postcode</govuk-input-label>
+                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "postcode-international"}})">
+            <govuk-input-label>Postal code/ zip code</govuk-input-label>
             @if (ViewContext.ModelState.ContainsKey("BillingPostcode") && ViewContext.ModelState["BillingPostcode"]!.Errors.Count > 0)
             {
                 <govuk-input-error-message>@ViewContext.ModelState["BillingPostcode"]!.Errors[0].ErrorMessage</govuk-input-error-message>

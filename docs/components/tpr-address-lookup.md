@@ -15,59 +15,96 @@ Without JavaScript, the original address input fields remain visible and usable.
 <form method="post" novalidate>
     <tpr-address-lookup role="Primary"
                         data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
-                        data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()">
+                        data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
+                        data-address-lookup-postcode-label="Postcode"
+                        data-address-lookup-postcode-required="Enter a postcode"
+                        data-address-lookup-postcode-maxlength="Postcode must be 20 characters or less"
+                        data-address-lookup-postcode-pattern="Enter a valid UK postcode"
+                        data-address-lookup-county-label="County (optional)"
+                        data-address-lookup-county-maxlength="County must be 100 characters or less"
+                        data-address-lookup-building-label="Building or house number (optional)"
+                        data-address-lookup-building-maxlength="Building or house number must be 100 characters or less"
+                        data-address-lookup-select-address-label="Select address"
+                        data-address-lookup-select-address-required="Select an address">
         <tpr-address-lookup-legend>Enter your address</tpr-address-lookup-legend>
         <tpr-address-lookup-hint id="address-lookup-hint">This should be your primary address</tpr-address-lookup-hint>
-        <govuk-client-side-validation error-message-required="This field is required"
-                                      error-message-maxlength="Cannot exceed the maximum length">
+
+        <govuk-client-side-validation error-message-required="Enter address line 1"
+                                      error-message-maxlength="Address line 1 must be 200 characters or less">
             <govuk-input for="AddressLine1" autocomplete="address-line1"
                          input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-1"}})'>
                 <govuk-input-label>Address line 1</govuk-input-label>
+                @if (ViewContext.ModelState.ContainsKey("AddressLine1") && ViewContext.ModelState["AddressLine1"]!.Errors.Count > 0)
+                {
+                    <govuk-input-error-message>@ViewContext.ModelState["AddressLine1"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                }
             </govuk-input>
         </govuk-client-side-validation>
 
-        <govuk-client-side-validation error-message-maxlength="Cannot exceed the maximum length">
+        <govuk-client-side-validation error-message-maxlength="Address line 2 must be 200 characters or less">
             <govuk-input for="AddressLine2" autocomplete="address-line2"
                          input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-2"}})'>
                 <govuk-input-label>Address line 2 (optional)</govuk-input-label>
+                @if (ViewContext.ModelState.ContainsKey("AddressLine2") && ViewContext.ModelState["AddressLine2"]!.Errors.Count > 0)
+                {
+                    <govuk-input-error-message>@ViewContext.ModelState["AddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                }
             </govuk-input>
         </govuk-client-side-validation>
 
-        <govuk-client-side-validation error-message-required="This field is required"
-                                      error-message-maxlength="Cannot exceed the maximum length">
+        <govuk-client-side-validation error-message-required="Enter a town or city"
+                                      error-message-maxlength="Town or city must be 100 characters or less">
             <govuk-input for="TownOrCity" input-class="govuk-input--width-20" autocomplete="address-level2"
                          input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "town-or-city"}})'>
                 <govuk-input-label>Town or city</govuk-input-label>
+                @if (ViewContext.ModelState.ContainsKey("TownOrCity") && ViewContext.ModelState["TownOrCity"]!.Errors.Count > 0)
+                {
+                    <govuk-input-error-message>@ViewContext.ModelState["TownOrCity"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                }
             </govuk-input>
         </govuk-client-side-validation>
 
-        <govuk-client-side-validation error-message-maxlength="Cannot exceed the maximum length">
+        <govuk-client-side-validation error-message-maxlength="Province, region or state must be 100 characters or less">
             <govuk-input for="County" input-class="govuk-input--width-20" autocomplete="address-level3"
                          input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "region-international"}})'>
                 <govuk-input-label>Province/ region/ state (optional)</govuk-input-label>
+                @if (ViewContext.ModelState.ContainsKey("County") && ViewContext.ModelState["County"]!.Errors.Count > 0)
+                {
+                    <govuk-input-error-message>@ViewContext.ModelState["County"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                }
             </govuk-input>
         </govuk-client-side-validation>
 
-        <govuk-client-side-validation error-message-required="This field is required">
+        <govuk-client-side-validation error-message-required="Select a country">
             <govuk-select for="Country" input-class="govuk-input--width-20" select-autocomplete="country"
                          select-data-address-lookup="country">
                 <govuk-select-label>Country</govuk-select-label>
+                @if (ViewContext.ModelState.ContainsKey("Country") && ViewContext.ModelState["Country"]!.Errors.Count > 0)
+                {
+                    <govuk-select-error-message>@ViewContext.ModelState["Country"]!.Errors[0].ErrorMessage</govuk-select-error-message>
+                }
                 @{
                     var countries = countryRepository.GetCountries();
-                    <govuk-select-item selected="true"></govuk-select-item>
+                    var selectEmpty = !countries.ContainsKey(ViewContext.ModelState["Country"]?.AttemptedValue?.ToString() ?? string.Empty);
+                    <govuk-select-item selected="@(selectEmpty)"></govuk-select-item>
                     foreach (var country in countries)
                     {
-                        <govuk-select-item value="@country.Value">@country.Key</govuk-select-item>
+                        var selected = country.Key.ToString() == ViewContext.ModelState["Country"]?.AttemptedValue;
+                        <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                     }
                 }
             </govuk-select>
         </govuk-client-side-validation>
 
-        <govuk-client-side-validation error-message-required="This field is required"
-                                      error-message-maxlength="Cannot exceed the maximum length">
+        <govuk-client-side-validation error-message-required="Enter a postal code or zip code"
+                                      error-message-maxlength="Postal code or zip code must be 20 characters or less">
             <govuk-input for="Postcode" input-class="govuk-input--width-10" autocomplete="postal-code"
-                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "postcode"}})'>
-                <govuk-input-label>Postcode</govuk-input-label>
+                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "postcode-international"}})'>
+                <govuk-input-label>Postal code/ zip code</govuk-input-label>
+                @if (ViewContext.ModelState.ContainsKey("Postcode") && ViewContext.ModelState["Postcode"]!.Errors.Count > 0)
+                {
+                    <govuk-input-error-message>@ViewContext.ModelState["Postcode"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                }
             </govuk-input>
         </govuk-client-side-validation>
 
@@ -134,16 +171,45 @@ Must be a direct child of `<tpr-address-lookup>`. Only one hint is permitted.
 
 Each `<input>` inside the component must have a `data-address-lookup` attribute set to one of the following values so the JavaScript can capture and restore field values across state transitions:
 
-| `data-address-lookup` value | Description                               |
-| --------------------------- | ----------------------------------------- |
-| `address-line-1`            | Address line 1                            |
-| `address-line-2`            | Address line 2                            |
-| `town-or-city`              | Town or city                              |
-| `county`                    | County                                    |
-| `country`                   | Country                                   |
-| `postcode`                  | Postcode                                  |
-| `UPRN`                      | Unique Property Reference Number (hidden) |
-| `country-code`              | Country code (hidden)                     |
+| `data-address-lookup` value | Description                                                |
+| --------------------------- | ---------------------------------------------------------- |
+| `address-line-1`            | Address line 1                                             |
+| `address-line-2`            | Address line 2                                             |
+| `town-or-city`              | Town or city                                               |
+| `county`                    | County (UK addresses)                                      |
+| `region-international`      | Province, region, or state (international addresses)       |
+| `country`                   | Country                                                    |
+| `postcode`                  | Postcode (UK addresses)                                    |
+| `postcode-international`    | Postal code or zip code (international addresses)          |
+| `UPRN`                      | Unique Property Reference Number (hidden)                  |
+| `country-code`              | Country code (hidden)                                      |
+
+## Customising labels and error messages
+
+Labels and validation error messages can be customised in three ways, listed here in priority order:
+
+1. **Server-rendered inputs** — The component captures the label text, required message, max length, and pattern message from any `<input>` or `<select>` elements rendered inside the `<tpr-address-lookup>` element. These are used when JavaScript rebuilds the component.
+
+2. **`data-*` attributes on the container** — For fields that only exist in JavaScript (building name, UK postcode for the search view, county, and select address), you can set `data-address-lookup-{field}-{property}` attributes on the `<tpr-address-lookup>` element. For example, `data-address-lookup-postcode-label` or `data-address-lookup-building-maxlength`.
+
+3. **Built-in defaults** — If no value is provided by either of the above methods, the component falls back to default values defined in `config.js`.
+
+### `data-*` attributes for JavaScript-only fields
+
+The following `data-*` attributes can be set on the `<tpr-address-lookup>` element to customise fields that are created by JavaScript and do not have server-rendered inputs:
+
+| Attribute                                     | Description                                         |
+| --------------------------------------------- | --------------------------------------------------- |
+| `data-address-lookup-postcode-label`          | Label for the postcode field in the search view.    |
+| `data-address-lookup-postcode-required`       | Error message when the postcode is missing.         |
+| `data-address-lookup-postcode-maxlength`      | Error message when the postcode exceeds max length. |
+| `data-address-lookup-postcode-pattern`        | Error message when the postcode format is invalid.  |
+| `data-address-lookup-building-label`          | Label for the building name/number field.           |
+| `data-address-lookup-building-maxlength`      | Error message when building name exceeds max length.|
+| `data-address-lookup-county-label`            | Label for the county field.                         |
+| `data-address-lookup-county-maxlength`        | Error message when county exceeds max length.       |
+| `data-address-lookup-select-address-label`    | Label for the address select dropdown.              |
+| `data-address-lookup-select-address-required` | Error message when no address is selected.          |
 
 ## View model
 

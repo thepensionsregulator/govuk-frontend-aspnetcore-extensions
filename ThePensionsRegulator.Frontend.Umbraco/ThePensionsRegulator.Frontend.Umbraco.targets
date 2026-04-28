@@ -16,9 +16,6 @@
 		-->
 		<Message Text="ThePensionsRegulator.Frontend.Umbraco not copying uSync and backoffice CSS files because the target project is not a web project." Condition="$(TprFrontendUmbraco_TargetProjectIsWebProject) != true" Importance="high" />
 		<CallTarget Targets="TprFrontendUmbraco_CopyFiles" Condition="$(TprFrontendUmbraco_TargetProjectIsWebProject) == true" />
-
-		<!-- Always clean up obsolete files from previous versions where they would cause a conflict. -->
-		<CallTarget Targets="TprFrontendUmbraco_Cleanup" />
 	</Target>
 
 	<Target Name="TprFrontendUmbraco_CopyFiles">
@@ -61,7 +58,7 @@
 		<WriteLinesToFile File="$(ProjectDir)uSync\ThePensionsRegulator.Frontend.Umbraco\.gitignore" Lines="@(TprFrontendUmbracoUSyncGitIgnore)" Overwrite="True"/>
 	</Target>
 
-	<Target Name="TprFrontendUmbraco_Cleanup" BeforeTargets="CoreClean">
+	<Target Name="TprFrontendUmbraco_Cleanup" BeforeTargets="BeforeBuild">
 		<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
 		<ItemGroup>
 			<TprFrontendUmbraco_uSyncVersion Include="v9"/>
@@ -90,6 +87,7 @@
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheader.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheader.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheadermenu.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheadermenu.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheadermenuchilditem.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheadermenuchilditem.config')" />
+		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheadermenuparentitem.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheadermenuparentitem.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheadermenuitem.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprheadermenuitem.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprimage.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprimage.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprimagesettings.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\ContentTypes\tprimagesettings.config')" />
@@ -124,6 +122,8 @@
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRFooterLanguageCodeRadioButtonList.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRFooterLanguageCodeRadioButtonList.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRFooterThreeColumnLinksBlockGrid.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRFooterThreeColumnLinksBlockGrid.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeaderMenuBlockList.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeaderMenuBlockList.config')" />
+		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeaderMenuChildItemBlockList.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeaderMenuChildItemBlockList.config')" />
+		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeaderMenuParentItemBlockList.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeaderMenuParentItemBlockList.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeaderMenuItemBlockList.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeaderMenuItemBlockList.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeadingLevelSearchResults.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeadingLevelSearchResults.config')" />
 		<Delete Files="$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeadingLevelSectionCards.config" Condition="Exists('$(ProjectDir)uSync\%(TprFrontendUmbraco_uSyncVersion.Identity)\DataTypes\TPRHeadingLevelSectionCards.config')" />

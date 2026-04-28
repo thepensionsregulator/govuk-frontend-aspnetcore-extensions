@@ -403,6 +403,15 @@ FodyWeavers.xsd
 # Snyk
 .dccache
 
+##
+## Visual Studio Code
+##
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
 # Umbraco 
 **/umbraco/
 !docs/umbraco
@@ -432,6 +441,7 @@ ThePensionsRegulator.Frontend.Umbraco/uSync/**/DataTypes/
 
 # Generated files with package version info
 *.generated.*
+!**/ModelsBuilder/*.generated.*
 
 # Files copied to example app
 *.ExampleApp/wwwroot/favicon.ico

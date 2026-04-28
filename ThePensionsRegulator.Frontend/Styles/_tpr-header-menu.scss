@@ -290,7 +290,7 @@
         border-width: 0 3px 3px 0;
     }
 
-    .tpr-header-menu__nav-menu-item-link:focus + .tpr-header-menu__arrow-container .tpr-header-menu__arrow {
+    .tpr-header-menu__nav-menu-item-link:focus + .tpr-header-menu__arrow-container .tpr-header-menu__arrow, .tpr-header-menu__arrow:focus {
         border: solid $tpr-colour-black;
         border-width: 0 3px 3px 0;
     }

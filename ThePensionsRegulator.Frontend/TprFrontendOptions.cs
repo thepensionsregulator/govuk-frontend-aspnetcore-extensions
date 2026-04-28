@@ -5,10 +5,10 @@
         public string[]? UpdateDestinationHostnames { get; set; }
 
         /// <summary>
-        /// Enable a CSV download button on all .govuk-table elements.
+        /// Enable a CSV download button below each .govuk-table element on the page.
         /// The button text defaults to "Download table data (CSV)" but can be customised by adding
         /// a data-tpr-table-csv-download-text attribute to the &lt;body&gt; element.
-        /// Tables already inside a .tpr-table-wrapper element are skipped.
+        /// Tables with merged cells (colspan or rowspan) are skipped.
         /// </summary>
         public bool EnableTableCsvDownload { get; set; }
     }

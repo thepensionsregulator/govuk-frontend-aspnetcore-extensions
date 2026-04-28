@@ -186,7 +186,7 @@ describe("hasMergedCells", () => {
 });
 
 describe("initTableCsvDownload", () => {
-    test("wraps .govuk-table in .tpr-table-wrapper and adds button", () => {
+    test("inserts a CSV download button immediately after each .govuk-table", () => {
         document.body.innerHTML = `
             <div>
                 <table class="govuk-table">
@@ -194,18 +194,18 @@ describe("initTableCsvDownload", () => {
                 </table>
             </div>`;
         initTableCsvDownload();
-        const wrapper = document.querySelector(".tpr-table-wrapper");
-        expect(wrapper).toBeInTheDocument();
-        expect(wrapper.querySelector("table")).toBeInTheDocument();
-        const button = wrapper.querySelector("button");
-        expect(button).toBeInTheDocument();
+        const table = document.querySelector(".govuk-table");
+        const button = table.nextElementSibling;
+        expect(button).not.toBeNull();
+        expect(button.tagName).toBe("BUTTON");
+        expect(button).toHaveAttribute("data-tpr-table-csv-button", "true");
         expect(button).toHaveTextContent("Download table data (CSV)");
         expect(button).toHaveClass("govuk-button", "govuk-button--secondary");
         expect(button).toHaveAttribute("data-module", "govuk-button");
         expect(button.type).toBe("button");
     });
 
-    test("does not wrap tables without .govuk-table class", () => {
+    test("does not add a button to tables without .govuk-table class", () => {
         document.body.innerHTML = `
             <div>
                 <table>
@@ -213,20 +213,20 @@ describe("initTableCsvDownload", () => {
                 </table>
             </div>`;
         initTableCsvDownload();
-        expect(document.querySelector(".tpr-table-wrapper")).not.toBeInTheDocument();
+        expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).not.toBeInTheDocument();
     });
 
-    test("skips tables already inside .tpr-table-wrapper", () => {
+    test("is idempotent — does not add a duplicate button when run twice", () => {
         document.body.innerHTML = `
-            <div class="tpr-table-wrapper">
+            <div>
                 <table class="govuk-table">
                     <tr><td>Data</td></tr>
                 </table>
             </div>`;
         initTableCsvDownload();
-        const wrappers = document.querySelectorAll(".tpr-table-wrapper");
-        expect(wrappers.length).toBe(1);
-        expect(wrappers[0].querySelector("button")).not.toBeInTheDocument();
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll('button[data-tpr-table-csv-button="true"]');
+        expect(buttons.length).toBe(1);
     });
 
     test("uses custom button text from body data attribute", () => {
@@ -264,8 +264,7 @@ describe("initTableCsvDownload", () => {
                 </table>
             </div>`;
         initTableCsvDownload();
-        expect(document.querySelector(".tpr-table-wrapper")).not.toBeInTheDocument();
-        expect(document.querySelector("button")).not.toBeInTheDocument();
+        expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).not.toBeInTheDocument();
     });
 
     test("handles multiple .govuk-table elements", () => {
@@ -275,9 +274,7 @@ describe("initTableCsvDownload", () => {
                 <table class="govuk-table"><tr><td>Table 2</td></tr></table>
             </div>`;
         initTableCsvDownload();
-        const wrappers = document.querySelectorAll(".tpr-table-wrapper");
-        expect(wrappers.length).toBe(2);
-        const buttons = document.querySelectorAll("button");
+        const buttons = document.querySelectorAll('button[data-tpr-table-csv-button="true"]');
         expect(buttons.length).toBe(2);
     });
 

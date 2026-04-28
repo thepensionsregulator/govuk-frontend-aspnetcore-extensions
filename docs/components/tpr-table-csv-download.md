@@ -20,10 +20,11 @@ When enabled, a `<script>` tag is added to the `TPR/BodyClosing` partial with `t
 
 On `DOMContentLoaded`, the script:
 
-1. Finds all `<table class="govuk-table">` elements not already inside a `.tpr-table-wrapper`.
-2. Wraps each table in a `<div class="tpr-table-wrapper">`.
-3. Adds a `<button class="govuk-button govuk-button--secondary">` below the table.
-4. On button click, converts the table to CSV (handling `colspan` and `rowspan`) and triggers a file download.
+1. Finds all `<table class="govuk-table">` elements on the page.
+2. Inserts a `<button class="govuk-button govuk-button--secondary">` immediately after each table.
+3. On button click, converts the table to CSV and triggers a file download.
+
+The script is idempotent — if it runs more than once, it will not create duplicate buttons.
 
 ### File naming
 
@@ -47,7 +48,4 @@ In Umbraco, a dictionary item `Table CSV Download Button Text` can be used to pr
 
 ## Merged cells
 
-Tables with `colspan` or `rowspan` attributes are supported. Merged cells are expanded in the CSV output:
-
-- The text appears in the first cell of the merged area.
-- Remaining cells in the merged area are left empty.
+Tables containing cells with `colspan` or `rowspan` greater than 1 are skipped — no download button is added — because merged cells cannot be reliably represented in CSV.

@@ -106,8 +106,8 @@ export function downloadCsv(csvContent, fileName) {
 }
 
 /**
- * Initialises CSV download buttons on all .govuk-table elements
- * that are not already inside a .tpr-table-wrapper.
+ * Initialises CSV download buttons on all .govuk-table elements.
+ * Idempotent — will not add a duplicate button if one already follows the table.
  */
 export function initTableCsvDownload() {
     const buttonText = getButtonText();
@@ -116,24 +116,25 @@ export function initTableCsvDownload() {
     for (let i = 0; i < tables.length; i++) {
         const table = tables[i];
 
-        // Skip tables already wrapped
-        if (table.closest(".tpr-table-wrapper")) continue;
-
         // Skip tables with merged cells — CSV cannot represent them reliably
         if (hasMergedCells(table)) continue;
 
+        // Skip if a CSV download button has already been added (idempotency)
+        if (
+            table.nextElementSibling &&
+            table.nextElementSibling.hasAttribute("data-tpr-table-csv-button")
+        ) {
+            continue;
+        }
+
         const caption = table.querySelector("caption");
         const fileName = sanitizeFileName(caption ? (caption.innerText || caption.textContent) : null);
-
-        const wrapper = document.createElement("div");
-        wrapper.className = "tpr-table-wrapper";
-        table.parentNode.insertBefore(wrapper, table);
-        wrapper.appendChild(table);
 
         const button = document.createElement("button");
         button.type = "button";
         button.className = "govuk-button govuk-button--secondary";
         button.setAttribute("data-module", "govuk-button");
+        button.setAttribute("data-tpr-table-csv-button", "true");
         button.setAttribute("data-tpr-table-csv-filename", fileName);
         button.textContent = buttonText;
 
@@ -142,7 +143,7 @@ export function initTableCsvDownload() {
             downloadCsv(csv, fileName);
         });
 
-        wrapper.appendChild(button);
+        table.parentNode.insertBefore(button, table.nextSibling);
     }
 }
 

@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function SelectNavOption(e) {
 
-        const toggles = document.querySelectorAll(".tpr-mobile-menu__toggle");
+        const mobileMenuInnerContainers = document.querySelectorAll(".tpr-mobile-menu__container-inner");
+        const toggles = document.querySelectorAll(".tpr-header-menu__button");
+        const noJsLinks = document.querySelectorAll(".tpr-mobile-menu__no-js-link");
         const overlay = document.querySelectorAll(".tpr-header-menu__nav-overlay");
         const menuItems = document.querySelectorAll(".tpr-header-menu__nav-menu-item");
         const arrowContainers = document.querySelectorAll(".tpr-header-menu__arrow-container");
@@ -19,7 +21,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (isMobile) {
 
-            toggles.forEach(t => t.removeAttribute("href"));
+            mobileMenuInnerContainers.forEach(m => m.classList.add("tpr-mobile-menu__container-inner--hidden"));
+            toggles.forEach(t => t.classList.remove("tpr-header-menu__button--hidden")); 
+            noJsLinks.forEach(l => l.classList.add("tpr-mobile-menu__no-js-link--hidden"))
             toggles.forEach(t => t.addEventListener("click", toggleMobileMenu));
             toggles.forEach(t => t.addEventListener("keydown", keyboardToggleMobileMenu));
 
@@ -359,22 +363,22 @@ function restoreDefaultMenuState(e) {
 
 function toggleMobileMenu() {
 
-    const toggle = document.querySelector(".tpr-mobile-menu__toggle");
-    toggle.classList.toggle("tpr-mobile-menu__toggle--open");
+    const toggle = document.querySelector(".tpr-header-menu__button");
+    toggle.classList.toggle("tpr-header-menu__button--open");
 
-    const svg = document.querySelector(".tpr-mobile-menu__svg");
-    svg?.classList.toggle("tpr-mobile-menu__svg--hide");
+    const svgs = document.querySelectorAll(".tpr-mobile-menu__svg");
+    svgs.forEach(s => s.classList.toggle("tpr-mobile-menu__svg--hide"));
 
-    const button = document.querySelector(".tpr-header-menu__button");
+    const button = document.querySelector(".tpr-header-menu__button-inner");
     if (button) {
         const closeButtonText = button.getAttribute("data-close-label");
         const openButtonText = button.getAttribute("data-open-label")
         const isMenu = button.textContent === closeButtonText;
         button.textContent = isMenu ? openButtonText : closeButtonText;
-        button.classList.toggle("tpr-header-menu__button--opened")
+        button.classList.toggle("tpr-header-menu__button-inner--opened")
 
-        const expanded = button.getAttribute("aria-expanded") === "true";
-        button.setAttribute("aria-expanded", !expanded);
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", !expanded);
     }
 
     document.querySelectorAll(".tpr-header-menu__nav-container").forEach((nav) => {
@@ -412,7 +416,7 @@ function closeMobileMenuOnFocusLeave() {
     setTimeout(() => {
 
         const nav = document.querySelector(".tpr-header-menu__nav");
-        const toggle = document.querySelector(".tpr-header-menu__button");
+        const toggle = document.querySelector(".tpr-header-menu__button-inner");
 
         const activeElement = document.activeElement;
 
@@ -428,17 +432,17 @@ function removeActiveClasses() {
         nav.classList.remove("tpr-header-menu__nav-container--active");
     });
 
-    document.querySelectorAll(".tpr-mobile-menu__toggle").forEach((toggle) => {
-        toggle.classList.remove("tpr-mobile-menu__toggle--open");
+    document.querySelectorAll(".tpr-header-menu__button").forEach((toggle) => {
+        toggle.classList.remove("tpr-header-menu__button--open");
+        toggle.setAttribute("aria-expanded", "false");
 
-        var toggleText = toggle.querySelector(".tpr-header-menu__button")
-        toggleText.classList.remove("tpr-header-menu__button--opened")
-        toggleText.setAttribute("aria-expanded", "false");
+        var toggleText = toggle.querySelector(".tpr-header-menu__button-inner")
+        toggleText.classList.remove("tpr-header-menu__button-inner--opened")
 
         var svg = toggle.querySelector(".tpr-mobile-menu__svg")
         svg.classList.remove("tpr-mobile-menu__svg--hide")
 
-        const button = toggle.querySelector(".tpr-header-menu__button");
+        const button = toggle.querySelector(".tpr-header-menu__button-inner");
         button.textContent = button.getAttribute("data-close-label");
     });
 

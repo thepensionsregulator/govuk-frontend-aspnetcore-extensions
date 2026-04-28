@@ -54,7 +54,7 @@ Without JavaScript, the original address input fields remain visible and usable.
 
         <govuk-client-side-validation error-message-required="Enter a town or city"
                                       error-message-maxlength="Town or city must be 100 characters or less">
-            <govuk-input for="TownOrCity" input-class="govuk-input--width-20" autocomplete="address-level2"
+            <govuk-input for="TownOrCity" class="govuk-input--width-20" autocomplete="address-level2"
                          input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "town-or-city"}})'>
                 <govuk-input-label>Town or city</govuk-input-label>
                 @if (ViewContext.ModelState.ContainsKey("TownOrCity") && ViewContext.ModelState["TownOrCity"]!.Errors.Count > 0)
@@ -65,7 +65,7 @@ Without JavaScript, the original address input fields remain visible and usable.
         </govuk-client-side-validation>
 
         <govuk-client-side-validation error-message-maxlength="Province, region or state must be 100 characters or less">
-            <govuk-input for="County" input-class="govuk-input--width-20" autocomplete="address-level3"
+            <govuk-input for="County" class="govuk-input--width-20" autocomplete="address-level3"
                          input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "region-international"}})'>
                 <govuk-input-label>Province/ region/ state (optional)</govuk-input-label>
                 @if (ViewContext.ModelState.ContainsKey("County") && ViewContext.ModelState["County"]!.Errors.Count > 0)

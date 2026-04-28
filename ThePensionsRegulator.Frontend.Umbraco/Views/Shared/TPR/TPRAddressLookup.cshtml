@@ -162,7 +162,7 @@
     <govuk-client-side-validation 
         error-message-required="@settings(TprPropertyAliases.TownOrCityErrorMessageRequired)"
         error-message-maxlength="@settings(TprPropertyAliases.TownOrCityErrorMessageMaxLength)">
-        <govuk-input name="@townOrCityState.ModelPropertyName" input-class="govuk-input--width-20" value="@townOrCityState.AttemptedValue" input-aria-invalid="@townOrCityState.InvalidAriaLabel" autocomplete="address-level2" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "town-or-city" }})">
+        <govuk-input name="@townOrCityState.ModelPropertyName" class="govuk-input--width-20" value="@townOrCityState.AttemptedValue" input-aria-invalid="@townOrCityState.InvalidAriaLabel" autocomplete="address-level2" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "town-or-city" }})">
             <govuk-input-label>@townOrCityState.Label</govuk-input-label>
             @if (townOrCityState.HasErrorMessage)
             {
@@ -173,7 +173,7 @@
 
     <govuk-client-side-validation 
         error-message-maxlength="@settings(TprPropertyAliases.InternationalCountyErrorMessageMaxLength)">
-        <govuk-input name="@countyState.ModelPropertyName" input-class="govuk-input--width-20" value="@countyState.AttemptedValue" input-aria-invalid="@countyState.InvalidAriaLabel" autocomplete="address-level3" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "region-international" }})">
+        <govuk-input name="@countyState.ModelPropertyName" class="govuk-input--width-20" value="@countyState.AttemptedValue" input-aria-invalid="@countyState.InvalidAriaLabel" autocomplete="address-level3" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "region-international" }})">
             <govuk-input-label>@countyState.Label</govuk-input-label>
             @if (countyState.HasErrorMessage)
             {
@@ -184,7 +184,7 @@
 
     <govuk-client-side-validation 
         error-message-required="@settings(TprPropertyAliases.CountryErrorMessageRequired)">
-        <govuk-select name="@countryState.ModelPropertyName" input-class="govuk-input--width-20" select-aria-invalid="@countryState.InvalidAriaLabel" select-autocomplete="country" select-data-address-lookup="country">
+        <govuk-select name="@countryState.ModelPropertyName" class="govuk-input--width-10" select-aria-invalid="@countryState.InvalidAriaLabel" select-autocomplete="country" select-data-address-lookup="country">
             <govuk-select-label>@countryState.Label</govuk-select-label>
             @if (countryState.HasErrorMessage)
             {
@@ -206,7 +206,7 @@
     <govuk-client-side-validation
         error-message-required="@settings(TprPropertyAliases.InternationalPostcodeErrorMessageRequired)"
         error-message-maxlength="@settings(TprPropertyAliases.InternationalPostcodeErrorMessageMaxLength)"> 
-        <govuk-input name="@postcodeState.ModelPropertyName" input-class="govuk-input--width-10" value="@postcodeState.AttemptedValue" input-aria-invalid="@postcodeState.InvalidAriaLabel" autocomplete="postal-code" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "postcode-international" }})">
+        <govuk-input name="@postcodeState.ModelPropertyName" class="govuk-input--width-10" value="@postcodeState.AttemptedValue" input-aria-invalid="@postcodeState.InvalidAriaLabel" autocomplete="postal-code" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "postcode-international" }})">
             <govuk-input-label>@postcodeState.Label</govuk-input-label>
             @if (postcodeState.HasErrorMessage)
             {

@@ -39,7 +39,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private bool _useAblePlayer = false;
         private string? _description = null;
         private string _headingLevel = "h2";
-        private string? _headingClass = null;
+        private string? _headingClass = "govuk-heading-m";
         private string? _transcriptUrl = null;
         private string? _transcriptTitle = null;
         private string? _transcriptTarget = null;

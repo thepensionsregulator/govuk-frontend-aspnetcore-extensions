@@ -3,8 +3,6 @@
 @inject IYouTubeVideoIdParser videoIdParser
 @inject IConsentCookieReader consentCookie
 @inject IGovUkHeadingClassProvider headingClassProvider
-@using GovUk.Frontend.Umbraco;
-@using GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Frontend.Security
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Services
@@ -61,7 +59,7 @@
 
     var headingLevelProperty = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingLevel) ?? string.Empty;
     var headingLevelNumber = headingLevelProperty.Replace("heading ", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
-    if (!int.TryParse(headingLevelNumber, out int numericHeadingLevel) || numericHeadingLevel < 1 || numericHeadingLevel > 6)
+    if (!int.TryParse(headingLevelNumber, out int numericHeadingLevel) || numericHeadingLevel < 2 || numericHeadingLevel > 5)
     {
         numericHeadingLevel = 2;
     }
@@ -73,16 +71,16 @@
     {
         headingClass = numericHeadingLevel switch
         {
-            1 => headingClasses.Heading1,
             2 => headingClasses.Heading2,
             3 => headingClasses.Heading3,
             4 => headingClasses.Heading4,
+            5 => headingClasses.Heading5,
             _ => headingClasses.Heading2
         };
     }
 
-    var iframeTitle = Umbraco.GetDictionaryValue("Video title");
-    iframeTitle = iframeTitle?.Replace("{{VIDEO_TITLE}}", title);
+    var iframeTitle = Umbraco.GetDictionaryValueOrDefault("Video title", "{{VIDEO_TITLE}} (video)");
+    iframeTitle = iframeTitle.Replace("{{VIDEO_TITLE}}", title);
 }
 <tpr-youtube-video id="@id"
                    class="@cssClasses"

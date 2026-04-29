@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Accordion section settings</summary>
 	[PublishedModel("govukAccordionSectionSettings")]
-	public partial class GovukAccordionSectionSettings : PublishedElementModel, IGovukCssClasses
+	public partial class GovukAccordionSectionSettings : PublishedElementModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -55,13 +55,5 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[ImplementPropertyType("expandSection")]
 		public virtual bool ExpandSection => this.Value<bool>(_publishedValueFallback, "expandSection");
-
-		///<summary>
-		/// CSS classes: Applied to the outermost HTML element of the component.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("cssClasses")]
-		public virtual string CssClasses => global::Umbraco.Cms.Web.Common.PublishedModels.GovukCssClasses.GetCssClasses(this, _publishedValueFallback);
 	}
 }

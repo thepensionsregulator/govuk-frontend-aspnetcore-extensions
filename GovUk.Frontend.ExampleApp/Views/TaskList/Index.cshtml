@@ -11,45 +11,49 @@
     </div>
 </div>
 
-<govuk-task-list-summary 
-       id="task-list-summary"
-       incomplete-status="Application incomplete" 
-       completed-status="Application completed" 
-       tracker="You've completed {0} of {1} tasks." 
-       total-tasks="10" 
-       completed-tasks="5" />
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds">
+        <govuk-task-list-summary 
+               id="task-list-summary"
+               incomplete-status="Application incomplete" 
+               completed-status="Application completed" 
+               tracker="You've completed {0} of {1} tasks." 
+               total-tasks="10" 
+               completed-tasks="5" />
 
-<h2 class="govuk-heading-m">Section 1</h2>
-<govuk-task-list id="list-1" id-prefix="list-1">
-    <govuk-task-list-task href="#">
-        <govuk-task-list-task-name>Thing to do</govuk-task-list-task-name>
-        <govuk-task-list-task-status status="NotStarted" class="@(TaskListTaskStatus.NotStarted.AsHtmlClass())">Not yet started</govuk-task-list-task-status>
-    </govuk-task-list-task>
-    <govuk-task-list-task href="#" id="the-task">
-        <govuk-task-list-task-name>Another thing to do</govuk-task-list-task-name>
-        <govuk-task-list-task-status status="Incomplete" class="@(TaskListTaskStatus.Incomplete.AsHtmlClass())" />
-    </govuk-task-list-task>
-    <govuk-task-list-task href="#">
-        <govuk-task-list-task-name>Yet <i>another</i> thing to do</govuk-task-list-task-name>
-        <govuk-task-list-task-hint>This thing has an <strong>important deadline</strong> you need to know about.</govuk-task-list-task-hint>
-        <govuk-task-list-task-status status="Completed" class="@(TaskListTaskStatus.Completed.AsHtmlClass())" />
-    </govuk-task-list-task>
-</govuk-task-list>
-<h2 class="govuk-heading-m">Section 2</h2>
-<govuk-task-list id ="list-2" id-prefix="list-2">
-    <govuk-task-list-task href="#">
-        <govuk-task-list-task-name>Thing to do</govuk-task-list-task-name>
-    </govuk-task-list-task>
-    <govuk-task-list-task>
-        <govuk-task-list-task-name>You can't do this</govuk-task-list-task-name>
-        <govuk-task-list-task-status status="NotApplicable" class="@(TaskListTaskStatus.NotApplicable.AsHtmlClass())" />
-    </govuk-task-list-task>
-    <govuk-task-list-task>
-        <govuk-task-list-task-name>You can't do this</govuk-task-list-task-name>
-        <govuk-task-list-task-status status="CannotStartYet" class="@(TaskListTaskStatus.CannotStartYet.AsHtmlClass())" />
-    </govuk-task-list-task>
-    <govuk-task-list-task>
-        <govuk-task-list-task-name>You can't do this</govuk-task-list-task-name>
-        <govuk-task-list-task-status status="Error" class="@(TaskListTaskStatus.Error.AsHtmlClass())" />
-    </govuk-task-list-task>
-</govuk-task-list>
+        <h2 class="govuk-heading-m">Section 1</h2>
+        <govuk-task-list id="list-1" id-prefix="list-1">
+            <govuk-task-list-task href="#">
+                <govuk-task-list-task-name>Thing to do</govuk-task-list-task-name>
+                <govuk-task-list-task-status status="NotStarted" class="@(TaskListTaskStatus.NotStarted.AsHtmlClass())">Not yet started</govuk-task-list-task-status>
+            </govuk-task-list-task>
+            <govuk-task-list-task href="#" id="the-task">
+                <govuk-task-list-task-name>Another thing to do</govuk-task-list-task-name>
+                <govuk-task-list-task-status status="Incomplete" class="@(TaskListTaskStatus.Incomplete.AsHtmlClass())" />
+            </govuk-task-list-task>
+            <govuk-task-list-task href="#">
+                <govuk-task-list-task-name>Yet <i>another</i> thing to do</govuk-task-list-task-name>
+                <govuk-task-list-task-hint>This thing has an <strong>important deadline</strong> you need to know about.</govuk-task-list-task-hint>
+                <govuk-task-list-task-status status="Completed" class="@(TaskListTaskStatus.Completed.AsHtmlClass())" />
+            </govuk-task-list-task>
+        </govuk-task-list>
+        <h2 class="govuk-heading-m">Section 2</h2>
+        <govuk-task-list id ="list-2" id-prefix="list-2">
+            <govuk-task-list-task href="#">
+                <govuk-task-list-task-name>Thing to do</govuk-task-list-task-name>
+            </govuk-task-list-task>
+            <govuk-task-list-task>
+                <govuk-task-list-task-name>You can't do this</govuk-task-list-task-name>
+                <govuk-task-list-task-status status="NotApplicable" class="@(TaskListTaskStatus.NotApplicable.AsHtmlClass())" />
+            </govuk-task-list-task>
+            <govuk-task-list-task>
+                <govuk-task-list-task-name>You can't do this</govuk-task-list-task-name>
+                <govuk-task-list-task-status status="CannotStartYet" class="@(TaskListTaskStatus.CannotStartYet.AsHtmlClass())" />
+            </govuk-task-list-task>
+            <govuk-task-list-task>
+                <govuk-task-list-task-name>You can't do this</govuk-task-list-task-name>
+                <govuk-task-list-task-status status="Error" class="@(TaskListTaskStatus.Error.AsHtmlClass())" />
+            </govuk-task-list-task>
+        </govuk-task-list>
+    </div>
+</div>

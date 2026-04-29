@@ -1,8 +1,8 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
-// Change GOV.UK panel styles where the TPR brand diverges from the GOV.UK Design System.
+// Change GOV.UK styles where the TPR brand diverges from the GOV.UK Design System.
 .govuk-tag {
-    color: $tpr-colour-royal-blue-shade-60;
-    background-color: $tpr-colour-royal-blue-tint-70;
+    color: $tpr-colour-royal-blue-shade-67;
+    background-color: $tpr-colour-royal-blue-tint-25;
 }

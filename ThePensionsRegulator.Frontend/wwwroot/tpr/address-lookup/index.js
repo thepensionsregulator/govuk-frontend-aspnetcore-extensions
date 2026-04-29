@@ -6,6 +6,7 @@ import { AddressLookupValidator } from "./validator.js";
 import { AddressMapper } from "./mapper.js";
 import { PostcodeSanitiser } from "./postcode-sanitiser.js";
 import { FieldDefaults } from "./field-defaults.js";
+import { PostcodeNormaliser } from "./postcode-normaliser.js";
     
 class TprAddressLookup {
     constructor(element, key, role, primaryStateMachine) {
@@ -26,6 +27,7 @@ class TprAddressLookup {
         this.originalInputs = this.captureOriginalInputs();
         this.countryOptions = this.captureCountryOptions();
         this.fieldDefaults = new FieldDefaults(this.container, this.originalInputs);
+        this.postcodeNormaliser = new PostcodeNormaliser();
 
         const address = this.addressMapper.mapFromInput(this.originalInputs);
 
@@ -219,6 +221,12 @@ class TprAddressLookup {
         heading.setAttribute("tabindex", "-1");
         heading.innerText = ADDRESS_LOOKUP_CONFIG.LABELS.ADDRESS_CONFIRMED;
 
+        let postcode = address.postcode;
+
+        if (address.country == ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY) {
+            postcode = this.postcodeNormaliser.normalise(postcode);
+        }
+
         const fullAddress = [
             address.organisationName || "",
             address.addressLine1,
@@ -227,7 +235,7 @@ class TprAddressLookup {
             address.county || address.region,
             address.country,
             address.countryCode,
-            address.postcode].filter(Boolean);
+            postcode].filter(Boolean);
 
         const confirmedAddress = this.componentBuilder.createConfirmedAddressParagraph(fullAddress, address.postcode, address.countryCode || '');
 
@@ -408,7 +416,8 @@ class TprAddressLookup {
             return;
         }
 
-        const address = this.addressMapper.mapFromManualUKEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, countyInput.value, postcodeInput.value);
+        const normalisedPostcode = this.postcodeNormaliser.normalise(postcodeInput.value);
+        const address = this.addressMapper.mapFromManualUKEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, countyInput.value, normalisedPostcode);
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 

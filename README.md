@@ -48,6 +48,7 @@ We add support for:
   - [TPR featured image](/docs/components/tpr-featured-image.md)
   - [TPR header bar](/docs/components/tpr-header-bar.md)
   - [TPR footer bar](/docs/components/tpr-footer-bar.md)
+  - [TPR navigational links](/docs/components/tpr-navigational-links.md)
   - [TPR related links](/docs/components/tpr-related-links.md)
   - [TPR search results](/docs/components/tpr-search-results.md)
   - [TPR section cards](/docs/components/tpr-section-cards.md)

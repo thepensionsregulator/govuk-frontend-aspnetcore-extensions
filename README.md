@@ -49,6 +49,7 @@ We add support for:
   - [TPR navigational links](/docs/components/tpr-navigational-links.md)
   - [TPR search results](/docs/components/tpr-search-results.md)
   - [TPR section cards](/docs/components/tpr-section-cards.md)
+  - [TPR table CSV download](/docs/components/tpr-table-csv-download.md)
   - [TPR side navigation](/docs/components/tpr-side-navigation.md)
   - [TPR timeline](/docs/components/tpr-timeline.md)
   - [TPR YouTube video](/docs/components/tpr-youtube-video.md)

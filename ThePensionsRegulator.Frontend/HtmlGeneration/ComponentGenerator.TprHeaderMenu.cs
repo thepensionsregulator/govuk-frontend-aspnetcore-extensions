@@ -20,14 +20,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var noJsIcon = new TagBuilder("div");
             noJsIcon.AddCssClass("tpr-mobile-menu__icon-no-js");
 
+            var closeText = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuToggleClosed) ? "Menu" : tprHeaderBar.HeaderMenuToggleClosed;
+
             var mobileMenuLinkInner = new TagBuilder("span");
             mobileMenuLinkInner.AddCssClass("tpr-mobile-menu__no-js-link-inner");
-
-            if (!string.IsNullOrEmpty((tprHeaderBar.HeaderMenuToggleClosed)))
-            {
-                mobileMenuLinkInner.Attributes.Add("data-close-label", tprHeaderBar.HeaderMenuToggleClosed);
-                mobileMenuLinkInner.InnerHtml.Append(tprHeaderBar.HeaderMenuToggleClosed);
-            }
+            mobileMenuLinkInner.Attributes.Add("data-close-label", closeText);
+            mobileMenuLinkInner.InnerHtml.Append(closeText);
 
             var mobileMenuToggle = new TagBuilder("button");
             mobileMenuToggle.AddCssClass("tpr-header-menu__button");
@@ -44,15 +42,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var openText = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuToggleOpen) ? "Close" : tprHeaderBar.HeaderMenuToggleOpen;
             closeButton.Attributes.Add("data-open-label", openText);
-           
-            var closeText = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuToggleClosed) ? "Menu" : tprHeaderBar.HeaderMenuToggleClosed;
+
             closeButton.Attributes.Add("data-close-label", closeText);
             closeButton.InnerHtml.Append(closeText);
-            
+
             mobileMenuToggle.InnerHtml.AppendHtml(icon);
             mobileMenuToggle.InnerHtml.AppendHtml(closeButton);
 
-            mobileMenuLink.InnerHtml.AppendHtml(icon); 
+            mobileMenuLink.InnerHtml.AppendHtml(icon);
             mobileMenuLink.InnerHtml.AppendHtml(mobileMenuLinkInner);
 
             mobileMenuContainer.InnerHtml.AppendHtml(mobileMenuLink);
@@ -111,7 +108,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var navAriaLabel = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuAriaLabel) ? "Main navigation" : tprHeaderBar.HeaderMenuAriaLabel;
             headerMenuNav.Attributes.Add("aria-label", navAriaLabel);
-            
+
             var tprWrapper = new TagBuilder("div");
             tprWrapper.AddCssClass("tpr-header-menu__nav-inner-container");
             headerMenuNav.InnerHtml.AppendHtml(tprWrapper);
@@ -163,9 +160,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     var arrow = new TagBuilder("button");
                     arrow.AddCssClass("tpr-header-menu__arrow");
 
-                    var menuItemAriaLabel = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuItemAriaLabel) ? "Click to expand the sub menu" : tprHeaderBar.HeaderMenuItemAriaLabel;                 
-                    arrow.Attributes.Add("aria-label", $"{item.LinkText}: {menuItemAriaLabel}"); 
-                    
+                    var menuItemAriaLabel = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuItemAriaLabel) ? "Click to expand the sub menu" : tprHeaderBar.HeaderMenuItemAriaLabel;
+                    arrow.Attributes.Add("aria-label", $"{item.LinkText}: {menuItemAriaLabel}");
+
                     arrow.Attributes.Add("aria-expanded", "true");
                     arrowContainer.InnerHtml.AppendHtml(arrow);
 

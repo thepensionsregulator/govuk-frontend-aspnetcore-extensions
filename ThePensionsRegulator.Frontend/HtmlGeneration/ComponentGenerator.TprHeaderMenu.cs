@@ -26,12 +26,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             mobileMenuLinkInner.Attributes.Add("data-close-label", closeText);
             mobileMenuLinkInner.InnerHtml.Append(closeText);
 
-            if (!string.IsNullOrEmpty((tprHeaderBar.HeaderMenuToggleClosed)))
-            {
-                mobileMenuLinkInner.Attributes.Add("data-close-label", tprHeaderBar.HeaderMenuToggleClosed);
-                mobileMenuLinkInner.InnerHtml.Append(tprHeaderBar.HeaderMenuToggleClosed);
-            }
-
             var mobileMenuToggle = new TagBuilder("button");
             mobileMenuToggle.AddCssClass("tpr-header-menu__button");
             mobileMenuToggle.AddCssClass("tpr-header-menu__button--hidden");

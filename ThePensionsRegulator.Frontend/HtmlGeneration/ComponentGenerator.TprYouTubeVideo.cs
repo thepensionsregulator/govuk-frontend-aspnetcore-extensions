@@ -88,7 +88,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 {
                     transcriptLink.Attributes.Add("target", video.TranscriptTarget);
                 }
-                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle ?? $"Read transcript: {video.Title}");
+                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle ?? (string.IsNullOrWhiteSpace(video.Title) ? "View transcript for video" : $"View transcript for '{video.Title}'"));
 
                 transcriptContainer.InnerHtml.AppendHtml(transcriptLink);
                 containerTag.InnerHtml.AppendHtml(transcriptContainer);

@@ -81,7 +81,7 @@ export class TprYouTubeVideoView extends UmbElementMixin(LitElement) implements 
                 <div class="tpr-video-wrapper-no-cookies__video-container">
                     <iframe referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube-nocookie.com/embed/${parseUrlResult.videoId}" title="${this.content?.title}"></iframe>
                 </div>
-                ${this.content?.transcriptUrl?.length ? html`<div class="tpr-video-wrapper-no-cookies__transcript-container"><span class="tpr-video-wrapper-no-cookies__transcript-link">${this.content?.transcriptUrl?.[0]?.name || `View transcript for '${this.content?.title ?? ''}'`}</span></div>` : null}
+                ${this.content?.transcriptUrl?.length ? html`<div class="tpr-video-wrapper-no-cookies__transcript-container"><span class="tpr-video-wrapper-no-cookies__transcript-link">${this.content?.transcriptUrl?.[0]?.name || (this.content?.title ? `View transcript for '${this.content.title}'` : 'View transcript for video')}</span></div>` : null}
              </div>
         </a>`;
     }

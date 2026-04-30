@@ -41,7 +41,7 @@ The YouTube video component embeds a YouTube video in a page using the official 
 | `title`             | `string` | A brief description of the video, displayed as the heading above the video.                                                                                                                                                           |
 | `transcript-url`    | `string` | URL of a transcript of the video. Default is `null`.                                                                                                                                                                                  |
 | `transcript-target` | `string` | Sets the `target` attribute of the link to the transcript when `transcript-url` is set. Default is `null`.                                                                                                                            |
-| `transcript-title`  | `string` | Text used to link to a transcript when `transcript-url` is set. Default is `View transcript for '{{title}}'` where `{{title}}` is the value of the `title` attribute.                                                                 |
+| `transcript-title`  | `string` | Text used to link to a transcript when `transcript-url` is set. Defaults to `View transcript for '{{title}}'` (where `{{title}}` is the value of the `title` attribute), or `View transcript for video` when `title` is blank.                          |
 | `use-able-player`   | `bool`   | Use [Able Player](https://ableplayer.github.io/ableplayer/) instead of the official YouTube player. **Not currently supported. See [#381](https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions/issues/381)**. |
 | `youtube-video-id`  | `string` | An alpha-numeric string uniquely identifying the video to embed, which can be found in the YouTube URL for the video.                                                                                                                 |
 
@@ -61,8 +61,8 @@ You can set the following properties:
 When you provide a transcript URL you can set the link text in three ways:
 
 - provide a title in the URL dialogue
-- add a dictionary entry with the key 'YouTube video - transcript link text'
-- leave both blank to use the default "View transcript for '{{title}}'"
+- add a dictionary entry with the key 'YouTube video - transcript link text' (used when the video has a title), or 'YouTube video - transcript link text (no title)' (used when the video has no title)
+- leave both blank to use the default "View transcript for '{{title}}'", or "View transcript for video" when the video has no title
 
 In any of the above locations a `{{title}}` token is replaced with the title of the video.
 

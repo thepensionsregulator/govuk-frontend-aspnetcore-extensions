@@ -46,10 +46,18 @@
         transcriptUrl = transcriptLink.Url;
         transcriptTarget = transcriptLink.Target;
     }
-    var transcriptTitle = Umbraco.GetDictionaryValueOrDefault("YouTube video - transcript link text", "View transcript for '{{title}}'");
+    var transcriptTitle = string.Empty;
     if (!string.IsNullOrWhiteSpace(transcriptLink?.Name))
     {
         transcriptTitle = transcriptLink.Name;
+    }
+    else if (string.IsNullOrWhiteSpace(title))
+    {
+        transcriptTitle = Umbraco.GetDictionaryValueOrDefault("YouTube video - transcript link text (no title)", "View transcript for video");
+    }
+    else
+    {
+        transcriptTitle = Umbraco.GetDictionaryValueOrDefault("YouTube video - transcript link text", "View transcript for '{{title}}'");
     }
     transcriptTitle = transcriptTitle.Replace("{{title}}", title);
 

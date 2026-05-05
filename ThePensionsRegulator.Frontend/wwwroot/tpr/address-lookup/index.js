@@ -121,6 +121,7 @@ class TprAddressLookup {
             id: input.getAttribute("id"),
             dataAddressLookup: input.getAttribute(ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE),
             value: input.value,
+            selectedOptionLabel: input.tagName === "SELECT" ? input.options[input.selectedIndex]?.text || undefined : undefined,
             label: input.labels?.[0]?.textContent.trim() || undefined,
             requiredMessage: input.dataset.valRequired,
             maxLength: input.dataset.valMaxlengthMax,

@@ -274,7 +274,8 @@ describe("Address mapper", () => {
                 "name": "BillingCountry",
                 "id": "BillingCountry",
                 "dataAddressLookup": "country",
-                "value": ""
+                "value": "1",
+                "selectedOptionLabel": "United Kingdom"
             },
             {
                 "name": "BillingPostcode",
@@ -309,7 +310,8 @@ describe("Address mapper", () => {
             expect(result.addressLine2).toEqual("125-135 Preston Road");
             expect(result.town).toEqual("Brighton");
             expect(result.county).toEqual("");
-            expect(result.country).toEqual("");
+            expect(result.country).toEqual("United Kingdom");
+            expect(result.countryCode).toEqual("1");
             expect(result.postcode).toEqual("BN1 6AF");
             expect(result.UPRN).toEqual("22275623");
         });

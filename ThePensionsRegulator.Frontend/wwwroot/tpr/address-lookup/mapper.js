@@ -4,15 +4,17 @@
     }
 
     mapFromInput(originalInputs) {
-        const get = (attribute) => originalInputs.find(x => x.dataAddressLookup === attribute)?.value || '';
+        const get = (attribute) => originalInputs.find(x => x.dataAddressLookup === attribute);
+        const getValue = (attribute) => get(attribute)?.value || '';
         return {
-            addressLine1: get(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_1),
-            addressLine2: get(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_2),
-            town: get(this.config.DATA_ATTRIBUTES.TOWN_OR_CITY),
-            county: get(this.config.DATA_ATTRIBUTES.COUNTY),
-            postcode: get(this.config.DATA_ATTRIBUTES.POSTCODE) || get(this.config.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL),
-            country: get(this.config.DATA_ATTRIBUTES.COUNTRY),
-            UPRN: get(this.config.DATA_ATTRIBUTES.UPRN)
+            addressLine1: getValue(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_1),
+            addressLine2: getValue(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_2),
+            town: getValue(this.config.DATA_ATTRIBUTES.TOWN_OR_CITY),
+            county: getValue(this.config.DATA_ATTRIBUTES.COUNTY),
+            postcode: getValue(this.config.DATA_ATTRIBUTES.POSTCODE) || getValue(this.config.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL),
+            country: get(this.config.DATA_ATTRIBUTES.COUNTRY).selectedOptionLabel,
+            countryCode: getValue(this.config.DATA_ATTRIBUTES.COUNTRY),
+            UPRN: getValue(this.config.DATA_ATTRIBUTES.UPRN)
         };
     }
 

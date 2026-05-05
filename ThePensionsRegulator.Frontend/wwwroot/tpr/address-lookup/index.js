@@ -52,6 +52,16 @@ class TprAddressLookup {
         this.stateContainer = document.createElement("div");
         this.container.appendChild(this.stateContainer);
 
+        this.stateContainer.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                const activeButton = this.stateContainer.querySelector("button[type='button']");
+                if (activeButton) {
+                    event.preventDefault();
+                    activeButton.click();
+                }
+            }
+        });
+
         this.initialised = false;
 
         if (this.validator.validAddress(address)) { 

@@ -233,10 +233,10 @@ describe("AddressLookupComponentBuilder", () => {
             expect(button.classList.contains("govuk-button--secondary")).toBe(true);
         });
 
-        it("should have type submit", () => {
+        it("should have type button", () => {
             const button = builder.createAddressLookupButton("Test Button", "test-value");
 
-            expect(button.getAttribute("type")).toBe("submit");
+            expect(button.getAttribute("type")).toBe("button");
         });
     });
 

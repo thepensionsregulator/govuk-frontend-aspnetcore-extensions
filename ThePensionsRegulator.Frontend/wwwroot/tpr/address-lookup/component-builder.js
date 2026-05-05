@@ -82,7 +82,7 @@ class AddressLookupComponentBuilder {
         button.setAttribute(this.config.ATTRIBUTES.BASE, dataAddressLookupValue);
         button.className = this.config.CSS_CLASSES.BUTTON_SECONDARY;
         button.innerText = label;
-        button.setAttribute("type", "submit");
+        button.setAttribute("type", "button");
 
         return button;
     }

@@ -546,6 +546,15 @@ function submitOnClick(event, addressLookupObjects) {
             event.preventDefault();
         }
     });
+
+    // Validate non-address-lookup fields on the form
+    const form = event.target.closest("form");
+    if (form) {
+        const isFormValid = $(form).valid();
+        if (!isFormValid) {
+            event.preventDefault();
+        }
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {

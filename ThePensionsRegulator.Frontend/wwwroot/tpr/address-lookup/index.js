@@ -233,9 +233,9 @@ class TprAddressLookup {
             address.addressLine2,
             address.town,
             address.county || address.region,
+            postcode,
             address.country,
-            address.countryCode,
-            postcode].filter(Boolean);
+            address.countryCode].filter(Boolean);
 
         const confirmedAddress = this.componentBuilder.createConfirmedAddressParagraph(fullAddress, address.postcode, address.countryCode || '');
 

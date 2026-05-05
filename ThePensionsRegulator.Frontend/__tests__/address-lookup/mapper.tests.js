@@ -280,6 +280,12 @@ describe("Address mapper", () => {
                 "name": "BillingPostcode",
                 "id": "BillingPostcode",
                 "dataAddressLookup": "postcode",
+                "value": ""
+            },
+            {
+                "name": "BillingPostcode",
+                "id": "BillingPostcode",
+                "dataAddressLookup": "postcode-international",
                 "value": "BN1 6AF"
             },
             {

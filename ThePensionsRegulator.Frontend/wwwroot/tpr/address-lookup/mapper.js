@@ -10,7 +10,7 @@
             addressLine2: get(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_2),
             town: get(this.config.DATA_ATTRIBUTES.TOWN_OR_CITY),
             county: get(this.config.DATA_ATTRIBUTES.COUNTY),
-            postcode: get(this.config.DATA_ATTRIBUTES.POSTCODE),
+            postcode: get(this.config.DATA_ATTRIBUTES.POSTCODE) || get(this.config.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL),
             country: get(this.config.DATA_ATTRIBUTES.COUNTRY),
             UPRN: get(this.config.DATA_ATTRIBUTES.UPRN)
         };

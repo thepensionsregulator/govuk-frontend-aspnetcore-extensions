@@ -63,7 +63,7 @@
     },
 
     LINK_TEXT: {
-        EDIT_ADDRESS: "Edit address",
+        EDIT_ADDRESS: "Change address",
         ENTER_ADDRESS_NOT_ON_LIST: "Enter address not on list",
         ENTER_INTERNATIONAL_ADDRESS: "Enter an international address",
         RETURN_TO_POSTCODE_SEARCH: "Return to postcode search"

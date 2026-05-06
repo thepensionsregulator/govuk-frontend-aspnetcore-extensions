@@ -174,7 +174,7 @@ function observeSubMenuVisibility(type, element, onExit) {
             }
 
             try {
-                subMenuObservers[type]?.disconnect();
+                subMenuObservers[type].disconnect();
                 subMenuObservers[type] = null;
                 onExit()
             } catch (err) {
@@ -194,7 +194,7 @@ function closeSubMenuDesktop(item, subMenu, overlay) {
     subMenu.style.display = 'none';
     item.setAttribute("aria-expanded", "false");
     item.classList.remove("tpr-header-menu__arrow-up");
-    overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
+    overlay.classList.remove("tpr-header-menu__nav-overlay--visible");
 }
 
 function openSubMenuDesktop(item, subMenu, overlay) {

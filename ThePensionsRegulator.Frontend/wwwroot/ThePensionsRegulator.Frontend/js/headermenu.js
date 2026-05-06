@@ -1,5 +1,4 @@
-﻿
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
 
 
     highlightCurrentSection();
@@ -22,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isMobile) {
 
             mobileMenuInnerContainers.forEach(m => m.classList.add("tpr-mobile-menu__container-inner--hidden"));
-            toggles.forEach(t => t.classList.remove("tpr-header-menu__button--hidden")); 
+            toggles.forEach(t => t.classList.remove("tpr-header-menu__button--hidden"));
             noJsLinks.forEach(l => l.classList.add("tpr-mobile-menu__no-js-link--hidden"))
             toggles.forEach(t => t.addEventListener("click", toggleMobileMenu));
             toggles.forEach(t => t.addEventListener("keydown", keyboardToggleMobileMenu));
@@ -155,63 +154,47 @@ function handleOutsideClick(e) {
     openItem.focus();
 }
 
-let desktopSubMenuObserver = null;
+let subMenuObservers = { desktop: null, mobile: null };
 
-function observeSubMenuVisibilityDesktop(item, subMenu, overlay) {
-
-    if (!("IntersectionObserver" in window)) return;
-
-    if (desktopSubMenuObserver) {
-        desktopSubMenuObserver.disconnect();
-    }
-
-    desktopSubMenuObserver = new IntersectionObserver(([entry]) => {
-        if (!entry.isIntersecting) {
-            closeSubMenuDesktop(item, subMenu, overlay);
-        }
-    },
-        {
-            root: null,
-            threshold: 0
-        }
-
-    );
-    desktopSubMenuObserver.observe(subMenu);
-}
-
-let mobileSubMenuObserver = null;
-function observeSubMenuVisibilityMobile(menu) {
+function observeSubMenuVisibility(type, element, onExit) {
 
     if (!("IntersectionObserver" in window)) return;
 
-    if (mobileSubMenuObserver) {
-        mobileSubMenuObserver.disconnect();
+    if (subMenuObservers[type]) {
+        subMenuObservers[type].disconnect();
     }
 
-    mobileSubMenuObserver = new IntersectionObserver(([entry]) => {
+    subMenuObservers[type] = new IntersectionObserver(([entry]) => {
         if (!entry.isIntersecting) {
-            closeMobileMenu()
-        }
-    },
-        {
-            root: null,
-            threshold: 0
-        }
 
-    );
-    mobileSubMenuObserver.observe(menu);
+            if (type === 'mobile') {
+               
+                const mobileIsOpen = document.querySelector(".tpr-header-menu__nav-container--active") !== null;
+                if (!mobileIsOpen) return;
+            }
+
+            try {
+                subMenuObservers[type]?.disconnect();
+                subMenuObservers[type] = null;
+                onExit()
+            } catch (err) {
+                
+                console.error(err);
+            }
+        }
+    }, {
+        root: null,
+        threshold: 0
+    });
+
+    subMenuObservers[type].observe(element);
 }
 
 function closeSubMenuDesktop(item, subMenu, overlay) {
     subMenu.style.display = 'none';
     item.setAttribute("aria-expanded", "false");
     item.classList.remove("tpr-header-menu__arrow-up");
-    overlay.classList.remove("tpr-header-menu__nav-overlay--visible");
-
-    if (desktopSubMenuObserver) {
-        desktopSubMenuObserver.disconnect();
-        desktopSubMenuObserver = null;
-    }
+    overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
 }
 
 function openSubMenuDesktop(item, subMenu, overlay) {
@@ -221,7 +204,7 @@ function openSubMenuDesktop(item, subMenu, overlay) {
     subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style");
     overlay.classList.add("tpr-header-menu__nav-overlay--visible");
 
-    observeSubMenuVisibilityDesktop(item, subMenu, overlay);
+    observeSubMenuVisibility('desktop', subMenu, () => closeSubMenuDesktop(item, subMenu, overlay));
 }
 
 function keyboardToggleMobileMenu(e) {
@@ -410,30 +393,41 @@ function closeMobileMenu() {
     });
 
 }
-function toggleMobileMenu() {
 
+function openMobileMenu() {
     const toggle = document.querySelector(".tpr-header-menu__button");
-    toggle.classList.toggle("tpr-header-menu__button--open");
+    if (!toggle) return;
+    if (toggle.classList.contains("tpr-header-menu__button--open")) return;
+
+    toggle.classList.add("tpr-header-menu__button--open");
 
     const svgs = document.querySelectorAll(".tpr-mobile-menu__svg");
-    svgs.forEach(s => s.classList.toggle("tpr-mobile-menu__svg--hide"));
+    svgs.forEach(s => s.classList.add("tpr-mobile-menu__svg--hide"));
 
     const button = document.querySelector(".tpr-header-menu__button-inner");
     if (button) {
-        const closeButtonText = button.getAttribute("data-close-label");
-        const openButtonText = button.getAttribute("data-open-label")
-        const isMenu = button.textContent === closeButtonText;
-        button.textContent = isMenu ? openButtonText : closeButtonText;
-        button.classList.toggle("tpr-header-menu__button-inner--opened")
+        const openButtonText = button.getAttribute("data-open-label");
+        button.textContent = openButtonText;
+        button.classList.add("tpr-header-menu__button-inner--opened")
 
-        const expanded = toggle.getAttribute("aria-expanded") === "true";
-        toggle.setAttribute("aria-expanded", !expanded);
+        toggle.setAttribute("aria-expanded", true);
     }
 
     document.querySelectorAll(".tpr-header-menu__nav-container").forEach((nav) => {
-        nav.classList.toggle("tpr-header-menu__nav-container--active");
-        observeSubMenuVisibilityMobile(nav)
+        nav.classList.add("tpr-header-menu__nav-container--active");
+        observeSubMenuVisibility('mobile', nav, closeMobileMenu)
     });
+}
+
+function toggleMobileMenu() {
+    const toggle = document.querySelector(".tpr-header-menu__button");
+    if (!toggle) return;
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    if (expanded) {
+        closeMobileMenu();
+    } else {
+        openMobileMenu();
+    }
 }
 
 function expandMobileMenuSubMenu(e) {

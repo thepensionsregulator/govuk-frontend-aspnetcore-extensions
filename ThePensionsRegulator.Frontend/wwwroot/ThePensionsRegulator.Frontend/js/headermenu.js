@@ -386,10 +386,17 @@ function closeMobileMenu() {
 
     document.querySelectorAll(".tpr-header-menu__nav-container").forEach((nav) => {
         nav.classList.remove("tpr-header-menu__nav-container--active");
-        const arrow = nav.querySelector(".tpr-header-menu__arrow");
-        arrow.classList.remove("tpr-header-menu__arrow-down");
-        arrow.setAttribute("aria-expanded", false);
-        const subMenu = nav.querySelector(".tpr-header-menu__nav-sub-menu").classList.remove("tpr-header-menu__nav-sub-menu--active")
+
+        nav.querySelectorAll(".tpr-header-menu__arrow").forEach(arrow => {
+            arrow.classList.remove("tpr-header-menu__arrow-down");
+            arrow.classList.add("tpr-header-menu__arrow-right");
+            arrow.setAttribute("aria-expanded", "false");
+        });
+
+        nav.querySelectorAll(".tpr-header-menu__nav-sub-menu").forEach(subMenu => {
+            subMenu.classList.remove("tpr-header-menu__nav-sub-menu--active");
+        });
+
     });
 
 }

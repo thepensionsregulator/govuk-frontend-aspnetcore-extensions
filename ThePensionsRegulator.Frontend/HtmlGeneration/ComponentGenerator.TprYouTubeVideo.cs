@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ThePensionsRegulator.GovUk.Frontend;
+using ThePensionsRegulator.GovUk.Frontend.Typography;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -7,6 +8,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         internal const string YouTubeVideoDefaultPreload = "metadata";
         internal const string YouTubeVideoElement = "video";
+        internal const int YouTubeVideoMinHeadingLevel = 2;
+        internal const int YouTubeVideoMaxHeadingLevel = 5;
+        internal const int YouTubeVideoDefaultHeadingLevel = 2;
 
         public virtual TagBuilder GenerateTprAblePlayer(TprYouTubeVideo video)
         {
@@ -31,13 +35,16 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public virtual TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(TprYouTubeVideo video)
         {
             Guard.ArgumentNotNullOrEmpty(nameof(video.YouTubeVideoId), video.YouTubeVideoId);
-            Guard.ArgumentNotNullOrEmpty(nameof(video.HeadingLevel), video.HeadingLevel);
+            if (video.HeadingLevel < YouTubeVideoMinHeadingLevel || video.HeadingLevel > YouTubeVideoMaxHeadingLevel)
+            {
+                throw new ArgumentOutOfRangeException(nameof(video.HeadingLevel), $"{nameof(video.HeadingLevel)} must be between {YouTubeVideoMinHeadingLevel} and {YouTubeVideoMaxHeadingLevel}.");
+            }
 
             var containerTag = new TagBuilder("div");
             containerTag.MergeAttributes(video.Attributes);
             containerTag.AddCssClass("tpr-video-wrapper-no-cookies");
 
-            var heading = new TagBuilder(video.HeadingLevel);
+            var heading = new TagBuilder($"h{video.HeadingLevel}");
             if (!string.IsNullOrWhiteSpace(video.HeadingSize))
             {
                 heading.AddCssClass(video.HeadingSize);
@@ -49,9 +56,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             if (!string.IsNullOrWhiteSpace(video.Description))
             {
                 var description = new TagBuilder("div");
-                description.AddCssClass("govuk-body");
                 description.AddCssClass("tpr-video-wrapper-no-cookies__description");
-                description.InnerHtml.AppendHtml(video.Description);
+                description.InnerHtml.AppendHtml(GovUkTypography.Apply(video.Description));
                 containerTag.InnerHtml.AppendHtml(description);
             }
 

@@ -36,8 +36,8 @@
         return;
     }
     string id = Model.Content.Key.ToString();
-    var title = Model.Content.Value<string?>(TprPropertyAliases.VideoTitle) ?? string.Empty;
-    var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var title = Model.Content.Value<string>(TprPropertyAliases.VideoTitle) ?? string.Empty;
+    var cssClasses = Model.Settings.Value<string?>(PropertyAliases.CssClasses);
     var transcriptLink = Model.Content.Value<Link>(TprPropertyAliases.VideoTranscriptUrl);
     var transcriptUrl = string.Empty;
     var transcriptTarget = string.Empty;
@@ -71,7 +71,6 @@
     {
         numericHeadingLevel = 2;
     }
-    var headingLevel = $"h{numericHeadingLevel}";
 
     var headingClasses = headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem);
     var headingClass = Model.Settings.Value<string>(TprPropertyAliases.VideoHeadingSize);
@@ -87,8 +86,12 @@
         };
     }
 
-    var iframeTitle = Umbraco.GetDictionaryValueOrDefault("Video title", "{{VIDEO_TITLE}} (video)");
-    iframeTitle = iframeTitle.Replace("{{VIDEO_TITLE}}", title);
+    var iframeTitleTemplate = Umbraco.GetDictionaryValueOrDefault("Video title", "{{VIDEO_TITLE}} (video)");
+    if (string.IsNullOrWhiteSpace(iframeTitleTemplate) || !iframeTitleTemplate.Contains("{{VIDEO_TITLE}}"))
+    {
+        iframeTitleTemplate = "{{VIDEO_TITLE}} (video)";
+    }
+    var iframeTitle = iframeTitleTemplate.Replace("{{VIDEO_TITLE}}", title);
 }
 <tpr-youtube-video id="@id"
                    class="@cssClasses"
@@ -98,7 +101,7 @@
                    use-able-player="@useAblePlayer"
                    autoplay="@autoplay"
                    plays-inline="@playsInline"
-                   heading-level="@headingLevel"
+                   heading-level="@numericHeadingLevel"
                    heading-size="@headingClass"
                    transcript-url="@transcriptUrl"
                    transcript-title="@transcriptTitle"

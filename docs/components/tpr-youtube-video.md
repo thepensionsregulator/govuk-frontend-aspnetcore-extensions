@@ -16,7 +16,7 @@ The YouTube video component embeds a YouTube video in a page using the official 
     autoplay="false"
     plays-inline="true"
     description="<p>A summary of the video for users who cannot watch it.</p>"
-    heading-level="h2"
+    heading-level="2"
     heading-size="govuk-heading-m"
     iframe-title="Master Trusts conference by The Pensions Regulator (video)"
     transcript-url="https://example.org/my-video-transcript"
@@ -32,13 +32,13 @@ The YouTube video component embeds a YouTube video in a page using the official 
 | Attribute           | Type     | Description                                                                                                                                                                                                                           |
 | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `autoplay`          | `bool`   | Start playing the video when the page loads. Should be avoided as it [creates accessibility problems and uses unnecessary bandwidth](https://abilitynet.org.uk/news-blogs/why-autoplay-accessibility-issue). Default is `false`.      |
-| `description`       | `string` | Optional HTML description displayed between the heading and the video. Default is `null`.                                                                                                                                             |
-| `heading-level`     | `string` | The HTML heading element used for the video title (e.g. `h2`, `h3`, `h4`, `h5`). Default is `h2`.                                                                                                                                     |
+| `description`       | `string` | Optional HTML description displayed between the heading and the video. GOV.UK Frontend typography classes are applied automatically using `GovUkTypography.Apply()`. Default is `null`.                                              |
+| `heading-level`     | `int`    | The level of HTML heading element used for the video title. Valid values are `2` to `5`. Default is `2`.                                                                                                                              |
 | `heading-size`      | `string` | The GOV.UK heading class applied to the heading (e.g. `govuk-heading-m`). Default is `govuk-heading-m`.                                                                                                                               |
 | `iframe-title`      | `string` | The accessible title of the YouTube `<iframe>`, exposed to assistive technology. Defaults to the value of the `title` attribute.                                                                                                      |
 | `plays-inline`      | `bool`   | Applies to iOS devices only. Sets whether to play the video within the web page rather than full-screen. Default is `true`.                                                                                                           |
 | `preload`           | `string` | Applies when `use-able-player="true"`. Tells the browser how much media to download when the page loads. Valid values are `auto`, `metadata` or `none`. Defaults to `metadata`.                                                       |
-| `title`             | `string` | A brief description of the video, displayed as the heading above the video.                                                                                                                                                           |
+| `title`             | `string` | **Required.** A brief description of the video, displayed as the heading above the video.                                                                                                                                             |
 | `transcript-url`    | `string` | URL of a transcript of the video. Default is `null`.                                                                                                                                                                                  |
 | `transcript-target` | `string` | Sets the `target` attribute of the link to the transcript when `transcript-url` is set. Default is `null`.                                                                                                                            |
 | `transcript-title`  | `string` | Text used to link to a transcript when `transcript-url` is set. Defaults to `View transcript for '{{title}}'` (where `{{title}}` is the value of the `title` attribute), or `View transcript for video` when `title` is blank.                          |

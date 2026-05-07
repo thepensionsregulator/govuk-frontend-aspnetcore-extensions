@@ -11,7 +11,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public required bool PlaysInline { get; set; }
         public required string Preload { get; set; }
         public required string? Description { get; set; }
-        public required string HeadingLevel { get; set; }
+        public required int HeadingLevel { get; set; }
         public required string? HeadingSize { get; set; }
         public required string? TranscriptUrl { get; set; }
         public required string? TranscriptTitle { get; set; }

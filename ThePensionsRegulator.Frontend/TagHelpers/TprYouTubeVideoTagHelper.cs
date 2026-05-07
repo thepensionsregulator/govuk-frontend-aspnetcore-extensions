@@ -38,7 +38,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private string _preload = ComponentGenerator.YouTubeVideoDefaultPreload;
         private bool _useAblePlayer = false;
         private string? _description = null;
-        private string _headingLevel = "h2";
+        private int _headingLevel = ComponentGenerator.YouTubeVideoDefaultHeadingLevel;
         private string? _headingClass = "govuk-heading-m";
         private string? _transcriptUrl = null;
         private string? _transcriptTitle = null;
@@ -110,10 +110,17 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         }
 
         [HtmlAttributeName(HeadingLevelAttributeName)]
-        public string HeadingLevel
+        public int HeadingLevel
         {
             get => _headingLevel;
-            set => _headingLevel = Guard.ArgumentNotNullOrEmpty(nameof(value), value);
+            set
+            {
+                if (value < ComponentGenerator.YouTubeVideoMinHeadingLevel || value > ComponentGenerator.YouTubeVideoMaxHeadingLevel)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), $"The {HeadingLevelAttributeName} attribute must be between {ComponentGenerator.YouTubeVideoMinHeadingLevel} and {ComponentGenerator.YouTubeVideoMaxHeadingLevel}.");
+                }
+                _headingLevel = value;
+            }
         }
 
         [HtmlAttributeName(HeadingSizeAttributeName)]
@@ -155,6 +162,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         /// <inheritdoc/>
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            if (string.IsNullOrEmpty(Title))
+            {
+                throw new InvalidOperationException($"The {TitleAttributeName} attribute is required on the <{TagName}> tag helper.");
+            }
+
             TagBuilder tagBuilder;
             if (UseAblePlayer)
             {

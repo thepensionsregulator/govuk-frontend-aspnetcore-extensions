@@ -22,9 +22,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string PlaysInlineAttributeName = "plays-inline";
         private const string PreloadAttributeName = "preload";
         private const string UseAblePlayerAttributeName = "use-able-player";
+        private const string DescriptionAttributeName = "description";
+        private const string HeadingLevelAttributeName = "heading-level";
+        private const string HeadingSizeAttributeName = "heading-size";
         private const string TranscriptUrlAttributeName = "transcript-url";
         private const string TranscriptTitleAttributeName = "transcript-title";
         private const string TranscriptTargetAttributeName = "transcript-target";
+        private const string IframeTitleAttributeName = "iframe-title";
         private readonly string[] MinimisedAttributeList = { "autoplay", "playsinline", "data-able-player", "data-youtube-nocookie", "allowfullscreen", "credentialless" };
 
         private string _title = string.Empty;
@@ -33,9 +37,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private bool _playsInline = true;
         private string _preload = ComponentGenerator.YouTubeVideoDefaultPreload;
         private bool _useAblePlayer = false;
+        private string? _description = null;
+        private int _headingLevel = ComponentGenerator.YouTubeVideoDefaultHeadingLevel;
+        private string? _headingClass = "govuk-heading-m";
         private string? _transcriptUrl = null;
         private string? _transcriptTitle = null;
         private string? _transcriptTarget = null;
+        private string? _iframeTitle = null;
         private readonly ITprHtmlGenerator _htmlGenerator;
 
         /// <summary>
@@ -94,6 +102,34 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             set => _useAblePlayer = value;
         }
 
+        [HtmlAttributeName(DescriptionAttributeName)]
+        public string? Description
+        {
+            get => _description;
+            set => _description = value;
+        }
+
+        [HtmlAttributeName(HeadingLevelAttributeName)]
+        public int HeadingLevel
+        {
+            get => _headingLevel;
+            set
+            {
+                if (value < ComponentGenerator.YouTubeVideoMinHeadingLevel || value > ComponentGenerator.YouTubeVideoMaxHeadingLevel)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), $"The {HeadingLevelAttributeName} attribute must be between {ComponentGenerator.YouTubeVideoMinHeadingLevel} and {ComponentGenerator.YouTubeVideoMaxHeadingLevel}.");
+                }
+                _headingLevel = value;
+            }
+        }
+
+        [HtmlAttributeName(HeadingSizeAttributeName)]
+        public string? HeadingSize
+        {
+            get => _headingClass;
+            set => _headingClass = value;
+        }
+
         [HtmlAttributeName(TranscriptUrlAttributeName)]
         public string? TranscriptUrl
         {
@@ -116,9 +152,21 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         }
 
 
+        [HtmlAttributeName(IframeTitleAttributeName)]
+        public string? IframeTitle
+        {
+            get => _iframeTitle;
+            set => _iframeTitle = value;
+        }
+
         /// <inheritdoc/>
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+            if (string.IsNullOrEmpty(Title))
+            {
+                throw new InvalidOperationException($"The {TitleAttributeName} attribute is required on the <{TagName}> tag helper.");
+            }
+
             TagBuilder tagBuilder;
             if (UseAblePlayer)
             {
@@ -130,9 +178,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     Autoplay = Autoplay,
                     PlaysInline = PlaysInline,
                     Preload = Preload,
+                    Description = Description,
+                    HeadingLevel = HeadingLevel,
+                    HeadingSize = HeadingSize,
                     TranscriptUrl = TranscriptUrl,
                     TranscriptTitle = TranscriptTitle,
-                    TranscriptTarget = TranscriptTarget
+                    TranscriptTarget = TranscriptTarget,
+                    IframeTitle = IframeTitle ?? Title
                 });
             }
             else
@@ -145,9 +197,13 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     Autoplay = Autoplay,
                     PlaysInline = PlaysInline,
                     Preload = Preload,
+                    Description = Description,
+                    HeadingLevel = HeadingLevel,
+                    HeadingSize = HeadingSize,
                     TranscriptUrl = TranscriptUrl,
                     TranscriptTitle = TranscriptTitle,
-                    TranscriptTarget = TranscriptTarget
+                    TranscriptTarget = TranscriptTarget,
+                    IframeTitle = IframeTitle ?? Title
                 });
             }
 

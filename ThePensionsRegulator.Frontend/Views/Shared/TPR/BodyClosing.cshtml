@@ -1,3 +1,10 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using ThePensionsRegulator.Frontend
+@using Microsoft.Extensions.Options
+@inject IOptions<TprFrontendOptions> tprOptions
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <partial name="GOVUK/BodyClosing" />
 <script src="/ThePensionsRegulator.Frontend/js/tpr-back-to-top.min.js" type="module" asp-append-version="true"></script>
+@if (tprOptions.Value.EnableTableCsvDownload)
+{
+    <script src="/ThePensionsRegulator.Frontend/js/tpr-table-csv-download.min.js" type="module" asp-append-version="true"></script>
+}

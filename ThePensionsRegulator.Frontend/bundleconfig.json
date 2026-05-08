@@ -33,5 +33,12 @@
       "wwwroot/ThePensionsRegulator.Frontend/js/tpr-side-navigation.js"
     ],
     "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download.min.js",
+    "inputFiles": [
+      "wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download.js"
+    ],
+    "minify": { "enabled": true }
   }
 ]

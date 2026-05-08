@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ThePensionsRegulator.GovUk.Frontend;
+using ThePensionsRegulator.GovUk.Frontend.Typography;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -7,6 +8,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         internal const string YouTubeVideoDefaultPreload = "metadata";
         internal const string YouTubeVideoElement = "video";
+        internal const int YouTubeVideoMinHeadingLevel = 2;
+        internal const int YouTubeVideoMaxHeadingLevel = 5;
+        internal const int YouTubeVideoDefaultHeadingLevel = 2;
 
         public virtual TagBuilder GenerateTprAblePlayer(TprYouTubeVideo video)
         {
@@ -31,10 +35,32 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public virtual TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(TprYouTubeVideo video)
         {
             Guard.ArgumentNotNullOrEmpty(nameof(video.YouTubeVideoId), video.YouTubeVideoId);
+            if (video.HeadingLevel < YouTubeVideoMinHeadingLevel || video.HeadingLevel > YouTubeVideoMaxHeadingLevel)
+            {
+                throw new ArgumentOutOfRangeException(nameof(video.HeadingLevel), $"{nameof(video.HeadingLevel)} must be between {YouTubeVideoMinHeadingLevel} and {YouTubeVideoMaxHeadingLevel}.");
+            }
 
             var containerTag = new TagBuilder("div");
             containerTag.MergeAttributes(video.Attributes);
             containerTag.AddCssClass("tpr-video-wrapper-no-cookies");
+
+            var heading = new TagBuilder($"h{video.HeadingLevel}");
+            if (!string.IsNullOrWhiteSpace(video.HeadingSize))
+            {
+                heading.AddCssClass(video.HeadingSize);
+            }
+            heading.AddCssClass("tpr-video-wrapper-no-cookies__heading");
+            heading.InnerHtml.AppendHtml(video.IframeTitle);
+            containerTag.InnerHtml.AppendHtml(heading);
+
+            if (!string.IsNullOrWhiteSpace(video.Description))
+            {
+                var description = new TagBuilder("div");
+                description.AddCssClass("tpr-video-wrapper-no-cookies__description");
+                description.InnerHtml.AppendHtml(GovUkTypography.Apply(video.Description));
+                containerTag.InnerHtml.AppendHtml(description);
+            }
+
             var wrapperTag = new TagBuilder("div");
             wrapperTag.AddCssClass("tpr-video-wrapper-no-cookies__video-container");
 
@@ -46,8 +72,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             }
 
             iFrame.Attributes.Add("src", src);
-            iFrame.Attributes.Add("title", video.Title);
-            iFrame.Attributes.Add("frameborder", "0");
+            iFrame.Attributes.Add("title", video.IframeTitle);
             iFrame.Attributes.Add("allow", "accelerometer; autoplay;  encrypted-media; gyroscope; picture-in-picture; web-share");
             iFrame.Attributes.Add("referrerpolicy", "strict-origin-when-cross-origin");
             iFrame.Attributes.Add("allowfullscreen", null);
@@ -59,6 +84,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             if (!string.IsNullOrWhiteSpace(video.TranscriptUrl))
             {
+                var transcriptContainer = new TagBuilder("div");
+                transcriptContainer.AddCssClass("tpr-video-wrapper-no-cookies__transcript-container");
+
                 var transcriptLink = new TagBuilder("a");
                 transcriptLink.AddCssClass("tpr-video-wrapper-no-cookies__transcript-link");
                 transcriptLink.Attributes.Add("href", video.TranscriptUrl);
@@ -66,8 +94,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 {
                     transcriptLink.Attributes.Add("target", video.TranscriptTarget);
                 }
-                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle ?? $"View transcript for '{video.Title}'");
-                containerTag.InnerHtml.AppendHtml(transcriptLink);
+                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle ?? (string.IsNullOrWhiteSpace(video.Title) ? "View transcript for video" : $"View transcript for '{video.Title}'"));
+
+                transcriptContainer.InnerHtml.AppendHtml(transcriptLink);
+                containerTag.InnerHtml.AppendHtml(transcriptContainer);
             }
 
             return containerTag;

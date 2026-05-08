@@ -19,7 +19,7 @@ AppConfig? config = builder.Configuration.GetSection("AppConfig").Get<AppConfig>
 
 if (config?.TPRStyles == true)
 {
-    builder.Services.AddTprFrontend();
+    builder.Services.AddTprFrontend((TprFrontendOptions options) => { options.EnableTableCsvDownload = true; });
 }
 else
 {

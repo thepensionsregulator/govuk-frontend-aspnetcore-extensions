@@ -5,6 +5,7 @@ using GovUk.Frontend.Umbraco.ExampleApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
+using ThePensionsRegulator.Frontend;
 using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
@@ -21,13 +22,16 @@ AppConfig? config = builder.Configuration.GetSection("AppConfig").Get<AppConfig>
 
 if (config?.TPRStyles == true)
 {
-    builder.Services.AddTprFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+    builder.Services.AddTprFrontendUmbraco(
+        umbracoOptions => { umbracoOptions.RenderWidthContainerForBlocks = true; },
+        tprOptions => { tprOptions.EnableTableCsvDownload = true; }
+    );
     builder.Services.Remove(builder.Services.First(builder => builder.ServiceType == typeof(ITprSideNavigationLinksService)));
     builder.Services.AddTransient<ITprSideNavigationLinksService, SideNavigationLinksServiceForExampleApp>();
 }
 else
 {
-    builder.Services.AddTprGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+    builder.Services.AddTprGovUkFrontendUmbraco(options => { options.RenderWidthContainerForBlocks = true; });
     builder.Services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/TPR/{0}.cshtml"));
     builder.Services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
 }

@@ -65,7 +65,7 @@ steps:
       command: custom
       workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions'
       customCommand: "audit --level moderate --groups dependencies"
-    displayName: npm audit
+    displayName: npm audit root project
 
   - task: Npm@1
     inputs:
@@ -76,10 +76,24 @@ steps:
 
   - task: Npm@1
     inputs:
+      command: custom
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.GovUk.Frontend.Umbraco\Backoffice'
+      customCommand: "audit --level moderate --groups dependencies"
+    displayName: npm audit GOV.UK backoffice
+
+  - task: Npm@1
+    inputs:
       command: ci
       workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.GovUk.Frontend.Umbraco\Backoffice'
     displayName: npm ci GOV.UK backoffice
     condition: ne(variables.GOVUK_UMBRACO_BACKOFFICE_CACHE_RESTORED, 'true')
+
+  - task: Npm@1
+    inputs:
+      command: custom
+      workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\Backoffice'
+      customCommand: "audit --level moderate --groups dependencies"
+    displayName: npm audit TPR backoffice
 
   - task: Npm@1
     inputs:

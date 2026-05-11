@@ -95,7 +95,7 @@ steps:
       customCommand: "audit --level moderate --groups dependencies"
     displayName: npm audit TPR backoffice
 
-    - task: Npm@1
+  - task: Npm@1
     inputs:
       command: ci
       workingDir: '$(Build.SourcesDirectory)\govuk-frontend-aspnetcore-extensions\ThePensionsRegulator.Frontend.Umbraco\Backoffice'

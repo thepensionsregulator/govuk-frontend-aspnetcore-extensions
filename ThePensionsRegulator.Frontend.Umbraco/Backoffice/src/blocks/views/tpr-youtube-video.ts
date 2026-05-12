@@ -1,17 +1,22 @@
-import { html, customElement, LitElement, property } from '@umbraco-cms/backoffice/external/lit';
+import { html, customElement, LitElement, property, unsafeHTML } from '@umbraco-cms/backoffice/external/lit';
 import { UmbElementMixin } from '@umbraco-cms/backoffice/element-api';
 import type { UmbBlockEditorCustomViewElement, UmbBlockEditorCustomViewConfiguration } from '@umbraco-cms/backoffice/block-custom-view';
 import type { UmbBlockDataType } from '@umbraco-cms/backoffice/block';
+import { UmbPropertyEditorRteValueType } from '@umbraco-cms/backoffice/rte';
 import { ILinkPickerModel } from '../types/ILinkPickerModel';
+import { disableLinks } from '../helpers/html-helper';
 import { PACKAGE_VERSION } from '../../package-version.generated';
 interface ITprYouTubeVideoContent extends UmbBlockDataType {
     title: string;
+    description: UmbPropertyEditorRteValueType;
     url: string;
     transcriptUrl: Array<ILinkPickerModel>;
 }
 
 interface ITprYouTubeVideoSettings extends UmbBlockDataType {
     cssClasses: string;
+    headingClass: string;
+    headingLevel: string;
 }
 
 
@@ -47,17 +52,37 @@ export class TprYouTubeVideoView extends UmbElementMixin(LitElement) implements 
         return { success: !!videoId, videoId };
     }
 
+    #renderHeading(title: string | undefined, headingClass: string | undefined, headingLevel: string | undefined) {
+        if (!title) return null;
+
+        const cssClass = `${headingClass || 'govuk-heading-m'} tpr-video-wrapper-no-cookies__heading`;
+
+        switch (headingLevel) {
+            case 'Heading 3':
+                return html`<h3 class="${cssClass}">${title}</h3>`;
+            case 'Heading 4':
+                return html`<h4 class="${cssClass}">${title}</h4>`;
+            case 'Heading 5':
+                return html`<h5 class="${cssClass}">${title}</h5>`;
+            default:
+                return html`<h2 class="${cssClass}">${title}</h2>`;
+        }
+    }
+
     override render() {
         const parseUrlResult = this.#tryParseVideoUrl(this.content?.url);
+        const headingAndIframeTitle = this.content?.title ? `${this.content.title} (video)` : '(video)';
 
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
             <div class="tpr-video-wrapper-no-cookies ${this.settings?.cssClasses}">
+                ${this.#renderHeading(this.content?.title ? headingAndIframeTitle : undefined, this.settings?.headingClass?.[0], this.settings?.headingLevel?.[0])}
+                ${this.content?.description?.markup ? html`<div class="govuk-body tpr-video-wrapper-no-cookies__description">${unsafeHTML(disableLinks(this.content?.description?.markup))}</div>` : null}
                 <div class="tpr-video-wrapper-no-cookies__video-container">
-                    <iframe referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube-nocookie.com/embed/${parseUrlResult.videoId}" title="${this.content?.title}"></iframe>
+                    <iframe referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube-nocookie.com/embed/${parseUrlResult.videoId}" title="${headingAndIframeTitle}"></iframe>
                 </div>
-                ${this.content?.transcriptUrl?.length ? html`<span class="tpr-video-wrapper-no-cookies__transcript-link">View transcript for '${this.content?.title}'</span>` : null}
+                ${this.content?.transcriptUrl?.length ? html`<div class="tpr-video-wrapper-no-cookies__transcript-container"><span class="tpr-video-wrapper-no-cookies__transcript-link">${this.content?.transcriptUrl?.[0]?.name || (this.content?.title ? `View transcript for '${this.content.title}'` : 'View transcript for video')}</span></div>` : null}
              </div>
         </a>`;
     }

@@ -2,12 +2,14 @@
 @addTagHelper *, ThePensionsRegulator.Frontend
 @inject IYouTubeVideoIdParser videoIdParser
 @inject IConsentCookieReader consentCookie
+@inject IGovUkHeadingClassProvider headingClassProvider
 @using ThePensionsRegulator.Frontend.Security
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Services
 @using ThePensionsRegulator.GovUk.Frontend.Security
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco;
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco;
 @using ThePensionsRegulator.Umbraco.Core
 @using ThePensionsRegulator.Umbraco.Core.Blocks
@@ -22,10 +24,10 @@
     var useAblePlayer = false;
     if (useAblePlayer)
     {
-        if (!consentCookie.HasConsent(TprConsentCookieReader.TPR_CONSENT_CATEGORY_FUNCTIONALITY)){ useAblePlayer = false; }
+        if (!consentCookie.HasConsent(TprConsentCookieReader.TPR_CONSENT_CATEGORY_FUNCTIONALITY)) { useAblePlayer = false; }
     }
     var videoUrl = Model.Content.Value<string>(TprPropertyAliases.VideoUrl);
-    if(string.IsNullOrWhiteSpace(videoUrl))
+    if (string.IsNullOrWhiteSpace(videoUrl))
     {
         return;
     }
@@ -34,8 +36,8 @@
         return;
     }
     string id = Model.Content.Key.ToString();
-    var title = Model.Content.Value<string>(TprPropertyAliases.VideoTitle);
-    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+    var title = Model.Content.Value<string>(TprPropertyAliases.VideoTitle) ?? string.Empty;
+    var cssClasses = Model.Settings?.Value<string?>(PropertyAliases.CssClasses);
     var transcriptLink = Model.Content.Value<Link>(TprPropertyAliases.VideoTranscriptUrl);
     var transcriptUrl = string.Empty;
     var transcriptTarget = string.Empty;
@@ -44,26 +46,65 @@
         transcriptUrl = transcriptLink.Url;
         transcriptTarget = transcriptLink.Target;
     }
-    var transcriptTitle = Umbraco.GetDictionaryValueOrDefault("YouTube video - transcript link text", "View transcript for '{{title}}'");
+    var transcriptTitle = string.Empty;
     if (!string.IsNullOrWhiteSpace(transcriptLink?.Name))
     {
         transcriptTitle = transcriptLink.Name;
     }
+    else if (string.IsNullOrWhiteSpace(title))
+    {
+        transcriptTitle = Umbraco.GetDictionaryValueOrDefault("YouTube video - transcript link text (no title)", "View transcript for video");
+    }
+    else
+    {
+        transcriptTitle = Umbraco.GetDictionaryValueOrDefault("YouTube video - transcript link text", "View transcript for '{{title}}'");
+    }
     transcriptTitle = transcriptTitle.Replace("{{title}}", title);
 
-    var autoplay = Model.Settings?.Value<bool>(TprPropertyAliases.VideoAutoplay) ?? false;
-    bool playsInline = Model.Settings?.Value<bool>(TprPropertyAliases.VideoPlaysInline) ?? true;
+    var autoplay = Model.Settings?.Value<bool?>(TprPropertyAliases.VideoAutoplay) ?? false;
+    bool playsInline = Model.Settings?.Value<bool?>(TprPropertyAliases.VideoPlaysInline) ?? true;
+    var description = Model.Content.Value<string?>(TprPropertyAliases.VideoDescription) ?? string.Empty;
+
+    var headingLevelProperty = Model.Settings?.Value<string>(TprPropertyAliases.VideoHeadingLevel) ?? string.Empty;
+    var headingLevelNumber = headingLevelProperty.Replace("heading ", string.Empty, StringComparison.OrdinalIgnoreCase).Trim();
+    if (!int.TryParse(headingLevelNumber, out int numericHeadingLevel) || numericHeadingLevel < 2 || numericHeadingLevel > 5)
+    {
+        numericHeadingLevel = 2;
+    }
+
+    var headingClasses = headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem);
+    var headingClass = Model.Settings?.Value<string>(TprPropertyAliases.VideoHeadingSize);
+    if (string.IsNullOrWhiteSpace(headingClass))
+    {
+        headingClass = numericHeadingLevel switch
+        {
+            2 => headingClasses.Heading2,
+            3 => headingClasses.Heading3,
+            4 => headingClasses.Heading4,
+            5 => headingClasses.Heading5,
+            _ => headingClasses.Heading2
+        };
+    }
+
+    var iframeTitleTemplate = Umbraco.GetDictionaryValueOrDefault("Video title", "{{VIDEO_TITLE}} (video)");
+    if (string.IsNullOrWhiteSpace(iframeTitleTemplate) || !iframeTitleTemplate.Contains("{{VIDEO_TITLE}}"))
+    {
+        iframeTitleTemplate = "{{VIDEO_TITLE}} (video)";
+    }
+    var iframeTitle = iframeTitleTemplate.Replace("{{VIDEO_TITLE}}", title);
 }
-<tpr-youtube-video
-    id="@id" 
-    class="@cssClasses"
-    title="@title"
-    youtube-video-id="@videoId"
-    use-able-player="@useAblePlayer"
-    autoplay="@autoplay"
-    plays-inline="@playsInline"
-    transcript-url="@transcriptUrl"
-    transcript-title="@transcriptTitle"
-    transcript-target="@transcriptTarget"
-    >
+<tpr-youtube-video id="@id"
+                   class="@cssClasses"
+                   title="@title"
+                   description="@description"
+                   youtube-video-id="@videoId"
+                   use-able-player="@useAblePlayer"
+                   autoplay="@autoplay"
+                   plays-inline="@playsInline"
+                   heading-level="@numericHeadingLevel"
+                   heading-size="@headingClass"
+                   transcript-url="@transcriptUrl"
+                   transcript-title="@transcriptTitle"
+                   transcript-target="@transcriptTarget"
+                   iframe-title="@iframeTitle">
 </tpr-youtube-video>

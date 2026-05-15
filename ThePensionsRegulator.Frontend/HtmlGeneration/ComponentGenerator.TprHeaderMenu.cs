@@ -7,19 +7,60 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         public TagBuilder GenerateTprHeaderMenu(TprHeaderMenu tprMobileMenu, TprHeaderBar tprHeaderBar)
         {
+            var mobileMenuContainer = new TagBuilder("div");
+            mobileMenuContainer.AddCssClass("tpr-mobile-menu__container-inner");
 
-            var mobileMenuToggle = new TagBuilder("a");
-            mobileMenuToggle.AddCssClass("tpr-mobile-menu__toggle");
-            mobileMenuToggle.Attributes.Add("href", tprHeaderBar.MobileMenuNoJsNavPage);
-            mobileMenuToggle.Attributes.Add("aria-live", "polite");
+            var icon = GenerateTprMobileMenuIcon();
+
+            var mobileMenuLink = new TagBuilder("a");
+            mobileMenuLink.AddCssClass("tpr-mobile-menu__no-js-link");
+            mobileMenuLink.AddCssClass("govuk-link");
+            mobileMenuLink.Attributes.Add("href", tprHeaderBar.MobileMenuNoJsNavPage);
+
+            var noJsIcon = new TagBuilder("div");
+            noJsIcon.AddCssClass("tpr-mobile-menu__icon-no-js");
+
+            var closeText = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuToggleClosed) ? "Menu" : tprHeaderBar.HeaderMenuToggleClosed;
+
+            var mobileMenuLinkInner = new TagBuilder("span");
+            mobileMenuLinkInner.AddCssClass("tpr-mobile-menu__no-js-link-inner");
+            mobileMenuLinkInner.Attributes.Add("data-close-label", closeText);
+            mobileMenuLinkInner.InnerHtml.Append(closeText);
+
+            var mobileMenuToggle = new TagBuilder("button");
+            mobileMenuToggle.AddCssClass("tpr-header-menu__button");
+            mobileMenuToggle.AddCssClass("tpr-header-menu__button--hidden");
+            mobileMenuToggle.Attributes.Add("aria-expanded", "false");
 
             if (tprMobileMenu.Attributes != null)
             {
                 mobileMenuToggle.MergeAttributes(mobileMenuToggle.Attributes);
             }
 
+            var closeButton = new TagBuilder("span");
+            closeButton.AddCssClass("tpr-header-menu__button-inner");
+
+            var openText = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuToggleOpen) ? "Close" : tprHeaderBar.HeaderMenuToggleOpen;
+            closeButton.Attributes.Add("data-open-label", openText);
+
+            closeButton.Attributes.Add("data-close-label", closeText);
+            closeButton.InnerHtml.Append(closeText);
+
+            mobileMenuToggle.InnerHtml.AppendHtml(icon);
+            mobileMenuToggle.InnerHtml.AppendHtml(closeButton);
+
+            mobileMenuLink.InnerHtml.AppendHtml(icon);
+            mobileMenuLink.InnerHtml.AppendHtml(mobileMenuLinkInner);
+
+            mobileMenuContainer.InnerHtml.AppendHtml(mobileMenuLink);
+            mobileMenuContainer.InnerHtml.AppendHtml(mobileMenuToggle);
+
+            return mobileMenuContainer;
+        }
+
+        public TagBuilder GenerateTprMobileMenuIcon()
+        {
             var icon = new TagBuilder("div");
-            icon.AddCssClass("tpr-mobile-menu__icon");
 
             var svgContainer = new TagBuilder("svg");
             svgContainer.Attributes.Add("viewBox", "0 0 17 16");
@@ -36,7 +77,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var svg2 = new TagBuilder("g");
             svg2.Attributes.Add("transform", "translate(1.000000, 1.000000)");
-            svg2.Attributes.Add("fill", "#434343");
+            svg2.AddCssClass("tpr-header-menu__menu-icon");
 
             var path1 = new TagBuilder("path");
             path1.Attributes.Add("d", "M16,0.938 C16,1.456 15.58,1.876 15.062,1.876 L0.98,1.876 C0.462,1.876 0.042,1.456 0.042,0.938 L0.042,0.938 C0.042,0.42 0.462,0 0.98,0 L15.062,0 C15.58,0 16,0.42 16,0.938 L16,0.938 L16,0.938 Z");
@@ -45,29 +86,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var path2 = new TagBuilder("path");
             path2.Attributes.Add("d", "M16,12.938 C16,13.456 15.58,13.876 15.062,13.876 L0.98,13.876 C0.462,13.876 0.042,13.456 0.042,12.938 L0.042,12.938 C0.042,12.42 0.462,12 0.98,12 L15.062,12 C15.58,12 16,12.42 16,12.938 L16,12.938 L16,12.938 Z");
-            path2.AddCssClass("tpr-header-menu__menu-icon");
             svg2.InnerHtml.AppendHtml(path2);
 
             var path3 = new TagBuilder("path");
             path3.Attributes.Add("d", "M16,6.938 C16,7.456 15.58,7.876 15.062,7.876 L0.98,7.876 C0.462,7.876 0.042,7.456 0.042,6.938 L0.042,6.938 C0.042,6.42 0.462,6 0.98,6 L15.062,6 C15.58,6 16,6.42 16,6.938 L16,6.938 L16,6.938 Z");
-            path3.AddCssClass("tpr-header-menu__menu-icon");
             svg2.InnerHtml.AppendHtml(path3);
-
-            var closeButton = new TagBuilder("button");
-            closeButton.AddCssClass("tpr-header-menu__button");
-            closeButton.Attributes.Add("aria-haspopup", "true");
-            closeButton.Attributes.Add("aria-expanded", "false");
-            closeButton.Attributes.Add("type", "button");
-
-            if (!string.IsNullOrEmpty(tprHeaderBar.HeaderMenuToggleOpen))
-            {
-                closeButton.Attributes.Add("data-open-label", tprHeaderBar.HeaderMenuToggleOpen);
-            }
-            if (!string.IsNullOrEmpty((tprHeaderBar.HeaderMenuToggleClosed)))
-            {
-                closeButton.Attributes.Add("data-close-label", tprHeaderBar.HeaderMenuToggleClosed);
-                closeButton.InnerHtml.Append(tprHeaderBar.HeaderMenuToggleClosed);
-            }
 
             svg1.InnerHtml.AppendHtml(svg2);
 
@@ -75,10 +98,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             icon.InnerHtml.AppendHtml(svgContainer);
 
-            mobileMenuToggle.InnerHtml.AppendHtml(icon);
-            mobileMenuToggle.InnerHtml.AppendHtml(closeButton);
-
-            return mobileMenuToggle;
+            return icon;
         }
 
         public TagBuilder GenerateTprHeaderNav(TprHeaderMenu headerMenu, TprHeaderBar tprHeaderBar)
@@ -86,10 +106,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var headerMenuNav = new TagBuilder("nav");
             headerMenuNav.AddCssClass("tpr-header-menu__nav-container");
 
-            if (!string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuAriaLabel))
-            {
-                headerMenuNav.Attributes.Add("aria-label", tprHeaderBar.HeaderMenuAriaLabel);
-            }
+            var navAriaLabel = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuAriaLabel) ? "Main navigation" : tprHeaderBar.HeaderMenuAriaLabel;
+            headerMenuNav.Attributes.Add("aria-label", navAriaLabel);
 
             var tprWrapper = new TagBuilder("div");
             tprWrapper.AddCssClass("tpr-header-menu__nav-inner-container");
@@ -141,14 +159,15 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
                     var arrow = new TagBuilder("button");
                     arrow.AddCssClass("tpr-header-menu__arrow");
-                    if (tprHeaderBar.HeaderMenuItemAriaLabel != null)
-                    {
-                        arrow.Attributes.Add("aria-label", $"{item.LinkText}: {tprHeaderBar.HeaderMenuItemAriaLabel}"); 
-                    }
+
+                    var menuItemAriaLabel = string.IsNullOrWhiteSpace(tprHeaderBar.HeaderMenuItemAriaLabel) ? "Click to expand the sub menu" : tprHeaderBar.HeaderMenuItemAriaLabel;
+                    arrow.Attributes.Add("aria-label", $"{item.LinkText}: {menuItemAriaLabel}");
+
                     arrow.Attributes.Add("aria-expanded", "true");
                     arrowContainer.InnerHtml.AppendHtml(arrow);
 
                     var anchorTag = new TagBuilder("a");
+                    anchorTag.AddCssClass("tpr-header-menu__nav-menu-item-link");
 
                     if (item.Attributes != null)
                     {

@@ -1,5 +1,4 @@
-﻿
-document.addEventListener("DOMContentLoaded", function () {
+﻿document.addEventListener("DOMContentLoaded", function () {
 
 
     highlightCurrentSection();
@@ -7,7 +6,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function SelectNavOption(e) {
 
-        const toggles = document.querySelectorAll(".tpr-mobile-menu__toggle");
+        const mobileMenuInnerContainers = document.querySelectorAll(".tpr-mobile-menu__container-inner");
+        const toggles = document.querySelectorAll(".tpr-header-menu__button");
+        const noJsLinks = document.querySelectorAll(".tpr-mobile-menu__no-js-link");
         const overlay = document.querySelectorAll(".tpr-header-menu__nav-overlay");
         const menuItems = document.querySelectorAll(".tpr-header-menu__nav-menu-item");
         const arrowContainers = document.querySelectorAll(".tpr-header-menu__arrow-container");
@@ -19,7 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (isMobile) {
 
-            toggles.forEach(t => t.removeAttribute("href"));
+            mobileMenuInnerContainers.forEach(m => m.classList.add("tpr-mobile-menu__container-inner--hidden"));
+            toggles.forEach(t => t.classList.remove("tpr-header-menu__button--hidden"));
+            noJsLinks.forEach(l => l.classList.add("tpr-mobile-menu__no-js-link--hidden"))
             toggles.forEach(t => t.addEventListener("click", toggleMobileMenu));
             toggles.forEach(t => t.addEventListener("keydown", keyboardToggleMobileMenu));
 
@@ -151,28 +154,40 @@ function handleOutsideClick(e) {
     openItem.focus();
 }
 
-let desktopSubMenuObserver = null;
+let subMenuObservers = { desktop: null, mobile: null };
 
-function observeSubMenuVisibility(item, subMenu, overlay) {
+function observeSubMenuVisibility(type, element, onExit) {
 
     if (!("IntersectionObserver" in window)) return;
 
-    if (desktopSubMenuObserver) {
-        desktopSubMenuObserver.disconnect();
+    if (subMenuObservers[type]) {
+        subMenuObservers[type].disconnect();
     }
 
-    desktopSubMenuObserver = new IntersectionObserver(([entry]) => {
+    subMenuObservers[type] = new IntersectionObserver(([entry]) => {
         if (!entry.isIntersecting) {
-            closeSubMenuDesktop(item, subMenu, overlay);
-        }
-    },
-        {
-            root: null,
-            threshold: 0
-        }
 
-    );
-    desktopSubMenuObserver.observe(subMenu);
+            if (type === 'mobile') {
+               
+                const mobileIsOpen = document.querySelector(".tpr-header-menu__nav-container--active") !== null;
+                if (!mobileIsOpen) return;
+            }
+
+            try {
+                subMenuObservers[type]?.disconnect();
+                subMenuObservers[type] = null;
+                onExit()
+            } catch (err) {
+                
+                console.error(err);
+            }
+        }
+    }, {
+        root: null,
+        threshold: 0
+    });
+
+    subMenuObservers[type].observe(element);
 }
 
 function closeSubMenuDesktop(item, subMenu, overlay) {
@@ -180,11 +195,6 @@ function closeSubMenuDesktop(item, subMenu, overlay) {
     item.setAttribute("aria-expanded", "false");
     item.classList.remove("tpr-header-menu__arrow-up");
     overlay?.classList.remove("tpr-header-menu__nav-overlay--visible");
-
-    if (desktopSubMenuObserver) {
-        desktopSubMenuObserver.disconnect();
-        desktopSubMenuObserver = null;
-    }
 }
 
 function openSubMenuDesktop(item, subMenu, overlay) {
@@ -194,7 +204,7 @@ function openSubMenuDesktop(item, subMenu, overlay) {
     subMenu.querySelector(".tpr-header-menu__nav-sub-menu-item").removeAttribute("style");
     overlay?.classList.add("tpr-header-menu__nav-overlay--visible");
 
-    observeSubMenuVisibility(item, subMenu, overlay);
+    observeSubMenuVisibility('desktop', subMenu, () => closeSubMenuDesktop(item, subMenu, overlay));
 }
 
 function keyboardToggleMobileMenu(e) {
@@ -357,29 +367,74 @@ function restoreDefaultMenuState(e) {
     });
 }
 
-function toggleMobileMenu() {
+function closeMobileMenu() {
+    const toggle = document.querySelector(".tpr-header-menu__button");
+    toggle.classList.remove("tpr-header-menu__button--open");
 
-    const toggle = document.querySelector(".tpr-mobile-menu__toggle");
-    toggle.classList.toggle("tpr-mobile-menu__toggle--open");
+    const svgs = document.querySelectorAll(".tpr-mobile-menu__svg");
+    svgs.forEach(s => s.classList.remove("tpr-mobile-menu__svg--hide"));
 
-    const svg = document.querySelector(".tpr-mobile-menu__svg");
-    svg?.classList.toggle("tpr-mobile-menu__svg--hide");
-
-    const button = document.querySelector(".tpr-header-menu__button");
+    const button = document.querySelector(".tpr-header-menu__button-inner");
     if (button) {
         const closeButtonText = button.getAttribute("data-close-label");
-        const openButtonText = button.getAttribute("data-open-label")
-        const isMenu = button.textContent === closeButtonText;
-        button.textContent = isMenu ? openButtonText : closeButtonText;
-        button.classList.toggle("tpr-header-menu__button--opened")
 
-        const expanded = button.getAttribute("aria-expanded") === "true";
-        button.setAttribute("aria-expanded", !expanded);
+        button.textContent = closeButtonText;
+        button.classList.remove("tpr-header-menu__button-inner--opened")
+
+        toggle.setAttribute("aria-expanded", false);
     }
 
     document.querySelectorAll(".tpr-header-menu__nav-container").forEach((nav) => {
-        nav.classList.toggle("tpr-header-menu__nav-container--active");
+        nav.classList.remove("tpr-header-menu__nav-container--active");
+
+        nav.querySelectorAll(".tpr-header-menu__arrow").forEach(arrow => {
+            arrow.classList.remove("tpr-header-menu__arrow-down");
+            arrow.classList.add("tpr-header-menu__arrow-right");
+            arrow.setAttribute("aria-expanded", "false");
+        });
+
+        nav.querySelectorAll(".tpr-header-menu__nav-sub-menu").forEach(subMenu => {
+            subMenu.classList.remove("tpr-header-menu__nav-sub-menu--active");
+        });
+
     });
+
+}
+
+function openMobileMenu() {
+    const toggle = document.querySelector(".tpr-header-menu__button");
+    if (!toggle) return;
+    if (toggle.classList.contains("tpr-header-menu__button--open")) return;
+
+    toggle.classList.add("tpr-header-menu__button--open");
+
+    const svgs = document.querySelectorAll(".tpr-mobile-menu__svg");
+    svgs.forEach(s => s.classList.add("tpr-mobile-menu__svg--hide"));
+
+    const button = document.querySelector(".tpr-header-menu__button-inner");
+    if (button) {
+        const openButtonText = button.getAttribute("data-open-label");
+        button.textContent = openButtonText;
+        button.classList.add("tpr-header-menu__button-inner--opened")
+
+        toggle.setAttribute("aria-expanded", true);
+    }
+
+    document.querySelectorAll(".tpr-header-menu__nav-container").forEach((nav) => {
+        nav.classList.add("tpr-header-menu__nav-container--active");
+        observeSubMenuVisibility('mobile', nav, closeMobileMenu)
+    });
+}
+
+function toggleMobileMenu() {
+    const toggle = document.querySelector(".tpr-header-menu__button");
+    if (!toggle) return;
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    if (expanded) {
+        closeMobileMenu();
+    } else {
+        openMobileMenu();
+    }
 }
 
 function expandMobileMenuSubMenu(e) {
@@ -412,7 +467,7 @@ function closeMobileMenuOnFocusLeave() {
     setTimeout(() => {
 
         const nav = document.querySelector(".tpr-header-menu__nav");
-        const toggle = document.querySelector(".tpr-header-menu__button");
+        const toggle = document.querySelector(".tpr-header-menu__button-inner");
 
         const activeElement = document.activeElement;
 
@@ -428,17 +483,17 @@ function removeActiveClasses() {
         nav.classList.remove("tpr-header-menu__nav-container--active");
     });
 
-    document.querySelectorAll(".tpr-mobile-menu__toggle").forEach((toggle) => {
-        toggle.classList.remove("tpr-mobile-menu__toggle--open");
+    document.querySelectorAll(".tpr-header-menu__button").forEach((toggle) => {
+        toggle.classList.remove("tpr-header-menu__button--open");
+        toggle.setAttribute("aria-expanded", "false");
 
-        var toggleText = toggle.querySelector(".tpr-header-menu__button")
-        toggleText.classList.remove("tpr-header-menu__button--opened")
-        toggleText.setAttribute("aria-expanded", "false");
+        var toggleText = toggle.querySelector(".tpr-header-menu__button-inner")
+        toggleText.classList.remove("tpr-header-menu__button-inner--opened")
 
         var svg = toggle.querySelector(".tpr-mobile-menu__svg")
         svg.classList.remove("tpr-mobile-menu__svg--hide")
 
-        const button = toggle.querySelector(".tpr-header-menu__button");
+        const button = toggle.querySelector(".tpr-header-menu__button-inner");
         button.textContent = button.getAttribute("data-close-label");
     });
 

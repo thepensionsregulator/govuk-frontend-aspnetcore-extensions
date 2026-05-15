@@ -148,7 +148,7 @@
             width: "large",
             validation: {
                 required: { message: "Enter a postcode" },
-                maxLength: { value: 20, message: "Postcode must be 20 characters or less" },
+                maxLength: { value: 10, message: "Postcode must be 10 characters or less" },
                 pattern: {
                     value: "^\\s*[A-Za-z]{1,2}[0-9]{1,2}[A-Za-z]?[\\s\\-]*[0-9][ABDEFGHJLNPQRSTUWXYZabdefghjlnpqrstuwxyz]{2}\\s*$",
                     message: "Enter a valid UK postcode"

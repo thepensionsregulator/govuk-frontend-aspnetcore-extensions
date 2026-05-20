@@ -155,53 +155,50 @@ describe("Address mapper", () => {
         });
     });
 
-    describe("mapFromManualUKEntry", () => {
-        it("all fields are populated", () => {
-            const result = mapper.mapFromManualUKEntry("10 Downing Street", "Westminster", "London", "Greater London", "SW1A 2AA");
+    describe("mapFromManualEntry", () => {
+        it("all fields are populated and county field exists when country is United Kingdom", () => {
+            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "London", "Greater London", "SW1A 2AA", ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY, "1");
 
             expect(result.addressLine1).toEqual("10 Downing Street");
             expect(result.addressLine2).toEqual("Westminster");
             expect(result.town).toEqual("London");
             expect(result.county).toEqual("Greater London");
             expect(result.postcode).toEqual("SW1A 2AA");
+            expect(result.country).toEqual("United Kingdom");
+            expect(result.countryCode).toEqual("1");
+
+            expect(result).not.toHaveProperty("region");
         });
 
+        it("all fields are populated and region field exists when country is not United Kingdom", () => {
+            const result = mapper.mapFromManualEntry("10 Rue de Rivoli", "", "Paris", "Île-de-France", "75001", "France", "FR");
+
+            expect(result.addressLine1).toEqual("10 Rue de Rivoli");
+            expect(result.addressLine2).toEqual("");
+            expect(result.town).toEqual("Paris");
+            expect(result.region).toEqual("Île-de-France");
+            expect(result.postcode).toEqual("75001");
+            expect(result.country).toEqual("France");
+            expect(result.countryCode).toEqual("FR");
+            expect(result).not.toHaveProperty("county");
+        }); 
+
+
+
         it("addressLine2 defaults to empty string when not provided", () => {
-            const result = mapper.mapFromManualUKEntry("10 Downing Street", undefined, "London", "Greater London", "SW1A 2AA");
+            const result = mapper.mapFromManualEntry("10 Downing Street", undefined, "London", "Greater London", "SW1A 2AA", "United Kingdom", "1");
 
             expect(result.addressLine2).toEqual("");
         });
 
         it("county defaults to empty string when not provided", () => {
-            const result = mapper.mapFromManualUKEntry("10 Downing Street", "Westminster", "London", undefined, "SW1A 2AA");
+            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "London", undefined, "SW1A 2AA", "United Kingdom", "1");
 
             expect(result.county).toEqual("");
         });
-    });
 
-    describe("mapFromManualInternationalEntry", () => {
-        it("all fields are populated", () => {
-            const result = mapper.mapFromManualInternationalEntry("1600 Pennsylvania Avenue", "Suite 1", "Washington", "DC", "United States", "US", "20500");
-
-            expect(result.addressLine1).toEqual("1600 Pennsylvania Avenue");
-            expect(result.addressLine2).toEqual("Suite 1");
-            expect(result.town).toEqual("Washington");
-            expect(result.county).toEqual("DC");
-            expect(result.country).toEqual("United States");
-            expect(result.countryCode).toEqual("US");
-            expect(result.postcode).toEqual("20500");
-        });
-
-        it("addressLine2 defaults to empty string when not provided", () => {
-            const result = mapper.mapFromManualInternationalEntry("1600 Pennsylvania Avenue", undefined, "Washington", "DC", "United States", "20500");
-
-            expect(result.addressLine2).toEqual("");
-        });
-
-        it("region defaults to empty string when not provided", () => {
-            const result = mapper.mapFromManualInternationalEntry("1600 Pennsylvania Avenue", "Suite 1", "Washington", undefined, "United States", "20500");
-
-            expect(result.county).toEqual("");
+        it("countryCode defaults to empty string when not provided", () => {
+            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "London", "Greater London", "SW1A 2AA", "United Kingdom", undefined);
         });
     });
 

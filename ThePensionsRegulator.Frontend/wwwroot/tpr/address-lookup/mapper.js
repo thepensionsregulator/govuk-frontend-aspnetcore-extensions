@@ -124,25 +124,16 @@
     }
 
 
-    mapFromManualUKEntry(addressLine1, addressLine2, town, county, postcode) {
+    mapFromManualEntry(addressLine1, addressLine2, town, countyOrRegion, postcode, country, countryCode) {
+        const isUK = country === this.config.DEFAULTS.COUNTRY;
         return {
             addressLine1: addressLine1,
             addressLine2: addressLine2 || '',
             town: town,
-            county: county || '',
-            postcode: postcode
-        };
-    }
-
-    mapFromManualInternationalEntry(addressLine1, addressLine2, town, region, country, countryCode, postcode) {
-        return {
-            addressLine1: addressLine1,
-            addressLine2: addressLine2 || '',
-            town: town,
-            county: region || '',
+            ...(isUK ? { county: countyOrRegion || '' } : { region: countyOrRegion || '' }),
             postcode: postcode,
             country: country,
-            countryCode: countryCode
+            countryCode: countryCode || ''
         };
     }
 

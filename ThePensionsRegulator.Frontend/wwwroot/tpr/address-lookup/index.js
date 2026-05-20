@@ -215,6 +215,9 @@ class TprAddressLookup {
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.UPRN]: address.UPRN
         };
 
+        //TODO: Why is county not being mapped to the correct input (or any input) for UK manual entry?!!!
+
+
         const fragment = document.createDocumentFragment();
         this.originalInputs.forEach(original => {
             const value = addressPropertyMap[original.dataAddressLookup];
@@ -408,7 +411,7 @@ class TprAddressLookup {
         const selectedCountry = countryInput.selectedOptions[0];
         const selectedCountryText = selectedCountry.text;
 
-        const address = this.addressMapper.mapFromManualInternationalEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, regionInput.value, selectedCountryText, countryInput.value, postcodeInput.value);
+        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, regionInput.value, postcodeInput.value, selectedCountryText, countryInput.value);
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 
@@ -428,7 +431,12 @@ class TprAddressLookup {
         }
 
         const normalisedPostcode = this.postcodeNormaliser.normalise(postcodeInput.value);
-        const address = this.addressMapper.mapFromManualUKEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, countyInput.value, normalisedPostcode);
+        const ukOption = this.countryOptions.find(option => option.text === ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY);
+        const countryName = ukOption ? ukOption.text : ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY;
+        const countryCode = ukOption ? ukOption.value : "";
+
+        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, countyInput.value, normalisedPostcode, countryName, countryCode);
+
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 

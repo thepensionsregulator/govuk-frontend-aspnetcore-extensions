@@ -15,6 +15,7 @@
   },
   "jest": {
     "testEnvironment": "jsdom",
+    "testPathIgnorePatterns": [ "test-helpers\\.js$" ],
     "roots": [
       "GovUk.Frontend.AspNetCore.Extensions",
       "ThePensionsRegulator.Frontend"

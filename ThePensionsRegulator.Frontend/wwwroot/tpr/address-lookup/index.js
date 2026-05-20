@@ -537,6 +537,14 @@ function submitOnClick(event, addressLookupObjects) {
         AddressLookupStateMachine.STATES.CONFIRMED
     ];
 
+    // Validate non-address-lookup fields on the form
+    const form = event.target.closest("form");
+    if (form) {
+        const isFormValid = $(form).valid();
+        if (!isFormValid) {
+            event.preventDefault();
+        }
+    }
 
     addressLookupObjects.forEach((addressLookup) => {
 
@@ -556,14 +564,7 @@ function submitOnClick(event, addressLookupObjects) {
         }
     });
 
-    // Validate non-address-lookup fields on the form
-    const form = event.target.closest("form");
-    if (form) {
-        const isFormValid = $(form).valid();
-        if (!isFormValid) {
-            event.preventDefault();
-        }
-    }
+
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -587,3 +588,6 @@ document.addEventListener("DOMContentLoaded", function () {
         formSubmitButton.addEventListener("click", (event) => { submitOnClick(event, addressLookupObjects); })
     }
 });
+
+
+export { submitOnClick };

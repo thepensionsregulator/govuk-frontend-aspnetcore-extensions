@@ -7,6 +7,7 @@ import { AddressMapper } from "./mapper.js";
 import { PostcodeSanitiser } from "./postcode-sanitiser.js";
 import { FieldDefaults } from "./field-defaults.js";
 import { PostcodeNormaliser } from "./postcode-normaliser.js";
+import { toTitleCase } from "./utils.js";
     
 class TprAddressLookup {
     constructor(element, key, role, primaryStateMachine) {
@@ -205,11 +206,11 @@ class TprAddressLookup {
 
     createHiddenInputsForAddress(address) {
         const addressPropertyMap = {
-            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1]: address.addressLine1,
-            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2]: address.addressLine2,
-            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY]: address.town,
-            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY]: address.county,
-            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY]: address.country,
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1]: toTitleCase(address.addressLine1),
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2]: toTitleCase(address.addressLine2),
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY]: toTitleCase(address.town),
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY]: toTitleCase(address.county),
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY]: toTitleCase(address.country),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY_CODE]: address.countryCode,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL]: address.postcode,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.UPRN]: address.UPRN

@@ -118,8 +118,8 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("internationalLabel")]
-		public virtual string InternationalLabel => this.Value<string>(_publishedValueFallback, "internationalLabel");
+		[ImplementPropertyType("internationalCountyLabel")]
+		public virtual string InternationalCountyLabel => this.Value<string>(_publishedValueFallback, "internationalCountyLabel");
 
 		///<summary>
 		/// International postcode label: Defaults to 'Postal code/ zip code' if left blank.

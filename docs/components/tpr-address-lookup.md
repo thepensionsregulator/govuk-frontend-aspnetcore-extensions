@@ -25,7 +25,8 @@ Without JavaScript, the original address input fields remain visible and usable.
                         data-address-lookup-building-label="Building or house number (optional)"
                         data-address-lookup-building-maxlength="Building or house number must be 100 characters or less"
                         data-address-lookup-select-address-label="Select address"
-                        data-address-lookup-select-address-required="Select an address">
+                        data-address-lookup-select-address-required="Select an address"
+                        data-address-lookup-error-messages-select-confirm="Confirm an address to save">
         <tpr-address-lookup-legend>Enter your address</tpr-address-lookup-legend>
         <tpr-address-lookup-hint id="address-lookup-hint">This should be your primary address</tpr-address-lookup-hint>
 
@@ -210,6 +211,7 @@ The following `data-*` attributes can be set on the `<tpr-address-lookup>` eleme
 | `data-address-lookup-county-maxlength`        | Error message when county exceeds max length.       |
 | `data-address-lookup-select-address-label`    | Label for the address select dropdown.              |
 | `data-address-lookup-select-address-required` | Error message when no address is selected.          |
+| `data-address-lookup-error-messages-select-confirm` | Error message when a user has selected an address but not confimred it | 
 
 ## View model
 

@@ -12,6 +12,9 @@ export function createMockAddressLookup(currentState) {
             addSelectError: jest.fn(),
             addOrUpdateCustomFieldsetError: jest.fn(),
         },
+        fieldDefaults: {
+            errorMessage: jest.fn((key) => `mock-error-${key}`),
+        },
         getComponentByDataAddressAttribute: jest.fn(() => document.createElement("select")),
     };
 }

@@ -39,9 +39,10 @@ describe("submitOnClick", () => {
         submitOnClick(event, [lookup]);
 
         expect(event.preventDefault).toHaveBeenCalled();
+        expect(lookup.fieldDefaults.errorMessage).toHaveBeenCalledWith("select-confirm");
         expect(lookup.validator.addSelectError).toHaveBeenCalledWith(
             expect.any(HTMLSelectElement),
-            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_CONFIRM
+            "mock-error-select-confirm"
         );
     });
 

@@ -24,6 +24,10 @@ export class FieldDefaults {
         return ADDRESS_LOOKUP_CONFIG.FIELD_DEFAULTS[key] || {};
     }
 
+    #errorDefaults(key) {
+        return ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES[key] || {};
+    }
+
     label(key) {
         return this.#captured(key)?.label
             ?? this.#fromAttr(key, "label")
@@ -65,5 +69,10 @@ export class FieldDefaults {
 
     width(key) {
         return this.#defaults(key).width;
+    }
+
+    errorMessage(key) {
+        return this.#fromAttr("error-messages", key)
+            ?? this.#errorDefaults(key);
     }
 }

@@ -84,6 +84,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string SectionCardDescriptionProperty = "descriptionFieldName";
         public const string SectionCardDescriptionPropertyDefault = "description";
         public const string SelectAddressErrorMessageRequired = "selectAddressErrorMessageRequired";
+        public const string SelectConfirmAddressErrorMessage = "selectConfirmAddressErrorMessage";
         public const string SelectAddressLabel = "selectAddressLabel";
         public const string SideNavigationRoot = "navigationRoot";
         public const string SideNavigationBlacklistedPages = "blacklistedPages";

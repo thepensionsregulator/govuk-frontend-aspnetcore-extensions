@@ -145,12 +145,20 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string CountyErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "countyErrorMessageMaxLength");
 
 		///<summary>
-		/// County model property: The name of the property on the view model being bound to county in the code.
+		/// International country error message max length: Sets the message displayed if the international county is set by the code to be of a maximum length.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("countyModelProperty")]
-		public virtual string CountyModelProperty => this.Value<string>(_publishedValueFallback, "countyModelProperty");
+		[ImplementPropertyType("internationalCountyErrorMessageMaxLength")]
+		public virtual string InternationalCountyErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "internationalCountyErrorMessageMaxLength");
+
+		///<summary>
+		/// International county model property: The name of the property on the view model being bound to the county or international county property in the code.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("internationalCountyModelProperty")]
+		public virtual string InternationalCountyModelProperty => this.Value<string>(_publishedValueFallback, "internationalCountyModelProperty");
 
 		///<summary>
 		/// Postcode error message maximum length: Sets the message displayed if postcode is set by the code to be of a maximum length.
@@ -169,7 +177,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string InternationalPostcodeErrorMessageRequired => this.Value<string>(_publishedValueFallback, "internationalPostcodeErrorMessageRequired");
 
 		///<summary>
-		/// International postcode model property: The name of the property on the view model being bound to postcode in the code.
+		/// International postcode model property: The name of the property on the view model being bound to postcode or international postcode in the code.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -207,6 +215,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("selectAddressErrorMessageRequired")]
 		public virtual string SelectAddressErrorMessageRequired => this.Value<string>(_publishedValueFallback, "selectAddressErrorMessageRequired");
+
+		///<summary>
+		/// Select confirm address errormessage: Sets the message displayed if user has not confirmed an address. Defaults to 'Select confirm address before saving this page'.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("selectConfirmAddressErrormessage")]
+		public virtual string SelectConfirmAddressErrormessage => this.Value<string>(_publishedValueFallback, "selectConfirmAddressErrormessage");
 
 		///<summary>
 		/// Town or city error message maximum length: Sets the message displayed if town or city is set by the code to be of a maximum length.

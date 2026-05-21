@@ -551,7 +551,8 @@ function submitOnClick(event, addressLookupObjects) {
         if (!submittableStates.includes(addressLookup.stateMachine.currentState)) {
             if (addressLookup.stateMachine.currentState === AddressLookupStateMachine.STATES.SELECT) {
                 const select = addressLookup.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS);
-                addressLookup.validator.addSelectError(select, ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_CONFIRM);
+                const errorMessage = addressLookup.fieldDefaults.errorMessage("select-confirm");
+                addressLookup.validator.addSelectError(select, errorMessage);
             } else {
                 const fieldset = addressLookup.container.querySelector("fieldset");
                 const errorMessage = addressLookup.stateMachine.currentState === AddressLookupStateMachine.STATES.SEARCH

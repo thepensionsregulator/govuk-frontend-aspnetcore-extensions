@@ -80,15 +80,15 @@
 
     var countryState = addressFieldStateHelper.GetFieldState(
             settings(TprPropertyAliases.CountryModelProperty),
-            content(TprPropertyAliases.CountryLabel),
-            Umbraco.GetDictionaryValueOrDefault("TPR address lookup country label", "Country"),
+            string.Empty,
+            string.Empty,
             ViewContext.ModelState
         );
 
     var countryCodeState = addressFieldStateHelper.GetFieldState(
             settings(TprPropertyAliases.CountryCodeModelProperty),
-            string.Empty,
-            string.Empty,
+            content(TprPropertyAliases.CountryLabel),
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup country label", "Country"),
             ViewContext.ModelState
         );
 
@@ -185,19 +185,20 @@
 
     <govuk-client-side-validation 
         error-message-required="@settings(TprPropertyAliases.CountryErrorMessageRequired)">
-        <govuk-select name="@countryState.ModelPropertyName" class="govuk-input--width-10" select-aria-invalid="@countryState.InvalidAriaLabel" select-autocomplete="country" select-data-address-lookup="country">
-            <govuk-select-label>@countryState.Label</govuk-select-label>
-            @if (countryState.HasErrorMessage)
+        <govuk-select name="@countryCodeState.ModelPropertyName" class="govuk-input--width-10" select-aria-invalid="@countryCodeState.InvalidAriaLabel" select-autocomplete="country" select-data-address-lookup="country-code">
+            <govuk-select-label>@countryCodeState.Label</govuk-select-label>
+            @if (countryCodeState.HasErrorMessage)
             {
-                <govuk-select-error-message>@countryState.ErrorMessage</govuk-select-error-message>
+                <govuk-select-error-message>@countryCodeState.ErrorMessage</govuk-select-error-message>
             }
             @{
                 var countries = countryRepository.GetCountries();
-                var selectEmpty = !countries.ContainsKey(countryState.AttemptedValue?.ToString() ?? string.Empty);
+                var selectEmpty = !countries.Any(x => x.Value.ToString() == countryCodeState.AttemptedValue); 
+
                 <govuk-select-item selected="@(selectEmpty)"></govuk-select-item>
                 foreach (var country in countries)
                 {
-                    var selected = country.Key.ToString() == countryState.AttemptedValue;
+                    var selected = country.Value.ToString() == countryCodeState.AttemptedValue;
                     <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                 }
             }
@@ -217,5 +218,5 @@
     </govuk-client-side-validation>
 
     <input type="hidden" id="@uprnState.ModelPropertyName" name="@uprnState.ModelPropertyName" value="@uprnState.AttemptedValue" data-address-lookup="UPRN"/>
-    <input type="hidden" id="@countryCodeState.ModelPropertyName" name="@countryCodeState.ModelPropertyName" value="@countryCodeState?.AttemptedValue" data-address-lookup="country-code"/>
+    <input type="hidden" id="@countryState.ModelPropertyName" name="@countryState.ModelPropertyName" value="@countryState?.AttemptedValue" data-address-lookup="country" />
 </tpr-address-lookup>

@@ -68,20 +68,20 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="Select a country">
-        <govuk-select for="ShippingCountry" select-class="govuk-input--width-20" select-autocomplete="country"
-                     select-data-address-lookup="country">
+        <govuk-select for="ShippingCountryCode" class="govuk-input--width-10" select-autocomplete="country"
+                      select-data-address-lookup="country-code">
             <govuk-select-label>Country</govuk-select-label>
-            @if (ViewContext.ModelState.ContainsKey("ShippingCountry") && ViewContext.ModelState["ShippingCountry"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("ShippingCountryCode") && ViewContext.ModelState["ShippingCountryCode"]!.Errors.Count > 0)
             {
-                <govuk-select-error-message>@ViewContext.ModelState["ShippingCountry"]!.Errors[0].ErrorMessage</govuk-select-error-message>
+                <govuk-select-error-message>@ViewContext.ModelState["ShippingCountryCode"]!.Errors[0].ErrorMessage</govuk-select-error-message>
             }
             @{
-                var countries = countryRepository.GetCountries();
-                var selectEmpty = !countries.ContainsKey(ViewContext.ModelState["ShippingCountry"]?.AttemptedValue?.ToString() ?? string.Empty);
-                <govuk-select-item selected="@(selectEmpty)"></govuk-select-item>
-                foreach (var country in countries)
+                var shippingCountries = countryRepository.GetCountries();
+                var shippingSelectEmpty = !shippingCountries.Any(x => x.Value.ToString() == (ViewContext.ModelState["ShippingCountryCode"]?.AttemptedValue ?? string.Empty));
+                <govuk-select-item selected="@(shippingSelectEmpty)"></govuk-select-item>
+                foreach (var country in shippingCountries)
                 {
-                    var selected = country.Key.ToString() == ViewContext.ModelState["ShippingCountry"]?.AttemptedValue;
+                    var selected = country.Value.ToString() == ViewContext.ModelState["ShippingCountryCode"]?.AttemptedValue;
                     <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                 }
             }
@@ -101,7 +101,7 @@
     </govuk-client-side-validation>
 
     <input type="hidden" id="ShippingUPRN" name="ShippingUPRN" value="@Model?.ShippingUPRN" data-address-lookup="UPRN" />
-    <input type="hidden" id="ShippingCountryCode" name="ShippingCountryCode" value="@Model?.ShippingCountryCode" data-address-lookup="country-code" />
+    <input type="hidden" id="ShippingCountry" name="ShippingCountry" value="@Model?.ShippingCountry" data-address-lookup="country" />
 </tpr-address-lookup>
 
 <h2 class="govuk-heading-m">Billing address</h2>
@@ -120,7 +120,8 @@
                     data-address-lookup-building-label="Building or house number (optional)"
                     data-address-lookup-building-maxlength="Building or house number must be 100 characters or less"
                     data-address-lookup-select-address-label="Select address"
-                    data-address-lookup-select-address-required="Select an address">
+                    data-address-lookup-select-address-required="Select an address"
+                    data-address-lookup-error-messages-select-confirm="Confirm an address to save">
 
     <tpr-address-lookup-legend>Billing address</tpr-address-lookup-legend>
 
@@ -171,20 +172,20 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="Select a country">
-        <govuk-select for="BillingCountry" select-class="govuk-input--width-20" select-autocomplete="country"
-                      select-data-address-lookup="country">
+        <govuk-select for="BillingCountryCode" class="govuk-input--width-10" select-autocomplete="country"
+                      select-data-address-lookup="country-code">
             <govuk-select-label>Country</govuk-select-label>
-            @if (ViewContext.ModelState.ContainsKey("BillingCountry") && ViewContext.ModelState["BillingCountry"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("BillingCountryCode") && ViewContext.ModelState["BillingCountryCode"]!.Errors.Count > 0)
             {
-                <govuk-select-error-message>@ViewContext.ModelState["BillingCountry"]!.Errors[0].ErrorMessage</govuk-select-error-message>
+                <govuk-select-error-message>@ViewContext.ModelState["BillingCountryCode"]!.Errors[0].ErrorMessage</govuk-select-error-message>
             }
             @{
-                var countries = countryRepository.GetCountries();
-                var selectEmpty = !countries.ContainsKey(ViewContext.ModelState["BillingCountry"]?.AttemptedValue?.ToString() ?? string.Empty);
-                <govuk-select-item selected="@(selectEmpty)"></govuk-select-item>
-                foreach (var country in countries)
+                var billingCountries = countryRepository.GetCountries();
+                var billingSelectEmpty = !billingCountries.Any(x => x.Value.ToString() == (ViewContext.ModelState["BillingCountryCode"]?.AttemptedValue ?? string.Empty));
+                <govuk-select-item selected="@(billingSelectEmpty)"></govuk-select-item>
+                foreach (var country in billingCountries)
                 {
-                    var selected = country.Key.ToString() == ViewContext.ModelState["BillingCountry"]?.AttemptedValue;
+                    var selected = country.Value.ToString() == ViewContext.ModelState["BillingCountryCode"]?.AttemptedValue;
                     <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                 }
             }
@@ -204,7 +205,7 @@
     </govuk-client-side-validation>
 
     <input type="hidden" id="BillingUPRN" name="BillingUPRN" value="@Model?.BillingUPRN" data-address-lookup="UPRN" />
-    <input type="hidden" id="BillingCountryCode" name="BillingCountryCode" value="@Model?.BillingCountryCode" data-address-lookup="country-code" />
+    <input type="hidden" id="BillingCountry" name="BillingCountry" value="@Model?.BillingCountry" data-address-lookup="country" />
 </tpr-address-lookup>
 
 <govuk-button type="submit">Save</govuk-button>

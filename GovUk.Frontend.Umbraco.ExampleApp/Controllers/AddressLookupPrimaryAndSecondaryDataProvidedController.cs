@@ -27,11 +27,13 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 ShippingSomethingReallyRandom = "Brighton",
                 ShippingPostcode = "BN1 6AF",
                 ShippingUPRN = "22275623",
+                ShippingCountryCode = 1,
                 BillingAddressLine1 = "Telecom House",
                 BillingAddressLine2 = "125-135 Preston Road",
                 BillingSomethingReallyRandom = "Brighton",
                 BillingPostcode = "BN1 6AF",
-                BillingUPRN = "22275623"
+                BillingUPRN = "22275623",
+                BillingCountryCode = 1
             };
 
             ModelState.SetInitialValue(nameof(viewModel.ShippingAddressLine1), viewModel.ShippingAddressLine1.ToString());
@@ -39,11 +41,13 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             ModelState.SetInitialValue(nameof(viewModel.ShippingSomethingReallyRandom), viewModel.ShippingSomethingReallyRandom.ToString());
             ModelState.SetInitialValue(nameof(viewModel.ShippingPostcode), viewModel.ShippingPostcode.ToString());
             ModelState.SetInitialValue(nameof(viewModel.ShippingUPRN), viewModel.ShippingUPRN.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.ShippingCountryCode), viewModel.ShippingCountryCode.ToString());
             ModelState.SetInitialValue(nameof(viewModel.BillingAddressLine1), viewModel.BillingAddressLine1.ToString());
             ModelState.SetInitialValue(nameof(viewModel.BillingAddressLine2), viewModel.BillingAddressLine2.ToString());
             ModelState.SetInitialValue(nameof(viewModel.BillingSomethingReallyRandom), viewModel.BillingSomethingReallyRandom.ToString());
             ModelState.SetInitialValue(nameof(viewModel.BillingPostcode), viewModel.BillingPostcode.ToString());
             ModelState.SetInitialValue(nameof(viewModel.BillingUPRN), viewModel.BillingUPRN.ToString());
+            ModelState.SetInitialValue(nameof(viewModel.BillingCountryCode), viewModel.BillingCountryCode.ToString());
 
             return CurrentTemplate(viewModel);
         }

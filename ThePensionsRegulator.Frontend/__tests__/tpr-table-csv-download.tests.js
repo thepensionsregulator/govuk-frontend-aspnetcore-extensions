@@ -297,7 +297,7 @@ describe("initTableCsvDownload", () => {
         expect(buttons.length).toBe(1);
     });
 
-    it("should create only one button on tables with an exsisting hardcoded button", () => {
+    it("should not create a button on tables with an exsisting hardcoded button", () => {
         document.body.innerHTML = `${createTable()} <form action="/example" class="tpr-table-download-form"><input type="hidden"><input type="hidden"><input type="hidden"><button class="govuk-button">Existing Button</button></form>`
     initTableCsvDownload();
     const buttons = document.querySelectorAll(

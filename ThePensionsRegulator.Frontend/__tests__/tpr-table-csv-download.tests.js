@@ -201,99 +201,110 @@ describe("sanitizeFileName", () => {
 });
 
 describe("initTableCsvDownload", () => {
-  afterEach(() => {
-    document.body.innerHTML = "";
-    delete document.body.dataset.tprTableCsvDownloadText;
-  });
+    afterEach(() => {
+        document.body.innerHTML = "";
+        delete document.body.dataset.tprTableCsvDownloadText;
+    });
 
-  it("should add a download button after each .govuk-table", () => {
-    document.body.innerHTML = createTable();
-    initTableCsvDownload();
-    const button = document.querySelector(
-      'button[data-tpr-table-csv-button="true"]'
-    );
-    expect(button).not.toBeNull();
-    expect(button.textContent).toBe(DEFAULT_BUTTON_TEXT);
-    expect(button.className).toBe("govuk-button govuk-button--secondary");
-  });
+    it("should add a download button after each .govuk-table", () => {
+        document.body.innerHTML = createTable();
+        initTableCsvDownload();
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(button).not.toBeNull();
+        expect(button.textContent).toBe(DEFAULT_BUTTON_TEXT);
+        expect(button.className).toBe("govuk-button govuk-button--secondary");
+    });
 
-  it("should not add a button to non-.govuk-table tables", () => {
-    document.body.innerHTML = createTable({ className: "other-table" });
-    initTableCsvDownload();
-    const button = document.querySelector(
-      'button[data-tpr-table-csv-button="true"]'
-    );
-    expect(button).toBeNull();
-  });
+    it("should not add a button to non-.govuk-table tables", () => {
+        document.body.innerHTML = createTable({ className: "other-table" });
+        initTableCsvDownload();
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(button).toBeNull();
+    });
 
-  it("should not add a button to tables with merged cells", () => {
-    document.body.innerHTML = createTable({ mergedCells: true });
-    initTableCsvDownload();
-    const button = document.querySelector(
-      'button[data-tpr-table-csv-button="true"]'
-    );
-    expect(button).toBeNull();
-  });
+    it("should not add a button to tables with merged cells", () => {
+        document.body.innerHTML = createTable({ mergedCells: true });
+        initTableCsvDownload();
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(button).toBeNull();
+    });
 
-  it("should not create duplicate buttons when called twice", () => {
-    document.body.innerHTML = createTable();
-    initTableCsvDownload();
+    it("should not create duplicate buttons when called twice", () => {
+        document.body.innerHTML = createTable();
+        initTableCsvDownload();
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(buttons.length).toBe(1);
+    });
+
+    it("should use custom button text from data attribute", () => {
+        document.body.dataset.tprTableCsvDownloadText = "Custom text";
+        document.body.innerHTML = createTable();
+        initTableCsvDownload();
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(button.textContent).toBe("Custom text");
+    });
+
+    it("should handle multiple tables on the page", () => {
+        document.body.innerHTML = createTable({ caption: "Table 1" }) +
+            createTable({ caption: "Table 2" });
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(buttons.length).toBe(2);
+    });
+
+    it("should place the button immediately after the table", () => {
+        document.body.innerHTML = `<div>${createTable()}</div>`;
+        initTableCsvDownload();
+        const table = document.querySelector(".govuk-table");
+        const button = table.nextElementSibling;
+        expect(button).not.toBeNull();
+        expect(button.hasAttribute("data-tpr-table-csv-button")).toBe(true);
+    });
+
+    it("should derive the file name from the table caption", () => {
+        document.body.innerHTML = createTable({ caption: "My Report 2024" });
+        initTableCsvDownload();
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(button).not.toBeNull();
+        expect(button.getAttribute("data-tpr-table-csv-filename")).toBe(
+            "my-report-2024"
+        );
+    });
+
+    it("should skip tables with merged cells but still process simple tables", () => {
+        document.body.innerHTML =
+            createTable({ mergedCells: true, caption: "Merged" }) +
+            createTable({ caption: "Simple" });
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(buttons.length).toBe(1);
+    });
+
+    it("should create only one button on tables with an exsisting hardcoded button", () => {
+    document.body.innerHTML = `${createTable()} <form action="/example" name="tableHtml"><button class="govuk-button">Existing Button</button></form>`
     initTableCsvDownload();
     const buttons = document.querySelectorAll(
-      'button[data-tpr-table-csv-button="true"]'
+        'button'
     );
     expect(buttons.length).toBe(1);
-  });
-
-  it("should use custom button text from data attribute", () => {
-    document.body.dataset.tprTableCsvDownloadText = "Custom text";
-    document.body.innerHTML = createTable();
-    initTableCsvDownload();
-    const button = document.querySelector(
-      'button[data-tpr-table-csv-button="true"]'
-    );
-    expect(button.textContent).toBe("Custom text");
-  });
-
-  it("should handle multiple tables on the page", () => {
-    document.body.innerHTML = createTable({ caption: "Table 1" }) +
-      createTable({ caption: "Table 2" });
-    initTableCsvDownload();
-    const buttons = document.querySelectorAll(
-      'button[data-tpr-table-csv-button="true"]'
-    );
-    expect(buttons.length).toBe(2);
-  });
-
-  it("should place the button immediately after the table", () => {
-    document.body.innerHTML = `<div>${createTable()}</div>`;
-    initTableCsvDownload();
-    const table = document.querySelector(".govuk-table");
-    const button = table.nextElementSibling;
-    expect(button).not.toBeNull();
-    expect(button.hasAttribute("data-tpr-table-csv-button")).toBe(true);
-  });
-
-  it("should derive the file name from the table caption", () => {
-    document.body.innerHTML = createTable({ caption: "My Report 2024" });
-    initTableCsvDownload();
-    const button = document.querySelector(
-      'button[data-tpr-table-csv-button="true"]'
-    );
-    expect(button).not.toBeNull();
-    expect(button.getAttribute("data-tpr-table-csv-filename")).toBe(
-      "my-report-2024"
-    );
-  });
-
-  it("should skip tables with merged cells but still process simple tables", () => {
-    document.body.innerHTML =
-      createTable({ mergedCells: true, caption: "Merged" }) +
-      createTable({ caption: "Simple" });
-    initTableCsvDownload();
-    const buttons = document.querySelectorAll(
-      'button[data-tpr-table-csv-button="true"]'
-    );
-    expect(buttons.length).toBe(1);
-  });
 });
+});
+
+

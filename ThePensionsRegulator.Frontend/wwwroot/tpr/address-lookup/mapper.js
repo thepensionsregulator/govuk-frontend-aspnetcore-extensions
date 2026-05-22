@@ -1,6 +1,7 @@
 ﻿class AddressMapper {
-    constructor(config) {
-        this.config = config
+    constructor(config, countryOptions) {
+        this.config = config,
+        this.defaultCountryCode = countryOptions.find(x => x.label === config.DEFAULTS.COUNTRY)?.value || '';
     }
 
     mapFromInput(originalInputs) {
@@ -12,8 +13,8 @@
             town: getValue(this.config.DATA_ATTRIBUTES.TOWN_OR_CITY),
             county: getValue(this.config.DATA_ATTRIBUTES.COUNTY),
             postcode: getValue(this.config.DATA_ATTRIBUTES.POSTCODE) || getValue(this.config.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL),
-            country: get(this.config.DATA_ATTRIBUTES.COUNTRY).selectedOptionLabel,
-            countryCode: getValue(this.config.DATA_ATTRIBUTES.COUNTRY),
+            country: get(this.config.DATA_ATTRIBUTES.COUNTRY_CODE).selectedOptionLabel,
+            countryCode: getValue(this.config.DATA_ATTRIBUTES.COUNTRY_CODE),
             UPRN: getValue(this.config.DATA_ATTRIBUTES.UPRN)
         };
     }
@@ -28,6 +29,7 @@
             postcode: dpaResult.POSTCODE,
             county: '',
             country: this.config.DEFAULTS.COUNTRY,
+            countryCode: this.defaultCountryCode,
             UPRN: dpaResult.UPRN
         };
 

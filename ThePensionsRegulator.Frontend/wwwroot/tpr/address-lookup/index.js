@@ -21,12 +21,12 @@ class TprAddressLookup {
         this.apiService = new AddressLookupApiService(this.searchEndpoint, this.idEndpoint);
         this.validator = new AddressLookupValidator(element, this.index);
         this.componentBuilder = new AddressLookupComponentBuilder(this.index, ADDRESS_LOOKUP_CONFIG);
-        this.addressMapper = new AddressMapper(ADDRESS_LOOKUP_CONFIG);
+        this.countryOptions = this.captureCountryOptions();
+        this.addressMapper = new AddressMapper(ADDRESS_LOOKUP_CONFIG, this.countryOptions);
         this.stateMachine = new AddressLookupStateMachine();
         this.stateMachine.onChange((newState, data) => this.onStateChange(newState, data));
         this.postcodeSanitiser = new PostcodeSanitiser();
         this.originalInputs = this.captureOriginalInputs();
-        this.countryOptions = this.captureCountryOptions();
         this.fieldDefaults = new FieldDefaults(this.container, this.originalInputs);
         this.postcodeNormaliser = new PostcodeNormaliser();
 
@@ -132,7 +132,7 @@ class TprAddressLookup {
     }
 
     captureCountryOptions() {
-        const countrySelect = this.container.querySelector(`select[${ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE}="${ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY}"]`);
+        const countrySelect = this.container.querySelector(`select[${ADDRESS_LOOKUP_CONFIG.ATTRIBUTES.BASE}="${ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY_CODE}"]`);
         const options = Array.from(countrySelect.querySelectorAll("option"));
         options.forEach(option => option.removeAttribute("selected"));
         return options;
@@ -179,7 +179,12 @@ class TprAddressLookup {
     renderSelectView(addressResults) {
         this.clearContainer();
 
-        const addressOptions = addressResults.map(result => this.componentBuilder.createOption(result.UPRN, result.ADDRESS));
+        const addressOptions = addressResults.map(result => {
+            const addressWithoutPostcode = result.ADDRESS.replace(`, ${result.POSTCODE}`, '');
+            const addressToTitleCase = toTitleCase(addressWithoutPostcode);
+            const addressToTitleCaseWithPostcode = `${addressToTitleCase}, ${result.POSTCODE}`;
+            return this.componentBuilder.createOption(result.UPRN, addressToTitleCaseWithPostcode);
+        });
 
         const selectKey = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.SELECT_ADDRESS;
         const selectElement = this.componentBuilder.createGovukSelect(this.fieldDefaults.label(selectKey), selectKey, addressOptions, this.fieldDefaults.labelSize(selectKey))
@@ -209,15 +214,12 @@ class TprAddressLookup {
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1]: toTitleCase(address.addressLine1),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2]: toTitleCase(address.addressLine2),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY]: toTitleCase(address.town),
-            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY]: toTitleCase(address.county),
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL]: toTitleCase(address.county) || toTitleCase(address.region),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY]: toTitleCase(address.country),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY_CODE]: address.countryCode,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL]: address.postcode,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.UPRN]: address.UPRN
         };
-
-        //TODO: Why is county not being mapped to the correct input (or any input) for UK manual entry?!!!
-
 
         const fragment = document.createDocumentFragment();
         this.originalInputs.forEach(original => {

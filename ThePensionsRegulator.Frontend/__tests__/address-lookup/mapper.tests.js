@@ -5,7 +5,13 @@ import { AddressMapper } from "../../wwwroot/tpr/address-lookup/mapper.js";
 import { ADDRESS_LOOKUP_CONFIG } from "../../wwwroot/tpr/address-lookup/config.js";
 
 describe("Address mapper", () => {
-    const mapper = new AddressMapper(ADDRESS_LOOKUP_CONFIG);
+    const options = [new Option(ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY, "1"), new Option("France", "FR")];
+    const mapper = new AddressMapper(ADDRESS_LOOKUP_CONFIG, options);
+    describe("defaultCountryCode", () => {
+        it("is set to the value of the option matching the default country label in config", () => {
+            expect(mapper.defaultCountryCode).toEqual("1");
+        });
+    });
     describe("mapFromDpaResult", () => {
         const typicalResidentialDPAResult = {
             BUILDING_NUMBER: "103",
@@ -268,13 +274,6 @@ describe("Address mapper", () => {
                 "value": ""
             },
             {
-                "name": "BillingCountry",
-                "id": "BillingCountry",
-                "dataAddressLookup": "country",
-                "value": "1",
-                "selectedOptionLabel": "United Kingdom"
-            },
-            {
                 "name": "BillingPostcode",
                 "id": "BillingPostcode",
                 "dataAddressLookup": "postcode",
@@ -296,7 +295,8 @@ describe("Address mapper", () => {
                 "name": "BillingCountryCode",
                 "id": "BillingCountryCode",
                 "dataAddressLookup": "country-code",
-                "value": ""
+                "value": "1",
+                "selectedOptionLabel": "United Kingdom"
             }
         ]
 

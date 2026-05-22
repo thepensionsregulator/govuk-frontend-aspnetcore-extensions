@@ -106,7 +106,7 @@ function initTableCsvDownload() {
       // Skip if a CSV download button has already been added (idempotency)
     if (
       nextElement &&
-        nextElement.hasAttribute("data-tpr-table-csv-button") || nextElement && nextElement.matches('form[name="tableHtml"]') && nextElement.querySelector("button")
+        nextElement.hasAttribute("data-tpr-table-csv-button") || nextElement && nextElement.matches('form[class="tpr-table-download-form"]') && nextElement.querySelector("button")
     ) {
       continue;
     }

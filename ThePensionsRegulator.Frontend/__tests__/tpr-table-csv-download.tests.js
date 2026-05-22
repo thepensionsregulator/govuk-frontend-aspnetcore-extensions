@@ -298,7 +298,7 @@ describe("initTableCsvDownload", () => {
     });
 
     it("should create only one button on tables with an exsisting hardcoded button", () => {
-    document.body.innerHTML = `${createTable()} <form action="/example" name="tableHtml"><button class="govuk-button">Existing Button</button></form>`
+        document.body.innerHTML = `${createTable()} <form action="/example" class="tpr-table-download-form"><input type="hidden"><input type="hidden"><input type="hidden"><button class="govuk-button">Existing Button</button></form>`
     initTableCsvDownload();
     const buttons = document.querySelectorAll(
         'button'

@@ -1,12 +1,6 @@
-using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ThePensionsRegulator.Frontend.TagHelpers;
+using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -21,21 +15,21 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             IEnumerable<TprTimelineItem> items,
             bool hideTail,
             int headingLevel,
-            string ariaTitle)
+            string? ariaTitle)
         {
             Guard.ArgumentNotNull(nameof(items), items);
             Guard.ArgumentValid(nameof(items), "A Timeline must contain at least one item", items.Any());
 
             var timelineTagBuilder = new TagBuilder(TimelineElement);
             if (attributes is not null) { timelineTagBuilder.MergeAttributes(attributes); }
-            timelineTagBuilder.MergeCssClass("tpr-timeline");
+            timelineTagBuilder.AddCssClass("tpr-timeline");
             var accessibleTitle = "Timeline";
-            if(!string.IsNullOrWhiteSpace(ariaTitle))
+            if (!string.IsNullOrWhiteSpace(ariaTitle))
             {
-               accessibleTitle = ariaTitle; 
+                accessibleTitle = ariaTitle;
             }
-            timelineTagBuilder.Attributes.Add("aria-label",accessibleTitle);
-            
+            timelineTagBuilder.Attributes.Add("aria-label", accessibleTitle);
+
             if (hideTail)
             {
                 timelineTagBuilder.AddCssClass("tpr-timeline--hide-tail");
@@ -49,15 +43,15 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 var itemBuilder = new TagBuilder(TimelineItemElement);
                 var itemContentBuilder = new TagBuilder(TimelineItemContentElement);
                 itemContentBuilder.AddCssClass("tpr-timeline__item-content");
-                
+
                 if (item.Attributes is not null) { itemBuilder.MergeAttributes(item.Attributes); }
 
-                itemBuilder.MergeCssClass("tpr-timeline__item");
+                itemBuilder.AddCssClass("tpr-timeline__item");
                 itemBuilder.InnerHtml.AppendHtml(itemContentBuilder);
                 timelineTagBuilder.InnerHtml.AppendHtml(itemBuilder);
 
                 itemContentBuilder.InnerHtml.AppendHtml(BuildDateTime(item));
-                if(!string.IsNullOrWhiteSpace(item.Heading))
+                if (!string.IsNullOrWhiteSpace(item.Heading))
                 {
                     itemContentBuilder.InnerHtml.AppendHtml(BuildHeading(item, headingLevel));
                 }
@@ -73,8 +67,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
         private static TagBuilder BuildDateTime(TprTimelineItem item)
         {
-            var timelineItemDateTime = new TagBuilder("p");
-            timelineItemDateTime.MergeCssClass("tpr-timeline__datetime");
+            var timelineItemDateTime = new TagBuilder("h3");
+            timelineItemDateTime.AddCssClass("tpr-timeline__datetime");
             timelineItemDateTime.InnerHtml.AppendHtml(item.DateTime!.ToString());
             return timelineItemDateTime;
         }
@@ -82,7 +76,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         private static TagBuilder BuildHeading(TprTimelineItem item, int headingLevel)
         {
             var timelineItemHeading = new TagBuilder($"h{headingLevel}");
-            timelineItemHeading.MergeCssClass("tpr-timeline__heading");
+            timelineItemHeading.AddCssClass("tpr-timeline__heading");
             timelineItemHeading.InnerHtml.AppendHtml(item.Heading!.ToString());
             return timelineItemHeading;
         }

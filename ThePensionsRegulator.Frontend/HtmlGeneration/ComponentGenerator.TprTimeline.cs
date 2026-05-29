@@ -67,7 +67,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
         private static TagBuilder BuildDateTime(TprTimelineItem item)
         {
-            var timelineItemDateTime = new TagBuilder("p");
+            var timelineItemDateTime = new TagBuilder("h3");
             timelineItemDateTime.AddCssClass("tpr-timeline__datetime");
             timelineItemDateTime.InnerHtml.AppendHtml(item.DateTime!.ToString());
             return timelineItemDateTime;

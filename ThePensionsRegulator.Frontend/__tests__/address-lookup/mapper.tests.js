@@ -274,6 +274,12 @@ describe("Address mapper", () => {
                 "value": ""
             },
             {
+                "name": "BillingRegion",
+                "id": "BillingRegion",
+                "dataAddressLookup": "region-international",
+                "value": "Essex"
+            },
+            {
                 "name": "BillingPostcode",
                 "id": "BillingPostcode",
                 "dataAddressLookup": "postcode",
@@ -306,11 +312,16 @@ describe("Address mapper", () => {
             expect(result.addressLine1).toEqual("Telecom House");
             expect(result.addressLine2).toEqual("125-135 Preston Road");
             expect(result.town).toEqual("Brighton");
-            expect(result.county).toEqual("");
             expect(result.country).toEqual("United Kingdom");
             expect(result.countryCode).toEqual("1");
             expect(result.postcode).toEqual("BN1 6AF");
             expect(result.UPRN).toEqual("22275623");
+        });
+
+        it("maps region international to county if county is not provided", () => {
+            const result = mapper.mapFromInput(originalInputs);
+
+            expect(result.county).toEqual("Essex");
         });
     });
 });

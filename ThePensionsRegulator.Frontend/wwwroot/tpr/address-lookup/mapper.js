@@ -11,7 +11,7 @@
             addressLine1: getValue(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_1),
             addressLine2: getValue(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_2),
             town: getValue(this.config.DATA_ATTRIBUTES.TOWN_OR_CITY),
-            county: getValue(this.config.DATA_ATTRIBUTES.COUNTY),
+            county: getValue(this.config.DATA_ATTRIBUTES.COUNTY) || getValue(this.config.DATA_ATTRIBUTES.REGION_INTERNATIONAL),
             postcode: getValue(this.config.DATA_ATTRIBUTES.POSTCODE) || getValue(this.config.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL),
             country: get(this.config.DATA_ATTRIBUTES.COUNTRY_CODE).selectedOptionLabel,
             countryCode: getValue(this.config.DATA_ATTRIBUTES.COUNTRY_CODE),

@@ -21,12 +21,12 @@ class TprAddressLookup {
         this.apiService = new AddressLookupApiService(this.searchEndpoint, this.idEndpoint);
         this.validator = new AddressLookupValidator(element, this.index);
         this.componentBuilder = new AddressLookupComponentBuilder(this.index, ADDRESS_LOOKUP_CONFIG);
+        this.originalInputs = this.captureOriginalInputs();
         this.countryOptions = this.captureCountryOptions();
         this.addressMapper = new AddressMapper(ADDRESS_LOOKUP_CONFIG, this.countryOptions);
         this.stateMachine = new AddressLookupStateMachine();
         this.stateMachine.onChange((newState, data) => this.onStateChange(newState, data));
         this.postcodeSanitiser = new PostcodeSanitiser();
-        this.originalInputs = this.captureOriginalInputs();
         this.fieldDefaults = new FieldDefaults(this.container, this.originalInputs);
         this.postcodeNormaliser = new PostcodeNormaliser();
 

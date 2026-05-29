@@ -101,7 +101,7 @@ Without JavaScript, the original address input fields remain visible and usable.
                                       error-message-maxlength="Postal code or zip code must be 20 characters or less">
             <govuk-input for="Postcode" input-class="govuk-input--width-10" autocomplete="postal-code"
                          input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "postcode-international"}})'>
-                <govuk-input-label>Postal code/ zip code</govuk-input-label>
+                <govuk-input-label>Postal code/zip code</govuk-input-label>
                 @if (ViewContext.ModelState.ContainsKey("Postcode") && ViewContext.ModelState["Postcode"]!.Errors.Count > 0)
                 {
                     <govuk-input-error-message>@ViewContext.ModelState["Postcode"]!.Errors[0].ErrorMessage</govuk-input-error-message>

@@ -100,4 +100,31 @@ describe("submitOnClick", () => {
         expect(searchLookup.validator.addOrUpdateCustomFieldsetError).toHaveBeenCalled();
         expect(event.preventDefault).toHaveBeenCalled();
     });
+
+    it("calls focusInvalid when form validation fails", () => {
+        const event = createMockEvent(false);
+        const lookup = createMockAddressLookup(AddressLookupStateMachine.STATES.CONFIRMED);
+
+        submitOnClick(event, [lookup]);
+
+        expect(lookup.validator.focusInvalid).toHaveBeenCalled();
+    });
+
+    it("calls focusInvalid when an address lookup is not in CONFIRMED state", () => {
+        const event = createMockEvent();
+        const lookup = createMockAddressLookup(AddressLookupStateMachine.STATES.SEARCH);
+
+        submitOnClick(event, [lookup]);
+
+        expect(lookup.validator.focusInvalid).toHaveBeenCalled();
+    });
+
+    it("does not call focusInvalid when all validation passes", () => {
+        const event = createMockEvent();
+        const lookup = createMockAddressLookup(AddressLookupStateMachine.STATES.CONFIRMED);
+
+        submitOnClick(event, [lookup]);
+
+        expect(lookup.validator.focusInvalid).not.toHaveBeenCalled();
+    });
 });

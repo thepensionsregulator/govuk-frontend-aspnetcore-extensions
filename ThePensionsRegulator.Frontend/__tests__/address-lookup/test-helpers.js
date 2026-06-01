@@ -11,6 +11,7 @@ export function createMockAddressLookup(currentState) {
         validator: {
             addSelectError: jest.fn(),
             addOrUpdateCustomFieldsetError: jest.fn(),
+            focusInvalid: jest.fn(),
         },
         fieldDefaults: {
             errorMessage: jest.fn((key) => `mock-error-${key}`),

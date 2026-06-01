@@ -259,5 +259,22 @@ describe("AddressLookupValidator", () => {
             expect(errorElement.id).toBe("test-input-0-error");
         });
     });
+
+    describe("focusInvalid", () => {
+        it("should delegate to the current form validator's focusInvalid", () => {
+            const focusInvalidMock = jest.fn();
+            const mockValidator = { focusInvalid: focusInvalidMock };
+            global.$ = jest.fn(() => ({
+                data: jest.fn(() => mockValidator),
+                removeData: jest.fn(function() { return this; }),
+                validate: jest.fn(() => mockValidator)
+            }));
+            global.$.validator = { unobtrusive: { parse: jest.fn() } };
+
+            validator.focusInvalid();
+
+            expect(focusInvalidMock).toHaveBeenCalledTimes(1);
+        });
+    });
 });
 

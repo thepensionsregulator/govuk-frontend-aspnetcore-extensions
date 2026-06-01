@@ -541,11 +541,13 @@ function submitOnClick(event, addressLookupObjects) {
     ];
 
     // Validate non-address-lookup fields on the form
+    let hasErrors = false;
     const form = event.target.closest("form");
     if (form) {
         const isFormValid = $(form).valid();
         if (!isFormValid) {
             event.preventDefault();
+            hasErrors = true;
         }
     }
 
@@ -565,10 +567,13 @@ function submitOnClick(event, addressLookupObjects) {
             }
 
             event.preventDefault();
+            hasErrors = true;
         }
     });
 
-
+    if (hasErrors && addressLookupObjects.length > 0) {
+        addressLookupObjects[0].validator.focusInvalid();
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {

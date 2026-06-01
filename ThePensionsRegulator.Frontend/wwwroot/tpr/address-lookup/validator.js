@@ -131,6 +131,13 @@ class AddressLookupValidator {
 
         this.govuk.updateError(selectElement, message);
     }
+
+    focusInvalid() {
+        const validator = $(this.form).data("validator");
+        if (validator) {
+            validator.focusInvalid();
+        }
+    }
 }
 
 export { AddressLookupValidator };

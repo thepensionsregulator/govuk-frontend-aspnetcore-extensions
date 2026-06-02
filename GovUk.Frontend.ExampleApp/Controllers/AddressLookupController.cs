@@ -3,6 +3,8 @@ using GovUk.Frontend.ExampleApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using ThePensionsRegulator.Frontend.Models;
+using ThePensionsRegulator.Frontend.Validation;
 
 namespace GovUk.Frontend.ExampleApp.Controllers
 {
@@ -27,14 +29,21 @@ namespace GovUk.Frontend.ExampleApp.Controllers
 
         public IActionResult PrimaryDataProvided()
         {
-            return View(new AddressLookupViewModel
+            var viewModel = new AddressLookupViewModel
             {
-                ShippingAddressLine1 = "15 Maple Street",
-                ShippingTownOrCity = "Edinburgh",
-                ShippingCountry = "Scotland",
-                ShippingPostcode = "AB12 3CD",
-                ShippingUPRN = "10001234"
-            });
+                ShippingAddress = new TprAddress
+                {
+                    AddressLine1 = "15 Maple Street",
+                    PostTown = "Edinburgh",
+                    CountryId = 1,
+                    PostCode = "AB12 3CD",
+                    UPRNReference = "10001234"
+                }
+            };
+
+            ModelState.SetModelValues(viewModel.ShippingAddress, nameof(viewModel.ShippingAddress));
+
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -46,19 +55,30 @@ namespace GovUk.Frontend.ExampleApp.Controllers
 
         public IActionResult PrimaryAndSecondaryDataProvided()
         {
-            return View(new AddressLookupViewModel
+            var viewModel = new AddressLookupViewModel
             {
-                ShippingAddressLine1 = "15 Maple Street",
-                ShippingTownOrCity = "Edinburgh",
-                ShippingCountry = "Scotland",
-                ShippingPostcode = "AB12 3CD",
-                ShippingUPRN = "10001234",
-                BillingAddressLine1 = "15 Maple Street",
-                BillingTownOrCity = "Edinburgh",
-                BillingCountry = "Scotland",
-                BillingPostcode = "AB12 3CD",
-                BillingUPRN = "10001234"
-            });
+                ShippingAddress = new TprAddress
+                {
+                    AddressLine1 = "15 Maple Street",
+                    PostTown = "Edinburgh",
+                    CountryId = 1,
+                    PostCode = "AB12 3CD",
+                    UPRNReference = "10001234"
+                },
+                BillingAddress = new TprAddress
+                {
+                    AddressLine1 = "15 Maple Street",
+                    PostTown = "Edinburgh",
+                    CountryId = 1,
+                    PostCode = "AB12 3CD",
+                    UPRNReference = "10001234"
+                }
+            };
+
+            ModelState.SetModelValues(viewModel.ShippingAddress, nameof(viewModel.ShippingAddress));
+            ModelState.SetModelValues(viewModel.BillingAddress, nameof(viewModel.BillingAddress));
+
+            return View(viewModel);
         }
 
         [HttpPost]

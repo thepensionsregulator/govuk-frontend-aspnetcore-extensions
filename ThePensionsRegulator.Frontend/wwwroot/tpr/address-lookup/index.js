@@ -215,7 +215,6 @@ class TprAddressLookup {
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2]: toTitleCase(address.addressLine2),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY]: toTitleCase(address.town),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL]: toTitleCase(address.county) || toTitleCase(address.region),
-            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY]: toTitleCase(address.country),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY_CODE]: address.countryCode,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL]: address.postcode,
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.UPRN]: address.UPRN
@@ -305,7 +304,7 @@ class TprAddressLookup {
             .addMaxLengthValidation(this.fieldDefaults.maxLength(regionKey), this.fieldDefaults.maxLengthMessage(regionKey))
             .build();
 
-        const countryKey = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY;
+        const countryKey = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY_CODE;
         const countryInput = this.componentBuilder.createGovukSelect(this.fieldDefaults.label(countryKey), countryKey, this.countryOptions)
             .addRequiredValidation(this.fieldDefaults.requiredMessage(countryKey))
             .addMaxLengthValidation(this.fieldDefaults.maxLength(countryKey), this.fieldDefaults.maxLengthMessage(countryKey))

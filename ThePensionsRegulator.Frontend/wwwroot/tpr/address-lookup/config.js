@@ -20,7 +20,6 @@
         REGION_INTERNATIONAL: "region-international",
         POSTCODE_INTERNATIONAL: "postcode-international",
         COUNTRIES: "countries",
-        COUNTRY: "country",
         COUNTRY_CODE: "country-code",
         LINK_LIST: "link-list",
         UPRN: "UPRN",
@@ -127,7 +126,7 @@
                 maxLength: { value: 100, message: "County must be 100 characters or less" }
             }
         },
-        "country": {
+        "country-code": {
             label: "Country",
             width: "x-large",
             validation: {

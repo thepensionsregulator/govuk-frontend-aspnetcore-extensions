@@ -18,7 +18,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string BackToMenuLink = "link";
         public const string CountryCodeModelProperty = "countryCodeModelProperty";
         public const string CountryCustomErrorMessage = "countryCustomErrorMessage";
-        public const string CountryModelProperty = "countryModelProperty";
         public const string CountryErrorMessageRequired = "countryErrorMessageRequired";
         public const string CountryLabel = "countryLabel";
         public const string CountyErrorMessageMaxLength = "countyErrorMessageMaxLength";

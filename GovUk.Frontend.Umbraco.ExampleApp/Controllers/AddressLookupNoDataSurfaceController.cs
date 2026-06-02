@@ -1,8 +1,9 @@
-﻿using System;
-using GovUk.Frontend.AspNetCore.Extensions.Validation;
+﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
 using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using ThePensionsRegulator.Frontend.Validation;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Routing;
@@ -43,6 +44,9 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     Response.GetTypedHeaders().Location = new Uri(viewModel.Page.NextPage.Url(), UriKind.RelativeOrAbsolute);
                 }
             }
+
+            ModelState.SetModelValues(viewModel.ShippingAddress, nameof(viewModel.ShippingAddress));
+            ModelState.SetModelValues(viewModel.BillingAddress, nameof(viewModel.BillingAddress));
 
             return View("AddressLookupNoData", viewModel);
         }

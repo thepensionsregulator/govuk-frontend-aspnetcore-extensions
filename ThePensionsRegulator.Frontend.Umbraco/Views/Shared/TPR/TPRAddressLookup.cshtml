@@ -5,21 +5,13 @@
 @inject ITprCountryRepository countryRepository 
 @using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Services
-@using GovUk.Frontend.Umbraco.Validation
-@using Microsoft.AspNetCore.Mvc.ModelBinding
-@using System.Text.Json
 @using ThePensionsRegulator.Frontend.Services
 @using ThePensionsRegulator.Frontend.TagHelpers
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco
 @using ThePensionsRegulator.Umbraco.Blocks
-@using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Strings
-@using Umbraco.Extensions
-@using Umbraco.Cms.Core.Models.PublishedContent
-@using Umbraco.Cms.Web.Common
-@using Microsoft.Extensions.Configuration
 @using PropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
 @addTagHelper *, ThePensionsRegulator.Frontend
 @addTagHelper *, GovUk.Frontend.AspNetCore
@@ -78,13 +70,6 @@
             ViewContext.ModelState
         );
 
-    var countryState = addressFieldStateHelper.GetFieldState(
-            settings(TprPropertyAliases.CountryModelProperty),
-            string.Empty,
-            string.Empty,
-            ViewContext.ModelState
-        );
-
     var countryCodeState = addressFieldStateHelper.GetFieldState(
             settings(TprPropertyAliases.CountryCodeModelProperty),
             content(TprPropertyAliases.CountryLabel),
@@ -104,7 +89,8 @@
     class="@cssClasses" 
     described-by="@fieldsetDescribedBy" 
     same-as-primary-checkbox-label="@checkboxLabel" 
-    role="@role" data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()" 
+    role="@role" 
+    data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()" 
     data-address-lookup-id-url="@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()"
     data-address-lookup-postcode-label="@content(TprPropertyAliases.PostcodeLabel)"
     data-address-lookup-postcode-required="@settings(TprPropertyAliases.PostcodeErrorMessageRequired)"
@@ -218,5 +204,4 @@
     </govuk-client-side-validation>
 
     <input type="hidden" id="@uprnState.ModelPropertyName" name="@uprnState.ModelPropertyName" value="@uprnState.AttemptedValue" data-address-lookup="UPRN"/>
-    <input type="hidden" id="@countryState.ModelPropertyName" name="@countryState.ModelPropertyName" value="@countryState?.AttemptedValue" data-address-lookup="country" />
 </tpr-address-lookup>

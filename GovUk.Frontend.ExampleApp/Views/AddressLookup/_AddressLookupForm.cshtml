@@ -2,13 +2,21 @@
 @inject ITprAddressLookupEndpointUrlProvider urlProvider
 @inject ITprCountryRepository countryRepository
 
+  <govuk-client-side-validation error-message-required="Enter a scheme name">
+    <govuk-input for="SchemeName">
+        <govuk-input-label is-page-heading="false">Scheme name</govuk-input-label>
+        @if (ViewContext.ModelState.ContainsKey("SchemeName") && ViewContext.ModelState["SchemeName"]!.Errors.Count > 0)
+        {
+            <govuk-input-error-message>@ViewContext.ModelState["SchemeName"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+        }
+    </govuk-input>
+</govuk-client-side-validation>
+
 <h2 class="govuk-heading-m">Shipping address</h2>
 <p class="govuk-body">Tell us where you would like your order shipped to.</p>
 
-<tpr-address-lookup role="Primary"
-                    data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
-                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
-                    data-address-lookup-postcode-label="Postcode"
+<tpr-address-lookup role="Primary" data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
+                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()" data-address-lookup-postcode-label="Postcode"
                     data-address-lookup-postcode-required="Enter a postcode"
                     data-address-lookup-postcode-maxlength="Postcode must be 20 characters or less"
                     data-address-lookup-postcode-pattern="Enter a valid UK postcode"
@@ -22,66 +30,72 @@
     <tpr-address-lookup-legend>Shipping address</tpr-address-lookup-legend>
 
     <govuk-client-side-validation error-message-required="Enter address line 1"
-                                  error-message-maxlength="Address line 1 must be 200 characters or less">
-        <govuk-input for="ShippingAddressLine1" autocomplete="address-line1"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-1"}})">
+                                  error-message-maxlength="Address line 1 must be 100 characters or less">
+        <govuk-input for="ShippingAddress.AddressLine1" autocomplete="address-line1"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-1" } })">
             <govuk-input-label>Address line 1</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("ShippingAddressLine1") && ViewContext.ModelState["ShippingAddressLine1"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("ShippingAddress.AddressLine1") &&
+            ViewContext.ModelState["ShippingAddress.AddressLine1"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["ShippingAddressLine1"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["ShippingAddress.AddressLine1"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-maxlength="Address line 2 must be 200 characters or less">
-        <govuk-input for="ShippingAddressLine2" autocomplete="address-line2"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-2"}})">
+    <govuk-client-side-validation error-message-maxlength="Address line 2 must be 100 characters or less">
+        <govuk-input for="ShippingAddress.AddressLine2" autocomplete="address-line2"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-2" } })">
             <govuk-input-label>Address line 2 (optional)</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("ShippingAddressLine2") && ViewContext.ModelState["ShippingAddressLine2"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("ShippingAddress.AddressLine2") &&
+            ViewContext.ModelState["ShippingAddress.AddressLine2"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["ShippingAddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["ShippingAddress.AddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="Enter a town or city"
                                   error-message-maxlength="Town or city must be 100 characters or less">
-        <govuk-input for="ShippingTownOrCity" class="govuk-input--width-20" autocomplete="address-level2"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "town-or-city"}})">
+        <govuk-input for="ShippingAddress.PostTown" class="govuk-input--width-20" autocomplete="address-level2"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "town-or-city" } })">
             <govuk-input-label>Town or city</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("ShippingTownOrCity") && ViewContext.ModelState["ShippingTownOrCity"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("ShippingAddress.PostTown") &&
+            ViewContext.ModelState["ShippingAddress.PostTown"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["ShippingTownOrCity"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["ShippingAddress.PostTown"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-maxlength="Province, region or state must be 100 characters or less">
-        <govuk-input for="ShippingCounty" class="govuk-input--width-20" autocomplete="address-level3"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "region-international"}})">
+        <govuk-input for="ShippingAddress.PostCounty" class="govuk-input--width-20" autocomplete="address-level3"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "region-international" } })">
             <govuk-input-label>Province/ region/ state (optional)</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("ShippingCounty") && ViewContext.ModelState["ShippingCounty"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("ShippingAddress.PostCounty") &&
+            ViewContext.ModelState["ShippingAddress.PostCounty"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["ShippingCounty"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["ShippingAddress.PostCounty"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="Select a country">
-        <govuk-select for="ShippingCountryCode" class="govuk-input--width-10" select-autocomplete="country"
+        <govuk-select for="ShippingAddress.CountryId" class="govuk-input--width-10" select-autocomplete="country"
                       select-data-address-lookup="country-code">
             <govuk-select-label>Country</govuk-select-label>
-            @if (ViewContext.ModelState.ContainsKey("ShippingCountryCode") && ViewContext.ModelState["ShippingCountryCode"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("ShippingAddress.CountryId") &&
+            ViewContext.ModelState["ShippingAddress.CountryId"]!.Errors.Count > 0)
             {
-                <govuk-select-error-message>@ViewContext.ModelState["ShippingCountryCode"]!.Errors[0].ErrorMessage</govuk-select-error-message>
+                <govuk-select-error-message>@ViewContext.ModelState["ShippingAddress.CountryId"]!.Errors[0].ErrorMessage</govuk-select-error-message>
             }
             @{
                 var shippingCountries = countryRepository.GetCountries();
-                var shippingSelectEmpty = !shippingCountries.Any(x => x.Value.ToString() == (ViewContext.ModelState["ShippingCountryCode"]?.AttemptedValue ?? string.Empty));
+                var shippingSelectEmpty = !shippingCountries.Any(x => x.Value.ToString() ==
+            (ViewContext.ModelState["ShippingAddress.CountryId"]?.AttemptedValue ?? string.Empty));
                 <govuk-select-item selected="@(shippingSelectEmpty)"></govuk-select-item>
                 foreach (var country in shippingCountries)
                 {
-                    var selected = country.Value.ToString() == ViewContext.ModelState["ShippingCountryCode"]?.AttemptedValue;
+                    var selected = country.Value.ToString() == ViewContext.ModelState["ShippingAddress.CountryId"]?.AttemptedValue;
                     <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                 }
             }
@@ -90,28 +104,28 @@
 
     <govuk-client-side-validation error-message-required="Enter a postal code or zip code"
                                   error-message-maxlength="Postal code or zip code must be 20 characters or less">
-        <govuk-input for="ShippingPostcode" class="govuk-input--width-10" autocomplete="postal-code"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "postcode-international"}})">
+        <govuk-input for="ShippingAddress.PostCode" class="govuk-input--width-10" autocomplete="postal-code"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "postcode-international" } })">
             <govuk-input-label>Postal code/zip code</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("ShippingPostcode") && ViewContext.ModelState["ShippingPostcode"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("ShippingAddress.PostCode") &&
+            ViewContext.ModelState["ShippingAddress.PostCode"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["ShippingPostcode"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["ShippingAddress.PostCode"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="ShippingUPRN" name="ShippingUPRN" value="@Model?.ShippingUPRN" data-address-lookup="UPRN" />
-    <input type="hidden" id="ShippingCountry" name="ShippingCountry" value="@Model?.ShippingCountry" data-address-lookup="country" />
+    <input type="hidden" id="ShippingAddress_UPRNReference" name="ShippingAddress.UPRNReference" value="@Model?.ShippingAddress?.UPRNReference"
+           data-address-lookup="UPRN" />
+    <input type="hidden" id="ShippingAddress_Country" name="ShippingAddress.Country" value="" data-address-lookup="country" />
 </tpr-address-lookup>
 
 <h2 class="govuk-heading-m">Billing address</h2>
 <p class="govuk-body">Tell us where we should bill your order to.</p>
 
-<tpr-address-lookup role="Secondary"
-                    same-as-primary-checkbox-label="Same as shipping address"
+<tpr-address-lookup role="Secondary" same-as-primary-checkbox-label="Same as shipping address"
                     data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
-                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
-                    data-address-lookup-postcode-label="Postcode"
+                    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()" data-address-lookup-postcode-label="Postcode"
                     data-address-lookup-postcode-required="Enter a postcode"
                     data-address-lookup-postcode-maxlength="Postcode must be 20 characters or less"
                     data-address-lookup-postcode-pattern="Enter a valid UK postcode"
@@ -126,66 +140,72 @@
     <tpr-address-lookup-legend>Billing address</tpr-address-lookup-legend>
 
     <govuk-client-side-validation error-message-required="Enter address line 1"
-                                  error-message-maxlength="Address line 1 must be 200 characters or less">
-        <govuk-input for="BillingAddressLine1" autocomplete="address-line1"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-1"}})">
+                                  error-message-maxlength="Address line 1 must be 100 characters or less">
+        <govuk-input for="BillingAddress.AddressLine1" autocomplete="address-line1"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-1" } })">
             <govuk-input-label>Address line 1</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("BillingAddressLine1") && ViewContext.ModelState["BillingAddressLine1"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("BillingAddress.AddressLine1") &&
+            ViewContext.ModelState["BillingAddress.AddressLine1"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["BillingAddressLine1"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.AddressLine1"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-maxlength="Address line 2 must be 200 characters or less">
-        <govuk-input for="BillingAddressLine2" autocomplete="address-line2"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-2"}})">
+    <govuk-client-side-validation error-message-maxlength="Address line 2 must be 100 characters or less">
+        <govuk-input for="BillingAddress.AddressLine2" autocomplete="address-line2"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-2" } })">
             <govuk-input-label>Address line 2 (optional)</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("BillingAddressLine2") && ViewContext.ModelState["BillingAddressLine2"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("BillingAddress.AddressLine2") &&
+            ViewContext.ModelState["BillingAddress.AddressLine2"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["BillingAddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.AddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="Enter a town or city"
                                   error-message-maxlength="Town or city must be 100 characters or less">
-        <govuk-input for="BillingTownOrCity" class="govuk-input--width-20" autocomplete="address-level2"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "town-or-city"}})">
+        <govuk-input for="BillingAddress.PostTown" class="govuk-input--width-20" autocomplete="address-level2"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "town-or-city" } })">
             <govuk-input-label>Town or city</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("BillingTownOrCity") && ViewContext.ModelState["BillingTownOrCity"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("BillingAddress.PostTown") &&
+            ViewContext.ModelState["BillingAddress.PostTown"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["BillingTownOrCity"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.PostTown"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-maxlength="Province, region or state must be 100 characters or less">
-        <govuk-input for="BillingCounty" class="govuk-input--width-20" autocomplete="address-level3"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "region-international"}})">
+        <govuk-input for="BillingAddress.PostCounty" class="govuk-input--width-20" autocomplete="address-level3"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "region-international" } })">
             <govuk-input-label>Province/ region/ state (optional)</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("BillingCounty") && ViewContext.ModelState["BillingCounty"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("BillingAddress.PostCounty") &&
+            ViewContext.ModelState["BillingAddress.PostCounty"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["BillingCounty"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.PostCounty"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-required="Select a country">
-        <govuk-select for="BillingCountryCode" class="govuk-input--width-10" select-autocomplete="country"
+        <govuk-select for="BillingAddress.CountryId" class="govuk-input--width-10" select-autocomplete="country"
                       select-data-address-lookup="country-code">
             <govuk-select-label>Country</govuk-select-label>
-            @if (ViewContext.ModelState.ContainsKey("BillingCountryCode") && ViewContext.ModelState["BillingCountryCode"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("BillingAddress.CountryId") &&
+            ViewContext.ModelState["BillingAddress.CountryId"]!.Errors.Count > 0)
             {
-                <govuk-select-error-message>@ViewContext.ModelState["BillingCountryCode"]!.Errors[0].ErrorMessage</govuk-select-error-message>
+                <govuk-select-error-message>@ViewContext.ModelState["BillingAddress.CountryId"]!.Errors[0].ErrorMessage</govuk-select-error-message>
             }
             @{
                 var billingCountries = countryRepository.GetCountries();
-                var billingSelectEmpty = !billingCountries.Any(x => x.Value.ToString() == (ViewContext.ModelState["BillingCountryCode"]?.AttemptedValue ?? string.Empty));
+                var billingSelectEmpty = !billingCountries.Any(x => x.Value.ToString() ==
+            (ViewContext.ModelState["BillingAddress.CountryId"]?.AttemptedValue ?? string.Empty));
                 <govuk-select-item selected="@(billingSelectEmpty)"></govuk-select-item>
                 foreach (var country in billingCountries)
                 {
-                    var selected = country.Value.ToString() == ViewContext.ModelState["BillingCountryCode"]?.AttemptedValue;
+                    var selected = country.Value.ToString() == ViewContext.ModelState["BillingAddress.CountryId"]?.AttemptedValue;
                     <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                 }
             }
@@ -194,18 +214,20 @@
 
     <govuk-client-side-validation error-message-required="Enter a postal code or zip code"
                                   error-message-maxlength="Postal code or zip code must be 20 characters or less">
-        <govuk-input for="BillingPostcode" class="govuk-input--width-10" autocomplete="postal-code"
-                     input-attributes="@(new Dictionary<string, string?>{{"data-address-lookup", "postcode-international"}})">
+        <govuk-input for="BillingAddress.PostCode" class="govuk-input--width-10" autocomplete="postal-code"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "postcode-international" } })">
             <govuk-input-label>Postal code/zip code</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("BillingPostcode") && ViewContext.ModelState["BillingPostcode"]!.Errors.Count > 0)
+            @if (ViewContext.ModelState.ContainsKey("BillingAddress.PostCode") &&
+            ViewContext.ModelState["BillingAddress.PostCode"]!.Errors.Count > 0)
             {
-                <govuk-input-error-message>@ViewContext.ModelState["BillingPostcode"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.PostCode"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="BillingUPRN" name="BillingUPRN" value="@Model?.BillingUPRN" data-address-lookup="UPRN" />
-    <input type="hidden" id="BillingCountry" name="BillingCountry" value="@Model?.BillingCountry" data-address-lookup="country" />
+    <input type="hidden" id="BillingAddress_UPRNReference" name="BillingAddress.UPRNReference" value="@Model?.BillingAddress?.UPRNReference" data-address-lookup="UPRN" />
+    <input type="hidden" id="BillingAddress_Country" name="BillingAddress.Country" value=""
+           data-address-lookup="country" />
 </tpr-address-lookup>
 
 <govuk-button type="submit">Save</govuk-button>

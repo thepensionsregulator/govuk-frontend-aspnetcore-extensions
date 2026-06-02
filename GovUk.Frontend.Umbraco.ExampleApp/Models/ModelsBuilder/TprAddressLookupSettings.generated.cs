@@ -129,14 +129,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string CountryErrorMessageRequired => this.Value<string>(_publishedValueFallback, "countryErrorMessageRequired");
 
 		///<summary>
-		/// Country model property: The name of the property on the view model being bound to country in the code.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("countryModelProperty")]
-		public virtual string CountryModelProperty => this.Value<string>(_publishedValueFallback, "countryModelProperty");
-
-		///<summary>
 		/// County error message maximum length: Sets the message displayed if county is set by the code to be of a maximum length.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

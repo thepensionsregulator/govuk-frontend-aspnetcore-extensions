@@ -2,7 +2,7 @@
 
 namespace ThePensionsRegulator.Frontend.Models
 {
-    public class TprAddress
+    public class TprAddress : ITprAddress
     {
         public virtual string? UPRNReference { get; set; }
 
@@ -28,7 +28,7 @@ namespace ThePensionsRegulator.Frontend.Models
         [Required(ErrorMessage = "Enter a country")]
         public virtual int? CountryId { get; set; }
 
-        public void PopulateAddress(TprAddress address)
+        public void PopulateAddress(ITprAddress address)
         {
             AddressLine1 = address.AddressLine1;
             AddressLine2 = address.AddressLine2;

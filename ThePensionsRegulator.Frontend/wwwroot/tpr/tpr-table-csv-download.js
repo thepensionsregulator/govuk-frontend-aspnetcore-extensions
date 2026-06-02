@@ -92,20 +92,21 @@ function downloadCsv(csvContent, fileName) {
 
 function initTableCsvDownload() {
   const buttonText = getButtonText();
-  const tables = document.querySelectorAll(".govuk-table");
+    const tables = document.querySelectorAll(".govuk-table");
 
   for (let i = 0; i < tables.length; i++) {
     const table = tables[i];
+      const nextElement = table.nextElementSibling;
 
     // Skip tables with merged cells — CSV cannot represent them reliably
     if (hasMergedCells(table)) {
       continue;
     }
 
-    // Skip if a CSV download button has already been added (idempotency)
+      // Skip if a CSV download button has already been added (idempotency)
     if (
-      table.nextElementSibling &&
-      table.nextElementSibling.hasAttribute("data-tpr-table-csv-button")
+      nextElement &&
+        nextElement.hasAttribute("data-tpr-table-csv-button") || nextElement && nextElement.matches('form[class="tpr-table-download-form"]') && nextElement.querySelector("button")
     ) {
       continue;
     }

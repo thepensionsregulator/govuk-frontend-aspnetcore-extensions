@@ -31,66 +31,71 @@ Without JavaScript, the original address input fields remain visible and usable.
         <tpr-address-lookup-hint id="address-lookup-hint">This should be your primary address</tpr-address-lookup-hint>
 
         <govuk-client-side-validation error-message-required="Enter address line 1"
-                                      error-message-maxlength="Address line 1 must be 200 characters or less">
-            <govuk-input for="AddressLine1" autocomplete="address-line1"
-                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-1"}})'>
+                                      error-message-maxlength="Address line 1 must be 100 characters or less">
+            <govuk-input for="Address.AddressLine1" autocomplete="address-line1"
+                         input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-1" } })">
                 <govuk-input-label>Address line 1</govuk-input-label>
-                @if (ViewContext.ModelState.ContainsKey("AddressLine1") && ViewContext.ModelState["AddressLine1"]!.Errors.Count > 0)
+                @if (ViewContext.ModelState.ContainsKey("Address.AddressLine1") &&
+                ViewContext.ModelState["Address.AddressLine1"]!.Errors.Count > 0)
                 {
-                    <govuk-input-error-message>@ViewContext.ModelState["AddressLine1"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                    <govuk-input-error-message>@ViewContext.ModelState["Address.AddressLine1"]!.Errors[0].ErrorMessage</govuk-input-error-message>
                 }
             </govuk-input>
         </govuk-client-side-validation>
 
-        <govuk-client-side-validation error-message-maxlength="Address line 2 must be 200 characters or less">
-            <govuk-input for="AddressLine2" autocomplete="address-line2"
-                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "address-line-2"}})'>
+        <govuk-client-side-validation error-message-maxlength="Address line 2 must be 100 characters or less">
+            <govuk-input for="Address.AddressLine2" autocomplete="address-line2"
+                         input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-2" } })">
                 <govuk-input-label>Address line 2 (optional)</govuk-input-label>
-                @if (ViewContext.ModelState.ContainsKey("AddressLine2") && ViewContext.ModelState["AddressLine2"]!.Errors.Count > 0)
+                @if (ViewContext.ModelState.ContainsKey("Address.AddressLine2") &&
+                ViewContext.ModelState["Address.AddressLine2"]!.Errors.Count > 0)
                 {
-                    <govuk-input-error-message>@ViewContext.ModelState["AddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                    <govuk-input-error-message>@ViewContext.ModelState["Address.AddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
                 }
             </govuk-input>
         </govuk-client-side-validation>
 
         <govuk-client-side-validation error-message-required="Enter a town or city"
                                       error-message-maxlength="Town or city must be 100 characters or less">
-            <govuk-input for="TownOrCity" class="govuk-input--width-20" autocomplete="address-level2"
-                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "town-or-city"}})'>
+            <govuk-input for="Address.PostTown" class="govuk-input--width-20" autocomplete="address-level2"
+                         input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "town-or-city" } })">
                 <govuk-input-label>Town or city</govuk-input-label>
-                @if (ViewContext.ModelState.ContainsKey("TownOrCity") && ViewContext.ModelState["TownOrCity"]!.Errors.Count > 0)
+                @if (ViewContext.ModelState.ContainsKey("Address.PostTown") &&
+                ViewContext.ModelState["Address.PostTown"]!.Errors.Count > 0)
                 {
-                    <govuk-input-error-message>@ViewContext.ModelState["TownOrCity"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                    <govuk-input-error-message>@ViewContext.ModelState["Address.PostTown"]!.Errors[0].ErrorMessage</govuk-input-error-message>
                 }
             </govuk-input>
         </govuk-client-side-validation>
 
         <govuk-client-side-validation error-message-maxlength="Province, region or state must be 100 characters or less">
-            <govuk-input for="County" class="govuk-input--width-20" autocomplete="address-level3"
-                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "region-international"}})'>
+            <govuk-input for="Address.PostCounty" class="govuk-input--width-20" autocomplete="address-level3"
+                         input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "region-international" } })">
                 <govuk-input-label>Province/ region/ state (optional)</govuk-input-label>
-                @if (ViewContext.ModelState.ContainsKey("County") && ViewContext.ModelState["County"]!.Errors.Count > 0)
+                @if (ViewContext.ModelState.ContainsKey("Address.PostCounty") &&
+                ViewContext.ModelState["Address.PostCounty"]!.Errors.Count > 0)
                 {
-                    <govuk-input-error-message>@ViewContext.ModelState["County"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                    <govuk-input-error-message>@ViewContext.ModelState["Address.PostCounty"]!.Errors[0].ErrorMessage</govuk-input-error-message>
                 }
             </govuk-input>
         </govuk-client-side-validation>
 
         <govuk-client-side-validation error-message-required="Select a country">
-            <govuk-select for="Country" input-class="govuk-input--width-20" select-autocomplete="country"
-                         select-data-address-lookup="country">
+            <govuk-select for="Address.CountryId" class="govuk-input--width-10" select-autocomplete="country"
+                          select-data-address-lookup="country-code">
                 <govuk-select-label>Country</govuk-select-label>
-                @if (ViewContext.ModelState.ContainsKey("Country") && ViewContext.ModelState["Country"]!.Errors.Count > 0)
+                @if (ViewContext.ModelState.ContainsKey("Address.CountryId") &&
+                ViewContext.ModelState["Address.CountryId"]!.Errors.Count > 0)
                 {
-                    <govuk-select-error-message>@ViewContext.ModelState["Country"]!.Errors[0].ErrorMessage</govuk-select-error-message>
+                    <govuk-select-error-message>@ViewContext.ModelState["Address.CountryId"]!.Errors[0].ErrorMessage</govuk-select-error-message>
                 }
                 @{
                     var countries = countryRepository.GetCountries();
-                    var selectEmpty = !countries.ContainsKey(ViewContext.ModelState["Country"]?.AttemptedValue?.ToString() ?? string.Empty);
+                    var selectEmpty = !countries.Any(x => x.Value.ToString() == (ViewContext.ModelState["Address.CountryId"]?.AttemptedValue ?? string.Empty));
                     <govuk-select-item selected="@(selectEmpty)"></govuk-select-item>
                     foreach (var country in countries)
                     {
-                        var selected = country.Key.ToString() == ViewContext.ModelState["Country"]?.AttemptedValue;
+                        var selected = country.Value.ToString() == ViewContext.ModelState["Address.CountryId"]?.AttemptedValue;
                         <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                     }
                 }
@@ -99,18 +104,19 @@ Without JavaScript, the original address input fields remain visible and usable.
 
         <govuk-client-side-validation error-message-required="Enter a postal code or zip code"
                                       error-message-maxlength="Postal code or zip code must be 20 characters or less">
-            <govuk-input for="Postcode" input-class="govuk-input--width-10" autocomplete="postal-code"
-                         input-attributes='@(new Dictionary<string, string?>{{"data-address-lookup", "postcode-international"}})'>
+            <govuk-input for="Address.PostCode" class="govuk-input--width-10" autocomplete="postal-code"
+                         input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "postcode-international" } })">
                 <govuk-input-label>Postal code/zip code</govuk-input-label>
-                @if (ViewContext.ModelState.ContainsKey("Postcode") && ViewContext.ModelState["Postcode"]!.Errors.Count > 0)
+                @if (ViewContext.ModelState.ContainsKey("Address.PostCode") &&
+                ViewContext.ModelState["Address.PostCode"]!.Errors.Count > 0)
                 {
-                    <govuk-input-error-message>@ViewContext.ModelState["Postcode"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                    <govuk-input-error-message>@ViewContext.ModelState["Address.PostCode"]!.Errors[0].ErrorMessage</govuk-input-error-message>
                 }
             </govuk-input>
         </govuk-client-side-validation>
 
-        <input type="hidden" id="UPRN" name="UPRN" value="@Model?.UPRN" data-address-lookup="UPRN" />
-        <input type="hidden" id="CountryCode" name="CountryCode" value="@Model?.CountryCode" data-address-lookup="country-code" />
+        <input type="hidden" id="Address_UPRNReference" name="Address.UPRNReference"
+               value="@Model?.Address?.UPRNReference" data-address-lookup="UPRN" />
     </tpr-address-lookup>
 
     <govuk-button type="submit">Submit</govuk-button>
@@ -127,20 +133,21 @@ Without JavaScript, the original address input fields remain visible and usable.
 You can render two address lookups on the same page — for example, a shipping and billing address. The second address can have a "same as primary" checkbox so the user can copy the confirmed primary address.
 
 ```razor
-<tpr-address-lookup
-    data-address-lookup-search-url="/api/address/search"
-    data-address-lookup-id-url="/api/address/byid">
-    <tpr-address-lookup-legend>Enter shipping address</tpr-address-lookup-legend>
-    <!-- shipping address inputs -->
+<tpr-address-lookup role="Primary"
+    data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
+    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
+    ...>
+    <tpr-address-lookup-legend>Shipping address</tpr-address-lookup-legend>
+    <!-- address inputs with "ShippingAddress." prefix -->
 </tpr-address-lookup>
 
-<tpr-address-lookup
-    role="Secondary"
-    same-as-primary-checkbox-label="Billing address is the same as shipping address"
-    data-address-lookup-search-url="/api/address/search"
-    data-address-lookup-id-url="/api/address/byid">
-    <tpr-address-lookup-legend>Enter billing address</tpr-address-lookup-legend>
-    <!-- billing address inputs -->
+<tpr-address-lookup role="Secondary"
+    same-as-primary-checkbox-label="Same as shipping address"
+    data-address-lookup-search-url="@urlProvider.GetAddressLookupSearchEndpoint()"
+    data-address-lookup-id-url="@urlProvider.GetAddressLookupIdEndpoint()"
+    ...>
+    <tpr-address-lookup-legend>Billing address</tpr-address-lookup-legend>
+    <!-- address inputs with "BillingAddress." prefix -->
 </tpr-address-lookup>
 ```
 
@@ -179,11 +186,10 @@ Each `<input>` inside the component must have a `data-address-lookup` attribute 
 | `town-or-city`              | Town or city                                               |
 | `county`                    | County (UK addresses)                                      |
 | `region-international`      | Province, region, or state (international addresses)       |
-| `country`                   | Country                                                    |
+| `country-code`              | Country code (used on the country `<select>`)              |
 | `postcode`                  | Postcode (UK addresses)                                    |
 | `postcode-international`    | Postal code or zip code (international addresses)          |
 | `UPRN`                      | Unique Property Reference Number (hidden)                  |
-| `country-code`              | Country code (hidden)                                      |
 
 ## Customising labels and error messages
 
@@ -215,37 +221,87 @@ The following `data-*` attributes can be set on the `<tpr-address-lookup>` eleme
 
 ## View model
 
-The backing view model should have properties for each address field. Apply standard data annotations for server-side validation.
+Use `TprAddress` from `ThePensionsRegulator.Frontend.Models` as the base class for address properties. It provides standard address fields with default validation attributes:
 
 ```csharp
-public class AddressViewModel
+using ThePensionsRegulator.Frontend.Models;
+
+public class AddressLookupViewModel
 {
-    [Required(ErrorMessage = "Enter address line 1")]
-    [MaxLength(500, ErrorMessage = "Address line 1 must not exceed 500 characters")]
-    public string? AddressLine1 { get; set; }
-
-    [MaxLength(500, ErrorMessage = "Address line 2 must not exceed 500 characters")]
-    public string? AddressLine2 { get; set; }
-
-    [Required(ErrorMessage = "Enter a town or city")]
-    [MaxLength(500, ErrorMessage = "Town or city must not exceed 500 characters")]
-    public string? TownOrCity { get; set; }
-
-    [MaxLength(500, ErrorMessage = "County must not exceed 500 characters")]
-    public string? County { get; set; }
-
-    [Required(ErrorMessage = "Enter a country")]
-    public string? Country { get; set; }
-
-    public int? CountryCode { get; set; }
-
-    [Required(ErrorMessage = "Enter a postcode")]
-    [MaxLength(20, ErrorMessage = "Postcode must not exceed 20 characters")]
-    public string? Postcode { get; set; }
-
-    public string? UPRN { get; set; }
+    public TprAddress? Address { get; set; }
 }
 ```
+
+`TprAddress` includes the following properties:
+
+```csharp
+public class TprAddress
+{
+    public virtual string? UPRNReference { get; set; }
+
+    [Required(ErrorMessage = "Enter address line 1")]
+    [MaxLength(100, ErrorMessage = "Address line 1 must not exceed 100 characters")]
+    public virtual string? AddressLine1 { get; set; }
+
+    [MaxLength(100, ErrorMessage = "Address line 2 must not exceed 100 characters")]
+    public virtual string? AddressLine2 { get; set; }
+
+    [MaxLength(100, ErrorMessage = "Address line 3 must not exceed 100 characters")]
+    public virtual string? AddressLine3 { get; set; }
+
+    [MaxLength(100, ErrorMessage = "Town or city must not exceed 100 characters")]
+    public virtual string? PostTown { get; set; }
+
+    [MaxLength(100, ErrorMessage = "County must not exceed 100 characters")]
+    public virtual string? PostCounty { get; set; }
+
+    [MaxLength(10, ErrorMessage = "Postcode must not exceed 20 characters")]
+    public virtual string? PostCode { get; set; }
+
+    [Required(ErrorMessage = "Enter a country")]
+    public virtual int? CountryId { get; set; }
+}
+```
+
+The country is identified by `CountryId` (an integer country code). There is no separate country name property — use the country repository to resolve names from codes when needed.
+
+### Umbraco view model
+
+When using Umbraco, use `UmbracoTprAddress` from `ThePensionsRegulator.Frontend.Umbraco.Models`. It extends `TprAddress` and overrides the validation attributes with error messages that reference the property name (for use with Umbraco's localised validation):
+
+```csharp
+public class UmbracoTprAddress : TprAddress
+{
+    [Required(ErrorMessage = nameof(AddressLine1))]
+    [MaxLength(100, ErrorMessage = nameof(AddressLine1))]
+    public override string? AddressLine1 { get; set; }
+
+    // Other properties follow the same pattern...
+
+    [Required(ErrorMessage = nameof(CountryId))]
+    public override int? CountryId { get; set; }
+}
+```
+
+### ModelState extensions
+
+Two extension methods are provided for populating `ModelStateDictionary` with address values:
+
+**`ThePensionsRegulator.Frontend.Validation.TprAddressModelStateExtensions`**
+
+```csharp
+// Sets model values on ModelState for a TprAddress, optionally with a key prefix.
+modelState.SetModelValues(address, keyPrefix: "ShippingAddress");
+```
+
+**`ThePensionsRegulator.Frontend.Umbraco.Validation.TprAddressModelStateExtensions`**
+
+```csharp
+// Sets initial values on ModelState for an UmbracoTprAddress, optionally with a key prefix.
+modelState.SetInitialAddressValues(umbracoAddress, keyPrefix: "ShippingAddress");
+```
+
+Both methods accept an optional `keyPrefix` parameter. When provided, the prefix is prepended to each property name (e.g. `"ShippingAddress.AddressLine1"`).
 
 ## State machine
 
@@ -368,13 +424,13 @@ These values are read by `TprAddressLookupEndpointUrlProvider`, which implements
 
 ### Country repository
 
-You must register an implementation of `ITprCountryRepository` in the dependency injection container. The view injects this service and serialises the result of `GetCountries()` into the `data-address-lookup-countries` attribute on the component element. The JavaScript reads this attribute to populate the country dropdown in the manual international address entry view.
+You must register an implementation of `ITprCountryRepository` in the dependency injection container. The view injects this service to populate the country `<select>` element. Each option's value is an integer country code (`CountryId`), and its display text is the country name.
 
 ```csharp
 public interface ITprCountryRepository
 {
     /// <summary>
-    /// Returns a dictionary of country names to country codes.
+    /// Returns a dictionary of country names (keys) to country codes (values).
     /// </summary>
     IDictionary<string, int> GetCountries();
 }

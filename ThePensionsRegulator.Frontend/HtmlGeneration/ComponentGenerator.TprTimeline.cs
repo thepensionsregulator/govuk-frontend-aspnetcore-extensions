@@ -73,8 +73,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
         private static TagBuilder BuildDateTime(TprTimelineItem item)
         {
-            var timelineItemDateTime = new TagBuilder("p");
-            timelineItemDateTime.MergeCssClass("tpr-timeline__datetime");
+            var timelineItemDateTime = new TagBuilder("h3");
+            timelineItemDateTime.AddCssClass("tpr-timeline__datetime");
             timelineItemDateTime.InnerHtml.AppendHtml(item.DateTime!.ToString());
             return timelineItemDateTime;
         }
@@ -82,7 +82,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         private static TagBuilder BuildHeading(TprTimelineItem item, int headingLevel)
         {
             var timelineItemHeading = new TagBuilder($"h{headingLevel}");
-            timelineItemHeading.MergeCssClass("tpr-timeline__heading");
+            timelineItemHeading.AddCssClass("tpr-timeline__heading");
             timelineItemHeading.InnerHtml.AppendHtml(item.Heading!.ToString());
             return timelineItemHeading;
         }

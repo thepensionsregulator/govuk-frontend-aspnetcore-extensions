@@ -11,27 +11,35 @@ using ThePensionsRegulator.Umbraco.Testing;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
 {
-    public class DependentFieldsActionFilterTests
+    public class DependentFieldsActionFilterTests : IDisposable
     {
         private const string PARENT_MODEL_PROPERTY = "Field1";
         private const string DEPENDENT_MODEL_PROPERTY = "Field2";
         private const string RADIO_WITH_DEPENDENT_FIELD_VALUE = "1";
         private const string RADIO_WITHOUT_DEPENDENT_FIELD_VALUE = "2";
 
+        private readonly UmbracoTestContext _testContext;
+
+        public DependentFieldsActionFilterTests()
+        {
+            _testContext = new UmbracoTestContext();
+            _testContext.Request.Setup(x => x.Method).Returns(HttpMethod.Post.Method);
+        }
+
+        public void Dispose() => _testContext.Dispose();
+
         [Fact]
         public void Invalid_ModelState_remains_invalid_for_non_dependent_field()
         {
             // Arrange
-            using var testContext = CreateTestContext();
-
-            testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithOneTextInput(DEPENDENT_MODEL_PROPERTY));
+            _testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithOneTextInput(DEPENDENT_MODEL_PROPERTY));
 
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(DEPENDENT_MODEL_PROPERTY, "Any error");
 
-            var actionExecutingContext = CreateActionExecutingContext(testContext.HttpContext.Object, modelState);
+            var actionExecutingContext = CreateActionExecutingContext(_testContext.HttpContext.Object, modelState);
 
-            var filter = new DependentFieldsActionFilter(testContext.UmbracoContextAccessor.Object);
+            var filter = new DependentFieldsActionFilter(_testContext.UmbracoContextAccessor.Object, _testContext.PublishedValueFallback.Object);
 
             // Act
             filter.OnActionExecuting(actionExecutingContext);
@@ -47,17 +55,15 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
         public void Invalid_ModelState_set_to_skipped_when_parent_field_is_invalid()
         {
             // Arrange
-            using var testContext = CreateTestContext();
-
-            testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithRadiosWithOneDependentField());
+            _testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithRadiosWithOneDependentField());
 
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(PARENT_MODEL_PROPERTY, "Any error");
             modelState.AddModelError(DEPENDENT_MODEL_PROPERTY, "Any error");
 
-            var actionExecutingContext = CreateActionExecutingContext(testContext.HttpContext.Object, modelState);
+            var actionExecutingContext = CreateActionExecutingContext(_testContext.HttpContext.Object, modelState);
 
-            var filter = new DependentFieldsActionFilter(testContext.UmbracoContextAccessor.Object);
+            var filter = new DependentFieldsActionFilter(_testContext.UmbracoContextAccessor.Object, _testContext.PublishedValueFallback.Object);
 
             // Act
             filter.OnActionExecuting(actionExecutingContext);
@@ -72,18 +78,16 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
         public void Invalid_ModelState_set_to_skipped_when_parent_field_is_valid_but_parent_option_not_selected()
         {
             // Arrange
-            using var testContext = CreateTestContext();
-
-            testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithRadiosWithOneDependentField());
+            _testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithRadiosWithOneDependentField());
 
             var modelState = new ModelStateDictionary();
             modelState.SetModelValue(PARENT_MODEL_PROPERTY, RADIO_WITHOUT_DEPENDENT_FIELD_VALUE, RADIO_WITHOUT_DEPENDENT_FIELD_VALUE);
             modelState.MarkFieldValid(PARENT_MODEL_PROPERTY);
             modelState.AddModelError(DEPENDENT_MODEL_PROPERTY, "Any error");
 
-            var actionExecutingContext = CreateActionExecutingContext(testContext.HttpContext.Object, modelState);
+            var actionExecutingContext = CreateActionExecutingContext(_testContext.HttpContext.Object, modelState);
 
-            var filter = new DependentFieldsActionFilter(testContext.UmbracoContextAccessor.Object);
+            var filter = new DependentFieldsActionFilter(_testContext.UmbracoContextAccessor.Object, _testContext.PublishedValueFallback.Object);
 
             // Act
             filter.OnActionExecuting(actionExecutingContext);
@@ -98,18 +102,16 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
         public void Invalid_ModelState_remains_invalid_when_parent_field_is_valid_and_parent_option_selected()
         {
             // Arrange
-            using var testContext = CreateTestContext();
-
-            testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithRadiosWithOneDependentField());
+            _testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithRadiosWithOneDependentField());
 
             var modelState = new ModelStateDictionary();
             modelState.SetModelValue(PARENT_MODEL_PROPERTY, RADIO_WITH_DEPENDENT_FIELD_VALUE, RADIO_WITH_DEPENDENT_FIELD_VALUE);
             modelState.MarkFieldValid(PARENT_MODEL_PROPERTY);
             modelState.AddModelError(DEPENDENT_MODEL_PROPERTY, "Any error");
 
-            var actionExecutingContext = CreateActionExecutingContext(testContext.HttpContext.Object, modelState);
+            var actionExecutingContext = CreateActionExecutingContext(_testContext.HttpContext.Object, modelState);
 
-            var filter = new DependentFieldsActionFilter(testContext.UmbracoContextAccessor.Object);
+            var filter = new DependentFieldsActionFilter(_testContext.UmbracoContextAccessor.Object, _testContext.PublishedValueFallback.Object);
 
             // Act
             filter.OnActionExecuting(actionExecutingContext);
@@ -161,12 +163,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
                         );
         }
 
-        private static UmbracoTestContext CreateTestContext()
-        {
-            var testContext = new UmbracoTestContext();
-            testContext.Request.Setup(x => x.Method).Returns(HttpMethod.Post.Method);
-            return testContext;
-        }
         private static ActionExecutingContext CreateActionExecutingContext(HttpContext httpContext, ModelStateDictionary modelState)
         {
             var actionContext = new ActionContext(

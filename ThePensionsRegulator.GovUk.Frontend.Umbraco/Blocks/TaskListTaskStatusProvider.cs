@@ -5,7 +5,7 @@ using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
 {
-    public class TaskListTaskStatusProvider : ITaskListTaskStatusProvider
+    public class TaskListTaskStatusProvider(IPublishedValueFallback _publishedValueFallback) : ITaskListTaskStatusProvider
     {
         /// <inheritdoc/>
         public IEnumerable<TaskListTaskStatus> FindTaskStatuses(IPublishedContent content)
@@ -40,7 +40,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
             var tasks = blocks.FindBlocksByContentTypeAlias(ElementTypeAliases.Task)
                 .Where(blockFilter).Select(blockSelector).OfType<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
             var taskStatuses = tasks
-                .Select(x => x.Settings?.Value<string>(PropertyAliases.TaskListTaskStatus))
+                .Select(x => x.Settings?.Value<string>(_publishedValueFallback, PropertyAliases.TaskListTaskStatus))
                 .Where(x => !string.IsNullOrEmpty(x))
                 .Select(x => Enum.Parse<TaskListTaskStatus>(x!.Replace(" ", string.Empty), true));
 

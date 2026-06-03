@@ -37,6 +37,10 @@
     <PackageReference Include="MailKit" Version="4.16.0" />
     <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.7" />
     <PackageReference Include="Umbraco.Cms.Web.Common" Version="17.2.2" />
+	<PackageReference Include="ThePensionsRegulator.Analyzers.Umbraco" Version="1.0.0">
+		<PrivateAssets>all</PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
   </ItemGroup>
 
 </Project>

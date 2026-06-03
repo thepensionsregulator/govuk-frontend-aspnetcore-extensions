@@ -1,51 +1,99 @@
-# Table CSV download
+# TPR table CSV download
 
-Adds a "Download table data (CSV)" button below each `.govuk-table` on the page, allowing users to download the table data as a CSV file. This improves accessibility by providing an alternative way to consume tabular data.
-
-## Enabling the feature
-
-Set `EnableTableCsvDownload = true` on `TprFrontendOptions`:
-
-```csharp
-// When using ThePensionsRegulator.Frontend directly
-builder.Services.AddTprFrontend(options => { options.EnableTableCsvDownload = true; });
-
-// When using ThePensionsRegulator.Frontend.Umbraco
-builder.Services.AddTprFrontendUmbraco(tprOptions => { tprOptions.EnableTableCsvDownload = true; });
-```
-
-When enabled, a `<script>` tag is added to the `TPR/BodyClosing` partial with `type="module"`.
+Adds a CSV download button below each `.govuk-table` element on the page. This is a TPR accessibility feature that allows users to download table data in CSV format, which can be easier to read in a spreadsheet application than a complex HTML table on a small screen.
 
 ## How it works
 
-On `DOMContentLoaded`, the script:
+When the script runs on `DOMContentLoaded`, it finds all elements with the `.govuk-table` class and inserts a "Download table data (CSV)" button after each one. Clicking the button generates a CSV file from the table data and triggers a download.
 
-1. Finds all `<table class="govuk-table">` elements on the page.
-2. Inserts a `<button class="govuk-button govuk-button--secondary">` immediately after each table.
-3. On button click, converts the table to CSV and triggers a file download.
+Tables with merged cells (`colspan` or `rowspan` greater than 1) are automatically skipped, because merged cells cannot be reliably represented in CSV format.
 
 The script is idempotent — if it runs more than once, it will not create duplicate buttons.
 
-### File naming
+## CSV standard
 
-The downloaded file name is derived from the table's `<caption>` element. If there is no caption, the file is named `table-data.csv`. The name is sanitised to remove special characters and truncated to 50 characters.
+The generated CSV conforms to [RFC 4180](https://www.rfc-editor.org/rfc/rfc4180) and the [UK government recommended open standard for tabular data](https://www.gov.uk/government/publications/recommended-open-standards-for-government/tabular-data-standard):
 
-### CSV format
+- Fields are separated by commas
+- Fields containing commas, double quotes, or line breaks are enclosed in double quotes
+- Double quotes within a field are escaped by doubling them
+- Lines are terminated with CRLF (`\r\n`)
+- The file is encoded as UTF-8 with a byte order mark (BOM)
 
-- Follows [RFC 4180](https://datatracker.ietf.org/doc/html/rfc4180) for quoting and escaping.
-- Includes a UTF-8 BOM for correct display in Excel.
-- Mitigates CSV injection by prefixing formula-triggering characters (`=`, `+`, `-`, `@`, tab, carriage return) with a single quote.
+Values beginning with `=`, `+`, `-`, or `@` are prefixed with a single quote (`'`) to mitigate CSV formula injection when opened in spreadsheet applications.
+
+## Client-side support
+
+Include the following script to enable the feature. This is included by default when referencing `<partial name="TPR/BodyClosing" />` in your layout.
+
+```html
+<script src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-table-csv-download.js" type="module"></script>
+```
+
+The script is lightweight and is a no-op if there are no `.govuk-table` elements on the page.
 
 ## Customising button text
 
-The default button text is **"Download table data (CSV)"**. To customise it (e.g. for Welsh language support), add a `data-tpr-table-csv-download-text` attribute to the `<body>` element:
+The default button text is "Download table data (CSV)". To customise it, add a `data-tpr-table-csv-download-text` attribute to the `<body>` element:
 
 ```html
-<body data-tpr-table-csv-download-text="Lawrlwytho data tabl (CSV)">
+<body data-tpr-table-csv-download-text="Download as CSV">
 ```
 
-In Umbraco, a dictionary item `Table CSV Download Button Text` can be used to provide translations. The layout page should render the body attribute using the dictionary value.
+## File name
 
-## Merged cells
+The downloaded file name is derived from the table's `<caption>` element text, sanitised to remove special characters. If no caption is present, the file is named `table-data.csv`.
 
-Tables containing cells with `colspan` or `rowspan` greater than 1 are skipped — no download button is added — because merged cells cannot be reliably represented in CSV.
+## Configuration
+
+Add the `EnableTableCsvDownload` property to `TprFrontendOptions` when registering services:
+
+```csharp
+services.AddTprFrontend(
+    tprOptions =>
+    {
+        tprOptions.EnableTableCsvDownload = true;
+    }
+);
+```
+
+## Example
+
+Given this table:
+
+```html
+<table class="govuk-table">
+  <caption>Quarterly results</caption>
+  <thead>
+    <tr>
+      <th scope="col">Quarter</th>
+      <th scope="col">Revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Q1</td>
+      <td>£1,000</td>
+    </tr>
+    <tr>
+      <td>Q2</td>
+      <td>£1,500</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+The script will insert a secondary GOV.UK button after the table. Clicking it downloads `quarterly-results.csv` with this content:
+
+```
+Quarter,Revenue
+Q1,"£1,000"
+Q2,"£1,500"
+```
+
+## Tables that are skipped
+
+The following tables will **not** get a download button:
+
+- Tables without the `.govuk-table` class
+- Tables containing cells with `colspan` or `rowspan` greater than 1 (merged cells)

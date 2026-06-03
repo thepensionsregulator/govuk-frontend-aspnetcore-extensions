@@ -1,375 +1,310 @@
-import '@testing-library/jest-dom';
-import { jest } from '@jest/globals';
-import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, hasMergedCells, tableToCsv, initTableCsvDownload, downloadCsv } from '../wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download';
+import "@testing-library/jest-dom";
 
-beforeEach(() => {
-    document.body.innerHTML = "";
-    document.body.removeAttribute("data-tpr-table-csv-download-text");
-});
+import {
+  DEFAULT_BUTTON_TEXT,
+  getButtonText,
+  escapeCsvValue,
+  hasMergedCells,
+  tableToCsv,
+  sanitizeFileName,
+  initTableCsvDownload,
+} from "../wwwroot/tpr/tpr-table-csv-download";
+
+const createTable = ({
+  className = "govuk-table",
+  caption = "Test table",
+  headers = ["Name", "Age"],
+  rows = [
+    ["Alice", "30"],
+    ["Bob", "25"],
+  ],
+  mergedCells = false,
+} = {}) => {
+  const headerHtml = headers
+    .map((h) => `<th scope="col">${h}</th>`)
+    .join("");
+  const rowHtml = rows
+    .map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`)
+    .join("");
+
+  if (mergedCells) {
+    return `<table class="${className}">
+      ${caption ? `<caption>${caption}</caption>` : ""}
+      <thead><tr>${headerHtml}</tr></thead>
+      <tbody>
+        <tr><td colspan="2">Merged cell</td></tr>
+        ${rowHtml}
+      </tbody>
+    </table>`;
+  }
+
+  return `<table class="${className}">
+    ${caption ? `<caption>${caption}</caption>` : ""}
+    <thead><tr>${headerHtml}</tr></thead>
+    <tbody>${rowHtml}</tbody>
+  </table>`;
+};
 
 describe("getButtonText", () => {
-    test("returns default text when no data attribute is set", () => {
-        expect(getButtonText()).toBe("Download table data (CSV)");
-    });
+  afterEach(() => {
+    delete document.body.dataset.tprTableCsvDownloadText;
+  });
 
-    test("returns custom text from body data attribute", () => {
-        document.body.setAttribute("data-tpr-table-csv-download-text", "Custom download");
-        expect(getButtonText()).toBe("Custom download");
-    });
+  it("should return default button text when no data attribute is set", () => {
+    expect(getButtonText()).toBe(DEFAULT_BUTTON_TEXT);
+  });
 
-    test("returns default text when data attribute is empty", () => {
-        document.body.setAttribute("data-tpr-table-csv-download-text", "");
-        expect(getButtonText()).toBe("Download table data (CSV)");
-    });
-});
-
-describe("sanitizeFileName", () => {
-    test("returns 'table-data' for null input", () => {
-        expect(sanitizeFileName(null)).toBe("table-data");
-    });
-
-    test("returns 'table-data' for empty string", () => {
-        expect(sanitizeFileName("")).toBe("table-data");
-    });
-
-    test("returns 'table-data' for whitespace-only input", () => {
-        expect(sanitizeFileName("   ")).toBe("table-data");
-    });
-
-    test("converts to lowercase and replaces spaces with hyphens", () => {
-        expect(sanitizeFileName("My Table Name")).toBe("my-table-name");
-    });
-
-    test("removes special characters", () => {
-        expect(sanitizeFileName("Table: 100% (data)")).toBe("table-100-data");
-    });
-
-    test("truncates to 50 characters", () => {
-        const longName = "A".repeat(60);
-        expect(sanitizeFileName(longName).length).toBe(50);
-    });
-
-    test("returns 'table-data' when all characters are special", () => {
-        expect(sanitizeFileName("!@#$%")).toBe("table-data");
-    });
-});
-
-describe("getCellText", () => {
-    test("returns trimmed text content of a cell", () => {
-        const td = document.createElement("td");
-        td.textContent = "  Hello World  ";
-        expect(getCellText(td)).toBe("Hello World");
-    });
-
-    test("normalises internal whitespace", () => {
-        const td = document.createElement("td");
-        td.textContent = "Hello   World\n\tFoo";
-        expect(getCellText(td)).toBe("Hello World Foo");
-    });
-
-    test("returns empty string for empty cell", () => {
-        const td = document.createElement("td");
-        expect(getCellText(td)).toBe("");
-    });
+  it("should return custom button text from data attribute on body", () => {
+    document.body.dataset.tprTableCsvDownloadText = "Download CSV";
+    expect(getButtonText()).toBe("Download CSV");
+  });
 });
 
 describe("escapeCsvValue", () => {
-    test("returns empty string for empty input", () => {
-        expect(escapeCsvValue("")).toBe("");
-    });
+  it("should return empty string for null or undefined", () => {
+    expect(escapeCsvValue(null)).toBe("");
+    expect(escapeCsvValue(undefined)).toBe("");
+    expect(escapeCsvValue("")).toBe("");
+  });
 
-    test("returns empty string for null input", () => {
-        expect(escapeCsvValue(null)).toBe("");
-    });
+  it("should return plain value when no special characters", () => {
+    expect(escapeCsvValue("Hello")).toBe("Hello");
+  });
 
-    test("returns value unchanged when no special characters", () => {
-        expect(escapeCsvValue("hello")).toBe("hello");
-    });
+  it("should wrap value in quotes when it contains a comma", () => {
+    expect(escapeCsvValue("Hello, World")).toBe('"Hello, World"');
+  });
 
-    test("quotes value containing comma", () => {
-        expect(escapeCsvValue("hello,world")).toBe('"hello,world"');
-    });
+  it("should escape double quotes by doubling them", () => {
+    expect(escapeCsvValue('He said "hi"')).toBe('"He said ""hi"""');
+  });
 
-    test("quotes value containing double quote and escapes it", () => {
-        expect(escapeCsvValue('say "hello"')).toBe('"say ""hello"""');
-    });
+  it("should wrap value in quotes when it contains a newline", () => {
+    expect(escapeCsvValue("Line1\nLine2")).toBe('"Line1\nLine2"');
+  });
 
-    test("quotes value containing newline", () => {
-        expect(escapeCsvValue("line1\nline2")).toBe('"line1\nline2"');
-    });
+  it("should wrap value in quotes when it contains a carriage return", () => {
+    expect(escapeCsvValue("Line1\rLine2")).toBe('"Line1\rLine2"');
+  });
 
-    test("quotes value containing carriage return", () => {
-        expect(escapeCsvValue("line1\rline2")).toBe('"line1\rline2"');
-    });
+  it("should prefix values starting with = to mitigate CSV injection", () => {
+    expect(escapeCsvValue("=SUM(A1:A2)")).toBe("'=SUM(A1:A2)");
+  });
 
-    test("prefixes formula-triggering = character", () => {
-        expect(escapeCsvValue("=SUM(A1)")).toBe("'=SUM(A1)");
-    });
+  it("should prefix values starting with + to mitigate CSV injection", () => {
+    expect(escapeCsvValue("+cmd|' /C calc'!A0")).toBe(
+      "'+cmd|' /C calc'!A0"
+    );
+  });
 
-    test("prefixes formula-triggering + character", () => {
-        expect(escapeCsvValue("+44 123")).toBe("'+44 123");
-    });
+  it("should both prefix and quote-wrap when injection char and comma present", () => {
+    expect(escapeCsvValue("=A,B")).toBe("\"'=A,B\"");
+  });
 
-    test("prefixes formula-triggering - character", () => {
-        expect(escapeCsvValue("-1")).toBe("'-1");
-    });
+  it("should prefix values starting with - to mitigate CSV injection", () => {
+    expect(escapeCsvValue("-1+1")).toBe("'-1+1");
+  });
 
-    test("prefixes formula-triggering @ character", () => {
-        expect(escapeCsvValue("@mention")).toBe("'@mention");
-    });
-
-    test("prefixes and quotes value with formula char and comma", () => {
-        expect(escapeCsvValue("=A,B")).toBe("\"'=A,B\"");
-    });
-});
-
-describe("tableToCsv", () => {
-    test("converts a simple table to CSV", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <thead><tr><th>Name</th><th>Age</th></tr></thead>
-                <tbody><tr><td>Alice</td><td>30</td></tr></tbody>
-            </table>`;
-        const table = document.querySelector("table");
-        expect(tableToCsv(table)).toBe("Name,Age\r\nAlice,30");
-    });
-
-    test("returns empty string for table with no rows", () => {
-        document.body.innerHTML = '<table class="govuk-table"></table>';
-        const table = document.querySelector("table");
-        expect(tableToCsv(table)).toBe("");
-    });
-
-    test("escapes CSV special characters in cell values", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <tr><td>Hello, World</td><td>Normal</td></tr>
-            </table>`;
-        const table = document.querySelector("table");
-        expect(tableToCsv(table)).toBe('"Hello, World",Normal');
-    });
+  it("should prefix values starting with @ to mitigate CSV injection", () => {
+    expect(escapeCsvValue("@SUM(A1)")).toBe("'@SUM(A1)");
+  });
 });
 
 describe("hasMergedCells", () => {
-    test("returns false for a table with no merged cells", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <tr><td>A</td><td>B</td></tr>
-            </table>`;
-        expect(hasMergedCells(document.querySelector("table"))).toBe(false);
-    });
+  it("should return false for a table with no merged cells", () => {
+    document.body.innerHTML = createTable();
+    const table = document.querySelector("table");
+    expect(hasMergedCells(table)).toBe(false);
+  });
 
-    test("returns true when a cell has colspan > 1", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <tr><td colspan="2">Merged</td></tr>
-            </table>`;
-        expect(hasMergedCells(document.querySelector("table"))).toBe(true);
-    });
+  it("should return true for a table with colspan > 1", () => {
+    document.body.innerHTML = createTable({ mergedCells: true });
+    const table = document.querySelector("table");
+    expect(hasMergedCells(table)).toBe(true);
+  });
 
-    test("returns true when a cell has rowspan > 1", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <tr><td rowspan="2">Merged</td><td>B1</td></tr>
-                <tr><td>B2</td></tr>
-            </table>`;
-        expect(hasMergedCells(document.querySelector("table"))).toBe(true);
-    });
+  it("should return true for a table with rowspan > 1", () => {
+    document.body.innerHTML = `<table class="govuk-table">
+      <tbody>
+        <tr><td rowspan="2">Merged</td><td>Cell</td></tr>
+        <tr><td>Cell</td></tr>
+      </tbody>
+    </table>`;
+    const table = document.querySelector("table");
+    expect(hasMergedCells(table)).toBe(true);
+  });
 
-    test("returns false when colspan and rowspan are 1", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <tr><td colspan="1" rowspan="1">Cell</td></tr>
-            </table>`;
-        expect(hasMergedCells(document.querySelector("table"))).toBe(false);
+  it("should return false when colspan and rowspan are 1", () => {
+    document.body.innerHTML = `<table class="govuk-table">
+      <tbody>
+        <tr><td colspan="1" rowspan="1">Cell</td></tr>
+      </tbody>
+    </table>`;
+    const table = document.querySelector("table");
+    expect(hasMergedCells(table)).toBe(false);
+  });
+});
+
+describe("tableToCsv", () => {
+  it("should generate CSV from a simple table", () => {
+    document.body.innerHTML = createTable();
+    const table = document.querySelector("table");
+    const csv = tableToCsv(table);
+    const lines = csv.split("\r\n");
+    expect(lines.length).toBe(3);
+    expect(lines[0]).toBe("Name,Age");
+    expect(lines[1]).toBe("Alice,30");
+    expect(lines[2]).toBe("Bob,25");
+  });
+
+  it("should use CRLF line endings per RFC 4180", () => {
+    document.body.innerHTML = createTable({
+      headers: ["A"],
+      rows: [["1"]],
     });
+    const table = document.querySelector("table");
+    const csv = tableToCsv(table);
+    expect(csv).toContain("\r\n");
+    expect(csv).toBe("A\r\n1");
+  });
+
+  it("should escape values containing commas", () => {
+    document.body.innerHTML = createTable({
+      headers: ["Name"],
+      rows: [["Smith, John"]],
+    });
+    const table = document.querySelector("table");
+    const csv = tableToCsv(table);
+    expect(csv).toContain('"Smith, John"');
+  });
+});
+
+describe("sanitizeFileName", () => {
+  it('should return "table-data" for null or empty input', () => {
+    expect(sanitizeFileName(null)).toBe("table-data");
+    expect(sanitizeFileName("")).toBe("table-data");
+    expect(sanitizeFileName("   ")).toBe("table-data");
+  });
+
+  it("should convert spaces to hyphens and lowercase", () => {
+    expect(sanitizeFileName("My Table Name")).toBe("my-table-name");
+  });
+
+  it("should remove special characters", () => {
+    expect(sanitizeFileName("Table (2023/24)")).toBe("table-202324");
+  });
+
+  it("should truncate to 100 characters", () => {
+    const longName = "a".repeat(150);
+    expect(sanitizeFileName(longName).length).toBe(100);
+  });
 });
 
 describe("initTableCsvDownload", () => {
-    test("inserts a CSV download button immediately after each .govuk-table", () => {
-        document.body.innerHTML = `
-            <div>
-                <table class="govuk-table">
-                    <tr><td>Data</td></tr>
-                </table>
-            </div>`;
+    afterEach(() => {
+        document.body.innerHTML = "";
+        delete document.body.dataset.tprTableCsvDownloadText;
+    });
+
+    it("should add a download button after each .govuk-table", () => {
+        document.body.innerHTML = createTable();
         initTableCsvDownload();
-        const table = document.querySelector(".govuk-table");
-        const button = table.nextElementSibling;
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
         expect(button).not.toBeNull();
-        expect(button.tagName).toBe("BUTTON");
-        expect(button).toHaveAttribute("data-tpr-table-csv-button", "true");
-        expect(button).toHaveTextContent("Download table data (CSV)");
-        expect(button).toHaveClass("govuk-button", "govuk-button--secondary");
-        expect(button).toHaveAttribute("data-module", "govuk-button");
-        expect(button.type).toBe("button");
+        expect(button.textContent).toBe(DEFAULT_BUTTON_TEXT);
+        expect(button.className).toBe("govuk-button govuk-button--secondary");
     });
 
-    test("does not add a button to tables without .govuk-table class", () => {
-        document.body.innerHTML = `
-            <div>
-                <table>
-                    <tr><td>Data</td></tr>
-                </table>
-            </div>`;
+    it("should not add a button to non-.govuk-table tables", () => {
+        document.body.innerHTML = createTable({ className: "other-table" });
         initTableCsvDownload();
-        expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).not.toBeInTheDocument();
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(button).toBeNull();
     });
 
-    test("is idempotent — does not add a duplicate button when run twice", () => {
-        document.body.innerHTML = `
-            <div>
-                <table class="govuk-table">
-                    <tr><td>Data</td></tr>
-                </table>
-            </div>`;
+    it("should not add a button to tables with merged cells", () => {
+        document.body.innerHTML = createTable({ mergedCells: true });
         initTableCsvDownload();
-        initTableCsvDownload();
-        const buttons = document.querySelectorAll('button[data-tpr-table-csv-button="true"]');
-        expect(buttons.length).toBe(1);
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(button).toBeNull();
     });
 
-    test("should not create a button on tables with an exsisting hardcoded button", () => {
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                 <thead><tr><th>Name</th><th>Age</th></tr></thead>
-                 <tbody><tr><td>Alice</td><td>30</td></tr></tbody>
-            </table> 
-            <form action="/example" class="tpr-table-download-form">
-                <input type="hidden">
-                 <input type="hidden">
-                 <input type="hidden">
-                 <button class="govuk-button">Existing Button</button>
-            </form>`
+    it("should not create duplicate buttons when called twice", () => {
+        document.body.innerHTML = createTable();
+        initTableCsvDownload();
         initTableCsvDownload();
         const buttons = document.querySelectorAll(
-            'button'
+            'button[data-tpr-table-csv-button="true"]'
         );
         expect(buttons.length).toBe(1);
     });
 
-    test("uses custom button text from body data attribute", () => {
-        document.body.setAttribute("data-tpr-table-csv-download-text", "Lawrlwytho data tabl (CSV)");
-        document.body.innerHTML = `
-            <table class="govuk-table">
-                <tr><td>Data</td></tr>
-            </table>`;
-        // Re-set the attribute after innerHTML clears it
-        document.body.setAttribute("data-tpr-table-csv-download-text", "Lawrlwytho data tabl (CSV)");
+    it("should use custom button text from data attribute", () => {
+        document.body.dataset.tprTableCsvDownloadText = "Custom text";
+        document.body.innerHTML = createTable();
         initTableCsvDownload();
-        const button = document.querySelector("button");
-        expect(button).toHaveTextContent("Lawrlwytho data tabl (CSV)");
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(button.textContent).toBe("Custom text");
     });
 
-    test("uses caption text for file name attribute", () => {
-        document.body.innerHTML = `
-            <div>
-                <table class="govuk-table">
-                    <caption>Quarterly Results</caption>
-                    <tr><td>Data</td></tr>
-                </table>
-            </div>`;
+    it("should handle multiple tables on the page", () => {
+        document.body.innerHTML = createTable({ caption: "Table 1" }) +
+            createTable({ caption: "Table 2" });
         initTableCsvDownload();
-        const button = document.querySelector("button");
-        expect(button).toHaveAttribute("data-tpr-table-csv-filename", "quarterly-results");
-    });
-
-    test("skips tables with merged cells", () => {
-        document.body.innerHTML = `
-            <div>
-                <table class="govuk-table">
-                    <tr><td colspan="2">Merged</td></tr>
-                    <tr><td>A</td><td>B</td></tr>
-                </table>
-            </div>`;
-        initTableCsvDownload();
-        expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).not.toBeInTheDocument();
-    });
-
-    test("handles multiple .govuk-table elements", () => {
-        document.body.innerHTML = `
-            <div>
-                <table class="govuk-table"><tr><td>Table 1</td></tr></table>
-                <table class="govuk-table"><tr><td>Table 2</td></tr></table>
-            </div>`;
-        initTableCsvDownload();
-        const buttons = document.querySelectorAll('button[data-tpr-table-csv-button="true"]');
+        const buttons = document.querySelectorAll(
+            'button[data-tpr-table-csv-button="true"]'
+        );
         expect(buttons.length).toBe(2);
     });
 
-    test("button click triggers CSV download", () => {
-        document.body.innerHTML = `
-            <div>
-                <table class="govuk-table">
-                    <caption>Test Table</caption>
-                    <tr><th>Col</th></tr>
-                    <tr><td>Val</td></tr>
-                </table>
-            </div>`;
+    it("should place the button immediately after the table", () => {
+        document.body.innerHTML = `<div>${createTable()}</div>`;
         initTableCsvDownload();
-
-        // Mock URL.createObjectURL and URL.revokeObjectURL
-        const mockUrl = "blob:mock-url";
-        const originalCreateObjectURL = URL.createObjectURL;
-        const originalRevokeObjectURL = URL.revokeObjectURL;
-        URL.createObjectURL = jest.fn(() => mockUrl);
-        URL.revokeObjectURL = jest.fn();
-
-        // Mock link click
-        const clickSpy = jest.fn();
-        const originalCreateElement = document.createElement.bind(document);
-        jest.spyOn(document, "createElement").mockImplementation((tag) => {
-            const el = originalCreateElement(tag);
-            if (tag === "a") {
-                el.click = clickSpy;
-            }
-            return el;
-        });
-
-        const button = document.querySelector("button");
-        button.click();
-
-        expect(URL.createObjectURL).toHaveBeenCalled();
-        expect(clickSpy).toHaveBeenCalled();
-        expect(URL.revokeObjectURL).toHaveBeenCalledWith(mockUrl);
-
-        // Restore
-        URL.createObjectURL = originalCreateObjectURL;
-        URL.revokeObjectURL = originalRevokeObjectURL;
-        document.createElement.mockRestore();
+        const table = document.querySelector(".govuk-table");
+        const button = table.nextElementSibling;
+        expect(button).not.toBeNull();
+        expect(button.hasAttribute("data-tpr-table-csv-button")).toBe(true);
     });
+
+    it("should derive the file name from the table caption", () => {
+        document.body.innerHTML = createTable({ caption: "My Report 2024" });
+        initTableCsvDownload();
+        const button = document.querySelector(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(button).not.toBeNull();
+        expect(button.getAttribute("data-tpr-table-csv-filename")).toBe(
+            "my-report-2024"
+        );
+    });
+
+    it("should skip tables with merged cells but still process simple tables", () => {
+        document.body.innerHTML =
+            createTable({ mergedCells: true, caption: "Merged" }) +
+            createTable({ caption: "Simple" });
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll(
+            'button[data-tpr-table-csv-button="true"]'
+        );
+        expect(buttons.length).toBe(1);
+    });
+
+    it("should not create a button on tables with an exsisting hardcoded button", () => {
+        document.body.innerHTML = `${createTable()} <form action="/example" class="tpr-table-download-form"><input type="hidden"><input type="hidden"><input type="hidden"><button class="govuk-button">Existing Button</button></form>`
+    initTableCsvDownload();
+    const buttons = document.querySelectorAll(
+        'button'
+    );
+    expect(buttons.length).toBe(1);
+});
 });
 
-describe("downloadCsv", () => {
-    test("creates blob with BOM and triggers download", () => {
-        const mockUrl = "blob:test-url";
-        const originalCreateObjectURL = URL.createObjectURL;
-        const originalRevokeObjectURL = URL.revokeObjectURL;
-        URL.createObjectURL = jest.fn(() => mockUrl);
-        URL.revokeObjectURL = jest.fn();
 
-        const clickSpy = jest.fn();
-        const originalCreateElement = document.createElement.bind(document);
-        jest.spyOn(document, "createElement").mockImplementation((tag) => {
-            const el = originalCreateElement(tag);
-            if (tag === "a") {
-                el.click = clickSpy;
-            }
-            return el;
-        });
-
-        downloadCsv("Name,Age\r\nAlice,30", "test-file");
-
-        expect(URL.createObjectURL).toHaveBeenCalled();
-        const blob = URL.createObjectURL.mock.calls[0][0];
-        expect(blob).toBeInstanceOf(Blob);
-        expect(blob.type).toBe("text/csv;charset=utf-8;");
-        expect(clickSpy).toHaveBeenCalled();
-        expect(URL.revokeObjectURL).toHaveBeenCalledWith(mockUrl);
-
-        // Restore
-        URL.createObjectURL = originalCreateObjectURL;
-        URL.revokeObjectURL = originalRevokeObjectURL;
-        document.createElement.mockRestore();
-    });
-});

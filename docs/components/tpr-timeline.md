@@ -1,4 +1,4 @@
-# TPR timeline
+# TPR timeline 
 
 You can add a timeline to your razor views by using the provided tag helper tags.
 
@@ -6,7 +6,6 @@ You can add a timeline to your razor views by using the provided tag helper tags
 
 ```razor
 @addTagHelper *, ThePensionsRegulator.Frontend
-
 <tpr-timeline>
     <tpr-timeline-item date="9 Jan 2005" heading="Starting title">
     </tpr-timeline-item>
@@ -23,8 +22,8 @@ You can add a timeline to your razor views by using the provided tag helper tags
     </tpr-timeline-item>
 </tpr-timeline>
 ```
+![Add a Section cards component](/docs/images/tpr-timeline-example.png)
 
-![TPR Timeline component example 1](/docs/images/tpr-timeline-example.png)
 
 ## Example 2
 
@@ -39,7 +38,7 @@ You can add a timeline to your razor views by using the provided tag helper tags
     </tpr-timeline-item>
     <tpr-timeline-item date="Set custom heading levels" heading="This is a H3 heading">
         <tpr-timeline-item-content>
-        <p class="govuk-body">You can set the heading level by setting the <code>heading-level</code> attribute on the <code>tpr-timeline</code> element.
+        <p class="govuk-body">You can set the heading level by setting the <code>heading-level</code> attribute on the <code>tpr-timeline</code> element. 
         The values range between 1-6.</p>
         </tpr-timeline-item-content>
     </tpr-timeline-item>
@@ -60,8 +59,8 @@ You can add a timeline to your razor views by using the provided tag helper tags
     </tpr-timeline-item>
     <tpr-timeline-item date="Custom accessibility title">
         <tpr-timeline-item-content>
-        <p class="govuk-body">You can set a custom <code>aria-title</code> attribute on the <code>tpr-timeline</code> element.
-        This will output an <code>aria-label</code> on the timeline element which is good for accessibility. If not specified,
+        <p class="govuk-body">You can set a custom <code>aria-title</code> attribute on the <code>tpr-timeline</code> element. 
+        This will output an <code>aria-label</code> on the timeline element which is good for accessibility. If not specified, 
         it defaults to 'Timeline'.</p>
         </tpr-timeline-item-content>
     </tpr-timeline-item>
@@ -80,8 +79,7 @@ You can add a timeline to your razor views by using the provided tag helper tags
 
 
 ```
-
-![TPR Timeline component example 2](/docs/images/tpr-timeline-example2.png)
+![Add a Section cards component](/docs/images/tpr-timeline-example2.png)
 
 ## Example 3
 
@@ -159,8 +157,7 @@ You can add a timeline to your razor views by using the provided tag helper tags
     </tpr-timeline-item>
 </tpr-timeline>
 ```
-
-![TPR Timeline component example 3](/docs/images/tpr-timeline-example3.png)
+![Add a Section cards component](/docs/images/tpr-timeline-example3.png)
 
 ## API
 
@@ -168,22 +165,25 @@ You can add a timeline to your razor views by using the provided tag helper tags
 
 _Required_
 
-| Attribute       | Type     | Description                                                                                             |
-| --------------- | -------- | ------------------------------------------------------------------------------------------------------- |
-| `aria-title`    | `string` | Sets an accessible title for the timeline.                                                              |
-| `hide-tail`     | `bool`   | Hides the line of the last segment of the timeline.                                                     |
-| `heading-level` | `int`    | Range between 1-6. Sets the level of heading tag to output for each heading of an item i.e. h2,h3,h4... |
+| Attribute    | Type     | Description                                                                                                                                                                       |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `aria-title`       | `string` | Sets an accessible title for the timeline.                                                                                                                                                  |
+| `hide-tail`     | `bool` | Hides the line of the last segment of the timeline. |
+| `heading-level`     | `int` | Range between 1-6. Sets the level of heading tag to output for each heading of an item i.e. h2,h3,h4... |
+
 
 ### `<tpr-timeline-item>`
 
 Creates a single segment of the timeline. Must be inside a `<tpr-timeline>` element.
 
-| Attribute | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| --------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `date`    | `string` | Sets the text to represent the date title. It's a string so it can be used to display other text information such as stage of progress.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `heading` | `string` | Sets the heading that appears under the date.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `class`   | `string` | By adding classes to this element, you can change the visual look of how the item looks. You can set the line colour of the timeline item by adding either `tpr-timeline__item--orange` or `tpr-timeline__item--red`. If you want to assign a custom colour to the timeline item, you can create your own class like the following: `.tpr-timeline__item--whatever,.tpr-timeline__item--whatever::before,.tpr-timeline__item--whatever:last-of-type::after{border-color: #7466be;}`. You can then your custom class `tpr-timeline__item--whatever`. You can also change the date size by adding the following classes: small:`tpr-timeline__datetime-s` , medium:`tpr-timeline__datetime-m`, large:`tpr-timeline__datetime-l` |
+| Attribute    | Type     | Description                                                                                                                                                                       |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `date`       | `string` | Sets the text to represent the date title. It's a string so it can be used to display other text information such as stage of progress.                                                                                                                                                  |
+| `heading`     | `string` | Sets the heading that appears under the date. |
+| `class`     | `string` | By adding classes to this element, you can change the visual look of how the item looks. You can set the line colour of the timeline item by adding either `tpr-timeline__item--orange` or `tpr-timeline__item--red`. If you want to assign a custom colour to the timeline item, you can create your own class like the following: `.tpr-timeline__item--whatever,.tpr-timeline__item--whatever::before,.tpr-timeline__item--whatever:last-of-type::after{border-color: #7466be;}`. You can then your custom class `tpr-timeline__item--whatever`. You can also change the date size by adding the following classes: small:`tpr-timeline__datetime-s` , medium:`tpr-timeline__datetime-m`, large:`tpr-timeline__datetime-l` |
+
 
 ### `<tpr-timeline-item-content>`
 
 Sets the HTML content for timeline item. Must be inside a `<tpr-timeline-item>` element.
+

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -31,11 +31,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Moq" Version="4.18.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ThePensionsRegulator.Umbraco.Core\ThePensionsRegulator.Umbraco.Core.csproj" />
+    <ProjectReference Include="..\ThePensionsRegulator.Umbraco\ThePensionsRegulator.Umbraco.csproj" />
   </ItemGroup>
 
   <ItemGroup>

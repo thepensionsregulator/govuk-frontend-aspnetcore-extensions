@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="ThePensionsRegulatorGovUkFrontend" BeforeTargets="BeforeBuild">
+		<!-- Look for the PackageReference to this package to get the current version.
+			 Use that version to find the NuGet package folder, and copy govuk-frontend SASS files to the Styles folder in the consuming project.
+			 If this package is a transitive dependency the PackageReference will not be found, so show a message.
+		-->
+		<PropertyGroup>
+			<UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>
+			<UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
+		</PropertyGroup>
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend']/@Version">
+			<Output TaskParameter="Result" ItemName="ThePensionsRegulatorGovUkFrontendVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<ThePensionsRegulatorGovUkFrontendVersion>@(ThePensionsRegulatorGovUkFrontendVersion)</ThePensionsRegulatorGovUkFrontendVersion>
+			<ThePensionsRegulatorGovUkFrontendSassFolder>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(ThePensionsRegulatorGovUkFrontendVersion)\contentFiles\any\$(TargetFramework)\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
+		</PropertyGroup>
+		<ItemGroup>
+			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(ThePensionsRegulatorGovUkFrontendSassFolder)**\*.scss" />
+		</ItemGroup>
+
+		<Message Text="Not copying govuk-frontend SASS files to the Styles folder because ThePensionsRegulator.GovUk.Frontend is a transitive dependency. These may be copied by the package that references ThePensionsRegulator.GovUk.Frontend or you may need to add a direct reference to ThePensionsRegulator.GovUk.Frontend." Importance="high"
+			     Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==0"/>
+		
+		<!-- The following copy task is also configured in ThePensionsRegulator.Frontend.targets, ThePensionsRegulator.GovUk.Frontend.Umbraco.targets 
+		     and ThePensionsRegulator.Frontend.Umbraco.targets in case this package is referenced as a transitive dependency -->
+		<Message Text="Copying govuk-frontend SASS files from $(ThePensionsRegulatorGovUkFrontendSassFolder) to $(ProjectDir)" Importance="high"
+			     Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==1"/>
+		<Copy SourceFiles="@(ThePensionsRegulatorGovUkFrontendSassFiles)"
+			  DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="@(ThePensionsRegulatorGovUkFrontendVersion->Count() )==1"/>
+
+		<!-- Generate a .gitignore so that govuk-frontend SASS files copied from this package are not committed to the consuming project's source control.
+			 Only do that if the folder exists, otherwise they'll also get created in a test project with a project reference to the target project. -->
+		<Message Text="Generating $(ProjectDir)Styles\govuk\.gitignore" Importance="high" Condition="Exists('$(ProjectDir)Styles')" />
+		<ItemGroup>
+			<ThePensionsRegulatorGovUkFrontendGitIgnoreText Include="ThePensionsRegulatorGovUkFrontendGitIgnoreText">
+				<Text>
+*
+!.gitignore
+				</Text>
+			</ThePensionsRegulatorGovUkFrontendGitIgnoreText>
+			<ThePensionsRegulatorGovUkFrontendGitIgnore Include="%(ThePensionsRegulatorGovUkFrontendGitIgnoreText.Text)" />
+		</ItemGroup>
+		<WriteLinesToFile File="$(ProjectDir)Styles\govuk\.gitignore" Lines="@(ThePensionsRegulatorGovUkFrontendGitIgnore)" Overwrite="True" Condition="Exists('$(ProjectDir)Styles')" />
+	</Target>
+
+	<!-- In pipeline builds if a CSS file exists AspNetCore.SassCompiler won't overwrite it with the generated version, 
+	     so look for SCSS files which will generate CSS files, and delete the equivalent CSS file first -->
+	<Target Name="ThePensionsRegulatorGovUkFrontend_CleanGeneratedCss" BeforeTargets="CoreClean">
+		<ItemGroup>
+			<ScssSourceFiles Include="$(MSBuildProjectDirectory)\Styles\*.scss" Exclude="$(MSBuildProjectDirectory)\Styles\_*.scss" />
+		</ItemGroup>
+		<ItemGroup>
+			<FilesToDeleteStep1 Include="@(ScssSourceFiles->Replace('$(MSBuildProjectDirectory)\Styles', '$(MSBuildProjectDirectory)\wwwroot\css'))" />
+		</ItemGroup>
+		<ItemGroup>
+			<FilesToDeleteStep2 Include="@(FilesToDeleteStep1->Replace('.scss', '.css'))" />
+		</ItemGroup>
+
+		<Delete Files="@(FilesToDeleteStep2)"  />
+	</Target>
+
+</Project>

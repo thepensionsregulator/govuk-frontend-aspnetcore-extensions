@@ -3,14 +3,20 @@
 	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019
 		 It copies files that would normally be installed by NuGet, but the example app uses a project reference to avoid a NuGet update cycle for every change during testing.
 	-->
-	<Target Name="UmbracoExample_CopyFilesFromGovUkFrontend" BeforeTargets="BeforeBuild">
+	<Target Name="CopyFilesFromGovUkFrontend" BeforeTargets="BeforeBuild">
 		<ItemGroup>
-			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\wwwroot\ThePensionsRegulator.Frontend.Umbraco\css\govuk-umbraco-backoffice.css*" />
+			<PluginFilesFromGovUkFrontendUmbraco Include="$(ProjectDir)..\GovUk.Frontend.Umbraco\App_Plugins\**" />
+			<WwwrootFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\styles\govuk-umbraco-backoffice.css*" />
+			<PluginFilesFromTprFrontendUmbraco Include="$(ProjectDir)..\ThePensionsRegulator.Frontend.Umbraco\App_Plugins\**" />
 		</ItemGroup>
 
+		<Message Text="Copying files from GovUk.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
+		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 		<Message Text="Copying files from ThePensionsRegulator.Frontend.Umbraco to $(ProjectDir)" Importance="high" />
 		<Copy SourceFiles="@(WwwrootFilesFromTprFrontendUmbraco)"
-			DestinationFiles="$(ProjectDir)wwwroot\css\%(RecursiveDir)%(Filename)%(Extension)" 
-			SkipUnchangedFiles="true"/>
+			DestinationFiles="$(ProjectDir)wwwroot\css\%(RecursiveDir)%(Filename)%(Extension)" />
+		<Copy SourceFiles="@(PluginFilesFromTprFrontendUmbraco)"
+			DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
 </Project>

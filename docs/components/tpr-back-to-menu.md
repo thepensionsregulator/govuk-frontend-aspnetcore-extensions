@@ -30,6 +30,6 @@ This example has TPR styling:
 
 ## Umbraco
 
-Add the 'Back to menu' component to a block grid or block list.
+Add the 'Back to menu' component to a block list.
 
 ![TPR back to menu in Umbraco](/docs/images/tpr-back-to-menu-umbraco-content.png)

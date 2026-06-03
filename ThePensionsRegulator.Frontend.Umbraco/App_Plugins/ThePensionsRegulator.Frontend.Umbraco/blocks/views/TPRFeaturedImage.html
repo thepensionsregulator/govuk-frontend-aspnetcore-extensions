@@ -1,0 +1,58 @@
+<style>
+    .tpr-featured-image {
+        background: grey;
+        display: flex;
+        flex-direction: column;
+        margin: 15px;
+    }
+
+    .tpr-featured-image--horizontal {
+        flex-direction: row;
+    }
+
+    .tpr-featured-image .tpr-box {
+        margin: 0px;
+    }
+
+    .tpr-featured-image_thumbnail {
+        flex-basis: 50%;
+    }
+
+    .tpr-featured-image_thumbnail img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+
+    .tpr-featured-image_info {
+        flex-basis: 50%;
+        box-sizing: border-box;
+    }
+</style>
+
+<div class="tpr-featured-image{{block.settingsData.horizontal === '1' ? ' tpr-featured-image--horizontal' : null}}" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit component">
+    <div class="tpr-featured-image_thumbnail">
+        <button type="button" ng-click="block.edit()" ng-focus="block.focus" ng-class="{'is-trashed': mediaItem.trashed}">
+            {{mediaItem = (block.data.image[0].mediaKey | mediaItemResolver); ""}}
+            <img ng-if="mediaItem !== null && (mediaItem.mediaLink.indexOf('jpg') !== -1 || mediaItem.mediaLink.indexOf('png') !== -1 || mediaItem.mediaLink.indexOf('webp') !== -1 || mediaItem.mediaLink.indexOf('gif') !== -1) && !mediaItem.trashed" ng-src="{{mediaItem.mediaLink}}" alt="{{mediaItem.name}}" class="image" />
+            <umb-icon ng-if="mediaItem !== null && mediaItem.mediaLink.indexOf('jpg') === -1 && mediaItem.mediaLink.indexOf('png') === -1 && mediaItem.mediaLink.indexOf('webp') === -1 && mediaItem.mediaLink.indexOf('gif') === -1 || mediaItem.trashed" icon="{{mediaItem.contentType.icon}}" class="icon"></umb-icon>
+            <span ng-if="mediaItem !== null && mediaItem.name" class="file-name">
+                <span ng-if="mediaItem.trashed"><localize key="mediaPicker_trashed">Trashed</localize>:</span>
+                {{mediaItem.name}}
+            </span>
+        </button>
+    </div>
+
+    <div class="tpr-box tpr-featured-image_info">
+        <div class="backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus"
+             aria-label="Edit section cards component">
+            <p class="backoffice-additional-blocks" aria-hidden="true" ng-if="!block.data.blocks.contentData">No blocks.</p>
+            <p class="backoffice-additional-blocks" aria-hidden="true" ng-if="block.data.blocks.contentData.length === 1">
+                1 block.
+            </p>
+            <p class="backoffice-additional-blocks" aria-hidden="true" ng-if="block.data.blocks.contentData.length > 1">
+                {{block.data.blocks.contentData.length}} blocks.
+            </p>
+        </div>
+    </div>
+</div>

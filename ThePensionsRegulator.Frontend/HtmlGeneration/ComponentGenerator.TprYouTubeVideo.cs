@@ -1,6 +1,7 @@
+using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ThePensionsRegulator.GovUk.Frontend;
-using ThePensionsRegulator.GovUk.Frontend.Typography;
+using System;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -8,9 +9,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
     {
         internal const string YouTubeVideoDefaultPreload = "metadata";
         internal const string YouTubeVideoElement = "video";
-        internal const int YouTubeVideoMinHeadingLevel = 2;
-        internal const int YouTubeVideoMaxHeadingLevel = 5;
-        internal const int YouTubeVideoDefaultHeadingLevel = 2;
 
         public virtual TagBuilder GenerateTprAblePlayer(TprYouTubeVideo video)
         {
@@ -24,7 +22,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             videoTag.Attributes.Add("data-able-player", null);
             videoTag.Attributes.Add("data-youtube-nocookie", null);
             videoTag.Attributes.Add("data-youtube-id", video.YouTubeVideoId);
-            videoTag.Attributes.Add("data-root-path", "/ThePensionsRegulator.Frontend/lib/ableplayer/");
+            videoTag.Attributes.Add("data-root-path", "/_content/ThePensionsRegulator.Frontend/lib/ableplayer/");
             if (video.Autoplay) { videoTag.Attributes.Add("autoplay", null); }
             if (video.PlaysInline) { videoTag.Attributes.Add("playsinline", null); }
             videoTag.Attributes.Add("preload", video.Preload);
@@ -35,34 +33,32 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         public virtual TagBuilder GenerateTprYouTubeNoCookiesEmbeddedPlayer(TprYouTubeVideo video)
         {
             Guard.ArgumentNotNullOrEmpty(nameof(video.YouTubeVideoId), video.YouTubeVideoId);
-            if (video.HeadingLevel < YouTubeVideoMinHeadingLevel || video.HeadingLevel > YouTubeVideoMaxHeadingLevel)
-            {
-                throw new ArgumentOutOfRangeException(nameof(video.HeadingLevel), $"{nameof(video.HeadingLevel)} must be between {YouTubeVideoMinHeadingLevel} and {YouTubeVideoMaxHeadingLevel}.");
-            }
+            Guard.ArgumentNotNullOrEmpty(nameof(video.HeadingLevel), video.HeadingLevel);
 
             var containerTag = new TagBuilder("div");
             containerTag.MergeAttributes(video.Attributes);
-            containerTag.AddCssClass("tpr-video-wrapper-no-cookies");
+            containerTag.MergeCssClass("tpr-video-wrapper-no-cookies");
 
-            var heading = new TagBuilder($"h{video.HeadingLevel}");
+            var heading = new TagBuilder(video.HeadingLevel);
             if (!string.IsNullOrWhiteSpace(video.HeadingSize))
             {
-                heading.AddCssClass(video.HeadingSize);
+                heading.MergeCssClass(video.HeadingSize);
             }
-            heading.AddCssClass("tpr-video-wrapper-no-cookies__heading");
+            heading.MergeCssClass("tpr-video-wrapper-no-cookies__heading");
             heading.InnerHtml.AppendHtml(video.IframeTitle);
             containerTag.InnerHtml.AppendHtml(heading);
 
             if (!string.IsNullOrWhiteSpace(video.Description))
             {
                 var description = new TagBuilder("div");
-                description.AddCssClass("tpr-video-wrapper-no-cookies__description");
-                description.InnerHtml.AppendHtml(GovUkTypography.Apply(video.Description));
+                description.MergeCssClass("govuk-body");
+                description.MergeCssClass("tpr-video-wrapper-no-cookies__description");
+                description.InnerHtml.AppendHtml(video.Description);
                 containerTag.InnerHtml.AppendHtml(description);
             }
 
             var wrapperTag = new TagBuilder("div");
-            wrapperTag.AddCssClass("tpr-video-wrapper-no-cookies__video-container");
+            wrapperTag.MergeCssClass("tpr-video-wrapper-no-cookies__video-container");
 
             var iFrame = new TagBuilder("iframe");
             var src = "https://www.youtube-nocookie.com/embed/" + video.YouTubeVideoId;
@@ -73,6 +69,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             iFrame.Attributes.Add("src", src);
             iFrame.Attributes.Add("title", video.IframeTitle);
+            iFrame.Attributes.Add("frameborder", "0");
             iFrame.Attributes.Add("allow", "accelerometer; autoplay;  encrypted-media; gyroscope; picture-in-picture; web-share");
             iFrame.Attributes.Add("referrerpolicy", "strict-origin-when-cross-origin");
             iFrame.Attributes.Add("allowfullscreen", null);
@@ -85,16 +82,16 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             if (!string.IsNullOrWhiteSpace(video.TranscriptUrl))
             {
                 var transcriptContainer = new TagBuilder("div");
-                transcriptContainer.AddCssClass("tpr-video-wrapper-no-cookies__transcript-container");
+                transcriptContainer.MergeCssClass("tpr-video-wrapper-no-cookies__transcript-container");
 
                 var transcriptLink = new TagBuilder("a");
-                transcriptLink.AddCssClass("tpr-video-wrapper-no-cookies__transcript-link");
+                transcriptLink.MergeCssClass("tpr-video-wrapper-no-cookies__transcript-link");
                 transcriptLink.Attributes.Add("href", video.TranscriptUrl);
                 if (!string.IsNullOrWhiteSpace(video.TranscriptTarget))
                 {
                     transcriptLink.Attributes.Add("target", video.TranscriptTarget);
                 }
-                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle ?? (string.IsNullOrWhiteSpace(video.Title) ? "View transcript for video" : $"View transcript for '{video.Title}'"));
+                transcriptLink.InnerHtml.AppendHtml(video.TranscriptTitle ?? $"Read transcript: {video.Title}");
 
                 transcriptContainer.InnerHtml.AppendHtml(transcriptLink);
                 containerTag.InnerHtml.AppendHtml(transcriptContainer);

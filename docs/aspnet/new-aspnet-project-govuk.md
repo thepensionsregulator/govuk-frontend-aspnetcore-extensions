@@ -1,30 +1,30 @@
 # Configure a new ASP.NET project (GOV.UK)
 
-1. Create a new project using the 'ASP.NET Core Web App (Model-View-Controller)' template in Visual Studio 2026 or later. Select .NET 10.0 or later as the Framework.
+1. Create a new project using the 'ASP.NET Core Web App (Model-View-Controller)' template in Visual Studio.
 
 2. Add the `ThePensionsRegulator.GovUk.Frontend` NuGet package to your project.
 
-3. In `Program.cs` add the following:
+3. In `Startup.cs` add the following:
 
    ```csharp
-   using ThePensionsRegulator.GovUk.Frontend;
+   using GovUk.Frontend.AspNetCore.Extensions;
 
-   var builder = WebApplication.CreateBuilder(args);
-   builder.Services.AddTprGovUkFrontend();
+   public void ConfigureServices(IServiceCollection services)
+   {
+       // Other code here
 
-   // other code to configure builder.Services
+       services.AddGovUkFrontendExtensions();
+   }
 
-   var app = builder.Build();
-   app.UseTprGovUkFrontend();
+   public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+   {
+      // Other code here
 
-   // other code to configure app
-
-   app.Run();
+      app.UseGovUkFrontendExtensions();
+   }
    ```
 
-   You shouldn't need to configure support for static assets as it's done for you, but if you do it must be called after `app.UseTprGovUkFrontend()`.
-
-4. Replace the contents of `Views/Shared/_Layout.cshtml` with the code shown below.
+4. Add partial views and the `govuk-template__body` class to `Views/Shared/_Layout.cshtml` as shown below. You should also make sure you have a `<main>` element in your markup.
 
    ```html
    <!DOCTYPE html>
@@ -35,7 +35,7 @@
        <partial name="GOVUK/Head" />
        @RenderSection("head", required: false)
      </head>
-     <body class="govuk-template__body">
+     <body class="govuk-template__body ">
        <partial name="GOVUK/BodyOpen" />
        <div class="govuk-width-container">
          <main class="govuk-main-wrapper" id="main">@RenderBody()</main>
@@ -50,14 +50,14 @@
 
    ```csharp
    @addTagHelper *, GovUk.Frontend.AspNetCore
-   @addTagHelper *, ThePensionsRegulator.GovUk.Frontend.AspNetCore
+   @addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
    ```
 
 6. [Add validation rules to your model](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/validation?view=aspnetcore-5.0) as you normally would for ASP.NET, using attributes from the [System.ComponentModel.DataAnnotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) namespace.
 
    > JQuery is included to support the standard ASP.NET validation. We recommend using vanilla JavaScript for everything else.
 
-7. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/x-govuk/govuk-frontend-aspnetcore), but with wrapper tags from `ThePensionsRegulator.GovUk.Frontend`.
+7. Add components from the GOV.UK Design System as documented in [ASP.NET Core MVC tag helpers for GOV.UK Design System](https://github.com/gunndabad/govuk-frontend-aspnetcore), but with wrapper tags from `GovUk.Frontend.AspNetCore.Extensions`.
 
    ```csharp
    <form asp-controller="Home" asp-action="Post" method="post" novalidate>

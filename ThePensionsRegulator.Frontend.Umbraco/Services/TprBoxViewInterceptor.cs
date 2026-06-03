@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Options;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
-using ThePensionsRegulator.Umbraco.Core;
-using ThePensionsRegulator.Umbraco.Core.Blocks;
+﻿using GovUk.Frontend.Umbraco;
+using GovUk.Frontend.Umbraco.Blocks;
+using Microsoft.Extensions.Options;
+using ThePensionsRegulator.Umbraco;
+using ThePensionsRegulator.Umbraco.Blocks;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Services
 {
@@ -43,7 +43,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
         private static bool BlockIsFullWidthBox(IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block)
         {
             return block.Content.ContentType.Alias == TprElementTypeAliases.Box &&
-                   block.Settings?.Value<string>(TprPropertyAliases.BoxStyle) == TprBoxStyles.FullWidth;
+                   block.Settings.Value<string>(TprPropertyAliases.BoxStyle) == TprBoxStyles.FullWidth;
         }
     }
 }

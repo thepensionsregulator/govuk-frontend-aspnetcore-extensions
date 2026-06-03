@@ -1,0 +1,24 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using GovUk.Frontend.Umbraco.Blocks
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+@using System.Linq
+@{
+    var buttons = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.ButtonGroupButtons)!;
+    var cssClasses = ("govuk-button-group " + Model.Settings?.Value<string>(PropertyAliases.CssClasses)).TrimEnd();
+}
+@if (buttons.FilteredBlocks().Any()) {
+var childBlocks = new BlockListViewModel(buttons)
+{
+    RenderGrid = false,
+    RenderWidthContainer = false
+};
+<div class="@cssClasses">
+    @await Html.PartialAsync("GOVUK/BlockList", childBlocks)
+</div>
+}

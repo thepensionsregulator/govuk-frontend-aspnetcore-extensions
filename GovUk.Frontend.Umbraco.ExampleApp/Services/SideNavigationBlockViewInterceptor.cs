@@ -1,14 +1,13 @@
-using Microsoft.Extensions.Options;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
-using ThePensionsRegulator.Umbraco.Core;
+﻿using GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Services
 {
-    public class SideNavigationBlockViewInterceptor(IUmbracoPublishedContentAccessor _publishedContentAccessor, IOptions<AppConfig> _config) : IBlockViewInterceptor
+    public class SideNavigationBlockViewInterceptor(IUmbracoPublishedContentAccessor _publishedContentAccessor) : IBlockViewInterceptor
     {
         public void InterceptBlockView(BlockViewModel blockViewModel)
         {
-            if (_publishedContentAccessor.PublishedContent.ContentType.Alias == "sideNavigation" && _config.Value.TPRStyles)
+            if (_publishedContentAccessor.PublishedContent.ContentType.Alias == "sideNavigation")
             {
                 blockViewModel.OpenWidthContainer = false;
                 blockViewModel.CloseWidthContainer = false;

@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<Target Name="ThePensionsRegulatorGovUkFrontendUmbraco" AfterTargets="ThePensionsRegulatorGovUkFrontend">
+		<!-- Look for the PackageReference to this package to get the current version.
+			 Use that version to find the NuGet package folder, and copy files to the consuming project.
+			 If this package is a transitive dependency the PackageReference will not be found, so show a message.
+		-->
+		<PropertyGroup>
+			<UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>
+			<UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
+		</PropertyGroup>
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend.Umbraco']/@Version">
+			<Output TaskParameter="Result" ItemName="GovUkFrontendUmbracoVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<GovUkFrontendUmbracoVersion>@(GovUkFrontendUmbracoVersion)</GovUkFrontendUmbracoVersion>
+			<HasPackageReferenceForGovUkFrontendUmbraco Condition="@(GovUkFrontendUmbracoVersion->Count() )==0">false</HasPackageReferenceForGovUkFrontendUmbraco>
+			<ContentFilesPath>$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend.umbraco\$(GovUkFrontendUmbracoVersion)\contentFiles\any\$(TargetFramework)\</ContentFilesPath>
+		</PropertyGroup>
+		<ItemGroup>
+			<uSyncFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)uSync\**" />
+			<WwwrootFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)Content\**" />
+			<PluginFilesFromGovUkFrontendUmbraco Include="$(ContentFilesPath)App_Plugins\**" />
+		</ItemGroup>
+
+		<Message Text="Not copying files from ThePensionsRegulator.GovUk.Frontend.Umbraco because it is a transitive dependency. These may be copied by the package that references ThePensionsRegulator.GovUk.Frontend.Umbraco or you may need to add a direct reference to ThePensionsRegulator.GovUk.Frontend.Umbraco." Importance="high"
+				 Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) == false"/>
+
+		<!-- The following copy tasks are also configured in ThePensionsRegulator.Frontend.Umbraco.targets in case this package is referenced as a transitive dependency -->
+		<Message Text="Copying files from $(ContentFilesPath) to $(ProjectDir)" Importance="high"
+				 Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
+
+		<Copy SourceFiles="@(uSyncFilesFromGovUkFrontendUmbraco)"
+			  DestinationFiles="$(ProjectDir)uSync\%(RecursiveDir)%(Filename)%(Extension)" 
+			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
+		<Copy SourceFiles="@(WwwrootFilesFromGovUkFrontendUmbraco)"
+			  DestinationFiles="$(ProjectDir)wwwroot\%(RecursiveDir)%(Filename)%(Extension)" 
+			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
+		<Copy SourceFiles="@(PluginFilesFromGovUkFrontendUmbraco)"
+			  DestinationFiles="$(ProjectDir)App_Plugins\%(RecursiveDir)%(Filename)%(Extension)"
+		      Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false"/>
+
+		<!-- Look for the PackageReference to ThePensionsRegulator.GovUk.Frontend to get the current version. If it's missing then 
+		     ThePensionsRegulator.GovUk.Frontend is a transitive dependency of this package, and will have been unable to copy 
+			 govuk-frontend SASS files to the Styles folder of the consuming project.
+			 
+			 If ThePensionsRegulator.GovUk.Frontend is a transitive dependency find its version in the metadata of ThePensionsRegulator.GovUk.Frontend.Umbraco. 
+			 Use the version of ThePensionsRegulator.GovUk.Frontend to find its NuGet package folder, and copy govuk-frontend SASS files to the 
+			 Styles folder in the consuming project.
+		-->
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='ThePensionsRegulator.GovUk.Frontend']/@Version"
+				 Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false">
+			<Output TaskParameter="Result" ItemName="ThePensionsRegulatorGovUkFrontendVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<HasPackageReferenceForThePensionsRegulatorGovUkFrontend Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and @(ThePensionsRegulatorGovUkFrontendVersion->Count() )==0">false</HasPackageReferenceForThePensionsRegulatorGovUkFrontend>
+		</PropertyGroup>
+		<XmlPeek XmlInputPath="$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend.umbraco\$(GovUkFrontendUmbracoVersion)\thepensionsregulator.govuk.frontend.umbraco.nuspec"
+			 Query="nu:package/nu:metadata/nu:dependencies/nu:group[@targetFramework = '$(TargetFramework)']/nu:dependency[@id = 'ThePensionsRegulator.GovUk.Frontend']/@version"
+			 Namespaces="&lt;Namespace Prefix='nu' Uri='http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd' /&gt;"
+			 Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and $(HasPackageReferenceForThePensionsRegulatorGovUkFrontend) == false">
+			<Output TaskParameter="Result" ItemName="ThePensionsRegulatorGovUkFrontendVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<ThePensionsRegulatorGovUkFrontendVersion Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false">@(ThePensionsRegulatorGovUkFrontendVersion)</ThePensionsRegulatorGovUkFrontendVersion>
+			<ThePensionsRegulatorGovUkFrontendSassFolder Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false">$(UserProfile)\.nuget\packages\thepensionsregulator.govuk.frontend\$(ThePensionsRegulatorGovUkFrontendVersion)\contentFiles\any\$(TargetFramework)\Styles\</ThePensionsRegulatorGovUkFrontendSassFolder>
+		</PropertyGroup>
+		<ItemGroup>
+			<ThePensionsRegulatorGovUkFrontendSassFiles Include="$(ThePensionsRegulatorGovUkFrontendSassFolder)**\*.scss" Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false" />
+		</ItemGroup>
+		<Message Text="Detected ThePensionsRegulator.GovUk.Frontend as a transitive dependency. Copying govuk-frontend SASS files from $(ThePensionsRegulatorGovUkFrontendSassFolder) to $(ProjectDir)." Importance="high"
+			     Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and $(HasPackageReferenceForThePensionsRegulatorGovUkFrontend) == false" />
+		<Copy SourceFiles="@(ThePensionsRegulatorGovUkFrontendSassFiles)"
+		      DestinationFiles="$(ProjectDir)Styles\%(RecursiveDir)%(Filename)%(Extension)"
+			  Condition="$(HasPackageReferenceForGovUkFrontendUmbraco) != false and $(HasPackageReferenceForThePensionsRegulatorGovUkFrontend) == false" />
+
+		<!-- Generate .gitignore files so that files copied from this package are not committed to the consuming project's source control.	 
+			 Only do that if the folder exists, otherwise they'll also get created in a test project with a project reference to the target project. -->
+		<ItemGroup>
+			<GovUkFrontendUmbracoGitIgnoreText Include="GovUkFrontendUmbracoGitIgnoreText">
+				<Text>
+*
+!.gitignore
+				</Text>
+			</GovUkFrontendUmbracoGitIgnoreText>
+			<GovUkFrontendUmbracoGitIgnore Include="%(GovUkFrontendUmbracoGitIgnoreText.Text)" />
+		</ItemGroup>
+		<Message Text="Generating $(ProjectDir)App_Plugins\GOVUK\.gitignore" Importance="high" Condition="Exists('$(ProjectDir)App_Plugins')" />
+		<WriteLinesToFile File="$(ProjectDir)App_Plugins\GOVUK\.gitignore" Lines="@(GovUkFrontendUmbracoGitIgnore)" Overwrite="True" Condition="Exists('$(ProjectDir)App_Plugins')"/>
+
+		<ItemGroup>
+			<GovUkFrontendUmbracoCssGitIgnoreText Include="GovUkFrontendUmbracoCssGitIgnoreText">
+				<Text>
+govuk-umbraco-backoffice.css
+govuk-umbraco-backoffice.css.map
+				</Text>
+			</GovUkFrontendUmbracoCssGitIgnoreText>
+			<GovUkFrontendUmbracoCssGitIgnore Include="%(GovUkFrontendUmbracoCssGitIgnoreText.Text)" />
+		</ItemGroup>
+		<Message Text="Generating $(ProjectDir)wwwroot\css\.gitignore" Importance="high" Condition="Exists('$(ProjectDir)wwwroot')" />
+		<WriteLinesToFile File="$(ProjectDir)wwwroot\css\.gitignore" Lines="@(GovUkFrontendUmbracoCssGitIgnore)" Overwrite="True" Condition="Exists('$(ProjectDir)wwwroot')"/>
+
+		<ItemGroup>
+			<GovUkFrontendUmbracoUSyncGitIgnoreText Include="GovUkFrontendUmbracoUSyncGitIgnoreText">
+				<Text>
+**/govuk*.config
+**/GOVUK*.config
+				</Text>
+			</GovUkFrontendUmbracoUSyncGitIgnoreText>
+			<GovUkFrontendUmbracoUSyncGitIgnore Include="%(GovUkFrontendUmbracoUSyncGitIgnoreText.Text)" />
+		</ItemGroup>
+		<Message Text="Generating $(ProjectDir)uSync\.gitignore" Importance="high" Condition="Exists('$(ProjectDir)uSync')" />
+		<WriteLinesToFile File="$(ProjectDir)uSync\.gitignore" Lines="@(GovUkFrontendUmbracoUSyncGitIgnore)" Overwrite="True" Condition="Exists('$(ProjectDir)uSync')"/>
+
+		<!-- If the ModelsBuilder out-of-date flag is present, show a helpful warning. -->
+		<Warning Text="Umbraco Models Builder models are out-of-date. Go to Settings &gt; Models Builder &gt; Generate models in the Umbraco backoffice to update them." Condition="Exists('$(ProjectDir)Models\ModelsBuilder\ood.flag')" />
+
+		<!-- Rich text editor data types import wwwroot\css\site.css so that consuming projects can add their own styles, including styles for the 'Formats' dropdown.
+		     However if there is no site.css the backoffice generates a request with a 404 response, so create a placeholder file to respond to that request. -->
+		<PropertyGroup>
+			<GenerateUmbracoSiteCss Condition="Exists('$(ProjectDir)wwwroot') and !Exists('$(ProjectDir)wwwroot\css\site.css') and !Exists('$(ProjectDir)Styles\site.scss')">true</GenerateUmbracoSiteCss>
+		</PropertyGroup>
+		<Message Text="Generating $(ProjectDir)wwwroot\css\site.css" Importance="high" Condition="$(GenerateUmbracoSiteCss) == true" />
+		<ItemGroup>
+			<GovUkFrontendUmbracoSiteCssText Include="GovUkFrontendUmbracoSiteCssText">
+				<Text>
+/* Generated by ThePensionsRegulator.GovUk.Frontend.Umbraco for the Umbraco rich text editor
+   You can delete this file safely and replace it with your own site.css */
+				</Text>
+			</GovUkFrontendUmbracoSiteCssText>
+			<GovUkFrontendUmbracoSiteCss Include="%(GovUkFrontendUmbracoSiteCssText.Text)" />
+		</ItemGroup>
+		<WriteLinesToFile File="$(ProjectDir)wwwroot\css\site.css" Lines="@(GovUkFrontendUmbracoSiteCss)" Overwrite="False" Condition="$(GenerateUmbracoSiteCss) == true" />
+	</Target>
+
+</Project>

@@ -15,25 +15,14 @@ using Moq;
 using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Security.Principal;
-using Umbraco.Cms.Core;
-using Umbraco.Cms.Core.Blocks;
-using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Configuration.Models;
-using Umbraco.Cms.Core.DeliveryApi;
-using Umbraco.Cms.Core.Dictionary;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Membership;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Routing;
-using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Core.Services.Navigation;
-using Umbraco.Cms.Core.Templates;
 using Umbraco.Cms.Core.Web;
-using Umbraco.Cms.Infrastructure.Serialization;
-using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Routing;
 using DI = Umbraco.Cms.Core.DependencyInjection;
 
@@ -46,7 +35,6 @@ namespace ThePensionsRegulator.Umbraco.Testing
     {
         private const string TEMPLATE_NAME = "MockTemplate";
         private ClaimsPrincipal _currentPrincipal;
-        private UmbracoHelper _umbracoHelper;
         private DistributedSession _sessionState = new(new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions())), Guid.NewGuid().ToString(), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30), () => true, Mock.Of<ILoggerFactory>(), true);
 
         /// <summary>
@@ -80,14 +68,19 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IUmbracoContextAccessor> UmbracoContextAccessor { get; private init; } = new();
 
         /// <summary>
-        /// Gets a service with query methods for accessing strongly-typed content in templates.
+        /// Provides access to a TryGetPublishedSnapshot bool method that will return true if the "current" <see cref="IPublishedSnapshot" /> is not null.
         /// </summary>
-        public Mock<IPublishedContentQuery> PublishedContentQuery { get; private init; } = new();
+        public Mock<IPublishedSnapshotAccessor> PublishedSnapshotAccessor { get; private init; } = new();
 
         /// <summary>
-        /// Gets a service to access published content types.
+        /// A published snapshot is a point-in-time capture of the current state of everything that is "published".
         /// </summary>
-        public Mock<IPublishedContentTypeCache> PublishedContentTypeCache { get; private init; } = new();
+        public Mock<IPublishedSnapshot> PublishedSnapshot { get; private init; } = new();
+
+        /// <summary>
+        /// Provides access to the current <see cref="IVariationContextAccessor.VariationContext"/>
+        /// </summary>
+        public Mock<IVariationContextAccessor> VariationContextAccessor { get; private init; } = new();
 
         /// <summary>
         /// Provides a fallback strategy for getting <see cref="IPublishedElement"/> values.
@@ -105,14 +98,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IPublishedUrlProvider> PublishedUrlProvider { get; private init; } = new();
 
         /// <summary>
-        /// Provides access to the current <see cref="IVariationContextAccessor.VariationContext"/>
+        /// Provides utilities to handle site domains.
         /// </summary>
-        public VariationContext VariationContext { get; private init; } = new();
-
-        /// <summary>
-        /// Provides access to the current <see cref="IVariationContextAccessor.VariationContext"/>
-        /// </summary>
-        public Mock<IVariationContextAccessor> VariationContextAccessor { get; private init; } = new();
+        public Mock<ISiteDomainMapper> SiteDomainMapper { get; private init; } = new();
 
         /// <summary>
         /// Provides access to the Examine search engine.
@@ -150,43 +138,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IPublishedRequest> PublishedRequest { get; private init; } = new();
 
         /// <summary>
-        /// Provides access to Umbraco's caches of current published content.
-        /// </summary>
-        public Mock<ICacheManager> CacheManager { get; private init; } = new();
-
-        /// <summary>
-        /// Gets the service used to cache blocks in rich text editors.
-        /// </summary>
-        public Mock<RichTextBlockPropertyValueConstructorCache> RichTextBlockPropertyValueConstructorCache { get; private init; } = new();
-
-        /// <summary>
         /// Provides access to Umbraco's cache of current published content.
         /// </summary>
         public Mock<IPublishedContentCache> PublishedContentCache { get; private init; } = new();
-
-        /// <summary>
-        /// Provides access to Umbraco's cache of current published media.
-        /// </summary>
-        public Mock<IPublishedMediaCache> PublishedMediaCache { get; private init; } = new();
-
-        /// <summary>
-        /// Provides access to Umbraco's cache of current members.
-        /// </summary>
-        public Mock<IPublishedMemberCache> PublishedMemberCache { get; private init; } = new();
-
-        /// <summary>
-        /// The elements-level cache is shared by all snapshots relying on the same elements, ie all snapshots built on top of unchanging content / media / etc.
-        /// </summary>
-        public Mock<IAppCache> ElementsCache { get; private init; } = new();
-
-        /// <summary>
-        /// Gets the engine used to render partial views in block editors.
-        /// </summary>
-        public Mock<IPartialViewBlockEngine> PartialViewBlockEngine { get; private init; } = new();
-
-        public IJsonSerializer JsonSerializer { get; private init; }
-
-        public IJsonSerializerEncoderFactory JsonSerializerEncoderFactory { get; private init; } = new DefaultJsonSerializerEncoderFactory();
 
         private readonly Dictionary<string, Mock<IPublishedContentType>> _contentTypes = new();
 
@@ -247,40 +201,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IContentTypeService> ContentTypeService { get; private init; } = new();
 
         /// <summary>
-        /// Provides the <see cref="ICultureDictionaryFactory"/> used to create culture dictionaries for Umbraco's dictionary feature.
-        /// </summary>
-        public Mock<ICultureDictionaryFactory> CultureDictionaryFactory { get; private init; } = new();
-
-        /// <summary>
-        /// The culture dictionary used to return entries from the Umbraco dictionary when a specific culture is not specified.
-        /// </summary>
-        public Mock<ICultureDictionary> CultureDictionaryForCurrentUICulture { get; private init; } = new();
-
-        /// <summary>
         /// Provides easy access to operations involving <see cref="IDataType" />.
         /// </summary>
         public Mock<IDataTypeService> DataTypeService { get; private init; } = new();
-
-        /// <summary>
-        /// Service to query the navigation structure of content nodes.
-        /// </summary>
-        public Mock<IDocumentNavigationQueryService> DocumentNavigationQueryService { get; private init; } = new();
-
-        /// <summary>
-        /// Service to filter published content by status.
-        /// </summary>
-        public Mock<IPublishedContentStatusFilteringService> PublishedContentStatusFilteringService { get; private init; } = new();
-
-        /// <summary>
-        /// Provides utilities to handle site domains.
-        /// </summary>
-        public Mock<ISiteDomainMapper> SiteDomainMapper { get; private init; } = new();
-
-        /// <summary>
-        /// Gets a cache of domains assigned to content nodes in a multi-site instance.
-        /// </summary>
-
-        public Mock<IDomainCache> DomainCache { get; private init; } = new();
 
         /// <summary>
         /// Manages domains assigned to content nodes in a multi-site instance.
@@ -308,15 +231,8 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IKeyValueService> KeyValueService { get; private init; } = new();
 
         /// <summary>
-        /// Provides easy access to operations involving languages.
-        /// </summary>
-        public Mock<ILanguageService> LanguageService { get; private init; } = new();
-
-        /// <summary>
         /// Provides easy access to operations involving Languages and Dictionary.
         /// </summary>
-        /// <remarks>Obsolete service retained because <c>ServiceContext.CreatePartial()</c> expects it.</remarks>
-        [Obsolete]
         public Mock<ILocalizationService> LocalizationService { get; private init; } = new();
 
         /// <summary>
@@ -325,14 +241,14 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<ILocalizedTextService> LocalizedTextService { get; private init; } = new();
 
         /// <summary>
+        /// Provides easy access to operations involving <see cref="IMacro" />.
+        /// </summary>
+        public Mock<IMacroService> MacroService { get; private init; } = new();
+
+        /// <summary>
         /// Provides easy access to operations involving <see cref="IMedia" />.
         /// </summary>
         public Mock<IMediaService> MediaService { get; private init; } = new();
-
-        /// <summary>
-        /// Service to query the navigation structure of media nodes.
-        /// </summary>
-        public Mock<IMediaNavigationQueryService> MediaNavigationQueryService { get; private init; } = new();
 
         /// <summary>
         /// Manages <see cref="IMediaType" /> objects.
@@ -395,21 +311,6 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<IWebhookService> WebhookService { get; private init; } = new();
 
         /// <summary>
-        /// Gets a service used to render Umbraco components as HTML in templates.
-        /// </summary>
-        public Mock<IUmbracoComponentRenderer> UmbracoComponentRenderer { get; private init; } = new();
-
-        /// <summary>
-        /// Gets the <see cref="UmbracoHelper"/> instance returned by <see cref="UmbracoHelperAccessor"/>.
-        /// </summary>
-        public UmbracoHelper UmbracoHelper => _umbracoHelper;
-
-        /// <summary>
-        /// Gets the accessor used to get the <see cref="UmbracoHelper"/> instance.
-        /// </summary>
-        public Mock<IUmbracoHelperAccessor> UmbracoHelperAccessor { get; private init; } = new();
-
-        /// <summary>
         /// Provides easy access to operations involving <see cref="IProfile" /> and eventually Users.
         /// </summary>
         public Mock<IUserService> UserService { get; private init; } = new();
@@ -424,20 +325,6 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public Mock<ITempDataDictionaryFactory> TempDataDictionaryFactory { get; private init; } = new();
 
-        /// <summary>
-        /// Gets the service used to build API elements for the Delivery API.
-        /// </summary>
-        public Mock<IApiElementBuilder> ApiElementBuilder { get; private init; } = new();
-
-        /// <summary>
-        /// Gets the parser used to parse rich text editor elements for the Delivery API.
-        /// </summary>
-        public Mock<IApiRichTextElementParser> ApiRichTextElementParser { get; private init; } = new();
-
-        /// <summary>
-        /// Gets the parser used to parse rich text editor markup for the Delivery API.
-        /// </summary>
-        public Mock<IApiRichTextMarkupParser> ApiRichTextMarkupParser { get; private init; } = new();
 
         // Disable 'Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.'
         // so that we can use the CurrentPrincipal setter to assign _currentPrincipal.
@@ -445,7 +332,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public UmbracoTestContext()
         {
 #pragma warning restore CS8618
-            CurrentPage = UmbracoContentFactory.CreateContent<IPublishedContent>("MockDocumentType", "Current page");
+            CurrentPage = UmbracoContentFactory.CreateContent<IPublishedContent>("MockDocumentType");
 
             SetupHttpContext();
 
@@ -472,9 +359,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
                 MediaTypeService.Object,
                 DataTypeService.Object,
                 FileService.Object,
-#pragma warning disable CS0612 // Type or member is obsolete
                 LocalizationService.Object,
-#pragma warning restore CS0612 
                 PackagingService.Object,
                 EntityService.Object,
                 RelationService.Object,
@@ -487,6 +372,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
                 LocalizedTextService.Object,
                 AuditService.Object,
                 DomainService.Object,
+                MacroService.Object,
                 PublicAccessService.Object,
                 ExternalLoginWithKeyService.Object,
                 ServerRegistrationService.Object,
@@ -497,11 +383,13 @@ namespace ThePensionsRegulator.Umbraco.Testing
                 WebhookService.Object
             );
 
-            CacheManager.Setup(x => x.ElementsCache).Returns(ElementsCache.Object);
-            CacheManager.Setup(x => x.Content).Returns(PublishedContentCache.Object);
-            CacheManager.Setup(x => x.Domains).Returns(DomainCache.Object);
-            CacheManager.Setup(x => x.Media).Returns(PublishedMediaCache.Object);
-            CacheManager.Setup(x => x.Members).Returns(PublishedMemberCache.Object);
+            PublishedSnapshot.Setup(x => x.Content).Returns(PublishedContentCache.Object);
+            PublishedSnapshotAccessor.Setup(x => x.TryGetPublishedSnapshot(out It.Ref<IPublishedSnapshot>.IsAny!))
+                .Callback(new TryGetPublishedSnapshotCallback((out IPublishedSnapshot snapshot) =>
+                {
+                    snapshot = PublishedSnapshot.Object;
+                }))
+                .Returns(true);
 
             CurrentIdentity.SetupGet(x => x.IsAuthenticated).Returns(false);
             CurrentPrincipal = new GenericPrincipal(CurrentIdentity.Object, Array.Empty<string>());
@@ -509,84 +397,52 @@ namespace ThePensionsRegulator.Umbraco.Testing
             ContentTypeService.Setup(x => x.GetAllContentTypeAliases()).Returns(_contentTypes.Keys.ToArray());
             ContentTypeService.Setup(x => x.GetAllContentTypeIds(It.IsAny<string[]>())).Returns<string[]>(aliases => _contentTypes.Where(x => aliases.Contains(x.Value.Object.Alias)).Select(x => x.Value.Object.Id));
 
-            CultureDictionaryFactory.Setup(x => x.CreateDictionary()).Returns(CultureDictionaryForCurrentUICulture.Object);
-            CultureDictionaryFactory.Setup(x => x.CreateDictionary(Thread.CurrentThread.CurrentUICulture)).Returns(CultureDictionaryForCurrentUICulture.Object);
-
-            JsonSerializer = new SystemTextJsonSerializer(JsonSerializerEncoderFactory);
-
-            VariationContextAccessor.Setup(x => x.VariationContext).Returns(VariationContext);
-
-            _umbracoHelper = new UmbracoHelper(CultureDictionaryFactory.Object, UmbracoComponentRenderer.Object, PublishedContentQuery.Object);
-            UmbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out _umbracoHelper!)).Returns(true);
-
             SetupServices();
         }
 
         private void SetupServices()
         {
+            DI.StaticServiceProvider.Instance = ServiceProvider.Object;
             HttpContext.Setup(x => x.RequestServices).Returns(ServiceProvider.Object);
-            SetupService(ApiElementBuilder.Object);
-            SetupService(ApiRichTextElementParser.Object);
-            SetupService(ApiRichTextMarkupParser.Object);
             SetupService(AuditService.Object);
             SetupService(CompositeViewEngine.Object);
-            SetupService(CacheManager.Object);
             SetupService(ConsentService.Object);
             SetupService(ContentService.Object);
             SetupService(ContentTypeBaseServiceProvider.Object);
             SetupService(ContentTypeService.Object);
-            SetupService(CultureDictionaryFactory.Object);
-            SetupService(CultureDictionaryForCurrentUICulture.Object);
             SetupService(DataTypeService.Object);
-            SetupService(DocumentNavigationQueryService.Object);
-            SetupService(DomainCache.Object);
             SetupService(DomainService.Object);
-            SetupService(ElementsCache.Object);
             SetupService(EntityService.Object);
             SetupService(ExternalLoginWithKeyService.Object);
             SetupService(ExamineManager.Object);
             SetupService(FileService.Object);
-            SetupService(JsonSerializer);
-            SetupService(JsonSerializerEncoderFactory);
             SetupService(KeyValueService.Object);
-            SetupService(LanguageService.Object);
-#pragma warning disable CS0612 // Type or member is obsolete
             SetupService(LocalizationService.Object);
-#pragma warning restore CS0612 
             SetupService(LocalizedTextService.Object);
+            SetupService(MacroService.Object);
             SetupService(MediaService.Object);
-            SetupService(MediaNavigationQueryService.Object);
             SetupService(MediaTypeService.Object);
             SetupService(MemberService.Object);
             SetupService(MemberGroupService.Object);
             SetupService(MemberTypeService.Object);
             SetupService(NotificationService.Object);
             SetupService(PackagingService.Object);
-            SetupService(PartialViewBlockEngine.Object);
             SetupService(PublicAccessService.Object);
             SetupService(PublishedContentCache.Object);
-            SetupService(PublishedMediaCache.Object);
-            SetupService(PublishedMemberCache.Object);
             SetupService(PublishedModelFactory.Object);
-            SetupService(PublishedContentQuery.Object);
-            SetupService(PublishedContentStatusFilteringService.Object);
-            SetupService(PublishedContentTypeCache.Object);
+            SetupService(PublishedSnapshotAccessor.Object);
             SetupService(PublishedUrlProvider.Object);
             SetupService(PublishedValueFallback.Object);
             SetupService(RedirectUrlService.Object);
             SetupService(RelationService.Object);
-            SetupService(RichTextBlockPropertyValueConstructorCache.Object);
             SetupService(ServerRegistrationService.Object);
             SetupService(SiteDomainMapper.Object);
             SetupService(TagService.Object);
             SetupService(TempDataDictionaryFactory.Object);
-            SetupService(UmbracoComponentRenderer.Object);
             SetupService(UmbracoContextAccessor.Object);
-            SetupService(UmbracoHelperAccessor.Object);
             SetupService(UserService.Object);
             SetupService(VariationContextAccessor.Object);
             SetupService(Options.Create(WebRoutingSettings));
-            DI.StaticServiceProvider.Instance = ServiceProvider.Object;
         }
 
         private void SetupService<T>(T implementation)
@@ -594,6 +450,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             ServiceProvider.Setup(x => x.GetService(typeof(T))).Returns(implementation);
         }
 
+        delegate void TryGetPublishedSnapshotCallback(out IPublishedSnapshot snapshot);
         delegate void SessionTryGetValueCallback(string key, out byte[]? value);
         delegate bool SessionTryGetValueReturns(string key, out byte[]? value);
 
@@ -631,9 +488,8 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// Adds a new content type to <see cref="ContentTypes"/> and other mocks within the <see cref="UmbracoTestContext"/>.
         /// </summary>
         /// <param name="contentTypeAlias">The alias of the content type.</param>
-        /// <param name="publishedItemType">The published item type of the content type. Defaults to <see cref="PublishedItemType.Element"/>.</param>
         /// <returns>The updated test context.</returns>
-        public UmbracoTestContext SetupContentType(string contentTypeAlias, PublishedItemType publishedItemType = PublishedItemType.Element)
+        public UmbracoTestContext SetupContentType(string contentTypeAlias)
         {
             var contentType = new Mock<IPublishedContentType>();
             contentType.Setup(x => x.Id).Returns(_contentTypes.Count + 1);
@@ -643,7 +499,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             _contentTypes.Add(contentTypeAlias, contentType);
             ContentTypes = new ReadOnlyDictionary<string, Mock<IPublishedContentType>>(_contentTypes);
 
-            PublishedContentTypeCache.Setup(x => x.Get(publishedItemType, contentTypeAlias)).Returns(ContentTypes[contentTypeAlias].Object);
+            PublishedContentCache.Setup(x => x.GetContentType(contentTypeAlias)).Returns<string>(alias => ContentTypes[alias].Object);
 
             return this;
         }

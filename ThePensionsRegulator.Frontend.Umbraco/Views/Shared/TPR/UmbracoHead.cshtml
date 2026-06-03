@@ -1,2 +1,8 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<link rel="stylesheet" href="/ThePensionsRegulator.Frontend.Umbraco/css/tpr.css" asp-append-version="true" />
+@addTagHelper *, Smidge
+<environment names="Development">
+    <link rel="stylesheet" href="tpr-frontend-css" debug="true" />
+</environment>
+<environment names="Staging,Production">
+    <link rel="stylesheet" href="tpr-frontend-css" />
+</environment>

@@ -1,4 +1,5 @@
-﻿@using GovUk.Frontend.Umbraco.ExampleApp.Models
+﻿@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration
+@using GovUk.Frontend.Umbraco.ExampleApp.Models
 @using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Configuration;
 @using ThePensionsRegulator.Frontend.Umbraco
@@ -7,12 +8,12 @@
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
-@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
-@inject ITprGlobalNavigationService navigationService;
+@inject IConfiguration Configuration
+@inject ITprGlobalNavigationService navigationSerivce;
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
-    var useTPRstyles = Configuration.Value.TPRStyles;
+    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
     var headerLockup = new UmbracoTprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
     var footerLockup = new UmbracoTprFooterLockupModel(settings!);
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
@@ -34,7 +35,7 @@
     }
     var headerViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
 
-    var menuItems = navigationService.GetMenuItems(settings, headerViewModel);
+    var menuItems = navigationSerivce.GetMenuItems(settings, headerViewModel);
     headerLockup.HeaderMenuItems = menuItems;
 }
 
@@ -52,30 +53,33 @@
     {
         <partial name="GOVUK/UmbracoHead" />
     }
-    <script src="/js/purify.js" type="module" asp-append-version="true"></script>
-    <script src="/js/trusted-types-policy.js" type="module" asp-append-version="true"></script>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <script src="/js/purify.js" asp-append-version="true"></script>
+    <script src="/js/trusted-types-policy.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("head", required: false)
 </head>
 
-<body class="govuk-template__body" data-tpr-table-csv-download-text="@(Umbraco.GetDictionaryValue("Table CSV Download Button Text"))">
+<body class="govuk-template__body" data-tpr-table-csv-download-text="@Umbraco.GetDictionaryValue("Table CSV Download Button Text")">
     <partial name="GOVUK/BodyOpen" />
     <partial name="TPR/TPRHeaderLockup" model="headerLockup" />
     <div class="tpr-main-wrapper">
         @RenderSection("language", required: false)
-        @RenderSection("secondary_navigation", required: false)
-        @if (!IsSectionDefined("secondary_navigation"))
+        @if (Context.Request.Path != home?.Url())
         {
-            <div class="govuk-width-container">
-                <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
-            </div>
+            @RenderSection("secondary_navigation", required: false)
+            @if (!IsSectionDefined("secondary_navigation"))
+            {
+                <div class="govuk-width-container">
+                    <govuk-back-link href="@home?.Url()">@Umbraco.GetDictionaryValue("Back link")</govuk-back-link>
+                </div>
+            }
         }
-        @if (currentPage?.ContentType.Alias == "sideNavigation" && useTPRstyles)
+        @if (currentPage?.ContentType.Alias == "sideNavigation")
         {
             <div class="govuk-width-container">
                 <div class="govuk-grid-row">
                     <div class="govuk-grid-column govuk-grid-column-one-third">
-                        <partial name="TPR/TPRSideNavigation" />
+                        @await Component.InvokeAsync("TprSideNavigation")
                     </div>
                     <div class="govuk-grid-column govuk-grid-column-two-thirds">
                         <main id="main" class="govuk-main-wrapper">
@@ -96,7 +100,12 @@
     {
         <partial name="TPR/TPRFooterLockup" model="footerLockup" />
     }
-    <partial name="TPR/BodyClosing" />
+    <partial name="TPR/UmbracoBodyClosing" />
     @RenderSection("scripts", required: false)
 </body>
+@await SmidgeHelper.JsHereAsync(debug: true)
+
 </html>
+
+
+

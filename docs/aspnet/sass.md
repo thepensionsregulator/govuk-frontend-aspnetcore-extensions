@@ -2,7 +2,7 @@
 
 You can use GOV.UK and TPR SASS styles and utilities in your project when you add the `ThePensionsRegulator.GovUk.Frontend` NuGet package.
 
-1. Install the [AspNetCore.SassCompiler](https://www.nuget.org/packages/AspNetCore.SassCompiler) NuGet package. You must explicitly install this package even though it is already a transitive dependency.
+1. Install the [AspNetCore.SassCompiler](https://www.nuget.org/packages/AspNetCore.SassCompiler) NuGet package. You must explicitly install this package even though it is already a transative dependency.
 2. Create your SASS file in the `Styles` folder of your application. You can add imports at the top of your file to make GOV.UK and TPR styles and utilities available:
 
    ```sass

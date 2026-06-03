@@ -4,7 +4,7 @@ using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Strings;
-using CmsConstants = Umbraco.Cms.Core.Constants;
+using Core = Umbraco.Cms.Core;
 
 namespace ThePensionsRegulator.Umbraco.Testing
 {
@@ -49,10 +49,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <param name="propertyEditorAlias">The alias of the Umbraco property editor used by the data type.</param>
         /// <param name="configuration">An internal Umbraco configuration object specific to the property type.</param>
         /// <returns>The mocked Umbraco property type.</returns>
-        public static PublishedPropertyType CreatePropertyType(int dataTypeId, string propertyAlias, string propertyEditorAlias, string contentTypeAlias, IEnumerable<string>? compositionAliases, object? configuration)
+        public static PublishedPropertyType CreatePropertyType(int dataTypeId, string propertyEditorAlias, object? configuration)
         {
             var propertyType = new Mock<IPropertyType>();
-            propertyType.SetupGet(x => x.Alias).Returns(propertyAlias);
             propertyType.SetupGet(x => x.DataTypeId).Returns(dataTypeId);
             propertyType.SetupGet(x => x.PropertyEditorAlias).Returns(propertyEditorAlias);
 
@@ -60,13 +59,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
 
             var propertyValueConverters = new PropertyValueConverterCollection(() => new IPropertyValueConverter[] { converter.Object });
 
-            var contentType = new Mock<IPublishedContentType>();
-            contentType.Setup(x => x.Alias).Returns(contentTypeAlias);
-            contentType.Setup(x => x.CompositionAliases).Returns(compositionAliases is not null ? [.. compositionAliases] : []);
-
             var contentTypeFactory = new Mock<IPublishedContentTypeFactory>();
-            contentTypeFactory.Setup(x => x.GetDataType(dataTypeId)).Returns(new PublishedDataType(dataTypeId, propertyEditorAlias, propertyEditorAlias, new Lazy<object?>(configuration)));
-            var publishedPropertyType = new PublishedPropertyType(contentType.Object, propertyType.Object, propertyValueConverters, Mock.Of<IPublishedModelFactory>(), contentTypeFactory.Object);
+            contentTypeFactory.Setup(x => x.GetDataType(dataTypeId)).Returns(new PublishedDataType(dataTypeId, propertyEditorAlias, new Lazy<object?>(configuration)));
+            var publishedPropertyType = new PublishedPropertyType(Mock.Of<IPublishedContentType>(), propertyType.Object, propertyValueConverters, Mock.Of<IPublishedModelFactory>(), contentTypeFactory.Object);
 
             converter.Setup(x => x.IsConverter(publishedPropertyType)).Returns(true);
             return publishedPropertyType;
@@ -76,24 +71,22 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// Mock an Umbraco property using a rich text data type, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
-        /// <param name="contentTypeAlias">The alias of the content type that contains the property.</param>
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateRichTextProperty(string propertyAlias, string contentTypeAlias, IHtmlEncodedString? value)
+        public static IPublishedProperty CreateRichTextProperty(string propertyAlias, IHtmlEncodedString? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(RICH_TEXT_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.RichText, contentTypeAlias, [], new RichTextConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(RICH_TEXT_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.TinyMce, new RichTextConfiguration()), value);
         }
 
         /// <summary>
         /// Mock an Umbraco property using a textbox data type, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
-        /// <param name="contentTypeAlias">The alias of the content type that contains the property.</param>
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateTextboxProperty(string propertyAlias, string contentTypeAlias, string? value)
+        public static IPublishedProperty CreateTextboxProperty(string propertyAlias, string? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(TEXTBOX_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.TextBox, contentTypeAlias, [], new TextboxConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(TEXTBOX_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.TextBox, new TextboxConfiguration()), value);
         }
 
 
@@ -101,84 +94,77 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// Mock an Umbraco property using a integer data type, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
-        /// <param name="contentTypeAlias">The alias of the content type that contains the property.</param>
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateIntegerProperty(string propertyAlias, string contentTypeAlias, int? value)
+        public static IPublishedProperty CreateIntegerProperty(string propertyAlias, int? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(INTEGER_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.Integer, contentTypeAlias, [], null), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(INTEGER_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.Integer, null), value);
         }
 
         /// <summary>
         /// Mock an Umbraco property using a block list data type, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
-        /// <param name="contentTypeAlias">The alias of the content type that contains the property.</param>
         /// <param name="value">The block list to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateBlockListProperty(string propertyAlias, string contentTypeAlias, IEnumerable<BlockListItem>? value)
+        public static IPublishedProperty CreateBlockListProperty(string propertyAlias, IEnumerable<BlockListItem>? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BLOCKLIST_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.BlockList, contentTypeAlias, [], new BlockListConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BLOCKLIST_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.BlockList, new BlockListConfiguration()), value);
         }
 
         /// <summary>
         /// Mock an Umbraco property using a block grid data type, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
-        /// <param name="contentTypeAlias">The alias of the content type that contains the property.</param>
         /// <param name="value">The block grid to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateBlockGridProperty(string propertyAlias, string contentTypeAlias, IEnumerable<BlockGridItem>? value)
+        public static IPublishedProperty CreateBlockGridProperty(string propertyAlias, IEnumerable<BlockGridItem>? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BLOCKGRID_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.BlockGrid, contentTypeAlias, [], new BlockGridConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BLOCKGRID_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.BlockGrid, new BlockGridConfiguration()), value);
         }
 
         /// <summary>
         /// Mock an Umbraco property using a boolean data type, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
-        /// <param name="contentTypeAlias">The alias of the content type that contains the property.</param>
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateBooleanProperty(string propertyAlias, string contentTypeAlias, bool? value)
+        public static IPublishedProperty CreateBooleanProperty(string propertyAlias, bool? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.Boolean, contentTypeAlias, [], null), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.Boolean, new TrueFalseConfiguration()), value);
         }
 
         /// <summary>
         /// Mock an Umbraco property using a boolean data type, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
-        /// <param name="contentTypeAlias">The alias of the content type that contains the property.</param>
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateBooleanProperty(string propertyAlias, string contentTypeAlias, bool value)
+        public static IPublishedProperty CreateBooleanProperty(string propertyAlias, bool value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.Boolean, contentTypeAlias, [], null), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(BOOLEAN_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.Boolean, new TrueFalseConfiguration()), value);
         }
 
         /// <summary>
         /// Mock an Umbraco property using a multi-URL picker data type configured to pick a maximum of one URL, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
-        /// <param name="contentTypeAlias">The alias of the content type that contains the property.</param>
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateMultiUrlPickerProperty(string propertyAlias, string contentTypeAlias, Link? value)
+        public static IPublishedProperty CreateMultiUrlPickerProperty(string propertyAlias, Link? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(MULTI_URL_PICKER_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.MultiUrlPicker, contentTypeAlias, [], new MultiUrlPickerConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(MULTI_URL_PICKER_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.MultiUrlPicker, new MultiUrlPickerConfiguration()), value);
         }
 
         /// <summary>
         /// Mock an Umbraco property using a content picker data type, and set its value.
         /// </summary>
         /// <param name="propertyAlias">The alias of the Umbraco property to mock.</param>
-        /// <param name="contentTypeAlias">The alias of the content type that contains the property.</param>
         /// <param name="value">The value to assign to the mocked Umbraco property.</param>
         /// <returns>The mocked Umbraco property.</returns>
-        public static IPublishedProperty CreateContentPickerProperty(string propertyAlias, string contentTypeAlias, IPublishedElement? value)
+        public static IPublishedProperty CreateContentPickerProperty(string propertyAlias, IPublishedElement? value)
         {
-            return CreateProperty(propertyAlias, CreatePropertyType(CONTENT_PICKER_DATA_TYPE_ID, propertyAlias, CmsConstants.PropertyEditors.Aliases.ContentPicker, contentTypeAlias, [], new ContentPickerConfiguration()), value);
+            return CreateProperty(propertyAlias, CreatePropertyType(CONTENT_PICKER_DATA_TYPE_ID, Core.Constants.PropertyEditors.Aliases.ContentPicker, new ContentPickerConfiguration()), value);
         }
     }
 }

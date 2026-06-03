@@ -1,4 +1,6 @@
-﻿namespace ThePensionsRegulator.Frontend.Models
+﻿using System.Collections.Generic;
+
+namespace ThePensionsRegulator.Frontend.Models
 {
     public class TprSideNavigationViewModel
     {
@@ -8,6 +10,6 @@
         public string CollapseItemLabel { get; set; } = "{0} toggle button";
         public string ExpandedItemLabel { get; set; } = "{0} is expanded";
         public string CollapsedItemLabel { get; set; } = "{0} is collapsed";
-        public IList<TprSideNavigationLink> NavigationLinks { get; set; } = new List<TprSideNavigationLink>();
+        public List<TprSideNavigationLink> NavigationLinks { get; set; } = new();
     }
 }

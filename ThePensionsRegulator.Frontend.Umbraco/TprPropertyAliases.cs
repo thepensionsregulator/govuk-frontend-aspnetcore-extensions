@@ -1,9 +1,23 @@
-namespace ThePensionsRegulator.Frontend.Umbraco
+﻿namespace ThePensionsRegulator.Frontend.Umbraco
 {
     public static class TprPropertyAliases
     {
+        public const string AddressLine1ErrorMessageRequired = "addressLine1ErrorMessageRequired";
+        public const string AddressLine1ErrorMessageMaxLength = "addressLine1ErrorMessageMaxLength";
+        public const string AddressLine1Label = "addressLine1Label";
+        public const string AddressLine1ModelProperty = "addressLine1ModelProperty";
+        public const string AddressLine2ModelProperty = "addressLine2ModelProperty";
+        public const string AddressLine2ErrorMessageMaxLength = "addressLine2ErrorMessageMaxLength";
+        public const string AddressLine2Label = "addressLine2Label";
+        public const string AddressLookupFieldsetBlocks = "fieldsetBlocks";
         public const string BackToMenuText = "text";
         public const string BackToMenuLink = "link";
+        public const string CountryModelProperty = "countryModelProperty";
+        public const string CountryErrorMessageRequired = "countryErrorMessageRequired";
+        public const string CountryLabel = "countryLabel";
+        public const string CountyModelProperty = "countyModelProperty";
+        public const string CountyErrorMessageMaxLength = "countyErrorMessageMaxLength";
+        public const string CountyLabel = "countyLabel";
         public const string Image = "image";
         public const string RelatedLinksHeading = "heading";
         public const string RelatedLinksLabel = "label";
@@ -21,10 +35,6 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string FooterLogoAltText = "tprFooterLogoAlt";
         public const string FooterLogoHref = "tprFooterLogoHref";
         public const string FooterLinks = "tprFooterThreeColumnLinks";
-        public const string HeaderContent = "tprHeaderContent";
-        public const string HeaderContext1 = "tprContext1";
-        public const string HeaderContext2 = "tprContext2";
-        public const string HeaderContext3 = "tprContext3";
         public const string HeaderMenuAriaLabel = "tprHeaderMenuAriaLabel";
         public const string HeaderMenuItemAriaLabel = "tprHeaderMenuItemAriaLabel";
         public const string HeaderMenuLinkText = "linkText";
@@ -39,6 +49,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string ImageDecorative = "decorativeImage";
         public const string ImageSize = "imageSize";
         public const string ImageSpaceAfter = "spaceAfter";
+        public const string PostcodeModelProperty = "postcodeModelProperty";
+        public const string PostcodeErrorMessageRequired = "postcodeErrorMessageRequired";
+        public const string PostcodeErrorMessageMaxLength = "postcodeErrorMessageMaxLength";
+        public const string PostcodeLabel = "postcodeLabel";
         public const string NavigationalLinksText = "text";
         public const string NavigationalLinksLabel = "label";
         public const string SearchResultsHeading = "heading";
@@ -56,6 +70,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string SectionCardDescriptionPropertyDefault = "description";
         public const string SideNavigationRoot = "navigationRoot";
         public const string SideNavigationBlacklistedPages = "blacklistedPages";
+        public const string TownOrCityModelProperty = "townOrCityModelProperty";
+        public const string TownOrCityErrorMessageRequired = "townOrCityErrorMessageRequired";
+        public const string TownOrCityErrorMessageMaxLength = "townOrCityErrorMessageMaxLength";
+        public const string TownOrCityLabel = "townOrCityLabel";
         public const string VideoUrl = "url";
         public const string VideoTitle = "title";
         public const string VideoTranscriptUrl = "transcriptUrl";

@@ -1,0 +1,4 @@
+﻿/* Import the govuk-frontend stylesheet and add styles that are only relevant for Umbraco.*/
+@import "../../GovUk.Frontend.AspNetCore.Extensions/Styles/govuk-frontend.scss";
+@import "_govuk-list.scss";
+@import "_govuk-spacing.scss";

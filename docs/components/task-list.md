@@ -1,6 +1,6 @@
 # Task list
 
-This implements the [Task list component](https://design-system.service.gov.uk/components/task-list/) from the GOV.UK Design System.
+[Task list component](https://design-system.service.gov.uk/components/task-list/)
 
 ## Example
 
@@ -59,27 +59,14 @@ Must be inside a `<govuk-task-list-task>` element.
 
 ### `<govuk-task-list-task-status>`
 
-| Attribute   | Type                 | Description                                                                                                                    |
-| ----------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `id-prefix` | `string`             | Sets the prefix prepended to the hint and status HTML ids.                                                                     |
-| `status`    | `TaskListTaskStatus` | The status of the task. Optional.                                                                                              |
-| `tag`       | `bool`               | Sets whether to wrap the status in a [tag component](https://design-system.service.gov.uk/components/tag/). Default is `true`. |
-| `tag-*`     |                      | Additional attributes to add to the generated tag component.                                                                   |
+| Attribute | Type                 | Description                                                                                                                    |
+| --------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `status`  | `TaskListTaskStatus` | The status of the task. Optional.                                                                                              |
+| `tag`     | `bool`               | Sets whether to wrap the status in a [tag component](https://design-system.service.gov.uk/components/tag/). Default is `true`. |
+| `tag-*`   |                      | Additional attributes to add to the generated tag component.                                                                   |
 
 The content is the status tag, if it needs to be different from the value of the `status` attribute.\
 Must be inside a `<govuk-task-list-task>` element.
-
-To support TPR styling you must set a class on the `<govuk-task-list-task-status>` element.
-
-```razor
-@using static ThePensionsRegulator.GovUk.Frontend.TaskListTaskStatus
-
-<govuk-task-list>
-    <govuk-task-list-task>
-        <govuk-task-list-task-status status="Incomplete" class="@(TaskListTaskStatus.Incomplete.AsHtmlClass())" />
-    </govuk-task-list-task>
-</govuk-task-list>
-```
 
 ## Umbraco
 

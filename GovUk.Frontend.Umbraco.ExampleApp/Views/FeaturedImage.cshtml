@@ -1,9 +1,8 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<FeaturedImage>
 @using Microsoft.Extensions.Configuration;
-@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
-
+@inject IConfiguration Configuration
 @{
-    var useTPRstyles = Configuration.Value.TPRStyles;
+    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
 }
 @section head {
 	<title>@Model.PageHeadingOrName()</title>
@@ -13,7 +12,5 @@
 {
     <partial name="GOVUK/BlockGrid" model="Model.Blocks" />
 }
-else
-{
-    <partial name="GOVUK/BlockList" model="Model.GovukBlocks" />
-}
+
+            

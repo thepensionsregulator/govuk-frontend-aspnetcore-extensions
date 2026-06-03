@@ -1,0 +1,47 @@
+using GovUk.Frontend.AspNetCore.Extensions.Configuration;
+using GovUk.Frontend.AspNetCore.Extensions.ModelBinding;
+using GovUk.Frontend.AspNetCore.Extensions.Security;
+using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+
+namespace GovUk.Frontend.AspNetCore.Extensions
+{
+    public static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddGovUkFrontendExtensions(this IServiceCollection services)
+        {
+            return services.AddGovUkFrontendExtensions(options => { });
+        }
+
+        public static IServiceCollection AddGovUkFrontendExtensions(
+            this IServiceCollection services,
+            Action<GovUkFrontendOptions> configureOptions)
+        {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            Action<GovUkFrontendOptions> configureOptionsWithDefaults = opt =>
+            {
+                opt.ErrorSummaryGeneration = ErrorSummaryGenerationOptions.None;
+                opt.DefaultFileUploadJavaScriptEnhancements = true;
+                configureOptions(opt);
+            };
+
+            services.AddGovUkFrontend(configureOptionsWithDefaults);
+            services.AddTransient<IClientSideValidationHtmlEnhancer, ClientSideValidationHtmlEnhancer>();
+            services.AddTransient<IModelPropertyResolver, ModelPropertyResolver>();
+            services.AddScoped<INonceProvider, NonceProvider>();
+            services.AddMvc(options =>
+            {
+                options.ModelBinderProviders.Insert(0, new NormalisedStringModelBinderProvider());
+                options.ModelBinderProviders.Insert(0, new UkPostcodeModelBinderProvider());
+            });
+            services.AddSingleton(new GovUkFrontendOptionsProvider(configureOptionsWithDefaults));
+
+            return services;
+        }
+    }
+}

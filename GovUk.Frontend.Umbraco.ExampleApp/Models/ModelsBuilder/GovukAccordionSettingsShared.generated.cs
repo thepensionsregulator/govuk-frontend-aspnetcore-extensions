@@ -22,11 +22,6 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 	/// <summary>Accordion settings (shared)</summary>
 	public partial interface IGovukAccordionSettingsShared : IPublishedElement
 	{
-		/// <summary>Heading class</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		string HeadingClass { get; }
-
 		/// <summary>Heading level</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
@@ -45,12 +40,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public new static IPublishedContentType GetModelContentType(IPublishedContentTypeCache contentTypeCache)
-			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
+		public new static IPublishedContentType GetModelContentType(IPublishedSnapshotAccessor publishedSnapshotAccessor)
+			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<GovukAccordionSettingsShared, TValue>> selector)
-			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<GovukAccordionSettingsShared, TValue>> selector)
+			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
@@ -65,20 +60,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Heading class: Defaults to "govuk-heading-m" if left blank.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("headingClass")]
-		public virtual string HeadingClass => GetHeadingClass(this, _publishedValueFallback);
-
-		/// <summary>Static getter for Heading class</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static string GetHeadingClass(IGovukAccordionSettingsShared that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "headingClass");
-
-		///<summary>
-		/// Heading level: Defaults to "Heading 2" if left blank.
+		/// Heading level: Defaults to 2 if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

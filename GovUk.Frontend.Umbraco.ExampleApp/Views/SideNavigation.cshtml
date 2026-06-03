@@ -1,21 +1,9 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SideNavigation>
-@using ThePensionsRegulator.Umbraco
+﻿@using ThePensionsRegulator.Umbraco
 @using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SideNavigation>
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
-@using Microsoft.Extensions.Configuration;
-@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
-@{
-    var useTPRstyles = Configuration.Value.TPRStyles;
-}
 @section head {
 	<title>@Model.PageHeadingOrName()</title>
 }
 
-@if (useTPRstyles)
-{
-	<partial name="GOVUK/BlockGrid" model="Model.Grid" />
-}
-else
-{
-	<partial name="GOVUK/BlockList" model="Model.GovukBlocks" />
-}
+<partial name="GOVUK/BlockGrid" model="Model.Grid" />

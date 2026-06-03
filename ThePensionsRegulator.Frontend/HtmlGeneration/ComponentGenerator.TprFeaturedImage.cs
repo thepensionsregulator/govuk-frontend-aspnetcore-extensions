@@ -1,7 +1,13 @@
+using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using ThePensionsRegulator.GovUk.Frontend;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using ThePensionsRegulator.Frontend.TagHelpers;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -26,40 +32,40 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var featuredImageTagHelper = new TagBuilder(FeaturedImageElement);
             if (attributes is not null) { featuredImageTagHelper.MergeAttributes(attributes); }
-            featuredImageTagHelper.AddCssClass("tpr-featured-image");
+            featuredImageTagHelper.MergeCssClass("tpr-featured-image");
 
             if (horizontal)
             {
-                featuredImageTagHelper.AddCssClass("tpr-featured-image--horizontal");
+                featuredImageTagHelper.MergeCssClass("tpr-featured-image--horizontal");
             }
 
 
             var featuredImageThumbnailTagHelper = new TagBuilder(FeaturedImageThumbnailElement);
 
-            featuredImageThumbnailTagHelper.AddCssClass("tpr-featured-image_thumbnail");
+            featuredImageThumbnailTagHelper.MergeCssClass("tpr-featured-image_thumbnail");
 
 
             var imageTagHelper = new TagBuilder("img");
             imageTagHelper.Attributes.Add("src", imageUrl);
-            var imageAltValue = string.Empty;
-            if (!decorativeImage)
+            var imageAltValue = string.Empty; 
+            if(!decorativeImage)
             {
                 imageAltValue = imageAlt ?? string.Empty;
             }
             imageTagHelper.Attributes.Add("alt", imageAltValue);
             featuredImageThumbnailTagHelper.InnerHtml.AppendHtml(imageTagHelper);
-
+            
             featuredImageTagHelper.InnerHtml.AppendHtml(featuredImageThumbnailTagHelper);
 
 
             var featuredImageInfoTagHelper = new TagBuilder(FeaturedImageInfoElement);
 
-            featuredImageInfoTagHelper.AddCssClass("tpr-featured-image_info");
-            featuredImageInfoTagHelper.AddCssClass("tpr-box");
+            featuredImageInfoTagHelper.MergeCssClass("tpr-featured-image_info");
+            featuredImageInfoTagHelper.MergeCssClass("tpr-box");
 
 
             featuredImageInfoTagHelper.InnerHtml.AppendHtml(htmlContent);
-
+            
             featuredImageTagHelper.InnerHtml.AppendHtml(featuredImageInfoTagHelper);
             return featuredImageTagHelper;
         }

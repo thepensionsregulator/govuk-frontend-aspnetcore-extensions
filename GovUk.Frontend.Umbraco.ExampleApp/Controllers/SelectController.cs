@@ -1,9 +1,10 @@
-﻿using GovUk.Frontend.Umbraco.ExampleApp.Models;
+﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.Umbraco.Blocks;
+using GovUk.Frontend.Umbraco.ExampleApp.Models;
+using GovUk.Frontend.Umbraco.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
-using ThePensionsRegulator.GovUk.Frontend.Validation;
+using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Web;
@@ -15,16 +16,14 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
     public class SelectController : RenderController
     {
         private readonly IPublishedValueFallback _publishedValueFallback;
-        private readonly IPublishedContentTypeCache _publishedContentTypeCache;
-        private readonly IVariationContextAccessor _variationContextAccessor;
+        private readonly IPublishedSnapshotAccessor _publishedSnapshotAccessor;
 
         public SelectController(ILogger<RenderController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor,
-            IPublishedValueFallback publishedValueFallback, IPublishedContentTypeCache publishedContentTypeCache, IVariationContextAccessor variationContextAccessor) :
+            IPublishedValueFallback publishedValueFallback, IPublishedSnapshotAccessor publishedSnapshotAccessor) :
             base(logger, compositeViewEngine, umbracoContextAccessor)
         {
             _publishedValueFallback = publishedValueFallback;
-            _publishedContentTypeCache = publishedContentTypeCache;
-            _variationContextAccessor = variationContextAccessor;
+            _publishedSnapshotAccessor = publishedSnapshotAccessor;
         }
 
         [ModelType(typeof(SelectViewModel))]
@@ -46,7 +45,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             viewModel.Page.Blocks!.FindBlockByClass("external-data")!
                 .Content
-                .OverrideSelectOptions(optionsFromDataSource, _publishedContentTypeCache, _variationContextAccessor, viewModel.Page.Blocks!.Filter);
+                .OverrideSelectOptions(optionsFromDataSource, _publishedSnapshotAccessor, viewModel.Page.Blocks!.Filter);
 
             return CurrentTemplate(viewModel);
         }

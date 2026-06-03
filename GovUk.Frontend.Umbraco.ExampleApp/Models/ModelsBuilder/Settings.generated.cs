@@ -30,12 +30,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public new static IPublishedContentType GetModelContentType(IPublishedContentTypeCache contentTypeCache)
-			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
+		public new static IPublishedContentType GetModelContentType(IPublishedSnapshotAccessor publishedSnapshotAccessor)
+			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<Settings, TValue>> selector)
-			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<Settings, TValue>> selector)
+			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
@@ -143,7 +143,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprFooterThreeColumnLinks")]
-		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterThreeColumnLinks(this, _publishedValueFallback);
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel TprFooterThreeColumnLinks => global::Umbraco.Cms.Web.Common.PublishedModels.TprFooter.GetTprFooterThreeColumnLinks(this, _publishedValueFallback);
 
 		///<summary>
 		/// Content: A small number of links, or blank.
@@ -229,7 +229,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderMenuBlockList")]
-		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprHeaderMenuBlockList => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuBlockList(this, _publishedValueFallback);
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockListModel TprHeaderMenuBlockList => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuBlockList(this, _publishedValueFallback);
 
 		///<summary>
 		/// Menu item ARIA label

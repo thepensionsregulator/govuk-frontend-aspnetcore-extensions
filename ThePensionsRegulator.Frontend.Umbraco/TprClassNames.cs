@@ -8,6 +8,5 @@
         public const string Image = "tpr-image";
         public const string ImageStretch = "tpr-image--fit-container";
         public const string ImageNoSpaceAfter = "tpr-image--no-space-after";
-        public const string Table = "govuk-table--tpr-default";
     }
 }

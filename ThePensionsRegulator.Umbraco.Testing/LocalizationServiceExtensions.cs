@@ -6,12 +6,12 @@ namespace ThePensionsRegulator.Umbraco.Testing
 {
     public static class LocalizationServiceExtensions
     {
-        public static Mock<IDictionaryItemService> SetupUmbracoDictionaryItem(this Mock<IDictionaryItemService> dictionaryItemService, string key, string value, string languageIsoCode)
+        public static Mock<ILocalizationService> SetupUmbracoDictionaryItem(this Mock<ILocalizationService> localizationService, string key, string value, int languageId = 2)
         {
             var dictionaryTranslation = new Mock<IDictionaryTranslation>();
             dictionaryTranslation
-                .Setup(x => x.LanguageIsoCode)
-                .Returns(languageIsoCode);
+                .Setup(x => x.LanguageId)
+                .Returns(languageId);
 
             dictionaryTranslation
                 .Setup(x => x.Value)
@@ -20,19 +20,18 @@ namespace ThePensionsRegulator.Umbraco.Testing
             var dictionaryItem = new Mock<IDictionaryItem>();
             dictionaryItem
                 .Setup(x => x.Translations)
-                .Returns([dictionaryTranslation.Object]);
+                .Returns(new[] { dictionaryTranslation.Object });
 
+            localizationService
+               .Setup(x => x.GetDictionaryItemByKey(key))
+               .Returns(dictionaryItem.Object);
 
-            dictionaryItemService
-               .Setup(x => x.GetAsync(key))
-               .ReturnsAsync(dictionaryItem.Object);
-
-            return dictionaryItemService;
+            return localizationService;
         }
 
-        public static Mock<IDictionaryItemService> SetupUmbracoDictionaryItem(this IDictionaryItemService dictionaryItemService, string key, string value, string languageIsoCode)
+        public static Mock<ILocalizationService> SetupUmbracoDictionaryItem(this ILocalizationService localizationService, string key, string value, int languageId = 2)
         {
-            return Mock.Get(dictionaryItemService).SetupUmbracoDictionaryItem(key, value, languageIsoCode);
+            return Mock.Get(localizationService).SetupUmbracoDictionaryItem(key, value, languageId);
         }
     }
 }

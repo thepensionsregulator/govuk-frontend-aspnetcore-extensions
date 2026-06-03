@@ -1,0 +1,5 @@
+﻿<div class="govuk-task-list-summary backoffice-block-view" ng-click="block.edit()" ng-focus="block.focus" aria-label="Edit task list summary component">
+    <h2 class="govuk-task-list-summary__heading govuk-heading-s" ng-bind-html="block.data.incompleteStatus || 'Tasks incomplete'" aria-hidden="true"></h2>
+    <p class="govuk-task-list-summary__tracker govuk-body" ng-bind-html="block.data.tracker" ng-if="block.data.tracker" aria-hidden="true"></p>
+    <p class="govuk-task-list-summary__tracker govuk-body" ng-if="!block.data.tracker" aria-hidden="true">You've completed 1 of 2 tasks.</p>
+</div>

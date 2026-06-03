@@ -1,8 +1,8 @@
 ﻿using Moq;
-using ThePensionsRegulator.Umbraco.Core;
-using ThePensionsRegulator.Umbraco.Core.Blocks;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
+using Core = Umbraco.Cms.Core;
 
 namespace ThePensionsRegulator.Umbraco.Testing
 {
@@ -48,7 +48,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static BlockListItem CreateBlock(IPublishedElement content)
         {
-            return new BlockListItem(Guid.NewGuid(), content, null, null);
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+            return new BlockListItem(Core.Udi.Create(Core.Constants.UdiEntityType.Element, Guid.NewGuid()), content, null, null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
         }
 
         /// <summary>
@@ -56,7 +58,8 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static BlockListItem CreateBlock(IPublishedElement content, IPublishedElement settings)
         {
-            return new BlockListItem(Guid.NewGuid(), content, Guid.NewGuid(), settings);
+            return new BlockListItem(Core.Udi.Create(Core.Constants.UdiEntityType.Element, Guid.NewGuid()), content,
+                                     Core.Udi.Create(Core.Constants.UdiEntityType.Element, Guid.NewGuid()), settings);
         }
 
         /// <summary>

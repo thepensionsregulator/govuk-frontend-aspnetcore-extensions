@@ -1,7 +1,0 @@
-
-
-@include govuk-media-query($until: tablet) {
-    .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list {
-        flex-wrap: wrap;
-    }
-}

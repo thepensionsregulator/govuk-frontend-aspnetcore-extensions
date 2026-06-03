@@ -1,0 +1,10 @@
+﻿<div ng-controller="GOVUKPluginController">
+    <select ng-model="model.value" ng-if="propertyNames.length > 0">
+        <option ng-repeat="propertyName in propertyNames" value="{{propertyName}}">{{propertyName}}</option>
+    </select>
+    <div ng-if="propertyNames.length === 0" class="govuk-umbraco-error red">
+        <umb-icon icon="icon-alert" class="icon large"></umb-icon>
+        <p>This document type is not configured for forms.</p>
+        <p>Apply a [ModelType] attribute to your controller action. The properties of the class identified by [ModelType] will appear here.</p>
+    </div>
+</div>

@@ -1,19 +1,19 @@
 @using ThePensionsRegulator.Frontend.Umbraco
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Web.Common
-@using GovUkPropertyAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyAliases
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
 @inject UmbracoHelper Umbraco
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
     var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
-    var heading = Model.Content.Value<string>(TprPropertyAliases.RelatedLinksHeading);
-    var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.RelatedLinksLinks);
-    var label = string.IsNullOrWhiteSpace(Model.Content.Value<string>(TprPropertyAliases.RelatedLinksLabel)) ? "List of related links" : Model.Content.Value<string>(TprPropertyAliases.RelatedLinksLabel);
 
-    if (string.IsNullOrEmpty(heading)) {
-        heading = Umbraco.GetDictionaryValueOrDefault("TPR Related links heading", "Related");
-    }
+    var heading = Model.Content.Value<string>(TprPropertyAliases.RelatedLinksHeading);
+    if (string.IsNullOrWhiteSpace(heading)) { heading = Umbraco.GetDictionaryValueOrDefault("TPR Related links heading", "Related"); }
+
+    var links = Model.Content.Value<IEnumerable<Link>>(TprPropertyAliases.RelatedLinksLinks);
+
+    var label = string.IsNullOrWhiteSpace(Model.Content.Value<string>(TprPropertyAliases.RelatedLinksLabel)) ? "List of related links" : Model.Content.Value<string>(TprPropertyAliases.RelatedLinksLabel);
 }
 
 <tpr-related-links class="@cssClasses" aria-label="@label">

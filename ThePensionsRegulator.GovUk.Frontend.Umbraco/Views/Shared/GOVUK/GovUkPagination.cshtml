@@ -1,9 +1,0 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@inject IUmbracoPaginationFactory paginationFactory
-@using ThePensionsRegulator.GovUk.Frontend.Models;
-@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
-@using ThePensionsRegulator.Umbraco;
-@using ThePensionsRegulator.Umbraco.Core
-@using ThePensionsRegulator.Umbraco.Core.Blocks
-<partial name="GOVUK/Pagination" model="(paginationFactory.CreateFromPaginationBlock(Model))" />

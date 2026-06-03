@@ -1,6 +1,6 @@
 # Accordion
 
-This implements the [Accordion component](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/accordion.md) from the GOV.UK Design System. For examples see [ASP.NET syntax for the Accordion component](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/accordion.md).
+This implements the [Accordion component](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/accordion.md) from the GOV.UK Design System. For examples see [ASP.NET syntax for the Accordion component](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/accordion.md).
 
 ## Umbraco
 

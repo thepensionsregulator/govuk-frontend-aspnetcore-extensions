@@ -1,0 +1,3 @@
+**/uSync/**/govuk*.config
+**/uSync/**/GOVUK*.config
+!.gitignore

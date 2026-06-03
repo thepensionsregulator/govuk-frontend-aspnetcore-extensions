@@ -1,23 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.11" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ThePensionsRegulator.GovUk.Frontend\ThePensionsRegulator.GovUk.Frontend.csproj" />
+    <ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
     <ProjectReference Include="..\SharedResourceLibrary\GovUk.Frontend.ExampleSharedResource.csproj" />
     <ProjectReference Include="..\ThePensionsRegulator.Frontend\ThePensionsRegulator.Frontend.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="Views\Breadcrumbs\Index.cshtml">
+    <Content Update="Views\Details\Index.cshtml">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

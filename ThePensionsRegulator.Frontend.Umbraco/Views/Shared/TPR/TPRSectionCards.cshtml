@@ -1,17 +1,16 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<OverridableBlockGridItem>;
 @addTagHelper *, ThePensionsRegulator.Frontend
-@using System.Web;
-@using ThePensionsRegulator.GovUk.Frontend.Umbraco;
-@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models
-@using GovUkPropertyAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyAliases
 @using Microsoft.AspNetCore.Html
 @using ThePensionsRegulator.Frontend.TagHelpers
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
+@using System.Web;
 @using ThePensionsRegulator.Frontend.Umbraco
-@using ThePensionsRegulator.Umbraco.Core
-@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using ThePensionsRegulator.Umbraco.Blocks;
 @using Umbraco.Cms.Core.Models
-@using Umbraco.Cms.Web.Common.PublishedModels
 @using Umbraco.Extensions
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
 @{
     var cards = Model.Content.Value<OverridableBlockListModel>(TprPropertyAliases.SectionCards);
     if (cards == null || cards.Any() == false)
@@ -19,16 +18,16 @@
         return;
     }
 
-    var nameFieldName = Model.Settings?.Value<string>(TprPropertyAliases.SectionCardNameProperty);
-    var descFieldName = Model.Settings?.Value<string>(TprPropertyAliases.SectionCardDescriptionProperty);
+    var nameFieldName = Model.Settings.Value<string>(TprPropertyAliases.SectionCardNameProperty);
+    var descFieldName = Model.Settings.Value<string>(TprPropertyAliases.SectionCardDescriptionProperty);
     if (string.IsNullOrWhiteSpace(descFieldName))
     {
         descFieldName = TprPropertyAliases.SectionCardDescriptionPropertyDefault;
     }
 
-    var cssClasses = Model.Settings?.Value<string>(GovUkPropertyAliases.CssClasses);
+    var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
 
-    var headingClass = Model.Settings?.Value<string?>(TprPropertyAliases.SectionCardsTitleHeadingClass);
+    var headingClass = Model.Settings.Value<string?>(TprPropertyAliases.SectionCardsTitleHeadingClass);
     if (string.IsNullOrEmpty(headingClass))
     {
         headingClass = "govuk-heading-m";
@@ -69,7 +68,7 @@
                     break;
                 case TprElementTypeAliases.SectionCardsForChildPages:
                     var page = Umbraco.AssignedContentItem;
-                    foreach (var child in page.Children())
+                    foreach (var child in page.Children)
                     {
                         if (!child.IsVisible())
                         {

@@ -1,0 +1,66 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@inject IGovUkFieldsetErrorFinder fieldsetErrorFinder
+@inject IGovUkHeadingClassProvider headingClassProvider
+@using GovUk.Frontend.Umbraco
+@using GovUk.Frontend.Umbraco.Blocks
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco.Services
+@using GovUk.Frontend.Umbraco.Validation
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using Umbraco.Cms.Core.Models.Blocks
+@using Umbraco.Extensions
+@{
+    var blocks = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks);
+    BlockListViewModel? childBlocks = null;
+    if (blocks is not null) 
+    {
+        childBlocks = new(blocks)
+        {
+            RenderWidthContainer = false
+        };
+    }
+    var cssClass = Model.Settings.Value<string>(PropertyAliases.CssClasses);
+    var legendIsPageHeading = Model.Settings.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading);
+    var legendClass = legendIsPageHeading ? headingClassProvider.HeadingClasses(Umbraco.AssignedContentItem).LegendAsHeading1 : "govuk-fieldset__legend--for-fieldset";
+    var legend = Model.Content.Value<string>(PropertyAliases.Legend)?.Replace("{{name}}", Umbraco.AssignedContentItem.Name);
+
+    // If there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
+    // If legendIsPageHeading is false, the classes are assigned in BlockList.cshtml, but describedBy must always be set here.
+    var fieldsetErrors = fieldsetErrorFinder.FindErrors(Model, ViewContext.ModelState);
+    var hasFieldsetError = fieldsetErrors.Any();
+    var fieldsetErrorClasses = hasFieldsetError && legendIsPageHeading ? $"{GovUkClassNames.FormGroup} {GovUkClassNames.FormGroupError}" : null;
+    var describedBy = hasFieldsetError ? string.Join(' ', fieldsetErrors.Select(x => x.Settings.Value<string>(PropertyAliases.ModelProperty)).ToArray()) : null;
+
+    // Add an error to ModelState so that we can communicate the presence of a fieldset error to each field within it
+    if (blocks is not null && hasFieldsetError) {
+        var allDescendentFields = blocks.FindBlocks(x => x.Content.ContentType.Alias == ElementTypeAliases.Checkbox || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.Checkboxes || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.DateInput || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.FileUpload || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.Radios || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.Select ||
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.TextInput || 
+                                                         x.Content.ContentType.Alias == ElementTypeAliases.Textarea);
+        foreach (var field in allDescendentFields) {
+            var modelPropertyName = field.Settings.Value<string>(PropertyAliases.ModelProperty);
+            if (!string.IsNullOrEmpty(modelPropertyName)) {
+                ViewContext.ModelState.AddModelError(modelPropertyName, ValidationConstants.FIELDSET_ERROR);
+            }
+        }
+    }
+}
+<govuk-fieldset class="@cssClass" described-by="@describedBy">
+    <govuk-fieldset-legend is-page-heading="@legendIsPageHeading" class="@legendClass">@legend</govuk-fieldset-legend>
+    @if (hasFieldsetError){
+        @:<div class="@GovUkClassNames.Row @fieldsetErrorClasses">
+        @:<div class="@GovUkClassNames.Column @GovUkClassNames.ColumnFullWidth">
+    }
+    @if (childBlocks is not null) { @await Html.PartialAsync("GOVUK/BlockList", childBlocks) }
+    @if (hasFieldsetError){
+        @:</div>
+        @:</div>
+    }
+</govuk-fieldset>

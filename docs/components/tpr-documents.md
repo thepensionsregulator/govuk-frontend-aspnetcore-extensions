@@ -1,10 +1,10 @@
 # TPR Documents
 
-The 'TPR Documents' component can be used to display a list of documents.
+A design component that can be used to display a list of documents, this component is implemented using tag helpers and can be used in Umbraco applications by selecting the 'Documents' block in either the TPR Block Grid or TPR Block List.
 
 ## Umbraco example
 
-The 'Documents' block is supported on the 'TPR Block Grid' and 'TPR Block List' data types in Umbraco. The block should look like this:
+The 'Documents' block is supported on the 'TPR Block Grid' and 'TPR Block List' components in Umbraco. The block should look like this:
 
 ![TPR Documents block inside TPR Block Grid / TPR Block List](../images/tpr-documents-block.png)
 

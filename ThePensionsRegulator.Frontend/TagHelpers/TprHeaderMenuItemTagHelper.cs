@@ -1,8 +1,8 @@
 ﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using GovUk.Frontend.AspNetCore;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {

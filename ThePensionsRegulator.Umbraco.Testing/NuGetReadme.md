@@ -1,6 +1,6 @@
 # ThePensionsRegulator.Umbraco.Testing
 
-Helper code for unit testing Umbraco applications, and in particular applications built using [ThePensionsRegulator.Umbraco.Core](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco.Core).
+Helper code for unit testing Umbraco applications, and in particular applications built using [ThePensionsRegulator.Umbraco](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco).
 
 Creating an `UmbracoTestContext` will give you an Umbraco context that mocks a page request using [Moq](https://github.com/moq/moq4), including mocks of Umbraco and .NET services used in that page request.
 

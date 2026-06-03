@@ -1,7 +1,7 @@
 ﻿@using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ErrorMessageViewModel>
-@section head {
+@section head{
     <title>@Model.Page?.PageHeadingOrName()</title>
 }
 @using (Html.BeginUmbracoForm<ErrorMessageSurfaceController>(nameof(ErrorMessageSurfaceController.Index), new { }, new { novalidate = "novalidate" }))
@@ -9,5 +9,5 @@
     <partial name="GOVUK/BlockList" model="Model.Page?.Blocks" />
 }
 @section scripts {
-    <partial name="GOVUK/Validation" />
+    <partial name="GOVUK/UmbracoValidation" />
 }

@@ -2,7 +2,7 @@
 
 Add `ThePensionsRegulator.Umbraco.Testing` NuGet package.
 
-Examples on this page are shown with XUnit, but these helper classes should work with any testing framework. However [Moq](https://github.com/moq/moq4) is required for mocking with these helper classes.
+Examples on this page are shown with NUnit, but these helper classes should work with any testing framework. However [Moq](https://github.com/moq/moq4) is required for mocking with these helper classes.
 
 ## Create an Umbraco context
 
@@ -14,14 +14,17 @@ using ThePensionsRegulator.Umbraco.Testing;
 private UmbracoTestContext _testContext;
 private ExampleController _controllerUnderTest;
 
-public MyTestClass()
+[SetUp]
+public void SetUp()
 {
     _testContext = new();
 
     _controllerUnderTest = new(
         Mock.Of<ILogger<ExampleController>>(),
         _testContext.CompositeViewEngine.Object,
-        _testContext.UmbracoContextAccessor.Object
+        _testContext.UmbracoContextAccessor.Object,
+        _testContext.VariationContextAccessor.Object,
+        _testContext.ServiceContext
         )
     {
         ControllerContext = _testContext.ControllerContext
@@ -36,37 +39,6 @@ public MyTestClass()
 ```csharp
 var otherPage = UmbracoContentFactory.CreateContent<IPublishedContent>();
 ```
-
-If you need to mock a content hierarchy you can do this by starting with the child page and setting one or more ancestors. These will be ordered by their `Level` property.
-
-```csharp
-var context = new UmbracoTestContext();
-
-var grandparent = UmbracoContentFactory.CreateContent<IPublishedContent>();
-grandparent.Setup(x => x.Level).Returns(1);
-
-var parent = UmbracoContentFactory.CreateContent<IPublishedContent>();
-parent.Setup(x => x.Level).Returns(2);
-parent.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [grandparent.Object]);
-
-context.CurrentPage.Setup(x => x.Level).Returns(3);
-context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [parent.Object, grandparent.Object]);
-```
-
-You can also setup child pages:
-
-```csharp
-var context = new UmbracoTestContext();
-
-var child = UmbracoContentFactory.CreateContent<IPublishedContent>();
-child.Setup(x => x.Level).Returns(2);
-
-context.CurrentPage.Setup(x => x.Level).Returns(1);
-context.CurrentPage.SetupChildren(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [child.Object]);
-
-```
-
-When working with hierarchy methods like `.Root()`, `.Children()`, `.Parent()` and `.Ancestors()` be sure to use overloads that take instances of `IDocumentNavigationQueryService` and `IPublishedContentStatusFilteringService` to avoid side effects in other tests.
 
 ## Mock Umbraco content types
 
@@ -97,7 +69,6 @@ _testContext.CurrentPage.SetupUmbracoBooleanPropertyValue("myTrueFalsePropertyAl
 _testContext.CurrentPage.SetupUmbracoContentPickerPropertyValue("myContentPropertyAlias", UmbracoContentFactory.CreateContent<IPublishedContent>("pickedContentAlias").Object);
 _testContext.CurrentPage.SetupUmbracoMultiUrlPickerPropertyValue("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
 _testContext.CurrentPage.SetupUmbracoBlockListPropertyValue("myBlockListPropertyAlias", myBlockList);
-_testContext.CurrentPage.SetupUmbracoBlockGridPropertyValue("myBlockGridPropertyAlias", myBlockGrid);
 ```
 
 If the above overloads don't meet your needs you can create a property directly.
@@ -105,13 +76,13 @@ If the above overloads don't meet your needs you can create a property directly.
 ```csharp
 var prop1 = UmbracoPropertyFactory.CreateProperty("myPropertyAlias", myPropertyType, string.Empty);
 var prop2 = UmbracoPropertyFactory.CreateRichTextProperty("myRichTextPropertyAlias", string.Empty);
-var prop3 = UmbracoPropertyFactory.CreateTextboxProperty("myTextPropertyAlias", string.Empty);
-var prop4 = UmbracoPropertyFactory.CreateIntegerProperty("myIntegerPropertyAlias", 123);
-var prop5 = UmbracoPropertyFactory.CreateBooleanProperty("myTrueFalsePropertyAlias", true);
-var prop6 = UmbracoPropertyFactory.CreateContentPickerProperty("myContentPickerPropertyAlias", UmbracoContentFactory.CreateContent<IPublishedContent>("pickedContentAlias").Object);
-var prop7 = UmbracoPropertyFactory.CreateMultiUrlPickerProperty("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
-var prop8 = UmbracoPropertyFactory.CreateBlockListProperty("myBlockListPropertyAlias", myBlockList);
-var prop9 = UmbracoPropertyFactory.CreateBlockGridProperty("myBlockGridPropertyAlias", myBlockGrid);
+var prop2 = UmbracoPropertyFactory.CreateTextboxProperty("myTextPropertyAlias", string.Empty);
+var prop2 = UmbracoPropertyFactory.CreateIntegerProperty("myIntegerPropertyAlias", 123);
+var prop3 = UmbracoPropertyFactory.CreateBooleanProperty("myTrueFalsePropertyAlias", true);
+var prop3 = UmbracoPropertyFactory.CreateContentPickerProperty("myContentPickerPropertyAlias", UmbracoContentFactory.CreateContent<IPublishedContent>("pickedContentAlias").Object);
+var prop4 = UmbracoPropertyFactory.CreateMultiUrlPickerProperty("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
+var prop5 = UmbracoPropertyFactory.CreateBlockListProperty("myBlockListPropertyAlias", myBlockList);
+var prop5 = UmbracoPropertyFactory.CreateBlockGridProperty("myBlockGridPropertyAlias", myBlockGrid);
 ```
 
 ## Mock Umbraco block lists and block grids
@@ -236,11 +207,3 @@ UmbracoContentFactory.CreateContent<IPublishedElement>();
 // Works, because the mock is the expected type
 UmbracoContentFactory.CreateContent<IOverridablePublishedElement>();
 ```
-
-### Tests pass on their own but fail when others are run
-
-Umbraco uses internally a static service locator at `Umbraco.Cms.Core.DependencyInjection.StaticServiceProvider.Instance`.
-
-`UmbracoTestContext` registers implementations with this service locator to support Umbraco methods that expect it. However, because it's static, this instance is shared across all tests in a run. In some cases this is fine, but in cases where you update the mocks this can cause problems in other tests.
-
-The best solution is to look into the Umbraco code to find out which services are using the static service locator, and then look for overloads that avoid it. For example `IPublishedContent.Parent()` uses the static service locator and is difficult to test, but `IPublishedContent.Parent<T>(IDocumentNavigationQueryService, IPublishedContentStatusFilteringService)` does not and can be tested.

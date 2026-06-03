@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
-using ThePensionsRegulator.Umbraco.Core.Blocks;
+using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;

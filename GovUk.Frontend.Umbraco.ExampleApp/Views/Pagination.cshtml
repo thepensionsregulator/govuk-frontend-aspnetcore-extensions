@@ -1,13 +1,13 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<PaginationViewModel>
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
-@section head {
+@section head{
     <title>@Model.PageTitle</title>
 }
 <form action="@Context.Request.Path" method="get">
-    <partial name="GOVUK/BlockList" model="Model.Page?.Blocks" />
-    <partial name="GOVUK/BlockGrid" model="Model.Page?.Grid" />
+    <partial name="GOVUK/BlockList" model="Model.Page.Blocks" />
+    <partial name="GOVUK/BlockGrid" model="Model.Page.Grid" />
 </form>
 @section scripts {
-    <partial name="GOVUK/Validation" />
+    <partial name="GOVUK/UmbracoValidation" />
 }

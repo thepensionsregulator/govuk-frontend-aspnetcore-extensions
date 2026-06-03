@@ -1,7 +1,8 @@
 ﻿using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using ThePensionsRegulator.GovUk.Frontend;
+using System.Threading.Tasks;
 using ComponentGenerator = ThePensionsRegulator.Frontend.HtmlGeneration.ComponentGenerator;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -24,10 +25,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 if (!string.IsNullOrEmpty(content))
                 {
                     htmlContent = new HtmlString(content);
-                    taskContext.HtmlContent = htmlContent;
                 }
             }
 
+            taskContext.HtmlContent = htmlContent;
             output.SuppressOutput();
         }
 

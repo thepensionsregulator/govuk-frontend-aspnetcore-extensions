@@ -1,6 +1,6 @@
+using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Builder;
 using System;
-using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend
 {
@@ -13,7 +13,7 @@ namespace ThePensionsRegulator.Frontend
                 throw new ArgumentNullException(nameof(app));
             }
 
-            app.UseTprGovUkFrontend();
+            app.UseGovUkFrontendExtensions();
 
             return app;
         }

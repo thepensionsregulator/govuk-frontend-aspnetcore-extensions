@@ -1,19 +1,14 @@
-@using ThePensionsRegulator.GovUk.Frontend.Umbraco
-@using ThePensionsRegulator.Umbraco.Core
-@using ThePensionsRegulator.Umbraco.Core.Blocks
-@using ThePensionsRegulator.Frontend.Umbraco
-@using Umbraco.Cms.Core
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Models.Blocks
-@using Umbraco.Cms.Core.Models.PublishedContent
-@using Umbraco.Extensions
-@inject Umbraco.Cms.Core.PublishedCache.IPublishedMediaCache mediaCache
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@using Umbraco.Cms.Web.Common
+@using GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Frontend.Umbraco
+@inject UmbracoHelper Umbraco
 @addTagHelper *, ThePensionsRegulator.Frontend
 
 @{
     var outerCssClasses = Model.Settings is not null ? Model.Settings.Value<string>(PropertyAliases.CssClasses) : "";
-    var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.DocumentsBlockList)!;
+    var documents = Model.Content.Value<IEnumerable<BlockListItem>>(TprPropertyAliases.DocumentsBlockList);
 }
 
 <tpr-documents outercss="@outerCssClasses">
@@ -21,9 +16,9 @@
     @foreach (var document in documents)
     {
         var documentLink = document.Content.Value<Link>(TprPropertyAliases.Document);
-        if (documentLink?.Udi is not null)
+        if (documentLink != null)
         {
-            var innerCssClasses = document.Settings?.Value<string>(PropertyAliases.CssClasses);
+            var innerCssClasses = document.Settings.Value<string>(PropertyAliases.CssClasses);
             var docHref = documentLink.Url;
             var docLinkType = documentLink.Type;
             var docPages = document.Content.Value<string>(TprPropertyAliases.DocumentNumberOfPages);
@@ -33,15 +28,12 @@
 
             if (docLinkType == LinkType.Media)
             {
-                var media = mediaCache.GetById(new Guid(documentLink.Udi.UriValue.Segments[1])) as IPublishedContent;
-                if (media is null)  { continue; }
-
-                var docKB = media.Value<int>(Constants.Conventions.Media.Bytes) / 1024;
+                var docKB = documentLink.Content.UmbracoBytes / 1024;
                 var docTitle = "";
 
-                var mediaLinkDocName = media.Name;
+                var mediaLinkDocName = documentLink.Content.Name;
                 var mediaLinkTitle = documentLink.Name;
-                var mediaType = media.ContentType.Alias;
+                var mediaType = documentLink.Content?.ContentType?.Alias;
 
                 if (!string.Equals(mediaLinkDocName, mediaLinkTitle, StringComparison.OrdinalIgnoreCase))
                 {
@@ -49,21 +41,27 @@
                 }
                 else
                 {
-                    docTitle = (mediaType == "File" && !string.IsNullOrEmpty(media.Value<string>(TprPropertyAliases.DocumentTitle)))
-                        ? media.Value<string>(TprPropertyAliases.DocumentTitle)
+                    docTitle = (mediaType == "File" && !string.IsNullOrEmpty(documentLink.Content?.DocumentTitle))
+                        ? documentLink.Content.DocumentTitle
                         : mediaLinkDocName;
                 }
 
                 <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
+
                     <tpr-document-title>@docTitle</tpr-document-title>
+
                     <tpr-document-description>@docDescription</tpr-document-description>
+
                 </tpr-document>
             }
             else
             {
                 <tpr-document href="@docHref" pages="@docPages" datepublished="@docDatePublished" innercss="@innerCssClasses">
+
                     <tpr-document-title>@documentLink.Name</tpr-document-title>
+
                     <tpr-document-description>@docDescription</tpr-document-description>
+
                 </tpr-document>
             }
         }

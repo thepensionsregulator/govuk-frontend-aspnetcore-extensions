@@ -30,12 +30,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public new static IPublishedContentType GetModelContentType(IPublishedContentTypeCache contentTypeCache)
-			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
+		public new static IPublishedContentType GetModelContentType(IPublishedSnapshotAccessor publishedSnapshotAccessor)
+			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<SideNavigation, TValue>> selector)
-			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<SideNavigation, TValue>> selector)
+			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
@@ -50,19 +50,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// GOV.UK blocks
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("govukBlocks")]
-		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel GovukBlocks => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "govukBlocks");
-
-		///<summary>
 		/// Grid
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("grid")]
-		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel Grid => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel>(_publishedValueFallback, "grid");
+		public virtual global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel Grid => this.Value<global::ThePensionsRegulator.Umbraco.Blocks.OverridableBlockGridModel>(_publishedValueFallback, "grid");
 	}
 }

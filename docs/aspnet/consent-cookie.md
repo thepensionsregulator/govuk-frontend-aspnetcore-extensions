@@ -5,7 +5,7 @@ Applications can implement `IConsentCookieReader` to read their consent cookie, 
 TPR has a single consent cookie that is valid across the public `*.thepensionsregulator.gov.uk` domain. This is read by `TprConsentCookieReader` which implements `IConsentCookieReader` in the `ThePensionsRegulator.Frontend` package.
 
 ```razor
-@using ThePensionsRegulator.GovUk.Frontend.Security
+@using GovUk.Frontend.AspNetCore.Extensions.Security
 @using ThePensionsRegulator.Frontend.Security
 @inject IConsentCookieReader consentCookie
 
@@ -14,11 +14,10 @@ TPR has a single consent cookie that is valid across the public `*.thepensionsre
     // do protected activity
 }
 ```
-
 Aditionally, subscribers can test for the consent cookie presence to assess whether a user has explicitly specified cookie consent levels.
 
 ```razor
-@using ThePensionsRegulator.GovUk.Frontend.Security
+@using GovUk.Frontend.AspNetCore.Extensions.Security
 @using ThePensionsRegulator.Frontend.Security
 @inject IConsentCookieReader consentCookie
 

@@ -1,32 +1,82 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\media\.gitignore" />
-    <None Include="wwwroot\media\grphyhbj\example-powerpoint-file.pptx" />
-    <None Include="wwwroot\media\icaposfq\example-pdf-file.pdf" />
-    <None Include="wwwroot\media\pjebff53\example-word-file.docx" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
     <ItemGroup>
-		<PackageReference Include="Microsoft.Build.Tasks.Core" Version="18.0.2" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
-        <PackageReference Include="Umbraco.Cms" Version="17.2.2" />
+      <Content Remove="wwwroot\_content\.gitignore" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="App_Plugins\GOVUK\blocks\views\GovUkAccordion.html" />
+      <Content Include="App_Plugins\GOVUK\blocks\views\GovUkErrorSummary.html" />
+      <Content Include="App_Plugins\GOVUK\blocks\views\GovUkFileUploadPreview.html" />
+      <Content Include="App_Plugins\GOVUK\blocks\views\GovUkGridColumns.html" />
+      <Content Include="App_Plugins\GOVUK\blocks\views\GovUkTypographyPreview.html" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="App_Plugins\GOVUK\tinymce\paste-from-word.min.js" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkButton.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkButtonGroup.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkCaption.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckbox.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkCheckboxesPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkDateInputPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkDetails.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkErrorMessage.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkFieldset.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkInsetTextPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkLinkAsButton.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkNotificationBannerPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkPageHeading.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkPagination.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkPanelPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkRadiosPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkSelectPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryCardPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkSummaryListPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkTaskListSummary.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkTextAreaPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkTextInputPreview.html" />
+      <None Include="App_Plugins\GOVUK\blocks\views\GovUkWarningTextPreview.html" />
+      <None Include="wwwroot\media\.gitignore" />
+      <None Include="wwwroot\media\grphyhbj\example-powerpoint-file.pptx" />
+      <None Include="wwwroot\media\icaposfq\example-pdf-file.pdf" />
+      <None Include="wwwroot\media\pjebff53\example-word-file.docx" />
+      <None Include="wwwroot\_content\.gitignore" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Build.Tasks.Core" Version="18.0.2" />
+        <PackageReference Include="Umbraco.Cms" Version="13.12.1" />
+    </ItemGroup>
+
     <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->
+    <ItemGroup>
       <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
-      <PackageReference Include="uSync" Version="17.0.4" />
-      <ProjectReference Include="..\ThePensionsRegulator.GovUk.Frontend\ThePensionsRegulator.GovUk.Frontend.csproj" />
+      <PackageReference Include="uSync" Version="13.3.2" />
+      <ProjectReference Include="..\GovUk.Frontend.AspNetCore.Extensions\GovUk.Frontend.AspNetCore.Extensions.csproj" />
+      <ProjectReference Include="..\GovUk.Frontend.Umbraco\GovUk.Frontend.Umbraco.csproj" />
       <ProjectReference Include="..\ThePensionsRegulator.Frontend.Umbraco\ThePensionsRegulator.Frontend.Umbraco.csproj" />
-      <ProjectReference Include="..\ThePensionsRegulator.GovUk.Frontend.Umbraco\ThePensionsRegulator.GovUk.Frontend.Umbraco.csproj" />
       <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) Or $(RuntimeIdentifier.StartsWith('win')) Or ('$(RuntimeIdentifier)' == '' And !$([MSBuild]::IsOSPlatform('osx')))" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="App_Plugins\GOVUK\blocks\controllers\" />
     </ItemGroup>
 
 
-  <PropertyGroup>
-    <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
-  </PropertyGroup>
+    <PropertyGroup>
+        <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
+    </PropertyGroup>
+
+    <!-- Keep this as false if ModelsBuilder mode is InMemoryAuto -->
+    <PropertyGroup>
+        <RazorCompileOnBuild>false</RazorCompileOnBuild>
+        <RazorCompileOnPublish>false</RazorCompileOnPublish>
+    </PropertyGroup>
+
 </Project>

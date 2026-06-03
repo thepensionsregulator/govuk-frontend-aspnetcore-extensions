@@ -1,0 +1,40 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore.Extensions
+@inject ITaskListTaskStatusProvider statusProvider;
+@using GovUk.Frontend.AspNetCore.Extensions.HtmlGeneration;
+@using GovUk.Frontend.AspNetCore.Extensions;
+@using GovUk.Frontend.Umbraco.Blocks;
+@using GovUk.Frontend.Umbraco.Models
+@using GovUk.Frontend.Umbraco;
+@using GovUk.Frontend.Umbraco.Validation;
+@using Microsoft.AspNetCore.Mvc.ModelBinding;
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Blocks;
+@using Umbraco.Extensions
+@{
+    var taskStatuses = statusProvider.FindTaskStatuses(Umbraco.AssignedContentItem);
+    var totalActionableTasks = taskStatuses.Count(x => x != TaskListTaskStatus.NotApplicable);
+    var completedTasks = taskStatuses.Count(x => x == TaskListTaskStatus.Completed);
+
+    if (!Int32.TryParse(Model.Settings.Value<string>(PropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out var headingLevel))
+    {
+        headingLevel = 2;
+    }
+    var incompleteStatus = Model.Content.Value<string>(PropertyAliases.TaskListSummaryIncomplete);
+    if (string.IsNullOrEmpty(incompleteStatus)) { incompleteStatus = ComponentGenerator.TaskListSummaryDefaultIncompleteStatus; }
+    var completedStatus = Model.Content.Value<string>(PropertyAliases.TaskListSummaryComplete);
+    if (string.IsNullOrEmpty(completedStatus)) { completedStatus = ComponentGenerator.TaskListSummaryDefaultCompletedStatus; }
+    var tracker = Model.Content.Value<string>(PropertyAliases.TaskListSummaryTracker);
+    if (string.IsNullOrEmpty(tracker)) { tracker = ComponentGenerator.TaskListSummaryDefaultTracker; }
+}
+
+<govuk-task-list-summary 
+    id="@Model.Content.Key"
+    class="@(Model.Settings.Value<string>(PropertyAliases.CssClasses))"
+    heading-level="@headingLevel"
+    incomplete-status="@(incompleteStatus)"
+    completed-status="@(completedStatus)"
+    tracker="@(tracker)"
+    total-tasks="@totalActionableTasks"
+    completed-tasks="@completedTasks"
+    />

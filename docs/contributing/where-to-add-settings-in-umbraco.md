@@ -34,6 +34,6 @@ Create a new composition in the 'Page settings' folder and add the setting prope
 
 In most cases add your setting to the 'Settings' tab on the composition. If you have several related properties you can create a new tab, or a new group on the 'Settings' tab.
 
-Create a provider interface and implementation similar to `IGovUkHeadingClassProvider` and `GovUkHeadingClassProvider` which accesses your property and, if appropriate, specifies a fallback strategy. Register that type in `ThePensionsRegulator.GovUk.Frontend.Umbraco\ServiceCollectionExtensions.cs` or `ThePensionsRegulator.Frontend.Umbraco\ServiceCollectionExtensions.cs` as appropriate for your scenario. For a sitewide setting use `Fallback.ToAncestors`, and then the composition can be added to a 'Home' document type and be available automatically on any page.
+Create a provider interface and implementation similar to `IGovUkHeadingClassProvider` and `GovUkHeadingClassProvider` which accesses your property and, if appropriate, specifies a fallback strategy. Register that type in `GovUk.Frontend.Umbraco\ServiceCollectionExtensions.cs` or `ThePensionsRegulator.Frontend.Umbraco\ServiceCollectionExtensions.cs` as appropriate for your scenario. For a sitewide setting use `Fallback.ToAncestors`, and then the composition can be added to a 'Home' document type and be available automatically on any page.
 
 Use the new setting in any code where it's relevant, but anticipate that it may not be present.

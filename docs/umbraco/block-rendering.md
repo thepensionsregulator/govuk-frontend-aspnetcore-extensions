@@ -25,8 +25,6 @@ By default, consecutive blocks with the same row and column configuration are me
 
 You need to take care when implementing `IBlockViewInterceptor` because the decision of whether to merge with the next or previous row and column has already been taken. For example, if you set a row class it may not be rendered because the decision has already been taken that row classes were the same as the previous component and a new row is not required. A row (or other grid element) that is merged with the previous one may render a closing `</div>` but not an opening one, so if you change a property that controls whether to render an element you may create invalid HTML nesting.
 
-**You should only implement `IBlockViewInterceptor` when no other solution is available.**
-
 ## Change default column classes
 
 [The GOV.UK Design System recommends most page content is two-thirds wide](https://design-system.service.gov.uk/styles/layout/#screen-size), so we render most page components at full-width for mobile and tablet breakpoints and two-thirds wide for desktop (within `govuk-width-container`).

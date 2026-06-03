@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ThePensionsRegulator.GovUk.Frontend.Validation;
+﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using System.ComponentModel.DataAnnotations;
 using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Models

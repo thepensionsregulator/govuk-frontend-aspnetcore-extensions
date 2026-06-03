@@ -1,0 +1,8 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Smidge
+<environment names="Development">
+    <script src="tpr-frontend-js" type="module" debug="true"></script>
+</environment>
+<environment names="Staging,Production">
+    <script src="tpr-frontend-js" type="module"></script>
+</environment>

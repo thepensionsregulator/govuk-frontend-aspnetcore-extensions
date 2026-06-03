@@ -4,10 +4,9 @@
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Web.Common
 @using Microsoft.Extensions.Configuration
-@using GovUkPropertyAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyAliases
+@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
 @inject ITprSearchResultsEndpointUrlProvider endpointUrlsProvider
 @addTagHelper *, ThePensionsRegulator.Frontend
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
 
@@ -42,4 +41,3 @@
         }
     </tpr-search-results-footer-links>
 </tpr-search-results>
-<script src="/ThePensionsRegulator.Frontend/js/tpr-search-results.min.js" type="module" asp-append-version="true"></script>

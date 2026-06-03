@@ -1,6 +1,6 @@
-﻿using GovUk.Frontend.Umbraco.ExampleApp.Models;
+﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
+using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using ThePensionsRegulator.GovUk.Frontend.Validation;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models.PublishedContent;

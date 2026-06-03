@@ -1,4 +1,9 @@
-﻿using ThePensionsRegulator.GovUk.Frontend.Security;
+﻿using GovUk.Frontend.AspNetCore.Extensions.Security;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Threading.Tasks;
 using Umbraco.Cms.Infrastructure.Migrations.Install;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Middleware
@@ -20,6 +25,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Middleware
             {
                 var connectSrcForLocalhost = _webHostEnvironment.IsDevelopment() ? "'self' ws://localhost:* http://localhost:*" : string.Empty; // Allows Visual Studio Browser Link for hot reload
 
+                const string scriptSrcForAblePlayer = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js";
                 const string styleSrcForAblePlayer = "'sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f' 'sha384-ETDm/j6COkRSUfVFsGNM5WYE4WjyRgfDhy4Pf4Fsc8eNw/eYEMqYZWuxTzMX6FBa'";
                 const string scriptSrcForYouTube = "https://youtube.com https://www.youtube.com https://www.youtube-nocookie.com";
                 const string imgSrcForYouTube = "https://i.ytimg.com";
@@ -32,7 +38,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Middleware
                 context.Response.Headers.Append("Content-Security-Policy",
                         "default-src 'self';" +
                         "require-trusted-types-for 'script';" +
-                        $"script-src 'self' 'nonce-{nonce}' {scriptSrcForYouTube};" +
+                        $"script-src 'self' 'nonce-{nonce}' {scriptSrcForAblePlayer} {scriptSrcForYouTube};" +
                         $"style-src 'self' {styleSrcForAblePlayer};" +
                         $"img-src 'self' {imgSrcForYouTube};" +
                         $"frame-src {frameSrcForYouTube}; " +

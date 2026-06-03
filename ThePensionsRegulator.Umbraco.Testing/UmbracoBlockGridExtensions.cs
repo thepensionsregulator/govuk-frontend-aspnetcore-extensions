@@ -1,4 +1,4 @@
-﻿using ThePensionsRegulator.Umbraco.Core.Blocks;
+﻿using ThePensionsRegulator.Umbraco.Blocks;
 
 namespace ThePensionsRegulator.Umbraco.Testing
 {

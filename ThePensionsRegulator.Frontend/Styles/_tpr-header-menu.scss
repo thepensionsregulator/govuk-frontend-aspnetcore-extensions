@@ -138,7 +138,7 @@
     display: none;
 }
 
-.tpr-header-menu__menu-icon {
+ .tpr-header-menu__menu-icon {
     fill: $tpr-colour-white;
 }
 
@@ -252,7 +252,7 @@
     }
 
     .tpr-header-menu__arrow:focus-visible {
-        outline: $govuk-focus-width solid govuk-functional-colour(focus);
+        outline: $govuk-focus-width solid $govuk-focus-colour;
         border-right: $govuk-focus-width solid $tpr-colour-black;
         border-bottom: $govuk-focus-width solid $tpr-colour-black;
     }
@@ -421,10 +421,10 @@
             color: $tpr-colour-royal-blue;
         }
 
-        a:hover {
-            color: none;
-            background: none;
-        }
+            a:hover {
+                color: none;
+                background: none;
+            }
     }
 
     .tpr-header-menu__arrow:active .tpr-header-menu__nav-menu-item:hover .tpr-header-menu__nav-sub-menu-item, .tpr-header-menu__nav-menu-item:focus-within .tpr-header-menu__nav-sub-menu-item {
@@ -521,9 +521,8 @@
         margin-left: 0;
     }
 
-    .tpr-mobile-menu__container-inner {
+    .tpr-mobile-menu__container-inner{
         margin-left: 0;
-        margin-top: 0;
     }
 
     .tpr-header-menu__button {

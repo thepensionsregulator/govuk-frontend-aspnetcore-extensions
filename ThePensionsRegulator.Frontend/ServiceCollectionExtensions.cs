@@ -1,12 +1,11 @@
 using GovUk.Frontend.AspNetCore;
+using GovUk.Frontend.AspNetCore.Extensions;
+using GovUk.Frontend.AspNetCore.Extensions.Security;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using ThePensionsRegulator.Frontend.Caching;
+using System;
 using ThePensionsRegulator.Frontend.Security;
 using ThePensionsRegulator.Frontend.Services;
-using ThePensionsRegulator.GovUk.Frontend;
-using ThePensionsRegulator.GovUk.Frontend.Caching;
-using ThePensionsRegulator.GovUk.Frontend.Security;
 
 namespace ThePensionsRegulator.Frontend
 {
@@ -34,9 +33,8 @@ namespace ThePensionsRegulator.Frontend
 
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
             services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
-            services.AddTransient<IStaticFileCachePolicy, TprStaticFileCachePolicy>();
 
-            services.AddTprGovUkFrontend(configureGovUkOptions);
+            services.AddGovUkFrontendExtensions(configureGovUkOptions);
 
             var tprFrontendOptions = new TprFrontendOptions();
             if (configureTprOptions is not null) { configureTprOptions(tprFrontendOptions); }

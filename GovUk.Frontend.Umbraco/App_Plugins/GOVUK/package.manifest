@@ -1,0 +1,20 @@
+{
+  "propertyEditors": [
+    {
+      "alias": "govukModelProperty",
+      "name": "Model Property Picker",
+      "icon": "icon-brackets",
+      "group": "Pickers",
+      "editor": {
+        "view": "~/App_Plugins/GOVUK/model-property.html"
+      }
+    }
+  ],
+  "css": [
+    "~/App_Plugins/GOVUK/govuk.css"
+  ],
+  "javascript": [
+    "~/App_Plugins/GOVUK/govuk.controller.js",
+    "~/App_Plugins/GOVUK/blocks/controllers/govukPageHeading.controller.js"
+  ]
+}

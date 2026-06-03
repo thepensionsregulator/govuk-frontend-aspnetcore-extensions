@@ -1,6 +1,6 @@
 # Select
 
-For examples see [ASP.NET syntax for the Select component](https://github.com/x-govuk/govuk-frontend-aspnetcore/blob/main/docs/components/select.md).
+For examples see [ASP.NET syntax for the Select component](https://github.com/gunndabad/govuk-frontend-aspnetcore/blob/main/docs/components/select.md).
 
 ## Umbraco
 
@@ -11,29 +11,26 @@ See [Validation](/docs/umbraco/validation.md) for how to validate a select compo
 You can configure a fixed set of options in the Umbraco backoffice, or you can supply options at runtime from a database or other data source.
 
 ```csharp
-using ThePensionsRegulator.Umbraco.Core.Blocks;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
-using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
+using ThePensionsRegulator.Umbraco.BlockLists;
+using GovUk.Frontend.Umbraco.BlockLists;
+using GovUk.Frontend.Umbraco.Models;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Web.Common.PublishedModels;
 
 public class ExampleController : RenderController
 {
     private readonly IPublishedValueFallback _publishedValueFallback;
-    private readonly IPublishedContentTypeCache _publishedContentTypeCache;
-    private readonly IVariationContextAccessor _variationContextAccessor;
+    private readonly IPublishedSnapshotAccessor _publishedSnapshotAccessor;
 
     public ExampleController(ILogger<RenderController> logger,
         ICompositeViewEngine compositeViewEngine,
         IUmbracoContextAccessor umbracoContextAccessor,
         IPublishedValueFallback publishedValueFallback,
-        IPublishedContentTypeCache publishedContentTypeCache,
-        IVariationContextAccessor variationContextAccessor
+        IPublishedSnapshotAccessor publishedSnapshotAccessor
         ) : base(logger, compositeViewEngine, umbracoContextAccessor)
     {
         _publishedValueFallback = publishedValueFallback;
-        _publishedContentTypeCache = publishedContentTypeCache;
-        _variationContextAccessor = variationContextAccessor;
+        _publishedSnapshotAccessor = publishedSnapshotAccessor;
     }
 
     [ModelType(typeof(ExampleViewModel))]
@@ -45,7 +42,7 @@ public class ExampleController : RenderController
         };
 
         var block = viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukSelect.ModelTypeAlias);
-        block.Content.OverrideSelectOptions(new[] { new SelectOption("1", "Hello world") }, _publishedContentTypeCache, _variationContextAccessor);
+        block.Content.OverrideSelectOptions(new[] { new SelectOption("1", "Hello world") }, _publishedSnapshotAccessor);
 
         return CurrentTemplate(viewModel);
     }

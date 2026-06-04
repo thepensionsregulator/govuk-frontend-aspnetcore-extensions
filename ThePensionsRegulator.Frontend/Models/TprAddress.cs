@@ -16,12 +16,14 @@ namespace ThePensionsRegulator.Frontend.Models
         [MaxLength(100, ErrorMessage = "Address line 3 must not exceed 100 characters")]
         public virtual string? AddressLine3 { get; set; }
 
+        [Required(ErrorMessage = "Enter a town or city")]
         [MaxLength(100, ErrorMessage = "Town or city must not exceed 100 characters")]
         public virtual string? PostTown { get; set; }
 
         [MaxLength(100, ErrorMessage = "County must not exceed 100 characters")]
         public virtual string? PostCounty { get; set; }
 
+        [Required(ErrorMessage = "Enter a postcode")]
         [MaxLength(10, ErrorMessage = "Postcode must not exceed 20 characters")]
         public virtual string? PostCode { get; set; }
 
@@ -30,14 +32,14 @@ namespace ThePensionsRegulator.Frontend.Models
 
         public void PopulateAddress(ITprAddress address)
         {
-            AddressLine1 = address.AddressLine1;
-            AddressLine2 = address.AddressLine2;
-            AddressLine3 = address.AddressLine3;
-            PostTown = address.PostTown;
-            PostCounty = address.PostCounty;
-            PostCode = address.PostCode;
+            AddressLine1 = address.AddressLine1?.Trim();
+            AddressLine2 = address.AddressLine2?.Trim();
+            AddressLine3 = address.AddressLine3?.Trim();
+            PostTown = address.PostTown?.Trim();
+            PostCounty = address.PostCounty?.Trim();
+            PostCode = address.PostCode?.Trim().ToUpper();
             CountryId = address.CountryId;
-            UPRNReference = address.UPRNReference;
+            UPRNReference = address.UPRNReference?.Trim();
         }
     }
 }

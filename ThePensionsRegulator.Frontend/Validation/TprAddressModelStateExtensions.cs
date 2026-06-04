@@ -7,8 +7,7 @@ namespace ThePensionsRegulator.Frontend.Validation
 {
     public static class TprAddressModelStateExtensions
     {
-
-        public static void SetModelValues(this ModelStateDictionary modelState, TprAddress? address, string? keyPrefix = null)
+        public static void SetModelValues(this ModelStateDictionary modelState, ITprAddress? address, string? keyPrefix = null)
         {
             ArgumentNullException.ThrowIfNull(modelState);
             if (address is null) return;

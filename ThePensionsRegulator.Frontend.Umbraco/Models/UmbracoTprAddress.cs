@@ -15,12 +15,14 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Models
         [MaxLength(100, ErrorMessage = nameof(AddressLine3))]
         public override string? AddressLine3 { get; set; }
 
+        [Required(ErrorMessage = nameof(PostTown))]
         [MaxLength(100, ErrorMessage = nameof(PostTown))]
         public override string? PostTown { get; set; }
 
         [MaxLength(100, ErrorMessage = nameof(PostCounty))]
         public override string? PostCounty { get; set; }
 
+        [Required(ErrorMessage = nameof(PostCode))]
         [MaxLength(10, ErrorMessage = nameof(PostCode))]
         public override string? PostCode { get; set; }
 

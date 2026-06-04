@@ -11,7 +11,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Validation
     {
         public static void SetInitialAddressValues(
             this ModelStateDictionary modelState,
-            UmbracoTprAddress? address,
+            ITprAddress? address,
             string? keyPrefix = null)
         {
             ArgumentNullException.ThrowIfNull(modelState);

@@ -45,7 +45,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
         public static Mock<TModel> SetupUmbracoPropertyValue<TModel, TProperty>(this Mock<TModel> publishedElement, string alias, TProperty value) where TModel : class, IPublishedElement
         {
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, (alias, contentTypeAlias, value) => UmbracoPropertyFactory.CreateProperty(alias, null, value));
+            return SetupUmbracoReferenceTypePropertyValue(publishedElement, alias, value, (alias, contentTypeAlias, value) => UmbracoPropertyFactory.CreateProperty(alias, null, value));
         }
 
         /// <summary>
@@ -72,10 +72,13 @@ namespace ThePensionsRegulator.Umbraco.Testing
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {
-                overridablePublishedElement.Setup(x => x.Value<string?>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value?.ToString());
+                // Value<string?> is not set up separately because string is a reference type — string? and string are the same IL type,
+                // so Value<string> and Value<string?> resolve to the same generic instantiation and a single setup covers both.
+                overridablePublishedElement.Setup(x => x.Value<string>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value?.ToString());
+                overridablePublishedElement.Setup(x => x.Value<string>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value?.ToString());
             }
 
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateRichTextProperty);
+            return SetupUmbracoReferenceTypePropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateRichTextProperty);
         }
 
         /// <summary>
@@ -120,7 +123,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
         public static Mock<T> SetupUmbracoTextboxPropertyValue<T>(this Mock<T> publishedElement, string alias, string? value) where T : class, IPublishedElement
         {
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateTextboxProperty);
+            return SetupUmbracoReferenceTypePropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateTextboxProperty);
         }
 
         /// <summary>
@@ -143,7 +146,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
         public static Mock<T> SetupUmbracoIntegerPropertyValue<T>(this Mock<T> publishedElement, string alias, int? value) where T : class, IPublishedElement
         {
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateIntegerProperty);
+            return SetupUmbracoNullableValueTypePropertyValue<T, int>(publishedElement, alias, value, UmbracoPropertyFactory.CreateIntegerProperty);
         }
 
         /// <summary>
@@ -179,7 +182,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
 
         public static Mock<T> SetupUmbracoBooleanPropertyValue<T>(this Mock<T> publishedElement, string alias, bool? value) where T : class, IPublishedElement
         {
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateBooleanProperty);
+            return SetupUmbracoNullableValueTypePropertyValue<T, bool>(publishedElement, alias, value, UmbracoPropertyFactory.CreateBooleanProperty);
         }
 
         /// <summary>
@@ -191,7 +194,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
 
         public static Mock<T> SetupUmbracoBooleanPropertyValue<T>(this Mock<T> publishedElement, string alias, bool value) where T : class, IPublishedElement
         {
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateBooleanProperty);
+            return SetupUmbracoNullableValueTypePropertyValue<T, bool>(publishedElement, alias, value, UmbracoPropertyFactory.CreateBooleanProperty);
         }
 
         /// <summary>
@@ -214,7 +217,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
         public static Mock<T> SetupUmbracoMultiUrlPickerPropertyValue<T>(this Mock<T> publishedElement, string alias, Link? value) where T : class, IPublishedElement
         {
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateMultiUrlPickerProperty);
+            return SetupUmbracoReferenceTypePropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateMultiUrlPickerProperty);
         }
 
         /// <summary>
@@ -237,7 +240,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
         public static Mock<T> SetupUmbracoContentPickerPropertyValue<T>(this Mock<T> publishedElement, string alias, IPublishedContent? value) where T : class, IPublishedElement
         {
-            return SetupUmbracoPropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateContentPickerProperty);
+            return SetupUmbracoReferenceTypePropertyValue(publishedElement, alias, value, UmbracoPropertyFactory.CreateContentPickerProperty);
         }
 
         /// <summary>
@@ -268,12 +271,15 @@ namespace ThePensionsRegulator.Umbraco.Testing
             if (overridablePublishedElement != null)
             {
                 overridablePublishedElement.Setup(x => x.Value<TBlockList>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
+                overridablePublishedElement.Setup(x => x.Value<TBlockList>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
                 overridablePublishedElement.Setup(x => x.Value<IEnumerable<BlockListItem>>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
+                overridablePublishedElement.Setup(x => x.Value<IEnumerable<BlockListItem>>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
 
                 var readOnlyValue = value as ReadOnlyCollection<BlockListItem>;
                 if (readOnlyValue != null)
                 {
                     overridablePublishedElement.Setup(x => x.Value<ReadOnlyCollection<BlockListItem>>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(readOnlyValue);
+                    overridablePublishedElement.Setup(x => x.Value<ReadOnlyCollection<BlockListItem>>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(readOnlyValue);
                 }
             }
             return publishedElement;
@@ -307,25 +313,48 @@ namespace ThePensionsRegulator.Umbraco.Testing
             if (overridablePublishedElement != null)
             {
                 overridablePublishedElement.Setup(x => x.Value<TBlockGrid>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
+                overridablePublishedElement.Setup(x => x.Value<TBlockGrid>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
                 overridablePublishedElement.Setup(x => x.Value<IEnumerable<BlockGridItem>>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
+                overridablePublishedElement.Setup(x => x.Value<IEnumerable<BlockGridItem>>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(value);
 
                 var readOnlyValue = value as ReadOnlyCollection<BlockGridItem>;
                 if (readOnlyValue != null)
                 {
                     overridablePublishedElement.Setup(x => x.Value<ReadOnlyCollection<BlockGridItem>>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(readOnlyValue);
+                    overridablePublishedElement.Setup(x => x.Value<ReadOnlyCollection<BlockGridItem>>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, null)).Returns(readOnlyValue);
                 }
             }
             return publishedElement;
         }
 
-        private static Mock<TModel> SetupUmbracoPropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, string, TProperty?, IPublishedProperty> createPropertyWithPropertyType)
+        private static Mock<TModel> SetupUmbracoReferenceTypePropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, string, TProperty?, IPublishedProperty> createPropertyWithPropertyType)
             where TModel : class, IPublishedElement
         {
             publishedElement.SetupUmbracoProperty(createPropertyWithPropertyType(alias, publishedElement.Object.ContentType?.Alias ?? string.Empty, value));
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {
+                overridablePublishedElement.Setup(x => x.Value<TProperty>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value);
+                overridablePublishedElement.Setup(x => x.Value<TProperty>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value);
+            }
+            return publishedElement;
+        }
+
+        /// <remarks>
+        /// where TProperty : struct makes this Nullable<TProperty> at the IL level, allowing both Value<TProperty> and Value<TProperty?> to be set up
+        /// </remarks>
+        private static Mock<TModel> SetupUmbracoNullableValueTypePropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, string, TProperty?, IPublishedProperty> createProperty)
+            where TModel : class, IPublishedElement
+            where TProperty : struct
+        {
+            publishedElement.SetupUmbracoProperty(createProperty(alias, publishedElement.Object.ContentType?.Alias ?? string.Empty, value));
+            var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
+            if (overridablePublishedElement != null)
+            {
+                overridablePublishedElement.Setup(x => x.Value<TProperty>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value.GetValueOrDefault());
+                overridablePublishedElement.Setup(x => x.Value<TProperty>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value.GetValueOrDefault());
                 overridablePublishedElement.Setup(x => x.Value<TProperty?>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value);
+                overridablePublishedElement.Setup(x => x.Value<TProperty?>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(value);
             }
             return publishedElement;
         }

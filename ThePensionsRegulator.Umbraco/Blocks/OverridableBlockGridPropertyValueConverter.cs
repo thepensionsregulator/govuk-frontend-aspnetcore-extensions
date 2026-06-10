@@ -12,21 +12,16 @@ namespace ThePensionsRegulator.Umbraco.Blocks
     /// <summary>
     /// A property value converter which ensures that ModelsBuilder models represent a block grid as an <see cref="OverridableBlockGridModel" />.
     /// </summary>
-    public class OverridableBlockGridPropertyValueConverter : BlockGridPropertyValueConverter
+    public class OverridableBlockGridPropertyValueConverter(
+        IProfilingLogger _proflog,
+        BlockEditorConverter _blockConverter,
+        IJsonSerializer _jsonSerializer,
+        IEnumerable<IPropertyValueFormatter> _propertyValueFormatters,
+        IApiElementBuilder _apiElementBuilder,
+        BlockGridPropertyValueConstructorCache _constructorCache,
+        IPublishedValueFallback _publishedValueFallback)
+        : BlockGridPropertyValueConverter(_proflog, _blockConverter, _jsonSerializer, _apiElementBuilder, _constructorCache)
     {
-        private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
-
-        public OverridableBlockGridPropertyValueConverter(IProfilingLogger proflog,
-            BlockEditorConverter blockConverter,
-            IJsonSerializer jsonSerializer,
-            IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
-            IApiElementBuilder apiElementBuilder,
-            BlockGridPropertyValueConstructorCache constructorCache)
-            : base(proflog, blockConverter, jsonSerializer, apiElementBuilder, constructorCache)
-        {
-            _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
-        }
-
         /// <inheritdoc />
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
         {
@@ -38,7 +33,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
-            return baseModel is BlockGridModel ? new OverridableBlockGridModel((BlockGridModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
+            return baseModel is BlockGridModel ? new OverridableBlockGridModel(_publishedValueFallback, (BlockGridModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
         }
 
         /// <inheritdoc />

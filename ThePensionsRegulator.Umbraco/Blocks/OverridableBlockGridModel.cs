@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
@@ -13,13 +15,19 @@ namespace ThePensionsRegulator.Umbraco.Blocks
     [TypeConverter(typeof(OverridableBlockGridTypeConverter))]
     public class OverridableBlockGridModel : OverridableBlockModel<OverridableBlockGridItem>
     {
+        private IEnumerable<IPropertyValueFormatter>? _propertyValueFormatters;
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockGridModel"/> with no items.
         /// </summary>
+        [Obsolete("Use a constructor which specifies an IPublishedValueFallback.")]
         public OverridableBlockGridModel() : this(Array.Empty<BlockGridItem>()) { }
 
-        private IEnumerable<IPropertyValueFormatter>? _propertyValueFormatters;
+        /// <summary>
+        /// Creates a new <see cref="OverridableBlockGridModel"/> with no items.
+        /// </summary>
+        /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block grid items.</param>
+        public OverridableBlockGridModel(IPublishedValueFallback publishedValueFallback) : this(publishedValueFallback, Array.Empty<BlockGridItem>()) { }
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockGridModel"/>
@@ -27,7 +35,28 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         /// <param name="blockGridItems">A block grid (typically a <see cref="BlockGridModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        public OverridableBlockGridModel(IEnumerable<BlockGridItem> blockGridItems, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
+        [Obsolete("Use a constructor which specifies an IPublishedValueFallback.")]
+        public OverridableBlockGridModel(
+            IEnumerable<BlockGridItem> blockGridItems,
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,
+            Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
+            => Initialise(null, blockGridItems, filter, publishedElementFactory);
+
+        /// <summary>
+        /// Creates a new <see cref="OverridableBlockGridModel"/>
+        /// </summary>
+        /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block grid items.</param>
+        /// <param name="blockGridItems">A block grid (typically a <see cref="BlockGridModel"/>).</param>
+        /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
+        /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
+        public OverridableBlockGridModel(
+            IPublishedValueFallback publishedValueFallback,
+            IEnumerable<BlockGridItem> blockGridItems,
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,
+            Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
+            => Initialise(publishedValueFallback, blockGridItems, filter, publishedElementFactory);
+
+        private void Initialise(IPublishedValueFallback? publishedValueFallback, IEnumerable<BlockGridItem> blockGridItems, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory)
         {
             if (blockGridItems is null)
             {
@@ -45,25 +74,32 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             // Take the IEnumerable<BlockGridItem> (which is probably a BlockGridModel) and convert each item to an OverridableBlockGridItem,
             // and each nested block grid or block list to an OverridableBlockGridModel or OverridableBlockListModel
             // populated with OverridableBlockGridItems or OverridableBlockListItems.
-            foreach (var item in blockGridItems)
+            if (blockGridItems.Any())
             {
-                var overridableItem = item as OverridableBlockGridItem ?? new OverridableBlockGridItem(item, factory);
-                foreach (var property in overridableItem.Content.Properties)
+                publishedValueFallback = publishedValueFallback ?? StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>();
+
+                foreach (var item in blockGridItems)
                 {
-                    ConvertBlockModelPropertyToOverridable<BlockGridModel, OverridableBlockGridModel>(
-                        Constants.PropertyEditors.Aliases.BlockGrid,
-                        overridableItem,
-                        property,
-                        blockGrid => new OverridableBlockGridModel(blockGrid, BaseFilter, factory),
-                        () => new OverridableBlockGridModel(Array.Empty<BlockGridItem>(), BaseFilter, factory));
-                    ConvertBlockModelPropertyToOverridable<BlockListModel, OverridableBlockListModel>(
-                        Constants.PropertyEditors.Aliases.BlockList,
-                        overridableItem,
-                        property,
-                        blockList => new OverridableBlockListModel(blockList, BaseFilter, factory),
-                        () => new OverridableBlockListModel(Array.Empty<BlockListItem>(), BaseFilter, factory));
+                    var overridableItem = item as OverridableBlockGridItem ?? new OverridableBlockGridItem(item, factory);
+                    foreach (var property in overridableItem.Content.Properties)
+                    {
+                        ConvertBlockModelPropertyToOverridable<BlockGridModel, OverridableBlockGridModel>(
+                            publishedValueFallback,
+                            Constants.PropertyEditors.Aliases.BlockGrid,
+                            overridableItem,
+                            property,
+                            blockGrid => new OverridableBlockGridModel(publishedValueFallback, blockGrid, BaseFilter, factory),
+                            () => new OverridableBlockGridModel(publishedValueFallback, Array.Empty<BlockGridItem>(), BaseFilter, factory));
+                        ConvertBlockModelPropertyToOverridable<BlockListModel, OverridableBlockListModel>(
+                            publishedValueFallback,
+                            Constants.PropertyEditors.Aliases.BlockList,
+                            overridableItem,
+                            property,
+                            blockList => new OverridableBlockListModel(publishedValueFallback, blockList, BaseFilter, factory),
+                            () => new OverridableBlockListModel(publishedValueFallback, Array.Empty<BlockListItem>(), BaseFilter, factory));
+                    }
+                    Items.Add(overridableItem);
                 }
-                Items.Add(overridableItem);
             }
 
             CopyFilterToDescendantBlockLists(Items, BaseFilter);

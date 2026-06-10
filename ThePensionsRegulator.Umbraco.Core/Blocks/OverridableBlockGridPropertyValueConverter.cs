@@ -12,23 +12,18 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
     /// <summary>
     /// A property value converter which ensures that ModelsBuilder models represent a block grid as an <see cref="OverridableBlockGridModel" />.
     /// </summary>
-    public class OverridableBlockGridPropertyValueConverter : BlockGridPropertyValueConverter
+    public class OverridableBlockGridPropertyValueConverter(IProfilingLogger _proflog,
+            BlockEditorConverter _blockConverter,
+            IJsonSerializer _jsonSerializer,
+            IEnumerable<IPropertyValueFormatter> _propertyValueFormatters,
+            IApiElementBuilder _apiElementBuilder,
+            BlockGridPropertyValueConstructorCache _constructorCache,
+            IVariationContextAccessor _variationContextAccessor,
+            BlockEditorVarianceHandler _blockEditorVarianceHandler,
+            IPublishedValueFallback _publishedValueFallback
+        )
+        : BlockGridPropertyValueConverter(_proflog, _blockConverter, _jsonSerializer, _apiElementBuilder, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler)
     {
-        private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
-
-        public OverridableBlockGridPropertyValueConverter(IProfilingLogger proflog,
-            BlockEditorConverter blockConverter,
-            IJsonSerializer jsonSerializer,
-            IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
-            IApiElementBuilder apiElementBuilder,
-            BlockGridPropertyValueConstructorCache constructorCache,
-            IVariationContextAccessor variationContextAccessor,
-            BlockEditorVarianceHandler blockEditorVarianceHandler)
-            : base(proflog, blockConverter, jsonSerializer, apiElementBuilder, constructorCache, variationContextAccessor, blockEditorVarianceHandler)
-        {
-            _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
-        }
-
         /// <inheritdoc />
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
         {
@@ -40,7 +35,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
-            return baseModel is BlockGridModel ? new OverridableBlockGridModel((BlockGridModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
+            return baseModel is BlockGridModel ? new OverridableBlockGridModel(_publishedValueFallback, (BlockGridModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
         }
 
         /// <inheritdoc />

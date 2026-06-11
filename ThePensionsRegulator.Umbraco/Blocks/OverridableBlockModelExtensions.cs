@@ -312,6 +312,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
             }
 
             var matchedBlocks = new List<T>();
+            publishedValueFallback = publishedValueFallback ?? new NoopPublishedValueFallback();
 
             foreach (var block in blocks)
             {
@@ -327,8 +328,8 @@ namespace ThePensionsRegulator.Umbraco.Blocks
                     if (blockProperty.PropertyType.EditorAlias == Constants.PropertyEditors.Aliases.BlockList && blockProperty.HasValue())
                     {
                         var overridableBlock = block as IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>;
-                        IEnumerable<T>? childBlocks = (IEnumerable<T>?)(overridableBlock?.Content.Value<OverridableBlockListModel>(blockProperty.Alias));
-                        if (childBlocks is null) { childBlocks = (IEnumerable<T>?)blockProperty.Value<BlockListModel>(publishedValueFallback ?? new NoopPublishedValueFallback()); }
+                        IEnumerable<T>? childBlocks = (IEnumerable<T>?)(overridableBlock?.Content.Value<OverridableBlockListModel>(publishedValueFallback, blockProperty.Alias));
+                        if (childBlocks is null) { childBlocks = (IEnumerable<T>?)blockProperty.Value<BlockListModel>(publishedValueFallback); }
                         var result = RecursivelyFindBlocks(childBlocks!, matcher, returnFirstMatchOnly, publishedValueFallback);
                         if (result.Any())
                         {

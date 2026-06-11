@@ -1,15 +1,19 @@
 ﻿using GovUk.Frontend.Umbraco.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Linq;
 using ThePensionsRegulator.Umbraco;
 using ThePensionsRegulator.Umbraco.Blocks;
 using Umbraco.Cms.Core.Models.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace GovUk.Frontend.Umbraco.Blocks
 {
-    public class BlockViewService(IGovUkGridClassBuilder _gridClassBuilder, IGovUkFieldsetErrorFinder _fieldsetErrorFinder, IOptions<GovUkFrontendUmbracoOptions> _options, IEnumerable<IBlockViewInterceptor> _interceptors)
+    public class BlockViewService(
+        IGovUkGridClassBuilder _gridClassBuilder,
+        IGovUkFieldsetErrorFinder _fieldsetErrorFinder,
+        IOptions<GovUkFrontendUmbracoOptions> _options,
+        IEnumerable<IBlockViewInterceptor> _interceptors,
+        IPublishedValueFallback _publishedValueFallback)
     {
         /// <summary>
         /// Builds details of the HTML required to render each block in a block grid.
@@ -26,7 +30,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
             var wrappedModel = blockGridItems as BlockGridViewModel;
             var gridModel = blockGridItems as OverridableBlockGridModel ?? wrappedModel?.BlockGrid;
             var areaModel = blockGridItems as OverridableBlockGridArea;
-            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(blockGridItems, null)).ToList();
+            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(_publishedValueFallback, blockGridItems)).ToList();
             if (!blocks.Any()) { return blocksToReturn; }
 
             string? previousRowClass = null, previousColumnClass = null;
@@ -153,7 +157,7 @@ namespace GovUk.Frontend.Umbraco.Blocks
         {
             var blocksToReturn = new List<BlockViewModel>();
             var wrappedModel = blockListItems as BlockListViewModel;
-            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(blockListItems, null);
+            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(_publishedValueFallback, blockListItems);
             var renderGrid = (wrappedModel?.RenderGrid ?? true);
             var blocks = filteredModel.FilteredBlocks().ToList();
             if (!blocks.Any()) { return blocksToReturn; }

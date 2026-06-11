@@ -402,7 +402,26 @@ namespace ThePensionsRegulator.Umbraco.Testing
 
         private void SetupServices()
         {
-            DI.StaticServiceProvider.Instance = ServiceProvider.Object;
+            // Umbraco falls back to the static service provider when services are not provided at the call site.
+            // Since there is only one static service provider shared by many tests, we have a choice of potential issues.
+
+            // If each instance of the test context replaces it the static service provider, we get a race condition where
+            // one test may replace the service provider while another test is using it, causing unpredictable results
+            // (usually services that aren't set up yet). 
+
+            // If we keep the instance set by the first test context to execute, then all subsequent test contexts will use
+            // the services set up by the first test context. If the tests do not do any custom setup on the services (either
+            // the first test or the currently executing test) then the tests will pass. However if a test relies on custom
+            // setup for a service and uses the static service provider to resolve it then it may display unpredicable
+            // behaviour depending on the order of test execution.
+
+            // The second approach is used because it causes fewer random test failures, but the only way to avoid test failures
+            // completely is to always provide service instances at the call site so that Umbraco does not fall back to the
+            // static service provider.
+            if (DI.StaticServiceProvider.Instance is null)
+            {
+                DI.StaticServiceProvider.Instance = ServiceProvider.Object;
+            }
             HttpContext.Setup(x => x.RequestServices).Returns(ServiceProvider.Object);
             SetupService(AuditService.Object);
             SetupService(CompositeViewEngine.Object);

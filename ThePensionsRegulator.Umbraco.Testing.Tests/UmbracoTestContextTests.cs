@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using System.Security.Claims;
 using System.Security.Principal;
+using DI = Umbraco.Cms.Core.DependencyInjection;
 
 namespace ThePensionsRegulator.Umbraco.Testing.Tests
 {
@@ -124,6 +126,18 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             testContext.Session.Object.Clear();
 
             Assert.Empty(testContext.Session.Object.Keys);
+        }
+
+        [Fact]
+        public void Does_not_replace_static_service_provider()
+        {
+            var originalProvider = Mock.Of<IServiceProvider>();
+
+            DI.StaticServiceProvider.Instance = originalProvider;
+
+            _ = new UmbracoTestContext();
+
+            Assert.Equal(originalProvider, DI.StaticServiceProvider.Instance);
         }
     }
 }

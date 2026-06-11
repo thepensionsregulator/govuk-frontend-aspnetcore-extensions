@@ -219,7 +219,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <param name="publishedValueFallback">The published value fallback provider.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSelectOptions(this IOverridablePublishedElement blockContent,
             IEnumerable<SelectOption> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,

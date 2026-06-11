@@ -134,5 +134,34 @@ namespace ThePensionsRegulator.Umbraco.Core
 
             return _publishedElement != null ? _publishedElement.Value(alias, culture, segment, fallback, defaultValue) : default;
         }
+
+        /// <summary>
+        /// Gets the value of a content's property identified by its alias, converted to a specified type.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="publishedValueFallback">The published value fallback strategy.</param>
+        /// <param name="alias">The property alias.</param>
+        /// <param name="culture">The variation language.</param>
+        /// <param name="segment">The variation segment.</param>
+        /// <param name="fallback">Optional fallback strategy.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// The value comes a value passed to <see cref="OverrideValue"/>, or from the <see cref="IPublishedProperty"/> field <c>Value</c> ie it is suitable for use when rendering content.
+        /// 
+        /// If no property with the specified alias exists, or if the property has no value, or if it could not be converted, returns <c>default(T)</c>.
+        /// 
+        /// The alias is case-insensitive.
+        /// </remarks>
+        public T? Value<T>(IPublishedValueFallback publishedValueFallback, string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default)
+        {
+            var key = alias.ToUpperInvariant();
+            if (_propertyValues.ContainsKey(key))
+            {
+                return (T)_propertyValues[key];
+            }
+
+            return _publishedElement != null ? _publishedElement.Value(publishedValueFallback, alias, culture, segment, fallback, defaultValue) : default;
+        }
     }
 }

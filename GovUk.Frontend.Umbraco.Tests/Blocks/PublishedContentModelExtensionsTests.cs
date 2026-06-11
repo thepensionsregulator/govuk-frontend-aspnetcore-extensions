@@ -7,6 +7,7 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace GovUk.Frontend.Umbraco.Tests.Blocks
 {
+	[NonParallelizable]
 	public class PublishedContentModelExtensionsTests
 	{
 		[Test]
@@ -21,7 +22,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 					)
 				);
 
-			var testContext = new UmbracoTestContext();
+			using var testContext = new UmbracoTestContext();
 			testContext.CurrentPage.Setup(page => page.Name).Returns("Page name");
 			testContext.CurrentPage.SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
 			var model = new ExampleModelsBuilderModel(testContext.CurrentPage.Object, Mock.Of<IPublishedValueFallback>());
@@ -44,7 +45,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 					)
 				);
 
-			var testContext = new UmbracoTestContext();
+			using var testContext = new UmbracoTestContext();
 			testContext.CurrentPage.Setup(page => page.Name).Returns("Page name");
 			testContext.CurrentPage.SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
 			var model = new ExampleModelsBuilderModel(testContext.CurrentPage.Object, Mock.Of<IPublishedValueFallback>());
@@ -59,7 +60,7 @@ namespace GovUk.Frontend.Umbraco.Tests.Blocks
 		[Test]
 		public void If_no_PageHeading_block_PageHeadingOrName_returns_name()
 		{
-			var testContext = new UmbracoTestContext();
+			using var testContext = new UmbracoTestContext();
 			testContext.CurrentPage.Setup(page => page.Name).Returns("Page name");
 			var model = new ExampleModelsBuilderModel(testContext.CurrentPage.Object, Mock.Of<IPublishedValueFallback>());
 

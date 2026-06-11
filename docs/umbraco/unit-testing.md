@@ -6,29 +6,96 @@ Examples on this page are shown with NUnit, but these helper classes should work
 
 ## Create an Umbraco context
 
-Create an instance of `UmbracoTestContext` in your setup method. This will give you access to an Umbraco context that mocks a page request.
+Create an instance of `UmbracoTestContext` to get access to a mock Umbraco page request. Because `UmbracoTestContext` writes to a process-wide static field it **must always be disposed** and test classes that use it **must not run in parallel** with each other. See [Avoiding flaky tests](#avoiding-flaky-tests) for details.
+
+### One context shared across all tests in a class (recommended)
+
+Sharing one context across the whole class avoids the overhead of constructing and disposing `UmbracoTestContext` for every test. See the xUnit and NUnit sections below.
+
+### One context per test
+
+This is simpler when tests have no shared setup and do not call `SetupContentType`. Use `using var` so the context is disposed automatically at the end of the test:
 
 ```csharp
-using ThePensionsRegulator.Umbraco.Testing;
-
-private UmbracoTestContext _testContext;
-private ExampleController _controllerUnderTest;
-
-[SetUp]
-public void SetUp()
+[Fact]
+public void My_test()
 {
-    _testContext = new();
+    using var testContext = new UmbracoTestContext();
 
-    _controllerUnderTest = new(
+    var controller = new ExampleController(
         Mock.Of<ILogger<ExampleController>>(),
-        _testContext.CompositeViewEngine.Object,
-        _testContext.UmbracoContextAccessor.Object,
-        _testContext.VariationContextAccessor.Object,
-        _testContext.ServiceContext
-        )
+        testContext.CompositeViewEngine.Object,
+        testContext.UmbracoContextAccessor.Object,
+        testContext.VariationContextAccessor.Object,
+        testContext.ServiceContext)
     {
-        ControllerContext = _testContext.ControllerContext
+        ControllerContext = testContext.ControllerContext
     };
+}
+```
+
+### One context per class (xUnit)
+
+Implement `IClassFixture<UmbracoTestContext>`. xUnit creates one instance for the class and disposes it after all tests have run:
+
+```csharp
+[Collection("UmbracoTests")]
+public class ExampleTests(UmbracoTestContext _testContext) : IClassFixture<UmbracoTestContext>
+{
+    [Fact]
+    public void My_test()
+    {
+        var controller = new ExampleController(
+            Mock.Of<ILogger<ExampleController>>(),
+            _testContext.CompositeViewEngine.Object,
+            _testContext.UmbracoContextAccessor.Object,
+            _testContext.VariationContextAccessor.Object,
+            _testContext.ServiceContext)
+        {
+            ControllerContext = _testContext.ControllerContext
+        };
+    }
+}
+```
+
+If you need to call `SetupContentType` or do other one-time setup on the context, use a `Fixture` class that owns the `UmbracoTestContext`. xUnit constructs the fixture **once per class** regardless of how many tests there are, so `SetupContentType` is only called once:
+
+```csharp
+[Collection("UmbracoTests")]
+public class ExampleTests : IClassFixture<ExampleTests.Fixture>
+{
+    public class Fixture : IDisposable
+    {
+        private readonly UmbracoTestContext _context = new();
+
+        public Fixture()
+        {
+            _context.SetupContentType("myContentTypeAlias");
+        }
+
+        public void Dispose() => _context.Dispose();
+    }
+}
+```
+
+Note that `UmbracoTestContext` itself cannot be used directly as the fixture type in this case because `SetupContentType` would be called once per test (each test gets a new instance of the test class) rather than once per class.
+
+### One context per class (NUnit)
+
+Use `[OneTimeSetUp]` and `[OneTimeTearDown]`:
+
+```csharp
+[TestFixture]
+[NonParallelizable]
+public class ExampleTests
+{
+    private UmbracoTestContext _testContext;
+
+    [OneTimeSetUp]
+    public void SetUp() => _testContext = new UmbracoTestContext();
+
+    [OneTimeTearDown]
+    public void TearDown() => _testContext.Dispose();
 }
 ```
 
@@ -207,3 +274,45 @@ UmbracoContentFactory.CreateContent<IPublishedElement>();
 // Works, because the mock is the expected type
 UmbracoContentFactory.CreateContent<IOverridablePublishedElement>();
 ```
+
+## Avoiding flaky tests
+
+`UmbracoTestContext` sets `Umbraco.Cms.Core.DependencyInjection.StaticServiceProvider.Instance` — a single static field shared by every thread in the process. Two things can go wrong if this is not managed carefully:
+
+- **Stale provider after a test** — if the context is not disposed the static field retains its value and the next test may resolve services from the wrong context.
+- **Mid-test overwrite** — if two test classes run in parallel on different threads, one thread can overwrite the static field while the other thread's test is still using it.
+
+`UmbracoTestContext` addresses the first problem by implementing `IDisposable`: construction saves the current value of the static field and `Dispose` restores it. The second problem requires serialising test execution so that only one test class that uses `UmbracoTestContext` runs at a time.
+
+### xUnit
+
+Two attributes are needed in each xUnit test project that contains tests using `UmbracoTestContext`.
+
+#### 1. Disable parallelisation across all collections in the assembly
+
+Add an `AssemblyInfo.cs` file to the project:
+
+```csharp
+using Xunit;
+
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+```
+
+This prevents test collections within the assembly from running in parallel with each other. Without it, different collections could still race on the static field even though each individual collection is serialised.
+
+#### 2. Group tests into a non-parallel collection
+
+Add a collection definition class to the project:
+
+```csharp
+[CollectionDefinition("UmbracoTests", DisableParallelization = true)]
+public class UmbracoTestsCollection { }
+```
+
+Then apply `[Collection("UmbracoTests")]` to every test class in that project that uses `UmbracoTestContext`.
+
+> **Note:** The remaining risk is cross-assembly: `dotnet test` runs multiple test projects in parallel by default, and this attribute has no effect on that. `IDisposable` on `UmbracoTestContext` minimises the window during which that cross-assembly race can occur.
+
+### NUnit
+
+Apply `[NonParallelizable]` to every `[TestFixture]` that uses `UmbracoTestContext`.

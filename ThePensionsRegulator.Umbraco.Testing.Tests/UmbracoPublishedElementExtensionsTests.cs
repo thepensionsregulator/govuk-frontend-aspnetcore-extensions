@@ -7,7 +7,8 @@ using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Umbraco.Testing.Tests
 {
-    public class UmbracoPublishedElementExtensionsTests
+    [Collection("UmbracoTests")]
+    public class UmbracoPublishedElementExtensionsTests(UmbracoTestContext _testContext) : IClassFixture<UmbracoTestContext>
     {
         private const string PAGE_ALIAS = "myPage";
         private const string PROPERTY_ALIAS = "myProperty";

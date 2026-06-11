@@ -20,7 +20,6 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
         /// </summary>
-        [Obsolete("Use a constructor which specifies an IPublishedValueFallback.")]
         public OverridableBlockListModel() : this(Array.Empty<BlockListItem>()) { }
 
         /// <summary>
@@ -35,7 +34,6 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        [Obsolete("Use a constructor which specifies an IPublishedValueFallback.")]
         public OverridableBlockListModel(
             IEnumerable<BlockListItem> blockListItems,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,

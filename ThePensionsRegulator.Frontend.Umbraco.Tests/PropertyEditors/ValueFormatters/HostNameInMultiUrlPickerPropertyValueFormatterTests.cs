@@ -7,6 +7,7 @@ using Umbraco.Cms.Core.Models;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
+    [Collection("UmbracoTests")]
     public class HostNameInMultiUrlPickerPropertyValueFormatterTests
     {
         [Fact]
@@ -16,7 +17,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             var input = new Link { Url = "https://example.org" };
             var expected = "https://example.com";
 
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             var accessor = new Mock<IHttpContextAccessor>();
             accessor.Setup(x => x.HttpContext).Returns(context.HttpContext.Object);
 
@@ -42,7 +43,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             };
             var expected = "https://example.com";
 
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             var accessor = new Mock<IHttpContextAccessor>();
             accessor.Setup(x => x.HttpContext).Returns(context.HttpContext.Object);
 

@@ -23,6 +23,7 @@ using Umbraco.Cms.Web.Common;
 
 namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 {
+    [NonParallelizable]
     public class UmbracoDateInputModelBinderTests
     {
 #nullable disable
@@ -45,6 +46,12 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 
             _umbracoHelperAccessor = new Mock<IUmbracoHelperAccessor>();
             _umbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out _umbracoHelper)).Returns(true);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _testContext.Dispose();
         }
 
         private UmbracoDateInputModelBinder CreateModelBinder(DateInputModelConverter converter)

@@ -21,7 +21,6 @@ using Umbraco.Cms.Core.Templates;
 
 namespace ThePensionsRegulator.Umbraco.Tests.PropertyEditors.ValueConverters
 {
-    [Collection("UmbracoTests")]
     public class RichTextEditorPropertyValueConverterTests
     {
         [Fact]

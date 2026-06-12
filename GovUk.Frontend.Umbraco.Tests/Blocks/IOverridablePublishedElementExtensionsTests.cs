@@ -15,7 +15,6 @@ using Umbraco.Cms.Core.Strings;
 namespace GovUk.Frontend.Umbraco.Tests.Blocks
 {
     [TestFixture]
-    [NonParallelizable]
     public class IOverridablePublishedElementExtensionsTests
     {
         [TestCase(ElementTypeAliases.Checkboxes, false)]

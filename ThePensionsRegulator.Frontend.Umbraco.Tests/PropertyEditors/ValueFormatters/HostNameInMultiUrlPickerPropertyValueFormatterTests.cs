@@ -7,7 +7,6 @@ using Umbraco.Cms.Core.Models;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueFormatters
 {
-    [Collection("UmbracoTests")]
     public class HostNameInMultiUrlPickerPropertyValueFormatterTests
     {
         [Fact]

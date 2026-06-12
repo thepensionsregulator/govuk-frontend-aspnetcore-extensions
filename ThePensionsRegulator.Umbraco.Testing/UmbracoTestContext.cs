@@ -50,10 +50,10 @@ namespace ThePensionsRegulator.Umbraco.Testing
     ///   </item>
     ///   <item>
     ///     <description>
-    ///       Prevent parallel execution between test classes that use this type. In xUnit apply
-    ///       <c>[Collection("UmbracoTests")]</c> to every such test class and declare a corresponding
-    ///       <c>[CollectionDefinition("UmbracoTests", DisableParallelization = true)]</c> in the project.
-    ///       In NUnit apply <c>[NonParallelizable]</c> to every such test fixture.
+    ///       Prevent parallel execution between test classes that use this type. In xUnit add
+    ///       <c>[assembly: CollectionBehavior(DisableTestParallelization = true)]</c> to an
+    ///       <c>AssemblyInfo.cs</c> file in the project.
+    ///       In NUnit no action is needed as tests are sequential by default.
     ///     </description>
     ///   </item>
     /// </list>
@@ -474,8 +474,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             // Each test context saves the previous static provider and unconditionally replaces it, then restores it on
             // Dispose(). Callers should use 'using var ctx = new UmbracoTestContext()' (or IClassFixture<T> in xUnit)
             // so the provider is always restored after each test. Test classes that share this static state must also
-            // be serialised (xUnit [Collection], NUnit [NonParallelizable]) to prevent mid-test overwrites from
-            // parallel threads.
+            // be serialised to prevent mid-test overwrites from parallel threads.
             _previousStaticServiceProvider = DI.StaticServiceProvider.Instance;
             DI.StaticServiceProvider.Instance = ServiceProvider.Object;
         }

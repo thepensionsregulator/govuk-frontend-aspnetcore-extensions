@@ -8,8 +8,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 {
-    [Collection("UmbracoTests")]
-    public class OverridableBlockGridModelTests(UmbracoTestContext _testContext) : IClassFixture<UmbracoTestContext>
+    public class OverridableBlockGridModelTests
     {
         private const string DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS = "docTypeChildBlocks";
         private const string PROPERTY_ALIAS_CHILD_BLOCKS = "childBlocks";

@@ -4,23 +4,19 @@ using Umbraco.Cms.Core.Strings;
 
 namespace ThePensionsRegulator.Umbraco.Tests
 {
-    [Collection("UmbracoTests")]
-    public class OverridablePublishedElementTests : IClassFixture<OverridablePublishedElementTests.Fixture>
+    public class OverridablePublishedElementTests : IDisposable
     {
         private const string PROPERTY_ALIAS = "property";
         private const string ELEMENT_TYPE_ALIAS = "elementType";
 
-        public class Fixture : IDisposable
+        private readonly UmbracoTestContext _testContext;
+
+        public OverridablePublishedElementTests()
         {
-            private readonly UmbracoTestContext _context = new();
-
-            public Fixture()
-            {
-                _context.SetupContentType(ELEMENT_TYPE_ALIAS);
-            }
-
-            public void Dispose() => _context.Dispose();
+            _testContext = new UmbracoTestContext().SetupContentType(ELEMENT_TYPE_ALIAS);
         }
+
+        public void Dispose() => _testContext.Dispose();
 
         [Fact]
         public void OverrideValue_works_for_HtmlEncodedString()

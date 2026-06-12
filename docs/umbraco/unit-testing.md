@@ -8,13 +8,9 @@ Examples on this page are shown with NUnit, but these helper classes should work
 
 Create an instance of `UmbracoTestContext` to get access to a mock Umbraco page request. Because `UmbracoTestContext` writes to a process-wide static field it **must always be disposed** and test classes that use it **must not run in parallel** with each other. See [Avoiding flaky tests](#avoiding-flaky-tests) for details.
 
-### One context shared across all tests in a class (recommended)
-
-Sharing one context across the whole class avoids the overhead of constructing and disposing `UmbracoTestContext` for every test. See the xUnit and NUnit sections below.
-
 ### One context per test
 
-This is simpler when tests have no shared setup and do not call `SetupContentType`. Use `using var` so the context is disposed automatically at the end of the test:
+Use `using var` so the context is disposed automatically at the end of the test. You can customise the context mocks with no side-effects.
 
 ```csharp
 [Fact]
@@ -34,12 +30,59 @@ public void My_test()
 }
 ```
 
+### One context per test, with setup (xUnit)
+
+If all tests in the class need the same setup (for example a `SetupContentType` call), implement `IDisposable` and create the context in the constructor. xUnit creates a new instance of the test class per test, so `Dispose` is called after each test:
+
+```csharp
+public class ExampleTests : IDisposable
+{
+    private readonly UmbracoTestContext _testContext;
+
+    public ExampleTests()
+    {
+        _testContext = new UmbracoTestContext().SetupContentType("myContentTypeAlias");
+    }
+
+    public void Dispose() => _testContext.Dispose();
+
+    [Fact]
+    public void My_test()
+    {
+        var element = UmbracoContentFactory.CreateContent<IPublishedElement>("myContentTypeAlias");
+    }
+}
+```
+
+### One context per test, with setup (NUnit)
+
+If all tests in the class need the same setup (for example a `SetupContentType` call), use `[SetUp]` and `[TearDown]`. NUnit calls these before and after each individual test:
+
+```csharp
+[TestFixture]
+public class ExampleTests
+{
+    private UmbracoTestContext _testContext;
+
+    [SetUp]
+    public void SetUp() => _testContext = new UmbracoTestContext().SetupContentType("myContentTypeAlias");
+
+    [TearDown]
+    public void TearDown() => _testContext.Dispose();
+
+    [Test]
+    public void My_test()
+    {
+        var element = UmbracoContentFactory.CreateContent<IPublishedElement>("myContentTypeAlias");
+    }
+}
+```
+
 ### One context per class (xUnit)
 
 Implement `IClassFixture<UmbracoTestContext>`. xUnit creates one instance for the class and disposes it after all tests have run:
 
 ```csharp
-[Collection("UmbracoTests")]
 public class ExampleTests(UmbracoTestContext _testContext) : IClassFixture<UmbracoTestContext>
 {
     [Fact]
@@ -58,35 +101,12 @@ public class ExampleTests(UmbracoTestContext _testContext) : IClassFixture<Umbra
 }
 ```
 
-If you need to call `SetupContentType` or do other one-time setup on the context, use a `Fixture` class that owns the `UmbracoTestContext`. xUnit constructs the fixture **once per class** regardless of how many tests there are, so `SetupContentType` is only called once:
-
-```csharp
-[Collection("UmbracoTests")]
-public class ExampleTests : IClassFixture<ExampleTests.Fixture>
-{
-    public class Fixture : IDisposable
-    {
-        private readonly UmbracoTestContext _context = new();
-
-        public Fixture()
-        {
-            _context.SetupContentType("myContentTypeAlias");
-        }
-
-        public void Dispose() => _context.Dispose();
-    }
-}
-```
-
-Note that `UmbracoTestContext` itself cannot be used directly as the fixture type in this case because `SetupContentType` would be called once per test (each test gets a new instance of the test class) rather than once per class.
-
 ### One context per class (NUnit)
 
 Use `[OneTimeSetUp]` and `[OneTimeTearDown]`:
 
 ```csharp
 [TestFixture]
-[NonParallelizable]
 public class ExampleTests
 {
     private UmbracoTestContext _testContext;
@@ -286,11 +306,7 @@ UmbracoContentFactory.CreateContent<IOverridablePublishedElement>();
 
 ### xUnit
 
-Two attributes are needed in each xUnit test project that contains tests using `UmbracoTestContext`.
-
-#### 1. Disable parallelisation across all collections in the assembly
-
-Add an `AssemblyInfo.cs` file to the project:
+Add an `AssemblyInfo.cs` file to each xUnit test project that contains tests using `UmbracoTestContext`:
 
 ```csharp
 using Xunit;
@@ -298,21 +314,14 @@ using Xunit;
 [assembly: CollectionBehavior(DisableTestParallelization = true)]
 ```
 
-This prevents test collections within the assembly from running in parallel with each other. Without it, different collections could still race on the static field even though each individual collection is serialised.
-
-#### 2. Group tests into a non-parallel collection
-
-Add a collection definition class to the project:
-
-```csharp
-[CollectionDefinition("UmbracoTests", DisableParallelization = true)]
-public class UmbracoTestsCollection { }
-```
-
-Then apply `[Collection("UmbracoTests")]` to every test class in that project that uses `UmbracoTestContext`.
-
-> **Note:** The remaining risk is cross-assembly: `dotnet test` runs multiple test projects in parallel by default, and this attribute has no effect on that. `IDisposable` on `UmbracoTestContext` minimises the window during which that cross-assembly race can occur.
+This prevents all test classes within the assembly from running in parallel with each other, which is sufficient to protect the static field.
 
 ### NUnit
 
-Apply `[NonParallelizable]` to every `[TestFixture]` that uses `UmbracoTestContext`.
+NUnit does not run tests in parallel by default, so no additional configuration is needed.
+
+### Resolving flaky tests when multiple test projects are run together
+
+After disabling parallel tests as described above the remaining risk is cross-assembly: `dotnet test` runs multiple test projects in parallel by default, and the configuration above has no effect on that. `IDisposable` on `UmbracoTestContext` minimises the window during which that cross-assembly race can occur.
+
+The best solution is to look into the Umbraco code to find out which services are using the static service locator, and then look for overloads that avoid it. For example `IPublishedContent.Parent()` uses the static service locator and is difficult to test, but `IPublishedContent.Parent<T>(IDocumentNavigationQueryService, IPublishedContentStatusFilteringService)` does not and can be tested.

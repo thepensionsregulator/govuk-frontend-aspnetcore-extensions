@@ -7,7 +7,6 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace GovUk.Frontend.Umbraco.Tests.Blocks
 {
-	[NonParallelizable]
 	public class PublishedContentModelExtensionsTests
 	{
 		[Test]

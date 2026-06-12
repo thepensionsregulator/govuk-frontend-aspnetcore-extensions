@@ -5,7 +5,6 @@ using System.Security.Principal;
 
 namespace ThePensionsRegulator.Umbraco.Testing.Tests
 {
-    [Collection("UmbracoTests")]
     public class UmbracoTestContextTests
     {
         [Fact]

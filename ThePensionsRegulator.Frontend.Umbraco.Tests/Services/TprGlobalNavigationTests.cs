@@ -9,7 +9,6 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
-    [Collection("UmbracoTests")]
     public class TprGlobalNavigationTests : IClassFixture<UmbracoTestContext>
     {
         private Mock<IPublishedContent> _settingsNode;

@@ -23,7 +23,6 @@ using Umbraco.Cms.Web.Common;
 
 namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
 {
-    [NonParallelizable]
     public class UmbracoDateInputModelBinderTests
     {
 #nullable disable

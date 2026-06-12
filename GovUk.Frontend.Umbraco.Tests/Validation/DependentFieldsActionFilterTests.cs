@@ -15,7 +15,6 @@ using ThePensionsRegulator.Umbraco.Testing;
 namespace GovUk.Frontend.Umbraco.Tests.Validation
 {
     [TestFixture]
-    [NonParallelizable]
     public class DependentFieldsActionFilterTests
     {
         private const string PARENT_MODEL_PROPERTY = "Field1";

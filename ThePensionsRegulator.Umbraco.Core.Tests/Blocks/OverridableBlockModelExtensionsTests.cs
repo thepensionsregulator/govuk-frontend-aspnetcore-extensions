@@ -227,7 +227,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
 
             // Assert
             Assert.NotNull(result);
-            Assert.Equal(OVERRIDDEN_VALUE, result.Content.Value<string>(EXAMPLE_TEXTBOX_PROPERTY_ALIAS));
+            Assert.Equal(OVERRIDDEN_VALUE, result.Content.Value<string>(Mock.Of<IPublishedValueFallback>(), EXAMPLE_TEXTBOX_PROPERTY_ALIAS));
         }
 
         [Fact]
@@ -243,7 +243,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
 
             blockList[0].Content.OverrideValue(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, OVERRIDDEN_VALUE);
 
-            var result = blockList.FindBlock(x => x.Content.Value<string>(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) == OVERRIDDEN_VALUE);
+            var result = blockList.FindBlock(x => x.Content.Value<string>(Mock.Of<IPublishedValueFallback>(), EXAMPLE_TEXTBOX_PROPERTY_ALIAS) == OVERRIDDEN_VALUE);
 
             // Assert
             Assert.NotNull(result);
@@ -328,6 +328,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             var childBlockList = CreateOverridableChildBlockListWithMultipleMatchingBlocks();
 
             var parentBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                    Mock.Of<IPublishedValueFallback>(),
                     UmbracoBlockListFactory.CreateOverridableBlock(
                         UmbracoBlockListFactory.CreateContentOrSettings()
                         .SetupUmbracoBlockListPropertyValue("childBlocks", childBlockList.BlockList)
@@ -343,6 +344,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             var childBlockList = CreateOverridableChildBlockListWithMultipleMatchingBlocks();
 
             var parentBlockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
+                    Mock.Of<IPublishedValueFallback>(),
                     UmbracoBlockGridFactory.CreateBlock(
                         UmbracoBlockGridFactory.CreateContentOrSettings()
                         .SetupUmbracoBlockListPropertyValue("childBlocks", childBlockList.BlockList)
@@ -369,7 +371,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
                         new BlockListItem(Guid.NewGuid(), matchingBlockContent1.Object, null, null),
                         OverridableBlockListItem.NoopPublishedElementFactory
                     );
-            var grandChildBlockList = new OverridableBlockListModel(new[] { matchingBlock1, matchingBlock2 }, null, OverridableBlockListItem.NoopPublishedElementFactory);
+            var grandChildBlockList = new OverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), new[] { matchingBlock1, matchingBlock2 }, null, OverridableBlockListItem.NoopPublishedElementFactory);
 
             var childBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
                 UmbracoBlockListFactory.CreateOverridableBlock(

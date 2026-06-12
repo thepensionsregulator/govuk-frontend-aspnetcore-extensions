@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
@@ -16,7 +16,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             const string INPUT = "<p><a href=\"https://example.org\">Example</a><a href=\"https://example.org\">Example</a></p>";
             const string EXPECTED = "<p><a href=\"https://example.com\">Example</a><a href=\"https://example.com\">Example</a></p>";
 
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             var accessor = new Mock<IHttpContextAccessor>();
             accessor.Setup(x => x.HttpContext).Returns(context.HttpContext.Object);
 
@@ -40,7 +40,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             // Arrange
             const string INPUT = "<p><a id='some-id'>Example</a></p>";
 
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             var accessor = new Mock<IHttpContextAccessor>();
             accessor.Setup(x => x.HttpContext).Returns(context.HttpContext.Object);
 
@@ -65,7 +65,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             // Arrange
             string INPUT = $"<p><a href='{hrefValue}'>Example</a></p>";
 
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             var accessor = new Mock<IHttpContextAccessor>();
             accessor.Setup(x => x.HttpContext).Returns(context.HttpContext.Object);
 

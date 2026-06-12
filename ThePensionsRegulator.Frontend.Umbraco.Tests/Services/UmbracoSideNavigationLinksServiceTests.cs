@@ -1,4 +1,4 @@
-﻿using Moq;
+using Moq;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Testing;
@@ -11,7 +11,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Returns_null_when_root_is_not_visible()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             context.CurrentPage.Setup(x => x.Level).Returns(1);
             context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, []);
             context.CurrentPage.SetupUmbracoBooleanPropertyValue("umbracoNaviHide", true);
@@ -29,7 +29,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Returns_title_link_based_on_root_node()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
 
             var root = UmbracoContentFactory.CreateContent<IPublishedContent>("page", "Root page");
             root.Setup(x => x.Level).Returns(1);
@@ -54,7 +54,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Title_link_is_current_page_when_current_page_is_root()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             context.CurrentPage.Setup(x => x.Level).Returns(1);
             context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, []);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(context.CurrentPage.Object, UrlMode.Default, null)).Returns("/");
@@ -73,7 +73,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Title_link_is_not_current_page_when_current_page_is_a_child()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
 
             var root = UmbracoContentFactory.CreateContent<IPublishedContent>("page", "Root page");
             root.Setup(x => x.Level).Returns(1);
@@ -97,7 +97,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Returns_empty_navigation_links_when_root_has_no_children()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             context.CurrentPage.Setup(x => x.Level).Returns(1);
             context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, []);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(context.CurrentPage.Object, UrlMode.Default, null)).Returns("/");
@@ -116,7 +116,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Returns_navigation_links_for_children_of_root()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             context.CurrentPage.Setup(x => x.Level).Returns(1);
             context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, []);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(context.CurrentPage.Object, UrlMode.Default, null)).Returns("/");
@@ -149,7 +149,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Excludes_hidden_children_from_navigation_links()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             context.CurrentPage.Setup(x => x.Level).Returns(1);
             context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, []);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(context.CurrentPage.Object, UrlMode.Default, null)).Returns("/");
@@ -179,7 +179,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Returns_nested_navigation_links()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             context.CurrentPage.Setup(x => x.Level).Returns(1);
             context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, []);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(context.CurrentPage.Object, UrlMode.Default, null)).Returns("/");
@@ -212,7 +212,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Marks_current_page_in_navigation_links()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
 
             var root = UmbracoContentFactory.CreateContent<IPublishedContent>("page", "Root");
             root.Setup(x => x.Level).Returns(1);
@@ -240,7 +240,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Expands_ancestor_of_current_page_in_navigation_links()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
 
             var root = UmbracoContentFactory.CreateContent<IPublishedContent>("page", "Root");
             root.Setup(x => x.Level).Returns(1);
@@ -273,7 +273,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Does_not_expand_non_ancestor_of_current_page_in_navigation_links()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
 
             var root = UmbracoContentFactory.CreateContent<IPublishedContent>("page", "Root");
             root.Setup(x => x.Level).Returns(1);
@@ -305,7 +305,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Sets_parent_on_child_navigation_links()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             context.CurrentPage.Setup(x => x.Level).Returns(1);
             context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, []);
             context.PublishedUrlProvider.Setup(x => x.GetUrl(context.CurrentPage.Object, UrlMode.Default, null)).Returns("/");

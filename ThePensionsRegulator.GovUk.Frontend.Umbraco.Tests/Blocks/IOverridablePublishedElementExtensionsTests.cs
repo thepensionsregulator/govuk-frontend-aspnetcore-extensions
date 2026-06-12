@@ -17,7 +17,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         [InlineData(ElementTypeAliases.Radios, true)]
         public void OverrideCheckboxes_throws_ArgumentException_if_block_is_not_Checkboxes_component(string elementTypeAlias, bool exceptionExpected)
         {
-            var testContext = new UmbracoTestContext();
+            using var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
@@ -35,7 +35,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         public void OverrideCheckboxes_replaces_checkboxes()
         {
             // Arrange
-            var testContext = new UmbracoTestContext()
+            using var testContext = new UmbracoTestContext()
                 .SetupContentType(ElementTypeAliases.Checkbox)
                 .SetupContentType(ElementTypeAliases.CheckboxesDivider)
                 .SetupContentType(ElementTypeAliases.CheckboxSettings);
@@ -95,7 +95,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         [InlineData(ElementTypeAliases.Radios, false)]
         public void OverrideRadioButtons_throws_ArgumentException_if_block_is_not_Radios_component(string elementTypeAlias, bool exceptionExpected)
         {
-            var testContext = new UmbracoTestContext();
+            using var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
@@ -113,7 +113,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         public void OverrideRadioButtons_replaces_radio_buttons()
         {
             // Arrange
-            var testContext = new UmbracoTestContext()
+            using var testContext = new UmbracoTestContext()
                 .SetupContentType(ElementTypeAliases.Radio)
                 .SetupContentType(ElementTypeAliases.RadiosDivider)
                 .SetupContentType(ElementTypeAliases.RadioSettings);
@@ -172,7 +172,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         [InlineData(ElementTypeAliases.Radios, true)]
         public void OverrideSelectOptions_throws_ArgumentException_if_block_is_not_Select_component(string elementTypeAlias, bool exceptionExpected)
         {
-            var testContext = new UmbracoTestContext();
+            using var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
@@ -190,7 +190,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         public void OverrideSelectOptions_replaces_options()
         {
             // Arrange
-            var testContext = new UmbracoTestContext()
+            using var testContext = new UmbracoTestContext()
                 .SetupContentType(ElementTypeAliases.SelectOption);
 
             var originalOptions = UmbracoBlockListFactory.CreateOverridableBlockListModel(new[]
@@ -237,7 +237,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         [InlineData(ElementTypeAliases.SummaryList, true)]
         public void OverrideSummaryCardActions_throws_ArgumentException_if_block_is_not_Summary_card_component(string elementTypeAlias, bool exceptionExpected)
         {
-            var testContext = new UmbracoTestContext();
+            using var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
@@ -255,7 +255,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         public void OverrideSummaryCardActions_replaces_actions()
         {
             // Arrange
-            var testContext = new UmbracoTestContext()
+            using var testContext = new UmbracoTestContext()
                 .SetupContentType(ElementTypeAliases.SummaryListAction);
 
             var originalItems = UmbracoBlockListFactory.CreateOverridableBlockListModel(new[]
@@ -304,7 +304,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         [InlineData(ElementTypeAliases.Radios, true)]
         public void OverrideSummaryListItems_throws_ArgumentException_if_block_is_not_Summary_card_or_Summary_list_component(string elementTypeAlias, bool exceptionExpected)
         {
-            var testContext = new UmbracoTestContext();
+            using var testContext = new UmbracoTestContext();
             var content = UmbracoBlockListFactory.CreateContentOrSettings(elementTypeAlias);
 
             if (exceptionExpected)
@@ -324,7 +324,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         public void OverrideSummaryListItems_replaces_items(string componentAlias, string listItemsPropertyAlias)
         {
             // Arrange
-            var testContext = new UmbracoTestContext()
+            using var testContext = new UmbracoTestContext()
                 .SetupContentType(ElementTypeAliases.SummaryListItem)
                 .SetupContentType(ElementTypeAliases.SummaryListItemSettings)
                 .SetupContentType(ElementTypeAliases.SummaryListAction);

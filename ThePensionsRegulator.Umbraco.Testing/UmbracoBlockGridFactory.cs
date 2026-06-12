@@ -46,6 +46,14 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <summary>
         /// Create an <see cref="OverridableBlockGridModel"/> containing a single <see cref="BlockGridItem"/> which can have its property values overridden at runtime.
         /// </summary>
+        public static OverridableBlockGridModel CreateOverridableBlockGridModel(IPublishedValueFallback publishedValueFallback, BlockGridItem blockGridItem)
+        {
+            return CreateOverridableBlockGridModel(publishedValueFallback, [blockGridItem]);
+        }
+
+        /// <summary>
+        /// Create an <see cref="OverridableBlockGridModel"/> containing a single <see cref="BlockGridItem"/> which can have its property values overridden at runtime.
+        /// </summary>
         public static OverridableBlockGridModel CreateOverridableBlockGridModel(BlockGridItem blockGridItem)
         {
             return CreateOverridableBlockGridModel([blockGridItem]);
@@ -54,10 +62,16 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <summary>
         /// Create an <see cref="OverridableBlockGridModel"/> containing multiple instances of <see cref="BlockGridItem"/> which can have their property values overridden at runtime.
         /// </summary>
-        public static OverridableBlockGridModel CreateOverridableBlockGridModel(IEnumerable<BlockGridItem> blockGridItems)
+        public static OverridableBlockGridModel CreateOverridableBlockGridModel(IPublishedValueFallback publishedValueFallback, IEnumerable<BlockGridItem> blockGridItems)
         {
-            return new OverridableBlockGridModel(blockGridItems, null, OverridableBlockGridItem.NoopPublishedElementFactory);
+            return new OverridableBlockGridModel(publishedValueFallback, blockGridItems, null, OverridableBlockGridItem.NoopPublishedElementFactory);
         }
+
+        /// <summary>
+        /// Create an <see cref="OverridableBlockGridModel"/> containing multiple instances of <see cref="BlockGridItem"/> which can have their property values overridden at runtime.
+        /// </summary>
+        public static OverridableBlockGridModel CreateOverridableBlockGridModel(IEnumerable<BlockGridItem> blockGridItems)
+            => CreateOverridableBlockGridModel(Mock.Of<IPublishedValueFallback>(), blockGridItems);
 
         /// <summary>
         /// Create an <see cref="OverridableBlockGridArea"/> containing a single <see cref="BlockGridItem"/> which can have its property values overridden at runtime.

@@ -50,6 +50,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         private static void SetupOverriddenValue<T>(string alias, T overriddenValue, Mock<IOverridablePublishedElement> overridablePublishedElement)
         {
             overridablePublishedElement.Setup(element => element.Value<T>(It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(overriddenValue);
+            overridablePublishedElement.Setup(element => element.Value<T>(It.IsAny<IPublishedValueFallback>(), It.Is<string>(x => string.Equals(alias, x, StringComparison.OrdinalIgnoreCase)), null, null, default, default)).Returns(overriddenValue);
         }
     }
 }

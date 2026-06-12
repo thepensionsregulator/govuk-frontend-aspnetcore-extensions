@@ -229,6 +229,25 @@ describe("initTableCsvDownload", () => {
         expect(buttons.length).toBe(1);
     });
 
+    test("should not create a button on tables with an exsisting hardcoded button", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                 <thead><tr><th>Name</th><th>Age</th></tr></thead>
+                 <tbody><tr><td>Alice</td><td>30</td></tr></tbody>
+            </table> 
+            <form action="/example" class="tpr-table-download-form">
+                <input type="hidden">
+                 <input type="hidden">
+                 <input type="hidden">
+                 <button class="govuk-button">Existing Button</button>
+            </form>`
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll(
+            'button'
+        );
+        expect(buttons.length).toBe(1);
+    });
+
     test("uses custom button text from body data attribute", () => {
         document.body.setAttribute("data-tpr-table-csv-download-text", "Lawrlwytho data tabl (CSV)");
         document.body.innerHTML = `

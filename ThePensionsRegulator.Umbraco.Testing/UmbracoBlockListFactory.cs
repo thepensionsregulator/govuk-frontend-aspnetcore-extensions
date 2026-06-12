@@ -30,18 +30,30 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <summary>
         /// Create an <see cref="OverridableBlockListModel"/> containing a single <see cref="BlockListItem"/> which can have its property values overridden at runtime.
         /// </summary>
-        public static OverridableBlockListModel CreateOverridableBlockListModel(BlockListItem blockListItem)
+        public static OverridableBlockListModel CreateOverridableBlockListModel(IPublishedValueFallback publishedValueFallback, BlockListItem blockListItem)
         {
-            return CreateOverridableBlockListModel(new[] { blockListItem });
+            return CreateOverridableBlockListModel(publishedValueFallback, new[] { blockListItem });
+        }
+
+        /// <summary>
+        /// Create an <see cref="OverridableBlockListModel"/> containing a single <see cref="BlockListItem"/> which can have its property values overridden at runtime.
+        /// </summary>
+        public static OverridableBlockListModel CreateOverridableBlockListModel(BlockListItem blockListItem)
+            => CreateOverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), blockListItem);
+
+        /// <summary>
+        /// Create an <see cref="OverridableBlockListModel"/> containing multiple instances of <see cref="BlockListItem"/> which can have their property values overridden at runtime.
+        /// </summary>
+        public static OverridableBlockListModel CreateOverridableBlockListModel(IPublishedValueFallback publishedValueFallback, IEnumerable<BlockListItem> blockListItems)
+        {
+            return new OverridableBlockListModel(publishedValueFallback, blockListItems, null, OverridableBlockListItem.NoopPublishedElementFactory);
         }
 
         /// <summary>
         /// Create an <see cref="OverridableBlockListModel"/> containing multiple instances of <see cref="BlockListItem"/> which can have their property values overridden at runtime.
         /// </summary>
         public static OverridableBlockListModel CreateOverridableBlockListModel(IEnumerable<BlockListItem> blockListItems)
-        {
-            return new OverridableBlockListModel(blockListItems, null, OverridableBlockListItem.NoopPublishedElementFactory);
-        }
+            => CreateOverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), blockListItems);
 
         /// <summary>
         /// Create a read-only Umbraco <see cref="BlockListItem"/> with the specified content, and no settings.

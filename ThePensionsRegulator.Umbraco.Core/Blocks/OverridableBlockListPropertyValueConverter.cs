@@ -13,24 +13,20 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
     /// <summary>
     /// A property value converter which ensures that ModelsBuilder models represent a block list as an <see cref="OverridableBlockListModel" />.
     /// </summary>
-    public class OverridableBlockListPropertyValueConverter : BlockListPropertyValueConverter
+    public class OverridableBlockListPropertyValueConverter(
+        IProfilingLogger _proflog,
+        BlockEditorConverter _blockConverter,
+        IContentTypeService _contentTypeService,
+        IApiElementBuilder _apiElementBuilder,
+        IJsonSerializer _jsonSerializer,
+        BlockListPropertyValueConstructorCache _constructorCache,
+        IVariationContextAccessor _variationContextAccessor,
+        BlockEditorVarianceHandler _blockEditorVarianceHandler,
+        IPublishedValueFallback _publishedValueFallback,
+        IEnumerable<IPropertyValueFormatter> _propertyValueFormatters
+        )
+        : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _jsonSerializer, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler)
     {
-        private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
-
-        public OverridableBlockListPropertyValueConverter(IProfilingLogger proflog,
-            BlockEditorConverter blockConverter,
-            IContentTypeService contentTypeService,
-            IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
-            IApiElementBuilder apiElementBuilder,
-            IJsonSerializer jsonSerializer,
-            BlockListPropertyValueConstructorCache constructorCache,
-            IVariationContextAccessor variationContextAccessor,
-            BlockEditorVarianceHandler blockEditorVarianceHandler)
-            : base(proflog, blockConverter, contentTypeService, apiElementBuilder, jsonSerializer, constructorCache, variationContextAccessor, blockEditorVarianceHandler)
-        {
-            _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
-        }
-
         /// <inheritdoc />
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
         {
@@ -42,7 +38,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
-            return baseModel is BlockListModel ? new OverridableBlockListModel((BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
+            return baseModel is BlockListModel ? new OverridableBlockListModel(_publishedValueFallback, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
         }
 
         /// <inheritdoc />

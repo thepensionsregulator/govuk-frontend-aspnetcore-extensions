@@ -1,0 +1,6 @@
+# Umbraco ModelsBuilder generates these files with LF line endings.
+# The repo otherwise relies on core.autocrlf=true (CRLF in the working tree),
+# which makes Git treat the LF generated files as perpetually "modified" even
+# though the content never changes. Pin them to LF so Git stops converting
+# them and stops showing phantom changes.
+*.generated.cs text eol=lf

@@ -11,7 +11,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Returns_empty_collection_when_a_page_has_no_parent()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, []);
 
             var service = new DefaultBreadcrumbLinksService(context.DocumentNavigationQueryService.Object, context.PublishedContentStatusFilteringService.Object);
@@ -25,7 +25,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Returns_collection_based_on_ancestors_ordered_by_level()
         {
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
 
             var greatGrandparent = UmbracoContentFactory.CreateContent<IPublishedContent>("example", "great grandparent");
             greatGrandparent.Setup(x => x.Level).Returns(1);

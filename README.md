@@ -91,7 +91,7 @@ We support LTS versions of Umbraco, currently Umbraco 17.x on .NET 10. Use v9.x 
 
 Umbraco features not dependent upon the GOV.UK Design System are published on NuGet as [ThePensionsRegulator.Umbraco.Core](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco.Core).
 
-![ThePensionsRegulator.Umbraco on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco)
+![ThePensionsRegulator.Umbraco.Core on nuget.org](https://img.shields.io/nuget/vpre/ThePensionsRegulator.Umbraco.Core)
 
 Umbraco unit-testing support is published on NuGet as [ThePensionsRegulator.Umbraco.Testing](https://www.nuget.org/packages/ThePensionsRegulator.Umbraco.Testing).
 

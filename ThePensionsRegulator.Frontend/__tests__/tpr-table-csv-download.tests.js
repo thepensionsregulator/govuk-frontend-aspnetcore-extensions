@@ -464,4 +464,14 @@ describe("hasExistingDownloadButton", () => {
         const table = document.querySelector(".govuk-table");
         expect(hasExistingDownloadButton(table)).toBe(false);
     });
+
+    test("returns true when the download form is nested in a wrapping sibling", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <div class="download-wrapper">
+                <form class="tpr-table-download-form"><button>Download</button></form>
+            </div>`;
+        const table = document.querySelector(".govuk-table");
+        expect(hasExistingDownloadButton(table)).toBe(true);
+    });
 });

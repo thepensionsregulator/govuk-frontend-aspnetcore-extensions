@@ -11,6 +11,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         protected Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> BaseFilter { get; set; } = DefaultFilter;
 
         protected void ConvertBlockModelPropertyToOverridable<TBaseModel, TOverridableModel>(
+            IPublishedValueFallback publishedValueFallback,
             string propertyEditorAlias,
             IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> overridableItem,
             IPublishedProperty property,
@@ -19,11 +20,11 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         {
             if (property.PropertyType.EditorAlias == propertyEditorAlias)
             {
-                var overriddenNestedBlockModel = overridableItem.Content.Value<TOverridableModel>(property.Alias);
+                var overriddenNestedBlockModel = overridableItem.Content.Value<TOverridableModel>(publishedValueFallback, property.Alias);
 
                 if (overriddenNestedBlockModel is null)
                 {
-                    var nestedBlockModel = overridableItem.Content.Value<TBaseModel>(property.Alias);
+                    var nestedBlockModel = overridableItem.Content.Value<TBaseModel>(publishedValueFallback, property.Alias);
                     if (nestedBlockModel is not null)
                     {
                         overriddenNestedBlockModel = baseToOverridableFactory(nestedBlockModel);

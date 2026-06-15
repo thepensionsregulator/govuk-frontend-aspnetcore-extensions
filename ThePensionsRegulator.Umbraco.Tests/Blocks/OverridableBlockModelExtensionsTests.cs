@@ -201,8 +201,8 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         [Fact]
         public void Block_is_matched_in_multiple_OverridableBlockListModels()
         {
-            var blockList1 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks();
-            var blockList2 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks();
+            var blockList1 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks(Mock.Of<IPublishedValueFallback>());
+            var blockList2 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks(Mock.Of<IPublishedValueFallback>());
 
             // Act
             var result = (new[] { blockList1.BlockList, blockList2.BlockList }).FindBlock(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null);
@@ -257,7 +257,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         [Fact]
         public void Multiple_matching_blocks_are_matched_in_block_list_descendant_of_OverridableBlockGridModel()
         {
-            var blockGrid = CreateOverridableBlockGridHierarchyWithMultipleMatchingBlocks();
+            var blockGrid = CreateOverridableBlockGridHierarchyWithMultipleMatchingBlocks(Mock.Of<IPublishedValueFallback>());
 
             // Act
             var results = blockGrid.BlockGrid.FindBlocks(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null).ToList();
@@ -271,7 +271,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         [Fact]
         public void Multiple_matching_blocks_are_matched_in_block_list_descendant_of_OverridableBlockListModel()
         {
-            var blockList = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks();
+            var blockList = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks(Mock.Of<IPublishedValueFallback>());
 
             // Act
             var results = blockList.BlockList.FindBlocks(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null).ToList();
@@ -285,8 +285,8 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
         [Fact]
         public void Multiple_matching_blocks_are_matched_in_multiple_OverridableBlockListModels()
         {
-            var blockList1 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks();
-            var blockList2 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks();
+            var blockList1 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks(Mock.Of<IPublishedValueFallback>());
+            var blockList2 = CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks(Mock.Of<IPublishedValueFallback>());
 
             // Act
             var results = (new[] { blockList1.BlockList, blockList2.BlockList }).FindBlocks(x => x.Content.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS) != null).ToList();
@@ -324,11 +324,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 
         #region Helpers
 
-        private static (OverridableBlockListModel BlockList, IList<OverridableBlockListItem> BlocksToMatch) CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks()
+        private static (OverridableBlockListModel BlockList, IList<OverridableBlockListItem> BlocksToMatch) CreateOverridableBlockListHierarchyWithMultipleMatchingBlocks(IPublishedValueFallback publishedValueFallback)
         {
-            var childBlockList = CreateOverridableChildBlockListWithMultipleMatchingBlocks();
+            var childBlockList = CreateOverridableChildBlockListWithMultipleMatchingBlocks(publishedValueFallback);
 
             var parentBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
+                    publishedValueFallback,
                     UmbracoBlockListFactory.CreateOverridableBlock(
                         UmbracoBlockListFactory.CreateContentOrSettings()
                         .SetupUmbracoBlockListPropertyValue("childBlocks", childBlockList.BlockList)
@@ -339,11 +340,12 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             return (parentBlockList, childBlockList.BlocksToMatch);
         }
 
-        private static (OverridableBlockGridModel BlockGrid, IList<OverridableBlockListItem> BlocksToMatch) CreateOverridableBlockGridHierarchyWithMultipleMatchingBlocks()
+        private static (OverridableBlockGridModel BlockGrid, IList<OverridableBlockListItem> BlocksToMatch) CreateOverridableBlockGridHierarchyWithMultipleMatchingBlocks(IPublishedValueFallback publishedValueFallback)
         {
-            var childBlockList = CreateOverridableChildBlockListWithMultipleMatchingBlocks();
+            var childBlockList = CreateOverridableChildBlockListWithMultipleMatchingBlocks(publishedValueFallback);
 
             var parentBlockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
+                    publishedValueFallback,
                     UmbracoBlockGridFactory.CreateBlock(
                         UmbracoBlockGridFactory.CreateContentOrSettings()
                         .SetupUmbracoBlockListPropertyValue("childBlocks", childBlockList.BlockList)
@@ -354,7 +356,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
             return (parentBlockGrid, childBlockList.BlocksToMatch);
         }
 
-        private static (OverridableBlockListModel BlockList, IList<OverridableBlockListItem> BlocksToMatch) CreateOverridableChildBlockListWithMultipleMatchingBlocks()
+        private static (OverridableBlockListModel BlockList, IList<OverridableBlockListItem> BlocksToMatch) CreateOverridableChildBlockListWithMultipleMatchingBlocks(IPublishedValueFallback publishedValueFallback)
         {
             var matchingBlockContent1 = new Mock<IOverridablePublishedElement>();
             matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "value"));
@@ -374,7 +376,7 @@ namespace ThePensionsRegulator.Umbraco.Tests.Blocks
 #nullable enable
                         OverridableBlockListItem.NoopPublishedElementFactory
                     );
-            var grandChildBlockList = new OverridableBlockListModel(new[] { matchingBlock1, matchingBlock2 }, null, OverridableBlockListItem.NoopPublishedElementFactory);
+            var grandChildBlockList = new OverridableBlockListModel(publishedValueFallback, new[] { matchingBlock1, matchingBlock2 }, null, OverridableBlockListItem.NoopPublishedElementFactory);
 
             var childBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
                 UmbracoBlockListFactory.CreateOverridableBlock(

@@ -12,21 +12,16 @@ namespace ThePensionsRegulator.Umbraco.Blocks
     /// <summary>
     /// A property value converter which ensures that ModelsBuilder models represent a block list as an <see cref="OverridableBlockListModel" />.
     /// </summary>
-    public class OverridableBlockListPropertyValueConverter : BlockListPropertyValueConverter
+    public class OverridableBlockListPropertyValueConverter(
+        IProfilingLogger _proflog,
+        BlockEditorConverter _blockConverter,
+        IContentTypeService _contentTypeService,
+        IEnumerable<IPropertyValueFormatter> _propertyValueFormatters,
+        IApiElementBuilder _apiElementBuilder,
+        BlockListPropertyValueConstructorCache _constructorCache,
+        IPublishedValueFallback _publishedValueFallback)
+        : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _constructorCache)
     {
-        private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
-
-        public OverridableBlockListPropertyValueConverter(IProfilingLogger proflog,
-            BlockEditorConverter blockConverter,
-            IContentTypeService contentTypeService,
-            IEnumerable<IPropertyValueFormatter> propertyValueFormatters,
-            IApiElementBuilder apiElementBuilder,
-            BlockListPropertyValueConstructorCache constructorCache)
-            : base(proflog, blockConverter, contentTypeService, apiElementBuilder, constructorCache)
-        {
-            _propertyValueFormatters = propertyValueFormatters ?? throw new ArgumentNullException(nameof(propertyValueFormatters));
-        }
-
         /// <inheritdoc />
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
         {
@@ -38,7 +33,7 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
-            return baseModel is BlockListModel ? new OverridableBlockListModel((BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
+            return baseModel is BlockListModel ? new OverridableBlockListModel(_publishedValueFallback, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
         }
 
         /// <inheritdoc />

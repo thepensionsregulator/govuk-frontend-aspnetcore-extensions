@@ -9,5 +9,6 @@ namespace ThePensionsRegulator.Umbraco.Core
     {
         void OverrideValue(string alias, object value);
         T? Value<T>(string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default);
+        T? Value<T>(IPublishedValueFallback publishedValueFallback, string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default);
     }
 }

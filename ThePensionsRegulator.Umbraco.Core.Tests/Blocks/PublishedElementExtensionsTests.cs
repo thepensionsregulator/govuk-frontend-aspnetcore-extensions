@@ -1,4 +1,5 @@
-﻿using ThePensionsRegulator.Umbraco.Core.Blocks;
+﻿using Moq;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
@@ -11,10 +12,10 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
         public void Finds_multiple_mixed_block_lists_and_grids()
         {
             // Arrange
-            var blockList1 = new OverridableBlockListModel(new[] { UmbracoBlockListFactory.CreateOverridableBlock(UmbracoBlockListFactory.CreateContentOrSettings("alias").Object) });
-            var blockList2 = new OverridableBlockListModel(new[] { UmbracoBlockListFactory.CreateOverridableBlock(UmbracoBlockListFactory.CreateContentOrSettings("alias").Object) });
-            var blockGrid1 = new OverridableBlockGridModel(new[] { UmbracoBlockGridFactory.CreateOverridableBlock(UmbracoBlockGridFactory.CreateContentOrSettings("alias").Object) });
-            var blockGrid2 = new OverridableBlockGridModel(new[] { UmbracoBlockGridFactory.CreateOverridableBlock(UmbracoBlockGridFactory.CreateContentOrSettings("alias").Object) });
+            var blockList1 = new OverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), new[] { UmbracoBlockListFactory.CreateOverridableBlock(UmbracoBlockListFactory.CreateContentOrSettings("alias").Object) });
+            var blockList2 = new OverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), new[] { UmbracoBlockListFactory.CreateOverridableBlock(UmbracoBlockListFactory.CreateContentOrSettings("alias").Object) });
+            var blockGrid1 = new OverridableBlockGridModel(Mock.Of<IPublishedValueFallback>(), new[] { UmbracoBlockGridFactory.CreateOverridableBlock(UmbracoBlockGridFactory.CreateContentOrSettings("alias").Object) });
+            var blockGrid2 = new OverridableBlockGridModel(Mock.Of<IPublishedValueFallback>(), new[] { UmbracoBlockGridFactory.CreateOverridableBlock(UmbracoBlockGridFactory.CreateContentOrSettings("alias").Object) });
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>();
             content.SetupUmbracoBlockListPropertyValue("blockList1", blockList1);

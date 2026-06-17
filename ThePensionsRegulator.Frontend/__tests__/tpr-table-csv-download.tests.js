@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { jest } from '@jest/globals';
-import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, hasMergedCells, tableToCsv, initTableCsvDownload, downloadCsv } from '../wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download';
+import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, hasMergedCells, tableToCsv, initTableCsvDownload, downloadCsv, hasExistingDownloadButton } from '../wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download';
 
 beforeEach(() => {
     document.body.innerHTML = "";
@@ -248,6 +248,50 @@ describe("initTableCsvDownload", () => {
         expect(buttons.length).toBe(1);
     });
 
+    test("does not add a button when the hardcoded download form has additional classes", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <thead><tr><th>Name</th><th>Age</th></tr></thead>
+                <tbody><tr><td>Alice</td><td>30</td></tr></tbody>
+            </table>
+            <form action="/api/table/download-csv" method="post" class="tpr-table-download-form govuk-!-margin-top-3">
+                <input type="hidden" name="tableHtml">
+                <button class="govuk-button">Download table data (CSV)</button>
+            </form>`;
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll('button');
+        expect(buttons.length).toBe(1);
+        expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).not.toBeInTheDocument();
+    });
+
+    test("does not add a button when the hardcoded download form is nested in a wrapping sibling", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <thead><tr><th>Name</th><th>Age</th></tr></thead>
+                <tbody><tr><td>Alice</td><td>30</td></tr></tbody>
+            </table>
+            <div class="download-wrapper">
+                <form action="/api/table/download-csv" method="post" class="tpr-table-download-form">
+                    <button class="govuk-button">Download table data (CSV)</button>
+                </form>
+            </div>`;
+        initTableCsvDownload();
+        expect(document.querySelectorAll('button').length).toBe(1);
+    });
+
+    test("still adds a button when a following form is not a download form", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <thead><tr><th>Name</th></tr></thead>
+                <tbody><tr><td>Alice</td></tr></tbody>
+            </table>
+            <form action="/search" class="search-form">
+                <button class="govuk-button">Search</button>
+            </form>`;
+        initTableCsvDownload();
+        expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).toBeInTheDocument();
+    });
+
     test("uses custom button text from body data attribute", () => {
         document.body.setAttribute("data-tpr-table-csv-download-text", "Lawrlwytho data tabl (CSV)");
         document.body.innerHTML = `
@@ -371,5 +415,63 @@ describe("downloadCsv", () => {
         URL.createObjectURL = originalCreateObjectURL;
         URL.revokeObjectURL = originalRevokeObjectURL;
         document.createElement.mockRestore();
+    });
+});
+
+describe("hasExistingDownloadButton", () => {
+    test("returns false when there is no following element", () => {
+        document.body.innerHTML = `<table class="govuk-table"><tr><td>Data</td></tr></table>`;
+        const table = document.querySelector(".govuk-table");
+        expect(hasExistingDownloadButton(table)).toBe(false);
+    });
+
+    test("returns true when followed by a script-added button", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <button data-tpr-table-csv-button="true">Download table data (CSV)</button>`;
+        const table = document.querySelector(".govuk-table");
+        expect(hasExistingDownloadButton(table)).toBe(true);
+    });
+
+    test("returns true when followed by a hardcoded download form with a button", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <form class="tpr-table-download-form"><button>Download</button></form>`;
+        const table = document.querySelector(".govuk-table");
+        expect(hasExistingDownloadButton(table)).toBe(true);
+    });
+
+    test("returns true when the download form has additional classes", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <form class="tpr-table-download-form govuk-!-margin-top-3"><button>Download</button></form>`;
+        const table = document.querySelector(".govuk-table");
+        expect(hasExistingDownloadButton(table)).toBe(true);
+    });
+
+    test("returns false when the download form has no button", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <form class="tpr-table-download-form"><input type="hidden"></form>`;
+        const table = document.querySelector(".govuk-table");
+        expect(hasExistingDownloadButton(table)).toBe(false);
+    });
+
+    test("returns false when followed by an unrelated form", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <form class="search-form"><button>Search</button></form>`;
+        const table = document.querySelector(".govuk-table");
+        expect(hasExistingDownloadButton(table)).toBe(false);
+    });
+
+    test("returns true when the download form is nested in a wrapping sibling", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <div class="download-wrapper">
+                <form class="tpr-table-download-form"><button>Download</button></form>
+            </div>`;
+        const table = document.querySelector(".govuk-table");
+        expect(hasExistingDownloadButton(table)).toBe(true);
     });
 });

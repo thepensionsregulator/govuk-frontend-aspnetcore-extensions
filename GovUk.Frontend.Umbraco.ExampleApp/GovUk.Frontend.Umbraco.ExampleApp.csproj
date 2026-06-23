@@ -15,6 +15,8 @@
     <ItemGroup>
 		<PackageReference Include="Microsoft.Build.Tasks.Core" Version="18.0.2" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+        <!-- Pin MessagePack to a patched version to resolve transitive high-severity advisory GHSA-hv8m-jj95-wg3x (CVE-2026-48109) pulled in by Umbraco.Cms. -->
+        <PackageReference Include="MessagePack" Version="3.1.7" />
         <PackageReference Include="Umbraco.Cms" Version="17.2.2" />
     <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->
       <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />

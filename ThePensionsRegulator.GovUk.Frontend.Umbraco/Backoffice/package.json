@@ -10,12 +10,15 @@
   "devDependencies": {
     "@umbraco-cms/backoffice": "^*",
     "typescript": "^5.9.3",
-    "vite": "^7.1.9"
+    "vite": "^8.0.16"
   },
   "overrides": {
-    "dompurify": "^3.3.3",
+    "dompurify": "^3.4.10",
     "handlebars": "^4.7.9",
     "uuid": "^14.0.0",
-    "postcss": "^8.5.10"
+    "postcss": "^8.5.10",
+    "js-yaml": "^4.2.0",
+    "markdown-it": "^14.2.0",
+    "ws": "^7.5.11"
   }
 }

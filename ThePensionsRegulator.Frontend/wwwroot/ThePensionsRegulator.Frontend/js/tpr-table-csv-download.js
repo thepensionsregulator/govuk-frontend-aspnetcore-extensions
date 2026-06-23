@@ -106,6 +106,32 @@ export function downloadCsv(csvContent, fileName) {
 }
 
 /**
+ * Returns true if the table is already followed by a download control, so that a
+ * duplicate button is not added. This covers both a button previously added by this
+ * script (idempotency) and a download button rendered server-side, such as the one
+ * produced by the HTML table component (a form with the "tpr-table-download-form" class).
+ * @param {HTMLTableElement} table
+ * @returns {boolean}
+ */
+export function hasExistingDownloadButton(table) {
+    const next = table.nextElementSibling;
+    if (!next) return false;
+
+    // A CSV download button already added by this script (idempotency).
+    if (next.hasAttribute("data-tpr-table-csv-button")) return true;
+
+    // A download button rendered server-side. Match by class name (tolerant of
+    // additional classes) and allow the form to be the sibling itself or nested
+    // within a wrapping sibling element.
+    const downloadForm = next.classList.contains("tpr-table-download-form")
+        ? next
+        : (next.querySelector ? next.querySelector(".tpr-table-download-form") : null);
+    if (downloadForm && downloadForm.querySelector("button")) return true;
+
+    return false;
+}
+
+/**
  * Initialises CSV download buttons on all .govuk-table elements.
  * Idempotent — will not add a duplicate button if one already follows the table.
  */
@@ -115,16 +141,13 @@ export function initTableCsvDownload() {
 
     for (let i = 0; i < tables.length; i++) {
         const table = tables[i];
-        const nextElement = table.nextElementSibling;
 
         // Skip tables with merged cells — CSV cannot represent them reliably
         if (hasMergedCells(table)) continue;
 
-        // Skip if a CSV download button has already been added (idempotency)
-        if (
-            nextElement &&
-            nextElement.hasAttribute("data-tpr-table-csv-button") || nextElement && nextElement.matches('form[class="tpr-table-download-form"]') && nextElement.querySelector("button")
-        ) {
+        // Skip if a download button has already been provided for this table
+        // (either by this script or server-side), to avoid duplicates.
+        if (hasExistingDownloadButton(table)) {
             continue;
         }
 

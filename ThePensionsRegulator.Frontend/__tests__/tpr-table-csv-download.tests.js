@@ -7,6 +7,7 @@ import {
   hasMergedCells,
   tableToCsv,
   sanitizeFileName,
+  hasExistingDownloadButton,
   initTableCsvDownload,
 } from "../wwwroot/tpr/tpr-table-csv-download";
 
@@ -298,13 +299,58 @@ describe("initTableCsvDownload", () => {
     });
 
     it("should not create a button on tables with an exsisting hardcoded button", () => {
-        document.body.innerHTML = `${createTable()} <form action="/example" class="tpr-table-download-form"><input type="hidden"><input type="hidden"><input type="hidden"><button class="govuk-button">Existing Button</button></form>`
-    initTableCsvDownload();
-    const buttons = document.querySelectorAll(
-        'button'
-    );
-    expect(buttons.length).toBe(1);
+        document.body.innerHTML = `${createTable()} <form action="/example" class="tpr-table-download-form"><input type="hidden"><input type="hidden"><input type="hidden"><button class="govuk-button">Existing Button</button></form>`;
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll("button");
+        expect(buttons.length).toBe(1);
+    });
+
+    it("should not add a button when download form has additional classes", () => {
+        document.body.innerHTML = `${createTable()} <form action="/example" class="tpr-table-download-form govuk-!-margin-top-3"><button class="govuk-button">Existing Button</button></form>`;
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll("button");
+        expect(buttons.length).toBe(1);
+    });
+
+    it("should not add a button when hardcoded download form is wrapped", () => {
+        document.body.innerHTML = `${createTable()} <div class="download-wrapper"><form action="/example" class="tpr-table-download-form"><button class="govuk-button">Existing Button</button></form></div>`;
+        initTableCsvDownload();
+        const buttons = document.querySelectorAll("button");
+        expect(buttons.length).toBe(1);
+    });
+
+    it("should still add a button when following form is unrelated", () => {
+        document.body.innerHTML = `${createTable()} <form action="/search" class="search-form"><button class="govuk-button">Search</button></form>`;
+        initTableCsvDownload();
+        const generatedButtons = document.querySelectorAll('button[data-tpr-table-csv-button="true"]');
+        expect(generatedButtons.length).toBe(1);
+    });
 });
+
+describe("hasExistingDownloadButton", () => {
+  it("should return false when table has no next sibling", () => {
+    document.body.innerHTML = `${createTable()}`;
+    const table = document.querySelector(".govuk-table");
+    expect(hasExistingDownloadButton(table)).toBe(false);
+  });
+
+  it("should return true for existing script-added button", () => {
+    document.body.innerHTML = `${createTable()}<button data-tpr-table-csv-button="true">Download</button>`;
+    const table = document.querySelector(".govuk-table");
+    expect(hasExistingDownloadButton(table)).toBe(true);
+  });
+
+  it("should return true for a hardcoded download form with extra classes", () => {
+    document.body.innerHTML = `${createTable()}<form class="tpr-table-download-form extra"><button>Download</button></form>`;
+    const table = document.querySelector(".govuk-table");
+    expect(hasExistingDownloadButton(table)).toBe(true);
+  });
+
+  it("should return false for unrelated form", () => {
+    document.body.innerHTML = `${createTable()}<form class="search-form"><button>Search</button></form>`;
+    const table = document.querySelector(".govuk-table");
+    expect(hasExistingDownloadButton(table)).toBe(false);
+  });
 });
 
 

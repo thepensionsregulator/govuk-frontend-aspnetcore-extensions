@@ -90,24 +90,37 @@ function downloadCsv(csvContent, fileName) {
   URL.revokeObjectURL(url);
 }
 
+function hasExistingDownloadButton(table) {
+  const next = table.nextElementSibling;
+  if (!next) return false;
+
+  // A CSV button already added by this script (idempotency).
+  if (next.hasAttribute("data-tpr-table-csv-button")) return true;
+
+  // A server-rendered download form, allowing additional classes or a wrapper.
+  const downloadForm = next.classList.contains("tpr-table-download-form")
+    ? next
+    : (next.querySelector
+      ? next.querySelector(".tpr-table-download-form")
+      : null);
+
+  return !!(downloadForm && downloadForm.querySelector("button"));
+}
+
 function initTableCsvDownload() {
   const buttonText = getButtonText();
-    const tables = document.querySelectorAll(".govuk-table");
+  const tables = document.querySelectorAll(".govuk-table");
 
   for (let i = 0; i < tables.length; i++) {
     const table = tables[i];
-      const nextElement = table.nextElementSibling;
 
-    // Skip tables with merged cells — CSV cannot represent them reliably
+    // Skip tables with merged cells - CSV cannot represent them reliably
     if (hasMergedCells(table)) {
       continue;
     }
 
-      // Skip if a CSV download button has already been added (idempotency)
-    if (
-      nextElement &&
-        nextElement.hasAttribute("data-tpr-table-csv-button") || nextElement && nextElement.matches('form[class="tpr-table-download-form"]') && nextElement.querySelector("button")
-    ) {
+    // Skip if a download control is already present for this table.
+    if (hasExistingDownloadButton(table)) {
       continue;
     }
 
@@ -143,5 +156,6 @@ export {
   tableToCsv,
   sanitizeFileName,
   downloadCsv,
+  hasExistingDownloadButton,
   initTableCsvDownload,
 };

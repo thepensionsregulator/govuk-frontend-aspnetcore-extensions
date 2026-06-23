@@ -9,15 +9,16 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
-    public class TprGlobalNavigationTests
+    public class TprGlobalNavigationTests : IDisposable
     {
+        private readonly UmbracoTestContext _testContext;
         private Mock<IPublishedContent> _settingsNode;
         private TprGlobalNavigationService _sut;
         private TprHeaderMenuViewModel _menuViewModel;
 
         public TprGlobalNavigationTests()
         {
-            var testContext = new UmbracoTestContext();
+            _testContext = new UmbracoTestContext();
 
             var children = new List<TprHeaderMenuChildItem>
             {
@@ -80,6 +81,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             //Arrange
             Assert.Empty(result);
         }
+
+        public void Dispose() => _testContext.Dispose();
 
         private OverridableBlockListItem CreateMenuBlock(string linkText, string linkUrl, List<TprHeaderMenuChildItem>? childItems = null)
         {

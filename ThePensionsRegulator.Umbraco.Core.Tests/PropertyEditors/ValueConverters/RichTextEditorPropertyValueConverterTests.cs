@@ -16,14 +16,13 @@ using Umbraco.Cms.Core.Templates;
 
 namespace ThePensionsRegulator.Umbraco.Core.Tests.PropertyEditors.ValueConverters
 {
-    
     public class RichTextEditorPropertyValueConverterTests
     {
         [Fact]
         public void Applies_PropertyValueFormatters()
         {
             // Arrange
-            var testContext = new UmbracoTestContext();
+            using var testContext = new UmbracoTestContext();
             var propertyType = UmbracoPropertyFactory.CreateRichTextProperty("myAlias", "contentTypeAlias", new HtmlEncodedString(string.Empty)).PropertyType;
             var urlProvider = testContext.PublishedUrlProvider.Object;
 

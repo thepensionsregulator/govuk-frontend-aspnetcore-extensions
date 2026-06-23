@@ -40,11 +40,39 @@ using DI = Umbraco.Cms.Core.DependencyInjection;
 namespace ThePensionsRegulator.Umbraco.Testing
 {
     /// <summary>
-    /// A mock Umbraco environment with a current page request
+    /// A mock Umbraco environment with a current page request.
     /// </summary>
-    public class UmbracoTestContext
+    /// <remarks>
+    /// <para>
+    /// <see cref="UmbracoTestContext"/> writes to the process-wide static
+    /// <see cref="Umbraco.Cms.Core.DependencyInjection.StaticServiceProvider.Instance"/> on construction and
+    /// restores the previous value on <see cref="Dispose"/>. Because this state is shared across all threads,
+    /// two rules must be followed to avoid flaky tests:
+    /// </para>
+    /// <list type="number">
+    ///   <item>
+    ///     <description>
+    ///       Always dispose the context after use. In xUnit use <c>using var ctx = new UmbracoTestContext()</c>
+    ///       for test-level contexts, or implement <c>IClassFixture&lt;UmbracoTestContext&gt;</c> for
+    ///       class-level contexts. In NUnit use <c>using var ctx = new UmbracoTestContext()</c> for test-level
+    ///       contexts, or <c>[OneTimeSetUp]</c>/<c>[OneTimeTearDown]</c> with an explicit <c>Dispose()</c> call
+    ///       for class-level contexts.
+    ///     </description>
+    ///   </item>
+    ///   <item>
+    ///     <description>
+    ///       Prevent parallel execution between test classes that use this type. In xUnit add an
+    ///       <c>AssemblyInfo.cs</c> file containing
+    ///       <c>[assembly: CollectionBehavior(DisableTestParallelization = true)]</c> to each test project.
+    ///       In NUnit apply <c>[NonParallelizable]</c> to every such test fixture.
+    ///     </description>
+    ///   </item>
+    /// </list>
+    /// </remarks>
+    public class UmbracoTestContext : IDisposable
     {
         private const string TEMPLATE_NAME = "MockTemplate";
+        private IServiceProvider? _previousStaticServiceProvider;
         private ClaimsPrincipal _currentPrincipal;
         private UmbracoHelper _umbracoHelper;
         private DistributedSession _sessionState = new(new MemoryDistributedCache(Options.Create(new MemoryDistributedCacheOptions())), Guid.NewGuid().ToString(), TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(30), () => true, Mock.Of<ILoggerFactory>(), true);
@@ -586,6 +614,13 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(UserService.Object);
             SetupService(VariationContextAccessor.Object);
             SetupService(Options.Create(WebRoutingSettings));
+
+            // Each test context saves the previous static provider and unconditionally replaces it, then restores it on
+            // Dispose(). Callers should use 'using var ctx = new UmbracoTestContext()' (or IClassFixture<T> in xUnit)
+            // so the provider is always restored after each test. Test classes that share this static state must also
+            // be serialised (xUnit [Collection], NUnit [NonParallelizable]) to prevent mid-test overwrites from
+            // parallel threads.
+            _previousStaticServiceProvider = DI.StaticServiceProvider.Instance;
             DI.StaticServiceProvider.Instance = ServiceProvider.Object;
         }
 
@@ -646,6 +681,11 @@ namespace ThePensionsRegulator.Umbraco.Testing
             PublishedContentTypeCache.Setup(x => x.Get(publishedItemType, contentTypeAlias)).Returns(ContentTypes[contentTypeAlias].Object);
 
             return this;
+        }
+
+        public void Dispose()
+        {
+            DI.StaticServiceProvider.Instance = _previousStaticServiceProvider!;
         }
     }
 }

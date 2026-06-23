@@ -22,7 +22,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
         public void Invalid_ModelState_remains_invalid_for_non_dependent_field()
         {
             // Arrange
-            UmbracoTestContext testContext = CreateTestContext();
+            using var testContext = CreateTestContext();
 
             testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithOneTextInput(DEPENDENT_MODEL_PROPERTY));
 
@@ -47,7 +47,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
         public void Invalid_ModelState_set_to_skipped_when_parent_field_is_invalid()
         {
             // Arrange
-            UmbracoTestContext testContext = CreateTestContext();
+            using var testContext = CreateTestContext();
 
             testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithRadiosWithOneDependentField());
 
@@ -72,7 +72,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
         public void Invalid_ModelState_set_to_skipped_when_parent_field_is_valid_but_parent_option_not_selected()
         {
             // Arrange
-            UmbracoTestContext testContext = CreateTestContext();
+            using var testContext = CreateTestContext();
 
             testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithRadiosWithOneDependentField());
 
@@ -98,7 +98,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Validation
         public void Invalid_ModelState_remains_invalid_when_parent_field_is_valid_and_parent_option_selected()
         {
             // Arrange
-            UmbracoTestContext testContext = CreateTestContext();
+            using var testContext = CreateTestContext();
 
             testContext.CurrentPage.Object.SetupUmbracoBlockListPropertyValue("blocks", BlockListWithRadiosWithOneDependentField());
 

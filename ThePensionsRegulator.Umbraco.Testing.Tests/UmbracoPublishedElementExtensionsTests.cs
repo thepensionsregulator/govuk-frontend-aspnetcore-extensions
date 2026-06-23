@@ -8,11 +8,10 @@ using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Umbraco.Testing.Tests
 {
-    public class UmbracoPublishedElementExtensionsTests
+    public class UmbracoPublishedElementExtensionsTests(UmbracoTestContext _testContext) : IClassFixture<UmbracoTestContext>
     {
         private const string PAGE_ALIAS = "myPage";
         private const string PROPERTY_ALIAS = "myProperty";
-        private UmbracoTestContext _testContext = new();
 
         private void TestSetupUmbracoTypedPropertyValue<TContentType, TValue>(Func<TValue> createPropertyValue, Action<TContentType, string, TValue> act, string expectedPropertyEditorAlias)
             where TContentType : class, IPublishedElement

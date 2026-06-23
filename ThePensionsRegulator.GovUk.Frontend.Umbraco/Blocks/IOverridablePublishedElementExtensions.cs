@@ -20,7 +20,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideCheckboxes(
             this IOverridablePublishedElement blockContent,
             IEnumerable<CheckboxItemBase> items,
@@ -54,7 +53,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideCheckboxes(
             this IOverridablePublishedElement blockContent,
             IEnumerable<CheckboxItemBase> items,
@@ -124,7 +122,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideRadioButtons(this IOverridablePublishedElement blockContent,
             IEnumerable<RadioItemBase> items,
             IPublishedContentTypeCache publishedContentTypeCache,
@@ -155,7 +152,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideRadioButtons(this IOverridablePublishedElement blockContent,
             IEnumerable<RadioItemBase> items,
             IPublishedContentTypeCache publishedContentTypeCache,
@@ -224,7 +220,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSelectOptions(this IOverridablePublishedElement blockContent,
             IEnumerable<SelectOption> items,
             IPublishedContentTypeCache publishedContentTypeCache,
@@ -255,7 +250,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSelectOptions(this IOverridablePublishedElement blockContent,
             IEnumerable<SelectOption> items,
             IPublishedContentTypeCache publishedContentTypeCache,
@@ -306,7 +300,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSummaryCardActions(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListAction> items,
             IPublishedContentTypeCache publishedContentTypeCache,
@@ -338,7 +331,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSummaryCardActions(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListAction> items,
             IPublishedContentTypeCache publishedContentTypeCache,
@@ -377,7 +369,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedContentTypeCache">Accessor for the cache of content types.</param>
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSummaryListItems(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListItem> items,
             IPublishedContentTypeCache publishedContentTypeCache,
@@ -409,7 +400,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         /// <param name="variationContextAccessor">Accessor for the current variation context.</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSummaryListItems(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListItem> items,
             IPublishedContentTypeCache publishedContentTypeCache,

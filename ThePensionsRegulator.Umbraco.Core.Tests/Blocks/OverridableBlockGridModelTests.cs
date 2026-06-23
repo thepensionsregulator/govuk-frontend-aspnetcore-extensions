@@ -8,11 +8,10 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
 {
-    public class OverridableBlockGridModelTests
+    public class OverridableBlockGridModelTests(UmbracoTestContext _testContext) : IClassFixture<UmbracoTestContext>
     {
         private const string DOCUMENT_TYPE_ALIAS_CHILD_BLOCKS = "docTypeChildBlocks";
         private const string PROPERTY_ALIAS_CHILD_BLOCKS = "childBlocks";
-        private UmbracoTestContext _testContext = new();
 
         private static (OverridableBlockGridModel ParentBlockGrid, OverridableBlockListModel ChildBlockList, OverridableBlockListModel GrandChildBlockList) CreateOverridableBlockGridModelWithTwoNestedOverridableBlockLists()
         {

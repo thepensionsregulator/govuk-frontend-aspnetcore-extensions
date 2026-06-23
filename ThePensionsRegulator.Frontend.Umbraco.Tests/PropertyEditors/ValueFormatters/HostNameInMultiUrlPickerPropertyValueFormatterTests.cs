@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
@@ -16,7 +16,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             var input = new Link { Url = "https://example.org" };
             var expected = "https://example.com";
 
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             var accessor = new Mock<IHttpContextAccessor>();
             accessor.Setup(x => x.HttpContext).Returns(context.HttpContext.Object);
 
@@ -42,7 +42,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             };
             var expected = "https://example.com";
 
-            var context = new UmbracoTestContext();
+            using var context = new UmbracoTestContext();
             var accessor = new Mock<IHttpContextAccessor>();
             accessor.Setup(x => x.HttpContext).Returns(context.HttpContext.Object);
 

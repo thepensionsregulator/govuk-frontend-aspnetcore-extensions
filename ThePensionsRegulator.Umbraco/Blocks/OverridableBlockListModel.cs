@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
 using ThePensionsRegulator.Umbraco.PropertyEditors;
 using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
@@ -13,12 +15,18 @@ namespace ThePensionsRegulator.Umbraco.Blocks
     [TypeConverter(typeof(OverridableBlockListTypeConverter))]
     public class OverridableBlockListModel : OverridableBlockModel<OverridableBlockListItem>
     {
+        private IEnumerable<IPropertyValueFormatter>? _propertyValueFormatters;
+
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
         /// </summary>
         public OverridableBlockListModel() : this(Array.Empty<BlockListItem>()) { }
 
-        private IEnumerable<IPropertyValueFormatter>? _propertyValueFormatters;
+        /// <summary>
+        /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
+        /// </summary>
+        /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block list items.</param>
+        public OverridableBlockListModel(IPublishedValueFallback publishedValueFallback) : this(publishedValueFallback, Array.Empty<BlockListItem>()) { }
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/>
@@ -26,7 +34,28 @@ namespace ThePensionsRegulator.Umbraco.Blocks
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        public OverridableBlockListModel(IEnumerable<BlockListItem> blockListItems, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
+        public OverridableBlockListModel(
+            IEnumerable<BlockListItem> blockListItems,
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,
+            Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
+            => Initialise(null, blockListItems, filter, publishedElementFactory);
+
+
+        /// <summary>
+        /// Creates a new <see cref="OverridableBlockListModel"/>
+        /// </summary>
+        /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block list items.</param>
+        /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
+        /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
+        /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
+        public OverridableBlockListModel(
+            IPublishedValueFallback publishedValueFallback,
+            IEnumerable<BlockListItem> blockListItems,
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,
+            Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
+            => Initialise(publishedValueFallback, blockListItems, filter, publishedElementFactory);
+
+        private void Initialise(IPublishedValueFallback? publishedValueFallback, IEnumerable<BlockListItem> blockListItems, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory)
         {
             if (blockListItems is null)
             {
@@ -38,19 +67,25 @@ namespace ThePensionsRegulator.Umbraco.Blocks
 
             // Take the IEnumerable<BlockListItem> (which is probably a BlockListModel) and convert each item to an OverridableBlockListItem,
             // and each nested block list to an OverridableBlockListModel populated with OverridableBlockListItems.
-            foreach (var item in blockListItems)
+            if (blockListItems.Any())
             {
-                var overridableItem = item as OverridableBlockListItem ?? new OverridableBlockListItem(item, factory);
-                foreach (var property in overridableItem.Content.Properties)
+                publishedValueFallback = publishedValueFallback ?? StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>();
+
+                foreach (var item in blockListItems)
                 {
-                    ConvertBlockModelPropertyToOverridable<BlockListModel, OverridableBlockListModel>(
-                        Constants.PropertyEditors.Aliases.BlockList,
-                        overridableItem,
-                        property,
-                        blockList => new OverridableBlockListModel(blockList, BaseFilter, factory),
-                        () => new OverridableBlockListModel(Array.Empty<BlockListItem>(), BaseFilter, factory));
+                    var overridableItem = item as OverridableBlockListItem ?? new OverridableBlockListItem(item, factory);
+                    foreach (var property in overridableItem.Content.Properties)
+                    {
+                        ConvertBlockModelPropertyToOverridable<BlockListModel, OverridableBlockListModel>(
+                            publishedValueFallback,
+                            Constants.PropertyEditors.Aliases.BlockList,
+                            overridableItem,
+                            property,
+                            blockList => new OverridableBlockListModel(publishedValueFallback, blockList, BaseFilter, factory),
+                            () => new OverridableBlockListModel(publishedValueFallback, Array.Empty<BlockListItem>(), BaseFilter, factory));
+                    }
+                    Items.Add(overridableItem);
                 }
-                Items.Add(overridableItem);
             }
 
             CopyFilterToDescendantBlockLists(Items, BaseFilter);

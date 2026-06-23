@@ -9,16 +9,14 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
-    public class TprGlobalNavigationTests
+    public class TprGlobalNavigationTests : IClassFixture<UmbracoTestContext>
     {
         private Mock<IPublishedContent> _settingsNode;
         private TprGlobalNavigationService _sut;
         private TprHeaderMenuViewModel _menuViewModel;
 
-        public TprGlobalNavigationTests()
+        public TprGlobalNavigationTests(UmbracoTestContext testContext)
         {
-            var testContext = new UmbracoTestContext();
-
             var children = new List<TprHeaderMenuChildItem>
             {
                 new TprHeaderMenuChildItem("ChildTest", "/childTest"),

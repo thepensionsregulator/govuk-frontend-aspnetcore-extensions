@@ -20,7 +20,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="items">The checkboxes.</param>
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideCheckboxes(this IOverridablePublishedElement blockContent,
             IEnumerable<CheckboxItemBase> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor)
@@ -48,12 +47,14 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideCheckboxes(this IOverridablePublishedElement blockContent,
             IEnumerable<CheckboxItemBase> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
-            => blockContent.OverrideCheckboxes(items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        {
+            GuardOverrideChildBlocks(nameof(OverrideCheckboxes), new List<string> { ElementTypeAliases.Checkboxes }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+            blockContent.OverrideCheckboxes(items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        }
 
         /// <summary>
         /// Replaces the checkboxes configured in Umbraco with those supplied as an argument.
@@ -113,7 +114,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="items">The radio buttons.</param>
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideRadioButtons(this IOverridablePublishedElement blockContent,
             IEnumerable<RadioItemBase> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor)
@@ -140,12 +140,14 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideRadioButtons(this IOverridablePublishedElement blockContent,
             IEnumerable<RadioItemBase> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
-            => blockContent.OverrideRadioButtons(items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        {
+            GuardOverrideChildBlocks(nameof(OverrideRadioButtons), new List<string> { ElementTypeAliases.Radios }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+            blockContent.OverrideRadioButtons(items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        }
 
         /// <summary>
         /// Replaces the radio buttons configured in Umbraco with those supplied as an argument.
@@ -205,7 +207,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="items">The select options.</param>
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSelectOptions(this IOverridablePublishedElement blockContent,
             IEnumerable<SelectOption> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor)
@@ -233,12 +234,14 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSelectOptions(this IOverridablePublishedElement blockContent,
             IEnumerable<SelectOption> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
-            => blockContent.OverrideSelectOptions(items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        {
+            GuardOverrideChildBlocks(nameof(OverrideSelectOptions), new List<string> { ElementTypeAliases.Select }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+            blockContent.OverrideSelectOptions(items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        }
 
 
         /// <summary>
@@ -280,7 +283,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="items">The summary card actions.</param>
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSummaryCardActions(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListAction> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor)
@@ -308,12 +310,14 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSummaryCardActions(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListAction> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
-            => OverrideSummaryCardActions(blockContent, items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        {
+            GuardOverrideChildBlocks(nameof(OverrideSummaryListItems), new List<string> { ElementTypeAliases.SummaryCard }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+            OverrideSummaryCardActions(blockContent, items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        }
 
         /// <summary>
         /// Replaces the summary card actions configured in Umbraco with those supplied as an argument.
@@ -342,7 +346,6 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="items">The summary list items.</param>
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSummaryListItems(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListItem> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor)
@@ -370,12 +373,14 @@ namespace GovUk.Frontend.Umbraco.Blocks
         /// <param name="publishedSnapshotAccessor">Accessor for a published snapshot, which is a point-in-time capture of the current state of everything that is "published".</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
-        [Obsolete("Use an overload which specifies an IPublishedValueFallback.")]
         public static void OverrideSummaryListItems(this IOverridablePublishedElement blockContent,
             IEnumerable<SummaryListItem> items,
             IPublishedSnapshotAccessor publishedSnapshotAccessor,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
-            => OverrideSummaryListItems(blockContent, items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        {
+            GuardOverrideChildBlocks(nameof(OverrideSummaryListItems), new List<string> { ElementTypeAliases.SummaryList, ElementTypeAliases.SummaryCard }, blockContent.ContentType?.Alias, publishedSnapshotAccessor);
+            OverrideSummaryListItems(blockContent, items, publishedSnapshotAccessor, StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>(), filter);
+        }
 
         /// <summary>
         /// Replaces the summary list items configured in Umbraco with those supplied as an argument.

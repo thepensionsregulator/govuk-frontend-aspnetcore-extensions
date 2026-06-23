@@ -47,6 +47,12 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
             _umbracoHelperAccessor.Setup(x => x.TryGetUmbracoHelper(out _umbracoHelper)).Returns(true);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _testContext.Dispose();
+        }
+
         private UmbracoDateInputModelBinder CreateModelBinder(DateInputModelConverter converter)
             => new UmbracoDateInputModelBinder(
                     converter,

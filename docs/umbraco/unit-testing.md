@@ -60,6 +60,7 @@ If all tests in the class need the same setup (for example a `SetupContentType` 
 
 ```csharp
 [TestFixture]
+[NonParallelizable]
 public class ExampleTests
 {
     private UmbracoTestContext _testContext;
@@ -107,6 +108,7 @@ Use `[OneTimeSetUp]` and `[OneTimeTearDown]`:
 
 ```csharp
 [TestFixture]
+[NonParallelizable]
 public class ExampleTests
 {
     private UmbracoTestContext _testContext;
@@ -350,7 +352,7 @@ This prevents all test classes within the assembly from running in parallel with
 
 ### NUnit
 
-NUnit does not run tests in parallel by default, so no additional configuration is needed.
+Apply `[NonParallelizable]` to every `[TestFixture]` that uses `UmbracoTestContext`.
 
 ### Resolving flaky tests when multiple test projects are run together
 

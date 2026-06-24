@@ -35,6 +35,8 @@
 
   <ItemGroup>
     <PackageReference Include="MailKit" Version="4.16.0" />
+    <!-- Pin MessagePack to a patched version to resolve transitive high-severity advisory GHSA-hv8m-jj95-wg3x (CVE-2026-48109) pulled in by Umbraco.Cms. -->
+    <PackageReference Include="MessagePack" Version="3.1.7" />
     <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.7" />
     <PackageReference Include="Umbraco.Cms.Web.Common" Version="17.2.2" />
 	<PackageReference Include="ThePensionsRegulator.Analyzers.Umbraco" Version="1.0.0">

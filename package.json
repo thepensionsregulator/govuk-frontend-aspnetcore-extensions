@@ -33,7 +33,9 @@
     "json5": "2.2.2"
   },
   "overrides": {
-    "minimatch": ">=10.2.4"
+    "minimatch": ">=10.2.4",
+    "js-yaml": "^4.2.0",
+    "@babel/core": "^7.29.6"
   },
   "dependencies": {
     "brace-expansion": "^5.0.5",

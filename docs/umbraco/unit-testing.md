@@ -6,9 +6,9 @@ Most examples on this page are shown with XUnit, but these helper classes should
 
 ## Create an Umbraco context
 
-Create an instance of `UmbracoTestContext` to get access to a mock Umbraco page request. Because `UmbracoTestContext` writes to a process-wide static field it **must always be disposed** and test classes that use it **must not run in parallel** with each other. See [Avoiding flaky tests](#avoiding-flaky-tests) for details.
+Create an instance of `UmbracoTestContext` for each test to get access to a mock Umbraco page request. Because `UmbracoTestContext` writes to a process-wide static field it **must always be disposed** and test classes that use it **must not run in parallel** with each other. See [Avoiding flaky tests](#avoiding-flaky-tests) for details.
 
-### One context per test
+### Create and dispose a context in each test (xUnit)
 
 Use `using var` so the context is disposed automatically at the end of the test. You can customise the context mocks with no side-effects.
 
@@ -30,7 +30,7 @@ public void My_test()
 }
 ```
 
-### One context per test, with setup (xUnit)
+### Create and dispose the test class (xUnit)
 
 If all tests in the class need the same setup (for example a `SetupContentType` call), implement `IDisposable` and create the context in the constructor. xUnit creates a new instance of the test class per test, so `Dispose` is called after each test:
 
@@ -54,7 +54,7 @@ public class ExampleTests : IDisposable
 }
 ```
 
-### One context per test, with setup (NUnit)
+### Create and dispose the context using [SetUp] and [TearDown] (NUnit)
 
 If all tests in the class need the same setup (for example a `SetupContentType` call), use `[SetUp]` and `[TearDown]`. NUnit calls these before and after each individual test:
 
@@ -76,48 +76,6 @@ public class ExampleTests
     {
         var element = UmbracoContentFactory.CreateContent<IPublishedElement>("myContentTypeAlias");
     }
-}
-```
-
-### One context per class (xUnit)
-
-Implement `IClassFixture<UmbracoTestContext>`. xUnit creates one instance for the class and disposes it after all tests have run:
-
-```csharp
-public class ExampleTests(UmbracoTestContext _testContext) : IClassFixture<UmbracoTestContext>
-{
-    [Fact]
-    public void My_test()
-    {
-        var controller = new ExampleController(
-            Mock.Of<ILogger<ExampleController>>(),
-            _testContext.CompositeViewEngine.Object,
-            _testContext.UmbracoContextAccessor.Object,
-            _testContext.VariationContextAccessor.Object,
-            _testContext.ServiceContext)
-        {
-            ControllerContext = _testContext.ControllerContext
-        };
-    }
-}
-```
-
-### One context per class (NUnit)
-
-Use `[OneTimeSetUp]` and `[OneTimeTearDown]`:
-
-```csharp
-[TestFixture]
-[NonParallelizable]
-public class ExampleTests
-{
-    private UmbracoTestContext _testContext;
-
-    [OneTimeSetUp]
-    public void SetUp() => _testContext = new UmbracoTestContext();
-
-    [OneTimeTearDown]
-    public void TearDown() => _testContext.Dispose();
 }
 ```
 

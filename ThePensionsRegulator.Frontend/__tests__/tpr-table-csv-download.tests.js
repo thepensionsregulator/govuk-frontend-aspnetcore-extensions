@@ -4,21 +4,35 @@ import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, hasMerged
 
 beforeEach(() => {
     document.body.innerHTML = "";
-    document.body.removeAttribute("data-tpr-table-csv-download-text");
+    document.head.innerHTML = "";
 });
 
+function setTableCsvDownloadText(text) {
+    let meta = document.querySelector('meta[name="tpr-table-csv-download-text"]');
+    if (!meta) {
+        meta = document.createElement('meta');
+        meta.setAttribute('name', 'tpr-table-csv-download-text');
+        document.head.appendChild(meta);
+    }
+    if (text) {
+        meta.setAttribute('content', text);
+    } else {
+        meta.setAttribute('content', '');
+    }
+}
+
 describe("getButtonText", () => {
-    test("returns default text when no data attribute is set", () => {
+    test("returns default text when no meta tag is set", () => {
         expect(getButtonText()).toBe("Download table data (CSV)");
     });
 
-    test("returns custom text from body data attribute", () => {
-        document.body.setAttribute("data-tpr-table-csv-download-text", "Custom download");
+    test("returns custom text from meta tag", () => {
+        setTableCsvDownloadText("Custom download");
         expect(getButtonText()).toBe("Custom download");
     });
 
-    test("returns default text when data attribute is empty", () => {
-        document.body.setAttribute("data-tpr-table-csv-download-text", "");
+    test("returns default text when meta tag is empty", () => {
+        setTableCsvDownloadText("");
         expect(getButtonText()).toBe("Download table data (CSV)");
     });
 });
@@ -292,20 +306,19 @@ describe("initTableCsvDownload", () => {
         expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).toBeInTheDocument();
     });
 
-    test("uses custom button text from body data attribute", () => {
-        document.body.setAttribute("data-tpr-table-csv-download-text", "Lawrlwytho data tabl (CSV)");
+    test("uses custom button text from meta tag", () => {
+        setTableCsvDownloadText("Lawrlwytho data tabl (CSV)");
         document.body.innerHTML = `
             <table class="govuk-table">
                 <tr><td>Data</td></tr>
             </table>`;
-        // Re-set the attribute after innerHTML clears it
-        document.body.setAttribute("data-tpr-table-csv-download-text", "Lawrlwytho data tabl (CSV)");
         initTableCsvDownload();
         const button = document.querySelector("button");
         expect(button).toHaveTextContent("Lawrlwytho data tabl (CSV)");
     });
 
     test("uses caption text for file name attribute", () => {
+        setTableCsvDownloadText("");
         document.body.innerHTML = `
             <div>
                 <table class="govuk-table">

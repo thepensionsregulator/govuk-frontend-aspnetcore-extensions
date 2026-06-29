@@ -6,8 +6,8 @@
 
         /// <summary>
         /// Enable a CSV download button below each .govuk-table element on the page.
-        /// The button text defaults to "Download table data (CSV)" but can be customised by adding
-        /// a data-tpr-table-csv-download-text attribute to the &lt;body&gt; element.
+        /// The button text defaults to "Download table data (CSV)" but can be customised by passing
+        /// a custom text string to the TPR/BodyClosing partial.
         /// Tables with merged cells (colspan or rowspan) are skipped.
         /// </summary>
         public bool EnableTableCsvDownload { get; set; }

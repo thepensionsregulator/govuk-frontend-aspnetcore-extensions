@@ -38,13 +38,19 @@ The downloaded file name is derived from the table's `<caption>` element. If the
 
 ## Customising button text
 
-The default button text is **"Download table data (CSV)"**. To customise it (e.g. for Welsh language support), add a `data-tpr-table-csv-download-text` attribute to the `<body>` element:
+The default button text is **"Download table data (CSV)"**. To customise it (e.g. for Welsh language support), pass the custom text to the `TPR/BodyClosing` partial:
 
+**Regular ASP.NET Core app (Example):**
 ```html
-<body data-tpr-table-csv-download-text="Lawrlwytho data tabl (CSV)">
+<partial name="TPR/BodyClosing" model="@customDownloadText" />
 ```
 
-In Umbraco, a dictionary item `Table CSV Download Button Text` can be used to provide translations. The layout page should render the body attribute using the dictionary value.
+**Umbraco app:**
+```html
+<partial name="TPR/BodyClosing" model="@(Umbraco.GetDictionaryValue("Table CSV Download Button Text"))" />
+```
+
+The custom text is rendered as a `<meta name="tpr-table-csv-download-text" content="...">` tag in the document when the feature is enabled.
 
 ## Merged cells
 

@@ -3,11 +3,12 @@
 const DEFAULT_BUTTON_TEXT = "Download table data (CSV)";
 
 /**
- * Gets the button text from the body's data attribute, falling back to default.
+ * Gets the button text from a meta tag, falling back to default.
  * @returns {string}
  */
 export function getButtonText() {
-    const customText = document.body.getAttribute("data-tpr-table-csv-download-text");
+    const metaTag = document.querySelector('meta[name="tpr-table-csv-download-text"]');
+    const customText = metaTag ? metaTag.getAttribute("content") : null;
     return customText || DEFAULT_BUTTON_TEXT;
 }
 

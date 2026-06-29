@@ -2,9 +2,16 @@
 @using Microsoft.Extensions.Options
 @inject IOptions<TprFrontendOptions> tprOptions
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    var tableCSVDownloadText = Model as string;
+}
 <partial name="GOVUK/BodyClosing" />
 <script src="/ThePensionsRegulator.Frontend/js/tpr-back-to-top.min.js" type="module" asp-append-version="true"></script>
 @if (tprOptions.Value.EnableTableCsvDownload)
 {
+    @if (!string.IsNullOrEmpty(tableCSVDownloadText))
+    {
+        <meta name="tpr-table-csv-download-text" content="@tableCSVDownloadText" />
+    }
     <script src="/ThePensionsRegulator.Frontend/js/tpr-table-csv-download.min.js" type="module" asp-append-version="true"></script>
 }

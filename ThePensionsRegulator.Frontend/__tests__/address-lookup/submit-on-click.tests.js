@@ -55,7 +55,7 @@ describe("submitOnClick", () => {
         expect(event.preventDefault).toHaveBeenCalled();
         expect(lookup.validator.addOrUpdateCustomFieldsetError).toHaveBeenCalledWith(
             expect.any(HTMLFieldSetElement),
-            ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_CONFIRM
+            "mock-error-select-confirm"
         );
     });
 

@@ -1,4 +1,4 @@
-import { AddressLookupApiService } from "./api-service.js"; 
+import { AddressLookupApiService } from "./api-service.js";
 import { ADDRESS_LOOKUP_CONFIG } from "./config.js";
 import { AddressLookupStateMachine } from "./state-machine.js";
 import { AddressLookupComponentBuilder } from "./component-builder.js";
@@ -8,7 +8,7 @@ import { PostcodeSanitiser } from "./postcode-sanitiser.js";
 import { FieldDefaults } from "./field-defaults.js";
 import { PostcodeNormaliser } from "./postcode-normaliser.js";
 import { toTitleCase } from "./utils.js";
-    
+
 class TprAddressLookup {
     constructor(element, key, role, primaryStateMachine) {
         this.container = element;
@@ -65,7 +65,7 @@ class TprAddressLookup {
 
         this.initialised = false;
 
-        if (this.validator.validAddress(address)) { 
+        if (this.validator.validAddress(address)) {
             this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
         } else {
             this.stateMachine.transition(AddressLookupStateMachine.STATES.SEARCH);
@@ -76,7 +76,7 @@ class TprAddressLookup {
 
     onPrimaryStateChange(newState, data) {
         if (newState === AddressLookupStateMachine.STATES.CONFIRMED && this.isSameAsChecked()) {
-            this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED,  data);
+            this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, data);
         }
     }
 
@@ -158,7 +158,7 @@ class TprAddressLookup {
         const findAddressButton = this.componentBuilder.createFindAddressButton((event) => this.findAddressButtonOnClick(event));
         const enterInternationalAddressLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.ENTER_INTERNATIONAL_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ENTER_INTERNATIONAL_ADDRESS);
         enterInternationalAddressLink.addEventListener("click", (event) => { this.enterInternationalAddressOnClick(event); });
-        const linkList = this.componentBuilder.createLinkList([ enterInternationalAddressLink ]);
+        const linkList = this.componentBuilder.createLinkList([enterInternationalAddressLink]);
 
 
         const fieldsetChildrenFormGroup = document.createElement("div");
@@ -287,7 +287,7 @@ class TprAddressLookup {
             .addRequiredValidation(this.fieldDefaults.requiredMessage(key))
             .addMaxLengthValidation(this.fieldDefaults.maxLength(key), this.fieldDefaults.maxLengthMessage(key))
             .build();
-            
+
         const addressLine2Key = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2;
         const addressLine2Input = this.componentBuilder.createGovukTextInput(this.fieldDefaults.label(addressLine2Key), addressLine2Key, this.fieldDefaults.width(addressLine2Key))
             .addMaxLengthValidation(this.fieldDefaults.maxLength(addressLine2Key), this.fieldDefaults.maxLengthMessage(addressLine2Key))
@@ -561,7 +561,7 @@ function submitOnClick(event, addressLookupObjects) {
                 const fieldset = addressLookup.container.querySelector("fieldset");
                 const errorMessage = addressLookup.stateMachine.currentState === AddressLookupStateMachine.STATES.SEARCH
                     ? ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_FIND_ADDRESS
-                    : ADDRESS_LOOKUP_CONFIG.ERROR_MESSAGES.SELECT_CONFIRM;
+                    : addressLookup.fieldDefaults.errorMessage("select-confirm");
                 addressLookup.validator.addOrUpdateCustomFieldsetError(fieldset, errorMessage);
             }
 

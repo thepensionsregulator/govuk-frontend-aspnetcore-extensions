@@ -1,4 +1,5 @@
-﻿using Moq;
+using Moq;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
@@ -33,7 +34,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             ((OverridableBlockGridItem)blockViewModel.CurrentBlock)
                 .AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);
@@ -51,7 +52,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             // Arrange
             var blockViewModel = CreateBlockView(GovUkElementTypeAliases.PageHeading, GovUkElementTypeAliases.PageHeadingSettings, classWasAlreadyPresent, classWasAlreadyPresent ? TprClassNames.Divider : null);
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);
@@ -103,7 +104,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             var blockViewModel = CreateBlockView(contentAlias, settingsAlias, classWasAlreadyPresent, classWasAlreadyPresent ? dividerClass : null);
             Mock.Get(blockViewModel.CurrentBlock.Settings!).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, legendIsPageHeading);
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);
@@ -153,7 +154,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
                 Mock.Get(blockViewModel.PreviousBlock.Settings!).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
             }
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);
@@ -192,7 +193,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
                 Mock.Get(blockViewModel.NextBlock.Settings!).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
             }
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);

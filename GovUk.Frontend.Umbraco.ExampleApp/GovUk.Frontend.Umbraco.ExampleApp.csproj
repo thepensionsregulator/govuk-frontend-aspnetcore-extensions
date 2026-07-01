@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -25,6 +25,10 @@
       <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
       <PackageReference Include="Umbraco.Cms.Api.Management" Version="17.5.0" />
       <PackageReference Include="uSync" Version="17.3.5" />
+      <PackageReference Include="ThePensionsRegulator.Analyzers.Umbraco" Version="1.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <ProjectReference Include="..\ThePensionsRegulator.GovUk.Frontend\ThePensionsRegulator.GovUk.Frontend.csproj" />
       <ProjectReference Include="..\ThePensionsRegulator.Frontend.Umbraco\ThePensionsRegulator.Frontend.Umbraco.csproj" />
       <ProjectReference Include="..\ThePensionsRegulator.GovUk.Frontend.Umbraco\ThePensionsRegulator.GovUk.Frontend.Umbraco.csproj" />

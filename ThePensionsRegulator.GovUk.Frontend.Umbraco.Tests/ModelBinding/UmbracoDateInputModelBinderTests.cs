@@ -382,7 +382,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.ModelBinding
             var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
 
             // Act
-            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _testContext.CultureDictionaryForCurrentUICulture.Object, parseErrors, modelMetadata, _testContext.UmbracoHelper);
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), null, _testContext.CultureDictionaryForCurrentUICulture.Object, parseErrors, modelMetadata, _testContext.UmbracoHelper);
 
             // Assert
             Assert.Equal(expectedMessage, result);
@@ -410,7 +410,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.ModelBinding
             var modelMetadata = new ModelMetadataForProperty(typeof(ExampleModel).GetProperty(nameof(ExampleModel.DateProperty))!);
 
             // Act
-            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), _testContext.CultureDictionaryForCurrentUICulture.Object, parseErrors, modelMetadata, _testContext.UmbracoHelper);
+            var result = UmbracoDateInputModelBinder.GetModelStateErrorMessage(Mock.Of<IOverridablePublishedElement>(), null, _testContext.CultureDictionaryForCurrentUICulture.Object, parseErrors, modelMetadata, _testContext.UmbracoHelper);
 
             // Assert
             Assert.Equal(expectedMessage, result);

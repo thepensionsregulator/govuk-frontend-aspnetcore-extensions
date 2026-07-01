@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Options;
+using Moq;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
@@ -17,7 +19,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             // Arrange
             var blockView = CreateTprBoxBlockView(TprBoxStyles.FullWidth, renderWidthContainerInitialValue);
 
-            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }));
+            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }), Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockView);
@@ -35,7 +37,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             // Arrange
             var blockView = CreateTprBoxBlockView(TprBoxStyles.FullWidth, renderWidthContainerInitialValue);
 
-            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = false }));
+            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = false }), Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockView);
@@ -53,7 +55,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             // Arrange
             var blockView = CreateTprBoxBlockView(TprBoxStyles.Solid, renderWidthContainerInitialValue);
 
-            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }));
+            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }), Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockView);
@@ -76,7 +78,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
                 CloseWidthContainer = renderWidthContainerInitialValue
             };
 
-            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }));
+            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }), Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockView);
@@ -127,7 +129,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
                 CloseWidthContainer = false
             };
 
-            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }));
+            var interceptor = new TprBoxViewInterceptor(Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true }), Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewWidthContainer);

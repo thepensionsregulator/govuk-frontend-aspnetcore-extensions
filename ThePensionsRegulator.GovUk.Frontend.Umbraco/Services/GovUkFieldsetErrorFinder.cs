@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 {
-    public class GovUkFieldsetErrorFinder : IGovUkFieldsetErrorFinder
+    public class GovUkFieldsetErrorFinder(IPublishedValueFallback _publishedValueFallback) : IGovUkFieldsetErrorFinder
     {
         /// <summary>
         /// Return fieldset-level errors that match a ModelState error, if the 'fieldsetErrors' setting is enabled for a fieldset block
@@ -18,7 +19,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
             if (fieldsetBlock?.Content?.ContentType?.Alias != ElementTypeAliases.Fieldset) { return Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>(); }
 
             bool.TryParse(fieldsetBlock.Settings?.GetProperty(PropertyAliases.FieldsetErrorsEnabled)?.GetValue()?.ToString(), out var fieldsetErrorsEnabled);
-            var blocksWithinFieldset = fieldsetBlock.Content.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks);
+            var blocksWithinFieldset = fieldsetBlock.Content.Value<OverridableBlockListModel>(_publishedValueFallback, PropertyAliases.FieldsetBlocks);
             if (fieldsetErrorsEnabled && blocksWithinFieldset != null)
             {
                 var invalidFields = modelState.Where(x => x.Value?.ValidationState == ModelValidationState.Invalid && !string.IsNullOrEmpty(x.Key)).Select(x => x.Key);

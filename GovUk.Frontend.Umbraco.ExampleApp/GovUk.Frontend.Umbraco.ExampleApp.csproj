@@ -14,6 +14,7 @@
 
     <ItemGroup>
 		<PackageReference Include="Microsoft.Build.Tasks.Core" Version="18.7.1" />
+		<PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
         <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
         <!-- Pin MessagePack to a patched version to resolve transitive high-severity advisory GHSA-hv8m-jj95-wg3x (CVE-2026-48109) pulled in by Umbraco.Cms. -->
         <PackageReference Include="MessagePack" Version="3.1.7" />

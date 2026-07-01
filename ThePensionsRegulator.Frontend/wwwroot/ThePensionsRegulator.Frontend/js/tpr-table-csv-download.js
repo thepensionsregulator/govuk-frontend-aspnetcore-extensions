@@ -132,8 +132,32 @@ export function hasExistingDownloadButton(table) {
 }
 
 /**
+ * Finds a server-side rendered CSV download form that follows the table, if present.
+ * Returns the form element, or null if not found.
+ * @param {HTMLTableElement} table
+ * @returns {HTMLFormElement|null}
+ */
+export function findServerSideDownloadForm(table) {
+    const next = table.nextElementSibling;
+    if (!next) return null;
+
+    if (next.classList.contains("tpr-table-download-form") && next.querySelector("button")) {
+        return next;
+    }
+
+    if (next.querySelector) {
+        const form = next.querySelector(".tpr-table-download-form");
+        if (form && form.querySelector("button")) return form;
+    }
+
+    return null;
+}
+
+/**
  * Initialises CSV download buttons on all .govuk-table elements.
  * Idempotent — will not add a duplicate button if one already follows the table.
+ * When a server-side download form is present, intercepts its submit and performs
+ * the download client-side instead of posting to the server.
  */
 export function initTableCsvDownload() {
     const buttonText = getButtonText();
@@ -145,14 +169,26 @@ export function initTableCsvDownload() {
         // Skip tables with merged cells — CSV cannot represent them reliably
         if (hasMergedCells(table)) continue;
 
-        // Skip if a download button has already been provided for this table
-        // (either by this script or server-side), to avoid duplicates.
-        if (hasExistingDownloadButton(table)) {
-            continue;
-        }
+        // Skip if a client-side download button was already added by this script (idempotency).
+        const next = table.nextElementSibling;
+        if (next && next.hasAttribute("data-tpr-table-csv-button")) continue;
 
         const caption = table.querySelector("caption");
         const fileName = sanitizeFileName(caption ? (caption.innerText || caption.textContent) : null);
+
+        // If a server-side download form is present, intercept its submit and perform
+        // the download client-side to avoid a server round-trip.
+        const serverForm = findServerSideDownloadForm(table);
+        if (serverForm) {
+            if (!serverForm.hasAttribute("data-tpr-table-csv-intercepted")) {
+                serverForm.setAttribute("data-tpr-table-csv-intercepted", "true");
+                serverForm.addEventListener("submit", (e) => {
+                    e.preventDefault();
+                    downloadCsv(tableToCsv(table), fileName);
+                });
+            }
+            continue;
+        }
 
         const button = document.createElement("button");
         button.type = "button";

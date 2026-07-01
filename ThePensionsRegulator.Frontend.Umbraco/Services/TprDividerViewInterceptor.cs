@@ -1,6 +1,7 @@
 ﻿using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using GovUkElementTypeAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.ElementTypeAliases;
 using GovUkPropertyAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyAliases;
 
@@ -9,7 +10,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
     /// <summary>
     /// Adds a decorative horizontal divider after the main heading on a page.
     /// </summary>
-    public class TprDividerViewInterceptor : IBlockViewInterceptor
+    public class TprDividerViewInterceptor(IPublishedValueFallback _publishedValueFallback) : IBlockViewInterceptor
     {
         private List<string> _fieldsetAliases = [GovUkElementTypeAliases.Checkboxes, GovUkElementTypeAliases.DateInput, GovUkElementTypeAliases.Fieldset, GovUkElementTypeAliases.Radios];
         private List<string> _labelAliases = [GovUkElementTypeAliases.FileUpload, GovUkElementTypeAliases.Select, GovUkElementTypeAliases.Textarea, GovUkElementTypeAliases.TextInput];
@@ -25,12 +26,12 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
                 ApplyClassToRowAndForceRowToRender(blockViewModel, TprClassNames.Divider);
             }
 
-            if (_fieldsetAliases.Contains(blockAlias) && blockViewModel.CurrentBlock!.Settings?.Value<bool>(GovUkPropertyAliases.FieldsetLegendIsPageHeading) == true)
+            if (_fieldsetAliases.Contains(blockAlias) && blockViewModel.CurrentBlock!.Settings?.Value<bool>(_publishedValueFallback, GovUkPropertyAliases.FieldsetLegendIsPageHeading) == true)
             {
                 ApplyClassToRowAndForceRowToRender(blockViewModel, TprClassNames.DividerForFieldsetWithLegendAsPageHeading);
             }
 
-            if (_labelAliases.Contains(blockAlias) && blockViewModel.CurrentBlock!.Settings?.Value<bool>(GovUkPropertyAliases.LabelIsPageHeading) == true)
+            if (_labelAliases.Contains(blockAlias) && blockViewModel.CurrentBlock!.Settings?.Value<bool>(_publishedValueFallback, GovUkPropertyAliases.LabelIsPageHeading) == true)
             {
                 ApplyClassToRowAndForceRowToRender(blockViewModel, TprClassNames.DividerForFormComponentWithLabelAsPageHeading);
             }
@@ -43,8 +44,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Services
         {
             var aliasOfAdjacentBlock = adjacentBlock?.Content.ContentType.Alias ?? string.Empty;
             return (aliasOfAdjacentBlock == GovUkElementTypeAliases.PageHeading
-                || (_fieldsetAliases.Contains(aliasOfAdjacentBlock) && adjacentBlock!.Settings?.Value<bool>(GovUkPropertyAliases.FieldsetLegendIsPageHeading) == true)
-                || (_labelAliases.Contains(aliasOfAdjacentBlock) && adjacentBlock!.Settings?.Value<bool>(GovUkPropertyAliases.LabelIsPageHeading) == true)
+                || (_fieldsetAliases.Contains(aliasOfAdjacentBlock) && adjacentBlock!.Settings?.Value<bool>(_publishedValueFallback, GovUkPropertyAliases.FieldsetLegendIsPageHeading) == true)
+                || (_labelAliases.Contains(aliasOfAdjacentBlock) && adjacentBlock!.Settings?.Value<bool>(_publishedValueFallback, GovUkPropertyAliases.LabelIsPageHeading) == true)
                 );
         }
 

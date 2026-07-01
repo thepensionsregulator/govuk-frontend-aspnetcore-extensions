@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -21,6 +21,10 @@
     <!-- Force Windows to use ICU. Otherwise Windows 10 2019H1+ will do it, but older Windows 10 and most, if not all, Windows Server editions will run NLS -->
       <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
       <PackageReference Include="uSync" Version="17.0.4" />
+      <PackageReference Include="ThePensionsRegulator.Analyzers.Umbraco" Version="1.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <ProjectReference Include="..\ThePensionsRegulator.GovUk.Frontend\ThePensionsRegulator.GovUk.Frontend.csproj" />
       <ProjectReference Include="..\ThePensionsRegulator.Frontend.Umbraco\ThePensionsRegulator.Frontend.Umbraco.csproj" />
       <ProjectReference Include="..\ThePensionsRegulator.GovUk.Frontend.Umbraco\ThePensionsRegulator.GovUk.Frontend.Umbraco.csproj" />

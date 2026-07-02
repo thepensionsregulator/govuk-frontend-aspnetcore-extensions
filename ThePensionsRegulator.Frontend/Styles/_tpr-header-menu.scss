@@ -330,7 +330,7 @@
             padding: 1rem;
             padding-right: 0.3rem;
             padding-left: 0.3rem;
-            padding-bottom: 1.2rem;
+            padding-bottom: 1.1rem;
             margin-right: 0.1rem
         }
     }
@@ -474,6 +474,10 @@
 
     .tpr-header-menu__arrow-container:has(.tpr-header-menu__arrow:hover) {
         background: $tpr-colour-white;
+    }
+
+    .tpr-header-menu__nav-menu-item:has(.tpr-header-menu__nav-sub-menu:focus-within) {
+         background: $tpr-colour-white;    
     }
 
     .tpr-header-menu__nav-menu-item:has(.tpr-header-menu__nav-sub-menu:focus-within) > a {

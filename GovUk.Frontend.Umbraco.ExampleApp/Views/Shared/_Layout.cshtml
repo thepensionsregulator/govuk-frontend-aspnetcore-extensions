@@ -9,12 +9,13 @@
 @inject UmbracoHelper Umbraco
 @inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
 @inject ITprGlobalNavigationService navigationService;
+@inject Umbraco.Cms.Core.Models.PublishedContent.IPublishedValueFallback publishedValueFallback;
 @{
     var home = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "home");
     var settings = Umbraco.ContentAtRoot().Single(x => x.ContentType.Alias == "settings");
     var useTPRstyles = Configuration.Value.TPRStyles;
-    var headerLockup = new UmbracoTprHeaderLockupModel(settings!) { ShowHeader = useTPRstyles };
-    var footerLockup = new UmbracoTprFooterLockupModel(settings!);
+    var headerLockup = new UmbracoTprHeaderLockupModel(settings!, publishedValueFallback) { ShowHeader = useTPRstyles };
+    var footerLockup = new UmbracoTprFooterLockupModel(settings!, publishedValueFallback);
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
     var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;

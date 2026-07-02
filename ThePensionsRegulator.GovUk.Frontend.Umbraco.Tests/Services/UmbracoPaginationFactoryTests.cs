@@ -3,6 +3,7 @@ using Microsoft.Extensions.Primitives;
 using Moq;
 using ThePensionsRegulator.GovUk.Frontend.Models;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using ThePensionsRegulator.Umbraco.Testing;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
@@ -32,7 +33,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Uses_PaginationModel_defaults_if_settings_empty()
         {
-            var factory = new UmbracoPaginationFactory(_httpContextAccessor.Object);
+            var factory = new UmbracoPaginationFactory(_httpContextAccessor.Object, Mock.Of<IPublishedValueFallback>());
             var defaults = new PaginationModel();
 
             var pagination = factory.CreateFromPaginationBlock(
@@ -58,7 +59,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Uses_properties_from_settings()
         {
-            var factory = new UmbracoPaginationFactory(_httpContextAccessor.Object);
+            var factory = new UmbracoPaginationFactory(_httpContextAccessor.Object, Mock.Of<IPublishedValueFallback>());
             var pageSize = 100;
             var totalItems = 500;
             var cssClasses = "example-class";
@@ -100,7 +101,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         [Fact]
         public void Page_number_from_querystring_respects_setting()
         {
-            var factory = new UmbracoPaginationFactory(_httpContextAccessor.Object);
+            var factory = new UmbracoPaginationFactory(_httpContextAccessor.Object, Mock.Of<IPublishedValueFallback>());
 
             var pagination = factory.CreateFromPaginationBlock(
                 UmbracoBlockListFactory.CreateOverridableBlock(

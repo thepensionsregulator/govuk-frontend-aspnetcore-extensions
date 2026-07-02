@@ -32,7 +32,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
             content.OverrideValue(PROPERTY_ALIAS, textAfter);
 
             // Assert
-            var updatedValue = content.Value<IHtmlEncodedString>(PROPERTY_ALIAS);
+            var updatedValue = content.Value<IHtmlEncodedString>(_testContext.PublishedValueFallback.Object, PROPERTY_ALIAS);
             Assert.Equal(textAfter.ToString(), updatedValue?.ToString());
         }
 
@@ -51,7 +51,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
             content.OverrideValue(PROPERTY_ALIAS, textAfter);
 
             // Assert
-            var updatedValue = content.Value<string>(PROPERTY_ALIAS);
+            var updatedValue = content.Value<string>(_testContext.PublishedValueFallback.Object, PROPERTY_ALIAS);
             Assert.Equal(textAfter, updatedValue);
         }
     }

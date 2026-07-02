@@ -41,7 +41,6 @@
     onChange(callback) {
         this.listeners.push(callback);
     }
-
 }
 
 export { AddressLookupStateMachine };

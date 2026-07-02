@@ -66,6 +66,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string AddressLine2Label => this.Value<string>(_publishedValueFallback, "addressLine2Label");
 
 		///<summary>
+		/// Address line 3 label: Defaults to 'Address line 3 (optional)' if left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine3Label")]
+		public virtual string AddressLine3Label => this.Value<string>(_publishedValueFallback, "addressLine3Label");
+
+		///<summary>
 		/// Address lookup checkbox label: Label for 'same as' checkbox for a secondary address lookup component.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

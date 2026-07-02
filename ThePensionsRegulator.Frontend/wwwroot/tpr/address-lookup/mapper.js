@@ -1,6 +1,6 @@
 ﻿class AddressMapper {
     constructor(config, countryOptions) {
-        this.config = config,
+        this.config = config;
         this.defaultCountryCode = countryOptions.find(x => x.label === config.DEFAULTS.COUNTRY)?.value || '';
     }
 
@@ -10,77 +10,151 @@
         return {
             addressLine1: getValue(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_1),
             addressLine2: getValue(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_2),
+            addressLine3: getValue(this.config.DATA_ATTRIBUTES.ADDRESS_LINE_3),
             town: getValue(this.config.DATA_ATTRIBUTES.TOWN_OR_CITY),
             county: getValue(this.config.DATA_ATTRIBUTES.COUNTY) || getValue(this.config.DATA_ATTRIBUTES.REGION_INTERNATIONAL),
             postcode: getValue(this.config.DATA_ATTRIBUTES.POSTCODE) || getValue(this.config.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL),
-            country: get(this.config.DATA_ATTRIBUTES.COUNTRY_CODE).selectedOptionLabel,
+            country: get(this.config.DATA_ATTRIBUTES.COUNTRY_CODE)?.selectedOptionLabel || '',
             countryCode: getValue(this.config.DATA_ATTRIBUTES.COUNTRY_CODE),
             UPRN: getValue(this.config.DATA_ATTRIBUTES.UPRN)
         };
     }
 
     mapFromDpaResult(dpaResult) {
-        const addressLines = this.#buildAddressLines(dpaResult);
-        const address = {
-            addressLine1: addressLines[0] || '',
-            addressLine2: addressLines[1] || '',
-            addressLine3: addressLines[2] || '',
-            town: dpaResult.POST_TOWN,
-            postcode: dpaResult.POSTCODE,
+        const lines = [];
+
+        if (dpaResult.ORGANISATION_NAME) {
+            lines.push(dpaResult.ORGANISATION_NAME);
+        }
+
+        let buildingName = (dpaResult.BUILDING_NAME || '').trim();
+        const subBuildingName = (dpaResult.SUB_BUILDING_NAME || '').trim();
+        let buildingNumber = (dpaResult.BUILDING_NUMBER || '').trim();
+
+        // Try to split building name if it contains a trailing number or range
+        if (buildingName && !buildingNumber) {
+            const splitResult = this.#splitBuildingNameAndNumber(buildingName);
+            if (splitResult) {
+                buildingName = splitResult[0];
+                buildingNumber = splitResult[1];
+            }
+        }
+
+        const isNumericBuildingName = this.#isNumericStyleBuildingName(buildingName);
+
+        if (subBuildingName) {
+            if (isNumericBuildingName) {
+                lines.push(subBuildingName);
+
+                const streetLine = this.#buildStreetLine(
+                    buildingName,
+                    dpaResult.DEPENDENT_THOROUGHFARE_NAME,
+                    dpaResult.THOROUGHFARE_NAME
+                );
+
+                if (streetLine) {
+                    lines.push(streetLine);
+                }
+            } else if (buildingName) {
+                const subBuildingIsNumeric = this.#isNumericStyleBuildingName(subBuildingName);
+
+                const premiseLine = this.#joinNonEmpty(
+                    [subBuildingName, buildingName],
+                    subBuildingIsNumeric ? ' ' : ', '
+                );
+
+                if (premiseLine) {
+                    lines.push(premiseLine);
+                }
+
+                const streetLine = this.#buildStreetLine(
+                    buildingNumber,
+                    dpaResult.DEPENDENT_THOROUGHFARE_NAME,
+                    dpaResult.THOROUGHFARE_NAME
+                );
+
+                if (streetLine) {
+                    lines.push(streetLine);
+                }
+            } else {
+                // Sub-building only, with building number and street
+                const streetParts = this.#buildStreetLine(
+                    buildingNumber,
+                    dpaResult.DEPENDENT_THOROUGHFARE_NAME,
+                    dpaResult.THOROUGHFARE_NAME
+                );
+
+                const premiseLine = this.#joinNonEmpty([subBuildingName, streetParts], ', ');
+
+                if (premiseLine) {
+                    lines.push(premiseLine);
+                }
+            }
+        } else if (isNumericBuildingName) {
+            const streetLine = this.#buildStreetLine(
+                buildingName,
+                dpaResult.DEPENDENT_THOROUGHFARE_NAME,
+                dpaResult.THOROUGHFARE_NAME
+            );
+
+            if (streetLine) {
+                lines.push(streetLine);
+            }
+        } else if (buildingName) {
+            lines.push(buildingName);
+
+            const streetLine = this.#buildStreetLine(
+                buildingNumber,
+                dpaResult.DEPENDENT_THOROUGHFARE_NAME,
+                dpaResult.THOROUGHFARE_NAME
+            );
+
+            if (streetLine) {
+                lines.push(streetLine);
+            }
+        } else {
+            const streetLine = this.#buildStreetLine(
+                buildingNumber,
+                dpaResult.DEPENDENT_THOROUGHFARE_NAME,
+                dpaResult.THOROUGHFARE_NAME
+            );
+
+            if (streetLine) {
+                lines.push(streetLine);
+            }
+        }
+
+        return {
+            addressLine1: lines[0] || '',
+            addressLine2: lines[1] || '',
+            addressLine3: lines[2] || '',
+            town: dpaResult.POST_TOWN || '',
+            postcode: dpaResult.POSTCODE || '',
             county: '',
             country: this.config.DEFAULTS.COUNTRY,
             countryCode: this.defaultCountryCode,
             UPRN: dpaResult.UPRN
         };
-
-        return address;
     }
 
-    #buildAddressLines(dpaResult) {
-        const addressLines = [];
-
-        if (dpaResult.ORGANISATION_NAME) {
-            addressLines.push(dpaResult.ORGANISATION_NAME);
-        }
-
-        let buildingName = dpaResult.BUILDING_NAME || '';
-        let buildingNumber = dpaResult.BUILDING_NUMBER || '';
-
-        if (!buildingNumber && buildingName) {
-            if (this.#buildingNameIsNumberWithSuffix(buildingName) || this.#buildingNameIsNumberRange(buildingName) || this.#buildingNameIsNumber(buildingName)) {
-                buildingNumber = buildingName;
-                buildingName = '';
-            } else {
-                const parts = this.#splitBuildingNameAndNumber(buildingName);
-                if (parts) {
-                    buildingName = parts[0];
-                    buildingNumber = parts[1];
-                }
-            }
-        }
-
-        if (buildingName) {
-            if (dpaResult.SUB_BUILDING_NAME) {
-                if (this.#buildingNameIsNumber(dpaResult.SUB_BUILDING_NAME) || this.#buildingNameIsNumberRange(dpaResult.SUB_BUILDING_NAME)) {
-                    addressLines.push(`${dpaResult.SUB_BUILDING_NAME} ${buildingName}`);
-                } else {
-                    addressLines.push(`${dpaResult.SUB_BUILDING_NAME}, ${buildingName}`);
-                }
-            } else {
-                addressLines.push(buildingName);
-            }
-        }
-
-        if (buildingNumber && dpaResult.THOROUGHFARE_NAME) {
-            addressLines.push(`${buildingNumber} ${dpaResult.THOROUGHFARE_NAME}`);
-        } else if (dpaResult.THOROUGHFARE_NAME && !addressLines.some(line => line.includes(dpaResult.THOROUGHFARE_NAME))) {
-            addressLines.push(dpaResult.THOROUGHFARE_NAME);
-        }
-
-        return addressLines;
+    #joinNonEmpty(parts, separator) {
+        return parts.filter(Boolean).join(separator);
     }
 
-    #buildingNameIsNumberWithSuffix(buildingName){
+    #buildStreetLine(firstPart, dependentThoroughfareName, thoroughfareName) {
+        return this.#joinNonEmpty(
+            [firstPart, dependentThoroughfareName, thoroughfareName],
+            ' '
+        );
+    }
+
+    #isNumericStyleBuildingName(buildingName) {
+        return this.#buildingNameIsNumber(buildingName)
+            || this.#buildingNameIsNumberWithSuffix(buildingName)
+            || this.#buildingNameIsNumberRange(buildingName);
+    }
+
+    #buildingNameIsNumberWithSuffix(buildingName) {
         if (buildingName.length < 2) return false;
 
         const lastChar = buildingName.charAt(buildingName.length - 1).toLowerCase();
@@ -125,27 +199,23 @@
         return null;
     }
 
-
-    mapFromManualEntry(addressLine1, addressLine2, town, countyOrRegion, postcode, country, countryCode) {
+    mapFromManualEntry(addressLine1, addressLine2, addressLine3, town, countyOrRegion, postcode, country, countryCode) {
         const isUK = country === this.config.DEFAULTS.COUNTRY;
         return {
-            addressLine1: addressLine1,
+            addressLine1,
             addressLine2: addressLine2 || '',
-            town: town,
+            addressLine3: addressLine3 || '',
+            town,
             ...(isUK ? { county: countyOrRegion || '' } : { region: countyOrRegion || '' }),
-            postcode: postcode,
-            country: country,
+            postcode,
+            country,
             countryCode: countryCode || ''
         };
     }
 
     addressesMatch(a, b) {
-        return (a.addressLine1 || '') === (b.addressLine1 || '')
-            && (a.addressLine2 || '') === (b.addressLine2 || '')
-            && (a.town || '') === (b.town || '')
-            && (a.county || '') === (b.county || '')
-            && (a.country || '') === (b.country || '')
-            && (a.postcode || '') === (b.postcode || '');
+        const fields = ['addressLine1', 'addressLine2', 'addressLine3', 'town', 'county', 'country', 'postcode'];
+        return fields.every(field => (a[field] || '') === (b[field] || ''));
     }
 }
 

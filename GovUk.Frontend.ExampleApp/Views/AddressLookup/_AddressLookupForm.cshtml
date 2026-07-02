@@ -2,7 +2,7 @@
 @inject ITprAddressLookupEndpointUrlProvider urlProvider
 @inject ITprCountryRepository countryRepository
 
-  <govuk-client-side-validation error-message-required="Enter a scheme name">
+<govuk-client-side-validation error-message-required="Enter a scheme name">
     <govuk-input for="SchemeName">
         <govuk-input-label is-page-heading="false">Scheme name</govuk-input-label>
         @if (ViewContext.ModelState.ContainsKey("SchemeName") && ViewContext.ModelState["SchemeName"]!.Errors.Count > 0)
@@ -54,6 +54,18 @@
         </govuk-input>
     </govuk-client-side-validation>
 
+    <govuk-client-side-validation error-message-maxlength="Address line 3 must be 100 characters or less">
+        <govuk-input for="ShippingAddress.AddressLine3" autocomplete="address-line3"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-3" } })">
+            <govuk-input-label>Address line 3 (optional)</govuk-input-label>
+            @if (ViewContext.ModelState.ContainsKey("ShippingAddress.AddressLine3") &&
+            ViewContext.ModelState["ShippingAddress.AddressLine3"]!.Errors.Count > 0)
+            {
+                <govuk-input-error-message>@ViewContext.ModelState["ShippingAddress.AddressLine3"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+            }
+        </govuk-input>
+    </govuk-client-side-validation>
+
     <govuk-client-side-validation error-message-required="Enter a town or city"
                                   error-message-maxlength="Town or city must be 100 characters or less">
         <govuk-input for="ShippingAddress.PostTown" class="govuk-input--width-20" autocomplete="address-level2"
@@ -95,7 +107,8 @@
                 <govuk-select-item selected="@(shippingSelectEmpty)"></govuk-select-item>
                 foreach (var country in shippingCountries)
                 {
-                    var selected = country.Value.ToString() == ViewContext.ModelState["ShippingAddress.CountryId"]?.AttemptedValue;
+                    var selected = country.Value.ToString() ==
+            ViewContext.ModelState["ShippingAddress.CountryId"]?.AttemptedValue;
                     <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                 }
             }
@@ -115,9 +128,10 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="ShippingAddress_UPRNReference" name="ShippingAddress.UPRNReference" value="@Model?.ShippingAddress?.UPRNReference"
-           data-address-lookup="UPRN" />
-    <input type="hidden" id="ShippingAddress_Country" name="ShippingAddress.Country" value="" data-address-lookup="country" />
+    <input type="hidden" id="ShippingAddress_UPRNReference" name="ShippingAddress.UPRNReference"
+           value="@Model?.ShippingAddress?.UPRNReference" data-address-lookup="UPRN" />
+    <input type="hidden" id="ShippingAddress_Country" name="ShippingAddress.Country" value=""
+           data-address-lookup="country" />
 </tpr-address-lookup>
 
 <h2 class="govuk-heading-m">Billing address</h2>
@@ -164,6 +178,18 @@
         </govuk-input>
     </govuk-client-side-validation>
 
+    <govuk-client-side-validation error-message-maxlength="Address line 3 must be 100 characters or less">
+        <govuk-input for="BillingAddress.AddressLine3" autocomplete="address-line3"
+                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-3" } })">
+            <govuk-input-label>Address line 3 (optional)</govuk-input-label>
+            @if (ViewContext.ModelState.ContainsKey("BillingAddress.AddressLine3") &&
+            ViewContext.ModelState["BillingAddress.AddressLine3"]!.Errors.Count > 0)
+            {
+                <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.AddressLine3"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+            }
+        </govuk-input>
+    </govuk-client-side-validation>
+
     <govuk-client-side-validation error-message-required="Enter a town or city"
                                   error-message-maxlength="Town or city must be 100 characters or less">
         <govuk-input for="BillingAddress.PostTown" class="govuk-input--width-20" autocomplete="address-level2"
@@ -205,7 +231,8 @@
                 <govuk-select-item selected="@(billingSelectEmpty)"></govuk-select-item>
                 foreach (var country in billingCountries)
                 {
-                    var selected = country.Value.ToString() == ViewContext.ModelState["BillingAddress.CountryId"]?.AttemptedValue;
+                    var selected = country.Value.ToString() ==
+            ViewContext.ModelState["BillingAddress.CountryId"]?.AttemptedValue;
                     <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                 }
             }
@@ -225,7 +252,8 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="BillingAddress_UPRNReference" name="BillingAddress.UPRNReference" value="@Model?.BillingAddress?.UPRNReference" data-address-lookup="UPRN" />
+    <input type="hidden" id="BillingAddress_UPRNReference" name="BillingAddress.UPRNReference"
+           value="@Model?.BillingAddress?.UPRNReference" data-address-lookup="UPRN" />
     <input type="hidden" id="BillingAddress_Country" name="BillingAddress.Country" value=""
            data-address-lookup="country" />
 </tpr-address-lookup>

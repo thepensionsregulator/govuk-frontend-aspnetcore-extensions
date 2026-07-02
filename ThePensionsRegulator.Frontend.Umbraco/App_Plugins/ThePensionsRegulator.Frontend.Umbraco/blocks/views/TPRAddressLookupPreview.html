@@ -10,6 +10,10 @@
             <input class="govuk-input" type="text" aria-hidden="true" />
         </div>
         <div class="govuk-form-group backoffice-block-view">
+            <label class="govuk-label" ng-bind-html="block.data.addressLine3Label || 'Address line 3'" aria-hidden="true"></label>
+            <input class="govuk-input" type="text" aria-hidden="true" />
+        </div>
+        <div class="govuk-form-group backoffice-block-view">
             <label class="govuk-label" ng-bind-html="block.data.townOrCityLabel || 'Town or city'" aria-hidden="true"></label>
             <input class="govuk-input" type="text" aria-hidden="true" />
         </div>

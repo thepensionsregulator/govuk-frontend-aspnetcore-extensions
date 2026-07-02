@@ -41,25 +41,27 @@ class AddressLookupComponentBuilder {
 
         fieldset.appendChild(legend);
 
-        return fieldset;    
+        return fieldset;
     }
 
     createConfirmedAddressParagraph(address, postcode, countryCode) {
         const selectedAddressParagraph = document.createElement("p");
         selectedAddressParagraph.classList = this.config.CSS_CLASSES.BODY;
 
-        address.forEach((addressLine) => {
-            addressLine = addressLine.trim();
-            if (addressLine === countryCode) {
-                return;
-            }
+        const filteredAddress = address
+            .slice(0, -1)  // Remove only the last element (country code)
+            .map(line => line.trim());
+
+        filteredAddress.forEach((addressLine, index) => {
             if (addressLine === postcode) {
                 selectedAddressParagraph.appendChild(document.createTextNode(addressLine));
             } else {
                 const titleCase = toTitleCase(addressLine);
                 selectedAddressParagraph.appendChild(document.createTextNode(titleCase));
             }
-            selectedAddressParagraph.appendChild(document.createElement("br"));
+            if (index < filteredAddress.length - 1) {
+                selectedAddressParagraph.appendChild(document.createElement("br"));
+            }
         });
 
         return selectedAddressParagraph;

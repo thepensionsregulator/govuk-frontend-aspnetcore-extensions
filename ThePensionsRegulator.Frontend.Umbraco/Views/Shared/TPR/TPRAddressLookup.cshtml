@@ -49,6 +49,13 @@
             ViewContext.ModelState
         );
 
+    var addressLine3State = addressFieldStateHelper.GetFieldState(
+            settings(TprPropertyAliases.AddressLine3ModelProperty),
+            content(TprPropertyAliases.AddressLine3Label),
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup line 3 label", "Address line 3 (optional)"),
+            ViewContext.ModelState
+        );
+
     var townOrCityState = addressFieldStateHelper.GetFieldState(
             settings(TprPropertyAliases.TownOrCityModelProperty),
             content(TprPropertyAliases.TownOrCityLabel),
@@ -142,6 +149,17 @@
             @if (addressLine2State.HasErrorMessage)
             {
 			    <govuk-input-error-message>@addressLine2State.ErrorMessage</govuk-input-error-message>
+            }
+        </govuk-input>
+    </govuk-client-side-validation>
+
+    <govuk-client-side-validation 
+        error-message-maxlength="@settings(TprPropertyAliases.AddressLine3ErrorMessageMaxLength)">
+        <govuk-input name="@addressLine3State.ModelPropertyName" value="@addressLine3State.AttemptedValue" input-aria-invalid="@addressLine3State.InvalidAriaLabel" autocomplete="address-line3" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "address-line-3" }})">
+            <govuk-input-label>@addressLine3State.Label</govuk-input-label>
+            @if (addressLine3State.HasErrorMessage)
+            {
+			    <govuk-input-error-message>@addressLine3State.ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>

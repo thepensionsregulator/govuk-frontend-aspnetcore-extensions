@@ -28,6 +28,11 @@ namespace ThePensionsRegulator.Umbraco.Testing
                     It.IsAny<string?>()))
                 .Returns(parent is null ? [] : [parent]);
 
+            filteringService
+                .Setup(x => x.Unfiltered(
+                    It.Is<IEnumerable<Guid>>(keys => parent == null ? !keys.Any() : keys.Count() == 1 && keys.First() == parentKey)))
+                .Returns(parent is null ? new List<IPublishedContent>() : new List<IPublishedContent> { parent });
+
             return content;
         }
 
@@ -52,6 +57,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
             queryService
                 .Setup(x => x.TryGetAncestorsKeys(child.Object.Key, out ancestorKeys))
                 .Returns(true);
+            queryService
+                .Setup(x => x.TryGetAncestorsKeysOfType(child.Object.Key, child.Object.ContentType.Alias, out ancestorKeys))
+                .Returns(true);
 
             filteringService
                 .Setup(x => x.FilterAvailable(
@@ -59,6 +67,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
                     It.IsAny<string?>()))
                 .Returns(ancestors.ToList());
 
+            filteringService
+                .Setup(x => x.Unfiltered(It.Is<IEnumerable<Guid>>(keys => keys == ancestorKeys)))
+                .Returns(ancestors.ToList());
             return child;
         }
 
@@ -79,6 +90,9 @@ namespace ThePensionsRegulator.Umbraco.Testing
             var childrenKeys = children.Select(c => c.Key);
             queryService
                 .Setup(x => x.TryGetChildrenKeys(parent.Object.Key, out childrenKeys))
+                .Returns(true);
+            queryService
+                .Setup(x => x.TryGetChildrenKeysOfType(parent.Object.Key, parent.Object.ContentType.Alias, out childrenKeys))
                 .Returns(true);
 
             filteringService

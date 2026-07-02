@@ -467,6 +467,11 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public Mock<IApiRichTextMarkupParser> ApiRichTextMarkupParser { get; private init; } = new();
 
+        /// <summary>
+        /// Provides access to the property rendering context.
+        /// </summary>
+        public Mock<IPropertyRenderingContextAccessor> PropertyRenderingContextAccessor { get; private init; } = new();
+
         // Disable 'Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.'
         // so that we can use the CurrentPrincipal setter to assign _currentPrincipal.
 #pragma warning disable CS8618
@@ -591,6 +596,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(NotificationService.Object);
             SetupService(PackagingService.Object);
             SetupService(PartialViewBlockEngine.Object);
+            SetupService(PropertyRenderingContextAccessor.Object);
             SetupService(PublicAccessService.Object);
             SetupService(PublishedContentCache.Object);
             SetupService(PublishedMediaCache.Object);

@@ -9,6 +9,7 @@ using ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation;
 using ThePensionsRegulator.GovUk.Frontend.Validation;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
@@ -18,13 +19,15 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
     public class PaginationController : RenderController
     {
         private readonly IUmbracoPaginationFactory _paginationFactory;
-
+        private readonly IPublishedValueFallback _publishedValueFallback;
         public PaginationController(ILogger<RenderController> logger,
             ICompositeViewEngine compositeViewEngine,
             IUmbracoContextAccessor umbracoContextAccessor,
-            IUmbracoPaginationFactory paginationFactory) : base(logger, compositeViewEngine, umbracoContextAccessor)
+            IUmbracoPaginationFactory paginationFactory,
+            IPublishedValueFallback publishedValueFallback) : base(logger, compositeViewEngine, umbracoContextAccessor)
         {
             _paginationFactory = paginationFactory ?? throw new ArgumentNullException(nameof(paginationFactory));
+            _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
         }
 
         [ModelType(typeof(PaginationViewModel))]
@@ -32,7 +35,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         {
             var viewModel = new PaginationViewModel
             {
-                Page = new Pagination(CurrentPage, null),
+                Page = new Pagination(CurrentPage, _publishedValueFallback),
             };
 
             var block = viewModel.Page.Blocks?.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias);

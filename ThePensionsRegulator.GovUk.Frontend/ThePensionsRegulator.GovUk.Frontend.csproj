@@ -39,9 +39,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.SassCompiler" Version="1.99.0" />
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.101.0" />
 		<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
-		<PackageReference Include="FileSignatures" Version="7.0.0" />
+		<PackageReference Include="FileSignatures" Version="7.2.1" />
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.1.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
 		<PackageReference Include="OpenMcdf" Version="3.1.4" />

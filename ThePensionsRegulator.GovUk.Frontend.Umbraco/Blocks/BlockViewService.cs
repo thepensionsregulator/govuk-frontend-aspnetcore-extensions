@@ -43,11 +43,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                 if (blocks[i]?.ContentKey is null) { continue; }
 
                 var hasGridAreas = blocks[i].Areas.Any();
-                string rowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
+                string rowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.CssClassesForRow));
                 var columnClass = _gridClassBuilder.BuildGridColumnClasses(
-                                    blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSize),
-                                    blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),
-                                    blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
+                                    blocks[i].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.ColumnSize),
+                                    blocks[i].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.ColumnSizeFromDesktop),
+                                    blocks[i].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.CssClassesForColumn),
                                     blocks[i].Content.ContentType.Alias,
                                     childColumnsDefaultToFullWidth);
 
@@ -59,11 +59,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
 
                 if (notTheLastBlock)
                 {
-                    nextRowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
+                    nextRowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i + 1].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.CssClassesForRow));
                     nextColumnClass = _gridClassBuilder.BuildGridColumnClasses(
-                                                            blocks[i + 1].Settings?.Value<string>(PropertyAliases.ColumnSize),
-                                                            blocks[i + 1].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),
-                                                            blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
+                                                            blocks[i + 1].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.ColumnSize),
+                                                            blocks[i + 1].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.ColumnSizeFromDesktop),
+                                                            blocks[i + 1].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.CssClassesForColumn),
                                                             blocks[i + 1].Content.ContentType.Alias,
                                                             childColumnsDefaultToFullWidth);
 
@@ -71,7 +71,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                     sameAsNext = IsSameAsNext(rowClass, nextRowClass, columnClass, nextColumnClass, hasGridAreas, nextHasGridAreas, false, false);
                 }
 
-                var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i]);
+                var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i], _publishedValueFallback);
                 var renderFieldsetErrorContainer = !string.IsNullOrEmpty(fieldsetErrorClasses);
 
                 var model = new BlockViewModel
@@ -126,15 +126,15 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                     currentColumnClass == nextColumnClass);
         }
 
-        private static string? FieldsetErrorClassesForBlock(IGovUkFieldsetErrorFinder _fieldsetErrorFinder, ModelStateDictionary modelState, IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block)
+        private static string? FieldsetErrorClassesForBlock(IGovUkFieldsetErrorFinder fieldsetErrorFinder, ModelStateDictionary modelState, IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement> block, IPublishedValueFallback publishedValueFallback)
         {
             // If this block is a fieldset and there is a fieldset-level error, add extra classes to show that the entire fieldset is in an error state.
             // But only if the 'legendIsPageHeading' setting is false, otherwise it's done in GovUkFieldset.cshtml.
-            var fieldsetErrors = _fieldsetErrorFinder.FindErrors(block, modelState);
+            var fieldsetErrors = fieldsetErrorFinder.FindErrors(block, modelState);
             string? fieldsetErrorClasses = null;
             if (fieldsetErrors.Any())
             {
-                var legendIsPageHeading = block.Settings?.Value<bool>(PropertyAliases.FieldsetLegendIsPageHeading) ?? false;
+                var legendIsPageHeading = block.Settings?.Value<bool>(publishedValueFallback, PropertyAliases.FieldsetLegendIsPageHeading) ?? false;
                 if (!legendIsPageHeading)
                 {
                     fieldsetErrorClasses = $"{GovUkClassNames.FormGroup} {GovUkClassNames.FormGroupError}";
@@ -169,11 +169,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                 if (blocks[i]?.ContentKey is null) { continue; }
 
                 var isGridRowBlock = blocks[i].Content.ContentType.Alias == ElementTypeAliases.GridRow;
-                string rowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
+                string rowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.CssClassesForRow));
                 var columnClass = _gridClassBuilder.BuildGridColumnClasses(
-                                    blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSize),
-                                    blocks[i].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),
-                                    blocks[i].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
+                                    blocks[i].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.ColumnSize),
+                                    blocks[i].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.ColumnSizeFromDesktop),
+                                    blocks[i].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.CssClassesForColumn),
                                     blocks[i].Content.ContentType.Alias);
 
                 var sameAsPrevious = IsSameAsPrevious(previousRowClass, rowClass, previousColumnClass, columnClass, false, false, previousIsGridRowBlock, isGridRowBlock);
@@ -184,11 +184,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
 
                 if (notTheLastBlock)
                 {
-                    nextRowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForRow));
+                    nextRowClass = _gridClassBuilder.BuildGridRowClasses(blocks[i + 1].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.CssClassesForRow));
                     nextColumnClass = _gridClassBuilder.BuildGridColumnClasses(
-                                                            blocks[i + 1].Settings?.Value<string>(PropertyAliases.ColumnSize),
-                                                            blocks[i + 1].Settings?.Value<string>(PropertyAliases.ColumnSizeFromDesktop),
-                                                            blocks[i + 1].Settings?.Value<string>(PropertyAliases.CssClassesForColumn),
+                                                            blocks[i + 1].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.ColumnSize),
+                                                            blocks[i + 1].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.ColumnSizeFromDesktop),
+                                                            blocks[i + 1].Settings?.Value<string>(_publishedValueFallback, PropertyAliases.CssClassesForColumn),
                                                             blocks[i + 1].Content.ContentType.Alias);
                     nextIsGridRowBlock = (blocks[i + 1].Content.ContentType.Alias == ElementTypeAliases.GridRow);
 
@@ -196,7 +196,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                 }
 
                 var renderGridRowAndColumn = renderGrid && !isGridRowBlock;
-                var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i]);
+                var fieldsetErrorClasses = FieldsetErrorClassesForBlock(_fieldsetErrorFinder, modelState, blocks[i], _publishedValueFallback);
                 var renderFieldsetErrorContainer = !string.IsNullOrEmpty(fieldsetErrorClasses);
 
                 var model = new BlockViewModel

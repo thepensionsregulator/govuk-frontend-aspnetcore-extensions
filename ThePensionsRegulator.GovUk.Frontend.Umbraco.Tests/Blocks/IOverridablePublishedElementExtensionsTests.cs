@@ -76,18 +76,18 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             content.OverrideCheckboxes(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
-            var options = content.Value<OverridableBlockListModel>(PropertyAliases.Checkboxes);
+            var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.Checkboxes);
 
             Assert.NotNull(options);
             Assert.Equal(replacement.Count(), options!.Count());
-            Assert.Equal("3", options![0].Content.Value<string>(PropertyAliases.CheckboxValue));
-            Assert.Equal("Item 3", options![0].Content.Value<string>(PropertyAliases.CheckboxLabel));
-            Assert.Equal("<i>Hint 3</i>", options![0].Content.Value<IHtmlEncodedString>(PropertyAliases.Hint)?.ToHtmlString());
-            Assert.NotNull(options![0].Content.Value<OverridableBlockListModel>(PropertyAliases.CheckboxConditionalBlocks));
-            Assert.Equal("item-3", options![0].Settings?.Value<string>(PropertyAliases.CssClasses));
-            Assert.Equal("divider", options[1].Content.Value<string>(PropertyAliases.CheckboxesDividerText));
-            Assert.Equal("4", options[2].Content.Value<string>(PropertyAliases.CheckboxValue));
-            Assert.Equal("Item 4", options[2].Content.Value<string>(PropertyAliases.CheckboxLabel));
+            Assert.Equal("3", options![0].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.CheckboxValue));
+            Assert.Equal("Item 3", options![0].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.CheckboxLabel));
+            Assert.Equal("<i>Hint 3</i>", options![0].Content.Value<IHtmlEncodedString>(testContext.PublishedValueFallback.Object, PropertyAliases.Hint)?.ToHtmlString());
+            Assert.NotNull(options![0].Content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.CheckboxConditionalBlocks));
+            Assert.Equal("item-3", options![0].Settings?.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.CssClasses));
+            Assert.Equal("divider", options[1].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.CheckboxesDividerText));
+            Assert.Equal("4", options[2].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.CheckboxValue));
+            Assert.Equal("Item 4", options[2].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.CheckboxLabel));
         }
 
         [Theory]
@@ -153,18 +153,18 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             content.OverrideRadioButtons(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
-            var options = content.Value<OverridableBlockListModel>(PropertyAliases.RadioButtons);
+            var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.RadioButtons);
 
             Assert.NotNull(options);
             Assert.Equal(replacement.Count(), options!.Count());
-            Assert.Equal("3", options![0].Content.Value<string>(PropertyAliases.RadioButtonValue));
-            Assert.Equal("Item 3", options![0].Content.Value<string>(PropertyAliases.RadioButtonLabel));
-            Assert.Equal("<i>Hint 3</i>", options![0].Content.Value<IHtmlEncodedString>(PropertyAliases.Hint)?.ToHtmlString());
-            Assert.NotNull(options![0].Content.Value<OverridableBlockListModel>(PropertyAliases.RadioConditionalBlocks));
-            Assert.Equal("item-3", options![0].Settings?.Value<string>(PropertyAliases.CssClasses));
-            Assert.Equal("divider", options[1].Content.Value<string>(PropertyAliases.RadiosDividerText));
-            Assert.Equal("4", options[2].Content.Value<string>(PropertyAliases.RadioButtonValue));
-            Assert.Equal("Item 4", options[2].Content.Value<string>(PropertyAliases.RadioButtonLabel));
+            Assert.Equal("3", options![0].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.RadioButtonValue));
+            Assert.Equal("Item 3", options![0].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.RadioButtonLabel));
+            Assert.Equal("<i>Hint 3</i>", options![0].Content.Value<IHtmlEncodedString>(testContext.PublishedValueFallback.Object, PropertyAliases.Hint)?.ToHtmlString());
+            Assert.NotNull(options![0].Content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.RadioConditionalBlocks));
+            Assert.Equal("item-3", options![0].Settings?.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.CssClasses));
+            Assert.Equal("divider", options[1].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.RadiosDividerText));
+            Assert.Equal("4", options[2].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.RadioButtonValue));
+            Assert.Equal("Item 4", options[2].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.RadioButtonLabel));
         }
 
         [Theory]
@@ -222,14 +222,14 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             content.OverrideSelectOptions(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
-            var options = content.Value<OverridableBlockListModel>(PropertyAliases.SelectOptions);
+            var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.SelectOptions);
 
             Assert.NotNull(options);
             Assert.Equal(replacement.Count(), options!.Count());
-            Assert.Equal("3", options![0].Content.Value<string>(PropertyAliases.SelectOptionValue));
-            Assert.Equal("Item 3", options![0].Content.Value<string>(PropertyAliases.SelectOptionLabel));
-            Assert.Equal("4", options[1].Content.Value<string>(PropertyAliases.SelectOptionValue));
-            Assert.Equal("Item 4", options[1].Content.Value<string>(PropertyAliases.SelectOptionLabel));
+            Assert.Equal("3", options![0].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.SelectOptionValue));
+            Assert.Equal("Item 3", options![0].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.SelectOptionLabel));
+            Assert.Equal("4", options[1].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.SelectOptionValue));
+            Assert.Equal("Item 4", options[1].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.SelectOptionLabel));
         }
 
         [Theory]
@@ -287,14 +287,14 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             content.OverrideSummaryCardActions(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
-            var options = content.Value<OverridableBlockListModel>(PropertyAliases.SummaryCardActions);
+            var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryCardActions);
 
             Assert.NotNull(options);
             Assert.Equal(replacement.Count(), options!.Count());
-            Assert.Equal("https://example.org/three", options![0].Content.Value<Link>(PropertyAliases.SummaryListActionLink)?.Url);
-            Assert.Equal("Item 3", options![0].Content.Value<string>(PropertyAliases.SummaryListActionLinkText));
-            Assert.Equal("https://example.org/four", options[1].Content.Value<Link>(PropertyAliases.SummaryListActionLink)?.Url);
-            Assert.Equal("Item 4", options[1].Content.Value<string>(PropertyAliases.SummaryListActionLinkText));
+            Assert.Equal("https://example.org/three", options![0].Content.Value<Link>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListActionLink)?.Url);
+            Assert.Equal("Item 3", options![0].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListActionLinkText));
+            Assert.Equal("https://example.org/four", options[1].Content.Value<Link>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListActionLink)?.Url);
+            Assert.Equal("Item 4", options[1].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListActionLinkText));
         }
 
 
@@ -359,21 +359,22 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             content.OverrideSummaryListItems(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object);
 
             // Assert
-            var options = content.Value<OverridableBlockListModel>(listItemsPropertyAlias);
+            var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, listItemsPropertyAlias);
 
             Assert.NotNull(options);
             Assert.Equal(replacement.Count(), options!.Count());
-            Assert.Equal("3", options![0].Content.Value<string>(PropertyAliases.SummaryListItemKey));
-            Assert.Equal("Item 3", options![0].Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue)?.ToHtmlString());
+            Assert.Equal("3", options![0].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListItemKey));
+            Assert.Equal("Item 3", options![0].Content.Value<IHtmlEncodedString>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListItemValue)?.ToHtmlString());
 
-            var actions = options[0].Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions);
+            var actions = options[0].Content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListItemActions);
             Assert.NotNull(actions);
             Assert.Equal(replacement[0].Actions.Count, actions!.Count());
-            Assert.Equal("https://example.org/test", actions![0].Content.Value<Link>(PropertyAliases.SummaryListActionLink)?.Url);
-            Assert.Equal("Example", actions![0].Content.Value<string>(PropertyAliases.SummaryListActionLinkText));
+            Assert.Equal("https://example.org/test", actions![0].Content.Value<Link>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListActionLink)?.Url);
+            Assert.Equal("Example", actions![0].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListActionLinkText));
 
-            Assert.Equal("4", options[1].Content.Value<string>(PropertyAliases.SummaryListItemKey));
-            Assert.Equal("Item 4", options[1].Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue)?.ToHtmlString());
+            Assert.Equal("4", options[1].Content.Value<string>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListItemKey));
+            Assert.Equal("Item 4", options[1].Content.Value<IHtmlEncodedString>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryListItemValue)?.ToHtmlString());
         }
     }
 }
+

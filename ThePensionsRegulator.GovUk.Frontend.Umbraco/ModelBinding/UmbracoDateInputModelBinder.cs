@@ -33,11 +33,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.ModelBinding
         private readonly DateInputModelConverter _dateInputModelConverter;
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
         private readonly ICultureDictionary _cultureDictionary;
-        private readonly IPublishedValueFallback? _publishedValueFallback;
+        private readonly IPublishedValueFallback _publishedValueFallback;
         private readonly bool _acceptMonthNamesInDateInputs;
         private readonly IUmbracoHelperAccessor _umbracoHelperAccessor;
 
-        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter, IUmbracoContextAccessor umbracoContextAccessor, ICultureDictionary cultureDictionary, IPublishedValueFallback? publishedValueFallback, bool acceptMonthNamesInDateInputs, IUmbracoHelperAccessor umbracoHelperAccessor)
+        public UmbracoDateInputModelBinder(DateInputModelConverter dateInputModelConverter, IUmbracoContextAccessor umbracoContextAccessor, ICultureDictionary cultureDictionary, IPublishedValueFallback publishedValueFallback, bool acceptMonthNamesInDateInputs, IUmbracoHelperAccessor umbracoHelperAccessor)
         {
             _dateInputModelConverter = Guard.ArgumentNotNull(nameof(dateInputModelConverter), dateInputModelConverter);
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
@@ -64,8 +64,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.ModelBinding
             }
 
             var blockSettings = !string.IsNullOrEmpty(bindingContext.ModelMetadata.PropertyName) ? umbracoContext.PublishedRequest.PublishedContent.FindOverridableBlockModels(_publishedValueFallback).FindBlockByBoundProperty(bindingContext.ModelMetadata.PropertyName)?.Settings : null;
-            var dayEnabled = blockSettings is not null ? blockSettings.Value<bool>(PropertyAliases.DateInputShowDay) : true;
-            var yearEnabled = blockSettings is not null ? blockSettings.Value<bool>(PropertyAliases.DateInputShowYear) : true;
+            var dayEnabled = blockSettings is not null ? blockSettings.Value<bool>(_publishedValueFallback, PropertyAliases.DateInputShowDay) : true;
+            var yearEnabled = blockSettings is not null ? blockSettings.Value<bool>(_publishedValueFallback, PropertyAliases.DateInputShowYear) : true;
 
             var dayModelName = $"{bindingContext.ModelName}.{DayComponentName}";
             var monthModelName = $"{bindingContext.ModelName}.{MonthComponentName}";
@@ -95,7 +95,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.ModelBinding
             {
                 itemTypes = DateInputItemTypes.DayMonthAndYear;
             }
-            
+
             if (!SupportedItemTypes.Contains(itemTypes))
             {
                 // Weird combination of fields submitted; we're done
@@ -149,7 +149,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.ModelBinding
 
                 var overallAttemptedValue = string.Join(",", overallAttemptedValueParts.Select(vpr => vpr.FirstValue ?? ""));
 
-                var errorMessage = GetModelStateErrorMessage(blockSettings, _cultureDictionary, parseErrors, bindingContext.ModelMetadata, umbracoHelper);
+                var errorMessage = GetModelStateErrorMessage(blockSettings, _publishedValueFallback, _cultureDictionary, parseErrors, bindingContext.ModelMetadata, umbracoHelper);
                 bindingContext.ModelState.SetModelValue(bindingContext.ModelName, rawValue: null, attemptedValue: overallAttemptedValue);
                 bindingContext.ModelState.AddModelError(bindingContext.ModelName, errorMessage);
 
@@ -160,7 +160,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.ModelBinding
         }
 
         // internal for testing
-        internal static string GetModelStateErrorMessage(IOverridablePublishedElement? blockSettings, ICultureDictionary umbracoDictionary, DateInputParseErrors parseErrors, ModelMetadata modelMetadata, UmbracoHelper umbracoHelper)
+        internal static string GetModelStateErrorMessage(IOverridablePublishedElement? blockSettings, IPublishedValueFallback publishedValueFallback, ICultureDictionary umbracoDictionary, DateInputParseErrors parseErrors, ModelMetadata modelMetadata, UmbracoHelper umbracoHelper)
         {
             Debug.Assert(parseErrors != DateInputParseErrors.None);
             Debug.Assert(parseErrors != (DateInputParseErrors.MissingDay | DateInputParseErrors.MissingMonth | DateInputParseErrors.MissingYear));
@@ -168,7 +168,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.ModelBinding
             string? displayName = null;
             if (!string.IsNullOrEmpty(modelMetadata.PropertyName))
             {
-                displayName = blockSettings?.Value<string>(PropertyAliases.DisplayName)?.Trim();
+                displayName = blockSettings?.Value<string>(publishedValueFallback, PropertyAliases.DisplayName)?.Trim();
             }
             if (string.IsNullOrEmpty(displayName)) { displayName = modelMetadata.PropertyName; }
 

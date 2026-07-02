@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
 
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
@@ -61,14 +61,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.SassCompiler" Version="1.99.0" />
-		<PackageReference Include="MailKit" Version="4.16.0" />
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.101.0" />
+		<PackageReference Include="MailKit" Version="4.17.0" />
 		<!-- Pin MessagePack to a patched version to resolve transitive high-severity advisory GHSA-hv8m-jj95-wg3x (CVE-2026-48109) pulled in by Umbraco.Cms. -->
 		<PackageReference Include="MessagePack" Version="3.1.7" />
-		<PackageReference Include="TinyMCE.Umbraco" Version="17.2.0" />
-		<PackageReference Include="Umbraco.Cms.Api.Management" Version="17.2.2" />
-		<PackageReference Include="Umbraco.Cms.Web.Website" Version="17.2.2" />
-		<PackageReference Include="uSync.BackOffice" Version="17.0.4" />
+		<PackageReference Include="Microsoft.OpenApi" Version="2.7.5" />
+		<PackageReference Include="TinyMCE.Umbraco" Version="17.5.0" />
+		<PackageReference Include="Umbraco.Cms.Api.Management" Version="17.5.0" />
+		<PackageReference Include="Umbraco.Cms.Web.Website" Version="17.5.0" />
+		<PackageReference Include="uSync.BackOffice" Version="17.3.5" />
+		<PackageReference Include="ThePensionsRegulator.Analyzers.Umbraco" Version="1.0.0">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<ItemGroup>

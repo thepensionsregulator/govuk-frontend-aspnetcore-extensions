@@ -17,22 +17,24 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
     {
         private readonly IPublishedContentTypeCache _publishedContentTypeCache;
         private readonly IVariationContextAccessor _variationContextAccessor;
-
+        private readonly IPublishedValueFallback _publishedValueFallback;
         public SummaryListController(ILogger<RenderController> logger,
             ICompositeViewEngine compositeViewEngine,
             IUmbracoContextAccessor umbracoContextAccessor,
             IPublishedContentTypeCache publishedContentTypeCache,
-            IVariationContextAccessor variationContextAccessor)
+            IVariationContextAccessor variationContextAccessor,
+            IPublishedValueFallback publishedValueFallback)
             : base(logger, compositeViewEngine, umbracoContextAccessor)
         {
             _publishedContentTypeCache = publishedContentTypeCache ?? throw new ArgumentNullException(nameof(publishedContentTypeCache));
             _variationContextAccessor = variationContextAccessor ?? throw new ArgumentNullException(nameof(variationContextAccessor));
+            _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
         }
 
         [ModelType(typeof(SummaryList))]
         public override IActionResult Index()
         {
-            var viewModel = new SummaryList(CurrentPage, null);
+            var viewModel = new SummaryList(CurrentPage, _publishedValueFallback);
 
             // Override content in a summary list
             var summaryListToOverride = viewModel.Blocks!.FindBlockByClass("override-this");

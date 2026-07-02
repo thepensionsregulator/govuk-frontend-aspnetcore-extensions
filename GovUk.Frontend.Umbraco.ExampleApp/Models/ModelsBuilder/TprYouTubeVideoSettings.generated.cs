@@ -65,7 +65,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string HeadingClass => this.Value<string>(_publishedValueFallback, "headingClass");
 
 		///<summary>
-		/// Heading level: Set the heading level for your text. Defaults to H2 if left blank.
+		/// Heading level: Set the heading level for your text. Defaults to 'Heading 2' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

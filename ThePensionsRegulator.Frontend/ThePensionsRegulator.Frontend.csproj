@@ -30,7 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AspNetCore.SassCompiler" Version="1.99.0" />
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.101.0" />
 		<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.1.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />

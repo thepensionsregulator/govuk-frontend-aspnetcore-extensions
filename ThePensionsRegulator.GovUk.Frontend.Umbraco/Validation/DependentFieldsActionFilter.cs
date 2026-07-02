@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation
@@ -14,10 +15,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation
     public class DependentFieldsActionFilter : IActionFilter
     {
         private readonly IUmbracoContextAccessor _umbracoContextAccessor;
+        private readonly IPublishedValueFallback _publishedValueFallback;
 
-        public DependentFieldsActionFilter(IUmbracoContextAccessor umbracoContextAccessor)
+        public DependentFieldsActionFilter(IUmbracoContextAccessor umbracoContextAccessor, IPublishedValueFallback publishedValueFallback)
         {
             _umbracoContextAccessor = umbracoContextAccessor ?? throw new ArgumentNullException(nameof(umbracoContextAccessor));
+            _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
         }
 
         public void OnActionExecuting(ActionExecutingContext context)
@@ -35,7 +38,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation
                     PropertyAliases.RadioButtons,
                     ElementTypeAliases.Radio,
                     PropertyAliases.RadioButtonValue,
-                    PropertyAliases.RadioConditionalBlocks);
+                    PropertyAliases.RadioConditionalBlocks,
+                    _publishedValueFallback);
 
                 ProcessFieldTypeThatSupportsDependentFields(context.ModelState,
                     blockModels,
@@ -43,7 +47,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation
                     PropertyAliases.Checkboxes,
                     ElementTypeAliases.Checkbox,
                     PropertyAliases.CheckboxValue,
-                    PropertyAliases.CheckboxConditionalBlocks);
+                    PropertyAliases.CheckboxConditionalBlocks,
+                    _publishedValueFallback);
             }
         }
 
@@ -54,7 +59,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation
             string optionsPropertyAlias,
             string optionBlockTypeAlias,
             string optionValuePropertyAlias,
-            string conditionalBlocksPropertyAlias)
+            string conditionalBlocksPropertyAlias,
+            IPublishedValueFallback publishedValueFallback)
         {
             var parentBlocks = blockModels.FindBlocksByContentTypeAlias(parentBlockTypeAlias);
             if (parentBlocks is null || !parentBlocks.Any()) { return; }
@@ -62,7 +68,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation
             foreach (var parentBlock in parentBlocks)
             {
                 // If the parent component (eg 'Radios') is not bound to a property, it's not ready for validation.
-                var parentBoundProperty = parentBlock.Settings?.Value<string>(PropertyAliases.ModelProperty);
+                var parentBoundProperty = parentBlock.Settings?.Value<string>(publishedValueFallback, PropertyAliases.ModelProperty);
                 if (string.IsNullOrEmpty(parentBoundProperty) || !modelState.ContainsKey(parentBoundProperty)) { continue; }
 
                 // Establish whether the parent component (eg 'Radios') is valid.
@@ -71,25 +77,25 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation
                 var selectedValueOfParent = modelState[parentBoundProperty]!.AttemptedValue;
 
                 // Get the options, eg individual radio buttons within a 'Radios' component.
-                var optionBlocks = parentBlock.Content.Value<OverridableBlockListModel>(optionsPropertyAlias)?.FindBlocksByContentTypeAlias(optionBlockTypeAlias);
+                var optionBlocks = parentBlock.Content.Value<OverridableBlockListModel>(publishedValueFallback, optionsPropertyAlias)?.FindBlocksByContentTypeAlias(optionBlockTypeAlias);
                 if (optionBlocks is null || !optionBlocks.Any()) { continue; }
 
                 foreach (var optionBlock in optionBlocks)
                 {
                     // Estalish whether the option is selected.
                     // If not, any conditional fields dependent upon that option should not be validated.
-                    var optionValue = optionBlock.Content.Value<string>(optionValuePropertyAlias);
+                    var optionValue = optionBlock.Content.Value<string>(publishedValueFallback, optionValuePropertyAlias);
                     var optionIsSelected = optionValue == selectedValueOfParent;
 
                     if (validationStateOfParent == ModelValidationState.Invalid || !optionIsSelected)
                     {
                         // If there are any conditional fields dependent upon for this option, skip validation of those fields.
-                        var conditionalBlocks = optionBlock.Content.Value<OverridableBlockListModel>(conditionalBlocksPropertyAlias);
+                        var conditionalBlocks = optionBlock.Content.Value<OverridableBlockListModel>(publishedValueFallback, conditionalBlocksPropertyAlias);
                         if (conditionalBlocks is not null && conditionalBlocks.Any())
                         {
                             foreach (var conditionalBlock in conditionalBlocks)
                             {
-                                var blockBoundProperty = conditionalBlock.Settings?.Value<string>(PropertyAliases.ModelProperty);
+                                var blockBoundProperty = conditionalBlock.Settings?.Value<string>(publishedValueFallback, PropertyAliases.ModelProperty);
                                 if (!string.IsNullOrEmpty(blockBoundProperty) && modelState.ContainsKey(blockBoundProperty))
                                 {
                                     modelState[blockBoundProperty]!.ValidationState = ModelValidationState.Skipped;

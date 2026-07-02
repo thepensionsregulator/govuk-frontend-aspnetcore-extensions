@@ -1,3 +1,4 @@
+using Moq;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
@@ -69,7 +70,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         public void Null_content_throws_ArgumentNullException()
         {
             // Arrange
-            var provider = new TaskListTaskStatusProvider();
+            var provider = new TaskListTaskStatusProvider(Mock.Of<IPublishedValueFallback>());
 
             // Act
 #nullable disable
@@ -86,7 +87,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
 
-            var provider = new TaskListTaskStatusProvider();
+            var provider = new TaskListTaskStatusProvider(Mock.Of<IPublishedValueFallback>());
 
             // Act
             var result = provider.FindTaskStatuses(content.Object).ToList();
@@ -106,7 +107,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockGridPropertyValue(nameof(ExampleModelsBuilderModel.BlockGrid), blockGrid);
 
-            var provider = new TaskListTaskStatusProvider();
+            var provider = new TaskListTaskStatusProvider(Mock.Of<IPublishedValueFallback>());
 
             // Act
             var result = provider.FindTaskStatuses(content.Object).ToList();
@@ -122,12 +123,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         {
             // Arrange
             var blockList = CreateBlockListWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
-            blockList.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings?.Value<string>(PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
+            blockList.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings?.Value<string>(Mock.Of<IPublishedValueFallback>(), PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
 
-            var provider = new TaskListTaskStatusProvider();
+            var provider = new TaskListTaskStatusProvider(Mock.Of<IPublishedValueFallback>());
 
             // Act
             var result = provider.FindTaskStatuses(content.Object).ToList();
@@ -142,12 +143,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         {
             // Arrange
             var blockGrid = CreateBlockGridWithTaskListSummaryAndTaskList(CreateBlockListOfTasks());
-            blockGrid.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings?.Value<string>(PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
+            blockGrid.Filter = x => x.Content.ContentType.Alias != ElementTypeAliases.Task || x.Settings?.Value<string>(Mock.Of<IPublishedValueFallback>(), PropertyAliases.TaskListTaskStatus) == TaskListTaskStatus.Completed.ToString();
 
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockGridPropertyValue(nameof(ExampleModelsBuilderModel.BlockGrid), blockGrid);
 
-            var provider = new TaskListTaskStatusProvider();
+            var provider = new TaskListTaskStatusProvider(Mock.Of<IPublishedValueFallback>());
 
             // Act
             var result = provider.FindTaskStatuses(content.Object).ToList();
@@ -177,7 +178,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             var content = UmbracoContentFactory.CreateContent<IPublishedContent>()
                 .SetupUmbracoBlockListPropertyValue(nameof(ExampleModelsBuilderModel.BlockList), blockList);
 
-            var provider = new TaskListTaskStatusProvider();
+            var provider = new TaskListTaskStatusProvider(Mock.Of<IPublishedValueFallback>());
 
             // Act
             var result = provider.FindTaskStatuses(content.Object).ToList();
@@ -188,3 +189,4 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
         }
     }
 }
+

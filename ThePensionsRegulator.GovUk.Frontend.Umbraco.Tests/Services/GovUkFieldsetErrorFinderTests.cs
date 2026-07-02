@@ -21,7 +21,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
 
-            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder(Mock.Of<IPublishedValueFallback>()).FindErrors(fieldsetBlock, modelState);
 
             Assert.Empty(results);
         }
@@ -34,7 +34,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
 
-            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder(Mock.Of<IPublishedValueFallback>()).FindErrors(fieldsetBlock, modelState);
 
             Assert.Empty(results);
         }
@@ -46,7 +46,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             var modelState = new ModelStateDictionary();
 
-            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder(Mock.Of<IPublishedValueFallback>()).FindErrors(fieldsetBlock, modelState);
 
             Assert.Empty(results);
         }
@@ -59,7 +59,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
 
-            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder(Mock.Of<IPublishedValueFallback>()).FindErrors(fieldsetBlock, modelState);
 
             Assert.Empty(results);
         }
@@ -72,7 +72,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(VIEWMODEL_PROPERTY_NAME, "Any error");
 
-            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder(Mock.Of<IPublishedValueFallback>()).FindErrors(fieldsetBlock, modelState);
 
             Assert.Single(results);
             Assert.Equal(ElementTypeAliases.ErrorMessage, results.First().Content.ContentType.Alias);
@@ -86,7 +86,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
             var modelState = new ModelStateDictionary();
             modelState.AddModelError(string.Empty, "Any error");
 
-            var results = new GovUkFieldsetErrorFinder().FindErrors(fieldsetBlock, modelState);
+            var results = new GovUkFieldsetErrorFinder(Mock.Of<IPublishedValueFallback>()).FindErrors(fieldsetBlock, modelState);
 
             Assert.Empty(results);
         }
@@ -120,7 +120,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
             var fieldsetContentProperties = new[] { UmbracoPropertyFactory.CreateBlockListProperty(PropertyAliases.FieldsetBlocks, ElementTypeAliases.Fieldset, fieldsetBlocks) };
             fieldsetContent.SetupGet(x => x.Properties).Returns(fieldsetContentProperties);
             fieldsetContent.Setup(x => x.GetProperty(PropertyAliases.FieldsetBlocks)).Returns(fieldsetContentProperties[0]);
-            fieldsetContent.Setup(x => x.Value<OverridableBlockListModel>(PropertyAliases.FieldsetBlocks, null, null, It.IsAny<Fallback>(), null)).Returns(fieldsetBlocks);
+            fieldsetContent.Setup(x => x.Value<OverridableBlockListModel>(It.IsAny<IPublishedValueFallback>(), PropertyAliases.FieldsetBlocks, null, null, It.IsAny<Fallback>(), null)).Returns(fieldsetBlocks);
 
             var fieldsetBlock = new OverridableBlockListItem(
                 new BlockListItem(Guid.NewGuid(), fieldsetContent.Object, Guid.NewGuid(), fieldsetSettings.Object),
@@ -130,3 +130,4 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         }
     }
 }
+

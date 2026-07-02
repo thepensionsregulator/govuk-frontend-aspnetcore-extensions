@@ -1,4 +1,4 @@
-﻿using Moq;
+using Moq;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
@@ -30,7 +30,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             _settingsNode = UmbracoContentFactory.CreateContent<IPublishedContent>();
             _settingsNode.SetupUmbracoBlockListPropertyValue(TprElementTypeAliases.HeaderMenu, blockList);
 
-            _sut = new TprGlobalNavigationService();
+            _sut = new TprGlobalNavigationService(_testContext.PublishedValueFallback.Object);
 
             _menuViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
         }
@@ -115,3 +115,4 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         }
     }
 }
+

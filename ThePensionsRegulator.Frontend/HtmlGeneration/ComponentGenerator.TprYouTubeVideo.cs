@@ -70,7 +70,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             iFrame.Attributes.Add("src", src);
             iFrame.Attributes.Add("title", video.IframeTitle);
             iFrame.Attributes.Add("frameborder", "0");
-            iFrame.Attributes.Add("allow", "accelerometer; autoplay;  encrypted-media; gyroscope; picture-in-picture; web-share");
+            iFrame.Attributes.Add("allow", "accelerometer; autoplay;  encrypted-media; gyroscope; picture-in-picture; web-share; clipboard-write");
             iFrame.Attributes.Add("referrerpolicy", "strict-origin-when-cross-origin");
             iFrame.Attributes.Add("allowfullscreen", null);
             iFrame.Attributes.Add("credentialless", null);

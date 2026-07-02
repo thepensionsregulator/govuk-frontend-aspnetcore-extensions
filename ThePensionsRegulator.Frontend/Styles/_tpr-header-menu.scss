@@ -331,6 +331,7 @@
             padding-right: 0.3rem;
             padding-left: 0.3rem;
             padding-bottom: 1.2rem;
+            margin-right: 0.1rem
         }
     }
 
@@ -445,7 +446,8 @@
     }
 
     .tpr-header-menu__nav-inner-container {
-        width: 100%
+        width: 100%;
+        margin: -1rem;
     }
 
     .tpr-mobile-menu__header-search-container {
@@ -501,6 +503,8 @@
 
     .tpr-header-menu__nav-menu-item {
         margin-right: 0.5rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
     }
 }
 

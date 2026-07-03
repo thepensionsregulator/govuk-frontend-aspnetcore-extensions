@@ -158,8 +158,8 @@ class TprAddressLookup {
         const findAddressButton = this.componentBuilder.createFindAddressButton((event) => this.findAddressButtonOnClick(event));
         const enterInternationalAddressLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.ENTER_INTERNATIONAL_ADDRESS, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ENTER_INTERNATIONAL_ADDRESS);
         enterInternationalAddressLink.addEventListener("click", (event) => { this.enterInternationalAddressOnClick(event); });
-        const linkList = this.componentBuilder.createLinkList([enterInternationalAddressLink]);
 
+        const linkList = this.componentBuilder.createLinkList([enterInternationalAddressLink]);
 
         const fieldsetChildrenFormGroup = document.createElement("div");
         fieldsetChildrenFormGroup.classList.add("govuk-form-group");
@@ -213,6 +213,7 @@ class TprAddressLookup {
         const addressPropertyMap = {
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1]: toTitleCase(address.addressLine1),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2]: toTitleCase(address.addressLine2),
+            [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_3]: toTitleCase(address.addressLine3),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY]: toTitleCase(address.town),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL]: toTitleCase(address.county) || toTitleCase(address.region),
             [ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY_CODE]: address.countryCode,
@@ -247,6 +248,7 @@ class TprAddressLookup {
             address.organisationName || "",
             address.addressLine1,
             address.addressLine2,
+            address.addressLine3,
             address.town,
             address.county || address.region,
             postcode,
@@ -261,7 +263,6 @@ class TprAddressLookup {
             editLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
             linkList = this.componentBuilder.createLinkList([editLink]);
         }
-
 
         const hiddenInputs = this.createHiddenInputsForAddress(address);
 
@@ -282,10 +283,10 @@ class TprAddressLookup {
 
         const fieldset = this.componentBuilder.createFieldset(ADDRESS_LOOKUP_CONFIG.LABELS.ENTER_NEW_INTERNATIONAL_ADDRESS);
 
-        const key = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1;
-        const addressLine1Input = this.componentBuilder.createGovukTextInput(this.fieldDefaults.label(key), key, this.fieldDefaults.width(key))
-            .addRequiredValidation(this.fieldDefaults.requiredMessage(key))
-            .addMaxLengthValidation(this.fieldDefaults.maxLength(key), this.fieldDefaults.maxLengthMessage(key))
+        const addressLine1Key = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1;
+        const addressLine1Input = this.componentBuilder.createGovukTextInput(this.fieldDefaults.label(addressLine1Key), addressLine1Key, this.fieldDefaults.width(addressLine1Key))
+            .addRequiredValidation(this.fieldDefaults.requiredMessage(addressLine1Key))
+            .addMaxLengthValidation(this.fieldDefaults.maxLength(addressLine1Key), this.fieldDefaults.maxLengthMessage(addressLine1Key))
             .build();
 
         const addressLine2Key = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2;
@@ -373,6 +374,7 @@ class TprAddressLookup {
         const confirmAddressButton = this.componentBuilder.createConfirmAddressButton((event) => this.confirmManualUKAddressOnClick(event));
         const returnToAddressLookupLink = this.componentBuilder.createLink(ADDRESS_LOOKUP_CONFIG.LINK_TEXT.RETURN_TO_POSTCODE_SEARCH, ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.RETURN_TO_POSTCODE);
         returnToAddressLookupLink.addEventListener("click", (event) => this.returnToSearchOnClick(event));
+
         const linkList = this.componentBuilder.createLinkList([returnToAddressLookupLink]);
 
         fieldset.appendChild(addressLine1Input);
@@ -403,6 +405,7 @@ class TprAddressLookup {
         const regionInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL);
         const countryInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY_CODE);
         const postcodeInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL);
+
         inputsToValidate.push(addressLine1Input, addressLine2Input, townOrCityInput, regionInput, countryInput, postcodeInput);
 
         const isValid = this.validator.validateMultiple(inputsToValidate);
@@ -533,7 +536,6 @@ class TprAddressLookup {
     }
 }
 
-
 function submitOnClick(event, addressLookupObjects) {
     const submittableStates = [
         AddressLookupStateMachine.STATES.CONFIRMED
@@ -579,6 +581,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const addressLookupComponents = document.querySelectorAll(ADDRESS_LOOKUP_CONFIG.COMPONENT_SELECTOR);
     const addressLookupObjects = [];
     let primaryStateMachine = null;
+
     addressLookupComponents.forEach((element, key) => {
         const role = element.getAttribute("data-address-lookup-role") || "primary";
         let lookup = null;
@@ -596,6 +599,5 @@ document.addEventListener("DOMContentLoaded", function () {
         formSubmitButton.addEventListener("click", (event) => { submitOnClick(event, addressLookupObjects); })
     }
 });
-
 
 export { submitOnClick };

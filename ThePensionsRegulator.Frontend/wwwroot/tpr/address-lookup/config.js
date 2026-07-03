@@ -15,6 +15,7 @@
         ENTER_INTERNATIONAL_ADDRESS: "enter-international-address",
         ADDRESS_LINE_1: "address-line-1",
         ADDRESS_LINE_2: "address-line-2",
+        ADDRESS_LINE_3: "address-line-3",
         TOWN_OR_CITY: "town-or-city",
         COUNTY: "county",
         REGION_INTERNATIONAL: "region-international",
@@ -101,7 +102,14 @@
             label: "Address line 2 (optional)",
             width: "xx-large",
             validation: {
-                maxLength: { value: 100, message: "Address line 2 must be 100 characters or less"}
+                maxLength: { value: 100, message: "Address line 2 must be 100 characters or less" }
+            }
+        },
+        "address-line-3": {
+            label: "Address line 3 (optional)",
+            width: "xx-large",
+            validation: {
+                maxLength: { value: 100, message: "Address line 3 must be 100 characters or less" }
             }
         },
         "town-or-city": {

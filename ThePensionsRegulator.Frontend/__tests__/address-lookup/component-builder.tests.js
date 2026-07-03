@@ -106,16 +106,16 @@ describe("AddressLookupComponentBuilder", () => {
         });
 
         it("should add each address line with a line break", () => {
-            const address = ["Line 1", "Line 2", "Brighton"];
-            const paragraph = builder.createConfirmedAddressParagraph(address, "BN1 4DW");
+            const address = ["Line 1", "Line 2", "Brighton", "BN1 4DW", "United Kingdom", "GB"];
+            const paragraph = builder.createConfirmedAddressParagraph(address, "BN1 4DW", "GB");
 
             const brElements = paragraph.querySelectorAll("br");
-            expect(brElements.length).toBe(3);
+            expect(brElements.length).toBe(4);
         });
 
         it("should convert address lines to title case except postcode", () => {
-            const address = ["UPPER CASE STREET", "BN1 4DW"];
-            const paragraph = builder.createConfirmedAddressParagraph(address, "BN1 4DW");
+            const address = ["UPPER CASE STREET", "BN1 4DW", "United Kingdom", "GB"];
+            const paragraph = builder.createConfirmedAddressParagraph(address, "BN1 4DW", "GB");
 
             expect(paragraph.textContent).toContain("Upper Case Street");
             expect(paragraph.textContent).toContain("BN1 4DW");
@@ -129,8 +129,8 @@ describe("AddressLookupComponentBuilder", () => {
         });
 
         it("should trim whitespace from address lines", () => {
-            const address = ["  Line 1  ", "  Line 2  "];
-            const paragraph = builder.createConfirmedAddressParagraph(address, "BN1 4DW");
+            const address = ["  Line 1  ", "  Line 2  ", "BN1 4DW", "United Kingdom", "GB"];
+            const paragraph = builder.createConfirmedAddressParagraph(address, "BN1 4DW", "GB");
 
             expect(paragraph.textContent).toContain("Line 1");
             expect(paragraph.textContent).toContain("Line 2");
@@ -402,7 +402,7 @@ describe("AddressLookupComponentBuilder", () => {
 
         it("should create a blank option as the first option if options doesnt provide one", () => {
             const option = builder.createOption("1", "Address 1");
-            const inputBuilder = builder.createGovukSelect("Choose address", "select", [ option ]);
+            const inputBuilder = builder.createGovukSelect("Choose address", "select", [option]);
             const formGroup = inputBuilder.build();
             const select = formGroup.querySelector("select");
 

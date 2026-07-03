@@ -2,7 +2,7 @@
 @inject ITprAddressLookupEndpointUrlProvider urlProvider
 @inject ITprCountryRepository countryRepository
 
-  <govuk-client-side-validation error-message-required="Enter a scheme name">
+<govuk-client-side-validation error-message-required="Enter a scheme name">
     <govuk-input for="SchemeName">
         <govuk-input-label is-page-heading="false">Scheme name</govuk-input-label>
         @if (ViewContext.ModelState.ContainsKey("SchemeName") && ViewContext.ModelState["SchemeName"]!.Errors.Count > 0)
@@ -95,7 +95,8 @@
                 <govuk-select-item selected="@(shippingSelectEmpty)"></govuk-select-item>
                 foreach (var country in shippingCountries)
                 {
-                    var selected = country.Value.ToString() == ViewContext.ModelState["ShippingAddress.CountryId"]?.AttemptedValue;
+                    var selected = country.Value.ToString() ==
+            ViewContext.ModelState["ShippingAddress.CountryId"]?.AttemptedValue;
                     <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                 }
             }
@@ -115,8 +116,8 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="ShippingAddress_UPRNReference" name="ShippingAddress.UPRNReference" value="@Model?.ShippingAddress?.UPRNReference"
-           data-address-lookup="UPRN" />
+    <input type="hidden" id="ShippingAddress_UPRNReference" name="ShippingAddress.UPRNReference" value="@Model?.ShippingAddress?.UPRNReference" data-address-lookup="UPRN" />
+    <input type="hidden" id="ShippingAddress_AddressLine3" name="ShippingAddress.AddressLine3" value="@Model?.ShippingAddress?.AddressLine3" data-address-lookup="address-line-3" />
     <input type="hidden" id="ShippingAddress_Country" name="ShippingAddress.Country" value="" data-address-lookup="country" />
 </tpr-address-lookup>
 
@@ -205,7 +206,8 @@
                 <govuk-select-item selected="@(billingSelectEmpty)"></govuk-select-item>
                 foreach (var country in billingCountries)
                 {
-                    var selected = country.Value.ToString() == ViewContext.ModelState["BillingAddress.CountryId"]?.AttemptedValue;
+                    var selected = country.Value.ToString() ==
+            ViewContext.ModelState["BillingAddress.CountryId"]?.AttemptedValue;
                     <govuk-select-item value="@country.Value" selected="@(selected)">@country.Key</govuk-select-item>
                 }
             }
@@ -226,8 +228,8 @@
     </govuk-client-side-validation>
 
     <input type="hidden" id="BillingAddress_UPRNReference" name="BillingAddress.UPRNReference" value="@Model?.BillingAddress?.UPRNReference" data-address-lookup="UPRN" />
-    <input type="hidden" id="BillingAddress_Country" name="BillingAddress.Country" value=""
-           data-address-lookup="country" />
+    <input type="hidden" id="BillingAddress_AddressLine3" name="BillingAddress.AddressLine3" value="@Model?.BillingAddress?.AddressLine3" data-address-lookup="address-line-3" />
+    <input type="hidden" id="BillingAddress_Country" name="BillingAddress.Country" value="" data-address-lookup="country" />
 </tpr-address-lookup>
 
 <govuk-button type="submit">Save</govuk-button>

@@ -11,6 +11,12 @@ describe("Address mapper", () => {
         it("is set to the value of the option matching the default country label in config", () => {
             expect(mapper.defaultCountryCode).toEqual("1");
         });
+
+        it("falls back to an empty string when no country option matches", () => {
+            const mapperWithoutMatch = new AddressMapper(ADDRESS_LOOKUP_CONFIG, [new Option("France", "FR")]);
+
+            expect(mapperWithoutMatch.defaultCountryCode).toEqual("");
+        });
     });
     describe("mapFromDpaResult", () => {
         const typicalResidentialDPAResult = {
@@ -48,6 +54,42 @@ describe("Address mapper", () => {
 
             expect(result.addressLine1).toEqual(residentialDPAResultWithBuildingName.BUILDING_NAME);
             expect(result.addressLine2).toEqual(residentialDPAResultWithBuildingName.THOROUGHFARE_NAME);
+        });
+
+        it("building name with a trailing suffix is split into building name and building number", () => {
+            const result = mapper.mapFromDpaResult({
+                BUILDING_NAME: "TELECOM HOUSE 103a",
+                THOROUGHFARE_NAME: "PRESTON ROAD",
+                POST_TOWN: "BRIGHTON",
+                POSTCODE: "BN1 6AF",
+            });
+
+            expect(result.addressLine1).toEqual("TELECOM HOUSE");
+            expect(result.addressLine2).toEqual("103a PRESTON ROAD");
+        });
+
+        it("building name with a trailing range is split into building name and building number", () => {
+            const result = mapper.mapFromDpaResult({
+                BUILDING_NAME: "THE HACIENDA 11-15",
+                THOROUGHFARE_NAME: "WHITWORTH STREET WEST",
+                POST_TOWN: "MANCHESTER",
+                POSTCODE: "M1 5DD",
+            });
+
+            expect(result.addressLine1).toEqual("THE HACIENDA");
+            expect(result.addressLine2).toEqual("11-15 WHITWORTH STREET WEST");
+        });
+
+        it("numeric building name without a separate building number is combined with the thoroughfare", () => {
+            const result = mapper.mapFromDpaResult({
+                BUILDING_NAME: "103",
+                THOROUGHFARE_NAME: "PRESTON ROAD",
+                POST_TOWN: "BRIGHTON",
+                POSTCODE: "BN1 6AF",
+            });
+
+            expect(result.addressLine1).toEqual("103 PRESTON ROAD");
+            expect(result.addressLine2).toEqual("");
         });
 
         it("town field is populated by POST_TOWN from DPA result", () => {
@@ -92,6 +134,31 @@ describe("Address mapper", () => {
             const result = mapper.mapFromDpaResult(subBuildingBuildingNameBuildingNumberDPAResult);
 
             expect(result.addressLine2).toMatch(`${subBuildingBuildingNameBuildingNumberDPAResult.BUILDING_NUMBER} ${subBuildingBuildingNameBuildingNumberDPAResult.THOROUGHFARE_NAME}`);
+        });
+
+        it("numeric sub-building names are joined to building names with a space", () => {
+            const result = mapper.mapFromDpaResult({
+                SUB_BUILDING_NAME: "12",
+                BUILDING_NAME: "WEST HOUSE",
+                POST_TOWN: "LONDON",
+                POSTCODE: "SW1A 1AA",
+            });
+
+            expect(result.addressLine1).toEqual("12 WEST HOUSE");
+            expect(result.addressLine2).toEqual("");
+        });
+
+        it("a sub-building with only a building number and street becomes a single premise line", () => {
+            const result = mapper.mapFromDpaResult({
+                SUB_BUILDING_NAME: "FLAT 14",
+                BUILDING_NUMBER: "44",
+                THOROUGHFARE_NAME: "SAFFRON HILL",
+                POST_TOWN: "LONDON",
+                POSTCODE: "EC1N 8FH",
+            });
+
+            expect(result.addressLine1).toEqual("FLAT 14, 44 SAFFRON HILL");
+            expect(result.addressLine2).toEqual("");
         });
 
         const organisationNameWithBuildingNumberDPAResult = {
@@ -159,6 +226,29 @@ describe("Address mapper", () => {
 
             expect(result.UPRN).toMatch(uprnDpaResult.UPRN);
         });
+
+        const allFieldsDPAResult = {
+            "UPRN": "906700424501",
+            "ORGANISATION_NAME": "ORG NAME",
+            "SUB_BUILDING_NAME": "SUB_BUILDING_NAME",
+            "BUILDING_NAME": "BUILDING_NAME",
+            "BUILDING_NUMBER": "BUILDING_NUMBER",
+            "THOROUGHFARE_NAME": "THOROUGHFARE_NAME",
+            "POST_TOWN": "POST_TOWN",
+            "POSTCODE": "POSTCODE",
+            "LOCAL_CUSTODIAN_CODE_DESCRIPTION": "GLASGOW CITY"
+        };
+
+        it("all address fields are correctly mapped when all DPA fields are present", () => {
+            const result = mapper.mapFromDpaResult(allFieldsDPAResult);
+
+            expect(result.addressLine1).toEqual(allFieldsDPAResult.ORGANISATION_NAME);
+            expect(result.addressLine2).toEqual(`${allFieldsDPAResult.SUB_BUILDING_NAME}, ${allFieldsDPAResult.BUILDING_NAME}`);
+            expect(result.addressLine3).toEqual(`${allFieldsDPAResult.BUILDING_NUMBER} ${allFieldsDPAResult.THOROUGHFARE_NAME}`);
+            expect(result.town).toEqual(allFieldsDPAResult.POST_TOWN);
+            expect(result.postcode).toEqual(allFieldsDPAResult.POSTCODE);
+            expect(result.UPRN).toEqual(allFieldsDPAResult.UPRN);
+        });
     });
 
     describe("mapFromManualEntry", () => {
@@ -187,7 +277,7 @@ describe("Address mapper", () => {
             expect(result.country).toEqual("France");
             expect(result.countryCode).toEqual("FR");
             expect(result).not.toHaveProperty("county");
-        }); 
+        });
 
 
 
@@ -205,6 +295,8 @@ describe("Address mapper", () => {
 
         it("countryCode defaults to empty string when not provided", () => {
             const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "London", "Greater London", "SW1A 2AA", "United Kingdom", undefined);
+
+            expect(result.countryCode).toEqual("");
         });
     });
 
@@ -239,6 +331,10 @@ describe("Address mapper", () => {
             expect(mapper.addressesMatch(address, { ...address, postcode: "SW1A 2AB" })).toBe(false);
         });
 
+        it("returns false when addressLine3 differs", () => {
+            expect(mapper.addressesMatch(address, { ...address, addressLine3: "Second Floor" })).toBe(false);
+        });
+
         it("treats undefined and empty string as equal", () => {
             const a = { addressLine1: "10 Downing Street", addressLine2: undefined, town: "London", county: "", country: undefined, postcode: "SW1A 2AA" };
             const b = { addressLine1: "10 Downing Street", addressLine2: "", town: "London", county: undefined, country: "", postcode: "SW1A 2AA" };
@@ -260,6 +356,12 @@ describe("Address mapper", () => {
                 "id": "BillingAddressLine2",
                 "dataAddressLookup": "address-line-2",
                 "value": "125-135 Preston Road"
+            },
+            {
+                "name": "BillingAddressLine3",
+                "id": "BillingAddressLine3",
+                "dataAddressLookup": "address-line-3",
+                "value": "Office 4"
             },
             {
                 "name": "BillingSomethingReallyRandom",
@@ -311,6 +413,7 @@ describe("Address mapper", () => {
 
             expect(result.addressLine1).toEqual("Telecom House");
             expect(result.addressLine2).toEqual("125-135 Preston Road");
+            expect(result.addressLine3).toEqual("Office 4");
             expect(result.town).toEqual("Brighton");
             expect(result.country).toEqual("United Kingdom");
             expect(result.countryCode).toEqual("1");

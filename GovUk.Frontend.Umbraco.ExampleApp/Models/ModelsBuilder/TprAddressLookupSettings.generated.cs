@@ -90,6 +90,14 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string AddressLine2ModelProperty => this.Value<string>(_publishedValueFallback, "addressLine2ModelProperty");
 
 		///<summary>
+		/// Address line 3 model: The name of the property on the view model being bound to address line 3 in the code.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine3ModelProperty")]
+		public virtual string AddressLine3ModelProperty => this.Value<string>(_publishedValueFallback, "addressLine3ModelProperty");
+
+		///<summary>
 		/// Address lookup is primary
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

@@ -54,18 +54,6 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-maxlength="Address line 3 must be 100 characters or less">
-        <govuk-input for="ShippingAddress.AddressLine3" autocomplete="address-line3"
-                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-3" } })">
-            <govuk-input-label>Address line 3 (optional)</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("ShippingAddress.AddressLine3") &&
-            ViewContext.ModelState["ShippingAddress.AddressLine3"]!.Errors.Count > 0)
-            {
-                <govuk-input-error-message>@ViewContext.ModelState["ShippingAddress.AddressLine3"]!.Errors[0].ErrorMessage</govuk-input-error-message>
-            }
-        </govuk-input>
-    </govuk-client-side-validation>
-
     <govuk-client-side-validation error-message-required="Enter a town or city"
                                   error-message-maxlength="Town or city must be 100 characters or less">
         <govuk-input for="ShippingAddress.PostTown" class="govuk-input--width-20" autocomplete="address-level2"
@@ -128,10 +116,9 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="ShippingAddress_UPRNReference" name="ShippingAddress.UPRNReference"
-           value="@Model?.ShippingAddress?.UPRNReference" data-address-lookup="UPRN" />
-    <input type="hidden" id="ShippingAddress_Country" name="ShippingAddress.Country" value=""
-           data-address-lookup="country" />
+    <input type="hidden" id="ShippingAddress_UPRNReference" name="ShippingAddress.UPRNReference" value="@Model?.ShippingAddress?.UPRNReference" data-address-lookup="UPRN" />
+    <input type="hidden" id="ShippingAddress_AddressLine3" name="ShippingAddress.AddressLine3" value="@Model?.ShippingAddress?.AddressLine3" data-address-lookup="address-line-3" />
+    <input type="hidden" id="ShippingAddress_Country" name="ShippingAddress.Country" value="" data-address-lookup="country" />
 </tpr-address-lookup>
 
 <h2 class="govuk-heading-m">Billing address</h2>
@@ -174,18 +161,6 @@
             ViewContext.ModelState["BillingAddress.AddressLine2"]!.Errors.Count > 0)
             {
                 <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.AddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
-            }
-        </govuk-input>
-    </govuk-client-side-validation>
-
-    <govuk-client-side-validation error-message-maxlength="Address line 3 must be 100 characters or less">
-        <govuk-input for="BillingAddress.AddressLine3" autocomplete="address-line3"
-                     input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-3" } })">
-            <govuk-input-label>Address line 3 (optional)</govuk-input-label>
-            @if (ViewContext.ModelState.ContainsKey("BillingAddress.AddressLine3") &&
-            ViewContext.ModelState["BillingAddress.AddressLine3"]!.Errors.Count > 0)
-            {
-                <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.AddressLine3"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
@@ -252,10 +227,9 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="BillingAddress_UPRNReference" name="BillingAddress.UPRNReference"
-           value="@Model?.BillingAddress?.UPRNReference" data-address-lookup="UPRN" />
-    <input type="hidden" id="BillingAddress_Country" name="BillingAddress.Country" value=""
-           data-address-lookup="country" />
+    <input type="hidden" id="BillingAddress_UPRNReference" name="BillingAddress.UPRNReference" value="@Model?.BillingAddress?.UPRNReference" data-address-lookup="UPRN" />
+    <input type="hidden" id="BillingAddress_AddressLine3" name="BillingAddress.AddressLine3" value="@Model?.BillingAddress?.AddressLine3" data-address-lookup="address-line-3" />
+    <input type="hidden" id="BillingAddress_Country" name="BillingAddress.Country" value="" data-address-lookup="country" />
 </tpr-address-lookup>
 
 <govuk-button type="submit">Save</govuk-button>

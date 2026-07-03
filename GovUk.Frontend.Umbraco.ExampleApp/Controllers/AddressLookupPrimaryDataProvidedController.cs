@@ -27,7 +27,6 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 {
                     AddressLine1 = "Shipping Address line 1",
                     AddressLine2 = "Shipping address line 2",
-                    AddressLine3 = "Shipping address line 3",
 					PostTown = "Shipping town",
                     PostCounty = "Shipping county",
                     PostCode = "CM12 0AG",

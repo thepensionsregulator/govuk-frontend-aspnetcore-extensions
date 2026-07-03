@@ -2,7 +2,7 @@
 @inject IGovUkHeadingClassProvider headingClassProvider
 @inject IAddressFieldStateHelper addressFieldStateHelper
 @inject ITprAddressLookupEndpointUrlProvider addressLookupEndpointUrlProvider
-@inject ITprCountryRepository countryRepository 
+@inject ITprCountryRepository countryRepository
 @using GovUk.Frontend.Umbraco.Blocks
 @using GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Frontend.Services
@@ -27,10 +27,12 @@
     var addressLine1ModelProperty = settings(TprPropertyAliases.AddressLine1ModelProperty);
     var fieldsetDescribedBy = string.IsNullOrWhiteSpace(hintText?.ToHtmlString()) ? null : $"{addressLine1ModelProperty}-hint";
     var cssClasses = (" " + settings(PropertyAliases.CssClasses)).TrimEnd();
+
     if (hintTextBlocks is not null && hintTextBlocks.Any())
     {
         fieldsetDescribedBy = $"{addressLine1ModelProperty}-blocks {fieldsetDescribedBy}".TrimEnd();
     }
+
     var isPrimary = Model.Settings.Value<bool>(TprPropertyAliases.AddressLookupIsPrimary);
     var role = isPrimary ? AddressLookupRole.Primary : AddressLookupRole.Secondary;
     var checkboxLabel = content(TprPropertyAliases.AddressLookupCheckboxLabel);
@@ -51,8 +53,8 @@
 
     var addressLine3State = addressFieldStateHelper.GetFieldState(
             settings(TprPropertyAliases.AddressLine3ModelProperty),
-            content(TprPropertyAliases.AddressLine3Label),
-            Umbraco.GetDictionaryValueOrDefault("TPR address lookup line 3 label", "Address line 3 (optional)"),
+            string.Empty,
+            string.Empty,
             ViewContext.ModelState
         );
 
@@ -92,25 +94,24 @@
         );
 }
 
-<tpr-address-lookup 
-    class="@cssClasses" 
-    described-by="@fieldsetDescribedBy" 
-    same-as-primary-checkbox-label="@checkboxLabel" 
-    role="@role" 
-    data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()" 
-    data-address-lookup-id-url="@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()"
-    data-address-lookup-postcode-label="@content(TprPropertyAliases.PostcodeLabel)"
-    data-address-lookup-postcode-required="@settings(TprPropertyAliases.PostcodeErrorMessageRequired)"
-    data-address-lookup-postcode-maxlength="@settings(TprPropertyAliases.PostcodeErrorMessageMaxLength)"
-    data-address-lookup-postcode-pattern="@settings(TprPropertyAliases.PostcodeErrorMessagePattern)"
-    data-address-lookup-county-label="@content(TprPropertyAliases.CountyLabel)"
-    data-address-lookup-county-maxlength="@settings(TprPropertyAliases.CountyErrorMessageMaxLength)"
-    data-address-lookup-building-label="@content(TprPropertyAliases.BuildingLabel)"
-    data-address-lookup-building-maxlength="@settings(TprPropertyAliases.BuildingErrorMessageMaxLength)"
-    data-address-lookup-select-address-label="@content(TprPropertyAliases.SelectAddressLabel)"
-    data-address-lookup-select-address-required="@settings(TprPropertyAliases.SelectAddressErrorMessageRequired)"
-    data-address-lookup-error-messages-select-confirm="@settings(TprPropertyAliases.SelectConfirmAddressErrorMessage)">
-    
+<tpr-address-lookup class="@cssClasses"
+                    described-by="@fieldsetDescribedBy"
+                    same-as-primary-checkbox-label="@checkboxLabel"
+                    role="@role"
+                    data-address-lookup-search-url="@addressLookupEndpointUrlProvider.GetAddressLookupSearchEndpoint()"
+                    data-address-lookup-id-url="@addressLookupEndpointUrlProvider.GetAddressLookupIdEndpoint()"
+                    data-address-lookup-postcode-label="@content(TprPropertyAliases.PostcodeLabel)"
+                    data-address-lookup-postcode-required="@settings(TprPropertyAliases.PostcodeErrorMessageRequired)"
+                    data-address-lookup-postcode-maxlength="@settings(TprPropertyAliases.PostcodeErrorMessageMaxLength)"
+                    data-address-lookup-postcode-pattern="@settings(TprPropertyAliases.PostcodeErrorMessagePattern)"
+                    data-address-lookup-county-label="@content(TprPropertyAliases.CountyLabel)"
+                    data-address-lookup-county-maxlength="@settings(TprPropertyAliases.CountyErrorMessageMaxLength)"
+                    data-address-lookup-building-label="@content(TprPropertyAliases.BuildingLabel)"
+                    data-address-lookup-building-maxlength="@settings(TprPropertyAliases.BuildingErrorMessageMaxLength)"
+                    data-address-lookup-select-address-label="@content(TprPropertyAliases.SelectAddressLabel)"
+                    data-address-lookup-select-address-required="@settings(TprPropertyAliases.SelectAddressErrorMessageRequired)"
+                    data-address-lookup-error-messages-select-confirm="@settings(TprPropertyAliases.SelectConfirmAddressErrorMessage)">
+
     
     <tpr-address-lookup-legend>@legend</tpr-address-lookup-legend>
 
@@ -125,15 +126,14 @@
             @await Html.PartialAsync("GOVUK/BlockList", childBlocks)
         </div>
     }
-    @if (!string.IsNullOrEmpty(hintText?.ToString()))   
+    @if (!string.IsNullOrEmpty(hintText?.ToString()))
     {
         <tpr-address-lookup-hint id="@addressLine1ModelProperty-hint">@hintText</tpr-address-lookup-hint>
     }
 
-    <govuk-client-side-validation 
-        error-message-required="@settings(TprPropertyAliases.AddressLine1ErrorMessageRequired)"
-        error-message-maxlength="@settings(TprPropertyAliases.AddressLine1ErrorMessageMaxLength)">
-        <govuk-input name="@addressLine1State.ModelPropertyName" value="@addressLine1State.AttemptedValue" input-aria-invalid="@addressLine1State.InvalidAriaLabel" autocomplete="address-line1" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "address-line-1" }})">
+    <govuk-client-side-validation error-message-required="@settings(TprPropertyAliases.AddressLine1ErrorMessageRequired)"
+                                  error-message-maxlength="@settings(TprPropertyAliases.AddressLine1ErrorMessageMaxLength)">
+        <govuk-input name="@addressLine1State.ModelPropertyName" value="@addressLine1State.AttemptedValue" input-aria-invalid="@addressLine1State.InvalidAriaLabel" autocomplete="address-line1" input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-1" } })">
             <govuk-input-label>@addressLine1State.Label</govuk-input-label>
             @if (addressLine1State.HasErrorMessage)
             {
@@ -142,43 +142,29 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation 
-        error-message-maxlength="@settings(TprPropertyAliases.AddressLine2ErrorMessageMaxLength)">
-        <govuk-input name="@addressLine2State.ModelPropertyName" value="@addressLine2State.AttemptedValue" input-aria-invalid="@addressLine2State.InvalidAriaLabel" autocomplete="address-line2" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "address-line-2" }})">
+    <govuk-client-side-validation error-message-maxlength="@settings(TprPropertyAliases.AddressLine2ErrorMessageMaxLength)">
+        <govuk-input name="@addressLine2State.ModelPropertyName" value="@addressLine2State.AttemptedValue" input-aria-invalid="@addressLine2State.InvalidAriaLabel" autocomplete="address-line2" input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-2" } })">
             <govuk-input-label>@addressLine2State.Label</govuk-input-label>
             @if (addressLine2State.HasErrorMessage)
             {
-			    <govuk-input-error-message>@addressLine2State.ErrorMessage</govuk-input-error-message>
+                <govuk-input-error-message>@addressLine2State.ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation 
-        error-message-maxlength="@settings(TprPropertyAliases.AddressLine3ErrorMessageMaxLength)">
-        <govuk-input name="@addressLine3State.ModelPropertyName" value="@addressLine3State.AttemptedValue" input-aria-invalid="@addressLine3State.InvalidAriaLabel" autocomplete="address-line3" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "address-line-3" }})">
-            <govuk-input-label>@addressLine3State.Label</govuk-input-label>
-            @if (addressLine3State.HasErrorMessage)
-            {
-			    <govuk-input-error-message>@addressLine3State.ErrorMessage</govuk-input-error-message>
-            }
-        </govuk-input>
-    </govuk-client-side-validation>
-
-    <govuk-client-side-validation 
-        error-message-required="@settings(TprPropertyAliases.TownOrCityErrorMessageRequired)"
-        error-message-maxlength="@settings(TprPropertyAliases.TownOrCityErrorMessageMaxLength)">
-        <govuk-input name="@townOrCityState.ModelPropertyName" class="govuk-input--width-20" value="@townOrCityState.AttemptedValue" input-aria-invalid="@townOrCityState.InvalidAriaLabel" autocomplete="address-level2" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "town-or-city" }})">
+    <govuk-client-side-validation error-message-required="@settings(TprPropertyAliases.TownOrCityErrorMessageRequired)"
+                                  error-message-maxlength="@settings(TprPropertyAliases.TownOrCityErrorMessageMaxLength)">
+        <govuk-input name="@townOrCityState.ModelPropertyName" class="govuk-input--width-20" value="@townOrCityState.AttemptedValue" input-aria-invalid="@townOrCityState.InvalidAriaLabel" autocomplete="address-level2" input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "town-or-city" } })">
             <govuk-input-label>@townOrCityState.Label</govuk-input-label>
             @if (townOrCityState.HasErrorMessage)
             {
-                <govuk-input-error-message>@townOrCityState.ErrorMessage</govuk-input-error-message>                   
+                <govuk-input-error-message>@townOrCityState.ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation 
-        error-message-maxlength="@settings(TprPropertyAliases.InternationalCountyErrorMessageMaxLength)">
-        <govuk-input name="@countyState.ModelPropertyName" class="govuk-input--width-20" value="@countyState.AttemptedValue" input-aria-invalid="@countyState.InvalidAriaLabel" autocomplete="address-level3" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "region-international" }})">
+    <govuk-client-side-validation error-message-maxlength="@settings(TprPropertyAliases.InternationalCountyErrorMessageMaxLength)">
+        <govuk-input name="@countyState.ModelPropertyName" class="govuk-input--width-20" value="@countyState.AttemptedValue" input-aria-invalid="@countyState.InvalidAriaLabel" autocomplete="address-level3" input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "region-international" } })">
             <govuk-input-label>@countyState.Label</govuk-input-label>
             @if (countyState.HasErrorMessage)
             {
@@ -187,8 +173,7 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation 
-        error-message-required="@settings(TprPropertyAliases.CountryErrorMessageRequired)">
+    <govuk-client-side-validation error-message-required="@settings(TprPropertyAliases.CountryErrorMessageRequired)">
         <govuk-select name="@countryCodeState.ModelPropertyName" class="govuk-input--width-10" select-aria-invalid="@countryCodeState.InvalidAriaLabel" select-autocomplete="country" select-data-address-lookup="country-code">
             <govuk-select-label>@countryCodeState.Label</govuk-select-label>
             @if (countryCodeState.HasErrorMessage)
@@ -197,7 +182,7 @@
             }
             @{
                 var countries = countryRepository.GetCountries();
-                var selectEmpty = !countries.Any(x => x.Value.ToString() == countryCodeState.AttemptedValue); 
+                var selectEmpty = !countries.Any(x => x.Value.ToString() == countryCodeState.AttemptedValue);
 
                 <govuk-select-item selected="@(selectEmpty)"></govuk-select-item>
                 foreach (var country in countries)
@@ -209,10 +194,9 @@
         </govuk-select>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation
-        error-message-required="@settings(TprPropertyAliases.InternationalPostcodeErrorMessageRequired)"
-        error-message-maxlength="@settings(TprPropertyAliases.InternationalPostcodeErrorMessageMaxLength)"> 
-        <govuk-input name="@postcodeState.ModelPropertyName" class="govuk-input--width-10" value="@postcodeState.AttemptedValue" input-aria-invalid="@postcodeState.InvalidAriaLabel" autocomplete="postal-code" input-attributes="@(new Dictionary<string, string?>{{ "data-address-lookup", "postcode-international" }})">
+    <govuk-client-side-validation error-message-required="@settings(TprPropertyAliases.InternationalPostcodeErrorMessageRequired)"
+                                  error-message-maxlength="@settings(TprPropertyAliases.InternationalPostcodeErrorMessageMaxLength)">
+        <govuk-input name="@postcodeState.ModelPropertyName" class="govuk-input--width-10" value="@postcodeState.AttemptedValue" input-aria-invalid="@postcodeState.InvalidAriaLabel" autocomplete="postal-code" input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "postcode-international" } })">
             <govuk-input-label>@postcodeState.Label</govuk-input-label>
             @if (postcodeState.HasErrorMessage)
             {
@@ -221,5 +205,6 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="@uprnState.ModelPropertyName" name="@uprnState.ModelPropertyName" value="@uprnState.AttemptedValue" data-address-lookup="UPRN"/>
+    <input type="hidden" id="@addressLine3State.ModelPropertyName" name="@addressLine3State.ModelPropertyName" value="@addressLine3State.AttemptedValue" data-address-lookup="address-line-3" />
+    <input type="hidden" id="@uprnState.ModelPropertyName" name="@uprnState.ModelPropertyName" value="@uprnState.AttemptedValue" data-address-lookup="UPRN" />
 </tpr-address-lookup>

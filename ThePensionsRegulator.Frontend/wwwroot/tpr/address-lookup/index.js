@@ -294,11 +294,6 @@ class TprAddressLookup {
             .addMaxLengthValidation(this.fieldDefaults.maxLength(addressLine2Key), this.fieldDefaults.maxLengthMessage(addressLine2Key))
             .build();
 
-        const addressLine3Key = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_3;
-        const addressLine3Input = this.componentBuilder.createGovukTextInput(this.fieldDefaults.label(addressLine3Key), addressLine3Key, this.fieldDefaults.width(addressLine3Key))
-            .addMaxLengthValidation(this.fieldDefaults.maxLength(addressLine3Key), this.fieldDefaults.maxLengthMessage(addressLine3Key))
-            .build();
-
         const townOrCityKey = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY;
         const townOrCityInput = this.componentBuilder.createGovukTextInput(this.fieldDefaults.label(townOrCityKey), townOrCityKey, this.fieldDefaults.width(townOrCityKey))
             .addRequiredValidation(this.fieldDefaults.requiredMessage(townOrCityKey))
@@ -329,7 +324,6 @@ class TprAddressLookup {
 
         fieldset.appendChild(addressLine1Input);
         fieldset.appendChild(addressLine2Input);
-        fieldset.appendChild(addressLine3Input);
         fieldset.appendChild(townOrCityInput);
         fieldset.appendChild(regionInput);
         fieldset.appendChild(countryInput);
@@ -359,11 +353,6 @@ class TprAddressLookup {
             .addMaxLengthValidation(this.fieldDefaults.maxLength(addressLine2Key), this.fieldDefaults.maxLengthMessage(addressLine2Key))
             .build();
 
-        const addressLine3Key = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_3;
-        const addressLine3Input = this.componentBuilder.createGovukTextInput(this.fieldDefaults.label(addressLine3Key), addressLine3Key, this.fieldDefaults.width(addressLine3Key))
-            .addMaxLengthValidation(this.fieldDefaults.maxLength(addressLine3Key), this.fieldDefaults.maxLengthMessage(addressLine3Key))
-            .build();
-
         const townOrCityKey = ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY;
         const townOrCityInput = this.componentBuilder.createGovukTextInput(this.fieldDefaults.label(townOrCityKey), townOrCityKey, this.fieldDefaults.width(townOrCityKey))
             .addRequiredValidation(this.fieldDefaults.requiredMessage(townOrCityKey))
@@ -390,7 +379,6 @@ class TprAddressLookup {
 
         fieldset.appendChild(addressLine1Input);
         fieldset.appendChild(addressLine2Input);
-        fieldset.appendChild(addressLine3Input);
         fieldset.appendChild(townOrCityInput);
         fieldset.appendChild(countyInput);
         fieldset.appendChild(postcodeInput);
@@ -413,13 +401,12 @@ class TprAddressLookup {
         const inputsToValidate = [];
         const addressLine1Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
         const addressLine2Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2);
-        const addressLine3Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_3);
         const townOrCityInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY);
         const regionInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.REGION_INTERNATIONAL);
         const countryInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTRY_CODE);
         const postcodeInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE_INTERNATIONAL);
 
-        inputsToValidate.push(addressLine1Input, addressLine2Input, addressLine3Input, townOrCityInput, regionInput, countryInput, postcodeInput);
+        inputsToValidate.push(addressLine1Input, addressLine2Input, townOrCityInput, regionInput, countryInput, postcodeInput);
 
         const isValid = this.validator.validateMultiple(inputsToValidate);
         if (!isValid) {
@@ -429,7 +416,7 @@ class TprAddressLookup {
         const selectedCountry = countryInput.selectedOptions[0];
         const selectedCountryText = selectedCountry.text;
 
-        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, addressLine3Input.value, townOrCityInput.value, regionInput.value, postcodeInput.value, selectedCountryText, countryInput.value);
+        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, '', townOrCityInput.value, regionInput.value, postcodeInput.value, selectedCountryText, countryInput.value);
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 
@@ -439,7 +426,6 @@ class TprAddressLookup {
         const inputsToValidate = [];
         const addressLine1Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
         const addressLine2Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2);
-        const addressLine3Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_3);
         const townOrCityInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.TOWN_OR_CITY);
         const countyInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY);
         const postcodeInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE);
@@ -454,7 +440,7 @@ class TprAddressLookup {
         const countryName = ukOption ? ukOption.text : ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY;
         const countryCode = ukOption ? ukOption.value : "";
 
-        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, addressLine3Input.value, townOrCityInput.value, countyInput.value, normalisedPostcode, countryName, countryCode);
+        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, '', townOrCityInput.value, countyInput.value, normalisedPostcode, countryName, countryCode);
 
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
@@ -550,7 +536,6 @@ class TprAddressLookup {
     }
 }
 
-
 function submitOnClick(event, addressLookupObjects) {
     const submittableStates = [
         AddressLookupStateMachine.STATES.CONFIRMED
@@ -614,6 +599,5 @@ document.addEventListener("DOMContentLoaded", function () {
         formSubmitButton.addEventListener("click", (event) => { submitOnClick(event, addressLookupObjects); })
     }
 });
-
 
 export { submitOnClick };

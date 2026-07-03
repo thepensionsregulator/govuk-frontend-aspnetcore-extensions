@@ -416,7 +416,7 @@ class TprAddressLookup {
         const selectedCountry = countryInput.selectedOptions[0];
         const selectedCountryText = selectedCountry.text;
 
-        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, '', townOrCityInput.value, regionInput.value, postcodeInput.value, selectedCountryText, countryInput.value);
+        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, regionInput.value, postcodeInput.value, selectedCountryText, countryInput.value);
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }
 
@@ -440,7 +440,7 @@ class TprAddressLookup {
         const countryName = ukOption ? ukOption.text : ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY;
         const countryCode = ukOption ? ukOption.value : "";
 
-        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, '', townOrCityInput.value, countyInput.value, normalisedPostcode, countryName, countryCode);
+        const address = this.addressMapper.mapFromManualEntry(addressLine1Input.value, addressLine2Input.value, townOrCityInput.value, countyInput.value, normalisedPostcode, countryName, countryCode);
 
         this.stateMachine.transition(AddressLookupStateMachine.STATES.CONFIRMED, { address });
     }

@@ -199,12 +199,11 @@
         return null;
     }
 
-    mapFromManualEntry(addressLine1, addressLine2, addressLine3, town, countyOrRegion, postcode, country, countryCode) {
+    mapFromManualEntry(addressLine1, addressLine2, town, countyOrRegion, postcode, country, countryCode) {
         const isUK = country === this.config.DEFAULTS.COUNTRY;
         return {
             addressLine1,
             addressLine2: addressLine2 || '',
-            addressLine3: addressLine3 || '',
             town,
             ...(isUK ? { county: countyOrRegion || '' } : { region: countyOrRegion || '' }),
             postcode,

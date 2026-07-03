@@ -253,11 +253,10 @@ describe("Address mapper", () => {
 
     describe("mapFromManualEntry", () => {
         it("all fields are populated and county field exists when country is United Kingdom", () => {
-            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "", "London", "Greater London", "SW1A 2AA", ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY, "1");
+            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "London", "Greater London", "SW1A 2AA", ADDRESS_LOOKUP_CONFIG.DEFAULTS.COUNTRY, "1");
 
             expect(result.addressLine1).toEqual("10 Downing Street");
             expect(result.addressLine2).toEqual("Westminster");
-            expect(result.addressLine3).toEqual("");
             expect(result.town).toEqual("London");
             expect(result.county).toEqual("Greater London");
             expect(result.postcode).toEqual("SW1A 2AA");
@@ -268,11 +267,10 @@ describe("Address mapper", () => {
         });
 
         it("all fields are populated and region field exists when country is not United Kingdom", () => {
-            const result = mapper.mapFromManualEntry("10 Rue de Rivoli", "", "", "Paris", "Île-de-France", "75001", "France", "FR");
+            const result = mapper.mapFromManualEntry("10 Rue de Rivoli", "", "Paris", "Île-de-France", "75001", "France", "FR");
 
             expect(result.addressLine1).toEqual("10 Rue de Rivoli");
             expect(result.addressLine2).toEqual("");
-            expect(result.addressLine3).toEqual("");
             expect(result.town).toEqual("Paris");
             expect(result.region).toEqual("Île-de-France");
             expect(result.postcode).toEqual("75001");
@@ -284,25 +282,19 @@ describe("Address mapper", () => {
 
 
         it("addressLine2 defaults to empty string when not provided", () => {
-            const result = mapper.mapFromManualEntry("10 Downing Street", undefined, "", "London", "Greater London", "SW1A 2AA", "United Kingdom", "1");
+            const result = mapper.mapFromManualEntry("10 Downing Street", undefined, "London", "Greater London", "SW1A 2AA", "United Kingdom", "1");
 
             expect(result.addressLine2).toEqual("");
         });
 
-        it("addressLine3 defaults to empty string when not provided", () => {
-            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", undefined, "London", "Greater London", "SW1A 2AA", "United Kingdom", "1");
-
-            expect(result.addressLine3).toEqual("");
-        });
-
         it("county defaults to empty string when not provided", () => {
-            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "", "London", undefined, "SW1A 2AA", "United Kingdom", "1");
+            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "London", undefined, "SW1A 2AA", "United Kingdom", "1");
 
             expect(result.county).toEqual("");
         });
 
         it("countryCode defaults to empty string when not provided", () => {
-            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "", "London", "Greater London", "SW1A 2AA", "United Kingdom", undefined);
+            const result = mapper.mapFromManualEntry("10 Downing Street", "Westminster", "London", "Greater London", "SW1A 2AA", "United Kingdom", undefined);
 
             expect(result.countryCode).toEqual("");
         });

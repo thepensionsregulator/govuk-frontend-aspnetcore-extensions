@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using GovUk.Frontend.Umbraco.Models;
+﻿using GovUk.Frontend.Umbraco.Models;
 using GovUk.Frontend.Umbraco.Services;
+using Microsoft.AspNetCore.Mvc;
 using ThePensionsRegulator.Umbraco;
 
 namespace GovUk.Frontend.Umbraco.Components
@@ -9,28 +8,42 @@ namespace GovUk.Frontend.Umbraco.Components
     [ViewComponent(Name = "GovUkBreadcrumb")]
     public class GovUkBreadcrumbComponent : ViewComponent
     {
-        private BreadcrumbViewModel ViewModel;
+        private BreadcrumbViewModel? ViewModel;
+        private readonly IGovUkAsyncBreadcrumbLinksService? _asyncBreadcrumbLinksService;
+        private readonly IGovUkBreadcrumbLinksService? _breadcrumbLinksService;
+        private readonly IUmbracoPublishedContentAccessor _publishedContext;
 
-        public GovUkBreadcrumbComponent(IGovUkBreadcrumbLinksService breadcrumbLinksService, IUmbracoPublishedContentAccessor publishedContext)
+        public GovUkBreadcrumbComponent(
+            IUmbracoPublishedContentAccessor publishedContext,
+            IGovUkAsyncBreadcrumbLinksService? asyncBreadcrumbLinksService = null,
+            IGovUkBreadcrumbLinksService? breadcrumbLinksService = null)
         {
-            if (breadcrumbLinksService is not null && publishedContext is not null)
+            if (publishedContext is null)
             {
-                ViewModel = breadcrumbLinksService.GetLinks(publishedContext.PublishedContent);
+                throw new ArgumentNullException(nameof(publishedContext), "Published context is not initialised.");
             }
-            else if (breadcrumbLinksService is null)
+
+            if (asyncBreadcrumbLinksService is null && breadcrumbLinksService is null)
             {
-                ViewModel.Error = "Breadcrumb links service is not initialised.";
-                throw new ArgumentNullException(nameof(breadcrumbLinksService), ViewModel.Error);
+                throw new ArgumentException("At least one breadcrumb links service must be provided.");
             }
-            else
-            {
-                ViewModel.Error = "Published context is not initialised.";
-                throw new ArgumentNullException(nameof(publishedContext), ViewModel.Error);
-            }
+
+            _asyncBreadcrumbLinksService = asyncBreadcrumbLinksService;
+            _breadcrumbLinksService = breadcrumbLinksService;
+            _publishedContext = publishedContext;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
+            if (_asyncBreadcrumbLinksService is not null)
+            {
+                ViewModel = await _asyncBreadcrumbLinksService.GetLinks(_publishedContext.PublishedContent);
+            }
+            else if (_breadcrumbLinksService is not null)
+            {
+                ViewModel = _breadcrumbLinksService.GetLinks(_publishedContext.PublishedContent);
+            }
+
             return View("Breadcrumb", ViewModel);
         }
     }

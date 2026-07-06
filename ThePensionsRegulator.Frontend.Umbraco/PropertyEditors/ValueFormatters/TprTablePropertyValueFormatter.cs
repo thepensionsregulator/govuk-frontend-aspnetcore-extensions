@@ -1,4 +1,8 @@
 ﻿using HtmlAgilityPack;
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core;
@@ -9,9 +13,26 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
 {
     /// <summary>
     /// Apply .tpr-table class to HTML tables from the Umbraco rich text editor.
+    /// Optionally injects CSV download forms for no-JS support when EnableTableCsvDownload is true.
     /// </summary>
     public class TprTablePropertyValueFormatter : IPropertyValueFormatter
     {
+        private readonly IOptions<TprFrontendOptions> _tprOptions;
+        private readonly IAntiforgery _antiforgery;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly TableHtmlCsvFormGenerator _formGenerator;
+
+        public TprTablePropertyValueFormatter(
+            IOptions<TprFrontendOptions> tprOptions,
+            IAntiforgery antiforgery,
+            IHttpContextAccessor httpContextAccessor)
+        {
+            _tprOptions = tprOptions;
+            _antiforgery = antiforgery;
+            _httpContextAccessor = httpContextAccessor;
+            _formGenerator = new TableHtmlCsvFormGenerator();
+        }
+
         public virtual bool IsFormatter(IPublishedPropertyType propertyType) => Constants.PropertyEditors.Aliases.RichText.Equals(propertyType.EditorAlias);
 
         /// <inheritdoc />
@@ -37,6 +58,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
                     }
                 }
                 richTextHtml = document.DocumentNode.OuterHtml;
+
+                // Inject CSV download forms for no-JS support if enabled
+                if (_tprOptions.Value.EnableTableCsvDownload && _httpContextAccessor.HttpContext != null)
+                {
+                    var tokens = _antiforgery.GetAndStoreTokens(_httpContextAccessor.HttpContext);
+                    richTextHtml = _formGenerator.AddCsvDownloadForms(richTextHtml, tokens.RequestToken!);
+                }
             }
             return new HtmlEncodedString(richTextHtml ?? "");
         }

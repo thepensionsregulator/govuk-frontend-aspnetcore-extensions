@@ -82,13 +82,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTprGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
 
             // ThePensionsRegulator.Frontend
-            services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
-            services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
-            services.AddTransient<IStaticFileCachePolicy, TprStaticFileCachePolicy>();
-
-            var tprFrontendOptions = new TprFrontendOptions();
-            if (configureTprOptions is not null) { configureTprOptions(tprFrontendOptions); }
-            services.AddTransient((services) => Options.Create(tprFrontendOptions));
+            services.AddTprFrontend(configureGovUkOptions, configureTprOptions);
 
             // ThePensionsRegulator.Frontend.Umbraco
             services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/TPR/{0}.cshtml"));

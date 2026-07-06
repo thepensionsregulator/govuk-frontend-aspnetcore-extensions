@@ -1,12 +1,25 @@
-﻿@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
-@using ThePensionsRegulator.Umbraco
+﻿@using Microsoft.Extensions.DependencyInjection
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco.Core
-@using Umbraco.Cms.Core.Routing
 @addTagHelper *, GovUk.Frontend.AspNetCore
-@inject IGovUkBreadcrumbLinksService breadcrumbLinksService
+@inject IServiceProvider serviceProvider
 @inject IUmbracoPublishedContentAccessor publishedContext
 @{
-    var model = breadcrumbLinksService.GetLinks(publishedContext.PublishedContent);
+    BreadcrumbViewModel? model = null;
+
+    var asyncBreadcrumbLinksService = serviceProvider.GetService(typeof(IGovUkAsyncBreadcrumbLinksService)) as IGovUkAsyncBreadcrumbLinksService;
+
+    if (asyncBreadcrumbLinksService is not null)
+    {
+        model = await asyncBreadcrumbLinksService.GetLinks(publishedContext.PublishedContent);
+    }
+    else 
+    {
+        var breadcrumbLinksService = serviceProvider.GetRequiredService(typeof(IGovUkBreadcrumbLinksService)) as IGovUkBreadcrumbLinksService;
+        model = breadcrumbLinksService!.GetLinks(publishedContext.PublishedContent);
+    }
+    if (model is null) { return; }
 }
 
 <govuk-breadcrumbs collapse-on-mobile="true">

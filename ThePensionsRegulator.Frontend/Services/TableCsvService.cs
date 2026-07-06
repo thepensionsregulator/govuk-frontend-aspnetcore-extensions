@@ -54,6 +54,17 @@ public class TableCsvService : ITableCsvService
             return string.Empty;
         }
 
+        // CSV injection (formula injection) mitigation: if the value starts with a character
+        // that spreadsheet applications (Excel, Google Sheets, LibreOffice) interpret as the
+        // start of a formula, prefix it with a single quote so it is opened as literal text
+        // instead of being executed. This mirrors the client-side escapeCsvValue in
+        // tpr-table-csv-download.js, since tableHtml/cell content here is untrusted input
+        // supplied directly by the client.
+        if (value[0] is '=' or '+' or '-' or '@' or '\t' or '\r')
+        {
+            value = "'" + value;
+        }
+
         if (value.Contains(',') || value.Contains('"') || value.Contains('\n') || value.Contains('\r'))
         {
             return $"\"{value.Replace("\"", "\"\"")}\"";

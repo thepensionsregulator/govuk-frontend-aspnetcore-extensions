@@ -50,7 +50,12 @@ public class TableDownloadController : ControllerBase
 
         var sanitized = Regex.Replace(fileName.Trim(), @"[^\w\s\-]", "");
         sanitized = Regex.Replace(sanitized, @"\s+", "-").ToLowerInvariant();
-        
+
+        if (string.IsNullOrEmpty(sanitized))
+        {
+            return null;
+        }
+
         return sanitized.Length > 50 ? sanitized[..50] : sanitized;
     }
 }

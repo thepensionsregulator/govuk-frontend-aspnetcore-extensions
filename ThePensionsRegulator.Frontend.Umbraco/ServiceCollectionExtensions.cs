@@ -82,7 +82,16 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTprGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
 
             // ThePensionsRegulator.Frontend
-            services.AddTprFrontend(configureGovUkOptions, configureTprOptions);
+            // Keep these registrations explicit here rather than calling AddTprFrontend(), because
+            // AddTprGovUkFrontendUmbraco() above has already registered the GOV.UK frontend services.
+            services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
+            services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
+            services.AddTransient<IStaticFileCachePolicy, TprStaticFileCachePolicy>();
+            services.AddTransient<ITableCsvService, TableCsvService>();
+
+            var tprFrontendOptions = new TprFrontendOptions();
+            configureTprOptions(tprFrontendOptions);
+            services.AddTransient((services) => Options.Create(tprFrontendOptions));
 
             // ThePensionsRegulator.Frontend.Umbraco
             services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/TPR/{0}.cshtml"));

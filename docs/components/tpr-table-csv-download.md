@@ -2,6 +2,8 @@
 
 Adds a "Download table data (CSV)" button below each `.govuk-table` on the page, allowing users to download the table data as a CSV file. This improves accessibility by providing an alternative way to consume tabular data.
 
+The feature is provided by `ThePensionsRegulator.Frontend`. Umbraco adds automatic no-JS form injection for rich text tables, but Umbraco is not required to use either the JavaScript enhancement or the server-side CSV download endpoint.
+
 ## Enabling the feature
 
 Set `EnableTableCsvDownload = true` on `TprFrontendOptions`:
@@ -25,6 +27,22 @@ On `DOMContentLoaded`, the script:
 3. On button click, converts the table to CSV and triggers a file download.
 
 The script is idempotent — if it runs more than once, it will not create duplicate buttons.
+
+## No-JS support
+
+When using `ThePensionsRegulator.Frontend.Umbraco`, no-JS download forms are injected automatically for eligible rich text tables.
+
+When using `ThePensionsRegulator.Frontend` without Umbraco, the JavaScript enhancement works automatically, and you can add a server-side fallback by rendering a form that posts the table HTML to `/api/table/download-csv`:
+
+```html
+<form method="post" action="/api/table/download-csv" class="tpr-table-download-form">
+	<input type="hidden" name="tableHtml" value="&lt;table&gt;...&lt;/table&gt;" />
+	<input type="hidden" name="__RequestVerificationToken" value="..." />
+	<button type="submit" class="govuk-button govuk-button--secondary">Download table data (CSV)</button>
+</form>
+```
+
+When JavaScript is available, the script intercepts that form submission and performs the CSV download client-side instead of posting to the server.
 
 ### File naming
 

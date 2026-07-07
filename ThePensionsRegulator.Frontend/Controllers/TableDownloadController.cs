@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 using ThePensionsRegulator.Frontend.Services;
 
-namespace ThePensionsRegulator.Frontend.Umbraco.Controllers;
+namespace ThePensionsRegulator.Frontend.Controllers;
 
 /// <summary>
 /// Handles CSV download requests for HTML tables.
@@ -50,7 +50,7 @@ public class TableDownloadController : ControllerBase
 
         var sanitized = Regex.Replace(fileName.Trim(), @"[^\w\s\-]", "");
         sanitized = Regex.Replace(sanitized, @"\s+", "-").ToLowerInvariant();
-        
+
         return sanitized.Length > 50 ? sanitized[..50] : sanitized;
     }
 }

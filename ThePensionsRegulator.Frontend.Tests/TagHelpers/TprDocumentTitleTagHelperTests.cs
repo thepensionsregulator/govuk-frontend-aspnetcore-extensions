@@ -15,6 +15,7 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
         [InlineData("/media/test.rtf", "misc", "RTF", "120KB, 4 page(s)")]
         [InlineData("/media/test.odt", "misc", "ODT", "120KB, 4 page(s)")]
         [InlineData("/media/test.xlsx", "excel", "Excel", "120KB")]
+        [InlineData("/media/test.xlst", "excel", "XLST", "120KB")]
         [InlineData("/media/test.csv", "excel", "CSV", "120KB")]
         public async Task TprDocumentTitleTagHelper_Should_RenderExpected_DocumentMetadata(string href, string expectedIconClass, string expectedFileLabel, string expectedMetaDataText)
         {

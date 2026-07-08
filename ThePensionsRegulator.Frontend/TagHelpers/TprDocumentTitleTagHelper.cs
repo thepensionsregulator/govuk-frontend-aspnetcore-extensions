@@ -71,10 +71,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private static string GenerateFileInfoHtml(string cssClass, string fileType, TprDocumentContext context, bool includePages = false)
         {
             var html = $"<br /><span class=\"{cssClass} fileicon\">{fileType}</span> {context.KbSize}KB";
+            var pageLabel = context.PagesLabel ?? "page(s)";
+
 
             if(includePages && context.Pages != "0")
             {
-                html = html + $", {context.Pages} page(s)";
+                html = html + $", {context.Pages} {pageLabel}";
             }
 
             return html;

@@ -23,6 +23,7 @@
             var docLinkType = documentLink.Type;
             var docPages = document.Content.Value<string>(TprPropertyAliases.DocumentNumberOfPages);
             var dteValue = document.Content.Value<DateTime>(TprPropertyAliases.DocumentDatePublished);
+			var docPagesLabel = Umbraco.GetDictionaryValueOrDefault("Pages", "page(s)");
             var docPublishedLabel = Umbraco.GetDictionaryValueOrDefault("Published", "Published");
             var docDatePublished = dteValue > DateTime.MinValue ? dteValue.ToString("MMMM yyyy") : null;
             var docDescription = document.Content.Value<string>(TprPropertyAliases.DocumentDescription);
@@ -47,7 +48,7 @@
                         : mediaLinkDocName;
                 }
 
-                <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" published-label="@docPublishedLabel" datepublished="@docDatePublished" innercss="@innerCssClasses">
+                <tpr-document href="@docHref" kbsize="@docKB" pages="@docPages" pages-label="@docPagesLabel" published-label="@docPublishedLabel" datepublished="@docDatePublished" innercss="@innerCssClasses">
                     <tpr-document-title>@docTitle</tpr-document-title>
 
                     <tpr-document-description>@docDescription</tpr-document-description>
@@ -56,7 +57,7 @@
             }
             else
             {
-                <tpr-document href="@docHref" pages="@docPages" published-label="@docPublishedLabel" datepublished="@docDatePublished" innercss="@innerCssClasses">
+                <tpr-document href="@docHref" pages="@docPages" pages-label="@docPagesLabel" published-label="@docPublishedLabel" datepublished="@docDatePublished" innercss="@innerCssClasses">
                     <tpr-document-title>@documentLink.Name</tpr-document-title>
 
                     <tpr-document-description>@docDescription</tpr-document-description>

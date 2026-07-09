@@ -107,12 +107,11 @@ function highlightCurrentSection() {
         const anchor = item.querySelector('a');
         let anchorText = anchor.innerHTML.toLowerCase();
 
-        const arrowContainer = item.querySelector(".tpr-header-menu__arrow-container")
         const arrow = item.querySelector(".tpr-header-menu__arrow")
 
         if (anchorText.includes(section.toLowerCase())) {
             anchor.classList.toggle("tpr-header-menu__nav-menu-item--active")
-            arrowContainer.classList.toggle("tpr-header-menu_arrow-container--active")
+            item.classList.toggle("tpr-header-menu__nav-menu-item--active")
             arrow.classList.toggle("tpr-header-menu_arrow--active")
         }
     });

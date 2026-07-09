@@ -33,7 +33,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                     case ".docx":
                         output.PostContent.SetHtmlContent(GenerateFileInfoHtml("doc", "Word", documentContext, includePages: true));
                         break;
-                    case "dotx":
+                    case ".dotx":
                         output.PostContent.SetHtmlContent(GenerateFileInfoHtml("doc", "DOTX", documentContext, includePages: true));
                         break;
                     case ".pptx":

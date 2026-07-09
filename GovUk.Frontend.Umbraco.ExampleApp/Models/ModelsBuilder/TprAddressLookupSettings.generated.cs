@@ -113,28 +113,28 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string BuildingErrorMessageMaxLength => this.Value<string>(_publishedValueFallback, "buildingErrorMessageMaxLength");
 
 		///<summary>
-		/// Country code model property: The name of the property on the view model being bound to the country code in the code.
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("countryCodeModelProperty")]
-		public virtual string CountryCodeModelProperty => this.Value<string>(_publishedValueFallback, "countryCodeModelProperty");
-
-		///<summary>
 		/// Country custom error message: Sets the message displayed by a custom validator.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("countryCustomErrorMessage")]
-		public virtual string CountryCustomErrorMessage => this.Value<string>(_publishedValueFallback, "countryCustomErrorMessage");
+		[ImplementPropertyType("countryCodeCustomErrorMessage")]
+		public virtual string CountryCodeCustomErrorMessage => this.Value<string>(_publishedValueFallback, "countryCodeCustomErrorMessage");
 
 		///<summary>
 		/// Country error message required: Sets the message displayed if country is set by the code to be required.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("countryErrorMessageRequired")]
-		public virtual string CountryErrorMessageRequired => this.Value<string>(_publishedValueFallback, "countryErrorMessageRequired");
+		[ImplementPropertyType("countryCodeErrorMessageRequired")]
+		public virtual string CountryCodeErrorMessageRequired => this.Value<string>(_publishedValueFallback, "countryCodeErrorMessageRequired");
+
+		///<summary>
+		/// Country code model property: The name of the property on the view model being bound to the country code in the code.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countryCodeModelProperty")]
+		public virtual string CountryCodeModelProperty => this.Value<string>(_publishedValueFallback, "countryCodeModelProperty");
 
 		///<summary>
 		/// County error message maximum length: Sets the message displayed if county is set by the code to be of a maximum length.

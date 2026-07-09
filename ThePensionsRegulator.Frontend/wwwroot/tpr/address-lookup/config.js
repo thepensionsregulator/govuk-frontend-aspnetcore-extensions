@@ -138,7 +138,7 @@
             label: "Country",
             width: "x-large",
             validation: {
-                required: { message: "Enter a country" },
+                required: { message: "Select a country" },
                 maxLength: { value: 100, message: "Country must be 100 characters or less" }
             }
         },

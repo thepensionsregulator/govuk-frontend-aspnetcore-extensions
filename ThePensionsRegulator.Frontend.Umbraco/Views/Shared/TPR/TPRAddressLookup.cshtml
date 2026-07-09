@@ -173,7 +173,7 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <govuk-client-side-validation error-message-required="@settings(TprPropertyAliases.CountryErrorMessageRequired)">
+    <govuk-client-side-validation error-message-required="@settings(TprPropertyAliases.CountryCodeErrorMessageRequired)">
         <govuk-select name="@countryCodeState.ModelPropertyName" class="govuk-input--width-10" select-aria-invalid="@countryCodeState.InvalidAriaLabel" select-autocomplete="country" select-data-address-lookup="country-code">
             <govuk-select-label>@countryCodeState.Label</govuk-select-label>
             @if (countryCodeState.HasErrorMessage)

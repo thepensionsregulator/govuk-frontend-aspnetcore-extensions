@@ -6,7 +6,6 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
 {
     public class TprDocumentTitleTagHelperTests
     {
-
         [Theory]
         [InlineData("/media/test.pdf", "pdf", "PDF", "120KB, 4 page(s)")]
         [InlineData("/media/test.doc", "doc", "Word", "120KB, 4 page(s)")]
@@ -17,37 +16,13 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
         [InlineData("/media/test.odt", "misc", "ODT", "120KB, 4 page(s)")]
         [InlineData("/media/test.xlsx", "excel", "Excel", "120KB")]
         [InlineData("/media/test.xlst", "excel", "XLST", "120KB")]
-        [InlineData("/media/test.csv", "excel", "CSV", "120KB")]
+        [InlineData("/media/test.csv", "excel", "CSV", "120KB")]    
         public async Task TprDocumentTitleTagHelper_Should_RenderExpected_DocumentMetadata(string href, string expectedIconClass, string expectedFileLabel, string expectedMetaDataText)
         {
-
-            //Arrange
-            var documentContext = new TprDocumentContext
-            {
-                Href = href,
-                KbSize = "120",
-                Pages = "4"
-            };
-
-            var attributes = new TagHelperAttributeList();
-
-            var context = new TagHelperContext(attributes, new Dictionary<object, object> { { typeof(TprDocumentsTagHelper), documentContext } }, Guid.NewGuid().ToString());
-
-            var output = new TagHelperOutput(TprDocumentTitleTagHelper.TagName, attributes, (useCachedResult, encoder) =>
-            {
-                var tagHelperContent = new DefaultTagHelperContent();
-                return Task.FromResult<TagHelperContent>(tagHelperContent);
-            });
-
-            var tagHelper = new TprDocumentTitleTagHelper();
-
             //Act
-            await tagHelper.ProcessAsync(context, output);
+            var output = await GenerateTagHelper(href, "4");
 
-            using var result = new StringWriter();
-            output.WriteTo(result, HtmlEncoder.Create());
-
-            var html = result.ToString();
+            var html = RenderHtml(output);
 
             //Assert
             Assert.Contains("<dt>", html);
@@ -55,39 +30,17 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             Assert.Contains($"href=\"{href}\"", html);
             Assert.Contains($"<span class=\"{expectedIconClass} fileicon\">{expectedFileLabel}</span>", html);
             Assert.Contains(expectedMetaDataText, html);
+            Assert.Contains("download", html);
             Assert.Contains("</dt>", html);
         }
 
         [Fact]
         public async Task Document_WithZeroPages_DoesNotRender_PageCount()
-        {
-            //Arrange
-            var documentContext = new TprDocumentContext
-            {
-                Href = "/media/test.pdf",
-                KbSize = "120",
-                Pages = "0"
-            };
-
-            var attributes = new TagHelperAttributeList();
-
-            var context = new TagHelperContext(attributes, new Dictionary<object, object> { { typeof(TprDocumentsTagHelper), documentContext } }, Guid.NewGuid().ToString());
-
-            var output = new TagHelperOutput(TprDocumentTitleTagHelper.TagName, attributes, (useCachedResult, encoder) =>
-            {
-                var tagHelperContent = new DefaultTagHelperContent();
-                return Task.FromResult<TagHelperContent>(tagHelperContent);
-            });
-
-            var tagHelper = new TprDocumentTitleTagHelper();
-
+        { 
             //Act
-            await tagHelper.ProcessAsync(context, output);
+            var output = await GenerateTagHelper("/media/test.pdf", "0");
 
-            using var result = new StringWriter();
-            output.WriteTo(result, HtmlEncoder.Create());
-
-            var html = result.ToString();
+            var html = RenderHtml(output);
 
             //Assert
             Assert.Contains("PDF", html);
@@ -98,11 +51,17 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
         [Fact]
         public async Task ProcessAsync_WhenHrefIsNull_ThrowsArgumentNullException()
         {
+            //Assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => GenerateTagHelper(null, "4"));
+        }
+
+        private static async Task<TagHelperOutput> GenerateTagHelper(string href, string pages)
+        {
             var documentContext = new TprDocumentContext
             {
-                Href = null,
+                Href = href,
                 KbSize = "120",
-                Pages = "1"
+                Pages = pages
             };
 
             var attributes = new TagHelperAttributeList();
@@ -117,17 +76,17 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
 
             var tagHelper = new TprDocumentTitleTagHelper();
 
-            await Assert.ThrowsAsync<ArgumentNullException>(
-                () => tagHelper.ProcessAsync(context, output));
+
+            await tagHelper.ProcessAsync(context, output);
+
+            return output;
         }
 
-        [Theory]
-        [InlineData("/media/test.pdf")]
-        [InlineData("/media/test.docx")]
-        [InlineData("/media/test.xlsx")]
-        public async Task MediaFiles_Should_RenderDowloadAttribute(string href)
+        private static string RenderHtml(TagHelperOutput output)
         {
-
+            using var result = new StringWriter();
+            output.WriteTo(result, HtmlEncoder.Create());
+            return result.ToString();
         }
     }
 }

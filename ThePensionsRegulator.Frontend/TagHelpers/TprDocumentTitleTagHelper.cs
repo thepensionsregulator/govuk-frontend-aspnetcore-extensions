@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -73,8 +70,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var html = $"<br /><span class=\"{cssClass} fileicon\">{fileType}</span> {context.KbSize}KB";
             var pageLabel = context.PagesLabel ?? "page(s)";
 
-
-            if(includePages && context.Pages != "0")
+            if (includePages && context.Pages != "0")
             {
                 html = html + $", {context.Pages} {pageLabel}";
             }

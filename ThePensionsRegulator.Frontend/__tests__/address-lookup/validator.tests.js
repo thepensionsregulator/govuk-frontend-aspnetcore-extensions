@@ -106,6 +106,7 @@ describe("AddressLookupValidator", () => {
             const errorElement = fieldset.querySelector(".govuk-error-message");
             expect(errorElement).not.toBeNull();
             expect(errorElement.tagName).toBe("P");
+            expect(errorElement.classList.contains("fieldset-error-message")).toBe(true);
         });
 
         it("should create error message with visually hidden 'Error:' prefix", () => {
@@ -260,13 +261,145 @@ describe("AddressLookupValidator", () => {
         });
     });
 
+    describe("removeCustomFieldsetError", () => {
+        it("should remove fieldset error message when fieldset is in a form group", () => {
+            const fieldset = document.querySelector("fieldset");
+            validator.addOrUpdateCustomFieldsetError(fieldset, "Test error message");
+
+            expect(fieldset.querySelector(".fieldset-error-message")).not.toBeNull();
+
+            validator.removeCustomFieldsetError(fieldset);
+
+            expect(fieldset.querySelector(".fieldset-error-message")).toBeNull();
+        });
+
+        it("should not fail when there is no fieldset error message", () => {
+            document.body.innerHTML = `
+                <form>
+                    <div id="container">
+                        <div class="govuk-form-group">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend">Test Legend</legend>
+                                <input id="test-input-0" name="test-input" />
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>`;
+            container = document.getElementById("container");
+            validator = new AddressLookupValidator(container, testIndex);
+            const fieldset = document.querySelector("fieldset");
+
+            expect(() => validator.removeCustomFieldsetError(fieldset)).not.toThrow();
+            expect(fieldset.querySelector(".fieldset-error-message")).toBeNull();
+        });
+
+        it("should not remove error when fieldset is not in a form group", () => {
+            const fieldset = document.querySelector("fieldset");
+            validator.addOrUpdateCustomFieldsetError(fieldset, "Test error message");
+
+            const formGroup = fieldset.parentElement;
+            formGroup.replaceWith(fieldset);
+
+            expect(fieldset.querySelector(".fieldset-error-message")).not.toBeNull();
+
+            validator.removeCustomFieldsetError(fieldset);
+
+            expect(fieldset.querySelector(".fieldset-error-message")).not.toBeNull();
+        });
+
+        it("should keep govuk-form-group--error class on parent form group", () => {
+            document.body.innerHTML = `
+                <form>
+                    <div id="container">
+                        <div class="govuk-form-group govuk-form-group--error">
+                            <fieldset class="govuk-fieldset">
+                                <legend class="govuk-fieldset__legend">Test Legend</legend>
+                                <p class="govuk-error-message fieldset-error-message">
+                                    <span class="govuk-visually-hidden">Error: </span>
+                                    Test error message
+                                </p>
+                                <input id="test-input-0" name="test-input" />
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>`;
+            container = document.getElementById("container");
+            validator = new AddressLookupValidator(container, testIndex);
+            const fieldset = document.querySelector("fieldset");
+            const formGroup = document.querySelector(".govuk-form-group");
+
+            validator.removeCustomFieldsetError(fieldset);
+
+            expect(formGroup.classList.contains("govuk-form-group--error")).toBe(true);
+            expect(fieldset.querySelector(".fieldset-error-message")).toBeNull();
+        });
+    });
+
+    describe("constructor focusout handling", () => {
+        it.each([
+            "button[data-address-lookup]",
+            "button[type='submit']",
+            "input[type='submit']",
+            "a[data-address-lookup='return-to-postcode']",
+            "a[data-address-lookup='address-not-on-list']"
+        ])("should skip blur validation when focus moves to %s", (selector) => {
+            const input = document.querySelector("#test-input-0");
+            input.setAttribute("data-val", "true");
+            const validateOnBlurSpy = jest.spyOn(validator, "validateOnBlur");
+
+            const nextFocusedElement = document.createElement(selector.startsWith("a[") ? "a" : selector.startsWith("input[") ? "input" : "button");
+            if (selector === "button[data-address-lookup]") {
+                nextFocusedElement.setAttribute("data-address-lookup", "find-address");
+            }
+            if (selector === "button[type='submit']" || selector === "input[type='submit']") {
+                nextFocusedElement.setAttribute("type", "submit");
+            }
+            if (selector === "a[data-address-lookup='return-to-postcode']") {
+                nextFocusedElement.setAttribute("data-address-lookup", "return-to-postcode");
+            }
+            if (selector === "a[data-address-lookup='address-not-on-list']") {
+                nextFocusedElement.setAttribute("data-address-lookup", "address-not-on-list");
+            }
+
+            document.body.appendChild(nextFocusedElement);
+
+            input.dispatchEvent(new FocusEvent("focusout", { bubbles: true, relatedTarget: nextFocusedElement }));
+
+            expect(validateOnBlurSpy).not.toHaveBeenCalled();
+        });
+
+        it("should validate on blur when related target does not match skip selectors", () => {
+            const input = document.querySelector("#test-input-0");
+            input.setAttribute("data-val", "true");
+            const validateOnBlurSpy = jest.spyOn(validator, "validateOnBlur");
+
+            const nextFocusedElement = document.createElement("button");
+            nextFocusedElement.setAttribute("type", "button");
+            document.body.appendChild(nextFocusedElement);
+
+            input.dispatchEvent(new FocusEvent("focusout", { bubbles: true, relatedTarget: nextFocusedElement }));
+
+            expect(validateOnBlurSpy).toHaveBeenCalledTimes(1);
+            expect(validateOnBlurSpy).toHaveBeenCalledWith(input);
+        });
+
+        it("should not validate on blur for elements without data-val='true'", () => {
+            const input = document.querySelector("#test-input-0");
+            const validateOnBlurSpy = jest.spyOn(validator, "validateOnBlur");
+
+            input.dispatchEvent(new FocusEvent("focusout", { bubbles: true }));
+
+            expect(validateOnBlurSpy).not.toHaveBeenCalled();
+        });
+    });
+
     describe("focusInvalid", () => {
         it("should delegate to the current form validator's focusInvalid", () => {
             const focusInvalidMock = jest.fn();
             const mockValidator = { focusInvalid: focusInvalidMock };
             global.$ = jest.fn(() => ({
                 data: jest.fn(() => mockValidator),
-                removeData: jest.fn(function() { return this; }),
+                removeData: jest.fn(function () { return this; }),
                 validate: jest.fn(() => mockValidator)
             }));
             global.$.validator = { unobtrusive: { parse: jest.fn() } };

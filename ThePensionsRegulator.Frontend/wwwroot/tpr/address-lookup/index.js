@@ -398,6 +398,9 @@ class TprAddressLookup {
     confirmManualInternationalAddressOnClick(event) {
         event.preventDefault();
 
+        const fieldSet = this.stateContainer.querySelector("fieldset");
+        this.validator.removeCustomFieldsetError(fieldSet);
+
         const inputsToValidate = [];
         const addressLine1Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
         const addressLine2Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2);
@@ -410,6 +413,7 @@ class TprAddressLookup {
 
         const isValid = this.validator.validateMultiple(inputsToValidate);
         if (!isValid) {
+            this.validator.addOrUpdateCustomFieldsetError(fieldSet, null);
             return;
         }
 
@@ -423,6 +427,9 @@ class TprAddressLookup {
     confirmManualUKAddressOnClick(event) {
         event.preventDefault();
 
+        const fieldSet = this.stateContainer.querySelector("fieldset");
+        this.validator.removeCustomFieldsetError(fieldSet);
+
         const inputsToValidate = [];
         const addressLine1Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_1);
         const addressLine2Input = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.ADDRESS_LINE_2);
@@ -430,8 +437,11 @@ class TprAddressLookup {
         const countyInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.COUNTY);
         const postcodeInput = this.getComponentByDataAddressAttribute(ADDRESS_LOOKUP_CONFIG.DATA_ATTRIBUTES.POSTCODE);
 
-        const isValid = this.validator.validateMultiple([addressLine1Input, addressLine2Input, townOrCityInput, countyInput, postcodeInput]);
+        inputsToValidate.push(addressLine1Input, addressLine2Input, townOrCityInput, countyInput, postcodeInput);
+
+        const isValid = this.validator.validateMultiple(inputsToValidate);
         if (!isValid) {
+            this.validator.addOrUpdateCustomFieldsetError(fieldSet, null);
             return;
         }
 

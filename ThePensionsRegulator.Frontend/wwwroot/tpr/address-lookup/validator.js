@@ -7,6 +7,13 @@ class AddressLookupValidator {
         this.jQueryValidator = this.#initValidator();
         this.index = index;
         this.container.addEventListener("focusout", (event) => {
+            const nextFocusedElement = event.relatedTarget;
+
+            const skipsBlurValidation = !!nextFocusedElement?.closest("button[data-address-lookup], button[type='submit'], input[type='submit'], a[data-address-lookup='return-to-postcode'], a[data-address-lookup='address-not-on-list']");
+            if (skipsBlurValidation) {
+                return;
+            }
+
             const element = event.target;
             if (element.matches("[data-val='true']")) {
                 this.validateOnBlur(element);
@@ -82,6 +89,17 @@ class AddressLookupValidator {
         return !!(address.addressLine1 && address.town && address.postcode);
     }
 
+    removeCustomFieldsetError(fieldset) {
+        const formGroup = fieldset.parentElement?.classList.contains("govuk-form-group") ? fieldset.parentElement : null;
+        if (formGroup) {
+            //formGroup.classList.remove("govuk-form-group--error");
+            const errorElement = fieldset.querySelector(".fieldset-error-message");
+            if (errorElement) {
+                errorElement.remove();
+            }
+        }
+    }
+
     addOrUpdateCustomFieldsetError(fieldset, message) {
         let formGroup = fieldset.parentElement?.classList.contains("govuk-form-group") ? fieldset.parentElement : null;
 
@@ -93,14 +111,15 @@ class AddressLookupValidator {
             formGroup.appendChild(fieldset);
         }
 
-        let errorElement = fieldset.querySelector(".govuk-error-message");
+        let errorElement = fieldset.querySelector(".fieldset-error-message");
         if (!errorElement) {
             const errorParaSpan = document.createElement("span");
             errorParaSpan.classList.add("govuk-visually-hidden");
             errorParaSpan.innerText = "Error: ";
 
             errorElement = document.createElement("p");
-            errorElement.classList.add("govuk-error-message");
+            errorElement.classList.add("govuk-error-message", "fieldset-error-message");
+
             const firstInput = fieldset.querySelector("input");
             const errorElementId = `${firstInput.id}-error`
             errorElement.id = errorElementId;
@@ -118,7 +137,10 @@ class AddressLookupValidator {
         if (hiddenSpan.nextSibling) {
             hiddenSpan.nextSibling.remove();
         }
-        errorElement.appendChild(document.createTextNode(message));
+
+        if (message) {
+            errorElement.appendChild(document.createTextNode(message));
+        }
 
         this.govuk.updateErrorSummary();
     }

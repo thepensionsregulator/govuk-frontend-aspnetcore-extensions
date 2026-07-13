@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using ThePensionsRegulator.Frontend.Controllers;
 using ThePensionsRegulator.Frontend.Services;
-using ThePensionsRegulator.Frontend.Umbraco.Controllers;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Controllers
 {

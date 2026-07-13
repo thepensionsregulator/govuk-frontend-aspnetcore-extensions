@@ -12,7 +12,9 @@ In Umbraco applications the Breadcrumbs component is _not_ added to the block gr
 <partial name="GOVUK/GovUkBreadcrumbs" />
 ```
 
-If the default implementation does not meet your needs you can create your own implementation of the `ThePensionsRegulator.GovUk.Frontend.Umbraco.Services.IGovUkBreadcrumbLinksService` interface from the `ThePensionsRegulator.Govuk.Frontend.Umbraco` NuGet package, and replace the default implementation which is registered with dependency injection. This allows you to provide your own links to the `GovUkBreadcrumb` component. You can then have full control over the breadcrumb links in your project. You may benefit by:
+If the default implementation does not meet your needs you can create your own implementation of either the `ThePensionsRegulator.GovUk.Frontend.Umbraco.Services.IGovUkAsyncBreadcrumbLinksService` or `ThePensionsRegulator.GovUk.Frontend.Umbraco.Services.IGovUkBreadcrumbLinksService` interface from the `ThePensionsRegulator.Govuk.Frontend.Umbraco` NuGet package, and replace the default implementation which is registered with dependency injection. This allows you to provide your own links to the `GovUkBreadcrumb` component. You can then have full control over the breadcrumb links in your project. You may benefit by:
 
 - Having different logic for generating breadcrumb links based on the page type.
 - Implementing custom logic for how to populate the link text of each link.
+
+If implementations are registered in DI for both interfaces, the async service will be preferred.

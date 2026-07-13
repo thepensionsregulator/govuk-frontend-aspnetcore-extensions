@@ -8,16 +8,21 @@ namespace ThePensionsRegulator.Frontend.Services;
 /// </summary>
 public class TableHtmlCsvFormGenerator
 {
+    private const string DEFAULT_BUTTON_TEXT = "Download table data (CSV)";
+
     /// <summary>
     /// Adds a CSV download form after each table in the HTML, with anti-forgery token.
     /// </summary>
     /// <param name="html">The HTML content containing tables.</param>
     /// <param name="antiForgeryToken">The anti-forgery token to include in the form.</param>
+    /// <param name="buttonText">Optional text for the download button.</param>
     /// <returns>HTML with download forms injected after each table.</returns>
-    public string AddCsvDownloadForms(string html, string antiForgeryToken)
+    public string AddCsvDownloadForms(string html, string antiForgeryToken, string? buttonText = null)
     {
         if (string.IsNullOrWhiteSpace(html))
             return html;
+
+        var resolvedButtonText = string.IsNullOrWhiteSpace(buttonText) ? DEFAULT_BUTTON_TEXT : buttonText;
 
         var doc = new HtmlDocument();
         doc.LoadHtml(html);
@@ -61,7 +66,7 @@ public class TableHtmlCsvFormGenerator
             submitButton.SetAttributeValue("type", "submit");
             submitButton.SetAttributeValue("class", "govuk-button govuk-button--secondary");
             submitButton.SetAttributeValue("data-module", "govuk-button");
-            submitButton.InnerHtml = "Download table data (CSV)";
+            submitButton.InnerHtml = HttpUtility.HtmlEncode(resolvedButtonText);
             form.AppendChild(submitButton);
 
             table.ParentNode.InsertBefore(wrapper, table);

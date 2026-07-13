@@ -11,5 +11,11 @@
         /// Tables with merged cells (colspan or rowspan) are skipped.
         /// </summary>
         public bool EnableTableCsvDownload { get; set; }
+
+        /// <summary>
+        /// Override the server-rendered (no-JS) CSV download button text.
+        /// If not set, the default button text "Download table data (CSV)" is used.
+        /// </summary>
+        public string? TableCsvDownloadButtonText { get; set; }
     }
 }

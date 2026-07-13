@@ -107,13 +107,56 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.PropertyEditors.ValueForma
             Assert.Equal(EXPECTED, ((HtmlEncodedString)resultOfHtmlEncodedString)?.ToHtmlString());
         }
 
-        private static TprTablePropertyValueFormatter CreateFormatter()
+        [Fact]
+        public void Uses_default_button_text_for_no_js_csv_form()
         {
-            var options = Options.Create(new TprFrontendOptions { EnableTableCsvDownload = false });
-            var antiforgery = Mock.Of<IAntiforgery>();
-            var httpContextAccessor = new HttpContextAccessor();
+            // Arrange
+            const string INPUT = "<table><caption>Quarterly results</caption><tr><td>Example</td></tr></table>";
+            var formatter = CreateFormatter(enableTableCsvDownload: true);
 
-            return new TprTablePropertyValueFormatter(options, antiforgery, httpContextAccessor);
+            // Act
+            var result = (HtmlEncodedString)formatter.FormatValue(INPUT);
+
+            // Assert
+            Assert.Contains("Download table data (CSV)", result.ToHtmlString());
+        }
+
+        [Fact]
+        public void Uses_configured_button_text_for_no_js_csv_form()
+        {
+            // Arrange
+            const string INPUT = "<table><caption>Quarterly results</caption><tr><td>Example</td></tr></table>";
+            const string CUSTOM_BUTTON_TEXT = "Lawrlwytho data tabl (CSV)";
+            var formatter = CreateFormatter(
+                enableTableCsvDownload: true,
+                tableCsvDownloadButtonText: CUSTOM_BUTTON_TEXT);
+
+            // Act
+            var result = (HtmlEncodedString)formatter.FormatValue(INPUT);
+
+            // Assert
+            Assert.Contains(CUSTOM_BUTTON_TEXT, result.ToHtmlString());
+        }
+
+        private static TprTablePropertyValueFormatter CreateFormatter(
+            bool enableTableCsvDownload = false,
+            string? tableCsvDownloadButtonText = null)
+        {
+            var options = Options.Create(
+                new TprFrontendOptions
+                {
+                    EnableTableCsvDownload = enableTableCsvDownload,
+                    TableCsvDownloadButtonText = tableCsvDownloadButtonText
+                });
+
+            var antiforgery = new Mock<IAntiforgery>();
+            antiforgery
+                .Setup(a => a.GetAndStoreTokens(It.IsAny<HttpContext>()))
+                .Returns(new AntiforgeryTokenSet("test-request-token", "test-cookie-token", "__RequestVerificationToken", "X-CSRF-TOKEN"));
+
+            var httpContextAccessor = new HttpContextAccessor { HttpContext = new DefaultHttpContext() };
+
+            return new TprTablePropertyValueFormatter(options, antiforgery.Object, httpContextAccessor);
         }
     }
 }

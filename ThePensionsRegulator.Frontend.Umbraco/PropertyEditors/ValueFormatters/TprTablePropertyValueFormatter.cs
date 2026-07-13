@@ -63,7 +63,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters
                 if (_tprOptions.Value.EnableTableCsvDownload && _httpContextAccessor.HttpContext != null)
                 {
                     var tokens = _antiforgery.GetAndStoreTokens(_httpContextAccessor.HttpContext);
-                    richTextHtml = _formGenerator.AddCsvDownloadForms(richTextHtml, tokens.RequestToken!);
+                    richTextHtml = _formGenerator.AddCsvDownloadForms(
+                        richTextHtml,
+                        tokens.RequestToken!,
+                        _tprOptions.Value.TableCsvDownloadButtonText);
                 }
             }
             return new HtmlEncodedString(richTextHtml ?? "");

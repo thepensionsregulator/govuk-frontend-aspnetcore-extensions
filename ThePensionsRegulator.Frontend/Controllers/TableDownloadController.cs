@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
+using HtmlAgilityPack;
+using System.Text;
 using System.Text.RegularExpressions;
 using ThePensionsRegulator.Frontend.Services;
 
-namespace ThePensionsRegulator.Frontend.Umbraco.Controllers;
+namespace ThePensionsRegulator.Frontend.Controllers;
 
 /// <summary>
 /// Handles CSV download requests for HTML tables.
@@ -11,6 +13,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Controllers;
 [ApiController]
 public class TableDownloadController : ControllerBase
 {
+    private const int MaxTableHtmlBytes = 300 * 1024;
     private readonly ITableCsvService _tableCsvService;
 
     public TableDownloadController(ITableCsvService tableCsvService)
@@ -35,7 +38,28 @@ public class TableDownloadController : ControllerBase
             return BadRequest("Table HTML is required.");
         }
 
-        var csvBytes = _tableCsvService.ConvertHtmlTableToCsv(tableHtml);
+        if (Encoding.UTF8.GetByteCount(tableHtml) > MaxTableHtmlBytes)
+        {
+            return BadRequest("Table HTML is too large.");
+        }
+
+        var htmlDoc = new HtmlDocument();
+        htmlDoc.LoadHtml(tableHtml);
+
+        var tableNodes = htmlDoc.DocumentNode.SelectNodes("//table");
+        if (tableNodes == null || tableNodes.Count == 0)
+        {
+            return BadRequest("Table HTML must contain a table element.");
+        }
+
+        if (tableNodes.Count > 1)
+        {
+            return BadRequest("Table HTML must contain exactly one table element.");
+        }
+
+        var tableOnlyHtml = tableNodes[0].OuterHtml;
+
+        var csvBytes = _tableCsvService.ConvertHtmlTableToCsv(tableOnlyHtml);
         var sanitizedFileName = SanitizeFileName(fileName) ?? "table-data";
 
         return File(csvBytes, "text/csv", $"{sanitizedFileName}.csv");
@@ -51,7 +75,7 @@ public class TableDownloadController : ControllerBase
         var sanitized = Regex.Replace(fileName.Trim(), @"[^\w\s\-]", "");
         sanitized = Regex.Replace(sanitized, @"\s+", "-").ToLowerInvariant();
 
-        if (string.IsNullOrEmpty(sanitized))
+        if (string.IsNullOrWhiteSpace(sanitized))
         {
             return null;
         }

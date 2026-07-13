@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { jest } from '@jest/globals';
-import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, hasMergedCells, tableToCsv, initTableCsvDownload, downloadCsv, hasExistingDownloadButton } from '../wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download';
+import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, hasMergedCells, tableToCsv, initTableCsvDownload, downloadCsv, hasExistingDownloadButton, findServerSideDownloadForm } from '../wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download';
 
 beforeEach(() => {
     document.body.innerHTML = "";
@@ -473,5 +473,146 @@ describe("hasExistingDownloadButton", () => {
             </div>`;
         const table = document.querySelector(".govuk-table");
         expect(hasExistingDownloadButton(table)).toBe(true);
+    });
+});
+
+describe("findServerSideDownloadForm", () => {
+    test("returns null when there is no following element", () => {
+        document.body.innerHTML = `<table class="govuk-table"><tr><td>Data</td></tr></table>`;
+        const table = document.querySelector(".govuk-table");
+        expect(findServerSideDownloadForm(table)).toBeNull();
+    });
+
+    test("returns null when followed by an unrelated form", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <form class="search-form"><button>Search</button></form>`;
+        const table = document.querySelector(".govuk-table");
+        expect(findServerSideDownloadForm(table)).toBeNull();
+    });
+
+    test("returns null when followed by a script-added button (not a form)", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <button data-tpr-table-csv-button="true">Download table data (CSV)</button>`;
+        const table = document.querySelector(".govuk-table");
+        expect(findServerSideDownloadForm(table)).toBeNull();
+    });
+
+    test("returns the form when directly followed by a tpr-table-download-form", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <form class="tpr-table-download-form"><button>Download</button></form>`;
+        const table = document.querySelector(".govuk-table");
+        const form = document.querySelector(".tpr-table-download-form");
+        expect(findServerSideDownloadForm(table)).toBe(form);
+    });
+
+    test("returns the form when it has additional classes", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <form class="tpr-table-download-form govuk-!-margin-top-3"><button>Download</button></form>`;
+        const table = document.querySelector(".govuk-table");
+        const form = document.querySelector(".tpr-table-download-form");
+        expect(findServerSideDownloadForm(table)).toBe(form);
+    });
+
+    test("returns the form when nested in a wrapping sibling", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <div class="download-wrapper">
+                <form class="tpr-table-download-form"><button>Download</button></form>
+            </div>`;
+        const table = document.querySelector(".govuk-table");
+        const form = document.querySelector(".tpr-table-download-form");
+        expect(findServerSideDownloadForm(table)).toBe(form);
+    });
+
+    test("returns null when the form has no button", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table"><tr><td>Data</td></tr></table>
+            <form class="tpr-table-download-form"><input type="hidden"></form>`;
+        const table = document.querySelector(".govuk-table");
+        expect(findServerSideDownloadForm(table)).toBeNull();
+    });
+});
+
+describe("initTableCsvDownload — server-side form interception", () => {
+    function mockDownload() {
+        const mockUrl = "blob:mock-url";
+        URL.createObjectURL = jest.fn(() => mockUrl);
+        URL.revokeObjectURL = jest.fn();
+        const clickSpy = jest.fn();
+        const originalCreateElement = document.createElement.bind(document);
+        jest.spyOn(document, "createElement").mockImplementation((tag) => {
+            const el = originalCreateElement(tag);
+            if (tag === "a") el.click = clickSpy;
+            return el;
+        });
+        return { clickSpy };
+    }
+
+    afterEach(() => {
+        jest.restoreAllMocks();
+    });
+
+    test("intercepts server-side form submit and downloads CSV client-side", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <thead><tr><th>Name</th><th>Age</th></tr></thead>
+                <tbody><tr><td>Alice</td><td>30</td></tr></tbody>
+            </table>
+            <form method="post" action="/api/table/download-csv" class="tpr-table-download-form">
+                <input type="hidden" name="tableHtml" value="...">
+                <input type="hidden" name="fileName" value="table-data">
+                <input type="hidden" name="__RequestVerificationToken" value="token">
+                <button type="submit" class="govuk-button govuk-button--secondary">Download table data (CSV)</button>
+            </form>`;
+
+        initTableCsvDownload();
+        const { clickSpy } = mockDownload();
+
+        const form = document.querySelector(".tpr-table-download-form");
+        form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+
+        expect(URL.createObjectURL).toHaveBeenCalled();
+        expect(clickSpy).toHaveBeenCalled();
+    });
+
+    test("does not add an extra button when a server-side form is present", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <thead><tr><th>Name</th></tr></thead>
+                <tbody><tr><td>Alice</td></tr></tbody>
+            </table>
+            <form method="post" action="/api/table/download-csv" class="tpr-table-download-form">
+                <button type="submit" class="govuk-button govuk-button--secondary">Download table data (CSV)</button>
+            </form>`;
+
+        initTableCsvDownload();
+
+        expect(document.querySelectorAll("button").length).toBe(1);
+        expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).not.toBeInTheDocument();
+    });
+
+    test("is idempotent — calling init twice does not attach duplicate submit listeners", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td>Data</td></tr>
+            </table>
+            <form method="post" action="/api/table/download-csv" class="tpr-table-download-form">
+                <button type="submit" class="govuk-button">Download</button>
+            </form>`;
+
+        initTableCsvDownload();
+        initTableCsvDownload();
+
+        const { clickSpy } = mockDownload();
+
+        const form = document.querySelector(".tpr-table-download-form");
+        form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+
+        // createObjectURL should be called exactly once (not twice if listener was added twice)
+        expect(URL.createObjectURL).toHaveBeenCalledTimes(1);
     });
 });

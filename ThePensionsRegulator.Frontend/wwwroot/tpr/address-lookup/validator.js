@@ -91,13 +91,10 @@ class AddressLookupValidator {
 
     removeCustomFieldsetError(fieldset) {
         const formGroup = fieldset.parentElement?.classList.contains("govuk-form-group") ? fieldset.parentElement : null;
-        if (formGroup) {
-            //formGroup.classList.remove("govuk-form-group--error");
-            const errorElement = fieldset.querySelector(".fieldset-error-message");
-            if (errorElement) {
-                errorElement.remove();
-            }
-        }
+        if (!formGroup) return;
+
+        const errorElement = fieldset.querySelector(".fieldset-error-message");
+        errorElement?.remove();
     }
 
     addOrUpdateCustomFieldsetError(fieldset, message) {

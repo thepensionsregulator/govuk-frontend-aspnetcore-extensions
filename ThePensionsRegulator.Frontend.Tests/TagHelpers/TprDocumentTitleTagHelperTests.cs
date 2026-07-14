@@ -76,7 +76,6 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
 
             var tagHelper = new TprDocumentTitleTagHelper();
 
-
             await tagHelper.ProcessAsync(context, output);
 
             return output;

@@ -82,12 +82,15 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTprGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
 
             // ThePensionsRegulator.Frontend
-            services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
+            // Keep these registrations explicit here rather than calling AddTprFrontend(), because
+            // AddTprGovUkFrontendUmbraco() above has already registered the GOV.UK frontend services.
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
+            services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
             services.AddTransient<IStaticFileCachePolicy, TprStaticFileCachePolicy>();
+            services.AddTransient<ITableCsvService, TableCsvService>();
 
             var tprFrontendOptions = new TprFrontendOptions();
-            if (configureTprOptions is not null) { configureTprOptions(tprFrontendOptions); }
+            configureTprOptions(tprFrontendOptions);
             services.AddTransient((services) => Options.Create(tprFrontendOptions));
 
             // ThePensionsRegulator.Frontend.Umbraco

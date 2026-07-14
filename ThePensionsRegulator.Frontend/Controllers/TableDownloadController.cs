@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using HtmlAgilityPack;
 using System.Text;
@@ -11,6 +12,7 @@ namespace ThePensionsRegulator.Frontend.Controllers;
 /// Provides both server-side fallback for no-JS scenarios and client-side form interception.
 /// </summary>
 [ApiController]
+[AllowAnonymous]
 public class TableDownloadController : ControllerBase
 {
     private const int MaxTableHtmlBytes = 300 * 1024;

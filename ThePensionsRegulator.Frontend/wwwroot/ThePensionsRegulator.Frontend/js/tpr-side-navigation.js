@@ -134,10 +134,9 @@
         // Robust Escape handler
         function onEscapeKey(e) {
             var key = e.key || (e.keyCode === 27 ? "Escape" : null);
-            if (key !== "Escape" && key !== "Esc") {
-                return;
-            }
 
+            if (key !== "Escape" && key !== "Esc") return;
+            
             var expandedToggles = sideNav.querySelectorAll(".tpr-side-nav__list--expanded, .tpr-side-nav__list-item--expanded, .tpr-side-nav__list-item__expand-toggle[aria-expanded='true'], .tpr-side-nav__mobile-expand-toggle[aria-expanded='true']");
 
             if (!expandedToggles.length) return;
@@ -160,11 +159,11 @@
             e.stopPropagation();
 
             collapseAll(expandedToggles);
+
             if (focusTarget) focusTarget.focus();   
         }
 
-        // Attach Escape handlers
-        document.addEventListener("keydown", onEscapeKey, false);
+        // Attach Escape handler
         sideNav.addEventListener("keydown", onEscapeKey, false);
 
         // Close other expanded branches at the same top-level

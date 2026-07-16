@@ -138,7 +138,7 @@
                 return;
             }
 
-            var expandedToggles = sideNav.querySelectorAll(".tpr-side-nav__list--expanded, .tpr-side-nav__list-item--expanded, .tpr-side-nav__list-item__expand-toggle[aria-expanded='true']");
+            var expandedToggles = sideNav.querySelectorAll(".tpr-side-nav__list--expanded, .tpr-side-nav__list-item--expanded, .tpr-side-nav__list-item__expand-toggle[aria-expanded='true'], .tpr-side-nav__mobile-expand-toggle[aria-expanded='true']");
 
             if (!expandedToggles.length) return;
 
@@ -152,7 +152,7 @@
                 var topLevelItem = active && active.closest ? active.closest("ul[data-level='1']") : null;
 
                 if (topLevelItem && sideNav.contains(topLevelItem)) {
-                    focusTarget = topLevelItem.querySelector(".tpr-side-nav__list-item__expand-toggle[aria-expanded='true']") || mobileToggle;
+                    focusTarget = topLevelItem.querySelector("ul[data-level='1'] > " + ".tpr-side-nav__list-item--expanded " + ".tpr-side-nav__list-item__expand-toggle");
                 }
             }
 

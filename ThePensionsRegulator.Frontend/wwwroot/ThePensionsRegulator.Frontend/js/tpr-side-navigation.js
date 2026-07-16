@@ -124,43 +124,12 @@
             }
         }
 
-        function collapseAll() {
-            // collapse mobile first-level nav if expanded
-            var mobileToggleBtn = sideNav.querySelector(".tpr-side-nav__mobile-expand-toggle[aria-expanded='true']");
-            if (mobileToggleBtn) {
-                var firstLevelNav = sideNav.querySelector("ul");
-                if (firstLevelNav) {
-                    firstLevelNav.classList.remove("tpr-side-nav__list--expanded");
-                }
-                mobileToggleBtn.setAttribute("aria-expanded", "false");
-                var img = mobileToggleBtn.querySelector("img");
-                if (img) {
-                    img.classList.remove("tpr-side-nav__list-item-arrow--up");
-                    img.setAttribute("alt", expandText.replace("{0}", ""));
-                }
-            }
-
-            // collapse all expanded list-item toggles
-            var expandedToggles = sideNav.querySelectorAll(".tpr-side-nav__list-item__expand-toggle[aria-expanded='true']");
-            for (var j = 0; j < expandedToggles.length; j++) {
-                collapseListItem(expandedToggles[j]);
-            }
-
-            // ensure top-level list items also lose the expanded class
-            var expandedNodes = sideNav.querySelectorAll(".tpr-side-nav__list-item--expanded");
-            for (var k = 0; k < expandedNodes.length; k++) {
-                var node = expandedNodes[k];
-                node.classList.remove("tpr-side-nav__list-item--expanded");
-                var nodeArrow = node.querySelector(".tpr-side-nav__list-item-arrow");
-                if (nodeArrow) {
-                    nodeArrow.classList.remove("tpr-side-nav__list-item-arrow--up");
-                }
-                var toggle = node.querySelector(".tpr-side-nav__list-item__expand-toggle");
-                if (toggle) {
-                    toggle.setAttribute("aria-expanded", "false");
-                }
+        function collapseAll(expandedToggles) {
+            for (var i= expandedToggles.length - 1; i >= 0; i--) {
+                expandedToggles[i].click();
             }
         }
+          
 
         // Robust Escape handler
         function onEscapeKey(e) {
@@ -169,22 +138,29 @@
                 return;
             }
 
-            var active = document.activeElement;
-            if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA" || active.tagName === "SELECT" || active.isContentEditable)) {
-                return;
+            var expandedToggles = sideNav.querySelectorAll(".tpr-side-nav__list--expanded, .tpr-side-nav__list-item--expanded, .tpr-side-nav__list-item__expand-toggle[aria-expanded='true']");
+
+            if (!expandedToggles.length) return;
+
+            var mobileToggle = sideNav.querySelector(".tpr-side-nav__mobile-expand-toggle");
+            var focusTarget = mobileToggle;
+
+            var mobileNavIsExpanded = mobileToggle && mobileToggle.getAttribute("aria-expanded") === "true";
+
+            if (!mobileNavIsExpanded) {
+                var active = document.activeElement;
+                var topLevelItem = active && active.closest ? active.closest("ul[data-level='1']") : null;
+
+                if (topLevelItem && sideNav.contains(topLevelItem)) {
+                    focusTarget = topLevelItem.querySelector(".tpr-side-nav__list-item__expand-toggle[aria-expanded='true']") || mobileToggle;
+                }
             }
 
-            var focusedInSideNav = sideNav.contains(active);
-            var hasExpanded = !!sideNav.querySelector(".tpr-side-nav__list--expanded, .tpr-side-nav__list-item--expanded, .tpr-side-nav__list-item__expand-toggle[aria-expanded='true']");
-            if (focusedInSideNav || hasExpanded) {
-                try {
-                    e.preventDefault();
-                    e.stopPropagation();
-                } catch (err) {
-                    // ignore if preventDefault isn't supported in some contexts
-                }
-                collapseAll();
-            }
+            e.preventDefault();
+            e.stopPropagation();
+
+            collapseAll(expandedToggles);
+            if (focusTarget) focusTarget.focus();   
         }
 
         // Attach Escape handlers

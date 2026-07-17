@@ -44,6 +44,10 @@ When using `ThePensionsRegulator.Frontend` without Umbraco, the JavaScript enhan
 
 When JavaScript is available, the script intercepts that form submission and performs the CSV download client-side instead of posting to the server.
 
+### Authorization
+
+The `/api/table/download-csv` endpoint is decorated with `[AllowAnonymous]`. It only converts posted, public table HTML to CSV and validates the anti-forgery token, so it does not expose protected data. Allowing anonymous access ensures the no-JS server-side download still works on sites that enforce a global or fallback authorization policy — without it, those sites return a 401/403 when the button is clicked.
+
 ### File naming
 
 The downloaded file name is derived from the table's `<caption>` element. If there is no caption, the file is named `table-data.csv`. The name is sanitised to remove special characters and truncated to 50 characters.
@@ -78,4 +82,4 @@ builder.Services.AddTprFrontend(options =>
 
 ## Merged cells
 
-Tables containing cells with `colspan` or `rowspan` greater than 1 are skipped — no download button is added — because merged cells cannot be reliably represented in CSV.
+Tables containing cells with `colspan` or `rowspan` greater than 1 are still exported. Merged cells are expanded into a rectangular grid so the CSV stays aligned: the value is placed in the top-left cell of the span and the remaining spanned positions are written as empty fields. Both the client-side JavaScript and the server-side endpoint use the same expansion, so the download button appears and produces identical output on either path.

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using HtmlAgilityPack;
 using System.Text;
@@ -10,7 +11,15 @@ namespace ThePensionsRegulator.Frontend.Controllers;
 /// Handles CSV download requests for HTML tables.
 /// Provides both server-side fallback for no-JS scenarios and client-side form interception.
 /// </summary>
+/// <remarks>
+/// The CSV download is an anonymous, public-data feature that must work on the no-JS
+/// server-side path even on sites that enforce a global or fallback authorization policy.
+/// Without <see cref="AllowAnonymousAttribute"/> such a policy blocks the POST and users are
+/// sent to a 401/403 after clicking the download button. The endpoint accepts only table HTML,
+/// validates the anti-forgery token and returns a CSV file, so it does not expose protected data.
+/// </remarks>
 [ApiController]
+[AllowAnonymous]
 public class TableDownloadController : ControllerBase
 {
     private const int MaxTableHtmlBytes = 300 * 1024;

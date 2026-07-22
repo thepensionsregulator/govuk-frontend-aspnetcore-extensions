@@ -27,93 +27,58 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
                 if (isMediaLink) { output.TagName += "download"; }
 
-                if (documentContext.Href.EndsWith(".pdf"))
+                switch (fileExtension)
                 {
-                    if (documentContext.Pages == "0")
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"pdf fileicon\">PDF</span> {documentContext.KbSize}KB </dt>");
-                    }
-                    else
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"pdf fileicon\">PDF</span> {documentContext.KbSize}KB, {documentContext.Pages} page(s) </dt>");
-                    }
+                    case ".pdf":
+                        output.PostContent.SetHtmlContent(GenerateFileInfoHtml("pdf", "PDF", documentContext, includePages: true));
+                        break;
+                    case ".doc":
+                    case ".docx":
+                        output.PostContent.SetHtmlContent(GenerateFileInfoHtml("doc", "Word", documentContext, includePages: true));
+                        break;
+                    case ".dotx":
+                        output.PostContent.SetHtmlContent(GenerateFileInfoHtml("doc", "DOTX", documentContext, includePages: true));
+                        break;
+                    case ".pptx":
+                        output.PostContent.SetHtmlContent(GenerateFileInfoHtml("powerpoint", "PPTX", documentContext, includePages: true));
+                        break;
+                    case ".rtf":
+                        output.PostContent.SetHtmlContent(GenerateFileInfoHtml("misc", "RTF", documentContext, includePages: true));
+                        break;
+                    case ".odt":
+                        output.PostContent.SetHtmlContent(GenerateFileInfoHtml("misc", "ODT", documentContext, includePages: true));
+                        break;
+                    case ".xlsx":
+                        output.PostContent.SetHtmlContent(GenerateFileInfoHtml("excel", "Excel", documentContext));
+                        break;
+                    case ".xlst":
+                        output.PostContent.SetHtmlContent(GenerateFileInfoHtml("excel", "XLST", documentContext));
+                        break;
+                    case ".csv":
+                        output.PostContent.SetHtmlContent(GenerateFileInfoHtml("excel", "CSV", documentContext));
+                        break;
+                    default:
+                        break;
                 }
-                else if (documentContext.Href.EndsWith(".docx") || documentContext.Href.EndsWith(".doc"))
-                {
-                    if (documentContext.Pages == "0")
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"doc fileicon\">Word</span> {documentContext.KbSize}KB </dt>");
-                    }
-                    else
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"doc fileicon\">Word</span> {documentContext.KbSize}KB, {documentContext.Pages} page(s) </dt>");
-                    }
-                }
-                else if (documentContext.Href.EndsWith(".dotx"))
-                {
-                    if (documentContext.Pages == "0")
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"doc fileicon\">DOTX</span> {documentContext.KbSize}KB </dt>");
-                    }
-                    else
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"doc fileicon\">DOTX</span> {documentContext.KbSize}KB, {documentContext.Pages} page(s) </dt>");
-                    }
-                }
-                else if (documentContext.Href.EndsWith(".pptx"))
-                {
-                    if (documentContext.Pages == "0")
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"powerpoint fileicon\">PPTX</span> {documentContext.KbSize}KB </dt>");
-                    }
-                    else
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"powerpoint fileicon\">PPTX</span> {documentContext.KbSize}KB, {documentContext.Pages} page(s) </dt>");
-                    }
-                }
-                else if (documentContext.Href.EndsWith(".rtf"))
-                {
-                    if (documentContext.Pages == "0")
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"misc fileicon\">RTF</span> {documentContext.KbSize}KB </dt>");
-                    }
-                    else
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"misc fileicon\">RTF</span> {documentContext.KbSize}KB, {documentContext.Pages} page(s) </dt>");
-                    }
-                }
-                else if (documentContext.Href.EndsWith(".odt"))
-                {
-                    if (documentContext.Pages == "0")
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"misc fileicon\">ODT</span> {documentContext.KbSize}KB </dt>");
-                    }
-                    else
-                    {
-                        output.PostContent.SetHtmlContent($"<br /><span class=\"misc fileicon\">ODT</span> {documentContext.KbSize}KB, {documentContext.Pages} page(s) </dt>");
-                    }
-                }
-                else if (documentContext.Href.EndsWith(".xlsx"))
-                {
-                    output.PostContent.SetHtmlContent($"<br /><span class=\"excel fileicon\">Excel</span> {documentContext.KbSize}KB </dt>");
-                }
-                else if (documentContext.Href.EndsWith(".xlst"))
-                {
-                    output.PostContent.SetHtmlContent($"<br /><span class=\"excel fileicon\">XLST</span> {documentContext.KbSize}KB </dt>");
-                }
-                else if (documentContext.Href.EndsWith(".csv"))
-                {
-                    output.PostContent.SetHtmlContent($"<br /><span class=\"excel fileicon\">CSV</span> {documentContext.KbSize}KB </dt>");
-                }
-                else
-                {
-                    output.PostElement.SetHtmlContent("</dt>");
-                }
+                output.PostContent.AppendHtml("</dt>");
             }
             else
             {
                 throw new ArgumentNullException(nameof(documentContext.Href), "Document href cannot be null");
             }
+        }
+
+        private static string GenerateFileInfoHtml(string cssClass, string fileType, TprDocumentContext context, bool includePages = false)
+        {
+            var html = $"<br /><span class=\"{cssClass} fileicon\">{fileType}</span> {context.KbSize}KB";
+            var pageLabel = context.PagesLabel ?? "page(s)";
+
+            if (includePages && context.Pages != "0")
+            {
+                html = html + $", {context.Pages} {pageLabel}";
+            }
+
+            return html;
         }
     }
 }

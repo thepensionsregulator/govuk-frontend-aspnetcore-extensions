@@ -89,5 +89,38 @@ namespace ThePensionsRegulator.Frontend.Tests.Services
 
             Assert.Equal("\"'=A,B\"" + Environment.NewLine, csv);
         }
+
+        // Merged cells (colspan/rowspan) are expanded into a rectangular grid so the CSV stays
+        // aligned. The value goes in the top-left cell of a span; the remaining spanned positions
+        // are emitted as empty fields. Mirrors the client-side tableToCsv test cases.
+        [Fact]
+        public void Expands_colspan_into_empty_trailing_fields()
+        {
+            var html = "<table><tr><td colspan=\"2\">Merged</td></tr><tr><td>A</td><td>B</td></tr></table>";
+
+            var csv = DecodeCsv(_service.ConvertHtmlTableToCsv(html));
+
+            Assert.Equal("Merged," + Environment.NewLine + "A,B" + Environment.NewLine, csv);
+        }
+
+        [Fact]
+        public void Expands_rowspan_by_carrying_empty_field_into_following_rows()
+        {
+            var html = "<table><tr><td rowspan=\"2\">R</td><td>B1</td></tr><tr><td>B2</td></tr></table>";
+
+            var csv = DecodeCsv(_service.ConvertHtmlTableToCsv(html));
+
+            Assert.Equal("R,B1" + Environment.NewLine + ",B2" + Environment.NewLine, csv);
+        }
+
+        [Fact]
+        public void Expands_rowspan_in_last_column()
+        {
+            var html = "<table><tr><td>A1</td><td rowspan=\"2\">B</td></tr><tr><td>A2</td></tr></table>";
+
+            var csv = DecodeCsv(_service.ConvertHtmlTableToCsv(html));
+
+            Assert.Equal("A1,B" + Environment.NewLine + "A2," + Environment.NewLine, csv);
+        }
     }
 }

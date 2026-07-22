@@ -148,6 +148,36 @@ describe("tableToCsv", () => {
         const table = document.querySelector("table");
         expect(tableToCsv(table)).toBe('"Hello, World",Normal');
     });
+
+    test("expands a colspan into empty trailing fields", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td colspan="2">Merged</td></tr>
+                <tr><td>A</td><td>B</td></tr>
+            </table>`;
+        const table = document.querySelector("table");
+        expect(tableToCsv(table)).toBe("Merged,\r\nA,B");
+    });
+
+    test("expands a rowspan by carrying an empty field into following rows", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td rowspan="2">R</td><td>B1</td></tr>
+                <tr><td>B2</td></tr>
+            </table>`;
+        const table = document.querySelector("table");
+        expect(tableToCsv(table)).toBe("R,B1\r\n,B2");
+    });
+
+    test("expands a rowspan in the last column", () => {
+        document.body.innerHTML = `
+            <table class="govuk-table">
+                <tr><td>A1</td><td rowspan="2">B</td></tr>
+                <tr><td>A2</td></tr>
+            </table>`;
+        const table = document.querySelector("table");
+        expect(tableToCsv(table)).toBe("A1,B\r\nA2,");
+    });
 });
 
 describe("hasMergedCells", () => {
@@ -318,7 +348,7 @@ describe("initTableCsvDownload", () => {
         expect(button).toHaveAttribute("data-tpr-table-csv-filename", "quarterly-results");
     });
 
-    test("skips tables with merged cells", () => {
+    test("adds a button to tables with merged cells", () => {
         document.body.innerHTML = `
             <div>
                 <table class="govuk-table">
@@ -327,7 +357,7 @@ describe("initTableCsvDownload", () => {
                 </table>
             </div>`;
         initTableCsvDownload();
-        expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).not.toBeInTheDocument();
+        expect(document.querySelector('button[data-tpr-table-csv-button="true"]')).toBeInTheDocument();
     });
 
     test("handles multiple .govuk-table elements", () => {

@@ -55,6 +55,8 @@ export function escapeCsvValue(value) {
 
 /**
  * Returns true if the table has any cells with colspan or rowspan greater than 1.
+ * Merged cells are still exported as CSV — tableToCsv expands them into a rectangular
+ * grid — so this is retained only as a utility for callers that need to detect them.
  * @param {HTMLTableElement} table
  * @returns {boolean}
  */
@@ -71,19 +73,77 @@ export function hasMergedCells(table) {
 }
 
 /**
- * Converts a table to CSV content.
+ * Returns true if any active rowspan carry occupies the given column or a column to its right.
+ * @param {Object.<number, number>} rowspanCarry
+ * @param {number} col
+ * @returns {boolean}
+ */
+function hasCarryAtOrBeyond(rowspanCarry, col) {
+    for (const key in rowspanCarry) {
+        if (parseInt(key, 10) >= col && rowspanCarry[key] > 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Converts a table to CSV content, expanding merged cells (colspan/rowspan) into a
+ * rectangular grid so the CSV stays aligned. The value is placed in the top-left cell
+ * of a span; the remaining spanned positions are emitted as empty fields. This mirrors
+ * ConvertHtmlTableToCsv in the server-side TableCsvService so both paths produce
+ * identical output.
  * @param {HTMLTableElement} table
  * @returns {string}
  */
 export function tableToCsv(table) {
     const rows = table.querySelectorAll("tr");
     const csvRows = [];
+    // Active rowspans keyed by column index: the number of further rows still to fill.
+    const rowspanCarry = {};
+
     for (let i = 0; i < rows.length; i++) {
         const cells = rows[i].querySelectorAll("th, td");
         const rowData = [];
-        for (let j = 0; j < cells.length; j++) {
-            rowData.push(escapeCsvValue(getCellText(cells[j])));
+        let col = 0;
+        let cellIndex = 0;
+
+        while (cellIndex < cells.length || hasCarryAtOrBeyond(rowspanCarry, col)) {
+            if (rowspanCarry[col] > 0) {
+                rowData[col] = "";
+                rowspanCarry[col]--;
+                if (rowspanCarry[col] === 0) delete rowspanCarry[col];
+                col++;
+                continue;
+            }
+
+            if (cellIndex < cells.length) {
+                const cell = cells[cellIndex++];
+                const colspan = Math.max(1, parseInt(cell.getAttribute("colspan"), 10) || 1);
+                const rowspan = Math.max(1, parseInt(cell.getAttribute("rowspan"), 10) || 1);
+                const text = escapeCsvValue(getCellText(cell));
+
+                for (let c = 0; c < colspan; c++) {
+                    rowData[col + c] = c === 0 ? text : "";
+                    if (rowspan > 1) {
+                        rowspanCarry[col + c] = rowspan - 1;
+                    }
+                }
+                col += colspan;
+                continue;
+            }
+
+            // No cell and no carry at this column, but a rowspan carry exists further right:
+            // fill the gap with an empty field to preserve grid alignment.
+            rowData[col] = "";
+            col++;
         }
+
+        // Replace any holes left by sparse assignment with empty strings.
+        for (let c = 0; c < rowData.length; c++) {
+            if (rowData[c] === undefined) rowData[c] = "";
+        }
+
         csvRows.push(rowData.join(","));
     }
     return csvRows.join("\r\n");
@@ -165,9 +225,6 @@ export function initTableCsvDownload() {
 
     for (let i = 0; i < tables.length; i++) {
         const table = tables[i];
-
-        // Skip tables with merged cells — CSV cannot represent them reliably
-        if (hasMergedCells(table)) continue;
 
         // Skip if a client-side download button was already added by this script (idempotency).
         const next = table.nextElementSibling;

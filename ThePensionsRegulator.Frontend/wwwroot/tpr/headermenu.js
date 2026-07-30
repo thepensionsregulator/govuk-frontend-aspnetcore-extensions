@@ -1,9 +1,6 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
 
-
-    highlightCurrentSection();
     const mediaQuery = window.matchMedia("(max-width: 993px)");
-
     function SelectNavOption(e) {
 
         const mobileMenuInnerContainers = document.querySelectorAll(".tpr-mobile-menu__container-inner");
@@ -17,6 +14,7 @@
 
         const isMobile = e.matches;
 
+        highlightCurrentSection(isMobile);
 
         if (isMobile) {
 
@@ -81,7 +79,7 @@
     mediaQuery.addEventListener("change", SelectNavOption);
 });
 
-function highlightCurrentSection() {
+function highlightCurrentSection(isMobile) {
 
     let url = window.location.pathname;
 
@@ -110,9 +108,16 @@ function highlightCurrentSection() {
         const arrow = item.querySelector(".tpr-header-menu__arrow")
 
         if (anchorText.includes(section.toLowerCase())) {
-            anchor.classList.toggle("tpr-header-menu__nav-menu-item--active")
-            item.classList.toggle("tpr-header-menu__nav-menu-item--active")
-            arrow.classList.toggle("tpr-header-menu_arrow--active")
+
+            if (isMobile) {
+                anchor.classList.remove("tpr-header-menu__nav-menu-item--active-desktop")
+                anchor.classList.add("tpr-header-menu__nav-menu-item--active-mobile")
+                arrow.classList.add("tpr-header-menu_arrow--active")
+            } else {
+                anchor.classList.remove("tpr-header-menu__nav-menu-item--active-mobile")
+                arrow.classList.remove("tpr-header-menu_arrow--active")
+                anchor.classList.add("tpr-header-menu__nav-menu-item--active-desktop")
+            }
         }
     });
 }

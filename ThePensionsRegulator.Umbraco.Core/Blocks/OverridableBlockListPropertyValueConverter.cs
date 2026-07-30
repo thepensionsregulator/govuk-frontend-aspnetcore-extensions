@@ -23,9 +23,11 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         IVariationContextAccessor _variationContextAccessor,
         BlockEditorVarianceHandler _blockEditorVarianceHandler,
         IPublishedValueFallback _publishedValueFallback,
+        ILanguageService _languageService,
+        IPropertyRenderingContextAccessor _propertyRenderingContextAccessor,
         IEnumerable<IPropertyValueFormatter> _propertyValueFormatters
         )
-        : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _jsonSerializer, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler)
+        : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _jsonSerializer, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler, _languageService, _propertyRenderingContextAccessor)
     {
         /// <inheritdoc />
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
@@ -42,6 +44,6 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         }
 
         /// <inheritdoc />
-        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Element;
+        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.None;
     }
 }

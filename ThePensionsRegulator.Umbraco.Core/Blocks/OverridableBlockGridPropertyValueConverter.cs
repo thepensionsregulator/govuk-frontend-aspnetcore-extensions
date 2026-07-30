@@ -6,6 +6,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
 using Umbraco.Cms.Core.Serialization;
+using Umbraco.Cms.Core.Services;
 
 namespace ThePensionsRegulator.Umbraco.Core.Blocks
 {
@@ -20,9 +21,11 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
             BlockGridPropertyValueConstructorCache _constructorCache,
             IVariationContextAccessor _variationContextAccessor,
             BlockEditorVarianceHandler _blockEditorVarianceHandler,
-            IPublishedValueFallback _publishedValueFallback
+            IPublishedValueFallback _publishedValueFallback,
+            ILanguageService _languageService,
+            IPropertyRenderingContextAccessor _propertyRenderingContextAccessor
         )
-        : BlockGridPropertyValueConverter(_proflog, _blockConverter, _jsonSerializer, _apiElementBuilder, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler)
+        : BlockGridPropertyValueConverter(_proflog, _blockConverter, _jsonSerializer, _apiElementBuilder, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler, _languageService, _propertyRenderingContextAccessor)
     {
         /// <inheritdoc />
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
@@ -39,6 +42,6 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         }
 
         /// <inheritdoc />
-        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Element;
+        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.None;
     }
 }

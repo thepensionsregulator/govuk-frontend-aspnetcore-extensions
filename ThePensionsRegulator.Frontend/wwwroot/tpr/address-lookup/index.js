@@ -524,6 +524,7 @@ class TprAddressLookup {
         const building = buildingInput.value;
 
         postcode = this.postcodeSanitiser.sanitise(postcode);
+        postcode = this.postcodeNormaliser.normalise(postcode);
 
         const searchResults = await this.apiService.searchAddresses(postcode, building);
 

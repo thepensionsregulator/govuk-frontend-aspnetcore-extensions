@@ -117,6 +117,9 @@ Without JavaScript, the original address input fields remain visible and usable.
 
         <input type="hidden" id="Address_UPRNReference" name="Address.UPRNReference"
                value="@Model?.Address?.UPRNReference" data-address-lookup="UPRN" />
+        <input type="hidden" id="Address_AddressLine3" name="Address.AddressLine3"
+               value="@Model?.Address?.AddressLine3" data-address-lookup="address-line-3" />
+        <input type="hidden" id="Address_Country" name="Address.Country" value="" data-address-lookup="country" />
     </tpr-address-lookup>
 
     <govuk-button type="submit">Submit</govuk-button>
@@ -189,7 +192,9 @@ Each `<input>` inside the component must have a `data-address-lookup` attribute 
 | `country-code`              | Country code (used on the country `<select>`)              |
 | `postcode`                  | Postcode (UK addresses)                                    |
 | `postcode-international`    | Postal code or zip code (international addresses)          |
+| `address-line-3`            | Address line 3 (hidden, populated from selected address)   |
 | `UPRN`                      | Unique Property Reference Number (hidden)                  |
+| `country`                   | Country name (hidden, populated from selected address)     |
 
 ## Customising labels and error messages
 

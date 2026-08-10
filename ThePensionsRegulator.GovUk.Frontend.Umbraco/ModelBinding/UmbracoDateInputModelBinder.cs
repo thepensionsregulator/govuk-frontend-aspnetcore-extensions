@@ -271,6 +271,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.ModelBinding
                 {
                     errors |= DateInputParseErrors.InvalidDay;
                 }
+                else if (parsedYear == 1900 && parsedMonth == 2 && parsedDay == 29)
+                {
+                    errors |= DateInputParseErrors.InvalidDay;
+                }
             }
 
             dateParts = errors == DateInputParseErrors.None ? new(

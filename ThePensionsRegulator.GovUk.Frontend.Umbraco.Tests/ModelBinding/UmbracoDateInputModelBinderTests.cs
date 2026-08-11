@@ -467,6 +467,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.ModelBinding
         [InlineData(DateInputItemTypes.DayMonthAndYear, "31", "January", "2020", false, DateInputParseErrors.InvalidMonth)]
         [InlineData(DateInputItemTypes.DayMonthAndYear, "29", "February", "2023", true, DateInputParseErrors.InvalidDay)]
         [InlineData(DateInputItemTypes.DayAndMonth, "29", "February", null, true, DateInputParseErrors.InvalidDay)]
+        [InlineData(DateInputItemTypes.DayAndMonth, "32", "March", null, true, DateInputParseErrors.InvalidDay)]
+        [InlineData(DateInputItemTypes.DayAndMonth, "0", "March", null, true, DateInputParseErrors.InvalidDay)]
         public void Parse_InvalidDate_ComputesExpectedParseErrors(DateInputItemTypes itemTypes,
             string? day, string? month, string? year, bool acceptMonthNames, DateInputParseErrors expectedParseErrors)
         {

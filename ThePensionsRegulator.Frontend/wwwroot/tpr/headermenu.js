@@ -445,11 +445,34 @@ function expandMobileMenuSubMenu(e) {
     const subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
     subMenu.removeAttribute("style");
 
+    const expanded = arrow.getAttribute("aria-expanded") === "true";
+
+    if (!expanded) {
+        document.querySelectorAll(".tpr-header-menu__nav-sub-menu--active").forEach(openSubMenu => {
+
+            const openMenuItem = openSubMenu.closest(".tpr-header-menu__nav-menu-item");
+
+            if (openMenuItem !== menuItem) {
+                closeMobileSubMenu(openMenuItem)
+            }
+        });
+    }
+
     subMenu.classList.toggle("tpr-header-menu__nav-sub-menu--active");
     arrow.classList.toggle("tpr-header-menu__arrow-down");
-
-    const expanded = arrow.getAttribute("aria-expanded") === "true";
     arrow.setAttribute("aria-expanded", !expanded);
+}
+
+function closeMobileSubMenu(menuItem) {
+
+    const arrow = menuItem.querySelector(".tpr-header-menu__arrow");
+    const subMenu = menuItem.querySelector(".tpr-header-menu__nav-sub-menu");
+
+    if (!arrow || !subMenu) return;
+
+    subMenu.classList.remove("tpr-header-menu__nav-sub-menu--active");
+    arrow.classList.remove("tpr-header-menu__arrow-down");
+    arrow.setAttribute("aria-expanded", "false");
 }
 
 function mobileKeyboardNavigation(e) {

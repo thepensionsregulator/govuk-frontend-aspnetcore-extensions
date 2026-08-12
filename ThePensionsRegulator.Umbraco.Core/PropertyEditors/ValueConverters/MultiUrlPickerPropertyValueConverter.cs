@@ -47,5 +47,8 @@ namespace ThePensionsRegulator.Umbraco.Core.PropertyEditors.ValueConverters
 
             return value is null ? null : _propertyValueFormatters.ApplyFormatters(propertyType, value);
         }
+
+        /// <inheritdoc />
+        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.None;
     }
 }

@@ -21,7 +21,9 @@ using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.Dictionary;
+using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.DeliveryApi;
 using Umbraco.Cms.Core.Models.Membership;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
@@ -181,6 +183,16 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// Provides access to Umbraco's caches of current published content.
         /// </summary>
         public Mock<ICacheManager> CacheManager { get; private init; } = new();
+
+        /// <summary>
+        /// Gets the service used to cache blocks in block grids.
+        /// </summary>
+        public Mock<BlockGridPropertyValueConstructorCache> BlockGridPropertyValueConstructorCache { get; private init; } = new();
+
+        /// <summary>
+        /// Gets the service used to cache blocks in block lists.
+        /// </summary>
+        public Mock<BlockListPropertyValueConstructorCache> BlockListPropertyValueConstructorCache { get; private init; } = new();
 
         /// <summary>
         /// Gets the service used to cache blocks in rich text editors.
@@ -453,9 +465,29 @@ namespace ThePensionsRegulator.Umbraco.Testing
         public Mock<ITempDataDictionaryFactory> TempDataDictionaryFactory { get; private init; } = new();
 
         /// <summary>
+        /// The logging service used by Umbraco.
+        /// </summary>
+        public Mock<IProfilingLogger> ProfilingLogger { get; private init; } = new();
+
+        /// <summary>
+        /// Gets the service used to provide content names for the Delivery API.
+        /// </summary>
+        public Mock<IApiContentNameProvider> ApiContentNameProvider { get; private init; } = new();
+
+        /// <summary>
+        /// Gets the builder that creates <see cref="IApiContentRoute"/> objects from published content for the Delivery API.
+        /// </summary>
+        public Mock<IApiContentRouteBuilder> ApiContentRouteBuilder { get; private init; } = new();
+
+        /// <summary>
         /// Gets the service used to build API elements for the Delivery API.
         /// </summary>
         public Mock<IApiElementBuilder> ApiElementBuilder { get; private init; } = new();
+
+        /// <summary>
+        /// Gets the service used to retrieve URLs for media items for the Delivery API.
+        /// </summary>
+        public Mock<IApiMediaUrlProvider> ApiMediaUrlProvider { get; private init; } = new();
 
         /// <summary>
         /// Gets the parser used to parse rich text editor elements for the Delivery API.
@@ -558,10 +590,15 @@ namespace ThePensionsRegulator.Umbraco.Testing
         private void SetupServices()
         {
             HttpContext.Setup(x => x.RequestServices).Returns(ServiceProvider.Object);
+            SetupService(ApiContentRouteBuilder.Object);
+            SetupService(ApiContentNameProvider.Object);
+            SetupService(ApiMediaUrlProvider.Object);
             SetupService(ApiElementBuilder.Object);
             SetupService(ApiRichTextElementParser.Object);
             SetupService(ApiRichTextMarkupParser.Object);
             SetupService(AuditService.Object);
+            SetupService(BlockGridPropertyValueConstructorCache.Object);
+            SetupService(BlockListPropertyValueConstructorCache.Object);
             SetupService(CompositeViewEngine.Object);
             SetupService(CacheManager.Object);
             SetupService(ConsentService.Object);
@@ -596,6 +633,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             SetupService(NotificationService.Object);
             SetupService(PackagingService.Object);
             SetupService(PartialViewBlockEngine.Object);
+            SetupService(ProfilingLogger.Object);
             SetupService(PropertyRenderingContextAccessor.Object);
             SetupService(PublicAccessService.Object);
             SetupService(PublishedContentCache.Object);

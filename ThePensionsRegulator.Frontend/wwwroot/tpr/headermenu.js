@@ -34,6 +34,8 @@
             arrows.forEach(a => a.classList.toggle("tpr-header-menu__arrow-right"));
             arrows.forEach(a => a.classList.remove("tpr-header-menu__arrow-down"));
 
+            nav.addEventListener("keydown", closeMobileMenuOnEscapeKey);
+            toggles.forEach(t => t.addEventListener("keydown", closeMobileMenuOnEscapeKey));
             nav.removeEventListener("focusin", restoreDefaultMenuState);
 
             menuItems.forEach(m => {
@@ -56,6 +58,9 @@
             arrowContainers.forEach(a => a.addEventListener("click", onClickDisplaySubMenuDesktop));
             arrowContainers.forEach(a => a.classList.add("js"));
             arrows.forEach(a => a.removeEventListener("click", expandMobileMenuSubMenu));
+
+            nav.removeEventListener("keydown", closeMobileMenuOnEscapeKey);
+            toggles.forEach(t => t.removeEventListener("keydown", closeMobileMenuOnEscapeKey));
 
             menuItems.forEach(m => {
                 const a = m.querySelector("button");
@@ -484,7 +489,9 @@ function mobileKeyboardNavigation(e) {
     }
 }
 
-function closeMobileMenuOnFocusLeave() {
+function closeMobileMenuOnFocusLeave(e) {
+
+    if (e.key === "Escape") return;
 
     setTimeout(() => {
 
@@ -497,6 +504,40 @@ function closeMobileMenuOnFocusLeave() {
             toggleMobileMenu();
         }
     }, 0);
+}
+
+function closeMobileMenuOnEscapeKey(e) {
+
+    if (e.key !== "Escape") return;
+
+    const nav = document.querySelector(".tpr-header-menu__nav");
+    const menuToggle = document.querySelector(".tpr-header-menu__button");
+    const openSubMenu = document.querySelector(".tpr-header-menu__nav-sub-menu--active");
+
+    if (openSubMenu) {
+        e.preventDefault();
+        const menuItem = openSubMenu.closest(".tpr-header-menu__nav-menu-item");
+        const parentToggle = menuItem.querySelector(".tpr-header-menu__arrow");
+        const focusWithinSubMenu = openSubMenu.contains(document.activeElement);
+
+        closeMobileSubMenu(menuItem);
+
+        if (focusWithinSubMenu) {
+            parentToggle.focus();
+        }
+
+        return;
+    }
+
+    const foucusWithinNav = nav.contains(document.activeElement);
+    const focusIsOnToggle = menuToggle === document.activeElement || menuToggle.contains(document.activeElement);
+
+    if (foucusWithinNav || focusIsOnToggle) {
+        e.preventDefault();
+
+        closeMobileMenu();
+        menuToggle.focus();
+    }
 }
 
 function removeActiveClasses() {

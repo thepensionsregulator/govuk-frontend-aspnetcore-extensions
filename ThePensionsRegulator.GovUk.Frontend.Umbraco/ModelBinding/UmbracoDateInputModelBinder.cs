@@ -276,7 +276,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.ModelBinding
             dateParts = errors == DateInputParseErrors.None ? new(
                 expectDay ? parsedDay : 1,
                 expectMonth ? parsedMonth : null,
-                expectYear ? parsedYear : 1900) : default;
+                expectYear ? parsedYear : 2000) : default;
             return errors;
 
             bool TryParseDay(string value, out int result) => int.TryParse(value, out result);

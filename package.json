@@ -9,9 +9,13 @@
   "private": true,
   "devDependencies": {
     "@testing-library/jest-dom": "^6.6.3",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.0.0",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
-    "jest-junit": "^8.0.0"
+    "jest-junit": "^8.0.0",
+    "ts-jest": "^29.4.12",
+    "typescript": "^5.9.3"
   },
   "jest": {
     "testEnvironment": "jsdom",
@@ -23,7 +27,11 @@
     "collectCoverageFrom": [
       "wwwroot/govuk/**/*.js"
     ],
-    "transform": {},
+    "moduleFileExtensions": ["js", "ts", "json"],
+    "extensionsToTreatAsEsm": [".ts"],
+    "transform": {
+      "^.+\\.ts$": ["ts-jest", { "useESM": true }]
+    },
     "moduleNameMapper": {
       "/govuk-frontend.min.js$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js"
     }
@@ -43,6 +51,11 @@
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
+    "build:ts": "npm run build:ts:frontend && npm run build:ts:govuk-frontend",
+    "build:ts:frontend": "tsc -p ThePensionsRegulator.Frontend/tsconfig.json",
+    "build:ts:govuk-frontend": "tsc -p ThePensionsRegulator.GovUk.Frontend/tsconfig.json",
+    "watch:ts:frontend": "tsc -p ThePensionsRegulator.Frontend/tsconfig.json --watch",
+    "watch:ts:govuk-frontend": "tsc -p ThePensionsRegulator.GovUk.Frontend/tsconfig.json --watch",
     "govuk": "npm install && cd GovUk.Frontend.AspNetCore.Extensions.ConformanceTests && npm install",
     "generate-version": "node scripts/generate-version.js",
     "backoffice": "npm run generate-version && cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm install && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm install && npm run build",

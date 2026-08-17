@@ -449,6 +449,7 @@ namespace GovUk.Frontend.Umbraco.Tests.ModelBinding
         [TestCase(DateInputItemTypes.DayMonthAndYear, "31", "dec", 12, "2020")]
         [TestCase(DateInputItemTypes.DayMonthAndYear, "31", "January", 1, "2020")]
         [TestCase(DateInputItemTypes.DayMonthAndYear, "29", "February", 2, "2024")]
+        [TestCase(DateInputItemTypes.DayAndMonth, "29", "February", 2, "2000")]
         public void Parse_ValidDate_Returns_Date(DateInputItemTypes itemTypes, string? day, string month, int expectedMonth, string year)
         {
             // Arrange

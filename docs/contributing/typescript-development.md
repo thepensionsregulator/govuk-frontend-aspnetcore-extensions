@@ -8,8 +8,6 @@ Source scripts (`.ts` or `.js`) live in a `Scripts` folder at the root of the pr
 
 `wwwroot\<package-name>\js` is **generated output**. Do not hand-edit or add files directly there, and do not add new files to source control in that folder — the compiler and bundler regenerate it on every build. This mirrors how `wwwroot\<package-name>\css` is generated from SASS files in the `Styles` folder (see [Include client-side files in packages](/docs/contributing/include-client-side-files-in-packages.md)).
 
-> `ThePensionsRegulator.GovUk.Frontend` still has some hand-written `.js` files directly in `wwwroot` that have not yet been migrated into `Scripts`. New scripts should be added to `Scripts`, and existing ones should be moved over when they're next changed significantly.
-
 ## How the build works
 
 Each project has its own `tsconfig.json` which sets `rootDir` to `Scripts` and `outDir` to that project's `wwwroot\<package-name>\js` folder. The `Microsoft.TypeScript.MSBuild` NuGet package runs the TypeScript compiler automatically as part of `dotnet build` (and therefore also `dotnet pack`), compiling every `.ts` and `.js` file in `Scripts` into `wwwroot`.

@@ -429,6 +429,18 @@ tpr.css*
 # Minified JS files
 **/wwwroot/**/js/*.min.js
 
+# Generated TS map files
+**/wwwroot/**/js/*.map
+
+# ThePensionsRegulator.Frontend: all client-side scripts are authored in /Scripts (.ts or .js)
+# and compiled/minified into wwwroot automatically on build - do not commit generated output.
+ThePensionsRegulator.Frontend/wwwroot/ThePensionsRegulator.Frontend/js/*.js
+
+# ThePensionsRegulator.GovUk.Frontend: only files compiled from /Scripts are generated output.
+# Add a line here for each new script added to /Scripts (existing hand-authored .js files in
+# wwwroot are not yet migrated and must remain committed).
+ThePensionsRegulator.GovUk.Frontend/wwwroot/ThePensionsRegulator.GovUk.Frontend/js/_placeholder.js
+
 # Jest
 junit.xml
 cobertura-coverage.xml

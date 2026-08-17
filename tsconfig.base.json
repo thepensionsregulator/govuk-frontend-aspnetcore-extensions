@@ -14,6 +14,8 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "declaration": false
+    "declaration": false,
+    "allowJs": true,
+    "checkJs": false
   }
 }

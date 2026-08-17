@@ -4,5 +4,5 @@
     "rootDir": "Scripts",
     "outDir": "wwwroot/ThePensionsRegulator.Frontend/js"
   },
-  "include": ["Scripts/**/*.ts"]
+  "include": ["Scripts/**/*.ts", "Scripts/**/*.js"]
 }

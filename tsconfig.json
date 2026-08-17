@@ -8,8 +8,10 @@
   },
   "include": [
     "ThePensionsRegulator.Frontend/Scripts/**/*.ts",
+    "ThePensionsRegulator.Frontend/Scripts/**/*.js",
     "ThePensionsRegulator.Frontend/__tests__/**/*.ts",
     "ThePensionsRegulator.GovUk.Frontend/Scripts/**/*.ts",
+    "ThePensionsRegulator.GovUk.Frontend/Scripts/**/*.js",
     "ThePensionsRegulator.GovUk.Frontend/__tests__/**/*.ts"
   ]
 }

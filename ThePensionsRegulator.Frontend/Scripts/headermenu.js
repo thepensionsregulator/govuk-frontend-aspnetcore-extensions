@@ -1,6 +1,6 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
 
-    const mediaQuery = window.matchMedia("(max-width: 995px)");
+    const mediaQuery = window.matchMedia("(max-width: 993px)");
     function SelectNavOption(e) {
 
         const mobileMenuInnerContainers = document.querySelectorAll(".tpr-mobile-menu__container-inner");

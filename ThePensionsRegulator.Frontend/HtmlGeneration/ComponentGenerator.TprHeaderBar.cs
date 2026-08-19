@@ -140,7 +140,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             {
                 form.Attributes.Add("action", tprHeaderBar.ActionPath);
             }
-            form.Attributes.Add("id", "tpr-header-search__form");
+
             form.Attributes.Add("method", "get");
 
             var searchField = new TagBuilder("div");

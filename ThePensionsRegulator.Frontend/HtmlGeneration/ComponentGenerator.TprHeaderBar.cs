@@ -129,7 +129,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             return tagBuilder;
         }
 
-        public virtual TagBuilder GenerateTprHeaderSearch(TprHeaderBar tprHeaderBar)
+        public virtual TagBuilder GenerateTprHeaderSearch(TprHeaderBar tprHeaderBar, bool includeId = true )
         {
             var divTag = new TagBuilder("div");
             if (tprHeaderBar.SearchAttributes != null) { divTag.MergeAttributes(tprHeaderBar.SearchAttributes); }
@@ -139,6 +139,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             if (!string.IsNullOrEmpty(tprHeaderBar.ActionPath))
             {
                 form.Attributes.Add("action", tprHeaderBar.ActionPath);
+            }
+
+            if (includeId)
+            {
+                form.Attributes.Add("id", "tpr-header-search__form");
             }
 
             form.Attributes.Add("method", "get");

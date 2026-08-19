@@ -129,7 +129,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 var searchContainer = new TagBuilder("li");
                 searchContainer.AddCssClass("tpr-mobile-menu__header-search-container");
                 headerMenuList.InnerHtml.AppendHtml(searchContainer);
-                var tprHeaderSearch = GenerateTprHeaderSearch(tprHeaderBar);
+                var tprHeaderSearch = GenerateTprHeaderSearch(tprHeaderBar, false);
                 tprHeaderSearch.AddCssClass("tpr-header-search__mobile");
                 searchContainer.InnerHtml.AppendHtml(tprHeaderSearch);
             }

@@ -430,15 +430,15 @@ tpr.css*
 **/wwwroot/**/js/*.min.js
 
 # Generated TS map files
-**/wwwroot/**/js/*.map
+**/wwwroot/**/js/**/*.map
 
 # ThePensionsRegulator.Frontend: all client-side scripts are authored in /Scripts (.ts or .js)
 # and compiled/minified into wwwroot automatically on build - do not commit generated output.
-ThePensionsRegulator.Frontend/wwwroot/ThePensionsRegulator.Frontend/js/*.js
+ThePensionsRegulator.Frontend/wwwroot/ThePensionsRegulator.Frontend/js/**/*.js
 
 # ThePensionsRegulator.GovUk.Frontend: all client-side scripts are authored in /Scripts (.ts or .js)
 # and compiled/minified into wwwroot automatically on build - do not commit generated output.
-ThePensionsRegulator.GovUk.Frontend/wwwroot/ThePensionsRegulator.GovUk.Frontend/js/*.js
+ThePensionsRegulator.GovUk.Frontend/wwwroot/ThePensionsRegulator.GovUk.Frontend/js/**/*.js
 
 # Jest
 junit.xml

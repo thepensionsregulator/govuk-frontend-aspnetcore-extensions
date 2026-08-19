@@ -424,6 +424,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.ModelBinding
         [InlineData(DateInputItemTypes.DayMonthAndYear, "31", "dec", 12, "2020")]
         [InlineData(DateInputItemTypes.DayMonthAndYear, "31", "January", 1, "2020")]
         [InlineData(DateInputItemTypes.DayMonthAndYear, "29", "February", 2, "2024")]
+        [InlineData(DateInputItemTypes.DayAndMonth, "29", "February", 2, "2000")]
         public void Parse_ValidDate_Returns_Date(DateInputItemTypes itemTypes, string? day, string month, int expectedMonth, string year)
         {
             // Arrange

@@ -9,11 +9,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     public class TprHeaderSearchTagHelper : TagHelper
     {
         internal const string TagName = "tpr-header-search";
+        private const string FormIdAttribute = "form-id";
         private const string ActionAttributeName = "action";
         private const string AutocompleteUrlAttribute = "autocomplete-url";
         private const string PlaceholderAttribute = "placeholder";
         private const string AriaLabelAttribute = "aria-label";
         private const string InputNameAttribute = "input-name";
+
+        [HtmlAttributeName(FormIdAttribute)]
+        public string? FormId { get; set; }
 
         [HtmlAttributeName(ActionAttributeName)]
         public string? ActionPath { get; set; }
@@ -36,7 +40,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             var content = await output.GetChildContentAsync();
 
-            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), true, ActionPath, AutocompleteUrl, PlaceholderText, AriaLabel, InputName);
+            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), true, FormId, ActionPath, AutocompleteUrl, PlaceholderText, AriaLabel, InputName);
            
             output.SuppressOutput();
         }

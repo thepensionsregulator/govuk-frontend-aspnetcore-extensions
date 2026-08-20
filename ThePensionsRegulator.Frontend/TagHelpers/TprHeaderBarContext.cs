@@ -36,6 +36,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public string? MobileMenuNoJsNavPage => _headerMenuContext?.MobileMenuNoJsNavPage;
         public string? HeaderMenuToggleClosed => _headerMenuContext?.HeaderMenuToggleClosed;
         public string? HeaderMenuToggleOpen => _headerMenuContext?.HeaderMenuToggleOpen;
+        public string? HeaderMenuSearchFormId => _headerMenuContext?.HeaderMenuSearchFormId;
 
 
         public void SetLogo(AttributeDictionary attributes, string? href, string? alternativeText)

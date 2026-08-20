@@ -1,6 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System.Threading.Tasks;
 using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
@@ -25,11 +24,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName(AutocompleteUrlAttribute)]
         public string? AutocompleteUrl { get; set; }
 
-        [HtmlAttributeName(PlaceholderAttribute)]    
-        public string? PlaceholderText {  get; set; }
-       
+        [HtmlAttributeName(PlaceholderAttribute)]
+        public string? PlaceholderText { get; set; }
+
         [HtmlAttributeName(AriaLabelAttribute)]
-        public string? AriaLabel {  get; set; }
+        public string? AriaLabel { get; set; }
 
         [HtmlAttributeName(InputNameAttribute)]
         public string? InputName { get; set; }
@@ -41,7 +40,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var content = await output.GetChildContentAsync();
 
             headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), true, FormId, ActionPath, AutocompleteUrl, PlaceholderText, AriaLabel, InputName);
-           
+
             output.SuppressOutput();
         }
     }

@@ -93,7 +93,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 HeaderMenuItemAriaLabel = barContext?.HeaderMenuItemAriaLabel,
                 MobileMenuNoJsNavPage = barContext?.MobileMenuNoJsNavPage,
                 HeaderMenuToggleClosed = barContext?.HeaderMenuToggleClosed,
-                HeaderMenuToggleOpen = barContext?.HeaderMenuToggleOpen
+                HeaderMenuToggleOpen = barContext?.HeaderMenuToggleOpen,
+                HeaderMenuSearchFormId = barContext?.HeaderMenuSearchFormId
 
             });
 

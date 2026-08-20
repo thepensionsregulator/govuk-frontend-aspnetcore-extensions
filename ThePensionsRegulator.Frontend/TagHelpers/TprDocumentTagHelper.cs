@@ -19,6 +19,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("pages")]
         public string? Pages { get; set; }
 
+        [HtmlAttributeName("pages-label")]
+        public string? PagesLabel { get; set; }
+
+        [HtmlAttributeName("published-label")]
+        public string? PublishedLabel { get; set; }
+
         [HtmlAttributeName("datepublished")]
         public string? DatePublished { get; set; }
 
@@ -33,6 +39,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             documentContext.Href = Href;
             documentContext.KbSize = KbSize;
             documentContext.Pages = Pages;
+            documentContext.PagesLabel = PagesLabel;
+            documentContext.PublishedLabel = PublishedLabel;
             documentContext.DatePublished = DatePublished;
             documentContext.Document = await output.GetChildContentAsync();
 

@@ -1,10 +1,14 @@
 import {
     FormGroupOptions,
     HintOptions,
-    InputWidth,
+    FormControlWidth,
     LabelOptions,
+    SelectFormGroupOptions,
+    Option,
+    SelectOptions,
     TextInputFormGroupOptions,
     TextInputOptions,
+    LabeledControlFormGroupOptions,
 } from "./types";
 
 export function createFormGroup(formGroupOptions: FormGroupOptions): HTMLElement {
@@ -18,6 +22,30 @@ export function createFormGroup(formGroupOptions: FormGroupOptions): HTMLElement
     div.appendChild(formGroupOptions.control);
 
     return div;
+}
+
+function createLabeledControlFormGroup(options: LabeledControlFormGroupOptions): HTMLElement {
+    const hintId = `${options.control.id}-hint`;
+
+    if (options.hintText) {
+        const describedBy = options.control.getAttribute("aria-describedby");
+
+        options.control.setAttribute(
+            "aria-describedby",
+            [describedBy, hintId].filter(Boolean).join(" ")
+        );
+    }
+
+    return createFormGroup({
+        label: createLabel({
+            labelText: options.labelText,
+            htmlFor: options.control.id,
+        }),
+        hint: options.hintText
+            ? createHint({ hintText: options.hintText, id: hintId })
+            : undefined,
+        control: options.control,
+    });
 }
 
 export function createLabel(labelOptions: LabelOptions): HTMLLabelElement {
@@ -56,25 +84,73 @@ export function createTextInput(options: TextInputOptions): HTMLInputElement {
     return input;
 }
 
-export function createTextInputFormGroup(options: TextInputFormGroupOptions): HTMLElement {
-    const hintId = `${options.input.id}-hint`;
-    const inputAttributes = { ...options.input.attributes };
+
+export function createTextInputFormGroup(
+    options: TextInputFormGroupOptions
+): HTMLElement {
+    return createLabeledControlFormGroup({
+        labelText: options.labelText,
+        hintText: options.hintText,
+        control: createTextInput(options.input),
+    });
+}
+
+export function createSelect(options: SelectOptions): HTMLSelectElement {
+    const select = document.createElement("select");
+    select.className = "govuk-select";
+    select.id = options.id;
+    select.name = options.name;
+    setAttributes(select, options.attributes);
+    
+    if (options.width) {
+        select.classList.add(inputWidthClasses[options.width]);
+    }
+    
+    for (const option of options.options) {
+        select.appendChild(createSelectOption(option));
+    }
+
+    if (options.value !== undefined) {
+        select.value = options.value;
+    }
+
+    return select;
+}
+
+function createSelectOption(option: Option): HTMLOptionElement {
+    const optionElement = document.createElement("option");
+    optionElement.value = option.value;
+    optionElement.textContent = option.text;
+    
+    if (option.disabled) {
+        optionElement.disabled = true;
+    }
+    if (option.attributes) {
+        setAttributes(optionElement, option.attributes);
+    }
+
+    return optionElement;
+}
+
+export function createSelectFormGroup(options: SelectFormGroupOptions): HTMLElement {
+    const hintId = `${options.select.id}-hint`;
+    const selectAttributes = { ...options.select.attributes };
 
     if (options.hintText) {
-        inputAttributes["aria-describedby"] = [inputAttributes["aria-describedby"], hintId]
+        selectAttributes["aria-describedby"] = [selectAttributes["aria-describedby"], hintId]
             .filter(Boolean)
             .join(" ");
     }
 
     return createFormGroup({
-        label: createLabel({ labelText: options.labelText, htmlFor: options.input.id }),
+        label: createLabel({ labelText: options.labelText, htmlFor: options.select.id }),
         hint: options.hintText ? createHint({ hintText: options.hintText, id: hintId }) : undefined,
-        control: createTextInput({ ...options.input, attributes: inputAttributes }),
+        control: createSelect({ ...options.select, attributes: selectAttributes }),
     });
 }
 
 
-const inputWidthClasses: Record<InputWidth, string> = {
+const inputWidthClasses: Record<FormControlWidth, string> = {
     "xx-small": "govuk-input--width-2",
     "x-small": "govuk-input--width-3",
     "small": "govuk-input--width-4",

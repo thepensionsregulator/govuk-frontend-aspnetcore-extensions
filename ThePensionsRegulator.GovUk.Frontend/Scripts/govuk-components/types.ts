@@ -21,7 +21,7 @@ export interface HintOptions {
   attributes?: Record<string, string>;
 }
 
-export type InputWidth = 
+export type FormControlWidth = 
     |"xx-small" 
     | "x-small" 
     | "small" 
@@ -35,8 +35,14 @@ export interface TextInputOptions {
   name: string;
   type?: HTMLInputElement["type"];
   value?: string;
-  width?: InputWidth;
+  width?: FormControlWidth;
   attributes?: Record<string, string>;
+}
+
+export interface LabeledControlFormGroupOptions {
+    labelText: string;
+    hintText?: string;
+    control: FormControl;
 }
 
 export interface TextInputFormGroupOptions {
@@ -49,4 +55,26 @@ export interface FormGroupOptions {
     control: FormControl,
     label: HTMLLabelElement,
   hint?: HTMLDivElement,
+}
+
+export interface Option {
+    value: string;
+    text: string;
+    disabled?: boolean;
+    attributes?: Record<string, string>;
+}
+
+export interface SelectOptions {
+    id: string;
+    name: string;
+    value?: string;
+    options: Option[];
+    attributes?: Record<string, string>;
+    width?: FormControlWidth;
+}
+
+export interface SelectFormGroupOptions {
+    labelText: string;
+    hintText?: string;
+    select: SelectOptions;
 }

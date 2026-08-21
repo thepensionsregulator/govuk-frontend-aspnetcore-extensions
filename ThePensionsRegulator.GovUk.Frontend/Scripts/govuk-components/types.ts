@@ -48,7 +48,7 @@ export interface TextInputFormGroupOptions {
 export interface FormGroupOptions {
     control: FormControl,
     label: HTMLLabelElement,
-  hint?: HTMLDivElement,
+    hint?: HTMLDivElement,
 }
 
 export interface Option {

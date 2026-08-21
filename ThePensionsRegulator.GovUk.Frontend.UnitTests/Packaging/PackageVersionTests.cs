@@ -21,25 +21,15 @@ namespace ThePensionsRegulator.GovUk.Frontend.UnitTests.Packaging
 
             try
             {
-                var success = RunMsBuildTarget(tempCsproj, "GovUkFrontend_PreparePackage", $"-p:Configuration=Release -p:Version={version}", tempProjectRoot);
-                Assert.True(success, "PreparePackage target failed");
+                var success = RunMsBuildTarget(tempCsproj, "GovUkFrontend_GenerateVersionPartial", $"-p:Configuration=Release -p:Version={version}", tempProjectRoot);
+                Assert.True(success, "GenerateVersionPartial target failed");
 
-                var tempPartial = Path.Combine(tempProjectRoot, "Styles", "_tpr-version.scss");
-                var tempGovuk = Path.Combine(tempProjectRoot, "Styles", "govuk-frontend.scss");
+                var tempPartial = Path.Combine(tempProjectRoot, "Styles", "_tpr-version.generated.scss");
 
                 Assert.True(File.Exists(tempPartial), $"Expected generated partial at {tempPartial}");
                 var partial = File.ReadAllText(tempPartial);
                 Assert.Contains("--govuk-frontend-version", partial);
                 Assert.Contains(version, partial);
-
-                Assert.True(File.Exists(tempGovuk), $"Expected govuk-frontend.scss at {tempGovuk}");
-                var govuk = File.ReadAllText(tempGovuk);
-                Assert.Contains("_tpr-version", govuk);
-
-                var restored = RunMsBuildTarget(tempCsproj, "GovUkFrontend_RestoreAfterPack", "-p:Configuration=Release", tempProjectRoot);
-                Assert.True(restored, "RestoreAfterPack target failed");
-
-                Assert.False(File.Exists(tempPartial), "Generated partial should be removed after restore");
             }
             finally
             {

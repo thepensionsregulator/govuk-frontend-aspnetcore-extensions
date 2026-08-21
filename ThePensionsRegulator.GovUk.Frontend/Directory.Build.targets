@@ -1,135 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="GovUkFrontend_Clean">
-  <!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 
-       Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
-	   because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument. -->
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+		 InitialTargets="GovUkFrontend_Clean">
+	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 
+	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
+		 because passing the `-load-path` argument needed by the GOV.UK Front End source code only works when using the `-stdin` argument.
+		 -->
+	<Target Name="GovUkFrontend_BuildSass" BeforeTargets="BeforeBuild">
+		<PropertyGroup>
+			<UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>
+			<UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
+		</PropertyGroup>
+		<PropertyGroup>
+			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
+		</PropertyGroup>
+		<Exec Command="git describe --tags" Condition="Exists('$(GovUkFrontEndFolder)')" WorkingDirectory="$(GovUkFrontEndFolder)" ConsoleToMsBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="GovUkFrontEndVersion" />
+		</Exec>
+		<Message Text="You are using GOV.UK Frontend $(GovUkFrontEndVersion). You can run 'git submodule update' to check for updates." Condition="Exists('$(GovUkFrontEndFolder)')" />
+		<Message Text="Installing GOV.UK Frontend submodule" Condition="!Exists('$(GovUkFrontEndFolder)')" />
+		<Exec Command="git submodule update --init" Condition="!Exists('$(GovUkFrontEndFolder)')" />
 
-  <!-- Build SASS into compiled CSS for this project during normal development builds -->
-  <Target Name="GovUkFrontend_BuildSass" BeforeTargets="BeforeBuild">
-	<PropertyGroup>
-	  <UserProfile Condition=" '$(OS)' == 'Windows_NT' ">$(UserProfile)</UserProfile>
-	  <UserProfile Condition=" '$(OS)' != 'Windows_NT' ">$(HOME)</UserProfile>
-	</PropertyGroup>
+		<Message Text="Run SassCompiler $(MSBuildProjectFullPath)" Importance="high"/>
+		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
+			<Output TaskParameter="Result" ItemName="SassCompilerVersion" />
+		</XmlPeek>
+		<PropertyGroup>
+			<SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
+			<SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
+			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
+			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.GovUk.Frontend\css\</TargetFolder>
+		</PropertyGroup>
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-frontend.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(SourceFolder) $(TargetFolder)govuk-frontend.css"/>
+		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
+	</Target>
 
-	<PropertyGroup>
-	  <GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
-	</PropertyGroup>
-
-	<Exec Command="git describe --tags" Condition="Exists('$(GovUkFrontEndFolder)')" WorkingDirectory="$(GovUkFrontEndFolder)" ConsoleToMsBuild="true">
-	  <Output TaskParameter="ConsoleOutput" PropertyName="GovUkFrontEndVersion" />
-	</Exec>
-
-	<Message Text="You are using GOV.UK Frontend $(GovUkFrontEndVersion). You can run 'git submodule update' to check for updates." Condition="Exists('$(GovUkFrontEndFolder)')" />
-	<Message Text="Installing GOV.UK Frontend submodule" Condition="!Exists('$(GovUkFrontEndFolder)')" />
-	<Exec Command="git submodule update --init" Condition="!Exists('$(GovUkFrontEndFolder)')" />
-
-	<Message Text="Run SassCompiler $(MSBuildProjectFullPath)" Importance="high"/>
-	<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
-	  <Output TaskParameter="Result" ItemName="SassCompilerVersion" />
-	</XmlPeek>
-
-	<PropertyGroup>
-	  <SassCompilerVersion>@(SassCompilerVersion)</SassCompilerVersion>
-	  <SassPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassPath>
-	  <SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
-	  <TargetFolder>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.GovUk.Frontend\css\</TargetFolder>
-	</PropertyGroup>
-
-	<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)govuk-frontend.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(SourceFolder) $(TargetFolder)govuk-frontend.css"/>
-	<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
-  </Target>
-
-  <!--
-	Pack-time steps: generate a SASS partial containing the package Version, and produce a package-friendly
-	govuk-frontend.scss that imports the version partial after the govuk imports so it overrides the upstream value.
-	These steps run only during `dotnet pack` so local development builds remain unchanged.
-  -->
-  <Target Name="GovUkFrontend_PreparePackage" BeforeTargets="Pack">
-	<Message Text="Preparing package: generating Styles/_tpr-version.scss and packaging govuk-frontend.scss with version override" Importance="high" />
-
-	<PropertyGroup>
-	  <StylesFolder>$(MsBuildThisFileDirectory)Styles\</StylesFolder>
-	  <BackupGovukFrontend>$(StylesFolder)govuk-frontend.scss.bak</BackupGovukFrontend>
-	  <GovukFrontendFile>$(StylesFolder)govuk-frontend.scss</GovukFrontendFile>
-	  <TprVersionPartial>$(StylesFolder)_tpr-version.scss</TprVersionPartial>
-	</PropertyGroup>
-
-	<!-- Backup existing govuk-frontend.scss if present -->
-	<Copy SourceFiles="$(GovukFrontendFile)" DestinationFiles="$(BackupGovukFrontend)" SkipUnchangedFiles="false" Condition="Exists('$(GovukFrontendFile)')" />
-
-	<!-- Write the version partial to Styles/_tpr-version.scss -->
-	<ItemGroup>
-	  <TprGovUkFrontendVersionScssText Include="TprGovUkFrontendVersionScssText">
-		<Text><![CDATA[:root {
-  --govuk-frontend-version: "$(Version)";
-}]]></Text>
-	  </TprGovUkFrontendVersionScssText>
-	  <TprGovUkFrontendVersionScss Include="%(TprGovUkFrontendVersionScssText.Text)" />
-	</ItemGroup>
-	<WriteLinesToFile File="$(TprVersionPartial)" Lines="@(TprGovUkFrontendVersionScss)" Overwrite="True" />
-
-	<!-- Create a package-friendly govuk-frontend.scss that imports govuk first, then the version partial, then the rest of our overrides -->
-	<ItemGroup>
-	  <GovukFrontendPackageLines Include="// Import and compile govuk-frontend, adding fixes and styles for the components we've added from later versions" />
-	  <GovukFrontendPackageLines Include="$govuk-new-organisation-colours: true; // Recommended in release notes for GOV.UK Frontend v5.5.0" />
-	  <GovukFrontendPackageLines Include="@import 'govuk';" />
-	  <GovukFrontendPackageLines Include="@import &quot;_tpr-version&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-accordion.scss&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-breadcrumb.scss&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-checkboxes.scss&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-input.scss&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-pagination.scss&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-panel.scss&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-radios.scss&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-select.scss&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-textarea.scss&quot;;" />
-	  <GovukFrontendPackageLines Include="@import &quot;_govuk-typography.scss&quot;;" />
-	</ItemGroup>
-	<WriteLinesToFile File="$(GovukFrontendFile)" Lines="@(GovukFrontendPackageLines)" Overwrite="True" />
-  </Target>
-
-  <!-- Restore original files after packing so local dev build remains unchanged -->
-  <Target Name="GovUkFrontend_RestoreAfterPack" AfterTargets="Pack">
-	<Message Text="Restoring original govuk-frontend.scss after pack" Importance="high" />
-	<PropertyGroup>
-	  <StylesFolder>$(MsBuildThisFileDirectory)Styles\</StylesFolder>
-	  <BackupGovukFrontend>$(StylesFolder)govuk-frontend.scss.bak</BackupGovukFrontend>
-	  <GovukFrontendFile>$(StylesFolder)govuk-frontend.scss</GovukFrontendFile>
-	  <TprVersionPartial>$(StylesFolder)_tpr-version.scss</TprVersionPartial>
-	</PropertyGroup>
-
-	<!-- Restore backup if it exists -->
-	<Copy SourceFiles="$(BackupGovukFrontend)" DestinationFiles="$(GovukFrontendFile)" Condition="Exists('$(BackupGovukFrontend)')" />
-	<Delete Files="$(BackupGovukFrontend)" Condition="Exists('$(BackupGovukFrontend)')" />
-
-	<!-- Remove generated partial locally so dev builds continue to show "development" -->
-	<Delete Files="$(TprVersionPartial)" Condition="Exists('$(TprVersionPartial)')" />
-  </Target>
-
-  <!--Generate a .props file so that ThePensionsRegulator.GovUk.Frontend.targets has access to the package version. -->
-  <Target Name="GovUkFrontend_GenerateProps" BeforeTargets="BeforeBuild">
-	<Message Text="ThePensionsRegulator.GovUk.Frontend generating $(ProjectDir)ThePensionsRegulator.GovUk.Frontend.props" Importance="high" />
-	<ItemGroup>
-	  <TprGovUkFrontendPropsText Include="TprGovUkFrontendPropsText">
-		<Text><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+	<Target Name="GovUkFrontend_GenerateProps" BeforeTargets="BeforeBuild">
+		<!--Generate a .props file so that ThePensionsRegulator.GovUk.Frontend.targets has access to the package version. -->
+		<Message Text="ThePensionsRegulator.GovUk.Frontend generating $(ProjectDir)ThePensionsRegulator.GovUk.Frontend.props" Importance="high" />
+		<ItemGroup>
+			<TprGovUkFrontendPropsText Include="TprGovUkFrontendPropsText">
+				<Text>
+					<![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <PropertyGroup>
-	<TprGovUkFrontendPackageVersion>$(Version)</TprGovUkFrontendPackageVersion>
-  </PropertyGroup>
-</Project>]]></Text>
-	  </TprGovUkFrontendPropsText>
-	  <TprGovUkFrontendProps Include="%(TprGovUkFrontendPropsText.Text)" />
-	</ItemGroup>
-	<WriteLinesToFile File="$(ProjectDir)ThePensionsRegulator.GovUk.Frontend.generated.props" Lines="@(TprGovUkFrontendProps)" Overwrite="True" />
-  </Target>
+	<PropertyGroup>
+		<TprGovUkFrontendPackageVersion>$(Version)</TprGovUkFrontendPackageVersion>
+	</PropertyGroup>
+</Project>
+				]]>
+				</Text>
+			</TprGovUkFrontendPropsText>
+			<TprGovUkFrontendProps Include="%(TprGovUkFrontendPropsText.Text)" />
+		</ItemGroup>
+		<WriteLinesToFile File="$(ProjectDir)ThePensionsRegulator.GovUk.Frontend.generated.props" Lines="@(TprGovUkFrontendProps)" Overwrite="True" />
+	</Target>
 
-  <!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
-  <Target Name="GovUkFrontend_Clean" Condition="Exists('$(ProjectDir)wwwroot\govuk\')">
-	<ItemGroup>
-	  <!-- Removed in v10.0.0 -->
-	  <GovUkFrontend_DirsToRemove Include="$(ProjectDir)wwwroot\govuk\" />
-	</ItemGroup>
-	<Message Text="Deleting obsolete files: @(GovUkFrontend_DirsToRemove)" />
-	<RemoveDir Directories="@(GovUkFrontend_DirsToRemove)" />
-  </Target>
+	<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
+	<Target Name="GovUkFrontend_Clean" Condition="Exists('$(ProjectDir)wwwroot\govuk\')">
+		<ItemGroup>
+			<!-- Removed in v10.0.0 -->
+			<GovUkFrontend_DirsToRemove Include="$(ProjectDir)wwwroot\govuk\" />
+		</ItemGroup>
+		<Message Text="Deleting obsolete files: @(GovUkFrontend_DirsToRemove)" />
+		<RemoveDir Directories="@(GovUkFrontend_DirsToRemove)" />
+	</Target>
+	
+	<!-- Generate a package SASS partial with the GOV.UK Frontend version. -->
+	<PropertyGroup>
+		<GovUkFrontend_SassVersion>development</GovUkFrontend_SassVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<GovUkFrontend_SassVersion>$(Version)</GovUkFrontend_SassVersion>
+	</PropertyGroup>
+	<Target Name="GovUkFrontend_GenerateVersionPartial" BeforeTargets="GovUkFrontend_BuildSass">
+		<WriteLinesToFile File="Styles/_tpr-version.generated.scss" Lines=':root { --govuk-frontend-version: "$(GovUkFrontend_SassVersion)"; }' Overwrite="true" />
+	</Target>
 </Project>

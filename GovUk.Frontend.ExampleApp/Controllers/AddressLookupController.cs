@@ -42,7 +42,6 @@ namespace GovUk.Frontend.ExampleApp.Controllers
             };
 
             ModelState.SetModelValues(viewModel.ShippingAddress, nameof(viewModel.ShippingAddress));
-
             return View(viewModel);
         }
 

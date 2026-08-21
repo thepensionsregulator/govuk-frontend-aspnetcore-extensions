@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
             "aria-disabled": "true"
         }
     });
-
     const secondaryButton = createButton({
         labelText: "Secondary button",
         variant: "secondary",

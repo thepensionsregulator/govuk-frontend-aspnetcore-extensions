@@ -1,8 +1,8 @@
 import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
-import { createFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/form-group.js";
+import { createTextInputFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-    const buttonTarget = document.getElementsByClassName("button-target")[0];
+    const buttonTarget = document.querySelector(".button-target");
     const buttonGroup = createButtonGroup();
     const primaryButton = createButton({
          labelText: "Primary button",
@@ -34,11 +34,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     buttonTarget.appendChild(buttonGroup);
 
-    var inputTarget = document.getElementsByClassName("input-target")[0];
-    var formControl = document.createElement("input");
-    var formLabel = document.createElement("label");
-    formLabel.innerText = "Text input";
-    const formGroup = createFormGroup({ control: formControl, label: formLabel });
+    const inputTarget = document.querySelector(".input-target");
 
-    inputTarget.appendChild(formGroup);
+    const postcodeInput = createTextInputFormGroup({
+        labelText: "Postcode",
+        hintText: "For example, SW1A 2AA",
+        input: {
+            id: "postcode",
+            name: "postcode",
+            width: "large",
+            attributes: {
+                autocomplete: "postal-code",
+            },
+        },
+    });
+
+    inputTarget.appendChild(postcodeInput);
 });

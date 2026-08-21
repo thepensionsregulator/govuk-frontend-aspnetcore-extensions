@@ -1,5 +1,5 @@
 import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
-import { createTextInputFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
+import { createTextInputFormGroup, createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     const buttonTarget = document.querySelector(".button-target");
@@ -50,4 +50,23 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     inputTarget.appendChild(postcodeInput);
+
+    const selectTarget = document.querySelector(".select-target");
+    const select = createSelectFormGroup({
+        labelText: "Select an option",
+        hintText: "For example, choose one",
+        select: {
+            id: "example-select",
+            name: "example-select",
+            width: "large",
+            options: [
+                { value: "", text: "Please select" },
+                { value: "option1", text: "Option 1" },
+                { value: "option2", text: "Option 2" },
+            ],
+            attributes: {},
+        },
+    });
+
+    selectTarget.appendChild(select);
 });

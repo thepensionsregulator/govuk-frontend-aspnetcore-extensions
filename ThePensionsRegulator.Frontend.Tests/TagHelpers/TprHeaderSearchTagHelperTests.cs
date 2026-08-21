@@ -16,7 +16,6 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             var expectedAriaLabel = "search";
             var expectedInputName = "query";
 
-
             var tagHelper = new TprHeaderSearchTagHelper
             {
                 FormId = expectedFormId,

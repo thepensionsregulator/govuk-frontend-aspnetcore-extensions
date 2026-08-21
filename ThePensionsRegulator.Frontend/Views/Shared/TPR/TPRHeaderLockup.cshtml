@@ -30,11 +30,11 @@
                 <tpr-header-bar-content allow-html="@Model.HeaderBarContentAllowHtml">@Html.Raw(Model.HeaderBarContent)</tpr-header-bar-content>
                 @if (Model.HeaderBarContent == null && Model.ShowSearch)
                 {
-                    <tpr-header-search action="@Model.HeaderSearchActionPath" autocomplete-url="@Model.HeaderSearchAutocompleteUrl" placeholder="@Model.HeaderSearchPlaceholderText" aria-label="@Model.HeaderSearchAriaLabel" input-name="@Model.HeaderSearchInputName"></tpr-header-search>
+                    <tpr-header-search action="@Model.HeaderSearchActionPath" autocomplete-url="@Model.HeaderSearchAutocompleteUrl" placeholder="@Model.HeaderSearchPlaceholderText" aria-label="@Model.HeaderSearchAriaLabel" input-name="@Model.HeaderSearchInputName" form-id="@Model.SearchFormId"></tpr-header-search>
                 }
                 @if (Model.HeaderBarContent == null && Model.ShowHeaderMenu)
                 {
-                    <tpr-header-menu aria-label="@Model.HeaderMenuAriaLabel" menu-item-aria-label="@Model.HeaderMenuItemAriaLabel" open-label="@Model.HeaderMenuToggleOpen" close-label="@Model.HeaderMenuToggleClosed">
+                    <tpr-header-menu aria-label="@Model.HeaderMenuAriaLabel" menu-item-aria-label="@Model.HeaderMenuItemAriaLabel" open-label="@Model.HeaderMenuToggleOpen" close-label="@Model.HeaderMenuToggleClosed" search-id="@Model.HeaderMenuSearchFormId">
                         @if (Model.HeaderMenuItems != null)
                         {
                             @foreach (var item in Model.HeaderMenuItems.OfType<TprHeaderMenuItem>())

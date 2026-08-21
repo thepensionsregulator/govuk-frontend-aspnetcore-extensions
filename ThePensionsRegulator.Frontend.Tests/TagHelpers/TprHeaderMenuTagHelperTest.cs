@@ -1,7 +1,4 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using ThePensionsRegulator.Frontend.TagHelpers;
 
 namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
@@ -19,11 +16,10 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             var expectedItemAriaLabel = "Nav Item";
             var expectedSearchId = "form-1";
 
-
             var tagHelper = new TprHeaderMenuTagHelper
             {
                 MenuAriaLabel = expectedAriaLabel,
-                NoJsNavPage =  expectedNoJSNavPage,
+                NoJsNavPage = expectedNoJSNavPage,
                 ToggleClosed = expectedToggleClosed,
                 ToggleOpen = expectedToggleOpen,
                 MenuItemAriaLabel = expectedItemAriaLabel,

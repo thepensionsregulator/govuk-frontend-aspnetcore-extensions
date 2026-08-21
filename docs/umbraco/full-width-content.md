@@ -14,7 +14,7 @@ To enable this support you need to make two changes to the consuming application
    ```csharp
    // for GOV.UK applications...
 
-   builder.Services.AddGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
+   builder.Services.AddTprGovUkFrontendUmbraco(options => options.RenderWidthContainerForBlocks = true);
 
    // or, for TPR applications...
 

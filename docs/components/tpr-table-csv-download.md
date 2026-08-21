@@ -1,99 +1,85 @@
-# TPR table CSV download
+# Table CSV download
 
-Adds a CSV download button below each `.govuk-table` element on the page. This is a TPR accessibility feature that allows users to download table data in CSV format, which can be easier to read in a spreadsheet application than a complex HTML table on a small screen.
+Adds a "Download table data (CSV)" button below each `.govuk-table` on the page, allowing users to download the table data as a CSV file. This improves accessibility by providing an alternative way to consume tabular data.
+
+The feature is provided by `ThePensionsRegulator.Frontend`. Umbraco adds automatic no-JS form injection for rich text tables, but Umbraco is not required to use either the JavaScript enhancement or the server-side CSV download endpoint.
+
+## Enabling the feature
+
+Set `EnableTableCsvDownload = true` on `TprFrontendOptions`:
+
+```csharp
+// When using ThePensionsRegulator.Frontend directly
+builder.Services.AddTprFrontend(options => { options.EnableTableCsvDownload = true; });
+
+// When using ThePensionsRegulator.Frontend.Umbraco
+builder.Services.AddTprFrontendUmbraco(tprOptions => { tprOptions.EnableTableCsvDownload = true; });
+```
+
+When enabled, a `<script>` tag is added to the `TPR/BodyClosing` partial with `type="module"`.
 
 ## How it works
 
-When the script runs on `DOMContentLoaded`, it finds all elements with the `.govuk-table` class and inserts a "Download table data (CSV)" button after each one. Clicking the button generates a CSV file from the table data and triggers a download.
+On `DOMContentLoaded`, the script:
 
-Tables with merged cells (`colspan` or `rowspan` greater than 1) are automatically skipped, because merged cells cannot be reliably represented in CSV format.
+1. Finds all `<table class="govuk-table">` elements on the page.
+2. Inserts a `<button class="govuk-button govuk-button--secondary">` immediately after each table.
+3. On button click, converts the table to CSV and triggers a file download.
 
 The script is idempotent — if it runs more than once, it will not create duplicate buttons.
 
-## CSV standard
+## No-JS support
 
-The generated CSV conforms to [RFC 4180](https://www.rfc-editor.org/rfc/rfc4180) and the [UK government recommended open standard for tabular data](https://www.gov.uk/government/publications/recommended-open-standards-for-government/tabular-data-standard):
+When using `ThePensionsRegulator.Frontend.Umbraco`, no-JS download forms are injected automatically for eligible rich text tables.
 
-- Fields are separated by commas
-- Fields containing commas, double quotes, or line breaks are enclosed in double quotes
-- Double quotes within a field are escaped by doubling them
-- Lines are terminated with CRLF (`\r\n`)
-- The file is encoded as UTF-8 with a byte order mark (BOM)
-
-Values beginning with `=`, `+`, `-`, or `@` are prefixed with a single quote (`'`) to mitigate CSV formula injection when opened in spreadsheet applications.
-
-## Client-side support
-
-Include the following script to enable the feature. This is included by default when referencing `<partial name="TPR/BodyClosing" />` in your layout.
+When using `ThePensionsRegulator.Frontend` without Umbraco, the JavaScript enhancement works automatically, and you can add a server-side fallback by rendering a form that posts the table HTML to `/api/table/download-csv`:
 
 ```html
-<script src="/_content/ThePensionsRegulator.Frontend/tpr/tpr-table-csv-download.js" type="module"></script>
+<form method="post" action="/api/table/download-csv" class="tpr-table-download-form">
+	<input type="hidden" name="tableHtml" value="&lt;table&gt;...&lt;/table&gt;" />
+	<input type="hidden" name="__RequestVerificationToken" value="..." />
+	<button type="submit" class="govuk-button govuk-button--secondary">Download table data (CSV)</button>
+</form>
 ```
 
-The script is lightweight and is a no-op if there are no `.govuk-table` elements on the page.
+When JavaScript is available, the script intercepts that form submission and performs the CSV download client-side instead of posting to the server.
+
+### Authorization
+
+The `/api/table/download-csv` endpoint is decorated with `[AllowAnonymous]`. It only converts posted, public table HTML to CSV and validates the anti-forgery token, so it does not expose protected data. Allowing anonymous access ensures the no-JS server-side download still works on sites that enforce a global or fallback authorization policy — without it, those sites return a 401/403 when the button is clicked.
+
+### File naming
+
+The downloaded file name is derived from the table's `<caption>` element. If there is no caption, the file is named `table-data.csv`. The name is sanitised to remove special characters and truncated to 50 characters.
+
+### CSV format
+
+- Follows [RFC 4180](https://datatracker.ietf.org/doc/html/rfc4180) for quoting and escaping.
+- Includes a UTF-8 BOM for correct display in Excel.
+- Mitigates CSV injection by prefixing formula-triggering characters (`=`, `+`, `-`, `@`, tab, carriage return) with a single quote.
 
 ## Customising button text
 
-The default button text is "Download table data (CSV)". To customise it, add a `data-tpr-table-csv-download-text` attribute to the `<body>` element:
+The default button text is **"Download table data (CSV)"**.
+
+For JavaScript-enhanced buttons, customise it (e.g. for Welsh language support) by adding a `data-tpr-table-csv-download-text` attribute to the `<body>` element:
 
 ```html
-<body data-tpr-table-csv-download-text="Download as CSV">
+<body data-tpr-table-csv-download-text="Lawrlwytho data tabl (CSV)">
 ```
 
-## File name
+In Umbraco, a dictionary item `Table CSV Download Button Text` can be used to provide translations. The layout page should render the body attribute using the dictionary value.
 
-The downloaded file name is derived from the table's `<caption>` element text, sanitised to remove special characters. If no caption is present, the file is named `table-data.csv`.
-
-## Configuration
-
-Add the `EnableTableCsvDownload` property to `TprFrontendOptions` when registering services:
+For server-rendered no-JS forms, set `TableCsvDownloadButtonText` in `TprFrontendOptions`:
 
 ```csharp
-services.AddTprFrontend(
-    tprOptions =>
-    {
-        tprOptions.EnableTableCsvDownload = true;
-    }
-);
+builder.Services.AddTprFrontend(options =>
+{
+	options.EnableTableCsvDownload = true;
+	options.TableCsvDownloadButtonText = "Lawrlwytho data tabl (CSV)";
+});
 ```
 
-## Example
+## Merged cells
 
-Given this table:
-
-```html
-<table class="govuk-table">
-  <caption>Quarterly results</caption>
-  <thead>
-    <tr>
-      <th scope="col">Quarter</th>
-      <th scope="col">Revenue</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Q1</td>
-      <td>£1,000</td>
-    </tr>
-    <tr>
-      <td>Q2</td>
-      <td>£1,500</td>
-    </tr>
-  </tbody>
-</table>
-```
-
-The script will insert a secondary GOV.UK button after the table. Clicking it downloads `quarterly-results.csv` with this content:
-
-```
-Quarter,Revenue
-Q1,"£1,000"
-Q2,"£1,500"
-```
-
-## Tables that are skipped
-
-The following tables will **not** get a download button:
-
-- Tables without the `.govuk-table` class
-- Tables containing cells with `colspan` or `rowspan` greater than 1 (merged cells)
+Tables containing cells with `colspan` or `rowspan` greater than 1 are still exported. Merged cells are expanded into a rectangular grid so the CSV stays aligned: the value is placed in the top-left cell of the span and the remaining spanned positions are written as empty fields. Both the client-side JavaScript and the server-side endpoint use the same expansion, so the download button appears and produces identical output on either path.

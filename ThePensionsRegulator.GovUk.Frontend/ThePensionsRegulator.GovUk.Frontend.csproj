@@ -1,0 +1,191 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<Nullable>enable</Nullable>
+		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Title>$(AssemblyName)</Title>
+		<Authors>rickmason-tpr</Authors>
+		<Company>The Pensions Regulator</Company>
+		<Description>Based on the GOV.UK Design System and GovUk.Frontend.AspNetCore. Adds extra features and components.</Description>
+		<Copyright>The Pensions Regulator</Copyright>
+		<PackageProjectUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</PackageProjectUrl>
+		<PackageIcon>tpr-nuget.png</PackageIcon>
+		<PackageReadmeFile>NuGetReadme.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<PackageTags>taghelpers gds govuk gov.uk</PackageTags>
+		<IncludeSymbols>True</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageId>$(AssemblyName)</PackageId>
+		<Product>$(AssemblyName)</Product>
+		<GovUkFrontEndSrcFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndSrcFolder>
+		<StaticWebAssetBasePath>/</StaticWebAssetBasePath>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="bundleconfig.json" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\jquery.validate.min.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\dist\jquery.min.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\dist\jquery.min.map" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AspNetCore.SassCompiler" Version="1.101.0" />
+		<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
+		<PackageReference Include="FileSignatures" Version="7.2.1" />
+		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.1.0" />
+		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+		<PackageReference Include="OpenMcdf" Version="3.1.4" />
+	</ItemGroup>
+
+	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
+		<ItemGroup>
+			<!-- Filter out unnecessary files -->
+			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
+		</ItemGroup>
+
+		<!-- Print batches for debug purposes -->
+		<Message Text="Batch for .nupkg: ReferenceCopyLocalPaths = @(_ReferenceCopyLocalPaths), ReferenceCopyLocalPaths.DestinationSubDirectory = %(_ReferenceCopyLocalPaths.DestinationSubDirectory) Filename = %(_ReferenceCopyLocalPaths.Filename) Extension = %(_ReferenceCopyLocalPaths.Extension)" Importance="High" Condition="'@(_ReferenceCopyLocalPaths)' != ''" />
+
+		<ItemGroup>
+			<!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
+			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
+		</ItemGroup>
+	</Target>
+
+	<ItemGroup>
+		<UpToDateCheckInput Remove="Styles\govuk-frontend.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="NuGetReadme.md">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+		<None Update="__tests__\govuk-validation-createErrorSummary.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-errorMessageForElement.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-formGroupForElement.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-global.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-removeOrUpdateError.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-showError.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-updateErrorMessage.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-updateErrorSummary.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-updateTitle.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+		<None Update="__tests__\govuk-validation-validateElement.tests.js">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\_base.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>Styles\govuk</PackagePath>
+		</Content>
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\helpers\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>Styles\govuk\helpers</PackagePath>
+		</Content>
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\tools\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>Styles\govuk\tools</PackagePath>
+		</Content>
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\settings\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>Styles\govuk\settings</PackagePath>
+		</Content>
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\vendor\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>Styles\govuk\vendor</PackagePath>
+		</Content>
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\objects\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>Styles\govuk\objects</PackagePath>
+		</Content>
+		<Content Include="$(GovUkFrontEndSrcFolder)\govuk\custom-properties\*.scss" Link="$(MsBuildThisFileDirectory)">
+			<Pack>true</Pack>
+			<PackagePath>Styles\govuk\custom-properties</PackagePath>
+		</Content>
+		<Content Remove="bundleconfig.json" />
+		<None Include="..\tpr-nuget.png">
+		  <Pack>True</Pack>
+		  <PackagePath>\</PackagePath>
+		</None>
+
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\css\govuk-frontend.css.map" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation-unobtrusive\LICENSE.txt" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\additional-methods.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\additional-methods.min.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\dist\jquery.validate.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery-validation\LICENSE.md" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\dist\jquery.js" />
+		<None Include="wwwroot\ThePensionsRegulator.GovUk.Frontend\lib\jquery\LICENSE.txt" />
+
+		<Content Include="ThePensionsRegulator.GovUk.Frontend.targets">
+			<Pack>true</Pack>
+			<PackagePath>build;buildTransitive</PackagePath>
+		</Content>
+		<Content Include="ThePensionsRegulator.GovUk.Frontend.generated.props">
+			<Pack>true</Pack>
+			<PackagePath>build</PackagePath>
+		</Content>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Content Update="sasscompiler.json" Pack="false">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-pagination.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-radios.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-checkboxes.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-input.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-textarea.scss" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Styles\_govuk-select.scss" />
+	</ItemGroup>
+	
+</Project>

@@ -1,17 +1,17 @@
 # Include SASS files in packages for consuming applications to use
 
-SASS functions, mixins and variables are included in packages published by this solution. They are intended for use by consuming applications that want to use govuk-frontend or tpr-frontend without repeating values or calculations.
+SASS functions, mixins and variables are included in packages published by this solution. They are intended for use by consuming applications that want to use GOV.UK Frontend or `ThePensionsRegulator.Frontend` without repeating values or calculations.
 
-To package a SASS file for use by consuming applications, if the SASS file is in the `Styles` folder, set its build action to `Content`. If it is not in the `Styles` folder, include XML similar to the following example in the `*.csproj` file. Replace values in `{curly braces}`.
+To package a SASS file for use by consuming applications, include XML similar to the following example in the `*.csproj` file. Replace values in `{curly braces}`. (GOV.UK Frontend SASS files included in `ThePensionsRegulator.GovUk.Frontend` use a slightly different syntax because they come from outside the project root.)
 
 ```xml
-<Content Include="$(MsBuildThisFileDirectory)\{path}\{filename}.scss" Link="$(MsBuildThisFileDirectory)">
+<Content Include="Styles\{filename}.scss">
     <Pack>true</Pack>
-    <PackagePath>contentFiles\any\net8.0\Styles\{folder}</PackagePath>
+    <PackagePath>Styles\{folder}</PackagePath>
 </Content>
 ```
 
-This creates a reference in the consuming project back to the file in the package folder, but the file isn't physically in the project folder which makes it difficult to reference from another SASS file. To solve this, create a `<package-name>.targets` file and add it to the `build` and `buildTransitive` folders in the package using XML similar to the following example in the `*.csproj` file. Replace values in `{curly braces}`.
+This creates a reference in the consuming project back to the file in the package folder, but the file isn't physically in the project folder which makes it difficult to reference from another SASS file. To solve this, use the `<package-name>.targets` file in the project. This is already added to the `build` and `buildTransitive` folders in the package using XML similar to the following example in the `*.csproj` file, and it runs each time the consuming project is built. The value in `{curly braces}` is the project name.
 
 ```xml
 <Content Include="{package-name}.targets">

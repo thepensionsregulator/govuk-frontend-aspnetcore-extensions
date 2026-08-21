@@ -60,6 +60,7 @@ If all tests in the class need the same setup (for example a `SetupContentType` 
 
 ```csharp
 [TestFixture]
+[NonParallelizable]
 public class ExampleTests
 {
     private UmbracoTestContext _testContext;
@@ -85,6 +86,37 @@ public class ExampleTests
 ```csharp
 var otherPage = UmbracoContentFactory.CreateContent<IPublishedContent>();
 ```
+
+If you need to mock a content hierarchy you can do this by starting with the child page and setting one or more ancestors. These will be ordered by their `Level` property.
+
+```csharp
+var context = new UmbracoTestContext();
+
+var grandparent = UmbracoContentFactory.CreateContent<IPublishedContent>();
+grandparent.Setup(x => x.Level).Returns(1);
+
+var parent = UmbracoContentFactory.CreateContent<IPublishedContent>();
+parent.Setup(x => x.Level).Returns(2);
+parent.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [grandparent.Object]);
+
+context.CurrentPage.Setup(x => x.Level).Returns(3);
+context.CurrentPage.SetupAncestors(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [parent.Object, grandparent.Object]);
+```
+
+You can also setup child pages:
+
+```csharp
+var context = new UmbracoTestContext();
+
+var child = UmbracoContentFactory.CreateContent<IPublishedContent>();
+child.Setup(x => x.Level).Returns(2);
+
+context.CurrentPage.Setup(x => x.Level).Returns(1);
+context.CurrentPage.SetupChildren(context.DocumentNavigationQueryService, context.PublishedContentStatusFilteringService, [child.Object]);
+
+```
+
+When working with hierarchy methods like `.Root()`, `.Children()`, `.Parent()` and `.Ancestors()` be sure to use overloads that take instances of `IDocumentNavigationQueryService` and `IPublishedContentStatusFilteringService` to avoid side effects in other tests.
 
 ## Mock Umbraco content types
 
@@ -115,6 +147,7 @@ _testContext.CurrentPage.SetupUmbracoBooleanPropertyValue("myTrueFalsePropertyAl
 _testContext.CurrentPage.SetupUmbracoContentPickerPropertyValue("myContentPropertyAlias", UmbracoContentFactory.CreateContent<IPublishedContent>("pickedContentAlias").Object);
 _testContext.CurrentPage.SetupUmbracoMultiUrlPickerPropertyValue("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
 _testContext.CurrentPage.SetupUmbracoBlockListPropertyValue("myBlockListPropertyAlias", myBlockList);
+_testContext.CurrentPage.SetupUmbracoBlockGridPropertyValue("myBlockGridPropertyAlias", myBlockGrid);
 ```
 
 If the above overloads don't meet your needs you can create a property directly.
@@ -122,13 +155,13 @@ If the above overloads don't meet your needs you can create a property directly.
 ```csharp
 var prop1 = UmbracoPropertyFactory.CreateProperty("myPropertyAlias", myPropertyType, string.Empty);
 var prop2 = UmbracoPropertyFactory.CreateRichTextProperty("myRichTextPropertyAlias", string.Empty);
-var prop2 = UmbracoPropertyFactory.CreateTextboxProperty("myTextPropertyAlias", string.Empty);
-var prop2 = UmbracoPropertyFactory.CreateIntegerProperty("myIntegerPropertyAlias", 123);
-var prop3 = UmbracoPropertyFactory.CreateBooleanProperty("myTrueFalsePropertyAlias", true);
-var prop3 = UmbracoPropertyFactory.CreateContentPickerProperty("myContentPickerPropertyAlias", UmbracoContentFactory.CreateContent<IPublishedContent>("pickedContentAlias").Object);
-var prop4 = UmbracoPropertyFactory.CreateMultiUrlPickerProperty("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
-var prop5 = UmbracoPropertyFactory.CreateBlockListProperty("myBlockListPropertyAlias", myBlockList);
-var prop5 = UmbracoPropertyFactory.CreateBlockGridProperty("myBlockGridPropertyAlias", myBlockGrid);
+var prop3 = UmbracoPropertyFactory.CreateTextboxProperty("myTextPropertyAlias", string.Empty);
+var prop4 = UmbracoPropertyFactory.CreateIntegerProperty("myIntegerPropertyAlias", 123);
+var prop5 = UmbracoPropertyFactory.CreateBooleanProperty("myTrueFalsePropertyAlias", true);
+var prop6 = UmbracoPropertyFactory.CreateContentPickerProperty("myContentPickerPropertyAlias", UmbracoContentFactory.CreateContent<IPublishedContent>("pickedContentAlias").Object);
+var prop7 = UmbracoPropertyFactory.CreateMultiUrlPickerProperty("myUrlPropertyAlias", new Link() { Url = "https://example.org" });
+var prop8 = UmbracoPropertyFactory.CreateBlockListProperty("myBlockListPropertyAlias", myBlockList);
+var prop9 = UmbracoPropertyFactory.CreateBlockGridProperty("myBlockGridPropertyAlias", myBlockGrid);
 ```
 
 ## Mock Umbraco block lists and block grids
@@ -277,7 +310,7 @@ This prevents all test classes within the assembly from running in parallel with
 
 ### NUnit
 
-NUnit does not run tests in parallel by default, so no additional configuration is needed.
+Apply `[NonParallelizable]` to every `[TestFixture]` that uses `UmbracoTestContext`.
 
 ### Resolving flaky tests when multiple test projects are run together
 

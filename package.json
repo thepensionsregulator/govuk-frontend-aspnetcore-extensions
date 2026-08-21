@@ -1,34 +1,31 @@
 {
   "name": "govuk-frontend-aspnetcore-extensions",
   "version": "1.0.0",
-  "description": "Adds client-side validation and editing in Umbraco to https://github.com/gunndabad/govuk-frontend-aspnetcore",
+  "description": "Adds client-side validation and editing in Umbraco to https://github.com/x-govuk/govuk-frontend-aspnetcore",
   "main": "index.js",
   "repository": "https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions.git",
   "author": "The Pensions Regulator <no-reply@tpr.gov.uk>",
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/jest-dom": "^6.6.3",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
     "jest-junit": "^8.0.0"
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "testPathIgnorePatterns": [ "test-helpers\\.js$" ],
     "roots": [
-      "GovUk.Frontend.AspNetCore.Extensions",
+      "ThePensionsRegulator.GovUk.Frontend",
       "ThePensionsRegulator.Frontend"
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "wwwroot/govuk/**/*.js",
-      "wwwroot/tpr/**/*.js"
+      "wwwroot/govuk/**/*.js"
     ],
     "transform": {},
     "moduleNameMapper": {
-      "/govuk-frontend.min.js$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js",
-      "_content/ThePensionsRegulator.GovUk.Frontend/govuk/govuk-validation.js$": "<rootDir>/GovUk.Frontend.AspNetCore.Extensions/wwwroot/govuk/govuk-validation.js"
+      "/govuk-frontend.min.js$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js"
     }
   },
   "type": "module",
@@ -36,14 +33,19 @@
     "json5": "2.2.2"
   },
   "overrides": {
-    "minimatch": ">=10.2.1"
+    "minimatch": ">=10.2.4",
+    "js-yaml": "^4.2.0",
+    "@babel/core": "^7.29.6"
   },
   "dependencies": {
-    "brace-expansion": "^1.1.13",
-    "govuk-frontend": "^5.13.0"
+    "brace-expansion": "^5.0.5",
+    "govuk-frontend": "^6.1.0"
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
-    "govuk": "cd GovUk.Frontend.AspNetCore.Extensions.ConformanceTests && npm install"
+    "govuk": "npm install && cd GovUk.Frontend.AspNetCore.Extensions.ConformanceTests && npm install",
+    "generate-version": "node scripts/generate-version.js",
+    "backoffice": "npm run generate-version && cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm install && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm install && npm run build",
+    "backoffice:ci": "npm run generate-version && cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm run build"
   }
 }

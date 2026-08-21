@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+		 InitialTargets="TprFrontendUmbraco_Clean">
 	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
 		 because in Release configuration it removes the comments that are needed to configure the Umbraco rich text editor.
@@ -18,11 +19,12 @@
 			<SassCompilerPath>$(UserProfile)\.nuget\packages\aspnetcore.sasscompiler\$(SassCompilerVersion)\runtimes\win-x64\src\</SassCompilerPath>
 			<SassPath>$(MsBuildThisFileDirectory)Styles\</SassPath>
 			<GovUkFrontEndFolder>$(MsBuildThisFileDirectory)..\lib\govuk-frontend\packages\govuk-frontend\src</GovUkFrontEndFolder>
-			<GovUkFrontEndExtensionsFolder>$(MsBuildThisFileDirectory)..\GovUk.Frontend.AspNetCore.Extensions\Styles\</GovUkFrontEndExtensionsFolder>
-			<WwwrootPath>$(MsBuildThisFileDirectory)wwwroot\tpr\</WwwrootPath>
+			<GovUkFrontEndExtensionsFolder>$(MsBuildThisFileDirectory)..\ThePensionsRegulator.GovUk.Frontend\Styles\</GovUkFrontEndExtensionsFolder>
+			<WwwrootPath>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.Frontend.Umbraco\css\</WwwrootPath>
 		</PropertyGroup>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)tpr.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SassPath) $(WwwrootPath)tpr.css"/>
-		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)govuk-umbraco-backoffice.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --quiet-deps --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SassPath) $(SassPath)govuk-umbraco-backoffice.css"/>
+		<!-- Do not minify backoffice CSS because umb_name comments need to be preserved for TinyMCE -->
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)tpr.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SassPath) $(WwwrootPath)tpr.css"/>
+		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)govuk-umbraco-backoffice.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SassPath) $(WwwrootPath)govuk-umbraco-backoffice.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 	</Target>
 	<!-- uSync files are authored in GovUk.Frontend.Umbraco.ExampleApp. Copy here to include them in the NuGet package. 
@@ -30,13 +32,45 @@
 		 If that reference is missing the consuming project will report a build error. -->
 	<Target Name="TprFrontendUmbraco_CopyUSync" BeforeTargets="BeforeBuild">
 		<ItemGroup>
-			<DataTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v9\DataTypes\TPR*.config"></DataTypes>
-			<ContentTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v9\ContentTypes\tpr*.config"></ContentTypes>
+			<DataTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v17\DataTypes\TPR*.config"></DataTypes>
+			<ContentTypes Include="..\GovUk.Frontend.Umbraco.ExampleApp\uSync\v17\ContentTypes\tpr*.config"></ContentTypes>
 		</ItemGroup>
 		<Copy SourceFiles="@(DataTypes)"
-			DestinationFiles="$(ProjectDir)uSync\v9\DataTypes\%(RecursiveDir)%(Filename)%(Extension)" />
+			DestinationFiles="$(ProjectDir)uSync\ThePensionsRegulator.Frontend.Umbraco\DataTypes\%(RecursiveDir)%(Filename)%(Extension)"
+			SkipUnchangedFiles="true"/>
 		<Copy SourceFiles="@(ContentTypes)"
-			DestinationFiles="$(ProjectDir)uSync\v9\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)" />
+			DestinationFiles="$(ProjectDir)uSync\ThePensionsRegulator.Frontend.Umbraco\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)"
+			SkipUnchangedFiles="true"/>
 	</Target>
 
+	<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->
+	<Target Name="TprFrontendUmbraco_Clean" Condition="Exists('$(ProjectDir)wwwroot\tpr\')">
+		<ItemGroup>
+			<!-- Removed in v10.0.0 -->
+			<TprFrontendUmbraco_DirsToRemove Include="$(ProjectDir)wwwroot\tpr\" />
+		</ItemGroup>
+		<Message Text="Deleting obsolete files: @(TprFrontendUmbraco_DirsToRemove)" />
+		<RemoveDir Directories="@(TprFrontendUmbraco_DirsToRemove)" />
+	</Target>
+
+	<Target Name="TprFrontendUmbraco_GenerateProps" BeforeTargets="BeforeBuild">
+		<!--Generate a .props file so that ThePensionsRegulator.Frontend.Umbraco.targets has access to the package version. -->
+		<Message Text="ThePensionsRegulator.Frontend.Umbraco generating $(ProjectDir)ThePensionsRegulator.Frontend.Umbraco.props to ..." Importance="high" />
+		<ItemGroup>
+			<TprFrontendUmbracoPropsText Include="TprFrontendUmbracoPropsText">
+				<Text>
+					<![CDATA[
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+	<PropertyGroup>
+		<TprFrontendUmbracoPackageVersion>$(Version)</TprFrontendUmbracoPackageVersion>
+	</PropertyGroup>
+</Project>
+				]]>
+				</Text>
+			</TprFrontendUmbracoPropsText>
+			<TprFrontendUmbracoProps Include="%(TprFrontendUmbracoPropsText.Text)" />
+		</ItemGroup>
+		<WriteLinesToFile File="$(ProjectDir)ThePensionsRegulator.Frontend.Umbraco.generated.props" Lines="@(TprFrontendUmbracoProps)" Overwrite="True" />
+	</Target>
 </Project>

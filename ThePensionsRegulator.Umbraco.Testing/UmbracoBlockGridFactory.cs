@@ -1,8 +1,8 @@
 ﻿using Moq;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Core = Umbraco.Cms.Core;
 
 namespace ThePensionsRegulator.Umbraco.Testing
 {
@@ -94,9 +94,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static BlockGridItem CreateBlock(IPublishedElement content)
         {
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-            return new BlockGridItem(Core.Udi.Create(Core.Constants.UdiEntityType.Element, Guid.NewGuid()), content, null, null);
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+            return new BlockGridItem(Guid.NewGuid(), content, null, null);
         }
 
         /// <summary>
@@ -104,8 +102,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static BlockGridItem CreateBlock(IPublishedElement content, IPublishedElement settings)
         {
-            return new BlockGridItem(Core.Udi.Create(Core.Constants.UdiEntityType.Element, Guid.NewGuid()), content,
-                                     Core.Udi.Create(Core.Constants.UdiEntityType.Element, Guid.NewGuid()), settings);
+            return new BlockGridItem(Guid.NewGuid(), content, Guid.NewGuid(), settings);
         }
 
         /// <summary>

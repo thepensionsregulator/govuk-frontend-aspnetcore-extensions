@@ -1,11 +1,12 @@
-﻿using GovUk.Frontend.Umbraco;
-using GovUk.Frontend.Umbraco.Blocks;
 using Moq;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
-using GovUkElementTypeAliases = GovUk.Frontend.Umbraco.ElementTypeAliases;
-using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases;
+using GovUkElementTypeAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.ElementTypeAliases;
+using GovUkPropertyAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyAliases;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
@@ -33,7 +34,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             ((OverridableBlockGridItem)blockViewModel.CurrentBlock)
                 .AddArea(UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area"));
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);
@@ -51,7 +52,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             // Arrange
             var blockViewModel = CreateBlockView(GovUkElementTypeAliases.PageHeading, GovUkElementTypeAliases.PageHeadingSettings, classWasAlreadyPresent, classWasAlreadyPresent ? TprClassNames.Divider : null);
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);
@@ -101,9 +102,9 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             var dividerClass = isFieldset ? TprClassNames.DividerForFieldsetWithLegendAsPageHeading : TprClassNames.DividerForFormComponentWithLabelAsPageHeading;
 
             var blockViewModel = CreateBlockView(contentAlias, settingsAlias, classWasAlreadyPresent, classWasAlreadyPresent ? dividerClass : null);
-            Mock.Get(blockViewModel.CurrentBlock.Settings).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, legendIsPageHeading);
+            Mock.Get(blockViewModel.CurrentBlock.Settings!).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, legendIsPageHeading);
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);
@@ -150,10 +151,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             blockViewModel.PreviousBlock = CreateBlock(contentAlias, settingsAlias);
             if (isPageHeadingProperty is not null)
             {
-                Mock.Get(blockViewModel.PreviousBlock.Settings).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
+                Mock.Get(blockViewModel.PreviousBlock.Settings!).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
             }
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);
@@ -189,10 +190,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             blockViewModel.NextBlock = CreateBlock(contentAlias, settingsAlias);
             if (isPageHeadingProperty is not null)
             {
-                Mock.Get(blockViewModel.NextBlock.Settings).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
+                Mock.Get(blockViewModel.NextBlock.Settings!).SetupUmbracoBooleanPropertyValue(isPageHeadingProperty, true);
             }
 
-            var interceptor = new TprDividerViewInterceptor();
+            var interceptor = new TprDividerViewInterceptor(Mock.Of<IPublishedValueFallback>());
 
             // Act
             interceptor.InterceptBlockView(blockViewModel);

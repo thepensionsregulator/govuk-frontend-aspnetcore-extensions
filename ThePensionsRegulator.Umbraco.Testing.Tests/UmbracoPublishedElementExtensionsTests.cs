@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core;
+﻿using ThePensionsRegulator.Umbraco.Core;
+using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -7,7 +8,7 @@ using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Umbraco.Testing.Tests
 {
-    public class UmbracoPublishedElementExtensionsTests
+    public class UmbracoPublishedElementExtensionsTests(UmbracoTestContext _testContext) : IClassFixture<UmbracoTestContext>
     {
         private const string PAGE_ALIAS = "myPage";
         private const string PROPERTY_ALIAS = "myProperty";
@@ -293,7 +294,28 @@ namespace ThePensionsRegulator.Umbraco.Testing.Tests
             TestSetupUmbracoTypedPropertyValue<IPublishedContent, HtmlEncodedString>(
                 () => new HtmlEncodedString("<p>Some value</p>"),
                 (target, alias, value) => target.SetupUmbracoRichTextPropertyValue(alias, value),
-                Constants.PropertyEditors.Aliases.TinyMce
+                Constants.PropertyEditors.Aliases.RichText
+            );
+
+            // IOverridablePublishedElement: set HtmlEncodedString, read HtmlEncodedString
+            TestSetupUmbracoTypedPropertyValue<IOverridablePublishedElement, HtmlEncodedString>(
+                () => new HtmlEncodedString("<p>Some value</p>"),
+                (target, alias, value) => target.SetupUmbracoRichTextPropertyValue(alias, value),
+                Constants.PropertyEditors.Aliases.RichText
+            );
+
+            // IPublishedContent: set HtmlEncodedString?, read HtmlEncodedString? (null)
+            TestSetupUmbracoTypedPropertyValue<IPublishedContent, HtmlEncodedString?>(
+                () => null,
+                (target, alias, value) => target.SetupUmbracoRichTextPropertyValue(alias, value),
+                Constants.PropertyEditors.Aliases.RichText
+            );
+
+            // IOverridablePublishedElement: set HtmlEncodedString?, read HtmlEncodedString? (null)
+            TestSetupUmbracoTypedPropertyValue<IOverridablePublishedElement, HtmlEncodedString?>(
+                () => null,
+                (target, alias, value) => target.SetupUmbracoRichTextPropertyValue(alias, value),
+                Constants.PropertyEditors.Aliases.RichText
             );
 
             // IOverridablePublishedElement: set HtmlEncodedString, read HtmlEncodedString

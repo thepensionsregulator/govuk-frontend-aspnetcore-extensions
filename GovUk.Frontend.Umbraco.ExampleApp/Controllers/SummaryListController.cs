@@ -1,11 +1,10 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.Umbraco.Blocks;
-using GovUk.Frontend.Umbraco.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
+using ThePensionsRegulator.GovUk.Frontend.Validation;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Core.Web;
@@ -16,21 +15,26 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 {
     public class SummaryListController : RenderController
     {
-        private readonly IPublishedSnapshotAccessor _publishedSnapshotAccessor;
-
+        private readonly IPublishedContentTypeCache _publishedContentTypeCache;
+        private readonly IVariationContextAccessor _variationContextAccessor;
+        private readonly IPublishedValueFallback _publishedValueFallback;
         public SummaryListController(ILogger<RenderController> logger,
             ICompositeViewEngine compositeViewEngine,
             IUmbracoContextAccessor umbracoContextAccessor,
-            IPublishedSnapshotAccessor publishedSnapshotAccessor)
+            IPublishedContentTypeCache publishedContentTypeCache,
+            IVariationContextAccessor variationContextAccessor,
+            IPublishedValueFallback publishedValueFallback)
             : base(logger, compositeViewEngine, umbracoContextAccessor)
         {
-            _publishedSnapshotAccessor = publishedSnapshotAccessor ?? throw new System.ArgumentNullException(nameof(publishedSnapshotAccessor));
+            _publishedContentTypeCache = publishedContentTypeCache ?? throw new ArgumentNullException(nameof(publishedContentTypeCache));
+            _variationContextAccessor = variationContextAccessor ?? throw new ArgumentNullException(nameof(variationContextAccessor));
+            _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
         }
 
         [ModelType(typeof(SummaryList))]
         public override IActionResult Index()
         {
-            var viewModel = new SummaryList(CurrentPage, null);
+            var viewModel = new SummaryList(CurrentPage, _publishedValueFallback);
 
             // Override content in a summary list
             var summaryListToOverride = viewModel.Blocks!.FindBlockByClass("override-this");
@@ -43,7 +47,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     summaryListItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
                     summaryListItems.Add(summaryListItem);
                 }
-                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedSnapshotAccessor);
+                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor);
             }
 
             return CurrentTemplate(viewModel);

@@ -13,10 +13,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var documentContext = (TprDocumentContext)context.Items[typeof(TprDocumentsTagHelper)];
             var innerText = await output.GetChildContentAsync();
             documentContext.DocumentDescription = innerText;
+            var publishedLabel = documentContext.PublishedLabel ?? "Published";
 
             if (!string.IsNullOrEmpty(documentContext.DatePublished))
             {
-                output.PreElement.SetHtmlContent($"<dd>Published: {documentContext.DatePublished}</dd>");
+                output.PreElement.SetHtmlContent($"<dd>{publishedLabel}: {documentContext.DatePublished}</dd>");
             }
 
             output.TagName = innerText.IsEmptyOrWhiteSpace ? "" : "dd";

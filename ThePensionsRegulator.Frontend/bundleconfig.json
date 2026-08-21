@@ -1,0 +1,44 @@
+[
+  {
+    "outputFileName": "wwwroot/ThePensionsRegulator.Frontend/js/autocomplete.min.js",
+    "inputFiles": [
+      "wwwroot/ThePensionsRegulator.Frontend/js/autocomplete.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/ThePensionsRegulator.Frontend/js/headermenu.min.js",
+    "inputFiles": [
+      "wwwroot/ThePensionsRegulator.Frontend/js/headermenu.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/ThePensionsRegulator.Frontend/js/tpr-back-to-top.min.js",
+    "inputFiles": [
+      "wwwroot/ThePensionsRegulator.Frontend/js/tpr-back-to-top.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/ThePensionsRegulator.Frontend/js/tpr-search-results.min.js",
+    "inputFiles": [
+      "wwwroot/ThePensionsRegulator.Frontend/js/tpr-search-results.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/ThePensionsRegulator.Frontend/js/tpr-side-navigation.min.js",
+    "inputFiles": [
+      "wwwroot/ThePensionsRegulator.Frontend/js/tpr-side-navigation.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
+    "outputFileName": "wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download.min.js",
+    "inputFiles": [
+      "wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download.js"
+    ],
+    "minify": { "enabled": true }
+  }
+]

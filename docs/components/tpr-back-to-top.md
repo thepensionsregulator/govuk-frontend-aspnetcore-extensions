@@ -20,10 +20,10 @@ This example has TPR styling:
 
 ## Client-side support
 
-When JavaScript is enabled the component is hidden on short pages. Include the following script to enable this behaviour. This is included by default when referencing `<partial name="TPR/Head" />` in your layout.
+When JavaScript is enabled the component is hidden on short pages. Include the following script to enable this behaviour. This is included by default when referencing `<partial name="TPR/BodyClosing" />` in your layout.
 
 ```html
-<script src="/_content/ThePensionsRegulator.GovUk.Frontend/tpr/tpr-back-to-top.js"></script>
+<script src="/ThePensionsRegulator.Frontend/js/tpr-back-to-top.min.js"></script>
 ```
 
 ## API
@@ -49,7 +49,7 @@ This component has culture variants enabled for localisation purposes.
 Finally, pass that content node to the `TPRFooterLockup` partial view on your layout to add the typical combination of TPR back to top and [TPR footer bar](tpr-footer-bar.md) to your application.
 
 ```razor
-@using GovUk.Frontend.Umbraco.Models;
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
 @{

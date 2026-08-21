@@ -7,13 +7,16 @@
 @import "govuk/objects";
 @import "govuk/components/accordion";
 @import "govuk/components/back-link";
+@import "govuk/components/breadcrumbs";
 @import "govuk/components/button";
 @import "govuk/components/character-count";
 @import "govuk/components/checkboxes";
+@import "govuk/components/cookie-banner";
 @import "govuk/components/date-input";
 @import "govuk/components/details";
 @import "govuk/components/error-message";
 @import "govuk/components/error-summary";
+@import "govuk/components/exit-this-page";
 @import "govuk/components/fieldset";
 @import "govuk/components/file-upload";
 @import "govuk/components/hint";
@@ -23,19 +26,22 @@
 @import "govuk/components/notification-banner";
 @import "govuk/components/pagination";
 @import "govuk/components/panel";
+@import "govuk/components/password-input";
 @import "govuk/components/phase-banner";
 @import "govuk/components/radios";
 @import "govuk/components/select";
+@import "govuk/components/service-navigation";
 @import "govuk/components/skip-link";
 @import "govuk/components/summary-list";
+@import "govuk/components/tabs";
 @import "govuk/components/table";
 @import "govuk/components/task-list";
 @import "govuk/components/textarea";
 @import "govuk/components/warning-text";
-@import "govuk/components/breadcrumbs";
 @import "govuk/utilities";
 @import "govuk/overrides";
-@import "_govuk-accordion.scss";
+@import '_govuk-accordion.scss';
+@import "_govuk-breadcrumb.scss";
 @import "_govuk-checkboxes.scss";
 @import "_govuk-input.scss";
 @import "_govuk-pagination.scss";
@@ -50,7 +56,6 @@
 
 // Override compiled GOV.UK styles to apply differences from the TPR UI Kit
 @import '_tpr-back.scss';
-@import '_tpr-breadcrumb.scss';
 @import '_tpr-button.scss';
 @import '_tpr-button-group.scss';
 @import '_tpr-caption.scss';

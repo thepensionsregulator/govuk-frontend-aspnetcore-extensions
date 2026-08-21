@@ -1,0 +1,81 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco;
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Models;
+@using Umbraco.Cms.Core.Strings;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@addTagHelper *, ThePensionsRegulator.GovUk.Frontend
+@{
+    var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+    var cardTitle = Model.Content?.Value<string>(PropertyAliases.SummaryCardTitle);
+    if (!Int32.TryParse(Model.Settings?.Value<string>(PropertyAliases.HeadingLevel)?.Replace("Heading ", string.Empty), out var headingLevel))
+    {
+        headingLevel = 2;
+    }
+    var cardActionsModel = Model.Content?.Value<OverridableBlockListModel>(PropertyAliases.SummaryCardActions)!;
+    var cardActions = cardActionsModel.FilteredBlocks();
+    var listItems = Model.Content?.Value<OverridableBlockListModel>(PropertyAliases.SummaryCardListItems)!;
+}
+<govuk-summary-card id="@Model.Content?.Key" class="@cssClasses">
+    <govuk-summary-card-title heading-level="@headingLevel">@cardTitle</govuk-summary-card-title>
+    @if (cardActions.Any()) 
+    {
+        <govuk-summary-card-actions>
+        @foreach (var action in cardActions)
+        {
+            var link = action.Content.Value<Link>(PropertyAliases.SummaryCardActionLink);
+            if (!string.IsNullOrEmpty(link?.Url))
+            {
+                var openInNewTab = link.Target?.Equals("_blank") ?? false;
+                if (openInNewTab)
+                {
+                    var visuallyHidden = $"{Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)}";
+                    <govuk-summary-card-action href="@(link.Url)" visually-hidden-text="@visuallyHidden" target="_blank" rel="noreferrer noopener">@(action.Content.Value<string>(PropertyAliases.SummaryCardActionLinkText))</govuk-summary-card-action>
+                }
+                else
+                {
+                    <govuk-summary-card-action href="@(link.Url)">@(action.Content.Value<string>(PropertyAliases.SummaryCardActionLinkText))</govuk-summary-card-action>
+                }
+            }
+        }
+        </govuk-summary-card-actions>
+    }
+    <govuk-summary-list>
+        @foreach (var listItem in listItems.FilteredBlocks())
+        {
+            <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
+                <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</govuk-summary-list-row-key>
+                <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
+                @{
+                    var rowActionsModel = listItem.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions)!;
+                    var rowActions = rowActionsModel.FilteredBlocks();
+                    if (rowActions.Any())
+                    {
+                        <govuk-summary-list-row-actions>
+                            @foreach (var action in rowActions)
+                            {
+                                var link = action.Content.Value<Link>(PropertyAliases.SummaryListActionLink);
+                                if (!string.IsNullOrEmpty(link?.Url))
+                                {
+                                    var openInNewTab = link.Target?.Equals("_blank") ?? false;
+                                    if (openInNewTab)
+                                    {
+                                        var visuallyHidden = $"{listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey)} {Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)}";
+                                        <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@visuallyHidden" target="_blank" rel="noreferrer noopener">@(action.Content.Value<string>(PropertyAliases.SummaryListActionLinkText))</govuk-summary-list-row-action>
+                                    }
+                                    else
+                                    {
+                                        var visuallyHidden = listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey);
+                                        <govuk-summary-list-row-action href="@(link.Url)" visually-hidden-text="@visuallyHidden">@(action.Content.Value<string>(PropertyAliases.SummaryListActionLinkText))</govuk-summary-list-row-action>
+                                    }
+                                }
+                            }
+                        </govuk-summary-list-row-actions>
+                    }
+                }
+            </govuk-summary-list-row>
+        }
+    </govuk-summary-list>
+</govuk-summary-card>

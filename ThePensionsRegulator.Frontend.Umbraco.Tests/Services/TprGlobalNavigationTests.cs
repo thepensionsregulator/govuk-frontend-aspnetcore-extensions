@@ -1,7 +1,7 @@
-﻿using Moq;
+using Moq;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -9,14 +9,17 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
 {
-    public class TprGlobalNavigationTests : IClassFixture<UmbracoTestContext>
+    public class TprGlobalNavigationTests : IDisposable
     {
+        private readonly UmbracoTestContext _testContext;
         private Mock<IPublishedContent> _settingsNode;
         private TprGlobalNavigationService _sut;
         private TprHeaderMenuViewModel _menuViewModel;
 
-        public TprGlobalNavigationTests(UmbracoTestContext testContext)
+        public TprGlobalNavigationTests()
         {
+            _testContext = new UmbracoTestContext();
+
             var children = new List<TprHeaderMenuChildItem>
             {
                 new TprHeaderMenuChildItem("ChildTest", "/childTest"),
@@ -27,7 +30,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
             _settingsNode = UmbracoContentFactory.CreateContent<IPublishedContent>();
             _settingsNode.SetupUmbracoBlockListPropertyValue(TprElementTypeAliases.HeaderMenu, blockList);
 
-            _sut = new TprGlobalNavigationService();
+            _sut = new TprGlobalNavigationService(_testContext.PublishedValueFallback.Object);
 
             _menuViewModel = new TprHeaderMenuViewModel(TprElementTypeAliases.HeaderMenu, TprPropertyAliases.HeaderMenuLinkText, TprPropertyAliases.HeaderMenuLinkUrl, TprElementTypeAliases.HeaderMenuChildItems);
         }
@@ -46,13 +49,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
                 Assert.Equal(2, result.Count);
                 Assert.Equal("Test", result[0].LinkText);
                 Assert.Equal("/test", result[0].LinkUrl);
-                
+
                 Assert.Equal(2, result[0]?.HeaderMenuChildItems?.Count);
                 Assert.Equal("ChildTest", childItems?[0].LinkText);
                 Assert.Equal("/childTest", childItems?[0]?.LinkUrl);
                 Assert.Equal("ChildTest1", childItems?[1]?.LinkText);
                 Assert.Equal("/childTest1", childItems?[1]?.LinkUrl);
-              
+
                 Assert.Equal("Test1", result[1].LinkText);
                 Assert.Equal("/test1", result[1].LinkUrl);
                 Assert.Equal(0, result[1]?.HeaderMenuChildItems?.Count);
@@ -63,7 +66,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public void GetMenuItems_WhenSettingsNodeIsNull_ReturnsEmptyList()
         {
             //Act
-            var result = _sut.GetMenuItems(null, _menuViewModel);
+            var result = _sut.GetMenuItems(null!, _menuViewModel);
 
             //Arrange
             Assert.Empty(result);
@@ -73,11 +76,13 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         public void GetMenuItems_WhenHeaderMenuBlockListAliasIsNull_ReturnsEmptyList()
         {
             //Act
-            var result = _sut.GetMenuItems(_settingsNode.Object, null);
+            var result = _sut.GetMenuItems(_settingsNode.Object, null!);
 
             //Arrange
             Assert.Empty(result);
         }
+
+        public void Dispose() => _testContext.Dispose();
 
         private OverridableBlockListItem CreateMenuBlock(string linkText, string linkUrl, List<TprHeaderMenuChildItem>? childItems = null)
         {
@@ -110,3 +115,4 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests.Services
         }
     }
 }
+

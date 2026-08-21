@@ -1,6 +1,5 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using ThePensionsRegulator.GovUk.Frontend.Validation;
 
 namespace GovUk.Frontend.ExampleApp.Models
 {

@@ -38,11 +38,9 @@ The Pensions Regulator (TPR) uses the TPR footer bar as the footer on its web pa
 
 _Required_
 
-| Attribute | Type   | Description                                      |
-|-----------|--------|--------------------------------------------------|
-| `lang`    | string | Sets the language attribute for footer links.    |
-
-
+| Attribute | Type   | Description                                   |
+| --------- | ------ | --------------------------------------------- |
+| `lang`    | string | Sets the language attribute for footer links. |
 
 ### `<govuk-footer-bar-logo>`
 
@@ -55,7 +53,6 @@ Configures the TPR logo, which links to The Pensions Regulator's website by defa
 
 Must be inside a `<govuk-footer-bar>` element.
 
-
 ### `<tpr-footer-bar-three-column-links>`
 
 Generates `ul` container for `tpr-footer-bar-three-column-links`.
@@ -64,11 +61,10 @@ Must be inside a `<govuk-footer-bar>` element.
 
 ### `<tpr-footer-bar-three-column-link>`
 
-| Attribute    | Type     | Description                |
-|-------------|---------|----------------------------|
-| `href`      | string  | Sets the URL for the link. |
-| `link-text` | string  | Sets the link title.       |
-
+| Attribute   | Type   | Description                |
+| ----------- | ------ | -------------------------- |
+| `href`      | string | Sets the URL for the link. |
+| `link-text` | string | Sets the link title.       |
 
 Must be inside a `<tpr-footer-bar-three-column-links>` element.
 
@@ -107,7 +103,7 @@ This component has culture variants enabled for localisation purposes.
 Finally, pass that content node to the `TPRFooterLockup` partial view on your layout to add the typical combination of [TPR back to top](tpr-back-to-top.md) and TPR footer bar to your application.
 
 ```razor
-@using GovUk.Frontend.Umbraco.Models;
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 @using Umbraco.Cms.Web.Common
 @inject UmbracoHelper Umbraco
 @{

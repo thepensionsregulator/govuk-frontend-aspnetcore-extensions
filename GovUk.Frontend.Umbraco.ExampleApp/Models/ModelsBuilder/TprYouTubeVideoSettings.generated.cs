@@ -30,12 +30,12 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public new static IPublishedContentType GetModelContentType(IPublishedSnapshotAccessor publishedSnapshotAccessor)
-			=> PublishedModelUtility.GetModelContentType(publishedSnapshotAccessor, ModelItemType, ModelTypeAlias);
+		public new static IPublishedContentType GetModelContentType(IPublishedContentTypeCache contentTypeCache)
+			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedSnapshotAccessor publishedSnapshotAccessor, Expression<Func<TprYouTubeVideoSettings, TValue>> selector)
-			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(publishedSnapshotAccessor), selector);
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<TprYouTubeVideoSettings, TValue>> selector)
+			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
 		private IPublishedValueFallback _publishedValueFallback;
@@ -65,7 +65,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		public virtual string HeadingClass => this.Value<string>(_publishedValueFallback, "headingClass");
 
 		///<summary>
-		/// Heading level: Set the heading level for your text. Defaults to H2 if left blank.
+		/// Heading level: Set the heading level for your text. Defaults to 'Heading 2' if left blank.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]

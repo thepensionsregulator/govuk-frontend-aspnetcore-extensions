@@ -1,6 +1,7 @@
 ﻿using Moq;
 using System.Collections.ObjectModel;
 using System.Linq.Expressions;
+using ThePensionsRegulator.Umbraco.Core;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -44,7 +45,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <returns>The <see cref="Mock&lt;IPublishedElement&gt;"/> this method was called on.</returns>
         public static Mock<TModel> SetupUmbracoPropertyValue<TModel, TProperty>(this Mock<TModel> publishedElement, string alias, TProperty value) where TModel : class, IPublishedElement
         {
-            return SetupUmbracoReferenceTypePropertyValue(publishedElement, alias, value, (alias, value) => UmbracoPropertyFactory.CreateProperty(alias, null, value));
+            return SetupUmbracoReferenceTypePropertyValue(publishedElement, alias, value, (alias, contentTypeAlias, value) => UmbracoPropertyFactory.CreateProperty(alias, null, value));
         }
 
         /// <summary>
@@ -265,7 +266,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         where TModel : class, IPublishedElement
         where TBlockList : class, IEnumerable<BlockListItem>
         {
-            publishedElement.SetupUmbracoProperty(UmbracoPropertyFactory.CreateBlockListProperty(alias, value));
+            publishedElement.SetupUmbracoProperty(UmbracoPropertyFactory.CreateBlockListProperty(alias, publishedElement.Object.ContentType?.Alias ?? string.Empty, value));
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {
@@ -307,7 +308,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         where TModel : class, IPublishedElement
         where TBlockGrid : class, IEnumerable<BlockGridItem>
         {
-            publishedElement.SetupUmbracoProperty(UmbracoPropertyFactory.CreateBlockGridProperty(alias, value));
+            publishedElement.SetupUmbracoProperty(UmbracoPropertyFactory.CreateBlockGridProperty(alias, publishedElement.Object.ContentType?.Alias ?? string.Empty, value));
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {
@@ -326,10 +327,10 @@ namespace ThePensionsRegulator.Umbraco.Testing
             return publishedElement;
         }
 
-        private static Mock<TModel> SetupUmbracoReferenceTypePropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, TProperty?, IPublishedProperty> createPropertyWithPropertyType)
+        private static Mock<TModel> SetupUmbracoReferenceTypePropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, string, TProperty?, IPublishedProperty> createPropertyWithPropertyType)
             where TModel : class, IPublishedElement
         {
-            publishedElement.SetupUmbracoProperty(createPropertyWithPropertyType(alias, value));
+            publishedElement.SetupUmbracoProperty(createPropertyWithPropertyType(alias, publishedElement.Object.ContentType?.Alias ?? string.Empty, value));
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {
@@ -342,11 +343,11 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// <remarks>
         /// where TProperty : struct makes this Nullable<TProperty> at the IL level, allowing both Value<TProperty> and Value<TProperty?> to be set up
         /// </remarks>
-        private static Mock<TModel> SetupUmbracoNullableValueTypePropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, TProperty?, IPublishedProperty> createProperty)
+        private static Mock<TModel> SetupUmbracoNullableValueTypePropertyValue<TModel, TProperty>(Mock<TModel> publishedElement, string alias, TProperty? value, Func<string, string, TProperty?, IPublishedProperty> createProperty)
             where TModel : class, IPublishedElement
             where TProperty : struct
         {
-            publishedElement.SetupUmbracoProperty(createProperty(alias, value));
+            publishedElement.SetupUmbracoProperty(createProperty(alias, publishedElement.Object.ContentType?.Alias ?? string.Empty, value));
             var overridablePublishedElement = publishedElement as Mock<IOverridablePublishedElement>;
             if (overridablePublishedElement != null)
             {

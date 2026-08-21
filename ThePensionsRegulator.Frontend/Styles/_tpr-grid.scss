@@ -61,7 +61,7 @@
 }
 
 .tpr-box--blue {
-    background-color: govuk-tint($tpr-colour-regent-st-blue, 75)
+    background-color: $tpr-colour-eastern-blue-tint-12;
 }
 
 .tpr-box.govuk-grid-row {
@@ -271,20 +271,20 @@
     }
 
     & .govuk-input, & .govuk-select {
-        border-color: $govuk-error-colour;
+        border-color: govuk-functional-colour(error);
 
         &:focus {
-            border-color: $govuk-input-border-colour;
+            border-color: govuk-functional-colour(input-border);
         }
     }
 }
 
 .govuk-grid-column--error {
     & .govuk-input, & .govuk-select {
-        border-color: $govuk-error-colour;
+        border-color: govuk-functional-colour(error);
 
         &:focus {
-            border-color: $govuk-input-border-colour;
+            border-color: govuk-functional-colour(input-border);
         }
     }
 }

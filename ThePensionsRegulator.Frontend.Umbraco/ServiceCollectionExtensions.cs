@@ -1,17 +1,20 @@
 using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions.Security;
-using GovUk.Frontend.Umbraco;
-using GovUk.Frontend.Umbraco.Blocks;
 using GovUk.Frontend.Umbraco.Services;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System;
+using ThePensionsRegulator.Frontend.Caching;
 using ThePensionsRegulator.Frontend.Security;
 using ThePensionsRegulator.Frontend.Services;
-using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Frontend.Umbraco.Caching;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.GovUk.Frontend.Caching;
+using ThePensionsRegulator.GovUk.Frontend.Security;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 namespace ThePensionsRegulator.Frontend.Umbraco
 {
@@ -76,29 +79,33 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             }
 
             // GovUk.Frontend.Umbraco
-            services.AddGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
+            services.AddTprGovUkFrontendUmbraco(configureGovUkOptions, configureGovUkUmbracoOptions);
 
             // ThePensionsRegulator.Frontend
-            services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
+            // Keep these registrations explicit here rather than calling AddTprFrontend(), because
+            // AddTprGovUkFrontendUmbraco() above has already registered the GOV.UK frontend services.
             services.AddTransient<IContextAwareHostUpdater, TprHostUpdater>();
-            services.AddTransient<ITprAddressLookupEndpointUrlProvider, TprAddressLookupEndpointUrlProvider>();
+            services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
+            services.AddTransient<IStaticFileCachePolicy, TprStaticFileCachePolicy>();
+            services.AddTransient<ITableCsvService, TableCsvService>();
 
             var tprFrontendOptions = new TprFrontendOptions();
-            if (configureTprOptions is not null) { configureTprOptions(tprFrontendOptions); }
+            configureTprOptions(tprFrontendOptions);
             services.AddTransient((services) => Options.Create(tprFrontendOptions));
 
             // ThePensionsRegulator.Frontend.Umbraco
+            services.Configure<RazorViewEngineOptions>(options => options.ViewLocationFormats.Add("/Views/Shared/TPR/{0}.cshtml"));
             services.AddTransient<IPropertyValueFormatter, HostNameInRichTextEditorPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, HostNameInMultiUrlPickerPropertyValueFormatter>();
             services.AddTransient<IPropertyValueFormatter, NoParagraphsPropertyValueFormatter>();
-            services.AddTransient<IPartialViewPathProvider, TprPartialViewPathProvider>();
-            services.AddTransient<IRichTextPropertyEditorAliasProvider, TprRichTextPropertyEditorAliasProvider>();
+            services.AddTransient<IPropertyValueFormatter, TprTablePropertyValueFormatter>();
             services.AddTransient<IBlockViewInterceptor, TprBoxViewInterceptor>();
             services.AddTransient<IBlockViewInterceptor, TprDividerViewInterceptor>();
             services.AddTransient<IDefaultColumnClassProvider, TprSectionCardsColumnClassProvider>();
             services.AddTransient<IYouTubeVideoIdParser, YouTubeVideoIdParser>();
             services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
-            services.AddTransient<IAddressFieldStateHelper, AddressFieldStateHelper>();
+            services.AddTransient<IStaticFileCachePolicy, TprUmbracoStaticFileCachePolicy>();
+            services.AddTransient<ITprSideNavigationLinksService, UmbracoSideNavigationLinksService>();
 
             return services;
         }

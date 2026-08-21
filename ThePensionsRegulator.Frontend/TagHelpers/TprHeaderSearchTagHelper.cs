@@ -1,7 +1,6 @@
 ﻿using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using System.Threading.Tasks;
+using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -9,11 +8,15 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
     public class TprHeaderSearchTagHelper : TagHelper
     {
         internal const string TagName = "tpr-header-search";
+        private const string FormIdAttribute = "form-id";
         private const string ActionAttributeName = "action";
         private const string AutocompleteUrlAttribute = "autocomplete-url";
         private const string PlaceholderAttribute = "placeholder";
         private const string AriaLabelAttribute = "aria-label";
         private const string InputNameAttribute = "input-name";
+
+        [HtmlAttributeName(FormIdAttribute)]
+        public string? FormId { get; set; }
 
         [HtmlAttributeName(ActionAttributeName)]
         public string? ActionPath { get; set; }
@@ -21,11 +24,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName(AutocompleteUrlAttribute)]
         public string? AutocompleteUrl { get; set; }
 
-        [HtmlAttributeName(PlaceholderAttribute)]    
-        public string? PlaceholderText {  get; set; }
-       
+        [HtmlAttributeName(PlaceholderAttribute)]
+        public string? PlaceholderText { get; set; }
+
         [HtmlAttributeName(AriaLabelAttribute)]
-        public string? AriaLabel {  get; set; }
+        public string? AriaLabel { get; set; }
 
         [HtmlAttributeName(InputNameAttribute)]
         public string? InputName { get; set; }
@@ -36,8 +39,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             var content = await output.GetChildContentAsync();
 
-            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), true, ActionPath, AutocompleteUrl, PlaceholderText, AriaLabel, InputName);
-           
+            headerSearchContext.SetSearch(output.Attributes.ToAttributeDictionary(), true, FormId, ActionPath, AutocompleteUrl, PlaceholderText, AriaLabel, InputName);
+
             output.SuppressOutput();
         }
     }

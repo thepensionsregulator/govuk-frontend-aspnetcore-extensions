@@ -1,0 +1,329 @@
+/** Naming concept, any inputs are welcome.
+UUI - Mapping-level or specific component name - State - Name - Part - Overwrites
+*/
+
+/* Size Properties */
+
+:root {
+  --uui-size-1: 3px;
+  --uui-size-2: 6px;
+  --uui-size-3: 9px;
+  --uui-size-4: 12px;
+  --uui-size-5: 15px;
+  --uui-size-6: 18px;
+  --uui-size-7: 21px;
+  --uui-size-8: 24px;
+  --uui-size-9: 27px;
+  --uui-size-10: 30px;
+  --uui-size-11: 33px;
+  --uui-size-12: 36px;
+  --uui-size-14: 42px;
+  --uui-size-16: 48px;
+  --uui-size-20: 60px;
+  --uui-size-22: 66px;
+  --uui-size-24: 72px;
+  --uui-size-28: 84px;
+  --uui-size-32: 96px;
+  --uui-size-36: 108px;
+  --uui-size-40: 120px;
+  --uui-size-44: 132px;
+  --uui-size-46: 138px;
+  --uui-size-48: 144px;
+  --uui-size-52: 156px;
+  --uui-size-56: 168px;
+  --uui-size-60: 180px;
+  --uui-size-64: 192px;
+  --uui-size-72: 216px;
+  --uui-size-80: 240px;
+  --uui-size-96: 288px;
+  --uui-size-100: 300px;
+
+  /** space and layout sizes for simpler usage of sizes: */
+  --uui-size-space-1: 3px; /*--uui-size-1*/
+  --uui-size-space-2: 6px; /*--uui-size-2*/
+  --uui-size-space-3: 9px; /*--uui-size-3*/
+  --uui-size-space-4: 12px; /*--uui-size-4*/
+  --uui-size-space-5: 18px; /*--uui-size-6*/
+  --uui-size-space-6: 24px; /*--uui-size-8*/
+
+  --uui-size-layout-1: 24px; /*--uui-size-8*/
+  --uui-size-layout-2: 30px; /*--uui-size-10*/
+  --uui-size-layout-3: 42px; /*--uui-size-14*/
+  --uui-size-layout-4: 66px; /*--uui-size-22*/
+  --uui-size-layout-5: 96px; /*--uui-size-32*/
+  --uui-size-layout-6: 138px; /*--uui-size-46*/
+
+  /** Other size props: */
+  --uui-border-radius: var(--uui-size-1);
+
+  /** Typography */
+  --uui-type-default-size: 14px;
+  --uui-type-small-size: 12px;
+  --uui-type-h1-size: 60px; /*--uui-size-20*/
+  --uui-type-h2-size: 42px; /*--uui-size-14*/
+  --uui-type-h3-size: 30px; /*--uui-size-10*/
+  --uui-type-h4-size: 21px;
+  --uui-type-h5-size: var(--uui-type-default-size);
+  --uui-type-h6-size: var(--uui-type-small-size);
+}
+/** Interface shadows*/
+/* TODO: fix automatic fallback values for shadows before we use them */
+:root {
+  --uui-shadow-depth-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  --uui-shadow-depth-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  --uui-shadow-depth-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  --uui-shadow-depth-4: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  --uui-shadow-depth-5: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+/* Currently used https://chir.ag/projects/name-that-color/ for naming inspiration */
+/* Color Properties */
+:root {
+  --uui-palette-deep-saffron: #f79c37;
+  --uui-palette-deep-saffron-light: rgb(249, 181, 103);
+  --uui-palette-deep-saffron-dark: rgb(222, 145, 56);
+  --uui-palette-deep-saffron-dimmed: rgb(166, 150, 133);
+  --uui-palette-sunglow: #fad634;
+  --uui-palette-sunglow-light: rgb(251, 224, 101);
+  --uui-palette-sunglow-dark: rgb(224, 193, 51);
+  --uui-palette-sunglow-dimmed: rgb(166, 160, 133);
+  --uui-palette-spanish-pink: #f5c1bc;
+  --uui-palette-spanish-pink-light: rgb(248, 214, 211);
+  --uui-palette-spanish-pink-dark: rgb(232, 192, 189);
+  --uui-palette-spanish-pink-dimmed: rgb(219, 212, 212);
+  --uui-palette-gunmetal: #162335;
+  --uui-palette-gunmetal-light: rgb(35, 55, 83);
+  --uui-palette-gunmetal-dark: rgb(23, 27, 33);
+  --uui-palette-gunmetal-dimmed: rgb(54, 54, 54);
+  --uui-palette-space-cadet: #1b264f;
+  --uui-palette-space-cadet-light: rgb(38, 53, 110);
+  --uui-palette-space-cadet-dark: rgb(28, 35, 59);
+  --uui-palette-space-cadet-dimmed: rgb(106, 117, 154);
+  --uui-palette-violet-blue: #3544b1;
+  --uui-palette-violet-blue-light: rgb(70, 86, 200);
+  --uui-palette-violet-blue-dark: rgb(54, 65, 156);
+  --uui-palette-violet-blue-dimmed: rgb(87, 87, 87);
+
+  /*
+  // not used jet.
+  $matisse: #2152a3;
+  --uui-palette-matisse: $matisse;
+  --uui-palette-matisse-light: color($matisse lightness(+ 8%));
+  --uui-palette-matisse-dark: color($matisse blackness(+ 8%));
+  --uui-palette-matisse-dimmed: color(
+    $matisse saturation(- 30%) blackness(+ 22%)
+  );
+  */
+  --uui-palette-malibu: #3879ff;
+  --uui-palette-malibu-light: rgb(97, 150, 255);
+  --uui-palette-malibu-dark: rgb(56, 116, 235);
+  --uui-palette-malibu-dimmed: rgb(115, 120, 130);
+  /*
+  $outline-blue: #3879ff;
+  --uui-palette-outline-blue: $outline-blue;
+  --uui-palette-outline-blue-light: color($outline-blue lightness(+ 8%));
+  --uui-palette-outline-blue-dark: color($outline-blue blackness(+ 8%));
+  --uui-palette-outline-blue-dimmed: color(
+    $outline-blue saturation(- 60%) blackness(+ 26%)
+  );
+*/
+  --uui-palette-maroon-flush: #d42054;
+  --uui-palette-maroon-flush-light: rgb(226, 60, 107);
+  --uui-palette-maroon-flush-dark: rgb(191, 33, 78);
+  --uui-palette-maroon-flush-dimmed: rgb(133, 107, 114);
+  --uui-palette-jungle-green: #2bc37c;
+  --uui-palette-jungle-green-light: rgb(58, 212, 140);
+  --uui-palette-jungle-green-dark: rgb(43, 179, 115);
+  --uui-palette-jungle-green-dimmed: rgb(102, 135, 120);
+  --uui-palette-forest-green: #0b8152;
+  --uui-palette-forest-green-light: rgb(13, 155, 98);
+  --uui-palette-forest-green-dark: rgb(10, 115, 73);
+  --uui-palette-forest-green-dimmed: rgb(46, 89, 72);
+  --uui-palette-cocoa-black: #191715;
+  --uui-palette-cocoa-black-light: rgb(39, 36, 32);
+  --uui-palette-cocoa-black-dark: rgb(20, 20, 20);
+  --uui-palette-cocoa-black-dimmed: rgb(48, 48, 48);
+  --uui-palette-dune-black: #2e2b29;
+  --uui-palette-dune-black-light: rgb(57, 53, 50);
+  --uui-palette-dune-black-dark: rgb(38, 38, 38);
+  --uui-palette-dune-black-dimmed: rgb(64, 64, 64);
+  --uui-palette-cocoa-brown: #332a24;
+  --uui-palette-cocoa-brown-light: rgb(66, 54, 47);
+  --uui-palette-cocoa-brown-dark: rgb(38, 37, 36);
+  --uui-palette-cocoa-brown-dimmed: rgb(43, 43, 43);
+  --uui-palette-chamoisee: #9d8057;
+  --uui-palette-chamoisee-light: rgb(175, 148, 110);
+  --uui-palette-chamoisee-dark: rgb(138, 116, 87);
+  --uui-palette-chamoisee-dimmed: rgb(115, 113, 110);
+  --uui-palette-timberwolf: #e2dad4;
+  --uui-palette-timberwolf-light: rgb(243, 239, 237);
+  --uui-palette-timberwolf-dark: rgb(208, 208, 208);
+  --uui-palette-timberwolf-dimmed: rgb(207, 207, 207);
+  --uui-palette-gravel: #d8d7d9;
+  --uui-palette-gravel-light: rgb(237, 237, 238);
+  --uui-palette-gravel-dark: rgb(200, 200, 200);
+  --uui-palette-gravel-dimmed: rgb(204, 204, 204);
+  --uui-palette-sand: #f3f3f5;
+  --uui-palette-sand-light: rgb(255, 255, 255);
+  --uui-palette-sand-dark: rgb(226, 226, 226);
+  --uui-palette-sand-dimmed: rgb(231, 231, 231);
+  --uui-palette-white: #fefefe;
+  --uui-palette-white-light: rgb(255, 255, 255);
+  --uui-palette-white-dark: rgb(250, 250, 250);
+  --uui-palette-white-dimmed: rgb(228, 228, 228);
+  --uui-palette-black: #060606;
+  --uui-palette-black-light: rgb(26, 26, 26);
+  --uui-palette-black-dark: rgb(5, 5, 5);
+  --uui-palette-black-dimmed: rgb(36, 36, 36);
+  --uui-palette-grey: #c4c4c4;
+  --uui-palette-grey-light: rgb(222, 222, 222);
+  --uui-palette-grey-dark: rgb(179, 179, 179);
+  --uui-palette-grey-dimmed: rgb(189, 189, 189);
+
+  /** not begin used currently. */
+  --uui-palette-dusty-grey: #9b9b9b;
+  --uui-palette-dusty-grey-light: rgb(176, 176, 176);
+  --uui-palette-dusty-grey-dark: rgb(141, 141, 141);
+  --uui-palette-dusty-grey-dimmed: rgb(186, 186, 186);
+  --uui-palette-mine-grey: #3e3e3e;
+  --uui-palette-mine-grey-light: rgb(82, 82, 82);
+  --uui-palette-mine-grey-dark: rgb(56, 56, 56);
+  --uui-palette-mine-grey-dimmed: rgb(87, 87, 87);
+}
+:root {
+  font-family: 'Roboto', sans-serif;
+
+  /* ----- STATES -----  */
+  --uui-color-selected: var(--uui-palette-violet-blue);
+  --uui-color-selected-emphasis: var(--uui-palette-violet-blue-light);
+  --uui-color-selected-standalone: var(--uui-palette-violet-blue-dark);
+  --uui-color-selected-contrast: #fff;
+
+  --uui-color-current: var(--uui-palette-spanish-pink);
+  --uui-color-current-emphasis: var(--uui-palette-spanish-pink-light);
+  --uui-color-current-standalone: var(--uui-palette-spanish-pink-dark);
+  --uui-color-current-contrast: var(--uui-palette-space-cadet);
+
+  --uui-color-disabled: var(--uui-palette-sand);
+  --uui-color-disabled-standalone: var(--uui-palette-sand-dark);
+  --uui-color-disabled-contrast: var(--uui-palette-grey);
+
+  /* ----- UNIVERSAL -----  */
+  --uui-color-header-surface: var(--uui-palette-space-cadet);
+  --uui-color-header-contrast: rgba(255, 255, 255, 0.8);
+  --uui-color-header-contrast-emphasis: #fff;
+
+  --uui-color-focus: var(--uui-palette-malibu);
+
+  /* ----- SURFACE -----  */
+  --uui-color-surface: #fff;
+  --uui-color-surface-alt: var(--uui-palette-sand);
+  --uui-color-surface-emphasis: var(--uui-palette-white-dark);
+
+  --uui-color-background: var(--uui-palette-sand);
+
+  --uui-color-text: var(--uui-palette-black);
+  --uui-color-text-alt: var(--uui-palette-dune-black);
+
+  --uui-color-interactive: var(--uui-palette-space-cadet);
+  --uui-color-interactive-emphasis: var(--uui-palette-violet-blue);
+
+  --uui-color-border: #d8d7d9;
+  --uui-color-border-standalone: #c2c2c2;
+  --uui-color-border-emphasis: #a1a1a1;
+
+  --uui-color-divider: #f6f6f7;
+  --uui-color-divider-standalone: #e9e9eb;
+  --uui-color-divider-emphasis: #bdbdbd;
+
+  /* ----- COLORS -----  */
+  --uui-color-default: var(--uui-palette-space-cadet);
+  --uui-color-default-emphasis: var(--uui-palette-violet-blue);
+  --uui-color-default-standalone: var(--uui-palette-space-cadet-dark);
+  --uui-color-default-contrast: #fff;
+
+  --uui-color-warning: #fbd142;
+  --uui-color-warning-emphasis: var(--uui-palette-sunglow-light);
+  --uui-color-warning-standalone: #a17700;
+  --uui-color-warning-contrast: #000;
+  /* --uui-color-warning: var(--uui-palette-sunglow); Contrast not high enough */
+  /* --uui-color-warning-standalone: var(--uui-palette-sunglow-dark); Contrast not high enough */
+
+  --uui-color-danger: var(--uui-palette-maroon-flush);
+  --uui-color-danger-emphasis: var(--uui-palette-maroon-flush-light);
+  --uui-color-danger-standalone: var(--uui-palette-maroon-flush-dark);
+  --uui-color-danger-contrast: white;
+
+  --uui-color-invalid: var(--uui-palette-maroon-flush);
+  --uui-color-invalid-emphasis: var(--uui-palette-maroon-flush-light);
+  --uui-color-invalid-standalone: var(--uui-palette-maroon-flush-dark);
+  --uui-color-invalid-contrast: white;
+
+  --uui-color-positive: var(--uui-palette-forest-green);
+  --uui-color-positive-emphasis: var(--uui-palette-forest-green-light);
+  --uui-color-positive-standalone: var(--uui-palette-forest-green-dark);
+  --uui-color-positive-contrast: #fff;
+}
+:root[data-theme='dark'] {
+  /* ----- STATES -----  */
+  /* --uui-color-selected: #2a72b6;
+  --uui-color-selected-emphasis: #3385d1;
+  --uui-color-selected-standalone: #215b91;
+  --uui-color-selected-contrast: white;
+
+  --uui-color-current: #d49e98;
+  --uui-color-current-emphasis: #dbaea9;
+  --uui-color-current-standalone: #c3786f;
+  --uui-color-current-contrast: #1b264f; */
+
+  /* ----- UNIVERSAL -----  */
+  /* --uui-color-header: #14171b;
+
+  --uui-color-focus: #2294ff;
+
+  --uui-color-hover: #3f464e;
+  --uui-color-hover-standalone: #51abff;
+
+  --uui-color-disabled: #373e47;
+  --uui-color-disabled-standalone: #444c55;
+  --uui-color-disabled-contrast: #636e7b; */
+
+  /* ----- SURFACE -----  */
+  /* --uui-color-surface: #2d333b;
+  --uui-color-surface-alt: #373e47;
+
+  --uui-color-background: #22272e;
+
+  --uui-color-text: #cdd9e5;
+  --uui-color-text-alt: #636e7b;
+
+  --uui-color-border: #4d5661;
+  --uui-color-border-standalone: #59636e;
+  --uui-color-border-emphasis: #697380;
+
+  --uui-color-divider: #383d44;
+  --uui-color-divider-standalone: #444c56;
+  --uui-color-divider-emphasis: #4f5864; */
+  /* ----- COLORS -----  */
+  /* --uui-color-default: #2c70d6;
+  --uui-color-default-emphasis: #3886fc;
+  --uui-color-default-standalone: #88bdff;
+  --uui-color-default-contrast: white;
+
+  --uui-color-warning: #977b00;
+  --uui-color-warning-emphasis: #bda22b;
+  --uui-color-warning-standalone: #ffd82c;
+  --uui-color-warning-contrast: white;
+
+  --uui-color-danger: #8a2944;
+  --uui-color-danger-emphasis: #a03452;
+  --uui-color-danger-standalone: #ff7a9f;
+  --uui-color-danger-contrast: white;
+
+  --uui-color-positive: #26793e;
+  --uui-color-positive-emphasis: #358f4e;
+  --uui-color-positive-standalone: #52d176;
+  --uui-color-positive-contrast: white; */
+}
+:root {
+  --uui-font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}

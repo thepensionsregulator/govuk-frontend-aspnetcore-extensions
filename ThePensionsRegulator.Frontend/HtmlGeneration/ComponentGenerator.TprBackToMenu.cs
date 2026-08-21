@@ -1,9 +1,7 @@
-using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using System.IO;
+using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -24,11 +22,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var tagBuilder = new TagBuilder(BackToMenuElement);
             if (attributes != null) tagBuilder.MergeAttributes(attributes);
-            tagBuilder.MergeCssClass("govuk-body");
-            tagBuilder.MergeCssClass("tpr-back-to-menu");
+            tagBuilder.AddCssClass("govuk-body");
+            tagBuilder.AddCssClass("tpr-back-to-menu");
 
             var linkBuilder = new TagBuilder(BackToMenuLinkElement);
-            linkBuilder.MergeCssClass("govuk-link");
+            linkBuilder.AddCssClass("govuk-link");
             linkBuilder.Attributes.Add("href", href);
             linkBuilder.InnerHtml.AppendHtml(content);
 

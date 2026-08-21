@@ -1,11 +1,12 @@
-﻿@using Microsoft.AspNetCore.Localization
+﻿@using GovUk.Frontend.ExampleSharedResource
+@using Microsoft.AspNetCore.Localization
 @using Microsoft.Extensions.Configuration;
 @using Microsoft.AspNetCore.Mvc.Localization
 
 @inject IViewLocalizer localizer;
-@inject IConfiguration Configuration
+@inject Microsoft.Extensions.Options.IOptions<AppConfig> Configuration;
 @{
-    var useTPRstyles = Configuration.GetValue<bool>("TPRStyles");
+    var useTPRstyles = Configuration.Value.TPRStyles;
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
     var currentLanguage = requestCulture!.RequestCulture.UICulture.Name;
     var twoLetterCode = requestCulture!.RequestCulture.UICulture.TwoLetterISOLanguageName;
@@ -24,9 +25,9 @@
     {
         <partial name="GOVUK/Head" />
     }
-    <script src="/scripts/purify.js" asp-append-version="true"></script>
-    <script src="/scripts/trusted-types-policy.js" asp-append-version="true"></script>
-    <link rel="stylesheet" href="~/css/site.css" />
+    <script src="/scripts/purify.min.js" type="module" asp-append-version="true"></script>
+    <script src="/scripts/trusted-types-policy.js" type="module" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />
@@ -61,9 +62,9 @@
         {
             @:<div class="govuk-width-container">            
         }
-        @if (IsSectionDefined("back"))
+        @if (IsSectionDefined("secondary_navigation"))
         {
-            @RenderSection("back")
+            @RenderSection("secondary_navigation")
         }
         else
         {

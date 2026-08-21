@@ -1,7 +1,7 @@
-@using GovUkPropertyAliases = GovUk.Frontend.Umbraco.PropertyAliases
 @using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
 @{
-    var cssClasses = Model.Settings.Value<string>(GovUkPropertyAliases.CssClasses);
+    var cssClasses = Model.Settings.Value<string>(PropertyAliases.CssClasses);
     var text = Model.Content.Value<string>(TprPropertyAliases.NavigationalLinksText);
     var label = string.IsNullOrWhiteSpace(Model.Content.Value<string>(TprPropertyAliases.NavigationalLinksLabel)) ? "List of in-page anchor links" : Model.Content.Value<string>(TprPropertyAliases.NavigationalLinksLabel);
 }

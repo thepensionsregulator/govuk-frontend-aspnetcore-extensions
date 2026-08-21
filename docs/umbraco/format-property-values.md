@@ -12,7 +12,7 @@ The property value converter for the property type needs to inject `IEnumerable<
 
 ```csharp
 using Umbraco.Cms.Core.PropertyEditors;
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 public class ExamplePropertyValueConverter : PropertyValueConverterBase
 {
@@ -37,32 +37,30 @@ public class ExamplePropertyValueConverter : PropertyValueConverterBase
 
 ### Step 2: The property value formatter
 
-Implement the `IPropertyValueFormatter` interface, specifying the alias of the property editor whose value can be formatted.
+Implement the `IPropertyValueFormatter` interface, specifying the alias of the property editor or specific properties whose value can be formatted.
 
 ```csharp
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
 public class ExamplePropertyValueFormatter : IPropertyValueFormatter
 {
-    public bool IsFormatter(IPublishedPropertyType propertyType) => "propertyEditorAliasToConvertFrom".Equals(propertyType.EditorAlias);
+    public bool IsFormatter(IPublishedPropertyType propertyType) {
+        return "propertyEditorAliasToFormat".Equals(propertyType.EditorAlias) ||
+               "aliasOfPropertyToFormat" == propertyType.Alias;
+    }
 
     // format the value somehow, don't just return it as shown here
     public object FormatValue(object? value) => value;
 }
 ```
 
-`IsFormatter` sets which property editor(s) this property value formatter can handle values from. The same property editor(s) should be handled by a single property value converter. `FormatValue` must handle and return the type or types returned by `GetPropertyValueType` on that property value converter.
+`IsFormatter` sets which property editor(s) this property value formatter can handle values from. The same property editor(s) should be handled by a property value converter. `FormatValue` must handle and return the type or types returned by `GetPropertyValueType` on that property value converter.
 
-Register the `IPropertyValueFormatter` with dependency injection. You can register multiple formatters by mapping `IPropertyValueFormatter` to each one as shown below.
+Register the `IPropertyValueFormatter` with dependency injection in `Program.cs`. You can register multiple formatters by mapping `IPropertyValueFormatter` to each one as shown below.
 
 ```csharp
-using ThePensionsRegulator.Umbraco.PropertyEditors;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 
-public void ConfigureServices(IServiceCollection services)
-{
-    // ...more services here...
-
-    services.AddTransient<IPropertyValueFormatter, ExamplePropertyValueFormatter>();
-    services.AddTransient<IPropertyValueFormatter, AnotherExamplePropertyValueFormatter>();
-}
+builder.Services.AddTransient<IPropertyValueFormatter, ExamplePropertyValueFormatter>();
+builder.Services.AddTransient<IPropertyValueFormatter, AnotherExamplePropertyValueFormatter>();
 ```

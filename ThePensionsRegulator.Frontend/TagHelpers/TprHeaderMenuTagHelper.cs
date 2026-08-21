@@ -1,7 +1,7 @@
 ﻿using GovUk.Frontend.AspNetCore;
-using GovUk.Frontend.AspNetCore.Extensions;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Threading.Tasks;
+using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -15,6 +15,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private const string NoJsNavPageName = "no-js-destination";
         private const string ToggleClosedName = "close-label";
         private const string ToggleOpenName = "open-label";
+        private const string SearchFormIdAttribute = "search-id";
 
         [HtmlAttributeName(MenuAriaLabelName)]
         public string? MenuAriaLabel { get; set; }
@@ -31,6 +32,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName(ToggleOpenName)]
         public string? ToggleOpen { get; set; }
 
+        [HtmlAttributeName(SearchFormIdAttribute)]
+        public string? SearchFormId { get; set; }
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var headerMenuContext = new TprHeaderMenuContext();
@@ -39,6 +43,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             headerMenuContext.MobileMenuNoJsNavPage = NoJsNavPage;
             headerMenuContext.HeaderMenuToggleClosed = ToggleClosed;
             headerMenuContext.HeaderMenuToggleOpen = ToggleOpen;
+            headerMenuContext.HeaderMenuSearchFormId = SearchFormId;
 
             if (output.Attributes != null)
             {

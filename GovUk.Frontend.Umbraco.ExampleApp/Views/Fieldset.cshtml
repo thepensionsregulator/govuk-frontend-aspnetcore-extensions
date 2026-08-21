@@ -1,10 +1,10 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Fieldset>
 @using GovUk.Frontend.Umbraco.ExampleApp.Controllers
 @using GovUk.Frontend.Umbraco.ExampleApp.Models
-@section head{
+@section head {
     <title>@Model.PageHeadingOrName()</title>
 }
 <partial name="GOVUK/BlockList" model="Model.Blocks" />
 @section scripts {
-    <partial name="GOVUK/UmbracoValidation" />
+    <partial name="GOVUK/Validation" />
 }

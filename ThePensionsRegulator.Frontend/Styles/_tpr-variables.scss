@@ -8,21 +8,37 @@ $govuk-font-weight-regular: $tpr-font-weight-regular;
 $govuk-font-weight-bold: $tpr-font-weight-bold;
 
 // TPR brand colours
+// Primary (Brand and Web)
 $tpr-colour-lime: #cdd500;
 $tpr-colour-violet: #483b8b;
-$tpr-colour-blue-marguerite: #7469ba;
-$tpr-colour-tolopea: #0b0030;
+$tpr-colour-steel: #54616c;
+
+// Secondary (Brand)
+$tpr-colour-cherry: #b90064;
+$tpr-colour-teal: #00827d;
+$tpr-colour-dove: #7e9eb3;
+$tpr-colour-brick: #cd2e25;
+$tpr-colour-turquoise: #0099b3;
+
+// Main web colours
+$tpr-colour-eclipse: #3d3d3d;
 $tpr-colour-eastern-blue: #0381a2;
-$tpr-colour-regent-st-blue: #99ccd9;
 $tpr-colour-royal-blue: #006ebc;
-$tpr-colour-kashmir-blue: #557b97;
-$tpr-colour-cornflower: #98c4e4;
+$tpr-colour-dark-cerulean: #00487a;
+$tpr-colour-tolopea: #0b0030;
+$tpr-colour-tangerine-yellow: #fed100;
+
+// Supplementary web colours
 $tpr-colour-camarone: #1e7e34;
 $tpr-colour-fire-brick: #a91717;
-$tpr-colour-brick: #cd2e25;
-$tpr-colour-petite-orchid: #dca1a1;
 $tpr-colour-tawny: #ca5002;
-$tpr-colour-tangerine-yellow: #fed100;
+$tpr-colour-petite-orchid: #dca1a1;
+$tpr-colour-regent-st-blue: #99ccd9;
+$tpr-colour-cornflower: #98c4e4;
+$tpr-colour-blue-marguerite: #7469ba;
+$tpr-colour-kashmir-blue: #557b97;
+
+// Greys
 $tpr-colour-white: #ffffff;
 $tpr-colour-snow: #fafafa;
 $tpr-colour-white-smoke: #f5f5f5;
@@ -31,25 +47,239 @@ $tpr-colour-very-light-grey: #cacaca;
 $tpr-colour-silver: #bbbbbb;
 $tpr-colour-dark-grey: #b0b0b0;
 $tpr-colour-grey: #767676;
-$tpr-colour-steel: #54616c;
-$tpr-colour-eclipse: #3d3d3d;
 $tpr-colour-zambezi: #585858;
 $tpr-colour-black: #000000;
 
-// Change the colours on GOV.UK components where TPR brand colours diverge from 
+// Approved tints and shades from TPR brand document.
+// Tint percentages represent the proportion of base colour (e.g. tint-80 = 80% base colour + 20% white).
+// Shade percentages represent the degree of darkening (e.g. shade-20 = 20% darker).
+
+// Violet tints
+$tpr-colour-violet-tint-80: #685ca1;
+$tpr-colour-violet-tint-65: #8377b2;
+$tpr-colour-violet-tint-50: #a39dc5;
+$tpr-colour-violet-tint-33: #c3bed9;
+$tpr-colour-violet-tint-25: #d1cee2;
+$tpr-colour-violet-tint-12: #e9e7f1;
+
+// Violet shades
+$tpr-colour-violet-shade-20: #3a2f6f;
+$tpr-colour-violet-shade-35: #2f265a;
+$tpr-colour-violet-shade-50: #241e46;
+$tpr-colour-violet-shade-67: #18132e;
+
+// Lime tints
+$tpr-colour-lime-tint-80: #d8dd4c;
+$tpr-colour-lime-tint-65: #e0e376;
+$tpr-colour-lime-tint-50: #e6ea7f;
+$tpr-colour-lime-tint-33: #eff1ab;
+$tpr-colour-lime-tint-25: #f2f4bf;
+$tpr-colour-lime-tint-12: #f9fae0;
+
+// Lime shades
+$tpr-colour-lime-shade-20: #a4aa00;
+$tpr-colour-lime-shade-35: #858a00;
+$tpr-colour-lime-shade-50: #676b00;
+$tpr-colour-lime-shade-67: #444600;
+
+// Steel tints
+$tpr-colour-steel-tint-80: #717c87;
+$tpr-colour-steel-tint-65: #89919b;
+$tpr-colour-steel-tint-50: #a9b0b5;
+$tpr-colour-steel-tint-33: #c7cbcf;
+$tpr-colour-steel-tint-25: #d4d7da;
+$tpr-colour-steel-tint-12: #eaeced;
+
+// Steel shades
+$tpr-colour-steel-shade-20: #434e56;
+$tpr-colour-steel-shade-35: #373f46;
+$tpr-colour-steel-shade-50: #2a3136;
+$tpr-colour-steel-shade-67: #1c2024;
+
+// Cherry tints
+$tpr-colour-cherry-tint-80: #c6487f;
+$tpr-colour-cherry-tint-65: #cf6e97;
+$tpr-colour-cherry-tint-50: #dc7fb1;
+$tpr-colour-cherry-tint-33: #e8abcc;
+$tpr-colour-cherry-tint-25: #edbfd8;
+$tpr-colour-cherry-tint-12: #f6e0ec;
+
+// Cherry shades
+$tpr-colour-cherry-shade-20: #940050;
+$tpr-colour-cherry-shade-35: #780041;
+$tpr-colour-cherry-shade-50: #5d0032;
+$tpr-colour-cherry-shade-67: #3d0021;
+
+// Teal tints
+$tpr-colour-teal-tint-80: #339b97;
+$tpr-colour-teal-tint-65: #59aeab;
+$tpr-colour-teal-tint-50: #80c1be;
+$tpr-colour-teal-tint-33: #abd6d4;
+$tpr-colour-teal-tint-25: #bfe0df;
+$tpr-colour-teal-tint-12: #e0f0ef;
+
+// Teal shades
+$tpr-colour-teal-shade-20: #006864;
+$tpr-colour-teal-shade-35: #005551;
+$tpr-colour-teal-shade-50: #00413f;
+$tpr-colour-teal-shade-67: #002b29;
+
+// Dove tints
+$tpr-colour-dove-tint-80: #96aec1;
+$tpr-colour-dove-tint-65: #a9bbcb;
+$tpr-colour-dove-tint-50: #becdd8;
+$tpr-colour-dove-tint-33: #d4dee5;
+$tpr-colour-dove-tint-25: #dee6eb;
+$tpr-colour-dove-tint-12: #eff3f6;
+
+// Dove shades
+$tpr-colour-dove-shade-20: #657e8f;
+$tpr-colour-dove-shade-35: #526774;
+$tpr-colour-dove-shade-50: #3f4f5a;
+$tpr-colour-dove-shade-67: #2a343b;
+
+// Brick tints
+$tpr-colour-brick-tint-80: #d75c46;
+$tpr-colour-brick-tint-65: #df7c64;
+$tpr-colour-brick-tint-50: #e69692;
+$tpr-colour-brick-tint-33: #efbab7;
+$tpr-colour-brick-tint-25: #f2cbc8;
+$tpr-colour-brick-tint-12: #f9e6e4;
+
+// Brick shades
+$tpr-colour-brick-shade-20: #a4251e;
+$tpr-colour-brick-shade-35: #851e18;
+$tpr-colour-brick-shade-50: #671713;
+$tpr-colour-brick-shade-67: #440f0c;
+
+// Turquoise tints
+$tpr-colour-turquoise-tint-80: #00acc3;
+$tpr-colour-turquoise-tint-65: #4fbbcf;
+$tpr-colour-turquoise-tint-50: #7fccd9;
+$tpr-colour-turquoise-tint-33: #abdde6;
+$tpr-colour-turquoise-tint-25: #bfe5ec;
+$tpr-colour-turquoise-tint-12: #e0f3f6;
+
+// Turquoise shades
+$tpr-colour-turquoise-shade-20: #007a8f;
+$tpr-colour-turquoise-shade-35: #006374;
+$tpr-colour-turquoise-shade-50: #004d5a;
+$tpr-colour-turquoise-shade-67: #00323b;
+
+// Eclipse tints
+$tpr-colour-eclipse-tint-80: #646464;
+$tpr-colour-eclipse-tint-65: #818181;
+$tpr-colour-eclipse-tint-50: #9e9e9e;
+$tpr-colour-eclipse-tint-33: #bfbfbf;
+$tpr-colour-eclipse-tint-25: #cfcfcf;
+$tpr-colour-eclipse-tint-12: #e8e8e8;
+
+// Eclipse shades
+$tpr-colour-eclipse-shade-20: #313131;
+$tpr-colour-eclipse-shade-35: #282828;
+$tpr-colour-eclipse-shade-50: #1f1f1f;
+$tpr-colour-eclipse-shade-67: #141414;
+
+// Eastern Blue tints
+$tpr-colour-eastern-blue-tint-80: #359ab5;
+$tpr-colour-eastern-blue-tint-65: #5badc3;
+$tpr-colour-eastern-blue-tint-50: #81c0d1;
+$tpr-colour-eastern-blue-tint-33: #acd5e0;
+$tpr-colour-eastern-blue-tint-25: #c0e0e8;
+$tpr-colour-eastern-blue-tint-12: #e1f0f4;
+
+// Eastern Blue shades
+$tpr-colour-eastern-blue-shade-20: #026782;
+$tpr-colour-eastern-blue-shade-35: #025469;
+$tpr-colour-eastern-blue-shade-50: #024151;
+$tpr-colour-eastern-blue-shade-67: #012b35;
+
+// Royal Blue tints
+$tpr-colour-royal-blue-tint-80: #338bc9;
+$tpr-colour-royal-blue-tint-65: #59a1d3;
+$tpr-colour-royal-blue-tint-50: #80b7de;
+$tpr-colour-royal-blue-tint-33: #abcfe9;
+$tpr-colour-royal-blue-tint-25: #bfdbee;
+$tpr-colour-royal-blue-tint-12: #e0eef7;
+
+// Royal Blue shades
+$tpr-colour-royal-blue-shade-20: #005896;
+$tpr-colour-royal-blue-shade-35: #00487a; // same hex as $tpr-colour-dark-cerulean
+$tpr-colour-royal-blue-shade-50: #00375e;
+$tpr-colour-royal-blue-shade-67: #00243e;
+
+// Tangerine Yellow tints
+$tpr-colour-tangerine-yellow-tint-80: #feda33;
+$tpr-colour-tangerine-yellow-tint-65: #fee159;
+$tpr-colour-tangerine-yellow-tint-50: #ffe880;
+$tpr-colour-tangerine-yellow-tint-33: #fff0ab;
+$tpr-colour-tangerine-yellow-tint-25: #fff4bf;
+$tpr-colour-tangerine-yellow-tint-12: #fff9e0;
+
+// Tangerine Yellow shades
+$tpr-colour-tangerine-yellow-shade-20: #cba700;
+$tpr-colour-tangerine-yellow-shade-35: #a58800;
+$tpr-colour-tangerine-yellow-shade-50: #7f6900;
+$tpr-colour-tangerine-yellow-shade-67: #544500;
+
+// Camarone tints
+$tpr-colour-camarone-tint-80: #4b985d;
+$tpr-colour-camarone-tint-65: #6dab7b;
+$tpr-colour-camarone-tint-50: #8fbf9a;
+$tpr-colour-camarone-tint-33: #b5d4bc;
+$tpr-colour-camarone-tint-25: #c7dfcc;
+$tpr-colour-camarone-tint-12: #e4f0e7;
+
+// Camarone shades
+$tpr-colour-camarone-shade-20: #18652a;
+$tpr-colour-camarone-shade-35: #145222;
+$tpr-colour-camarone-shade-50: #0f3f1a;
+$tpr-colour-camarone-shade-67: #0a2a11;
+
+// Fire Brick tints
+$tpr-colour-fire-brick-tint-80: #ba4545;
+$tpr-colour-fire-brick-tint-65: #c76868;
+$tpr-colour-fire-brick-tint-50: #d48b8b;
+$tpr-colour-fire-brick-tint-33: #e3b2b2;
+$tpr-colour-fire-brick-tint-25: #eac5c5;
+$tpr-colour-fire-brick-tint-12: #f5e3e3;
+
+// Fire Brick shades
+$tpr-colour-fire-brick-shade-20: #871212;
+$tpr-colour-fire-brick-shade-35: #6e0f0f;
+$tpr-colour-fire-brick-shade-50: #550c0c;
+$tpr-colour-fire-brick-shade-67: #380808;
+
+// Tawny tints
+$tpr-colour-tawny-tint-80: #d57335;
+$tpr-colour-tawny-tint-65: #dd8d5b;
+$tpr-colour-tawny-tint-50: #e5a881;
+$tpr-colour-tawny-tint-33: #eec5ac;
+$tpr-colour-tawny-tint-25: #f2d3c0;
+$tpr-colour-tawny-tint-12: #f9eae1;
+
+// Tawny shades
+$tpr-colour-tawny-shade-20: #a24002;
+$tpr-colour-tawny-shade-35: #833401;
+$tpr-colour-tawny-shade-50: #652801;
+$tpr-colour-tawny-shade-67: #431a01;
+
+// Change the colours on GOV.UK components where TPR brand colours diverge from
 // the GOV.UK Design System. Colours are changed in two ways:
 // - here, before GOV.UK classes are compiled, targeting situations where GOV.UK source
 //   defines a variable for the specific situation
 // - in _tpr-*.scss for individual components, after GOV.UK classes are compiled
-$govuk-text-colour: $tpr-colour-eclipse;
-$govuk-link-colour: $tpr-colour-royal-blue;
-$govuk-link-visited-colour: $tpr-colour-violet;
-$govuk-link-hover-colour: $tpr-colour-kashmir-blue;
-$govuk-link-active-colour: $tpr-colour-kashmir-blue;
-$govuk-secondary-text-colour: $tpr-colour-zambezi;
-$govuk-input-border-colour: $tpr-colour-eclipse;
-$govuk-focus-colour: $tpr-colour-tangerine-yellow;
-$govuk-error-colour: $tpr-colour-fire-brick;
+$govuk-functional-colours: (
+    error: $tpr-colour-fire-brick,
+    focus: $tpr-colour-tangerine-yellow,
+    input-border: $tpr-colour-eclipse,
+    link: $tpr-colour-royal-blue,
+    link-active: $tpr-colour-kashmir-blue,
+    link-hover: $tpr-colour-kashmir-blue,
+    link-visited: $tpr-colour-violet,
+    text: $tpr-colour-eclipse,
+    secondary-text: $tpr-colour-zambezi
+);
 $govuk-button-text-colour: $tpr-colour-white;
 $govuk-button-background-colour: $tpr-colour-eastern-blue;
 $govuk-inverse-button-text-colour: $govuk-button-text-colour;
@@ -164,26 +394,12 @@ $govuk-typography-scale: (
       font-size: 14pt,
       line-height: 1.2
     )
-  ),
-  14: (
-    null: (
-      font-size: 12px,
-      line-height: 15px
-    ),
-    tablet: (
-      font-size: 14px,
-      line-height: 20px
-    ),
-    print: (
-      font-size: 12pt,
-      line-height: 1.2
-    )
   )
 ) !default;
 
 @mixin tpr-read-only {
     opacity: 1;
     background-color: $tpr-colour-white-smoke;
-    border-color: govuk-tint(black, 44);
-    color: govuk-tint(black, 44);
+    border-color: $tpr-colour-eclipse-tint-80;
+    color: $tpr-colour-eclipse-tint-80;
 }

@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>$(AssemblyName)</Title>
+    <Authors>rickmason-tpr</Authors>
+    <Company>The Pensions Regulator</Company>
+    <Description>Utility classes for working with Umbraco, including filtering blocks and overriding property values in block lists.</Description>
+    <Copyright>The Pensions Regulator</Copyright>
+    <PackageProjectUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</PackageProjectUrl>
+    <PackageIcon>tpr-nuget.png</PackageIcon>
+    <PackageReadmeFile>NuGetReadme.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/thepensionsregulator/govuk-frontend-aspnetcore-extensions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>umbraco blocklist</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <IncludeSymbols>True</IncludeSymbols>
+	<SymbolPackageFormat>snupkg</SymbolPackageFormat>    
+	
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\tpr-nuget.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="NuGetReadme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lucene.Net.Replicator" Version="4.8.0-beta00018" />
+    <PackageReference Include="MailKit" Version="4.17.0" />
+    <!-- Pin MessagePack to a patched version to resolve transitive high-severity advisory GHSA-hv8m-jj95-wg3x (CVE-2026-48109) pulled in by Umbraco.Cms. -->
+    <PackageReference Include="MessagePack" Version="3.1.7" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="17.5.3" />
+	<PackageReference Include="ThePensionsRegulator.Analyzers.Umbraco" Version="1.0.0">
+		<PrivateAssets>all</PrivateAssets>
+		<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+  </ItemGroup>
+
+</Project>

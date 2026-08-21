@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;

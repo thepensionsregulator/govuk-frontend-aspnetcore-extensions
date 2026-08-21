@@ -1,6 +1,6 @@
-﻿using GovUk.Frontend.AspNetCore;
-using Microsoft.AspNetCore.Html;
+﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using ThePensionsRegulator.GovUk.Frontend;
 
 namespace ThePensionsRegulator.Frontend.TagHelpers
 {
@@ -9,7 +9,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         private (AttributeDictionary Attributes, string? Href, string? AlternativeText)? _logo;
         private (AttributeDictionary Attributes, IHtmlContent? Label, bool AllowHtml)? _label;
         private (AttributeDictionary Attributes, IHtmlContent? Content, bool AllowHtml)? _content;
-        private (AttributeDictionary Attributes, bool ShowSearch, string? ActionPath,string? AutocompleteUrl, string? PlaceholderText, string? SearchAriaLabel, string? SearchInputName)? _search;
+        private (AttributeDictionary Attributes, bool ShowSearch, string? FormId, string? ActionPath, string? AutocompleteUrl, string? PlaceholderText, string? SearchAriaLabel, string? SearchInputName)? _search;
         private TprHeaderMenuContext? _headerMenuContext;
 
         public AttributeDictionary? LogoAttributes => _logo?.Attributes;
@@ -23,6 +23,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public bool ContentAllowHtml => _content?.AllowHtml ?? false;
         public bool ShowSearch => _search?.ShowSearch ?? false;
         public AttributeDictionary? SearchAttributes => _search?.Attributes;
+        public string? SearchFormId => _search?.FormId;
         public string? ActionPath => _search?.ActionPath;
         public string? AutoCompleteUrl => _search?.AutocompleteUrl;
         public string? SearchPlaceholderText => _search?.PlaceholderText;
@@ -35,6 +36,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public string? MobileMenuNoJsNavPage => _headerMenuContext?.MobileMenuNoJsNavPage;
         public string? HeaderMenuToggleClosed => _headerMenuContext?.HeaderMenuToggleClosed;
         public string? HeaderMenuToggleOpen => _headerMenuContext?.HeaderMenuToggleOpen;
+        public string? HeaderMenuSearchFormId => _headerMenuContext?.HeaderMenuSearchFormId;
 
 
         public void SetLogo(AttributeDictionary attributes, string? href, string? alternativeText)
@@ -73,7 +75,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             _content = (attributes, htmlContent, allowHtml);
         }
 
-        public void SetSearch(AttributeDictionary attributes, bool showSearch, string? actionPath,string? autocompleteUrl, string? placeholderText, string? ariaLabel, string? inputName)
+        public void SetSearch(AttributeDictionary attributes, bool showSearch, string? formId, string? actionPath, string? autocompleteUrl, string? placeholderText, string? ariaLabel, string? inputName)
         {
             if (_search != null)
             {
@@ -82,7 +84,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 TprHeaderBarTagHelper.TagName);
             }
 
-            _search = (attributes, showSearch, actionPath, autocompleteUrl, placeholderText, ariaLabel, inputName);
+            _search = (attributes, showSearch, formId, actionPath, autocompleteUrl, placeholderText, ariaLabel, inputName);
         }
         public void SetHeaderMenu(TprHeaderMenuContext tprHeaderMenuContext)
         {

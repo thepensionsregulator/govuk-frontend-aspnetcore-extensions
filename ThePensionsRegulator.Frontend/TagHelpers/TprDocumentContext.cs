@@ -10,6 +10,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public string? Pages { get; set; }
 
+        public string? PagesLabel { get; set; }
+
+        public string? PublishedLabel { get; set; } 
+
         public string? DatePublished { get; set; }
 
         public IHtmlContent? Document { get; set; }

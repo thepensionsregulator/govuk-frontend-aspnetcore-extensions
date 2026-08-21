@@ -1,0 +1,7 @@
+{
+"version":3,
+"file":"umbraco-backoffice-extensions-js.js",
+"mappings":"AAAAA,OAAOC,OAAO,CAAC,SAAD,CAAWC,WAAW,CAAC,uBAAuB,CAAE,QAAS,CAACC,MAAM,CAAEC,KAAK,CAAEC,WAAhB,CAA6B,CAChGD,KAAKE,IAAI,CAAC,gEAAiE,CAAEC,kBAAkB,CAACF,WAAWG,QAAQC,iBAApB,CAAtF,CACLC,KAAK,CAAC,QAAwB,CAACC,QAAD,CAAW,CACrCR,MAAMS,cAAe,CAAE,CAAC,EAAD,CAAIC,OAAO,CAACF,QAAQG,KAAT,CADG,CAApC,CAFuF,CAAhE;ACApCd,OAAOC,OAAO,CAAC,SAAD,CAAWC,WAAW,CAAC,4BAA4B,CAAE,QAAS,CAACC,MAAM,CAAEE,WAAT,CAAsB,CAC9FF,MAAMY,YAAa,CAAEV,WAAWG,QAAQQ,SAASC,OAAO,CAACC,GAAKA,CAACC,OAAP,CAAgB,CAAA,CAAA,CAAEC,KADoB,CAA9D",
+"sources":["/App_Plugins/GOVUK/govuk.controller.js","/App_Plugins/GOVUK/blocks/controllers/govukPageHeading.controller.js"],
+"names":["angular","module","controller","$scope","$http","editorState","get","encodeURIComponent","current","contentTypeAlias","then","response","propertyNames","concat","data","pageHeading","variants","filter","x","active","name"]
+}

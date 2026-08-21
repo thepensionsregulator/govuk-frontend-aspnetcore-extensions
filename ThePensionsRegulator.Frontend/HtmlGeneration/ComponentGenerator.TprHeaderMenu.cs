@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
@@ -122,7 +121,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             govContainer.InnerHtml.AppendHtml(navContainer);
 
             var headerMenuList = new TagBuilder("ul");
-          
+
             navContainer.InnerHtml.AppendHtml(headerMenuList);
 
             if (tprHeaderBar.ShowSearch)
@@ -130,7 +129,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 var searchContainer = new TagBuilder("li");
                 searchContainer.AddCssClass("tpr-mobile-menu__header-search-container");
                 headerMenuList.InnerHtml.AppendHtml(searchContainer);
-                var tprHeaderSearch = GenerateTprHeaderSearch(tprHeaderBar);
+                var tprHeaderSearch = GenerateTprHeaderSearch(tprHeaderBar, tprHeaderBar.HeaderMenuSearchFormId);
                 tprHeaderSearch.AddCssClass("tpr-header-search__mobile");
                 searchContainer.InnerHtml.AppendHtml(tprHeaderSearch);
             }
@@ -142,16 +141,16 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 foreach (var item in headerMenu.HeaderMenuItems)
                 {
                     var mobileMenuItem = new TagBuilder("li");
-                    
+
                     if (headerMenu.HeaderMenuItems.Count >= currentTprMenuItems || item != headerMenu.HeaderMenuItems.Last())
                     {
                         mobileMenuItem.AddCssClass("tpr-header-menu__nav-menu-item");
                     }
-                    else 
+                    else
                     {
                         mobileMenuItem.AddCssClass("tpr-header-menu__nav-menu-item tpr-header-menu__nav-final-item");
                     }
-                    
+
                     headerMenuList.InnerHtml.AppendHtml(mobileMenuItem);
 
                     var arrowContainer = new TagBuilder("div");
@@ -178,11 +177,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                     {
                         anchorTag.Attributes.Add("href", item.LinkUrl);
                     }
-                   
+
                     anchorTag.Attributes.Add("tabindex", "0");
-                   
+
                     mobileMenuItem.InnerHtml.AppendHtml(anchorTag);
-                    
+
 
                     if (!string.IsNullOrWhiteSpace(item.LinkText))
                     {
@@ -219,7 +218,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                             }
 
                             aTag.Attributes.Add("tabindex", "0");
-        
+
                             mobileMenuSubMenuItemTitle.InnerHtml.AppendHtml(aTag);
 
                             if (!string.IsNullOrWhiteSpace(subMenuItem.LinkText))
@@ -239,4 +238,3 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
         }
     }
 }
-

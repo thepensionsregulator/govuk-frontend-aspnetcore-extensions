@@ -1,16 +1,15 @@
-﻿using GovUk.Frontend.AspNetCore.Extensions.Validation;
-using GovUk.Frontend.Umbraco.Blocks;
-using GovUk.Frontend.Umbraco.ExampleApp.Models;
-using GovUk.Frontend.Umbraco.Services;
-using GovUk.Frontend.Umbraco.Validation;
+﻿using GovUk.Frontend.Umbraco.ExampleApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Globalization;
 using System.Web;
-using ThePensionsRegulator.Umbraco;
-using ThePensionsRegulator.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation;
+using ThePensionsRegulator.GovUk.Frontend.Validation;
+using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
+using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
@@ -20,13 +19,15 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
     public class PaginationController : RenderController
     {
         private readonly IUmbracoPaginationFactory _paginationFactory;
-
+        private readonly IPublishedValueFallback _publishedValueFallback;
         public PaginationController(ILogger<RenderController> logger,
             ICompositeViewEngine compositeViewEngine,
             IUmbracoContextAccessor umbracoContextAccessor,
-            IUmbracoPaginationFactory paginationFactory) : base(logger, compositeViewEngine, umbracoContextAccessor)
+            IUmbracoPaginationFactory paginationFactory,
+            IPublishedValueFallback publishedValueFallback) : base(logger, compositeViewEngine, umbracoContextAccessor)
         {
             _paginationFactory = paginationFactory ?? throw new ArgumentNullException(nameof(paginationFactory));
+            _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
         }
 
         [ModelType(typeof(PaginationViewModel))]
@@ -34,7 +35,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         {
             var viewModel = new PaginationViewModel
             {
-                Page = new Pagination(CurrentPage, null),
+                Page = new Pagination(CurrentPage, _publishedValueFallback),
             };
 
             var block = viewModel.Page.Blocks?.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias);
@@ -91,11 +92,11 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 }
                 viewModel.Page.Blocks!.Filter = filter;
                 viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)?
-                    .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
+                    .Settings?.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
 
                 viewModel.Page.Grid!.Filter = filter;
                 viewModel.Page.Grid.FindBlockByContentTypeAlias(GovukPagination.ModelTypeAlias)?
-                    .Settings.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
+                    .Settings?.OverrideValue(nameof(GovukPaginationSettings.TotalItems), pagination.TotalItems);
 
                 ModelState.SetInitialValue(nameof(viewModel.Items), pagination.TotalItems.ToString(CultureInfo.InvariantCulture));
 

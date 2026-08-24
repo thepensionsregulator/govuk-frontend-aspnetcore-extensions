@@ -33,7 +33,7 @@
       "^.+\\.ts$": ["ts-jest", { "useESM": true }]
     },
     "moduleNameMapper": {
-      "/govuk-frontend.min.js$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js"
+      "^/govuk-frontend\\.min\\.js(\\?v=.*)?$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js"
     }
   },
   "type": "module",

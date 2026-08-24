@@ -1,5 +1,6 @@
 import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
 import { createTextInputFormGroup, createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
+import { createFieldset } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     const buttonTarget = document.querySelector(".button-target");
@@ -69,4 +70,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     selectTarget.appendChild(select);
+
+    const fieldsetTarget = document.querySelector(".fieldset-target");
+    const fieldset = createFieldset({
+        legendText: "Contact details",
+        legendSize: "medium",
+        children: [
+            createTextInputFormGroup({
+                labelText: "First name",
+                input: {
+                    id: "first-name",
+                    name: "first-name",
+                    width: "x-large",
+                },
+            }),
+            createTextInputFormGroup({
+                labelText: "Last name",
+                input: {
+                    id: "last-name",
+                    name: "last-name",
+                    width: "x-large",
+                },
+            }),
+        ],
+    });
+
+    fieldsetTarget.appendChild(fieldset);
+
 });

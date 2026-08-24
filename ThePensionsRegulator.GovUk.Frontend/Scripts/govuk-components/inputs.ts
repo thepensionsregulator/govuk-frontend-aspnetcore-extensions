@@ -8,7 +8,6 @@ import {
     SelectOptions,
     TextInputFormGroupOptions,
     TextInputOptions,
-    LabeledControlFormGroupOptions,
 } from "./types";
 
 interface LabeledControlFormGroupOptions {

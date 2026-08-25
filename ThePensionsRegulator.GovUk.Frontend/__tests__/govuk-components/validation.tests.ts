@@ -16,7 +16,7 @@ jest.unstable_mockModule(
     })
 );
 
-const { clearControlError, showControlError } = await import("../../Scripts/govuk-components/validation");
+const { clearFormGroupError, showFormGroupError } = await import("../../Scripts/govuk-components/validation");
 
 function createInputFormGroup(id: string): { formGroup: HTMLElement; input: HTMLInputElement } {
 	const formGroup = createTextInputFormGroup({
@@ -40,12 +40,12 @@ beforeEach(() => {
 	jest.clearAllMocks();
 });
 
-describe("showControlError", () => {
+describe("showFormGroupError", () => {
 	const id = "postcode";
 	it("should apply GOV.UK error classes to an input and its form group", () => {
 		const { formGroup, input } = createInputFormGroup(id);
 
-		showControlError(input, "Enter a valid postcode");
+		showFormGroupError(formGroup, "Enter a valid postcode");
 
 		expect(formGroup).toHaveClass("govuk-form-group--error");
 		expect(input).toHaveClass("govuk-input--error");
@@ -54,7 +54,7 @@ describe("showControlError", () => {
 	it("should create an accessible error message before the control", () => {
 		const { formGroup, input } = createInputFormGroup(id);
 
-		showControlError(input, "Enter a valid postcode");
+		showFormGroupError(formGroup, "Enter a valid postcode");
 
 		const errorMessage = formGroup.querySelector(`#${id}-error`);
 
@@ -66,9 +66,9 @@ describe("showControlError", () => {
 	});
 
 	it("should add the error ID to aria-describedby without removing the hint ID", () => {
-		const { input } = createInputFormGroup(id);
+		const { formGroup, input } = createInputFormGroup(id);
 
-		showControlError(input, "Enter a valid postcode");
+		showFormGroupError(formGroup, "Enter a valid postcode");
 
 		expect(input).toHaveAttribute("aria-describedby", `${id}-hint ${id}-error`);
 	});
@@ -76,8 +76,8 @@ describe("showControlError", () => {
 	it("should update an existing error message without adding another error ID", () => {
 		const { formGroup, input } = createInputFormGroup(id);
 
-		showControlError(input, "Enter a valid postcode");
-		showControlError(input, "Postcode is not recognised");
+		showFormGroupError(formGroup, "Enter a valid postcode");
+		showFormGroupError(formGroup, "Postcode is not recognised");
 
 		expect(formGroup.querySelectorAll(".govuk-error-message")).toHaveLength(1);
 		expect(formGroup.querySelector(`#${id}-error`)).toHaveTextContent(
@@ -87,9 +87,9 @@ describe("showControlError", () => {
 	});
 
 	it("should update the page error summary and title", () => {
-    	const { input } = createInputFormGroup("postcode");
+    	const { formGroup } = createInputFormGroup("postcode");
 
-    	showControlError(input, "Enter a valid postcode");
+    	showFormGroupError(formGroup, "Enter a valid postcode");
 
     	expect(ensureErrorSummary).toHaveBeenCalledTimes(1);
     	expect(updateErrorSummary).toHaveBeenCalledTimes(1);
@@ -97,13 +97,12 @@ describe("showControlError", () => {
 	});
 });
 
-describe("clearControlError", () => {
+describe("clearFormGroupError", () => {
 	const id = "first-name";
 	it("should remove error classes and the error message while preserving the hint Id and aria-describedby", () => {
 		const { formGroup, input } = createInputFormGroup(id);
-		showControlError(input, "Enter a valid postcode");
-
-		clearControlError(input);
+		showFormGroupError(formGroup, "Enter a valid postcode");
+		clearFormGroupError(formGroup);
 
 		expect(formGroup).not.toHaveClass("govuk-form-group--error");
 		expect(input).not.toHaveClass("govuk-input--error");
@@ -118,19 +117,19 @@ describe("clearControlError", () => {
 		formGroup.className = "govuk-form-group";
 		formGroup.appendChild(input);
 
-		showControlError(input, "Enter a valid postcode");
-		clearControlError(input);
+		showFormGroupError(formGroup, "Enter a valid postcode");
+		clearFormGroupError(formGroup);
 
 		expect(input).not.toHaveAttribute("aria-describedby");
 	});
 
 	it("should update the page error summary and title after clearing", () => {
-    	const { input } = createInputFormGroup("postcode");
+    	const { formGroup } = createInputFormGroup("postcode");
 
-    	showControlError(input, "Enter a valid postcode");
+    	showFormGroupError(formGroup, "Enter a valid postcode");
     	jest.clearAllMocks();
 
-    	clearControlError(input);
+    	clearFormGroupError(formGroup);
 
     	expect(ensureErrorSummary).not.toHaveBeenCalled();
     	expect(updateErrorSummary).toHaveBeenCalledTimes(1);

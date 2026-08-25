@@ -1,4 +1,4 @@
-import { FieldsetOptions } from "./types";
+import { FieldsetFormGroupOptions, FieldsetOptions } from "./types";
 
 export function createFieldset(fieldsetOptions: FieldsetOptions): HTMLFieldSetElement {
     const fieldset = document.createElement("fieldset");
@@ -25,6 +25,17 @@ export function createFieldset(fieldsetOptions: FieldsetOptions): HTMLFieldSetEl
     });
 
     return fieldset;
+}
+
+export function createFieldsetFormGroup(fieldsetOptions: FieldsetFormGroupOptions): HTMLElement {
+    const formGroup = document.createElement("div");
+    formGroup.className = "govuk-form-group";
+
+    const fieldset = createFieldset(fieldsetOptions);
+    fieldset.id = fieldsetOptions.id;
+    formGroup.appendChild(fieldset);
+
+    return formGroup;
 }
 
 const legendSizeClassMap: Record<string, string> = {

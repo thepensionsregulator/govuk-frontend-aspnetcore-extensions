@@ -1,3 +1,5 @@
+import { ensureErrorSummary, updateErrorSummary, updateTitle } from "./error-summary.js";
+
 export function showControlError(control: HTMLInputElement | HTMLSelectElement, errorMessage: string): void {
     const formGroup = control.closest(".govuk-form-group");
     if (!formGroup){
@@ -28,6 +30,10 @@ export function showControlError(control: HTMLInputElement | HTMLSelectElement, 
         describedBy.push(errorId);
         control.setAttribute("aria-describedby", describedBy.join(" "));    
     }
+
+    ensureErrorSummary();
+    updateErrorSummary();
+    updateTitle();
 }
 
 function setErrorMessage(errorMessageElement: HTMLElement, errorMessage: string): void {
@@ -63,4 +69,7 @@ export function clearControlError(control: HTMLInputElement | HTMLSelectElement)
     } else {
         control.removeAttribute("aria-describedby");
     }
+
+    updateErrorSummary();
+    updateTitle();
 }

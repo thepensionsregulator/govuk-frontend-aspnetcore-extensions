@@ -1,6 +1,22 @@
-import { clearControlError, showControlError } from "../../Scripts/govuk-components/validation";
+import { jest } from "@jest/globals";
 import { createTextInputFormGroup } from "../../Scripts/govuk-components/inputs";
 import "@testing-library/jest-dom";
+
+
+const ensureErrorSummary = jest.fn();
+const updateErrorSummary = jest.fn();
+const updateTitle = jest.fn();
+
+jest.unstable_mockModule(
+	"../../Scripts/govuk-components/error-summary.js",
+    () => ({
+        ensureErrorSummary,
+        updateErrorSummary,
+        updateTitle,
+    })
+);
+
+const { clearControlError, showControlError } = await import("../../Scripts/govuk-components/validation");
 
 function createInputFormGroup(id: string): { formGroup: HTMLElement; input: HTMLInputElement } {
 	const formGroup = createTextInputFormGroup({
@@ -19,6 +35,10 @@ function createInputFormGroup(id: string): { formGroup: HTMLElement; input: HTML
 
 	return { formGroup, input };
 }
+
+beforeEach(() => {
+	jest.clearAllMocks();
+});
 
 describe("showControlError", () => {
 	const id = "postcode";
@@ -65,6 +85,16 @@ describe("showControlError", () => {
 		);
 		expect(input).toHaveAttribute("aria-describedby", `${id}-hint ${id}-error`);
 	});
+
+	it("should update the page error summary and title", () => {
+    	const { input } = createInputFormGroup("postcode");
+
+    	showControlError(input, "Enter a valid postcode");
+
+    	expect(ensureErrorSummary).toHaveBeenCalledTimes(1);
+    	expect(updateErrorSummary).toHaveBeenCalledTimes(1);
+    	expect(updateTitle).toHaveBeenCalledTimes(1);
+	});
 });
 
 describe("clearControlError", () => {
@@ -92,5 +122,18 @@ describe("clearControlError", () => {
 		clearControlError(input);
 
 		expect(input).not.toHaveAttribute("aria-describedby");
+	});
+
+	it("should update the page error summary and title after clearing", () => {
+    	const { input } = createInputFormGroup("postcode");
+
+    	showControlError(input, "Enter a valid postcode");
+    	jest.clearAllMocks();
+
+    	clearControlError(input);
+
+    	expect(ensureErrorSummary).not.toHaveBeenCalled();
+    	expect(updateErrorSummary).toHaveBeenCalledTimes(1);
+    	expect(updateTitle).toHaveBeenCalledTimes(1);
 	});
 });

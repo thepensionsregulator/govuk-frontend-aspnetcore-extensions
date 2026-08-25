@@ -1,7 +1,7 @@
 import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
 import { createTextInputFormGroup, createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
-import { createFieldset } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js";
-import { clearControlError, showControlError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
+import { createFieldsetFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js";
+import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     const buttonTarget = document.querySelector(".button-target");
@@ -53,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     inputTarget.appendChild(postcodeInput);
 
-    const postcodeControl = postcodeInput.querySelector("input");
     const validationButtonGroup = createButtonGroup();
     const showErrorButton = createButton({
         labelText: "Show input error",
@@ -71,13 +70,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     showErrorButton.addEventListener("click", () => {
-        showControlError(postcodeControl, "Enter a valid postcode");
+        showFormGroupError(postcodeInput, "Enter a valid postcode");
     });
     updateErrorButton.addEventListener("click", () => {
-        showControlError(postcodeControl, "Enter a valid postcode (updated)");
+        showFormGroupError(postcodeInput, "Enter a valid postcode (updated)");
     });
     clearErrorButton.addEventListener("click", () => {
-        clearControlError(postcodeControl);
+        clearFormGroupError(postcodeInput);
     });
 
     validationButtonGroup.appendChild(showErrorButton);
@@ -105,7 +104,8 @@ document.addEventListener("DOMContentLoaded", function () {
     selectTarget.appendChild(select);
 
     const fieldsetTarget = document.querySelector(".fieldset-target");
-    const fieldset = createFieldset({
+    const fieldset = createFieldsetFormGroup({
+        id: "contact-details",
         legendText: "Contact details",
         legendSize: "medium",
         children: [
@@ -128,6 +128,32 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
     });
 
-    fieldsetTarget.appendChild(fieldset);
+    const showFieldsetErrorButton = createButton({
+        labelText: "Show fieldset error"
+    });
+    const updateFieldsetErrorButton = createButton({
+        labelText: "Update fieldset error",
+        variant: "secondary"
+    });
+    const clearFieldsetErrorButton = createButton({
+        labelText: "Clear fieldset error",
+        variant: "warning"
+    });
+    const fieldsetButtonGroup = createButtonGroup();
 
+    showFieldsetErrorButton.addEventListener("click", () => {
+        showFormGroupError(fieldset, "Enter valid contact details");
+    });
+    updateFieldsetErrorButton.addEventListener("click", () => {
+        showFormGroupError(fieldset, "Enter valid contact details (updated)");
+    });
+    clearFieldsetErrorButton.addEventListener("click", () => {
+        clearFormGroupError(fieldset);
+    });
+
+    fieldsetTarget.appendChild(fieldset);
+    fieldsetButtonGroup.appendChild(showFieldsetErrorButton);
+    fieldsetButtonGroup.appendChild(updateFieldsetErrorButton);
+    fieldsetButtonGroup.appendChild(clearFieldsetErrorButton);
+    fieldsetTarget.appendChild(fieldsetButtonGroup);
 });

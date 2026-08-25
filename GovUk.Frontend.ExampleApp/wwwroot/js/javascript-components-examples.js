@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fieldset = createFieldsetFormGroup({
         id: "contact-details",
         legendText: "Contact details",
-        legendSize: "small",
+        legendSize: "medium",
         children: [
             firstInput,
             createTextInputFormGroup({
@@ -211,7 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
     clearFirstNameErrorButton.addEventListener("click", () => {
         clearFormGroupError(firstInput);
     });
-
     fieldsetTarget.appendChild(fieldset);
     fieldsetButtonGroup.appendChild(showFieldsetErrorButton);
     fieldsetButtonGroup.appendChild(updateFieldsetErrorButton);

@@ -1,6 +1,7 @@
 import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
 import { createTextInputFormGroup, createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 import { createFieldset } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js";
+import { clearControlError, showControlError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     const buttonTarget = document.querySelector(".button-target");
@@ -51,6 +52,38 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     inputTarget.appendChild(postcodeInput);
+
+    const postcodeControl = postcodeInput.querySelector("input");
+    const validationButtonGroup = createButtonGroup();
+    const showErrorButton = createButton({
+        labelText: "Show input error",
+        type: "button",
+    });
+    const updateErrorButton = createButton({
+        labelText: "Update input error",
+        variant: "secondary"
+    });
+
+    const clearErrorButton = createButton({
+        labelText: "Clear input error",
+        type: "button",
+        variant: "warning",
+    });
+
+    showErrorButton.addEventListener("click", () => {
+        showControlError(postcodeControl, "Enter a valid postcode");
+    });
+    updateErrorButton.addEventListener("click", () => {
+        showControlError(postcodeControl, "Enter a valid postcode (updated)");
+    });
+    clearErrorButton.addEventListener("click", () => {
+        clearControlError(postcodeControl);
+    });
+
+    validationButtonGroup.appendChild(showErrorButton);
+    validationButtonGroup.appendChild(updateErrorButton);
+    validationButtonGroup.appendChild(clearErrorButton);
+    inputTarget.appendChild(validationButtonGroup);
 
     const selectTarget = document.querySelector(".select-target");
     const select = createSelectFormGroup({

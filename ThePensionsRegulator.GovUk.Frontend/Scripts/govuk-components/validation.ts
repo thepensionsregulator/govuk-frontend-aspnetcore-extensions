@@ -23,7 +23,6 @@ export function showFormGroupError(formGroup: HTMLElement, errorMessage: string)
 
     const validatableElement = getValidatableElement(formGroup);
     if (validatableElement instanceof HTMLFieldSetElement) {
-        console.log("is a fieldset");
         showFieldsetError(formGroup, validatableElement, errorMessage);
     }else{
         showControlError(formGroup, validatableElement as HTMLInputElement | HTMLSelectElement, errorMessage);
@@ -39,7 +38,7 @@ function showControlError(formGroup: HTMLElement, control: HTMLInputElement | HT
     }
 
     const errorId = `${control.id}-error`;
-    let errorMessageElement = formGroup.querySelector<HTMLElement>(".govuk-error-message");
+    let errorMessageElement = formGroup.querySelector<HTMLElement>(`#${errorId}`);
     if (!errorMessageElement){ 
         errorMessageElement = document.createElement("p");
         errorMessageElement.className = "govuk-error-message";
@@ -50,6 +49,7 @@ function showControlError(formGroup: HTMLElement, control: HTMLInputElement | HT
 
     setErrorMessage(errorMessageElement, errorMessage);
     addDescriptionId(control, errorId);
+    setFieldsetFormGroupError(control);
 
     ensureErrorSummary();
     updateErrorSummary();
@@ -60,7 +60,7 @@ function showFieldsetError(formGroup: HTMLElement, fieldset: HTMLFieldSetElement
     const errorId = `${fieldset.id}-error`;
     formGroup.classList.add("govuk-form-group--error");
 
-    let errorMessageElement = formGroup.querySelector<HTMLElement>(".govuk-error-message");
+    let errorMessageElement = formGroup.querySelector<HTMLElement>(`#${errorId}`);
     if (!errorMessageElement) {
         errorMessageElement = document.createElement("p");
         errorMessageElement.className = "govuk-error-message";
@@ -129,6 +129,7 @@ function clearControlError(formGroup: HTMLElement, control: HTMLInputElement | H
     removeErrorMessage(formGroup, control.id);
 
     removeDescriptionId(control, control.id + "-error");
+    clearFieldsetFormGroupError(control);
 
     updateErrorSummary();
     updateTitle();
@@ -138,6 +139,27 @@ function removeErrorMessage(formGroup: HTMLElement, validatableElementId: string
     const errorMessageElement = formGroup.querySelector(`#${validatableElementId}-error`);
     if (errorMessageElement) {
         errorMessageElement.remove();
+    }
+}
+
+function setFieldsetFormGroupError(control: HTMLInputElement | HTMLSelectElement): void {
+    const fieldset = control.closest("fieldset");
+    const fieldsetFormGroup = fieldset?.parentElement;
+
+    if (fieldsetFormGroup?.classList.contains("govuk-form-group")) {
+        fieldsetFormGroup.classList.add("govuk-form-group--error");
+    }
+}
+
+function clearFieldsetFormGroupError(control: HTMLInputElement | HTMLSelectElement): void {
+    const fieldset = control.closest("fieldset");
+    const fieldsetFormGroup = fieldset?.parentElement;
+
+    if (
+        fieldsetFormGroup?.classList.contains("govuk-form-group") &&
+        !fieldset?.querySelector(".govuk-form-group--error")
+    ) {
+        fieldsetFormGroup.classList.remove("govuk-form-group--error");
     }
 }
 

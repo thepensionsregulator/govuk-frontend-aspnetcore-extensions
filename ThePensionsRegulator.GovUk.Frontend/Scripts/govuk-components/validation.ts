@@ -172,4 +172,7 @@ function removeDescriptionId(element: HTMLElement, descriptionId: string): void 
     } else {
         element.removeAttribute("aria-describedby");
     }
+
+    updateErrorSummary();
+    updateTitle();
 }

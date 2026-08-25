@@ -104,19 +104,21 @@ document.addEventListener("DOMContentLoaded", function () {
     selectTarget.appendChild(select);
 
     const fieldsetTarget = document.querySelector(".fieldset-target");
-    const fieldset = createFieldsetFormGroup({
-        id: "contact-details",
-        legendText: "Contact details",
-        legendSize: "medium",
-        children: [
-            createTextInputFormGroup({
+    const firstInput = createTextInputFormGroup({
                 labelText: "First name",
                 input: {
                     id: "first-name",
                     name: "first-name",
                     width: "x-large",
                 },
-            }),
+            });
+
+    const fieldset = createFieldsetFormGroup({
+        id: "contact-details",
+        legendText: "Contact details",
+        legendSize: "medium",
+        children: [
+            firstInput,
             createTextInputFormGroup({
                 labelText: "Last name",
                 input: {
@@ -131,6 +133,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const showFieldsetErrorButton = createButton({
         labelText: "Show fieldset error"
     });
+    const showFirstNameErrorButton = createButton({
+        labelText: "Show first name error",
+        variant: "secondary",
+        type: "button",
+    });
     const updateFieldsetErrorButton = createButton({
         labelText: "Update fieldset error",
         variant: "secondary"
@@ -139,10 +146,17 @@ document.addEventListener("DOMContentLoaded", function () {
         labelText: "Clear fieldset error",
         variant: "warning"
     });
+    const clearFirstNameErrorButton = createButton({
+        labelText: "Clear first name error",
+        variant: "secondary-warning",
+    });
     const fieldsetButtonGroup = createButtonGroup();
 
     showFieldsetErrorButton.addEventListener("click", () => {
         showFormGroupError(fieldset, "Enter valid contact details");
+    });
+    showFirstNameErrorButton.addEventListener("click", () => {
+        showFormGroupError(firstInput, "Enter a first name");
     });
     updateFieldsetErrorButton.addEventListener("click", () => {
         showFormGroupError(fieldset, "Enter valid contact details (updated)");
@@ -150,10 +164,15 @@ document.addEventListener("DOMContentLoaded", function () {
     clearFieldsetErrorButton.addEventListener("click", () => {
         clearFormGroupError(fieldset);
     });
-
+    clearFirstNameErrorButton.addEventListener("click", () => {
+        clearFormGroupError(firstInput);
+    });
+    
     fieldsetTarget.appendChild(fieldset);
     fieldsetButtonGroup.appendChild(showFieldsetErrorButton);
     fieldsetButtonGroup.appendChild(updateFieldsetErrorButton);
+    fieldsetButtonGroup.appendChild(showFirstNameErrorButton);
     fieldsetButtonGroup.appendChild(clearFieldsetErrorButton);
+    fieldsetButtonGroup.appendChild(clearFirstNameErrorButton);
     fieldsetTarget.appendChild(fieldsetButtonGroup);
 });

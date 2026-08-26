@@ -53,8 +53,8 @@
 
     var addressLine3State = addressFieldStateHelper.GetFieldState(
             settings(TprPropertyAliases.AddressLine3ModelProperty),
-            string.Empty,
-            string.Empty,
+            content(TprPropertyAliases.AddressLine3Label),
+            Umbraco.GetDictionaryValueOrDefault("TPR address lookup line 3 label", "Address line 3 (optional)"),
             ViewContext.ModelState
         );
 
@@ -152,6 +152,16 @@
         </govuk-input>
     </govuk-client-side-validation>
 
+    <govuk-client-side-validation error-message-maxlength="@settings(TprPropertyAliases.AddressLine3ErrorMessageMaxLength)">
+        <govuk-input name="@addressLine3State.ModelPropertyName" value="@addressLine3State.AttemptedValue" input-aria-invalid="@addressLine3State.InvalidAriaLabel" autocomplete="address-line3" input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-3" } })">
+            <govuk-input-label>@addressLine3State.Label</govuk-input-label>
+            @if (addressLine3State.HasErrorMessage)
+            {
+                <govuk-input-error-message>@addressLine3State.ErrorMessage</govuk-input-error-message>
+            }
+        </govuk-input>
+    </govuk-client-side-validation>
+
     <govuk-client-side-validation error-message-required="@settings(TprPropertyAliases.TownOrCityErrorMessageRequired)"
                                   error-message-maxlength="@settings(TprPropertyAliases.TownOrCityErrorMessageMaxLength)">
         <govuk-input name="@townOrCityState.ModelPropertyName" class="govuk-input--width-20" value="@townOrCityState.AttemptedValue" input-aria-invalid="@townOrCityState.InvalidAriaLabel" autocomplete="address-level2" input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "town-or-city" } })">
@@ -205,6 +215,5 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="@addressLine3State.ModelPropertyName" name="@addressLine3State.ModelPropertyName" value="@addressLine3State.AttemptedValue" data-address-lookup="address-line-3" />
     <input type="hidden" id="@uprnState.ModelPropertyName" name="@uprnState.ModelPropertyName" value="@uprnState.AttemptedValue" data-address-lookup="UPRN" />
 </tpr-address-lookup>

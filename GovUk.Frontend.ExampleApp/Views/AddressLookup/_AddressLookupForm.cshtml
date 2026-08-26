@@ -54,6 +54,18 @@
         </govuk-input>
     </govuk-client-side-validation>
 
+    <govuk-client-side-validation error-message-maxlength="Address line 3 must be 100 characters or less">
+        <govuk-input for="ShippingAddress.AddressLine3" autocomplete="address-line3"
+                input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-3" } })">
+                <govuk-input-label>Address line 3 (optional)</govuk-input-label>
+                @if(ViewContext.ModelState.ContainsKey("ShippingAddress.AddressLine3") &&
+                ViewContext.ModelState["ShippingAddress.AddressLine3"]!.Errors.Count > 0)
+                {
+                    <govuk-input-error-message>@ViewContext.ModelState["ShippingAddress.AddressLine3"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+                }
+        </govuk-input>
+    </govuk-client-side-validation>
+
     <govuk-client-side-validation error-message-required="Enter a town or city"
                                   error-message-maxlength="Town or city must be 100 characters or less">
         <govuk-input for="ShippingAddress.PostTown" class="govuk-input--width-20" autocomplete="address-level2"
@@ -161,6 +173,18 @@
             ViewContext.ModelState["BillingAddress.AddressLine2"]!.Errors.Count > 0)
             {
                 <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.AddressLine2"]!.Errors[0].ErrorMessage</govuk-input-error-message>
+            }
+        </govuk-input>
+    </govuk-client-side-validation>
+
+    <govuk-client-side-validation error-message-maxlength="Address line 3 must be 100 characters or less">
+        <govuk-input for="BillingAddress.AddressLine3" autocomplete="address-line3"
+                input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-3" } })">
+            <govuk-input-label>Address line 3 (optional)</govuk-input-label>
+            @if(ViewContext.ModelState.ContainsKey("BillingAddress.AddressLine3") &&
+            ViewContext.ModelState["BillingAddress.AddressLine3"]!.Errors.Count > 0)
+            {
+                <govuk-input-error-message>@ViewContext.ModelState["BillingAddress.AddressLine3"]!.Errors[0].ErrorMessage</govuk-input-error-message>
             }
         </govuk-input>
     </govuk-client-side-validation>

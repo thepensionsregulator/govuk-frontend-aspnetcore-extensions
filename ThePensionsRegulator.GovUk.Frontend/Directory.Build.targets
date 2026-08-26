@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" 
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
 		 InitialTargets="GovUkFrontend_Clean">
 	<!-- This file is run automatically when the project is built. https://docs.microsoft.com/en-us/visualstudio/msbuild/customize-your-build?view=vs-2019 
 	     Run a custom command using Dart SASS installed by the AspNetCore.SassCompiler NuGet package. The default package configuration cannot be used
@@ -35,7 +35,7 @@
 	</Target>
 
 	<Target Name="GovUkFrontend_GenerateProps" BeforeTargets="BeforeBuild">
-		 <!--Generate a .props file so that ThePensionsRegulator.GovUk.Frontend.targets has access to the package version. --> 
+		<!--Generate a .props file so that ThePensionsRegulator.GovUk.Frontend.targets has access to the package version. -->
 		<Message Text="ThePensionsRegulator.GovUk.Frontend generating $(ProjectDir)ThePensionsRegulator.GovUk.Frontend.props" Importance="high" />
 		<ItemGroup>
 			<TprGovUkFrontendPropsText Include="TprGovUkFrontendPropsText">
@@ -47,7 +47,8 @@
 		<TprGovUkFrontendPackageVersion>$(Version)</TprGovUkFrontendPackageVersion>
 	</PropertyGroup>
 </Project>
-				]]></Text>
+				]]>
+				</Text>
 			</TprGovUkFrontendPropsText>
 			<TprGovUkFrontendProps Include="%(TprGovUkFrontendPropsText.Text)" />
 		</ItemGroup>
@@ -62,5 +63,16 @@
 		</ItemGroup>
 		<Message Text="Deleting obsolete files: @(GovUkFrontend_DirsToRemove)" />
 		<RemoveDir Directories="@(GovUkFrontend_DirsToRemove)" />
+	</Target>
+	
+	<!-- Generate a package SASS partial with the GOV.UK Frontend version. -->
+	<PropertyGroup>
+		<GovUkFrontend_SassVersion>development</GovUkFrontend_SassVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
+		<GovUkFrontend_SassVersion>$(Version)</GovUkFrontend_SassVersion>
+	</PropertyGroup>
+	<Target Name="GovUkFrontend_GenerateVersionPartial" BeforeTargets="GovUkFrontend_BuildSass">
+		<WriteLinesToFile File="Styles/_tpr-version.generated.scss" Lines=':root { --govuk-frontend-version: "$(GovUkFrontend_SassVersion)"; }' Overwrite="true" />
 	</Target>
 </Project>

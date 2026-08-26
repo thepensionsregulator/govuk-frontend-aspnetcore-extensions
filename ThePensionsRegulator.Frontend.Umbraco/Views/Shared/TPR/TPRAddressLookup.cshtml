@@ -153,7 +153,7 @@
     </govuk-client-side-validation>
 
     <govuk-client-side-validation error-message-maxlength="@settings(TprPropertyAliases.AddressLine3ErrorMessageMaxLength)">
-        <govuk-input name="@addressLine3State.ModelPropertyName" value="@addressLine3State.AttemptedValue" input-aria-invalid="@addressLine3State.InvalidAriaLabel" autocomplete="address-line2" input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-3" } })">
+        <govuk-input name="@addressLine3State.ModelPropertyName" value="@addressLine3State.AttemptedValue" input-aria-invalid="@addressLine3State.InvalidAriaLabel" autocomplete="address-line3" input-attributes="@(new Dictionary<string, string?> { { "data-address-lookup", "address-line-3" } })">
             <govuk-input-label>@addressLine3State.Label</govuk-input-label>
             @if (addressLine3State.HasErrorMessage)
             {
@@ -215,6 +215,5 @@
         </govuk-input>
     </govuk-client-side-validation>
 
-    <input type="hidden" id="@addressLine3State.ModelPropertyName" name="@addressLine3State.ModelPropertyName" value="@addressLine3State.AttemptedValue" data-address-lookup="address-line-3" />
     <input type="hidden" id="@uprnState.ModelPropertyName" name="@uprnState.ModelPropertyName" value="@uprnState.AttemptedValue" data-address-lookup="UPRN" />
 </tpr-address-lookup>

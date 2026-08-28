@@ -105,17 +105,21 @@ describe("renderAddressSearch", () => {
         expect(postcodeInput).toHaveAttribute("autocomplete", "postal-code");
     });
 
-    it("building input and postcode input are provided to onSearch function", () => {
-        const { buildingInput, postcodeInput, button, searchOptions } = createSearch();
+    it("building input and postcode input are provided to onSearchSuccess function", async() => {
+        const { buildingInput, postcodeInput, button, onSearchSuccess, searchOptions } = createSearch();
+        const addresses = [
+            { UPRN: "1", UDPRN: "1", ADDRESS: "10 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "10" },
+            { UPRN: "2", UDPRN: "2", ADDRESS: "11 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "11" }
+        ];
+        searchOptions.mockResolvedValue(addresses);
         buildingInput!.value = "10";
         postcodeInput!.value = "sw1a2aa";
 
         button!.click();
+        await Promise.resolve();
 
-        expect(searchOptions).toHaveBeenCalledWith({
-            buildingName: "10",
-            postcode: "SW1A 2AA",
-        });
+        expect(onSearchSuccess).toHaveBeenCalledWith([addresses[0], addresses[1]], { buildingName: "10", postcode: "SW1A 2AA" });
+        expect(button).not.toBeDisabled();
     });
     
     it("should return all addresses matching the building number", async () => {

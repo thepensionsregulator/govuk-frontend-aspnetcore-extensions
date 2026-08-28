@@ -13,6 +13,11 @@ export interface AddressSearchService {
     // getAddressById(uprn: string) : AddressSearchResult | null;
 }
 
+export interface AddressSearchService {
+    searchAddress(postcode: string): Promise<AddressSearchResult[]>;
+    // getAddressById(uprn: string) : AddressSearchResult | null;
+}
+
 export interface AddressSearchOptions {
     searchService: AddressSearchService;
     criteria?: AddressSearchCriteria;

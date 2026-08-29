@@ -60,10 +60,19 @@
         <div class="tpr-box">
             <p class="govuk-body">Boxes can be added within columns.</p>
         </div>
-    </div>
-    <div class="govuk-grid-column govuk-grid-column-one-half">
         <div class="tpr-box tpr-box--bordered">
             <p class="govuk-body">Bordered boxes can be added within columns too.</p>
+        </div>
+    </div>
+    <div class="govuk-grid-column govuk-grid-column-one-half">
+        <div class="tpr-box tpr-box--blue">
+            <p class="govuk-body">This box has its background colour set to blue.</p>
+        </div>
+        <div class="tpr-box tpr-box--royal-blue">
+            <p class="govuk-body">This box has its background colour set to royal blue.</p>
+        </div>
+        <div class="tpr-box tpr-box--green">
+            <p class="govuk-body">This box has its background colour set to green.</p>
         </div>
     </div>
 </div>
@@ -72,6 +81,26 @@
         <p class="govuk-body">This box has a divider applied and the column is set to full width to show the two styles working together.</p>
     </div>
 </div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <div class="tpr-box">
+            <partial name="_BoxContentPart1" />
+            <partial name="_BoxContentPart2" />
+        </div>
+        <div class="tpr-box tpr-box--royal-blue">
+            <partial name="_BoxContentPart1" />
+            <p class="govuk-body">This box is set to royal blue. Inverse colours must be used when the box has a dark background.</p>
+            <partial name="_BoxContentPart2" />
+        </div>
+        <div class="tpr-box tpr-box--green">
+            <partial name="_BoxContentPart1" />
+            <p class="govuk-body">This box is set to green. Inverse colours must be used when the box has a dark background.</p>
+            <partial name="_BoxContentPart2" />
+        </div>
+    </div>
+</div>
+
 <div class="govuk-grid-row govuk-grid-row--tpr-divider-for-fieldset govuk-grid-row--tpr-divider">
     <div class="govuk-grid-column govuk-grid-column-two-thirds-from-desktop">
         <div class="govuk-form-group">

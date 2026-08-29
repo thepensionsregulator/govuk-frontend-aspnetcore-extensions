@@ -1,5 +1,6 @@
 ﻿@using GovUk.Frontend.Umbraco;
 @using GovUkPropertyAliases = ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyAliases
+@using Humanizer
 @using Microsoft.Extensions.Options
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco
@@ -15,11 +16,15 @@
     var styleOfBox = Model.Settings?.Value<string>(TprPropertyAliases.BoxStyle);
     var isSolid = string.IsNullOrEmpty(styleOfBox) || styleOfBox == TprBoxStyles.Solid;
     var isFullWidth = styleOfBox == TprBoxStyles.FullWidth;
-    var boxClass = (string.IsNullOrEmpty(styleOfBox) || isSolid) ? null : " tpr-box--" + styleOfBox.ToLowerInvariant();
+    var boxClass = (string.IsNullOrEmpty(styleOfBox) || isSolid) ? null : $" tpr-box--{styleOfBox.ToLowerInvariant()}";
     var cssClasses = (" " + Model.Settings?.Value<string>(GovUkPropertyAliases.CssClasses)).TrimEnd();
     if (isSolid || isFullWidth)
     {
-        cssClasses += Model.Settings?.Value<ColorPickerValueConverter.PickedColor>(TprPropertyAliases.BoxBackgroundColour)?.Label == "Blue" ? " tpr-box--blue" : null;
+        var backgroundColour = Model.Settings?.Value<ColorPickerValueConverter.PickedColor>(TprPropertyAliases.BoxBackgroundColour)?.Label;
+        if (!string.IsNullOrEmpty(backgroundColour) && backgroundColour != "Grey")
+        {
+            cssClasses += $" tpr-box--{backgroundColour.Kebaberize()}";
+        };
     }
     <div class="tpr-box@(boxClass)@(cssClasses)">
         @if (isFullWidth)

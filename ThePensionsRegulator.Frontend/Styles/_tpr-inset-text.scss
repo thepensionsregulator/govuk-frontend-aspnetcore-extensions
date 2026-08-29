@@ -2,7 +2,9 @@
 @import 'govuk/base';
 
 // Change GOV.UK inset text styles where the TPR brand diverges from the GOV.UK Design System.
+// Display in inverse colours on a dark background, otherwise use the default colours.
 .govuk-inset-text {
+    color: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
     margin-top: 0;
     border-left-width: govuk-px-to-rem(10px);
     font-weight: $tpr-font-weight-semi-bold;

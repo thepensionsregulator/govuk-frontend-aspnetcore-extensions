@@ -5,14 +5,14 @@ import { FetchAddressSearchService } from "../../Scripts/address-lookup/address-
 import type { AddressSearchCriteria, AddressSearchResult } from "../../Scripts/address-lookup/types";
 
 describe("renderAddressSearch", () => {
-    function createSearch(){
+    function createSearch(criteria?: AddressSearchCriteria){
         const searchService = new FetchAddressSearchService({ searchEndpoint: "https://example.com/search", addressByIdEndpoint: "https://example.com/address", fetchFunction: jest.fn(() => Promise.resolve(new Response())) });
         const searchAddress = jest.fn<(postcode: string) => Promise<AddressSearchResult[]>>()
             .mockResolvedValue([]);
         searchService.searchAddress = searchAddress;
         const onSearchSuccess = jest.fn<(results: AddressSearchResult[], criteria: AddressSearchCriteria) => void>();
 
-        const component = renderAddressSearch({ searchService, onSearchSuccess });
+        const component = renderAddressSearch({ searchService, onSearchSuccess, criteria });
 
         const buildingInput = component.querySelector<HTMLInputElement>("#building");
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode");
@@ -21,6 +21,20 @@ describe("renderAddressSearch", () => {
         return { component, buildingInput, postcodeInput, button, searchOptions: searchAddress, onSearchSuccess };
     }
     
+    it("should leave the inputs empty when no criteria is provided", () => {
+        const { buildingInput, postcodeInput } = createSearch();
+
+        expect(buildingInput).toHaveValue("");
+        expect(postcodeInput).toHaveValue("");
+    });
+
+    it("should pre-fill the inputs from the provided criteria", () => {
+        const { buildingInput, postcodeInput } = createSearch({ buildingName: "1", postcode: "SW1A 2AA" });
+
+        expect(buildingInput).toHaveValue("1");
+        expect(postcodeInput).toHaveValue("SW1A 2AA");
+    });
+
     it("should render search inputs and a button in a fieldset", () => {
         const { component, buildingInput, postcodeInput, button } = createSearch();
         const fieldset = component.querySelector("fieldset");

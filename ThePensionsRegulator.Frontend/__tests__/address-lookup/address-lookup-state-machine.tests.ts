@@ -70,6 +70,24 @@ describe("AddressLookupStateMachine", () => {
         expect(stateMachine.getState()).toEqual({ status: "confirmed", address: addressOne });
     });
 
+    it("should move back to the search state with the given criteria", () => {
+        const stateMachine = new AddressLookupStateMachine();
+        stateMachine.dispatch({ status: "search-succeeded", criteria, addresses: [addressOne, addressTwo] });
+
+        stateMachine.dispatch({ status: "back-to-search-requested", criteria });
+
+        expect(stateMachine.getState()).toEqual({ status: "search", criteria });
+    });
+
+    it("should currently allow back-to-search-requested to be dispatched from the search state", () => {
+        const stateMachine = new AddressLookupStateMachine();
+
+        // Current behaviour: there is no guard preventing this transition from an unexpected state.
+        stateMachine.dispatch({ status: "back-to-search-requested", criteria });
+
+        expect(stateMachine.getState()).toEqual({ status: "search", criteria });
+    });
+
     it("should notify a subscribed listener with the new state after a dispatch", () => {
         const stateMachine = new AddressLookupStateMachine();
         const listener = jest.fn<(state: AddressLookupState) => void>();

@@ -23,8 +23,8 @@ export interface AddressLookupConfirmedState {
 
 export type AddressLookupEvent = 
     | { status: "search-succeeded", criteria?: AddressSearchCriteria, addresses: AddressSearchResult[] }
-    | { status: "address-selected", criteria: AddressSearchCriteria, address: AddressSearchResult };
-   // | { status: "confirmed", address: AddressSearchResult };
+    | { status: "address-selected", criteria: AddressSearchCriteria, address: AddressSearchResult }
+    | { status: "back-to-search-requested", criteria: AddressSearchCriteria };
 
 export type AddressLookupStateListener = (state: AddressLookupState) => void;
 
@@ -58,6 +58,8 @@ export class AddressLookupStateMachine {
                 }
             case "address-selected":
                 return { status: "confirmed", address: event.address };
+            case "back-to-search-requested":
+                return { status: "search", criteria: event.criteria };
             default:
                 return state;
         }

@@ -1,5 +1,11 @@
+export interface AddressLookupOptions {
+    searchEndpoint: string;
+    addressByIdEndpoint: string;
+}
+
 export interface AddressSearchCriteria {
-    postcode?: string;
+    buildingName?: string;
+    postcode: string;
 }
 
 export interface AddressSearchService {
@@ -9,7 +15,7 @@ export interface AddressSearchService {
 
 export interface AddressSearchOptions {
     searchService: AddressSearchService;
-    onResults: (results: AddressSearchResult[]) => void;
+    onSearchSuccess: (results: AddressSearchResult[], criteria: AddressSearchCriteria) => void;
 }
 
 /** A Delivery Point Address as returned by the Ordnance Survey Places API. */

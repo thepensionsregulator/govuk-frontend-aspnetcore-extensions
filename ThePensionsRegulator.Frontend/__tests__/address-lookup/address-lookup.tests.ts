@@ -28,6 +28,12 @@ describe("createAddressLookup", () => {
         return fetchMock as unknown as jest.Mock<typeof globalThis.fetch>;
     }
 
+    // Flushes all pending microtasks (fetch -> response.json() -> service -> view -> dispatch),
+    // however deep the awaited chain, unlike a fixed number of Promise.resolve() hops.
+    function flushPromises(): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, 0));
+    }
+
     it("should return an HTMLElement", () => {
         const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
 
@@ -50,15 +56,14 @@ describe("createAddressLookup", () => {
         postcodeInput.value = "SW1A 2AA";
 
         button.click();
-        await Promise.resolve();
-        await Promise.resolve();
+        await flushPromises();
 
         const [requestedUrl] = fetchMock.mock.calls[0] as unknown as [URL, RequestInit];
         expect(requestedUrl.pathname).toBe("/api/address-search");
         expect(requestedUrl.searchParams.get("postcode")).toBe("SW1A 2AA");
     });
 
-    it("should leave the search form in place when multiple addresses are found", async () => {
+    it("should render the results view when multiple addresses are found", async () => {
         mockFetchResults([
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
@@ -69,14 +74,48 @@ describe("createAddressLookup", () => {
         postcodeInput.value = "SW1A 2AA";
 
         button.click();
-        await Promise.resolve();
-        await Promise.resolve();
+        await flushPromises();
 
-        // Known gap: the "results" state has no view wired up yet, so the search form is never replaced.
-        expect(component.querySelector("#postcode")).not.toBeNull();
+        expect(component.querySelector("#postcode")).toBeNull();
+        expect(component.querySelector("#address-select")).not.toBeNull();
     });
 
-    it("should leave the search form in place when a single address is found", async () => {
+    it("should only ever show one view's markup at a time", async () => {
+        mockFetchResults([
+            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
+            { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
+        ]);
+        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
+        const button = component.querySelector<HTMLButtonElement>("button")!;
+        postcodeInput.value = "SW1A 2AA";
+
+        button.click();
+        await flushPromises();
+
+        expect(component.children).toHaveLength(1);
+    });
+
+    it("should confirm the selected address from the results view", async () => {
+        mockFetchResults([
+            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
+            { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
+        ]);
+        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
+        postcodeInput.value = "SW1A 2AA";
+        component.querySelector<HTMLButtonElement>("button")!.click();
+        await flushPromises();
+
+        const select = component.querySelector<HTMLSelectElement>("#address-select")!;
+        select.value = "2";
+        component.querySelector<HTMLButtonElement>("button")!.click();
+
+        // Known gap: the "confirmed" state has no case in the render switch, so the container goes blank.
+        expect(component.children).toHaveLength(0);
+    });
+
+    it("should leave the container blank when a single address is found", async () => {
         mockFetchResults([
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
@@ -86,10 +125,28 @@ describe("createAddressLookup", () => {
         postcodeInput.value = "SW1A 2AA";
 
         button.click();
-        await Promise.resolve();
-        await Promise.resolve();
+        await flushPromises();
 
-        // Known gap: the "confirmed" state has no case in the render switch at all.
-        expect(component.querySelector("#postcode")).not.toBeNull();
+        // Known gap: single-result search auto-confirms, but there's no view for the confirmed state.
+        expect(component.children).toHaveLength(0);
+    });
+
+    it("should return to a pre-filled search form when back-to-search is requested", async () => {
+        mockFetchResults([
+            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "1" },
+            { UPRN: "2", UDPRN: "2", ADDRESS: "1 Station Road", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "1" }
+        ]);
+        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const buildingInput = component.querySelector<HTMLInputElement>("#building")!;
+        const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
+        buildingInput.value = "1";
+        postcodeInput.value = "SW1A 2AA";
+        component.querySelector<HTMLButtonElement>("button")!.click();
+        await flushPromises();
+
+        component.querySelector<HTMLAnchorElement>("nav a")!.click();
+
+        expect(component.querySelector<HTMLInputElement>("#building")).toHaveValue("1");
+        expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
     });
 });

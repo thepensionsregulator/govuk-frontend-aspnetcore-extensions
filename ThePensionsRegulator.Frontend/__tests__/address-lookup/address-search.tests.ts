@@ -1,24 +1,24 @@
 import { jest } from "@jest/globals";
 import "@testing-library/jest-dom";
-import { createAddressSearch } from "../../Scripts/address-lookup/address-search";
+import { renderAddressSearch } from "../../Scripts/address-lookup/address-search";
 import { FetchAddressSearchService } from "../../Scripts/address-lookup/address-search-service";
-import type { AddressSearchResult } from "../../Scripts/address-lookup/types";
+import type { AddressSearchCriteria, AddressSearchResult } from "../../Scripts/address-lookup/types";
 
-describe("createAddressSearch", () => {
+describe("renderAddressSearch", () => {
     function createSearch(){
         const searchService = new FetchAddressSearchService({ searchEndpoint: "https://example.com/search", addressByIdEndpoint: "https://example.com/address", fetchFunction: jest.fn(() => Promise.resolve(new Response())) });
         const searchAddress = jest.fn<(postcode: string) => Promise<AddressSearchResult[]>>()
             .mockResolvedValue([]);
         searchService.searchAddress = searchAddress;
-        const onResults = jest.fn<(results: AddressSearchResult[]) => void>();
+        const onSearchSuccess = jest.fn<(results: AddressSearchResult[], criteria: AddressSearchCriteria) => void>();
 
-        const component = createAddressSearch({ searchService, onResults });
+        const component = renderAddressSearch({ searchService, onSearchSuccess });
 
         const buildingInput = component.querySelector<HTMLInputElement>("#building");
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode");
         const button = component.querySelector<HTMLButtonElement>("button");
 
-        return { component, buildingInput, postcodeInput, button, searchOptions: searchAddress, onResults };
+        return { component, buildingInput, postcodeInput, button, searchOptions: searchAddress, onSearchSuccess };
     }
     
     it("should render search inputs and a button in a fieldset", () => {
@@ -66,7 +66,7 @@ describe("createAddressSearch", () => {
     });
 
     it("should return all addresses when building name or number is empty", async () => {
-        const { postcodeInput, button, searchOptions, onResults } = createSearch();
+        const { postcodeInput, button, searchOptions, onSearchSuccess } = createSearch();
         const addresses = [
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "1" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "2" }
@@ -77,12 +77,12 @@ describe("createAddressSearch", () => {
         button!.click();
         await Promise.resolve();
 
-        expect(onResults).toHaveBeenCalledWith(addresses);
+        expect(onSearchSuccess).toHaveBeenCalledWith(addresses, { buildingName: "", postcode: "SW1A 2AA" });
         expect(button).not.toBeDisabled();
     });
 
     it("should return all addresses matching the building number", async () => {
-        const { buildingInput, postcodeInput, button, searchOptions, onResults } = createSearch();
+        const { buildingInput, postcodeInput, button, searchOptions, onSearchSuccess } = createSearch();
         const addresses = [
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "1" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "1 Station Road", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "1" },
@@ -95,12 +95,12 @@ describe("createAddressSearch", () => {
         button!.click();
         await Promise.resolve();
 
-        expect(onResults).toHaveBeenCalledWith([addresses[0], addresses[1]]);
+        expect(onSearchSuccess).toHaveBeenCalledWith([addresses[0], addresses[1]], { buildingName: "1", postcode: "SW1A 2AA" });
         expect(button).not.toBeDisabled();
     });
 
     it("should show an error when no addresses match the building", async () => {
-        const { buildingInput, postcodeInput, button, searchOptions, onResults, component } = createSearch();
+        const { buildingInput, postcodeInput, button, searchOptions, onSearchSuccess, component } = createSearch();
         searchOptions.mockResolvedValue([
             { UPRN: "1", UDPRN: "1", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "2" }
         ]);
@@ -113,12 +113,12 @@ describe("createAddressSearch", () => {
         expect(component.querySelector("#address-search-fieldset-error")).toHaveTextContent(
             "Error: The address and postcode do not match"
         );
-        expect(onResults).not.toHaveBeenCalled();
+        expect(onSearchSuccess).not.toHaveBeenCalled();
         expect(button).not.toBeDisabled();
     });
 
     it("should show an error when address search fails", async () => {
-        const { postcodeInput, button, searchOptions, onResults, component } = createSearch();
+        const { postcodeInput, button, searchOptions, onSearchSuccess, component } = createSearch();
         searchOptions.mockRejectedValue(new Error("search failed"));
         postcodeInput!.value = "SW1A 2AA";
 
@@ -128,7 +128,7 @@ describe("createAddressSearch", () => {
         expect(component.querySelector("#address-search-fieldset-error")).toHaveTextContent(
             "Error: There was a problem searching for addresses. Please try again."
         );
-        expect(onResults).not.toHaveBeenCalled();
+        expect(onSearchSuccess).not.toHaveBeenCalled();
         expect(button).not.toBeDisabled();
     });
 

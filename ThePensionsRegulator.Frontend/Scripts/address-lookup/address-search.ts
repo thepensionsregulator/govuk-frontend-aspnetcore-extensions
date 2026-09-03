@@ -25,7 +25,8 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
             width: "x-large",
             attributes: {
                 autocomplete: "address-line1"
-            }
+            },
+            value: options.criteria?.buildingName
         }
     });
     const buildingNameOrNumberInput = buildingNameFormGroup.querySelector("input")!;
@@ -38,7 +39,8 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
             width: "large",
             attributes: {
                 autocomplete: "postal-code"
-            }
+            },
+            value: options.criteria?.postcode
         }
     });
     const postcodeInput = postcodeFormGroup.querySelector("input")!;

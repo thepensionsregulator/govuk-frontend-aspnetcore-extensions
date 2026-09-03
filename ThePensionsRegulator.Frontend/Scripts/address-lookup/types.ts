@@ -15,6 +15,7 @@ export interface AddressSearchService {
 
 export interface AddressSearchOptions {
     searchService: AddressSearchService;
+    criteria?: AddressSearchCriteria;
     onSearchSuccess: (results: AddressSearchResult[], criteria: AddressSearchCriteria) => void;
 }
 

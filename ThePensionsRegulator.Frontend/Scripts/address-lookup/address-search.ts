@@ -22,7 +22,8 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
         input: {
             id: "building",
             name: "building",
-            width: "x-large"
+            width: "x-large",
+            value: options.criteria?.buildingName
         }
     });
     const buildingNameOrNumberInput = buildingNameFormGroup.querySelector("input")!;
@@ -32,7 +33,8 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
         input:{
             id: "postcode",
             name: "postcode",
-            width: "large"
+            width: "large",
+            value: options.criteria?.postcode
         }
     });
     const postcodeInput = postcodeFormGroup.querySelector("input")!;

@@ -20,8 +20,8 @@ export interface AddressSearchService {
 
 export interface AddressSearchOptions {
     searchService: AddressSearchService;
-    onSearchSuccess: (results: AddressSearchResult[], criteria: AddressSearchCriteria) => void;
     criteria?: AddressSearchCriteria;
+    onSearchSuccess: (results: AddressSearchResult[], criteria: AddressSearchCriteria) => void;
 }
 
 /** A Delivery Point Address as returned by the Ordnance Survey Places API. */

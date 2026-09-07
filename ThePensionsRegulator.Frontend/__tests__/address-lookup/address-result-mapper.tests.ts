@@ -196,4 +196,3 @@ describe("mapInitialAddress", () => {
 			postcode: "75001"
 		});
 	});
-});

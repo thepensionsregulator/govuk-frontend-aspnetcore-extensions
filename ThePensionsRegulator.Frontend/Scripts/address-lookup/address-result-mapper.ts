@@ -162,7 +162,6 @@ export function mapInitialAddress(content: AddressLookupContent, address?: Initi
         uprn: address.uprn || undefined
     };
 }
-
 function pushStreetLine(lines: string[], buildingNumber: string, address: AddressSearchResult): void {
     const streetLine = buildStreetLine(buildingNumber, address);
     if (streetLine) {

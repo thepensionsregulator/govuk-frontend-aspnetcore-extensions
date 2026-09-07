@@ -22,9 +22,9 @@ export interface AddressLookupConfirmedState {
 }
 
 export type AddressLookupEvent = 
-    | { status: "search-succeeded", criteria?: AddressSearchCriteria, addresses: AddressSearchResult[] }
-    | { status: "address-selected", criteria: AddressSearchCriteria, address: AddressSearchResult }
-    | { status: "back-to-search-requested", criteria: AddressSearchCriteria };
+    | { status: "search-succeeded", criteria: AddressSearchCriteria, addresses: AddressSearchResult[] }
+    | { status: "address-selected", address: AddressSearchResult }
+    | { status: "back-to-search-requested" };
 
 export type AddressLookupStateListener = (state: AddressLookupState) => void;
 
@@ -51,17 +51,29 @@ export class AddressLookupStateMachine {
     private reduce(state: AddressLookupState, event: AddressLookupEvent): AddressLookupState | undefined {
         switch (event.status) {
             case "search-succeeded":
+                if (state.status !== "search") {
+                    return undefined;
+                }
+
                 if (event.addresses.length === 1) {
                     return { status: "confirmed", address: event.addresses[0] };
                 } else {
-                    return { status: "results", criteria: event.criteria!, addresses: event.addresses };
+                    return { status: "results", criteria: event.criteria, addresses: event.addresses };
                 }
             case "address-selected":
+                if (state.status !== "results") {
+                    return undefined;
+                }
+
                 return { status: "confirmed", address: event.address };
             case "back-to-search-requested":
-                return { status: "search", criteria: event.criteria };
+                if (state.status !== "results") {
+                    return undefined;
+                }
+
+                return { status: "search", criteria: state.criteria };
             default:
-                return state;
+                return undefined;
         }
     }
 

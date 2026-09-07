@@ -61,16 +61,13 @@ export interface FetchAddressSearchServiceOptions{
 }
 
 export interface ConfirmedAddress {
-    organisationName: string;
-    departmentName: string;
-    subBuildingName: string;
-    buildingName: string;
-    buildingNumber: string;
-    dependentThoroughfareName: string;
-    thoroughfareName: string;
-    doubleDependentLocality: string;
-    dependentLocality: string;
+    addressLine1: string;
+    addressLine2: string;
+    addressLine3: string;
     postTown: string;
-    postcode: string;
-    uprn: string;
+    postCounty: string;
+    countryId: string;
+    countryName: string;
+    postCode: string;
+    uprnReference: string;
 }

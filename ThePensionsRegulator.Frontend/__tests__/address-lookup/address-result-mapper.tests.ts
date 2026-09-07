@@ -99,11 +99,11 @@ describe("mapAddressSearchResult", () => {
 
 		expect(mappedAddress).toMatchObject({
 			postTown: "London",
-			postCounty: "",
-			countryId: "GB",
-			countryName: "United Kingdom",
 			postCode: "SW1A 2AA",
 			uprnReference: "100000000001"
 		});
+		expect(mappedAddress).not.toHaveProperty("postCounty");
+		expect(mappedAddress).not.toHaveProperty("countryId");
+		expect(mappedAddress).not.toHaveProperty("countryName");
 	});
 });

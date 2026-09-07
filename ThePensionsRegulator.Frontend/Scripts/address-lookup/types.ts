@@ -67,12 +67,12 @@ export interface FetchAddressSearchServiceOptions{
 
 export interface ConfirmedAddress {
     addressLine1: string;
-    addressLine2: string;
-    addressLine3: string;
-    postTown: string;
-    postCounty: string;
-    countryId: string;
-    countryName: string;
-    postCode: string;
-    uprnReference: string;
+    addressLine2?: string;
+    addressLine3?: string;
+    postTown?: string;
+    postCounty?: string;
+    countryId?: string;
+    countryName?: string;
+    postCode?: string;
+    uprnReference?: string;
 }

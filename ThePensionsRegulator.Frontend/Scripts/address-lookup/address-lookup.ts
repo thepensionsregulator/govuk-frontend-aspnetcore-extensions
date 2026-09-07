@@ -31,8 +31,8 @@ export function createAddressLookup(options: AddressLookupOptions){
                 container.appendChild(renderAddressResults({
                     addresses: state.addresses,
                     criteria: state.criteria,
-                    onAddressSelected: (address) => stateMachine.dispatch({ status: "address-selected", criteria: state.criteria, address }),
-                    onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested", criteria: state.criteria })
+                    onAddressSelected: (address) => stateMachine.dispatch({ status: "address-selected", address }),
+                    onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })
                 }));
                 break;
             case "confirmed":

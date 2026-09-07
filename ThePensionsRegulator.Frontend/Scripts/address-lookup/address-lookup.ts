@@ -3,6 +3,7 @@ import { FetchAddressSearchService } from './address-search-service.js';
 import { renderAddressSearch } from './address-search.js';
 import { AddressLookupState, AddressLookupStateMachine } from './address-lookup-state-machine.js';
 import { renderAddressResults } from './address-results.js';
+import { mapAddressSearchResult } from './address-result-mapper.js';
 
 export function createAddressLookup(options: AddressLookupOptions){
     const container = document.createElement("div");
@@ -38,7 +39,8 @@ export function createAddressLookup(options: AddressLookupOptions){
                 resultsView.querySelector<HTMLSelectElement>("#address-select")?.focus();
                 break;
             case "confirmed":
-                console.log("Address confirmed:", state.address);
+                const confirmedAddress = mapAddressSearchResult(state.address);
+                console.log("Address confirmed:", confirmedAddress);
                 break;
         }
     }

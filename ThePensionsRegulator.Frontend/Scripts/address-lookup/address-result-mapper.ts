@@ -1,7 +1,7 @@
 import type { AddressSearchResult, ConfirmedAddress } from './types';
 
-const unitedKingdomCountryId = 'GB';
-const unitedKingdomCountryName = 'United Kingdom';
+// const unitedKingdomCountryId = 'GB';
+// const unitedKingdomCountryName = 'United Kingdom';
 
 export function mapAddressSearchResult(address: AddressSearchResult): ConfirmedAddress {
     const lines: string[] = [];
@@ -59,15 +59,12 @@ export function mapAddressSearchResult(address: AddressSearchResult): ConfirmedA
     }
 
     return {
-        addressLine1: lines[0] ?? '',
-        addressLine2: lines[1] ?? '',
-        addressLine3: lines[2] ?? '',
-        postTown: address.POST_TOWN ?? '',
-        postCounty: '',
-        countryId: unitedKingdomCountryId,
-        countryName: unitedKingdomCountryName,
-        postCode: address.POSTCODE ?? '',
-        uprnReference: address.UPRN
+        addressLine1: lines[0],
+        addressLine2: lines[1] ?? undefined,
+        addressLine3: lines[2] ?? undefined,
+        postTown: address.POST_TOWN?.trim() || undefined,
+        postCode: address.POSTCODE,
+        uprnReference: address.UPRN ?? undefined
     };
 }
 

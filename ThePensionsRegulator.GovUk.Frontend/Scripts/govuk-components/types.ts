@@ -5,6 +5,13 @@ export interface ButtonOptions {
   type: HTMLButtonElement["type"];
 }
 
+export interface LinkOptions {
+  labelText: string;
+  variant?: "back";
+  href?: string;
+  attributes?: Record<string, string>;
+}
+
 type FormControl =
     | HTMLInputElement
     | HTMLSelectElement

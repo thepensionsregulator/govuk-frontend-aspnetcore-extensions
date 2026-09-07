@@ -33,6 +33,19 @@ describe("AddressLookupStateMachine", () => {
         expect(stateMachine.getState()).toEqual({ status: "confirmed", address: addressOne });
     });
 
+    it("should reject search-succeeded when not in the search state", () => {
+        const stateMachine = new AddressLookupStateMachine();
+        const listener = jest.fn<(state: AddressLookupState) => void>();
+        stateMachine.subscribe(listener);
+        stateMachine.dispatch({ status: "search-succeeded", criteria, addresses: [addressOne, addressTwo] });
+        listener.mockClear();
+
+        stateMachine.dispatch({ status: "search-succeeded", criteria, addresses: [addressOne] });
+
+        expect(stateMachine.getState()).toEqual({ status: "results", criteria, addresses: [addressOne, addressTwo] });
+        expect(listener).not.toHaveBeenCalled();
+    });
+
     it("should move to the results state with an empty list when no addresses are found", () => {
         const stateMachine = new AddressLookupStateMachine();
 
@@ -42,50 +55,44 @@ describe("AddressLookupStateMachine", () => {
         expect(stateMachine.getState()).toEqual({ status: "results", criteria, addresses: [] });
     });
 
-    it("should not populate criteria when search-succeeded is dispatched without it", () => {
-        const stateMachine = new AddressLookupStateMachine();
-
-        stateMachine.dispatch({ status: "search-succeeded", addresses: [addressOne, addressTwo] });
-
-        // Current behaviour: the non-null assertion in reduce() lets criteria through as undefined at runtime,
-        // even though AddressLookupResultState declares criteria as required.
-        expect(stateMachine.getState()).toEqual({ status: "results", criteria: undefined, addresses: [addressOne, addressTwo] });
-    });
-
     it("should move to the confirmed state when an address is selected", () => {
         const stateMachine = new AddressLookupStateMachine();
         stateMachine.dispatch({ status: "search-succeeded", criteria, addresses: [addressOne, addressTwo] });
 
-        stateMachine.dispatch({ status: "address-selected", criteria, address: addressTwo });
+        stateMachine.dispatch({ status: "address-selected", address: addressTwo });
 
         expect(stateMachine.getState()).toEqual({ status: "confirmed", address: addressTwo });
     });
 
-    it("should currently allow address-selected to be dispatched from the search state", () => {
+    it("should reject address-selected when not in the results state", () => {
         const stateMachine = new AddressLookupStateMachine();
+        const listener = jest.fn<(state: AddressLookupState) => void>();
+        stateMachine.subscribe(listener);
 
-        // Current behaviour: there is no guard preventing this transition from an unexpected state.
-        stateMachine.dispatch({ status: "address-selected", criteria, address: addressOne });
+        stateMachine.dispatch({ status: "address-selected", address: addressOne });
 
-        expect(stateMachine.getState()).toEqual({ status: "confirmed", address: addressOne });
+        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(listener).not.toHaveBeenCalled();
     });
 
     it("should move back to the search state with the given criteria", () => {
         const stateMachine = new AddressLookupStateMachine();
         stateMachine.dispatch({ status: "search-succeeded", criteria, addresses: [addressOne, addressTwo] });
 
-        stateMachine.dispatch({ status: "back-to-search-requested", criteria });
+        stateMachine.dispatch({ status: "back-to-search-requested" });
 
         expect(stateMachine.getState()).toEqual({ status: "search", criteria });
     });
 
-    it("should currently allow back-to-search-requested to be dispatched from the search state", () => {
+    it("should reject back-to-search-requested when not in the results state", () => {
         const stateMachine = new AddressLookupStateMachine();
+        const listener = jest.fn<(state: AddressLookupState) => void>();
+        stateMachine.subscribe(listener);
 
-        // Current behaviour: there is no guard preventing this transition from an unexpected state.
-        stateMachine.dispatch({ status: "back-to-search-requested", criteria });
+        stateMachine.dispatch({ status: "back-to-search-requested" });
 
-        expect(stateMachine.getState()).toEqual({ status: "search", criteria });
+        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(listener).not.toHaveBeenCalled();
     });
 
     it("should notify a subscribed listener with the new state after a dispatch", () => {
@@ -111,16 +118,14 @@ describe("AddressLookupStateMachine", () => {
         expect(secondListener).toHaveBeenCalledTimes(1);
     });
 
-    it("should still notify listeners for an unrecognised event, leaving state unchanged", () => {
+    it("should not notify listeners for an unrecognised event", () => {
         const stateMachine = new AddressLookupStateMachine();
         const listener = jest.fn<(state: AddressLookupState) => void>();
         stateMachine.subscribe(listener);
         const unrecognisedEvent = { status: "unrecognised" } as unknown as AddressLookupEvent;
 
-        // Current behaviour: reduce()'s default branch returns the same state rather than undefined,
-        // so dispatch still transitions and notifies listeners for a no-op event.
         stateMachine.dispatch(unrecognisedEvent);
 
-        expect(listener).toHaveBeenCalledWith({ status: "search" });
+        expect(listener).not.toHaveBeenCalled();
     });
 });

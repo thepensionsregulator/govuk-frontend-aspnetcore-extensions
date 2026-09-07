@@ -4,7 +4,6 @@ import { validateInternationalUkManualEntryAddress } from './address-internation
 import { normalisePostcode } from './postcode-normaliser.js';
 import { sanitisePostcode } from './postcode-sanitiser.js';
 
-
 export function mapAddressSearchResult(address: AddressSearchResult): ConfirmedAddress {
     const lines: string[] = [];
     const organisationName = address.ORGANISATION_NAME?.trim() ?? '';

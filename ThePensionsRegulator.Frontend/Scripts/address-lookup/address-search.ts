@@ -128,21 +128,3 @@ function readAndValidateCriteria(buildingNameInput: HTMLInputElement, postcodeIn
 
     return { isValid: true, criteria: { buildingName, postcode: normalisedPostcode } };
 }
-
-type CriteriaValidationResult =
-    | { isValid: true; criteria: AddressSearchCriteria }
-    | { isValid: false; errorMessage: string };
-
-function readAndValidateCriteria(buildingNameInput: HTMLInputElement, postcodeInput: HTMLInputElement): CriteriaValidationResult {
-    const buildingName = buildingNameInput.value.trim();
-    const sanitisedPostcode = sanitisePostcode(postcodeInput.value);
-    const normalisedPostcode = normalisePostcode(sanitisedPostcode);
-
-    const validatePostcodeResult = validatePostcode(normalisedPostcode);
-    if (!validatePostcodeResult.isValid) {
-        const errorMessage = validatePostcodeResult.error === "required" ? "Enter a postcode" : "Enter a valid postcode";
-        return { isValid: false, errorMessage };
-    }
-
-    return { isValid: true, criteria: { buildingName, postcode: normalisedPostcode } };
-}

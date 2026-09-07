@@ -77,7 +77,6 @@ function createHiddenAddressInputs(address: ConfirmedAddress, fields: AddressFie
             inputs.push(input);
         }
     });
-
     return inputs;
 }
 

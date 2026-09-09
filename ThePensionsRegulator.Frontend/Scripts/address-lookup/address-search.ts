@@ -13,6 +13,7 @@ import { validatePostcode } from "./postcode-validator.js";
 import { filterAddressesByBuilding } from "./address-filter.js";
 import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 import type { AddressSearchCriteria, AddressSearchOptions } from "./types.js";
+import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
 
 export function renderAddressSearch(options: AddressSearchOptions): HTMLElement {
     const addressSearchWrapper = document.createElement("div");
@@ -46,6 +47,10 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     findAddressButton.addEventListener("click", handleAddressSearch);
     addressSearchWrapper.appendChild(findAddressButton);
 
+    const internationalEntryLink = createLink({labelText: "Enter an international address"});
+    internationalEntryLink.addEventListener("click", handleOnInternationalEntryClicked);
+    addressSearchWrapper.appendChild(internationalEntryLink);
+
     return addressSearchWrapper;
     
     async function handleAddressSearch(): Promise<void> {
@@ -77,6 +82,11 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
              findAddressButton.disabled = false;
         }
     } 
+
+    function handleOnInternationalEntryClicked(event: Event): void{
+        event.preventDefault();
+        options.onInternationalEntryRequested();
+    }
 }
 
 type CriteriaValidationResult =

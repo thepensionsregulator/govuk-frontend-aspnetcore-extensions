@@ -65,6 +65,19 @@ export interface FetchAddressSearchServiceOptions{
     fetchFunction?: typeof globalThis.fetch;
 }
 
+export interface UkManualEntryAddress {
+    addressLine1: string;
+    addressLine2?: string;
+    addressLine3?: string;
+    postTown: string;
+    county?: string
+    postcode: string;
+}
+
+export interface InternationalManualEntryAddress {
+
+}
+
 export interface ConfirmedAddress {
     addressLine1: string;
     addressLine2?: string;
@@ -73,6 +86,6 @@ export interface ConfirmedAddress {
     postCounty?: string;
     countryId?: string;
     countryName?: string;
-    postCode?: string;
+    postcode?: string;
     uprnReference?: string;
 }

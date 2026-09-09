@@ -11,7 +11,7 @@ describe("renderConfirmedAddress", () => {
         postTown: "London",
         postCounty: "Greater London",
         countryId: "GB",
-        postCode: "SW1A 2AA",
+        postcode: "SW1A 2AA",
         uprnReference: "100000000001"
     };
 
@@ -27,7 +27,7 @@ describe("renderConfirmedAddress", () => {
     it("should omit optional fields without adding blank lines", () => {
         const address: ConfirmedAddress = {
             addressLine1: "10 High Street",
-            postCode: "SW1A 2AA",
+            postcode: "SW1A 2AA",
             uprnReference: "100000000001"
         };
 
@@ -46,7 +46,7 @@ describe("renderConfirmedAddress", () => {
             postTown: "Paris",
             countryId,
             countryName,
-            postCode: "75001",
+            postcode: "75001",
             uprnReference: ""
         };
 
@@ -61,15 +61,15 @@ describe("renderConfirmedAddress", () => {
 
     it("should create hidden inputs with the confirmed address field IDs", () => {
         const component = renderConfirmedAddress(completeAddress, jest.fn());
-        const expectedValues = {
-            AddressLine1: "10 High Street",
-            AddressLine2: "Flat 2",
-            AddressLine3: "West End",
-            PostTown: "London",
-            PostCounty: "Greater London",
-            CountryId: "GB",
-            PostCode: "SW1A 2AA",
-            UPRNReference: "100000000001"
+        const expectedValues : ConfirmedAddress = {
+            addressLine1: "10 High Street",
+            addressLine2: "Flat 2",
+            addressLine3: "West End",
+            postTown: "London",
+            postCounty: "Greater London",
+            countryId: "GB",
+            postcode: "SW1A 2AA",
+            uprnReference: "100000000001"
         };
 
         for (const [id, value] of Object.entries(expectedValues)) {
@@ -82,17 +82,17 @@ describe("renderConfirmedAddress", () => {
     it("should omit hidden inputs for absent optional values", () => {
         const address: ConfirmedAddress = {
             addressLine1: "10 High Street",
-            postCode: "SW1A 2AA",
+            postcode: "SW1A 2AA",
             uprnReference: "100000000001"
         };
 
         const component = renderConfirmedAddress(address, jest.fn());
 
-        expect(component.querySelector("#AddressLine2")).toBeNull();
-        expect(component.querySelector("#AddressLine3")).toBeNull();
-        expect(component.querySelector("#PostTown")).toBeNull();
-        expect(component.querySelector("#PostCounty")).toBeNull();
-        expect(component.querySelector("#CountryId")).toBeNull();
+        expect(component.querySelector("#addressLine2")).toBeNull();
+        expect(component.querySelector("#addressLine3")).toBeNull();
+        expect(component.querySelector("#postTown")).toBeNull();
+        expect(component.querySelector("#postCounty")).toBeNull();
+        expect(component.querySelector("#countryId")).toBeNull();
     });
 
     it("should report when the change address link is clicked", () => {

@@ -26,7 +26,8 @@ export function createAddressLookup(options: AddressLookupOptions){
                 container.appendChild(renderAddressSearch({
                     searchService: addressSearchService, 
                     onSearchSuccess: (results, criteria) => stateMachine.dispatch({ status: "search-succeeded", addresses: results, criteria: criteria }),
-                    criteria: state.criteria
+                    criteria: state.criteria,
+                    onInternationalEntryRequested: () => stateMachine.dispatch({ status: "international-manual-entry-requested" })
                 }));
                 break;
             case "results":
@@ -48,6 +49,7 @@ export function createAddressLookup(options: AddressLookupOptions){
                 }));
                 break;
             case "international-manual-entry":
+                break;
         }
     }
 }

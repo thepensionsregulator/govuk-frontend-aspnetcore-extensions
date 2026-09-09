@@ -1,4 +1,4 @@
-import { mapAddressSearchResult, mapUkManualEntryAddress } from './address-result-mapper.js';
+import { mapAddressSearchResult, mapInternationalManualEntryAddress, mapUkManualEntryAddress } from './address-result-mapper.js';
 import type { AddressSearchCriteria, AddressSearchResult, ConfirmedAddress, InternationalManualEntryAddress, UkManualEntryAddress } from './types';
 
 export type AddressLookupState = 
@@ -98,12 +98,14 @@ export class AddressLookupStateMachine {
                 }
                 const confirmedUkAddress = mapUkManualEntryAddress(event.address);
                 return { status: "confirmed", address: confirmedUkAddress };
-            // case "international-manual-address-submitted":
-            //     if (state.status !== "international-manual-entry") {
-            //         return undefined;
-            //     }
-            //     const confirmedInternationalAddress = mapInternationalManualEntryAddress(event.address);
-            //     return { status: "confirmed", address: confirmedInternationalAddress };
+            case "international-manual-entry-requested":
+                return { status: "international-manual-entry" };
+            case "international-manual-address-submitted":
+                if (state.status !== "international-manual-entry") {
+                    return undefined;
+                }
+                const confirmedInternationalAddress = mapInternationalManualEntryAddress(event.address);
+                return { status: "confirmed", address: confirmedInternationalAddress };
             default:
                 return undefined;
         }

@@ -1,9 +1,12 @@
-import type { AddressSearchCriteria, AddressSearchResult } from './types';
+import { mapAddressSearchResult, mapUkManualEntryAddress } from './address-result-mapper.js';
+import type { AddressSearchCriteria, AddressSearchResult, ConfirmedAddress, InternationalManualEntryAddress, UkManualEntryAddress } from './types';
 
 export type AddressLookupState = 
     | AddressLookupSearchState
     | AddressLookupResultState
-    | AddressLookupConfirmedState;
+    | AddressLookupConfirmedState
+    | AddressLookupUkManualEntryState
+    | AddressLookupInternationalManualEntryState
 
 export interface AddressLookupSearchState {
     status: "search";
@@ -18,13 +21,25 @@ export interface AddressLookupResultState {
 
 export interface AddressLookupConfirmedState {
     status: "confirmed";
-    address: AddressSearchResult;
+    address: ConfirmedAddress;
+}
+
+export interface AddressLookupUkManualEntryState{
+    status: "uk-manual-entry";
+}
+
+export interface AddressLookupInternationalManualEntryState {
+    status: "international-manual-entry";
 }
 
 export type AddressLookupEvent = 
     | { status: "search-succeeded", criteria: AddressSearchCriteria, addresses: AddressSearchResult[] }
     | { status: "address-selected", address: AddressSearchResult }
-    | { status: "back-to-search-requested" };
+    | { status: "back-to-search-requested" }
+    | { status: "uk-manual-entry-requested" }
+    | { status: "international-manual-entry-requested" }
+    | { status: "uk-manual-address-submitted", address: UkManualEntryAddress }
+    | { status: "international-manual-address-submitted", address: InternationalManualEntryAddress }
 
 export type AddressLookupStateListener = (state: AddressLookupState) => void;
 
@@ -54,24 +69,41 @@ export class AddressLookupStateMachine {
                 if (state.status !== "search") {
                     return undefined;
                 }
-
                 if (event.addresses.length === 1) {
-                    return { status: "confirmed", address: event.addresses[0] };
+                    const confirmedAddress = mapAddressSearchResult(event.addresses[0]);
+                    return { status: "confirmed", address: confirmedAddress };
                 } else {
                     return { status: "results", criteria: event.criteria, addresses: event.addresses };
                 }
+            
             case "address-selected":
                 if (state.status !== "results") {
                     return undefined;
                 }
-
-                return { status: "confirmed", address: event.address };
+                const confirmedAddress = mapAddressSearchResult(event.address);
+                return { status: "confirmed", address: confirmedAddress };
+            
             case "back-to-search-requested":
                 if (state.status === "search") {
                     return undefined;
                 }
-
                 return { status: "search", criteria: state.status === "results" ? state.criteria : undefined };
+            case "uk-manual-entry-requested":
+                return { status: "uk-manual-entry" }
+            case "international-manual-entry-requested":
+                return { status: "international-manual-entry" };
+            case "uk-manual-address-submitted":
+                if (state.status !== "uk-manual-entry") {
+                    return undefined;
+                }
+                const confirmedUkAddress = mapUkManualEntryAddress(event.address);
+                return { status: "confirmed", address: confirmedUkAddress };
+            // case "international-manual-address-submitted":
+            //     if (state.status !== "international-manual-entry") {
+            //         return undefined;
+            //     }
+            //     const confirmedInternationalAddress = mapInternationalManualEntryAddress(event.address);
+            //     return { status: "confirmed", address: confirmedInternationalAddress };
             default:
                 return undefined;
         }

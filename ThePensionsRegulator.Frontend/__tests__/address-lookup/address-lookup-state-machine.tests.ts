@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 import { AddressLookupStateMachine, type AddressLookupEvent, type AddressLookupState } from "../../Scripts/address-lookup/address-lookup-state-machine";
-import { mapAddressSearchResult } from "../../Scripts/address-lookup/address-result-mapper";
-import type { AddressSearchCriteria, AddressSearchResult, UkManualEntryAddress } from "../../Scripts/address-lookup/types";
+import { mapAddressSearchResult, mapInternationalManualEntryAddress } from "../../Scripts/address-lookup/address-result-mapper";
+import type { AddressSearchCriteria, AddressSearchResult, InternationalManualEntryAddress, UkManualEntryAddress } from "../../Scripts/address-lookup/types";
 
 describe("AddressLookupStateMachine", () => {
     const criteria: AddressSearchCriteria = { buildingName: "1", postcode: "SW1A 2AA" };
@@ -16,6 +16,13 @@ describe("AddressLookupStateMachine", () => {
         addressLine2: "1 High Street",
         postTown: "London",
         county: "Greater London",
+        postcode: "SW1A 1AA"
+    };
+    const internationalAddress: InternationalManualEntryAddress = {
+        addressLine1: "Flat 2",
+        addressLine2: "1 High Street",
+        postTown: "London",
+        countryId: "1",
         postcode: "SW1A 1AA"
     };
 
@@ -70,6 +77,37 @@ describe("AddressLookupStateMachine", () => {
         stateMachine.dispatch({ status: "address-selected", address: addressTwo });
 
         expect(stateMachine.getState()).toEqual({ status: "confirmed", address: mapAddressSearchResult(addressTwo) });
+    });
+
+    it("should move to the international entry state when requested", () => {
+        const stateMachine = new AddressLookupStateMachine();
+        stateMachine.dispatch({ status: "international-manual-entry-requested" });
+
+        expect(stateMachine.getState()).toEqual({ status: "international-manual-entry" });
+    });
+
+    it("should move to the confirmed view when an international address is submitted", () => {
+        const stateMachine = new AddressLookupStateMachine();
+        stateMachine.dispatch({ status: "international-manual-entry-requested" });
+
+        stateMachine.dispatch({ status: "international-manual-address-submitted", address: internationalAddress });
+
+        expect(stateMachine.getState()).toEqual({
+            status: "confirmed",
+            address: mapInternationalManualEntryAddress(internationalAddress)
+        });
+    });
+
+    it("should reject international-manual-address-submitted when not in the international entry state", () => {
+        const stateMachine = new AddressLookupStateMachine();
+        const listener = jest.fn<(state: AddressLookupState) => void>();
+        stateMachine.subscribe(listener);
+
+        stateMachine.dispatch({ status: "back-to-search-requested" });
+        stateMachine.dispatch({ status: "international-manual-address-submitted", address: internationalAddress });
+
+        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(listener).not.toHaveBeenCalled();
     });
 
     it("should map a submitted UK manual address and move to the confirmed state", () => {

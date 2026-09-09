@@ -1,4 +1,4 @@
-import type { AddressSearchResult, ConfirmedAddress } from './types';
+import type { AddressSearchResult, ConfirmedAddress, UkManualEntryAddress } from './types';
 
 // const unitedKingdomCountryId = 'GB';
 // const unitedKingdomCountryName = 'United Kingdom';
@@ -63,10 +63,27 @@ export function mapAddressSearchResult(address: AddressSearchResult): ConfirmedA
         addressLine2: lines[1] ?? undefined,
         addressLine3: lines[2] ?? undefined,
         postTown: address.POST_TOWN?.trim() || undefined,
-        postCode: address.POSTCODE,
+        postcode: address.POSTCODE,
         uprnReference: address.UPRN ?? undefined
     };
 }
+
+export function mapUkManualEntryAddress(address: UkManualEntryAddress): ConfirmedAddress {
+    const confirmedAddress : ConfirmedAddress = {
+        addressLine1: address.addressLine1,
+        addressLine2: address.addressLine2 ?? undefined,
+        addressLine3: address.addressLine3 ?? undefined,
+        postTown: address.postTown,
+        postCounty: address.county ?? undefined,
+        postcode: address.postcode,
+    };
+
+    return confirmedAddress;
+}
+
+// export function mapInternationalManualEntryAddress(address: InternationalManualEntryAddress): ConfirmedAddress {
+    
+// }
 
 function pushStreetLine(lines: string[], buildingNumber: string, address: AddressSearchResult): void {
     const streetLine = buildStreetLine(buildingNumber, address);

@@ -5,6 +5,7 @@ import { AddressLookupState, AddressLookupStateMachine } from './address-lookup-
 import { renderAddressResults } from './address-results.js';
 import { renderAddressUkManualEntry } from './address-uk-manual-entry.js';
 import { renderConfirmedAddress } from './address-confirmed.js';
+import { renderAddressInternationalManualEntry } from './address-international-manual-entry.js';
 
 export function createAddressLookup(options: AddressLookupOptions){
     const container = document.createElement("div");
@@ -49,6 +50,11 @@ export function createAddressLookup(options: AddressLookupOptions){
                 }));
                 break;
             case "international-manual-entry":
+                container.appendChild(renderAddressInternationalManualEntry({
+                    onAddressSubmitted: (address) => stateMachine.dispatch({ status: "international-manual-address-submitted", address}),
+                    onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" }),
+                    countries: [{ value: 'FR', text: 'France' }]
+                }));
                 break;
         }
     }

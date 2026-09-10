@@ -82,6 +82,7 @@ export interface InternationalManualEntryAddress {
     postTown: string;
     countyStateProvince?: string;
     countryId?: string;
+    countryName?: string;
     postcode?: string;
 }
 

@@ -40,8 +40,15 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
     backToSearchLink.addEventListener("click", handleBackToSearch);
 
     const nav = document.createElement("nav");
-    nav.appendChild(backToSearchLink);
-    nav.appendChild(ukManualEntryLink);
+    const ul = document.createElement("ul");
+    ul.classList = "govuk-list";
+    const backToSearchLi = document.createElement("li");
+    backToSearchLi.appendChild(backToSearchLink);
+    const ukManualEntryLi = document.createElement("li");
+    ukManualEntryLi.appendChild(ukManualEntryLink);
+    ul.appendChild(backToSearchLi);
+    ul.appendChild(ukManualEntryLi);
+    nav.appendChild(ul);
     addressResultsWrapper.appendChild(selectFormGroup);
     addressResultsWrapper.appendChild(button);
     addressResultsWrapper.appendChild(nav);

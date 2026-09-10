@@ -112,9 +112,9 @@ describe("createAddressLookup", () => {
         component.querySelector<HTMLButtonElement>("button")!.click();
 
         expect(component.querySelector("p")).toHaveTextContent("2 High StreetLondonSW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#AddressLine1")).toHaveValue("2 High Street");
-        expect(component.querySelector<HTMLInputElement>("#PostCode")).toHaveValue("SW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#UPRNReference")).toHaveValue("2");
+        expect(component.querySelector<HTMLInputElement>("#addressLine1")).toHaveValue("2 High Street");
+        expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
+        expect(component.querySelector<HTMLInputElement>("#uprnReference")).toHaveValue("2");
     });
 
     it("should render the confirmed view when a single address is found", async () => {
@@ -130,9 +130,9 @@ describe("createAddressLookup", () => {
         await flushPromises();
 
         expect(component.querySelector("p")).toHaveTextContent("1 High StreetLondonSW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#AddressLine1")).toHaveValue("1 High Street");
-        expect(component.querySelector<HTMLInputElement>("#PostCode")).toHaveValue("SW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#UPRNReference")).toHaveValue("1");
+        expect(component.querySelector<HTMLInputElement>("#addressLine1")).toHaveValue("1 High Street");
+        expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
+        expect(component.querySelector<HTMLInputElement>("#uprnReference")).toHaveValue("1");
     });
 
     it("should return to a pre-filled search form when back-to-search is requested", async () => {
@@ -152,5 +152,19 @@ describe("createAddressLookup", () => {
 
         expect(component.querySelector<HTMLInputElement>("#building")).toHaveValue("1");
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
+    });
+
+    it("should confirm an international address with its country name and ID", () => {
+        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+
+        component.querySelector<HTMLAnchorElement>("nav a")!.click();
+
+        component.querySelector<HTMLInputElement>("#address-line-1")!.value = "123 Rue de Rivoli";
+        component.querySelector<HTMLInputElement>("#post-town")!.value = "Paris";
+        component.querySelector<HTMLSelectElement>("#country")!.value = "FR";
+        component.querySelector<HTMLButtonElement>("button")!.click();
+
+        expect(component.querySelector("p")).toHaveTextContent("France");
+        expect(component.querySelector<HTMLInputElement>("#countryId")).toHaveValue("FR");
     });
 });

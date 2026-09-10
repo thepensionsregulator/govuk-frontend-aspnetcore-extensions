@@ -3,8 +3,9 @@ import { FetchAddressSearchService } from './address-search-service.js';
 import { renderAddressSearch } from './address-search.js';
 import { AddressLookupState, AddressLookupStateMachine } from './address-lookup-state-machine.js';
 import { renderAddressResults } from './address-results.js';
-import { mapAddressSearchResult } from './address-result-mapper.js';
+import { renderAddressUkManualEntry } from './address-uk-manual-entry.js';
 import { renderConfirmedAddress } from './address-confirmed.js';
+import { renderAddressInternationalManualEntry } from './address-international-manual-entry.js';
 
 export function createAddressLookup(options: AddressLookupOptions){
     const container = document.createElement("div");
@@ -26,7 +27,8 @@ export function createAddressLookup(options: AddressLookupOptions){
                 container.appendChild(renderAddressSearch({
                     searchService: addressSearchService, 
                     onSearchSuccess: (results, criteria) => stateMachine.dispatch({ status: "search-succeeded", addresses: results, criteria: criteria }),
-                    criteria: state.criteria
+                    criteria: state.criteria,
+                    onInternationalEntryRequested: () => stateMachine.dispatch({ status: "international-manual-entry-requested" })
                 }));
                 break;
             case "results":
@@ -34,13 +36,27 @@ export function createAddressLookup(options: AddressLookupOptions){
                     addresses: state.addresses,
                     criteria: state.criteria,
                     onAddressSelected: (address) => stateMachine.dispatch({ status: "address-selected", address }),
-                    onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })
+                    onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" }),
+                    onUkManualEntryRequested: () => stateMachine.dispatch({ status: "uk-manual-entry-requested" })
                 }));
                 break;
             case "confirmed":
-                const confirmedAddress = mapAddressSearchResult(state.address);
-                container.appendChild(renderConfirmedAddress(confirmedAddress, () => stateMachine.dispatch({ status: "back-to-search-requested" })));
+                container.appendChild(renderConfirmedAddress(state.address, () => stateMachine.dispatch({ status: "back-to-search-requested" })));
+                break;
+            case "uk-manual-entry":
+                container.appendChild(renderAddressUkManualEntry({
+                    onAddressSubmitted: (address) => stateMachine.dispatch({ status: "uk-manual-address-submitted", address}),
+                    onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })
+                }));
+                break;
+            case "international-manual-entry":
+                container.appendChild(renderAddressInternationalManualEntry({
+                    onAddressSubmitted: (address) => stateMachine.dispatch({ status: "international-manual-address-submitted", address}),
+                    onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" }),
+                    countries: [{ value: 'FR', text: 'France' }]
+                }));
                 break;
         }
     }
 }
+

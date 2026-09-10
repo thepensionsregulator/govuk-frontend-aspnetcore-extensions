@@ -47,9 +47,14 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     findAddressButton.addEventListener("click", handleAddressSearch);
     addressSearchWrapper.appendChild(findAddressButton);
 
+    
     const internationalEntryLink = createLink({labelText: "Enter an international address"});
     internationalEntryLink.addEventListener("click", handleOnInternationalEntryClicked);
-    addressSearchWrapper.appendChild(internationalEntryLink);
+    
+    const nav = document.createElement("nav");
+    nav.appendChild(internationalEntryLink);
+    
+    addressSearchWrapper.appendChild(nav);
 
     return addressSearchWrapper;
     

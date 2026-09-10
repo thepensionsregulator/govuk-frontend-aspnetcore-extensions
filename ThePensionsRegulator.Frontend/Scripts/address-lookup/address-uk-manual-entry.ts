@@ -8,7 +8,7 @@ import { createTextInputFormGroup } from '/ThePensionsRegulator.GovUk.Frontend/j
 import { createLink } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js';
 import { clearFormGroupError, showFormGroupError } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js';
 
-export interface AddressUkManualEntryOptions{
+export interface AddressUkManualEntryOptions {
     onAddressSubmitted: (address: UkManualEntryAddress) => void;
     onBackToSearchRequested: () => void;
 }
@@ -45,7 +45,7 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
         event.preventDefault();
         const formGroupsByField: Record<keyof UkManualEntryValues, HTMLElement> = { addressLine1, addressLine2, addressLine3, townOrCity, county, postcode };
         Object.values(formGroupsByField).forEach(clearFormGroupError);
-        var validationResult = validateUkManualEntryAddress(readValues(addressLine1, addressLine2, addressLine3, townOrCity, county, postcode));
+        const validationResult = validateUkManualEntryAddress(readValues(addressLine1, addressLine2, addressLine3, townOrCity, county, postcode));
         if (!validationResult.isValid) {
             validationResult.errorMessages.forEach(({ fieldName, message }) => showFormGroupError(formGroupsByField[fieldName], message));
             return;

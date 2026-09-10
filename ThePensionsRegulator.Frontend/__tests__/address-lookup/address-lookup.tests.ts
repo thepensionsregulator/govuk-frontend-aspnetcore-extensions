@@ -153,4 +153,18 @@ describe("createAddressLookup", () => {
         expect(component.querySelector<HTMLInputElement>("#building")).toHaveValue("1");
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
     });
+
+    it("should confirm an international address with its country name and ID", () => {
+        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+
+        component.querySelector<HTMLAnchorElement>("nav a")!.click();
+
+        component.querySelector<HTMLInputElement>("#address-line-1")!.value = "123 Rue de Rivoli";
+        component.querySelector<HTMLInputElement>("#post-town")!.value = "Paris";
+        component.querySelector<HTMLSelectElement>("#country")!.value = "FR";
+        component.querySelector<HTMLButtonElement>("button")!.click();
+
+        expect(component.querySelector("p")).toHaveTextContent("France");
+        expect(component.querySelector<HTMLInputElement>("#countryId")).toHaveValue("FR");
+    });
 });

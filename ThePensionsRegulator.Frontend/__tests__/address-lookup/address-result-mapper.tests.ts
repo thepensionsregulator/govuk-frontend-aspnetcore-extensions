@@ -117,6 +117,7 @@ describe("mapInternationalManualEntryAddress", () => {
 			postTown: "Paris",
 			countyStateProvince: "Ile-de-France",
 			countryId: "FR",
+			countryName: "France",
 			postcode: "75001"
 		};
 
@@ -127,6 +128,7 @@ describe("mapInternationalManualEntryAddress", () => {
 			postTown: "Paris",
 			postCounty: "Ile-de-France",
 			countryId: "FR",
+			countryName: "France",
 			postcode: "75001"
 		});
 	});
@@ -144,6 +146,7 @@ describe("mapInternationalManualEntryAddress", () => {
 			postTown: "New York",
 			postCounty: undefined,
 			countryId: undefined,
+			countryName: undefined,
 			postcode: undefined
 		});
 	});

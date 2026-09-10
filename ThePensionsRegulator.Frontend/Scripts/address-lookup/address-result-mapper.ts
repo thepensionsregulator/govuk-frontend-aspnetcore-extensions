@@ -89,6 +89,7 @@ export function mapInternationalManualEntryAddress(address: InternationalManualE
         postTown: address.postTown,
         postCounty: address.countyStateProvince ?? undefined,
         countryId: address.countryId ?? undefined,
+        countryName: address.countryName ?? undefined,
         postcode: address.postcode ?? undefined
     };
 }

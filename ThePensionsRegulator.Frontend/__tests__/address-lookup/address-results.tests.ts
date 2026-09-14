@@ -15,12 +15,14 @@ describe("renderAddressResults", () => {
     function createResults() {
         const onAddressSelected = jest.fn<(address: AddressSearchResult) => void>();
         const onBackToSearchRequested = jest.fn<() => void>();
+        const onUkManualEntryRequested = jest.fn<() => void>();
 
         const component = renderAddressResults({
             addresses: [addressOne, addressTwo],
             criteria,
             onAddressSelected,
-            onBackToSearchRequested
+            onBackToSearchRequested,
+            onUkManualEntryRequested
         });
 
         const select = component.querySelector<HTMLSelectElement>("#address-select");

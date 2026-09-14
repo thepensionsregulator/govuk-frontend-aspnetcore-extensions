@@ -31,16 +31,18 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 Page = new FilterAndOverrideBlocks(CurrentPage, _publishedValueFallback)
             };
 
+            var overriddenText = $"<p><strong>This text is overridden at {DateTime.Now.ToLongTimeString()}. This time should update when the page is refreshed to confirm caching works correctly.</strong></p>";
+
             // Filter out a block in the block list and block grid
             viewModel.Page.BlockList!.Filter = block => block.Settings?.Value<string>(_publishedValueFallback, nameof(GovukGrid.CssClassesForRow)) != "filter-this";
             viewModel.Page.Grid!.Filter = block => block.Settings?.Value<string>(_publishedValueFallback, nameof(GovukGrid.CssClassesForRow)) != "filter-this";
 
             // Override content in the block list and block grid
             viewModel.Page.BlockList.First(x => x.GridRowClassList().Contains("override-this"))?
-                .Content.OverrideValue(nameof(GovukTypography.Text), "<p><strong>This text is overridden.</strong></p>");
+                .Content.OverrideValue(nameof(GovukTypography.Text), overriddenText);
 
             viewModel.Page.Grid.First(x => x.GridRowClassList().Contains("override-this"))?
-                .Content.OverrideValue(nameof(GovukTypography.Text), "<p><strong>This text is overridden.</strong></p>");
+                .Content.OverrideValue(nameof(GovukTypography.Text), overriddenText);
 
             // Override content in a nested block list
             var row = viewModel.Page.BlockList.First(x => x.Content.ContentType.Alias == GovukGridRow.ModelTypeAlias);
@@ -48,7 +50,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             if (col != null)
             {
                 col.Content.Value<OverridableBlockListModel>(_publishedValueFallback, nameof(GovukGridColumn.Blocks))?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"))?
-                    .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
+                    .Content.OverrideValue("text", overriddenText);
             }
 
             return CurrentTemplate(viewModel);

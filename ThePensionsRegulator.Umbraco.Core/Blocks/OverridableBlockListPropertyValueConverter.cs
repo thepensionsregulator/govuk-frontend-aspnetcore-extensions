@@ -1,4 +1,6 @@
-﻿using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models.Blocks;
@@ -23,9 +25,12 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         IVariationContextAccessor _variationContextAccessor,
         BlockEditorVarianceHandler _blockEditorVarianceHandler,
         IPublishedValueFallback _publishedValueFallback,
-        IEnumerable<IPropertyValueFormatter> _propertyValueFormatters
+        ILanguageService _languageService,
+        IPropertyRenderingContextAccessor _propertyRenderingContextAccessor,
+        IEnumerable<IPropertyValueFormatter> _propertyValueFormatters,
+        IHttpContextAccessor _httpContextAccessor
         )
-        : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _jsonSerializer, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler)
+        : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _jsonSerializer, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler, _languageService, _propertyRenderingContextAccessor)
     {
         /// <inheritdoc />
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
@@ -38,7 +43,9 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
-            return baseModel is BlockListModel ? new OverridableBlockListModel(_publishedValueFallback, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
+            return baseModel is BlockListModel
+                ? new OverridableBlockListModel(_publishedValueFallback, _httpContextAccessor, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters }
+                : baseModel;
         }
 
         /// <inheritdoc />

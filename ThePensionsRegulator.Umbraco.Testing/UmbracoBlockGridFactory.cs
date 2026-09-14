@@ -64,7 +64,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockGridModel CreateOverridableBlockGridModel(IPublishedValueFallback publishedValueFallback, IEnumerable<BlockGridItem> blockGridItems)
         {
-            return new OverridableBlockGridModel(publishedValueFallback, blockGridItems, null, OverridableBlockGridItem.NoopPublishedElementFactory);
+            return new OverridableBlockGridModel(publishedValueFallback, null, blockGridItems, null, OverridableBlockGridItem.NoopPublishedElementFactory);
         }
 
         /// <summary>

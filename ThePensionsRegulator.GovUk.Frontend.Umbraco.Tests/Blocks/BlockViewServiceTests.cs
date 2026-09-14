@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -59,7 +60,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
                 ], "area");
             model.Filter = block => block.Content.ContentType.Alias == ALLOWED;
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IHttpContextAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());

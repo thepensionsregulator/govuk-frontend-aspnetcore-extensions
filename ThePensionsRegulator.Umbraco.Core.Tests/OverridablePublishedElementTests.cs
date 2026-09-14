@@ -54,5 +54,21 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
             var updatedValue = content.Value<string>(_testContext.PublishedValueFallback.Object, PROPERTY_ALIAS);
             Assert.Equal(textAfter, updatedValue);
         }
+
+        [Fact]
+        public void Value_store_is_isolated_per_request_scope()
+        {
+            // Arrange
+            var content = new OverridablePublishedElement(UmbracoContentFactory.CreateContent<IPublishedElement>(ELEMENT_TYPE_ALIAS).Object);
+            var firstRequestStore = new OverridablePublishedElementValueStore();
+            var secondRequestStore = new OverridablePublishedElementValueStore();
+
+            // Act
+            firstRequestStore.Get(content)[PROPERTY_ALIAS] = "first request";
+
+            // Assert
+            Assert.Equal("first request", firstRequestStore.Get(content)[PROPERTY_ALIAS]);
+            Assert.False(secondRequestStore.Get(content).ContainsKey(PROPERTY_ALIAS));
+        }
     }
 }

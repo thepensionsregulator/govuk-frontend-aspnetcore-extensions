@@ -98,7 +98,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             };
 
             // Act
-            _ = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, parentBlockGrid, null, factory);
+            _ = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, null, parentBlockGrid, null, factory);
 
             // Assert
             Assert.NotNull(convertedChildBlockGrid);
@@ -160,7 +160,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             };
 
             // Act
-            _ = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, parentBlockGrid, null, factory);
+            _ = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, null, parentBlockGrid, null, factory);
 
             // Assert
             Assert.NotNull(convertedChildBlockList);
@@ -194,7 +194,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             parentBlockGrid[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, overriddenChildBlockList);
 
             // Act
-            var model = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, parentBlockGrid);
+            var model = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, null, parentBlockGrid);
 
             // Assert
             var overriddenBlock = model.FindBlockByContentTypeAlias(OVERRIDDEN_BLOCK_TYPE_ALIAS);
@@ -225,7 +225,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             };
 
             // Act
-            var result = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, blockGrid);
+            var result = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, null, blockGrid);
 
             // Assert
             Assert.Single(result[0].Areas);
@@ -249,7 +249,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             var filter = new Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>(block => true);
 
             // Act
-            var model = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, blockGrids.ParentBlockGrid, filter);
+            var model = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, null, blockGrids.ParentBlockGrid, filter);
 
             // Assert
             Assert.Equal(filter, model.Filter);
@@ -377,7 +377,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             var parentBlockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
                 UmbracoBlockGridFactory.CreateOverridableBlock(
                     new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings()
-                    .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, Array.Empty<OverridableBlockListItem>()))
+                    .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, null, Array.Empty<OverridableBlockListItem>()))
                     .Object),
                     new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object)
                 ));
@@ -400,7 +400,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             replacementChildBlock.Content.OverrideValue(CONTENT_PROPERTY_ALIAS_TO_OVERRIDE, CONTENT_PROPERTY_VALUE);
             replacementChildBlock.Settings?.OverrideValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, SETTINGS_PROPERTY_VALUE);
 
-            var replacementChildBlockList = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, new[] { replacementChildBlock });
+            var replacementChildBlockList = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, null, new[] { replacementChildBlock });
             parentBlockGrid[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, replacementChildBlockList);
 
             // Assert
@@ -428,7 +428,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
         [Fact]
         public void Can_convert_to_BlockGridModel()
         {
-            var converter = TypeDescriptor.GetConverter(new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object));
+            var converter = TypeDescriptor.GetConverter(new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, null));
 
             Assert.Equal(typeof(OverridableBlockGridTypeConverter), converter.GetType());
         }

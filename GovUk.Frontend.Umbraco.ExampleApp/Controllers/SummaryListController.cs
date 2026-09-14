@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
@@ -18,17 +19,20 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         private readonly IPublishedContentTypeCache _publishedContentTypeCache;
         private readonly IVariationContextAccessor _variationContextAccessor;
         private readonly IPublishedValueFallback _publishedValueFallback;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         public SummaryListController(ILogger<RenderController> logger,
             ICompositeViewEngine compositeViewEngine,
             IUmbracoContextAccessor umbracoContextAccessor,
             IPublishedContentTypeCache publishedContentTypeCache,
             IVariationContextAccessor variationContextAccessor,
-            IPublishedValueFallback publishedValueFallback)
+            IPublishedValueFallback publishedValueFallback,
+            IHttpContextAccessor httpContextAccessor)
             : base(logger, compositeViewEngine, umbracoContextAccessor)
         {
             _publishedContentTypeCache = publishedContentTypeCache ?? throw new ArgumentNullException(nameof(publishedContentTypeCache));
             _variationContextAccessor = variationContextAccessor ?? throw new ArgumentNullException(nameof(variationContextAccessor));
             _publishedValueFallback = publishedValueFallback ?? throw new ArgumentNullException(nameof(publishedValueFallback));
+            _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
         }
 
         [ModelType(typeof(SummaryList))]
@@ -47,7 +51,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     summaryListItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
                     summaryListItems.Add(summaryListItem);
                 }
-                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor);
+                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _httpContextAccessor);
             }
 
             return CurrentTemplate(viewModel);

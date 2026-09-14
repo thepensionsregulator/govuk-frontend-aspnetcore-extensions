@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
@@ -21,5 +22,6 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprSearchResults(string popularContentUrl, string searchContentUrl, string contentByIdUrl);
         TagBuilder GenerateTprSearchResultsFooterLinks(TprSearchFooterLinks tprSearchFooterLinks);
         TagBuilder GenerateTprSearchResultsInput(int headingLevel, string headingClass, string? label = null);
+        TagBuilder GenerateTprAddressLookup(ModelExpression @for, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content);
     }
 }

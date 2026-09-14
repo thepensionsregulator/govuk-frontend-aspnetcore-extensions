@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GovUk.Frontend.ExampleApp.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GovUk.Frontend.ExampleApp.Controllers
 {
@@ -7,6 +8,13 @@ namespace GovUk.Frontend.ExampleApp.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        [ActionName("Index")]
+        public IActionResult IndexPost(AddressLookupViewModel viewModel)
+        {
+            return View("Index", viewModel);
         }
     }
 }

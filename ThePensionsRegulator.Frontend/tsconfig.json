@@ -2,7 +2,15 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "Scripts",
-    "outDir": "wwwroot/ThePensionsRegulator.Frontend/js"
+    "outDir": "wwwroot/ThePensionsRegulator.Frontend/js",
+    "paths": {
+      "/ThePensionsRegulator.GovUk.Frontend/js/*": [
+        "../ThePensionsRegulator.GovUk.Frontend/types/*"
+      ]
+    }
   },
+  "references": [
+    { "path": "../ThePensionsRegulator.GovUk.Frontend" }
+  ],
   "include": ["Scripts/**/*.ts", "Scripts/**/*.js"]
 }

@@ -27,13 +27,26 @@
     "collectCoverageFrom": [
       "wwwroot/govuk/**/*.js"
     ],
-    "moduleFileExtensions": ["js", "ts", "json"],
-    "extensionsToTreatAsEsm": [".ts"],
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "json"
+    ],
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
     "transform": {
-      "^.+\\.ts$": ["ts-jest", { "useESM": true }]
+      "^.+\\.ts$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
+      ]
     },
     "moduleNameMapper": {
-      "^/govuk-frontend\\.min\\.js(\\?v=.*)?$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js"
+      "^/govuk-frontend\\.min\\.js(\\?v=.*)?$": "<rootDir>/ThePensionsRegulator.Frontend/__mocks__/govuk/all.min.js",
+      "^/ThePensionsRegulator\\.GovUk\\.Frontend/js/(.*)\\.js$": "<rootDir>/ThePensionsRegulator.GovUk.Frontend/Scripts/$1.ts",
+      "^(\\.{1,2}/.*)\\.js$": "$1"
     }
   },
   "type": "module",
@@ -51,11 +64,11 @@
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
-    "build:ts": "npm run build:ts:frontend && npm run build:ts:govuk-frontend",
-    "build:ts:frontend": "tsc -p ThePensionsRegulator.Frontend/tsconfig.json",
-    "build:ts:govuk-frontend": "tsc -p ThePensionsRegulator.GovUk.Frontend/tsconfig.json",
-    "watch:ts:frontend": "tsc -p ThePensionsRegulator.Frontend/tsconfig.json --watch",
-    "watch:ts:govuk-frontend": "tsc -p ThePensionsRegulator.GovUk.Frontend/tsconfig.json --watch",
+    "build:ts": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.Frontend",
+    "build:ts:frontend": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.Frontend",
+    "build:ts:govuk-frontend": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.GovUk.Frontend",
+    "watch:ts:frontend": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.Frontend --watch",
+    "watch:ts:govuk-frontend": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.GovUk.Frontend --watch",
     "govuk": "npm install && cd GovUk.Frontend.AspNetCore.Extensions.ConformanceTests && npm install",
     "generate-version": "node scripts/generate-version.js",
     "backoffice": "npm run generate-version && cd ThePensionsRegulator.GovUk.Frontend.Umbraco/Backoffice && npm install && npm run build && cd ../../ThePensionsRegulator.Frontend.Umbraco/Backoffice && npm install && npm run build",

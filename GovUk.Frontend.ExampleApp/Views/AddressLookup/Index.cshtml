@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Address lookup";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column address-lookup-target"></div>
+</div>
+
+@section scripts {
+    <script src="~/js/address-lookup-example.js" type="module"></script>
+}

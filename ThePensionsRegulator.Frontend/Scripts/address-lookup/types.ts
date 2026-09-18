@@ -59,3 +59,15 @@ export interface FetchAddressSearchServiceOptions{
     addressByIdEndpoint: string;
     fetchFunction?: typeof globalThis.fetch;
 }
+
+export interface ConfirmedAddress {
+    addressLine1: string;
+    addressLine2?: string;
+    addressLine3?: string;
+    postTown?: string;
+    postCounty?: string;
+    countryId?: string;
+    countryName?: string;
+    postCode?: string;
+    uprnReference?: string;
+}

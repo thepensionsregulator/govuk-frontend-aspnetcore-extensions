@@ -65,8 +65,8 @@ describe("createAddressLookup", () => {
 
     it("should render the results view when multiple addresses are found", async () => {
         mockFetchResults([
-            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
-            { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
+            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", BUILDING_NUMBER: "1", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
+            { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", BUILDING_NUMBER: "2", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
         const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
@@ -98,8 +98,8 @@ describe("createAddressLookup", () => {
 
     it("should confirm the selected address from the results view", async () => {
         mockFetchResults([
-            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
-            { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
+            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", BUILDING_NUMBER: "1", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
+            { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", BUILDING_NUMBER: "2", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
         const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
@@ -111,13 +111,15 @@ describe("createAddressLookup", () => {
         select.value = "2";
         component.querySelector<HTMLButtonElement>("button")!.click();
 
-        // Known gap: the "confirmed" state has no case in the render switch, so the container goes blank.
-        expect(component.children).toHaveLength(0);
+        expect(component.querySelector("p")).toHaveTextContent("2 High StreetLondonSW1A 2AA");
+        expect(component.querySelector<HTMLInputElement>("#AddressLine1")).toHaveValue("2 High Street");
+        expect(component.querySelector<HTMLInputElement>("#PostCode")).toHaveValue("SW1A 2AA");
+        expect(component.querySelector<HTMLInputElement>("#UPRNReference")).toHaveValue("2");
     });
 
-    it("should leave the container blank when a single address is found", async () => {
+    it("should render the confirmed view when a single address is found", async () => {
         mockFetchResults([
-            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
+            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", BUILDING_NUMBER: "1", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
         const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
@@ -127,8 +129,10 @@ describe("createAddressLookup", () => {
         button.click();
         await flushPromises();
 
-        // Known gap: single-result search auto-confirms, but there's no view for the confirmed state.
-        expect(component.children).toHaveLength(0);
+        expect(component.querySelector("p")).toHaveTextContent("1 High StreetLondonSW1A 2AA");
+        expect(component.querySelector<HTMLInputElement>("#AddressLine1")).toHaveValue("1 High Street");
+        expect(component.querySelector<HTMLInputElement>("#PostCode")).toHaveValue("SW1A 2AA");
+        expect(component.querySelector<HTMLInputElement>("#UPRNReference")).toHaveValue("1");
     });
 
     it("should return to a pre-filled search form when back-to-search is requested", async () => {

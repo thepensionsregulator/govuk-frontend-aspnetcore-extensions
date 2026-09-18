@@ -67,11 +67,11 @@ export class AddressLookupStateMachine {
 
                 return { status: "confirmed", address: event.address };
             case "back-to-search-requested":
-                if (state.status !== "results") {
+                if (state.status === "search") {
                     return undefined;
                 }
 
-                return { status: "search", criteria: state.criteria };
+                return { status: "search", criteria: state.status === "results" ? state.criteria : undefined };
             default:
                 return undefined;
         }

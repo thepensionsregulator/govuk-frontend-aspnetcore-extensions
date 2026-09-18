@@ -39,12 +39,6 @@ export interface TextInputOptions {
   attributes?: Record<string, string>;
 }
 
-export interface LabeledControlFormGroupOptions {
-    labelText: string;
-    hintText?: string;
-    control: FormControl;
-}
-
 export interface TextInputFormGroupOptions {
   labelText: string;
   hintText?: string;
@@ -77,4 +71,13 @@ export interface SelectFormGroupOptions {
     labelText: string;
     hintText?: string;
     select: SelectOptions;
+}
+
+export type LegendSize = "small" | "medium" | "large" | "x-large";
+
+export interface FieldsetOptions {
+    legendText: string;
+    legendSize?: LegendSize;
+    children: HTMLElement[];
+    attributes?: Record<string, string>;
 }

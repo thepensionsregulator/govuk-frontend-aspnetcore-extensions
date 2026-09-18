@@ -9,6 +9,7 @@ export type AddressResultsOptions = {
     criteria: AddressSearchCriteria;
     onAddressSelected: (address: AddressSearchResult) => void;
     onBackToSearchRequested: () => void;
+    onUkManualEntryRequested: () => void;
 }
 
 export function renderAddressResults(options: AddressResultsOptions): HTMLElement {
@@ -32,11 +33,22 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
     const button = createButton({labelText: "Confirm address", variant: "secondary", type: "button"});
     button.addEventListener("click", handleAddressSelect);
 
+    const ukManualEntryLink = createLink({labelText: "Enter address not on list"});
+    ukManualEntryLink.addEventListener("click", handleUkManualEntry);
+
     const backToSearchLink = createLink({labelText: "Return to postcode search"});
     backToSearchLink.addEventListener("click", handleBackToSearch);
 
     const nav = document.createElement("nav");
-    nav.appendChild(backToSearchLink);
+    const ul = document.createElement("ul");
+    ul.classList = "govuk-list";
+    const backToSearchLi = document.createElement("li");
+    backToSearchLi.appendChild(backToSearchLink);
+    const ukManualEntryLi = document.createElement("li");
+    ukManualEntryLi.appendChild(ukManualEntryLink);
+    ul.appendChild(backToSearchLi);
+    ul.appendChild(ukManualEntryLi);
+    nav.appendChild(ul);
     addressResultsWrapper.appendChild(selectFormGroup);
     addressResultsWrapper.appendChild(button);
     addressResultsWrapper.appendChild(nav);
@@ -59,5 +71,10 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
     function handleBackToSearch(event: Event): void {
         event.preventDefault();
         options.onBackToSearchRequested();
+    }
+
+    function handleUkManualEntry(event: Event): void {
+        event.preventDefault();
+        options.onUkManualEntryRequested();
     }
 }

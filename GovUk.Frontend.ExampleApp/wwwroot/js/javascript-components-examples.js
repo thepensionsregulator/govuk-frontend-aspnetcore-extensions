@@ -1,4 +1,5 @@
 import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
+import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
 import { createTextInputFormGroup, createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 import { createFieldsetFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js";
 import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
@@ -35,6 +36,22 @@ document.addEventListener("DOMContentLoaded", function () {
     buttonGroup.appendChild(secondaryWarning);
 
     buttonTarget.appendChild(buttonGroup);
+
+    const linkTarget = document.querySelector(".link-target");
+    const link = createLink({ labelText: "Back to search", href: "#" });
+    const backLink = createLink({ labelText: "Back", variant: "back", href: "#" });
+
+    link.addEventListener("click", (event) => {
+        event.preventDefault();
+        console.log("Link clicked");
+    });
+    backLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        console.log("Back link clicked");
+    });
+
+    linkTarget.appendChild(link);
+    linkTarget.appendChild(backLink);
 
     const inputTarget = document.querySelector(".input-target");
 

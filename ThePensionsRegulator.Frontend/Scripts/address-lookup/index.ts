@@ -1,1 +1,1 @@
-export { createAddressSearch } from "./address-search.js";
+export { createAddressLookup } from "./address-lookup.js";

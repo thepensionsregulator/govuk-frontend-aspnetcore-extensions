@@ -9,6 +9,14 @@ npm install
 npm test
 ```
 
+`npm test` runs Jest, which covers both `.js` and TypeScript `.ts` test files. To type-check all TypeScript in the repo (source scripts and tests) without running the tests, use:
+
+```cmd
+npx tsc -p tsconfig.json --noEmit
+```
+
+See [TypeScript for client-side scripts](/docs/contributing/typescript-development.md) for more on writing client-side scripts in TypeScript.
+
 To run unit tests on the .NET code:
 
 ```cmd

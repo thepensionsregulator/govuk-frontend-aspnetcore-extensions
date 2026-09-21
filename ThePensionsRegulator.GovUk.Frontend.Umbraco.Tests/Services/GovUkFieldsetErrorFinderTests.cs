@@ -113,10 +113,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             var errorMessageBlock = new OverridableBlockListItem(
                 new BlockListItem(Guid.NewGuid(), errorMessageContent.Object, Guid.NewGuid(), errorMessageSettings.Object),
-                OverridableBlockListItem.NoopPublishedElementFactory
+                new TestPublishedElementFactory()
                 );
 
-            var fieldsetBlocks = new OverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), null, new[] { errorMessageBlock }, null, OverridableBlockListItem.NoopPublishedElementFactory);
+            var fieldsetBlocks = new OverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>(), new[] { errorMessageBlock }, null);
             var fieldsetContentProperties = new[] { UmbracoPropertyFactory.CreateBlockListProperty(PropertyAliases.FieldsetBlocks, ElementTypeAliases.Fieldset, fieldsetBlocks) };
             fieldsetContent.SetupGet(x => x.Properties).Returns(fieldsetContentProperties);
             fieldsetContent.Setup(x => x.GetProperty(PropertyAliases.FieldsetBlocks)).Returns(fieldsetContentProperties[0]);
@@ -124,7 +124,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             var fieldsetBlock = new OverridableBlockListItem(
                 new BlockListItem(Guid.NewGuid(), fieldsetContent.Object, Guid.NewGuid(), fieldsetSettings.Object),
-                OverridableBlockListItem.NoopPublishedElementFactory
+                new TestPublishedElementFactory()
             );
             return fieldsetBlock;
         }

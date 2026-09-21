@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.Umbraco.Core;
@@ -15,18 +14,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         IOptions<GovUkFrontendUmbracoOptions> _options,
         IEnumerable<IBlockViewInterceptor> _interceptors,
         IPublishedValueFallback _publishedValueFallback,
-        IHttpContextAccessor _httpContextAccessor)
+        IOverridablePublishedElementFactoryAccessor _publishedElementFactoryAccessor)
     {
-        public BlockViewService(
-            IGovUkGridClassBuilder gridClassBuilder,
-            IGovUkFieldsetErrorFinder fieldsetErrorFinder,
-            IOptions<GovUkFrontendUmbracoOptions> options,
-            IEnumerable<IBlockViewInterceptor> interceptors,
-            IPublishedValueFallback publishedValueFallback)
-            : this(gridClassBuilder, fieldsetErrorFinder, options, interceptors, publishedValueFallback, new HttpContextAccessor())
-        {
-        }
-
         /// <summary>
         /// Builds details of the HTML required to render each block in a block grid.
         /// </summary>
@@ -42,7 +31,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
             var wrappedModel = blockGridItems as BlockGridViewModel;
             var gridModel = blockGridItems as OverridableBlockGridModel ?? wrappedModel?.BlockGrid;
             var areaModel = blockGridItems as OverridableBlockGridArea;
-            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(_publishedValueFallback, _httpContextAccessor, blockGridItems)).ToList();
+            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(_publishedValueFallback, _publishedElementFactoryAccessor, blockGridItems)).ToList();
             if (!blocks.Any()) { return blocksToReturn; }
 
             string? previousRowClass = null, previousColumnClass = null;
@@ -169,7 +158,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         {
             var blocksToReturn = new List<BlockViewModel>();
             var wrappedModel = blockListItems as BlockListViewModel;
-            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(_publishedValueFallback, _httpContextAccessor, blockListItems);
+            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(_publishedValueFallback, _publishedElementFactoryAccessor, blockListItems);
             var renderGrid = (wrappedModel?.RenderGrid ?? true);
             var blocks = filteredModel.FilteredBlocks().ToList();
             if (!blocks.Any()) { return blocksToReturn; }

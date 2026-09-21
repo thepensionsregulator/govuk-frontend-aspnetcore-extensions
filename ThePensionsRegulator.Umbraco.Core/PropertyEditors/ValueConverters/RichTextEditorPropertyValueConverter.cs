@@ -18,11 +18,7 @@ namespace ThePensionsRegulator.Umbraco.Core.PropertyEditors.ValueConverters
     /// A property value converter for rich text properties using TinyMCE which does the built-in conversion and then applies any 
     /// <see cref="IPropertyValueFormatter"/> instances registered with the dependency injection container.
     /// </summary>
-    public class RichTextEditorPropertyValueConverter : RteBlockRenderingValueConverter
-    {
-        private readonly IEnumerable<IPropertyValueFormatter> _propertyValueFormatters;
-
-        public RichTextEditorPropertyValueConverter(
+    public class RichTextEditorPropertyValueConverter(
             HtmlLocalLinkParser _linkParser,
             HtmlUrlParser _urlParser,
             HtmlImageSourceParser _imageSourceParser,
@@ -39,8 +35,8 @@ namespace ThePensionsRegulator.Umbraco.Core.PropertyEditors.ValueConverters
             IVariationContextAccessor _variationContextAccessor,
             IOptionsMonitor<DeliveryApiSettings> _deliveryApiSettings,
             ILanguageService _languageService,
-            IPropertyRenderingContextAccessor _propertyRenderingContextAccessor) :
-            base(_linkParser,
+            IPropertyRenderingContextAccessor _propertyRenderingContextAccessor)
+            : RteBlockRenderingValueConverter(_linkParser,
                 _urlParser,
                 _imageSourceParser,
                 _apiRichTextElementParser,
@@ -56,9 +52,7 @@ namespace ThePensionsRegulator.Umbraco.Core.PropertyEditors.ValueConverters
                 _deliveryApiSettings,
                 _languageService,
                 _propertyRenderingContextAccessor)
-        {
-            this._propertyValueFormatters = _propertyValueFormatters ?? throw new ArgumentNullException(nameof(_propertyValueFormatters));
-        }
+    {
 
         /// <inheritdoc />
         public override object ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)

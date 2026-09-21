@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
+﻿using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core.DeliveryApi;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models.Blocks;
@@ -28,7 +26,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         ILanguageService _languageService,
         IPropertyRenderingContextAccessor _propertyRenderingContextAccessor,
         IEnumerable<IPropertyValueFormatter> _propertyValueFormatters,
-        IHttpContextAccessor _httpContextAccessor
+        IOverridablePublishedElementFactoryAccessor _overridablePublishedElementFactoryAccessor
         )
         : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _jsonSerializer, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler, _languageService, _propertyRenderingContextAccessor)
     {
@@ -44,7 +42,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
             return baseModel is BlockListModel
-                ? new OverridableBlockListModel(_publishedValueFallback, _httpContextAccessor, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters }
+                ? new OverridableBlockListModel(_publishedValueFallback, _overridablePublishedElementFactoryAccessor, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters }
                 : baseModel;
         }
 

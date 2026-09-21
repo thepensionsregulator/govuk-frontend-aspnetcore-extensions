@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.ComponentModel;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
 using Umbraco.Cms.Core;
@@ -21,23 +20,25 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
         /// </summary>
-        [Obsolete("Use a constructor which specifies an IPublishedValueFallback.")]
+        [Obsolete($"Use a constructor which accepts an {nameof(IPublishedValueFallback)} to avoid depending on Umbraco's StaticServiceProvider.")]
         public OverridableBlockListModel() : this(Array.Empty<BlockListItem>()) { }
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
         /// </summary>
         /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block list items.</param>
-        [Obsolete("Use a constructor which specifies an IHttpContextAccessor. Pass null for non-HTTP usage.")]
-        public OverridableBlockListModel(IPublishedValueFallback publishedValueFallback) : this(publishedValueFallback, null, Array.Empty<BlockListItem>()) { }
+        [Obsolete($"Use a constructor which accepts an {nameof(IOverridablePublishedElementFactoryAccessor)} to avoid depending on Umbraco's StaticServiceProvider.")]
+        public OverridableBlockListModel(IPublishedValueFallback publishedValueFallback) : this(publishedValueFallback, Array.Empty<BlockListItem>()) { }
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
         /// </summary>
         /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block list items.</param>
-        /// <param name="httpContextAccessor">The accessor used to find the current request-scoped override store. Must not be <c>null</c> during an HTTP request; pass <c>null</c> for non-HTTP usage.</param>
-        public OverridableBlockListModel(IPublishedValueFallback publishedValueFallback, IHttpContextAccessor? httpContextAccessor)
-            : this(publishedValueFallback, httpContextAccessor, Array.Empty<BlockListItem>()) { }
+        /// <param name="publishedElementFactoryAccessor">Accessor used to resolve a request-scoped factory to create elements using a request-scoped value store. Request scope is required to support overriding property values.</param>
+        public OverridableBlockListModel(IPublishedValueFallback publishedValueFallback, IOverridablePublishedElementFactoryAccessor publishedElementFactoryAccessor)
+            : this(publishedValueFallback, publishedElementFactoryAccessor, Array.Empty<BlockListItem>())
+        {
+        }
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/>.
@@ -45,12 +46,12 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        [Obsolete("Use a constructor which specifies an IHttpContextAccessor. Pass null for non-HTTP usage.")]
+        [Obsolete($"Use a constructor which accepts an {nameof(IOverridablePublishedElementFactoryAccessor)} to avoid depending on Umbraco's StaticServiceProvider.")]
         public OverridableBlockListModel(
             IEnumerable<BlockListItem> blockListItems,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,
             Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
-            => Initialise(null, blockListItems, filter, publishedElementFactory);
+            => Initialise(null, blockListItems, filter, publishedElementFactory is not null ? new DelegatingOverridablePublishedElementFactoryAccessor(publishedElementFactory) : null);
 
 
         /// <summary>
@@ -60,34 +61,34 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        [Obsolete("Use the overload accepting an IHttpContextAccessor. Pass null for non-HTTP usage.")]
+        [Obsolete($"Use a constructor which accepts an {nameof(IOverridablePublishedElementFactoryAccessor)} to avoid depending on Umbraco's StaticServiceProvider.")]
+
         public OverridableBlockListModel(
             IPublishedValueFallback publishedValueFallback,
             IEnumerable<BlockListItem> blockListItems,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,
             Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
-            => Initialise(publishedValueFallback, blockListItems, filter, publishedElementFactory);
+            => Initialise(publishedValueFallback, blockListItems, filter, publishedElementFactory is not null ? new DelegatingOverridablePublishedElementFactoryAccessor(publishedElementFactory) : null);
 
         /// <summary>
-        /// Creates a block list model whose wrappers resolve override values from the current HTTP request. The <paramref name="httpContextAccessor"/> must not be <c>null</c> when this method is called during an HTTP request. Pass <c>null</c> only for non-HTTP usage.
+        /// Creates an <see cref="OverridableBlockListModel" /> whose content and settings elements are created using a factory provided by the supplied <see cref="IOverridablePublishedElementFactoryAccessor">.
         /// </summary>
         /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block list items.</param>
-        /// <param name="httpContextAccessor">Must not be <c>null</c> during an HTTP request, or values will be cached incorrectly. Pass <c>null</c> only for non-HTTP usage.</param>
+        /// <param name="publishedElementFactoryAccessor">Accessor used to resolve a request-scoped factory to create elements using a request-scoped value store. Request scope is required to support overriding property values.</param>
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         public OverridableBlockListModel(
             IPublishedValueFallback publishedValueFallback,
-            IHttpContextAccessor? httpContextAccessor,
+            IOverridablePublishedElementFactoryAccessor publishedElementFactoryAccessor,
             IEnumerable<BlockListItem> blockListItems,
-            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,
-            Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null)
             => Initialise(
                 publishedValueFallback,
                 blockListItems,
                 filter,
-                publishedElementFactory ?? (publishedElement => publishedElement is null ? null : new OverridablePublishedElement(publishedElement, httpContextAccessor)));
+                publishedElementFactoryAccessor);
 
-        private void Initialise(IPublishedValueFallback? publishedValueFallback, IEnumerable<BlockListItem> blockListItems, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter, Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory)
+        private void Initialise(IPublishedValueFallback? publishedValueFallback, IEnumerable<BlockListItem> blockListItems, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter, IOverridablePublishedElementFactoryAccessor? publishedElementFactoryAccessor)
         {
             if (blockListItems is null)
             {
@@ -95,17 +96,18 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
             }
 
             BaseFilter = filter ?? DefaultFilter;
-            var factory = publishedElementFactory ?? OverridableBlockListItem.DefaultPublishedElementFactory;
-
             // Take the IEnumerable<BlockListItem> (which is probably a BlockListModel) and convert each item to an OverridableBlockListItem,
             // and each nested block list to an OverridableBlockListModel populated with OverridableBlockListItems.
             if (blockListItems.Any())
             {
-                publishedValueFallback = publishedValueFallback ?? StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>();
+                publishedValueFallback ??= StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>();
+                publishedElementFactoryAccessor ??= StaticServiceProvider.Instance.GetRequiredService<IOverridablePublishedElementFactoryAccessor>();
+
+                var publishedElementFactory = publishedElementFactoryAccessor.Get();
 
                 foreach (var item in blockListItems)
                 {
-                    var overridableItem = item as OverridableBlockListItem ?? new OverridableBlockListItem(item, factory);
+                    var overridableItem = item as OverridableBlockListItem ?? new OverridableBlockListItem(item, publishedElementFactory);
                     foreach (var property in overridableItem.Content.Properties)
                     {
                         ConvertBlockModelPropertyToOverridable<BlockListModel, OverridableBlockListModel>(
@@ -113,8 +115,8 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
                             Constants.PropertyEditors.Aliases.BlockList,
                             overridableItem,
                             property,
-                            blockList => new OverridableBlockListModel(publishedValueFallback, null, blockList, BaseFilter, factory),
-                            () => new OverridableBlockListModel(publishedValueFallback, null, Array.Empty<BlockListItem>(), BaseFilter, factory));
+                            blockList => new OverridableBlockListModel(publishedValueFallback, publishedElementFactoryAccessor, (IEnumerable<BlockListItem>)blockList, BaseFilter),
+                            () => new OverridableBlockListModel(publishedValueFallback, publishedElementFactoryAccessor, Array.Empty<BlockListItem>(), BaseFilter));
                     }
                     Items.Add(overridableItem);
                 }

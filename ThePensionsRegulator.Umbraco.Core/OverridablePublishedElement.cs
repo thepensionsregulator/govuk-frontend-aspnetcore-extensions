@@ -1,42 +1,47 @@
-﻿using ThePensionsRegulator.Umbraco.Core.Blocks;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Umbraco.Core
 {
     /// <summary>
-    /// A wrapper for <see cref="IPublishedElement"/> which allows property values to be overriden.
+    /// A wrapper for <see cref="IPublishedElement"/> which allows property values to be overridden.
     /// </summary>
     public class OverridablePublishedElement : IPublishedElement, IOverridablePublishedElement
     {
         private readonly IPublishedElement _publishedElement;
-
-        // Umbraco caches this object instance at PropertyCacheLevel.Element, so it can be reused by multiple requests.
-        // Request overrides must therefore live in the scoped store below rather than on this cached object.
-        // This dictionary is only used when the wrapper was created without an HTTP context, such as in a unit test.
-        private readonly Dictionary<string, object> _propertyValuesNoHttpContext = new();
-        private readonly IHttpContextAccessor? _httpContextAccessor;
+        private IOverridablePublishedElementValueStore? _overridablePublishedElementValueStore;
         private IEnumerable<IPropertyValueFormatter>? _propertyValueFormatters;
 
-        /// <summary>
-        /// Creates an overridable element for non-HTTP usage. For HTTP request handling, use <see cref="OverridablePublishedElement(IPublishedElement, IHttpContextAccessor)"/>.
-        /// </summary>
-        public OverridablePublishedElement(IPublishedElement publishedElement) : this(publishedElement, null)
+        // Resolved on first use so that the obsolete constructor defers the StaticServiceProvider call.
+        private IOverridablePublishedElementValueStore ValueStore
+            => _overridablePublishedElementValueStore
+               ??= StaticServiceProvider.Instance.GetRequiredService<IOverridablePublishedElementValueStore>();
+
+        [Obsolete("Use the constructor that accepts IOverridablePublishedElementValueStore to avoid depending on Umbraco's StaticServiceProvider.")]
+        public OverridablePublishedElement(IPublishedElement publishedElement)
         {
+            _publishedElement = publishedElement ?? throw new ArgumentNullException(nameof(publishedElement));
         }
 
         /// <summary>
-        /// Creates an overridable element that resolves request-scoped override values through the supplied HTTP context accessor.
+        /// Initializes a new instance of the <see cref="OverridablePublishedElement"/> class.
         /// </summary>
-        /// <param name="publishedElement">The element to wrap.</param>
-        /// <param name="httpContextAccessor">The accessor used to find the current request-scoped override store.</param>
-        internal OverridablePublishedElement(IPublishedElement publishedElement, IHttpContextAccessor? httpContextAccessor)
+        /// <param name="publishedElement">The published element to wrap.</param>
+        /// <param name="overridablePublishedElementValueStore">A request-scoped store for overridden property values.</param>
+        /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
+        /// <remarks>
+        /// Umbraco caches this object instance at PropertyCacheLevel.Element, so it can be reused by multiple requests.
+        /// Request overrides must therefore live in the request-scoped store <see cref="IOverridablePublishedElementValueStore"/> 
+        /// rather than on this cached object instance.
+        /// </remarks>
+        public OverridablePublishedElement(IPublishedElement publishedElement, IOverridablePublishedElementValueStore overridablePublishedElementValueStore)
         {
-            _publishedElement = publishedElement;
-            _httpContextAccessor = httpContextAccessor;
+            _publishedElement = publishedElement ?? throw new ArgumentNullException(nameof(publishedElement));
+            _overridablePublishedElementValueStore = overridablePublishedElementValueStore ?? throw new ArgumentNullException(nameof(overridablePublishedElementValueStore));
         }
 
         /// <summary>
@@ -56,12 +61,13 @@ namespace ThePensionsRegulator.Umbraco.Core
 
                 if (_propertyValueFormatters is not null)
                 {
-                    foreach (var alias in _propertyValuesNoHttpContext.Keys)
+                    var propertyValues = ValueStore.Get(this);
+                    foreach (var alias in new List<string>(propertyValues.Keys))
                     {
                         var propertyType = GetProperty(alias)?.PropertyType;
                         if (propertyType is not null)
                         {
-                            _propertyValuesNoHttpContext[alias] = _propertyValueFormatters.ApplyFormatters(propertyType, _propertyValuesNoHttpContext[alias]);
+                            propertyValues[alias] = _propertyValueFormatters.ApplyFormatters(propertyType, propertyValues[alias]);
                         }
                     }
                 }
@@ -107,7 +113,7 @@ namespace ThePensionsRegulator.Umbraco.Core
         /// <param name="value">The new property value.</param>
         public void OverrideValue(string alias, object value)
         {
-            var propertyValues = GetPropertyValues();
+            var propertyValues = ValueStore.Get(this);
 
             // Apply property value formatters so that any automatic changes that would have been applied
             // by a property value converter that supports property value formatters will also be applied to the new value.
@@ -151,7 +157,7 @@ namespace ThePensionsRegulator.Umbraco.Core
         /// </remarks>
         public T? Value<T>(string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default)
         {
-            var propertyValues = GetPropertyValues();
+            var propertyValues = ValueStore.Get(this);
 
             var key = alias.ToUpperInvariant();
             if (propertyValues.ContainsKey(key))
@@ -182,7 +188,7 @@ namespace ThePensionsRegulator.Umbraco.Core
         /// </remarks>
         public T? Value<T>(IPublishedValueFallback publishedValueFallback, string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default)
         {
-            var propertyValues = GetPropertyValues();
+            var propertyValues = ValueStore.Get(this);
 
             var key = alias.ToUpperInvariant();
             if (propertyValues.ContainsKey(key))
@@ -191,16 +197,6 @@ namespace ThePensionsRegulator.Umbraco.Core
             }
 
             return _publishedElement != null ? _publishedElement.Value(publishedValueFallback, alias, culture, segment, fallback, defaultValue) : default;
-        }
-
-        private IDictionary<string, object> GetPropertyValues()
-        {
-            // This object instance is element-cached, but overrides are request data. A scoped store gives every
-            // request its own values and prevents concurrent requests from sharing or clearing each other's overrides.
-            var requestStore = _httpContextAccessor?.HttpContext?.RequestServices.GetService<IOverridablePublishedElementValueStore>();
-
-            return requestStore?.Get(this)
-                ?? _propertyValuesNoHttpContext;
         }
     }
 }

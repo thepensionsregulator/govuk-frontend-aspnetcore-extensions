@@ -154,7 +154,6 @@ The card title will automatically be used as visually-hidden text on each action
 You can also supply card actions and summary list items at runtime from a database or other data source.
 
 ```csharp
-using Microsoft.AspNetCore.Http;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
@@ -166,7 +165,7 @@ public class ExampleController : RenderController
     private readonly IPublishedValueFallback _publishedValueFallback;
     private readonly IPublishedContentTypeCache _publishedContentTypeCache;
     private readonly IVariationContextAccessor _variationContextAccessor;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IOverridablePublishedElementFactoryAccessor _publishedElementFactoryAccessor;
 
     public ExampleController(ILogger<RenderController> logger,
         ICompositeViewEngine compositeViewEngine,
@@ -174,13 +173,13 @@ public class ExampleController : RenderController
         IPublishedValueFallback publishedValueFallback,
         IPublishedContentTypeCache publishedContentTypeCache,
         IVariationContextAccessor variationContextAccessor,
-        IHttpContextAccessor httpContextAccessor
+        IOverridablePublishedElementFactoryAccessor publishedElementFactoryAccessor)
         ) : base(logger, compositeViewEngine, umbracoContextAccessor)
     {
         _publishedValueFallback = publishedValueFallback;
         _publishedContentTypeCache = publishedContentTypeCache;
         _variationContextAccessor = variationContextAccessor;
-        _httpContextAccessor = httpContextAccessor;
+        _publishedElementFactoryAccessor = publishedElementFactoryAccessor;
     }
 
     [ModelType(typeof(ExampleViewModel))]
@@ -197,8 +196,8 @@ public class ExampleController : RenderController
         listItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org/change-the-thing" }, "Change"));
 
         var block = viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukSummaryList.ModelTypeAlias);
-        block.Content.OverrideSummaryCardActions(new[] { cardAction }, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _httpContextAccessor);
-        block.Content.OverrideSummaryListItems(new[] { listItem }, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _httpContextAccessor);
+        block.Content.OverrideSummaryCardActions(new[] { cardAction }, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactoryAccessor);
+        block.Content.OverrideSummaryListItems(new[] { listItem }, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactoryAccessor);
 
         return CurrentTemplate(viewModel);
     }

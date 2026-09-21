@@ -1,10 +1,10 @@
 ﻿using GovUk.Frontend.Umbraco.ExampleApp.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using ThePensionsRegulator.GovUk.Frontend.Validation;
+using ThePensionsRegulator.Umbraco.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Web;
@@ -13,23 +13,16 @@ using Umbraco.Cms.Web.Common.PublishedModels;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 {
-    public class SelectController : RenderController
+    public class SelectController(
+        ILogger<RenderController> _logger,
+        ICompositeViewEngine _compositeViewEngine,
+        IUmbracoContextAccessor _umbracoContextAccessor,
+        IPublishedValueFallback _publishedValueFallback,
+        IPublishedContentTypeCache _publishedContentTypeCache,
+        IVariationContextAccessor _variationContextAccessor,
+        IOverridablePublishedElementFactoryAccessor _publishedElementFactoryAccessor)
+        : RenderController(_logger, _compositeViewEngine, _umbracoContextAccessor)
     {
-        private readonly IPublishedValueFallback _publishedValueFallback;
-        private readonly IPublishedContentTypeCache _publishedContentTypeCache;
-        private readonly IVariationContextAccessor _variationContextAccessor;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public SelectController(ILogger<RenderController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor,
-            IPublishedValueFallback publishedValueFallback, IPublishedContentTypeCache publishedContentTypeCache, IVariationContextAccessor variationContextAccessor, IHttpContextAccessor httpContextAccessor) :
-            base(logger, compositeViewEngine, umbracoContextAccessor)
-        {
-            _publishedValueFallback = publishedValueFallback;
-            _publishedContentTypeCache = publishedContentTypeCache;
-            _variationContextAccessor = variationContextAccessor;
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         [ModelType(typeof(SelectViewModel))]
         public override IActionResult Index()
         {
@@ -49,7 +42,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             viewModel.Page.Blocks!.FindBlockByClass("external-data")!
                 .Content
-                .OverrideSelectOptions(optionsFromDataSource, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _httpContextAccessor, viewModel.Page.Blocks!.Filter);
+                .OverrideSelectOptions(optionsFromDataSource, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactoryAccessor, viewModel.Page.Blocks!.Filter);
 
             return CurrentTemplate(viewModel);
         }

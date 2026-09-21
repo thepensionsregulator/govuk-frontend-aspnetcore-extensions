@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -37,7 +36,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
                 ]);
             model.Filter = block => block.Content.ContentType.Alias == ALLOWED;
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -60,7 +59,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
                 ], "area");
             model.Filter = block => block.Content.ContentType.Alias == ALLOWED;
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IHttpContextAccessor>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -83,7 +82,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
                 ]);
             model.Filter = block => block.Content.ContentType.Alias == ALLOWED;
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -99,7 +98,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Arrange
             var model = UmbracoBlockGridFactory.CreateOverridableBlockGridModel([]);
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -114,7 +113,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Arrange
             var model = UmbracoBlockGridFactory.CreateOverridableBlockGridArea([], "area");
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -133,7 +132,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
                 UmbracoBlockGridFactory.CreateOverridableBlock("three")
                 ]);
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary()).ToList();
@@ -160,7 +159,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
                 UmbracoBlockGridFactory.CreateOverridableBlock("three")
                 ], "area");
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary()).ToList();
@@ -183,7 +182,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             // Arrange
             var model = UmbracoBlockListFactory.CreateOverridableBlockListModel([]);
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -202,7 +201,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
                 UmbracoBlockListFactory.CreateOverridableBlock("three")
                 ]);
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary()).ToList();
@@ -256,7 +255,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -303,7 +302,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -325,7 +324,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -347,7 +346,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForBlocksEnabled });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -406,7 +405,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForSiteEnabled });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -465,7 +464,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = renderWidthContainerForSiteEnabled });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -510,7 +509,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -555,7 +554,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -600,7 +599,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -645,7 +644,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -694,7 +693,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -743,7 +742,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             var options = Options.Create(new GovUkFrontendUmbracoOptions { RenderWidthContainerForBlocks = true });
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, options, [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -773,7 +772,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             var errors = hasErrors ? [UmbracoBlockGridFactory.CreateOverridableBlock(ElementTypeAliases.ErrorMessage)] : Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
             _ = _fieldsetErrorFinder.Setup(x => x.FindErrors(model.First(), modelState)).Returns(errors);
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, modelState);
@@ -814,7 +813,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             var errors = hasErrors ? [UmbracoBlockListFactory.CreateOverridableBlock(ElementTypeAliases.ErrorMessage)] : Array.Empty<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>>();
             _ = _fieldsetErrorFinder.Setup(x => x.FindErrors(model.First(), modelState)).Returns(errors);
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, modelState);
@@ -847,7 +846,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(null)).Returns(ROW_CLASS);
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, null, "alias", false)).Returns(COLUMN_CLASS);
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());
@@ -870,7 +869,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             _ = _gridClassBuilder.Setup(x => x.BuildGridRowClasses(null)).Returns(ROW_CLASS);
             _ = _gridClassBuilder.Setup(x => x.BuildGridColumnClasses(null, null, null, "alias", false)).Returns(COLUMN_CLASS);
 
-            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>());
+            var blockViewService = new BlockViewService(_gridClassBuilder.Object, _fieldsetErrorFinder.Object, Options.Create(new GovUkFrontendUmbracoOptions()), [], Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactoryAccessor>());
 
             // Act
             var result = blockViewService.PrepareBlockViewModels(model, new ModelStateDictionary());

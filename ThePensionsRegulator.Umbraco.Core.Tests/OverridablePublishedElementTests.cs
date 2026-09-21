@@ -1,4 +1,5 @@
-﻿using ThePensionsRegulator.Umbraco.Testing;
+﻿using Moq;
+using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 
@@ -8,12 +9,8 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
     {
         private const string PROPERTY_ALIAS = "property";
         private const string ELEMENT_TYPE_ALIAS = "elementType";
-        private readonly UmbracoTestContext _testContext;
-
-        public OverridablePublishedElementTests()
-        {
-            _testContext = new UmbracoTestContext().SetupContentType(ELEMENT_TYPE_ALIAS);
-        }
+        private readonly UmbracoTestContext _testContext = new UmbracoTestContext().SetupContentType(ELEMENT_TYPE_ALIAS);
+        private readonly OverridablePublishedElementValueStore _valueStore = new();
 
         public void Dispose() => _testContext.Dispose();
 
@@ -26,7 +23,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
 
             var content = new OverridablePublishedElement(UmbracoContentFactory.CreateContent<IPublishedElement>(ELEMENT_TYPE_ALIAS)
                 .SetupUmbracoRichTextPropertyValue(PROPERTY_ALIAS, textBefore)
-                .Object);
+                .Object, _valueStore);
 
             // Act
             content.OverrideValue(PROPERTY_ALIAS, textAfter);
@@ -45,7 +42,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
 
             var content = new OverridablePublishedElement(UmbracoContentFactory.CreateContent<IPublishedElement>(ELEMENT_TYPE_ALIAS)
                  .SetupUmbracoRichTextPropertyValue(PROPERTY_ALIAS, textBefore)
-                 .Object);
+                 .Object, _valueStore);
 
             // Act
             content.OverrideValue(PROPERTY_ALIAS, textAfter);
@@ -54,21 +51,5 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
             var updatedValue = content.Value<string>(_testContext.PublishedValueFallback.Object, PROPERTY_ALIAS);
             Assert.Equal(textAfter, updatedValue);
         }
-
-        [Fact]
-        public void Value_store_is_isolated_per_request_scope()
-        {
-            // Arrange
-            var content = new OverridablePublishedElement(UmbracoContentFactory.CreateContent<IPublishedElement>(ELEMENT_TYPE_ALIAS).Object);
-            var firstRequestStore = new OverridablePublishedElementValueStore();
-            var secondRequestStore = new OverridablePublishedElementValueStore();
-
-            // Act
-            firstRequestStore.Get(content)[PROPERTY_ALIAS] = "first request";
-
-            // Assert
-            Assert.Equal("first request", firstRequestStore.Get(content)[PROPERTY_ALIAS]);
-            Assert.False(secondRequestStore.Get(content).ContainsKey(PROPERTY_ALIAS));
+            }
         }
-    }
-}

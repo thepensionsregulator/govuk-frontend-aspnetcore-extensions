@@ -56,6 +56,9 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
 
             var blockEditorVarianceHandler = new BlockEditorVarianceHandler(testContext.LanguageService.Object, testContext.ContentTypeService.Object);
 
+            var overridablePublishedElementFactoryAccessor = new Mock<IOverridablePublishedElementFactoryAccessor>();
+            overridablePublishedElementFactoryAccessor.Setup(x => x.Get()).Returns(new DefaultOverridablePublishedElementFactory(new OverridablePublishedElementValueStore()));
+
             return new OverridableBlockListPropertyValueConverter(
                 testContext.ProfilingLogger.Object,
                 new BlockEditorConverter(testContext.PublishedContentTypeCache.Object, testContext.CacheManager.Object, testContext.PublishedModelFactory.Object, testContext.VariationContextAccessor.Object, blockEditorVarianceHandler),
@@ -69,7 +72,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
                 testContext.LanguageService.Object,
                 testContext.PropertyRenderingContextAccessor.Object,
                 propertyValueFormatters ?? new List<IPropertyValueFormatter>(),
-                testContext.HttpContextAccessor.Object
+                overridablePublishedElementFactoryAccessor.Object
                 );
         }
     }

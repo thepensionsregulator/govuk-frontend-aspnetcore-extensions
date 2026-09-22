@@ -23,15 +23,24 @@
     listItem.Content.Value<HtmlEncodedString>(PropertyAliases.SummaryListItemValue))).ToList();
 
     var trackingResult = await NewItemTracker.TrackNewItemsAsync(Model.Content.Key.ToString("N"), trackingItems);
+
+    var orderedItems = filteredListItems
+.Select((item, index) => new
+{
+  Item = item,
+  IsNew = trackingResult.IsNew(index)
+})
+.OrderByDescending(x => x.IsNew)
+.ToList();
 }
 <govuk-summary-list id="@Model.Content.Key" class="@cssClasses">
-    @for(var index = 0; index < filteredListItems.Count(); index++)
+    @foreach(var row in orderedItems)
     {
-        var listItem = filteredListItems[index];
-        var isNew = trackingResult.IsNew(index);
+        var listItem = row.Item;
+        var isNew = row.IsNew;
         <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
             <govuk-summary-list-row-key>
-                @(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey)) @if(newTagEnabled && isNew){<strong class="govuk-tag @newTagCssClasses">@newTagText</strong>}
+                @(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey)) @if(newTagEnabled && isNew){<strong class="@newTagCssClasses">@newTagText</strong>}
             </govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
             @{

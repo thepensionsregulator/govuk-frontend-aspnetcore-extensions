@@ -50,7 +50,45 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor);
             }
 
+            OverrideSummaryListItems(viewModel);
+
             return CurrentTemplate(viewModel);
+        }
+
+        private void OverrideSummaryListItems(SummaryList viewModel)
+        {
+            var summaryListToOverride = viewModel.Blocks!.FindBlockByClass("new-enabled");
+            if (summaryListToOverride is null) return;
+
+            var items = CreateTestItems();
+
+            summaryListToOverride.Content.OverrideSummaryListItems(items, _publishedContentTypeCache, _variationContextAccessor);
+
+        }
+
+        private List<SummaryListItem> CreateTestItems()
+        {
+            var items = new List<SummaryListItem>();
+
+            for (var i = 1; i <= 3; i++)
+            {
+                var summaryListItem = new SummaryListItem($"Data source item {i}", new HtmlEncodedString($"Data source item value {i}")) { /*TrackingId = $"tracking-id-{i}"*/ };
+                summaryListItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
+                items.Add(summaryListItem);
+            }
+            if(!int.TryParse(Request.Query["items"], out var itemCount))
+            {
+               return items;
+            }
+
+            itemCount = Math.Clamp(itemCount, 0, 10);
+
+            for(var i = 0; i <= itemCount; i++)
+            {
+                items.Add(new SummaryListItem($"Data source item {i}", new HtmlEncodedString($"Data source item value {i}")) { /*TrackingId = $"tracking-id-{i}"*/ });
+            }
+
+            return items;
         }
     }
 }

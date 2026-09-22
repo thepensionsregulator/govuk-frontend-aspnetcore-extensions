@@ -42,13 +42,23 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
                 return SummaryListTrackingResult.Empty;
             }
 
-            var previouslyTrackedItemsSet = previouslyTrackedItems.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var previousCounts = previouslyTrackedItems.GroupBy(x => x)
+                                                       .ToDictionary(g => g.Key, g => g.Count());
+            var newItemIndexes = new HashSet<int>();
 
-            var newItemIndexes = currentlyTrackedItems
-                .Select((identity, index) => new { identity, index })
-                .Where(x => !previouslyTrackedItemsSet.Contains(x.identity))
-                .Select(x => x.index)
-                .ToHashSet();
+            for (var i = 0; i < currentlyTrackedItems.Count; i++)
+            {
+                var identity = currentlyTrackedItems[i];
+
+                if (!previousCounts.TryGetValue(identity, out var count) || count == 0)
+                {
+                    newItemIndexes.Add(i);
+                }
+                else
+                {
+                    previousCounts[identity]--;
+                }
+            }
 
             SaveSnapshot(session, sessionKey, currentlyTrackedItems);
 

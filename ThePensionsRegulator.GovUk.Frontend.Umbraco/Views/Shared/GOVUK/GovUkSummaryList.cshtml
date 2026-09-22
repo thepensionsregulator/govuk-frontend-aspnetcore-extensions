@@ -15,6 +15,10 @@
     var listItems = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItems)!;
 
     var filteredListItems = listItems.FilteredBlocks().ToList();
+
+    var newTagEnabled = Model.Content?.Value<bool>(PropertyAliases.SummaryListNewTagEnabled) ?? false;
+    var newTagText = Model.Content?.Value<string>(PropertyAliases.SummaryListNewTagText) ?? "New";
+    var newTagCssClasses = Model.Content?.Value<string>(PropertyAliases.SummaryListNewTagCssClasses) ?? "govuk-tag--green";
     var trackingItems = filteredListItems.Select(listItem => new SummaryListItem(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey) ?? string.Empty,
     listItem.Content.Value<HtmlEncodedString>(PropertyAliases.SummaryListItemValue))).ToList();
 
@@ -26,10 +30,8 @@
         var listItem = filteredListItems[index];
         var isNew = trackingResult.IsNew(index);
         <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
-            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))
-                @if(isNew){
-                    <strong class="govuk-tag govuk-tag--green">New</strong>
-                }
+            <govuk-summary-list-row-key>
+                @(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey)) @if(newTagEnabled && isNew){<strong class="govuk-tag @newTagCssClasses">@newTagText</strong>}
             </govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
             @{

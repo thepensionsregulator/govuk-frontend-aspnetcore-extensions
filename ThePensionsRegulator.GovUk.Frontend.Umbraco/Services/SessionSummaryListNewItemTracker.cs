@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -65,7 +63,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 
             foreach (var item in items)
             {
-                var identity = _summaryItemIdentityProvider.GetIdentity(item); 
+                var identity = _summaryItemIdentityProvider.GetIdentity(item);
                 if (identity is not null)
                 {
                     identities.Add(identity);
@@ -100,7 +98,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 
     }
 
-        public interface ISummaryListNewItemTracker
+    public interface ISummaryListNewItemTracker
     {
         Task<SummaryListTrackingResult> TrackNewItemsAsync(string summaryListId, IReadOnlyList<SummaryListItem> items, CancellationToken cancellationToken = default);
     }

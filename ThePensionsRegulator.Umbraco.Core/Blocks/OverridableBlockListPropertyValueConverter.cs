@@ -26,7 +26,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         ILanguageService _languageService,
         IPropertyRenderingContextAccessor _propertyRenderingContextAccessor,
         IEnumerable<IPropertyValueFormatter> _propertyValueFormatters,
-        IOverridablePublishedElementFactoryAccessor _overridablePublishedElementFactoryAccessor
+        IOverridablePublishedElementFactory _overridablePublishedElementFactory
         )
         : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _jsonSerializer, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler, _languageService, _propertyRenderingContextAccessor)
     {
@@ -42,7 +42,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
             return baseModel is BlockListModel
-                ? new OverridableBlockListModel(_publishedValueFallback, _overridablePublishedElementFactoryAccessor, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters }
+                ? new OverridableBlockListModel(_publishedValueFallback, _overridablePublishedElementFactory, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters }
                 : baseModel;
         }
 

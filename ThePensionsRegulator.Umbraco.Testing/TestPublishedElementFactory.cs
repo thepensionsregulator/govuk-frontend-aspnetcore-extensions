@@ -11,15 +11,15 @@ namespace ThePensionsRegulator.Umbraco.Testing
     /// </summary>
     public class TestPublishedElementFactory : IOverridablePublishedElementFactory
     {
-        private readonly Dictionary<OverridablePublishedElement, IDictionary<string, object>> _values = new();
+        private readonly Dictionary<Guid, IDictionary<string, object>> _values = new();
 
-        public TestPublishedElementFactory() => ValueStore.Setup(x => x.Get(It.IsAny<OverridablePublishedElement>()))
-            .Returns((OverridablePublishedElement element) =>
+        public TestPublishedElementFactory() => ValueStore.Setup(x => x.Get(It.IsAny<Guid>()))
+            .Returns((Guid elementKey) =>
             {
-                if (!_values.TryGetValue(element, out var propertyValues))
+                if (!_values.TryGetValue(elementKey, out var propertyValues))
                 {
                     propertyValues = new Dictionary<string, object>();
-                    _values.Add(element, propertyValues);
+                    _values.Add(elementKey, propertyValues);
                 }
                 return propertyValues;
             });
@@ -36,7 +36,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
             if (publishedElement is null) { return null; }
             if (publishedElement is IOverridablePublishedElement) { return (IOverridablePublishedElement)publishedElement; }
 
-            return new OverridablePublishedElement(publishedElement, ValueStore.Object);
+            return new OverridablePublishedElement(publishedElement, () => ValueStore.Object);
         }
     }
 }

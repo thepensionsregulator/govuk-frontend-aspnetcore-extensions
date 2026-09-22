@@ -14,7 +14,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         IOptions<GovUkFrontendUmbracoOptions> _options,
         IEnumerable<IBlockViewInterceptor> _interceptors,
         IPublishedValueFallback _publishedValueFallback,
-        IOverridablePublishedElementFactoryAccessor _publishedElementFactoryAccessor)
+        IOverridablePublishedElementFactory _publishedElementFactory)
     {
         /// <summary>
         /// Builds details of the HTML required to render each block in a block grid.
@@ -31,7 +31,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
             var wrappedModel = blockGridItems as BlockGridViewModel;
             var gridModel = blockGridItems as OverridableBlockGridModel ?? wrappedModel?.BlockGrid;
             var areaModel = blockGridItems as OverridableBlockGridArea;
-            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(_publishedValueFallback, _publishedElementFactoryAccessor, blockGridItems)).ToList();
+            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(_publishedValueFallback, _publishedElementFactory, blockGridItems)).ToList();
             if (!blocks.Any()) { return blocksToReturn; }
 
             string? previousRowClass = null, previousColumnClass = null;
@@ -158,7 +158,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         {
             var blocksToReturn = new List<BlockViewModel>();
             var wrappedModel = blockListItems as BlockListViewModel;
-            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(_publishedValueFallback, _publishedElementFactoryAccessor, blockListItems);
+            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(_publishedValueFallback, _publishedElementFactory, blockListItems);
             var renderGrid = (wrappedModel?.RenderGrid ?? true);
             var blocks = filteredModel.FilteredBlocks().ToList();
             if (!blocks.Any()) { return blocksToReturn; }

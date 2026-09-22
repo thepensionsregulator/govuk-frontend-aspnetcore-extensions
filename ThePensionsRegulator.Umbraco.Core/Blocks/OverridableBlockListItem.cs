@@ -1,4 +1,6 @@
-﻿using Umbraco.Cms.Core.Models.Blocks;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Core.Blocks
@@ -8,7 +10,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// <summary>
         /// Creates block list items for compatibility scenarios where no <see cref="IOverridablePublishedElementFactory"/> is supplied.
         /// </summary>
-        [Obsolete($"Use a factory which accepts an {nameof(IOverridablePublishedElementFactory)} or {nameof(Func<IPublishedElement?, IOverridablePublishedElement?>)} to support overriding property values.")]
+        [Obsolete($"Use a factory which accepts an {nameof(IOverridablePublishedElementFactory)} or {nameof(Func<IPublishedElement?, IOverridablePublishedElement?>)} to avoid depending on Umbraco's StaticServiceProvider.")]
         public static Func<IPublishedElement?, IOverridablePublishedElement?> DefaultPublishedElementFactory { get => publishedElement => publishedElement != null ? new OverridablePublishedElement(publishedElement) : null; }
 
         /// <summary>
@@ -16,7 +18,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// </summary>
         public static Func<IPublishedElement?, IOverridablePublishedElement?> NoopPublishedElementFactory { get => publishedElement => (IOverridablePublishedElement?)publishedElement; }
 
-        [Obsolete($"Use a factory which accepts an {nameof(IOverridablePublishedElementFactory)} or {nameof(Func<IPublishedElement?, IOverridablePublishedElement?>)} to support overriding property values.")]
+        [Obsolete($"Use a factory which accepts an {nameof(IOverridablePublishedElementFactory)} or {nameof(Func<IPublishedElement?, IOverridablePublishedElement?>)} to avoid depending on Umbraco's StaticServiceProvider.")]
         public OverridableBlockListItem(BlockListItem item) : this(item, DefaultPublishedElementFactory) { }
 
         /// <summary>

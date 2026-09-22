@@ -10,6 +10,6 @@ namespace ThePensionsRegulator.Umbraco.Core
     /// </remarks>
     public interface IOverridablePublishedElementValueStore
     {
-        IDictionary<string, object> Get(OverridablePublishedElement element);
+        IDictionary<string, object> Get(Guid elementKey);
     }
 }

@@ -24,7 +24,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
             IPublishedValueFallback _publishedValueFallback,
             ILanguageService _languageService,
             IPropertyRenderingContextAccessor _propertyRenderingContextAccessor,
-            IOverridablePublishedElementFactoryAccessor _overridablePublishedElementFactoryAccessor
+            IOverridablePublishedElementFactory _overridablePublishedElementFactory
         )
         : BlockGridPropertyValueConverter(_proflog, _blockConverter, _jsonSerializer, _apiElementBuilder, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler, _languageService, _propertyRenderingContextAccessor)
     {
@@ -40,7 +40,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
             return baseModel is BlockGridModel
-                ? new OverridableBlockGridModel(_publishedValueFallback, _overridablePublishedElementFactoryAccessor, (BlockGridModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters }
+                ? new OverridableBlockGridModel(_publishedValueFallback, _overridablePublishedElementFactory, (BlockGridModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters }
                 : baseModel;
         }
 

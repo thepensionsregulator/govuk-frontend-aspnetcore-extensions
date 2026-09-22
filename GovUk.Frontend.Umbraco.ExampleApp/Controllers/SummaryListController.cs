@@ -21,7 +21,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         IPublishedContentTypeCache _publishedContentTypeCache,
         IVariationContextAccessor _variationContextAccessor,
         IPublishedValueFallback _publishedValueFallback,
-        IOverridablePublishedElementFactoryAccessor _publishedElementFactoryAccessor)
+        IOverridablePublishedElementFactory _publishedElementFactory)
         : RenderController(_logger, _compositeViewEngine, _umbracoContextAccessor)
     {
         [ModelType(typeof(SummaryList))]
@@ -40,7 +40,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     summaryListItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
                     summaryListItems.Add(summaryListItem);
                 }
-                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactoryAccessor);
+                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory);
             }
 
             return CurrentTemplate(viewModel);

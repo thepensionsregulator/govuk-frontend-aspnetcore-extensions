@@ -10,8 +10,8 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// <summary>
         /// Creates block grid items for compatibility scenarios where no <see cref="IOverridablePublishedElementFactory"/> is supplied.
         /// </summary>
-        [Obsolete($"Use a factory which accepts an {nameof(IOverridablePublishedElementFactory)} or {nameof(Func<IPublishedElement?, IOverridablePublishedElement?>)} to support overriding property values.")]
-        public static Func<IPublishedElement?, IOverridablePublishedElement?> DefaultPublishedElementFactory { get => publishedElement => publishedElement != null ? new OverridablePublishedElement(publishedElement, StaticServiceProvider.Instance.GetRequiredService<IOverridablePublishedElementValueStore>()) : null; }
+        [Obsolete($"Use a factory which accepts an {nameof(IOverridablePublishedElementFactory)} or {nameof(Func<IPublishedElement?, IOverridablePublishedElement?>)} to avoid depending on Umbraco's StaticServiceProvider.")]
+        public static Func<IPublishedElement?, IOverridablePublishedElement?> DefaultPublishedElementFactory { get => publishedElement => publishedElement != null ? new OverridablePublishedElement(publishedElement) : null; }
 
         /// <summary>
         /// Leaves published elements unchanged. This is useful when the supplied elements already implement <see cref="IOverridablePublishedElement"/>, such as in unit tests.
@@ -20,7 +20,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
 
         private List<OverridableBlockGridArea> _areas = new();
 
-        [Obsolete($"Use a factory which accepts an {nameof(IOverridablePublishedElementFactory)} or {nameof(Func<IPublishedElement?, IOverridablePublishedElement?>)} to support overriding property values.")]
+        [Obsolete($"Use a factory which accepts an {nameof(IOverridablePublishedElementFactory)} or {nameof(Func<IPublishedElement?, IOverridablePublishedElement?>)} to avoid depending on Umbraco's StaticServiceProvider.")]
         public OverridableBlockGridItem(BlockGridItem item) : this(item, DefaultPublishedElementFactory) { }
 
         /// <summary>

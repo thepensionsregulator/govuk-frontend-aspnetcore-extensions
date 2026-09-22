@@ -1,4 +1,4 @@
-﻿using Moq;
+using Moq;
 using System.ComponentModel;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
@@ -98,7 +98,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             };
 
             // Act
-            _ = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new DelegatingOverridablePublishedElementFactoryAccessor(factory), parentBlockGrid);
+            _ = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new DelegatingOverridablePublishedElementFactory(factory), parentBlockGrid);
 
             // Assert
             Assert.NotNull(convertedChildBlockGrid);
@@ -160,7 +160,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             };
 
             // Act
-            _ = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new DelegatingOverridablePublishedElementFactoryAccessor(factory), parentBlockGrid);
+            _ = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new DelegatingOverridablePublishedElementFactory(factory), parentBlockGrid);
 
             // Assert
             Assert.NotNull(convertedChildBlockList);
@@ -194,12 +194,52 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             parentBlockGrid[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, overriddenChildBlockList);
 
             // Act
-            var model = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactoryAccessor(), parentBlockGrid);
+            var model = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), parentBlockGrid);
 
             // Assert
             var overriddenBlock = model.FindBlockByContentTypeAlias(OVERRIDDEN_BLOCK_TYPE_ALIAS);
             Assert.NotNull(overriddenBlock);
             Assert.Equal(OVERRIDDEN_TEXT_VALUE, overriddenBlock.Content.Value<string>(_testContext.PublishedValueFallback.Object, OVERRIDDEN_TEXT_PROPERTY));
+        }
+
+        [Fact]
+        public void Reused_cached_block_grid_items_resolve_overrides_from_the_current_request()
+        {
+            // Arrange
+            const string propertyAlias = "text";
+            const string originalValue = "Original text";
+            const string firstRequestValue = "First request override";
+            const string secondRequestValue = "Second request override";
+
+            var blockGrid = UmbracoBlockGridFactory.CreateBlockGridModel(
+                UmbracoBlockGridFactory.CreateBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("alias")
+                        .SetupUmbracoTextboxPropertyValue(propertyAlias, originalValue)
+                        .Object));
+            var firstStore = new OverridablePublishedElementValueStore();
+            var secondStore = new OverridablePublishedElementValueStore();
+            IOverridablePublishedElementValueStore currentStore = firstStore;
+
+            var model = new OverridableBlockGridModel(
+                _testContext.PublishedValueFallback.Object,
+                new DelegatingOverridablePublishedElementFactory(publishedElement => publishedElement is null ? null : new OverridablePublishedElement(publishedElement, () => currentStore)),
+                blockGrid);
+            var item = model[0];
+
+            // Act
+            item.Content.OverrideValue(propertyAlias, firstRequestValue);
+            currentStore = secondStore;
+            var secondRequestBeforeOverride = item.Content.Value<string>(_testContext.PublishedValueFallback.Object, propertyAlias);
+            item.Content.OverrideValue(propertyAlias, secondRequestValue);
+            currentStore = firstStore;
+            var firstRequestAfterSecondOverride = item.Content.Value<string>(_testContext.PublishedValueFallback.Object, propertyAlias);
+            currentStore = secondStore;
+            var secondRequestAfterOverride = item.Content.Value<string>(_testContext.PublishedValueFallback.Object, propertyAlias);
+
+            // Assert
+            Assert.Equal(originalValue, secondRequestBeforeOverride);
+            Assert.Equal(firstRequestValue, firstRequestAfterSecondOverride);
+            Assert.Equal(secondRequestValue, secondRequestAfterOverride);
         }
 
         [Fact]
@@ -225,7 +265,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             };
 
             // Act
-            var result = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactoryAccessor(), blockGrid);
+            var result = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), blockGrid);
 
             // Assert
             Assert.Single(result[0].Areas);
@@ -234,6 +274,53 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             Assert.Equal(AREA_ROWSPAN, result[0].Areas.First().RowSpan);
             Assert.Equal(AREA_COLSPAN, result[0].Areas.First().ColumnSpan);
             Assert.Equal("inArea", result[0].Areas.First().First().Content.ContentType.Alias);
+        }
+
+        [Fact]
+        public void Reused_cached_grid_area_items_resolve_overrides_from_the_current_request()
+        {
+            // Arrange
+            const string areaPropertyAlias = "text";
+            const string originalValue = "Original text";
+            const string firstRequestValue = "First request override";
+            const string secondRequestValue = "Second request override";
+
+            var itemInArea = UmbracoBlockGridFactory.CreateBlock(
+                UmbracoBlockGridFactory.CreateContentOrSettings("inArea")
+                    .SetupUmbracoTextboxPropertyValue(areaPropertyAlias, originalValue)
+                    .Object);
+            var blockGrid = UmbracoBlockGridFactory.CreateBlockGridModel(
+                UmbracoBlockGridFactory.CreateBlock(
+                    UmbracoBlockGridFactory.CreateContentOrSettings("alias").Object));
+            blockGrid[0].Areas = new List<BlockGridArea>
+            {
+                new BlockGridArea(new List<BlockGridItem>{ itemInArea }, "area51", 2, 4)
+            };
+
+            var firstStore = new OverridablePublishedElementValueStore();
+            var secondStore = new OverridablePublishedElementValueStore();
+            IOverridablePublishedElementValueStore currentStore = firstStore;
+
+            var model = new OverridableBlockGridModel(
+                _testContext.PublishedValueFallback.Object,
+                new DelegatingOverridablePublishedElementFactory(publishedElement => publishedElement is null ? null : new OverridablePublishedElement(publishedElement, () => currentStore)),
+                blockGrid);
+            var areaItem = model[0].Areas.First().First();
+
+            // Act
+            areaItem.Content.OverrideValue(areaPropertyAlias, firstRequestValue);
+            currentStore = secondStore;
+            var secondRequestBeforeOverride = areaItem.Content.Value<string>(_testContext.PublishedValueFallback.Object, areaPropertyAlias);
+            areaItem.Content.OverrideValue(areaPropertyAlias, secondRequestValue);
+            currentStore = firstStore;
+            var firstRequestAfterSecondOverride = areaItem.Content.Value<string>(_testContext.PublishedValueFallback.Object, areaPropertyAlias);
+            currentStore = secondStore;
+            var secondRequestAfterOverride = areaItem.Content.Value<string>(_testContext.PublishedValueFallback.Object, areaPropertyAlias);
+
+            // Assert
+            Assert.Equal(originalValue, secondRequestBeforeOverride);
+            Assert.Equal(firstRequestValue, firstRequestAfterSecondOverride);
+            Assert.Equal(secondRequestValue, secondRequestAfterOverride);
         }
 
         [Fact]
@@ -249,7 +336,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             var filter = new Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>(block => true);
 
             // Act
-            var model = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactoryAccessor(), blockGrids.ParentBlockGrid, filter);
+            var model = new OverridableBlockGridModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), blockGrids.ParentBlockGrid, filter);
 
             // Assert
             Assert.Equal(filter, model.Filter);
@@ -321,10 +408,12 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
         {
             // Arrange
             var formatter = Mock.Of<IPropertyValueFormatter>();
+            var contentFactory = new TestPublishedElementFactory();
+            var settingsFactory = new TestPublishedElementFactory();
             var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(
                 UmbracoBlockGridFactory.CreateOverridableBlock(
-                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, new TestPublishedElementFactory().ValueStore.Object),
-                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, new TestPublishedElementFactory().ValueStore.Object)
+                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, () => contentFactory.ValueStore.Object),
+                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, () => settingsFactory.ValueStore.Object)
                 ));
 
             // Act
@@ -340,18 +429,23 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
         {
             // Arrange
             var formatter = Mock.Of<IPropertyValueFormatter>();
+            var contentFactory = new TestPublishedElementFactory();
+            var settingsFactory = new TestPublishedElementFactory();
+            var areaContentFactory = new TestPublishedElementFactory();
+            var areaSettingsFactory = new TestPublishedElementFactory();
+            var areaFactory = new TestPublishedElementFactory();
             var block = UmbracoBlockGridFactory.CreateOverridableBlock(
-                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, new TestPublishedElementFactory().ValueStore.Object),
-                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, new TestPublishedElementFactory().ValueStore.Object)
+                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, () => contentFactory.ValueStore.Object),
+                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, () => settingsFactory.ValueStore.Object)
                 );
             block.Areas = new List<OverridableBlockGridArea> {
                 new OverridableBlockGridArea(new []
                 {
                     UmbracoBlockGridFactory.CreateOverridableBlock(
-                        new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, new TestPublishedElementFactory().ValueStore.Object),
-                        new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, new TestPublishedElementFactory().ValueStore.Object)
+                        new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, () => areaContentFactory.ValueStore.Object),
+                        new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, () => areaSettingsFactory.ValueStore.Object)
                     )
-                }, "area", 1,1, new TestPublishedElementFactory())
+                }, "area", 1,1, areaFactory)
             };
 
             var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
@@ -380,8 +474,8 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
                 UmbracoBlockGridFactory.CreateOverridableBlock(
                     new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings()
                     .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, null, Array.Empty<OverridableBlockListItem>()))
-                    .Object, factory.ValueStore.Object),
-                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, factory.ValueStore.Object)
+                    .Object, () => factory.ValueStore.Object),
+                    new OverridablePublishedElement(UmbracoBlockGridFactory.CreateContentOrSettings().Object, () => factory.ValueStore.Object)
                 ));
             parentBlockGrid.PropertyValueFormatters = new List<IPropertyValueFormatter> { formatter.Object };
 
@@ -394,15 +488,15 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             var replacementChildBlock = UmbracoBlockListFactory.CreateOverridableBlock(
                     new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings()
                         .SetupUmbracoTextboxPropertyValue(CONTENT_PROPERTY_ALIAS_TO_OVERRIDE, string.Empty)
-                    .Object, factory.ValueStore.Object),
+                    .Object, () => factory.ValueStore.Object),
                     new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings()
                         .SetupUmbracoTextboxPropertyValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, string.Empty)
-                    .Object, factory.ValueStore.Object)
+                    .Object, () => factory.ValueStore.Object)
                 );
             replacementChildBlock.Content.OverrideValue(CONTENT_PROPERTY_ALIAS_TO_OVERRIDE, CONTENT_PROPERTY_VALUE);
             replacementChildBlock.Settings?.OverrideValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, SETTINGS_PROPERTY_VALUE);
 
-            var replacementChildBlockList = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, Mock.Of<IOverridablePublishedElementFactoryAccessor>(), new[] { replacementChildBlock });
+            var replacementChildBlockList = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, Mock.Of<IOverridablePublishedElementFactory>(), new[] { replacementChildBlock });
             parentBlockGrid[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, replacementChildBlockList);
 
             // Assert

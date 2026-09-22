@@ -20,7 +20,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         IPublishedValueFallback _publishedValueFallback,
         IPublishedContentTypeCache _publishedContentTypeCache,
         IVariationContextAccessor _variationContextAccessor,
-        IOverridablePublishedElementFactoryAccessor _publishedElementFactoryAccessor)
+        IOverridablePublishedElementFactory _publishedElementFactory)
         : RenderController(_logger, _compositeViewEngine, _umbracoContextAccessor)
     {
         [ModelType(typeof(SelectViewModel))]
@@ -42,7 +42,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             viewModel.Page.Blocks!.FindBlockByClass("external-data")!
                 .Content
-                .OverrideSelectOptions(optionsFromDataSource, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactoryAccessor, viewModel.Page.Blocks!.Filter);
+                .OverrideSelectOptions(optionsFromDataSource, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory, viewModel.Page.Blocks!.Filter);
 
             return CurrentTemplate(viewModel);
         }

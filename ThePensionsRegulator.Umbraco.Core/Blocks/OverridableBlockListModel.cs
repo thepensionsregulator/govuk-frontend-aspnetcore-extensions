@@ -27,16 +27,16 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
         /// </summary>
         /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block list items.</param>
-        [Obsolete($"Use a constructor which accepts an {nameof(IOverridablePublishedElementFactoryAccessor)} to avoid depending on Umbraco's StaticServiceProvider.")]
+        [Obsolete($"Use a constructor which accepts an {nameof(IOverridablePublishedElementFactory)} to avoid depending on Umbraco's StaticServiceProvider.")]
         public OverridableBlockListModel(IPublishedValueFallback publishedValueFallback) : this(publishedValueFallback, Array.Empty<BlockListItem>()) { }
 
         /// <summary>
         /// Creates a new <see cref="OverridableBlockListModel"/> with no items.
         /// </summary>
         /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block list items.</param>
-        /// <param name="publishedElementFactoryAccessor">Accessor used to resolve a request-scoped factory to create elements using a request-scoped value store. Request scope is required to support overriding property values.</param>
-        public OverridableBlockListModel(IPublishedValueFallback publishedValueFallback, IOverridablePublishedElementFactoryAccessor publishedElementFactoryAccessor)
-            : this(publishedValueFallback, publishedElementFactoryAccessor, Array.Empty<BlockListItem>())
+        /// <param name="publishedElementFactory">Factory used to create elements using a request-scoped value store. Request scope is required to support overriding property values.</param>
+        public OverridableBlockListModel(IPublishedValueFallback publishedValueFallback, IOverridablePublishedElementFactory publishedElementFactory)
+            : this(publishedValueFallback, publishedElementFactory, Array.Empty<BlockListItem>())
         {
         }
 
@@ -45,13 +45,13 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// </summary>
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
-        /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        [Obsolete($"Use a constructor which accepts an {nameof(IOverridablePublishedElementFactoryAccessor)} to avoid depending on Umbraco's StaticServiceProvider.")]
+        /// <param name="publishedElementFactory">Factory used to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
+        [Obsolete($"Use a constructor which accepts an {nameof(IOverridablePublishedElementFactory)} to avoid depending on Umbraco's StaticServiceProvider.")]
         public OverridableBlockListModel(
             IEnumerable<BlockListItem> blockListItems,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,
             Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
-            => Initialise(null, blockListItems, filter, publishedElementFactory is not null ? new DelegatingOverridablePublishedElementFactoryAccessor(publishedElementFactory) : null);
+            => Initialise(null, blockListItems, filter, publishedElementFactory is not null ? new DelegatingOverridablePublishedElementFactory(publishedElementFactory) : null);
 
 
         /// <summary>
@@ -60,35 +60,35 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block list items.</param>
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
-        /// <param name="publishedElementFactory">Factory method to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
-        [Obsolete($"Use a constructor which accepts an {nameof(IOverridablePublishedElementFactoryAccessor)} to avoid depending on Umbraco's StaticServiceProvider.")]
+        /// <param name="publishedElementFactory">Factory used to create an <see cref="IPublishedElement"/> that supports overriding property values.</param>
+        [Obsolete($"Use a constructor which accepts an {nameof(IOverridablePublishedElementFactory)} to avoid depending on Umbraco's StaticServiceProvider.")]
 
         public OverridableBlockListModel(
             IPublishedValueFallback publishedValueFallback,
             IEnumerable<BlockListItem> blockListItems,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null,
             Func<IPublishedElement?, IOverridablePublishedElement?>? publishedElementFactory = null)
-            => Initialise(publishedValueFallback, blockListItems, filter, publishedElementFactory is not null ? new DelegatingOverridablePublishedElementFactoryAccessor(publishedElementFactory) : null);
+            => Initialise(publishedValueFallback, blockListItems, filter, publishedElementFactory is not null ? new DelegatingOverridablePublishedElementFactory(publishedElementFactory) : null);
 
         /// <summary>
-        /// Creates an <see cref="OverridableBlockListModel" /> whose content and settings elements are created using a factory provided by the supplied <see cref="IOverridablePublishedElementFactoryAccessor">.
+        /// Creates an <see cref="OverridableBlockListModel" /> whose content and settings elements are created using the supplied <see cref="IOverridablePublishedElementFactory">.
         /// </summary>
         /// <param name="publishedValueFallback">An <see cref="IPublishedValueFallback"/> to use when retrieving property values for the block list items.</param>
-        /// <param name="publishedElementFactoryAccessor">Accessor used to resolve a request-scoped factory to create elements using a request-scoped value store. Request scope is required to support overriding property values.</param>
+        /// <param name="publishedElementFactory">Factory used to create elements using a request-scoped value store. Request scope is required to support overriding property values.</param>
         /// <param name="blockListItems">A block list (typically a <see cref="BlockListModel"/>).</param>
         /// <param name="filter">The filter which will be applied to blocks when retrieved using <see cref="FilteredBlocks"/>.</param>
         public OverridableBlockListModel(
             IPublishedValueFallback publishedValueFallback,
-            IOverridablePublishedElementFactoryAccessor publishedElementFactoryAccessor,
+            IOverridablePublishedElementFactory publishedElementFactory,
             IEnumerable<BlockListItem> blockListItems,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter = null)
             => Initialise(
                 publishedValueFallback,
                 blockListItems,
                 filter,
-                publishedElementFactoryAccessor);
+                publishedElementFactory);
 
-        private void Initialise(IPublishedValueFallback? publishedValueFallback, IEnumerable<BlockListItem> blockListItems, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter, IOverridablePublishedElementFactoryAccessor? publishedElementFactoryAccessor)
+        private void Initialise(IPublishedValueFallback? publishedValueFallback, IEnumerable<BlockListItem> blockListItems, Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter, IOverridablePublishedElementFactory? publishedElementFactory)
         {
             if (blockListItems is null)
             {
@@ -101,9 +101,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
             if (blockListItems.Any())
             {
                 publishedValueFallback ??= StaticServiceProvider.Instance.GetRequiredService<IPublishedValueFallback>();
-                publishedElementFactoryAccessor ??= StaticServiceProvider.Instance.GetRequiredService<IOverridablePublishedElementFactoryAccessor>();
-
-                var publishedElementFactory = publishedElementFactoryAccessor.Get();
+                publishedElementFactory ??= StaticServiceProvider.Instance.GetRequiredService<IOverridablePublishedElementFactory>();
 
                 foreach (var item in blockListItems)
                 {
@@ -115,8 +113,8 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
                             Constants.PropertyEditors.Aliases.BlockList,
                             overridableItem,
                             property,
-                            blockList => new OverridableBlockListModel(publishedValueFallback, publishedElementFactoryAccessor, (IEnumerable<BlockListItem>)blockList, BaseFilter),
-                            () => new OverridableBlockListModel(publishedValueFallback, publishedElementFactoryAccessor, Array.Empty<BlockListItem>(), BaseFilter));
+                            blockList => new OverridableBlockListModel(publishedValueFallback, publishedElementFactory, (IEnumerable<BlockListItem>)blockList, BaseFilter),
+                            () => new OverridableBlockListModel(publishedValueFallback, publishedElementFactory, Array.Empty<BlockListItem>(), BaseFilter));
                     }
                     Items.Add(overridableItem);
                 }

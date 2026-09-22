@@ -1,21 +1,36 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco;
 @using ThePensionsRegulator.Umbraco.Core
 @using ThePensionsRegulator.Umbraco.Core.Blocks
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
+@inject ISummaryListNewItemTracker NewItemTracker;
 @{
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
     var listItems = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItems)!;
+
+    var filteredListItems = listItems.FilteredBlocks().ToList();
+    var trackingItems = filteredListItems.Select(listItem => new SummaryListItem(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey) ?? string.Empty,
+    listItem.Content.Value<HtmlEncodedString>(PropertyAliases.SummaryListItemValue))).ToList();
+
+    var trackingResult = await NewItemTracker.TrackNewItemsAsync(Model.Content.Key.ToString("N"), trackingItems);
 }
 <govuk-summary-list id="@Model.Content.Key" class="@cssClasses">
-    @foreach (var listItem in listItems.FilteredBlocks())
+    @for(var index = 0; index < filteredListItems.Count(); index++)
     {
+        var listItem = filteredListItems[index];
+        var isNew = trackingResult.IsNew(index);
         <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
-            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</govuk-summary-list-row-key>
+            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))
+                @if(isNew){
+                    <strong class="govuk-tag govuk-tag--green">New</strong>
+                }
+            </govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
             @{
                 var actionsModel = listItem.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions)!;

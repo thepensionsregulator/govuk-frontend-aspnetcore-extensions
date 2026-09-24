@@ -1,4 +1,5 @@
-﻿using Lucene.Net.Util;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
@@ -8,7 +9,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
     {
         [Obsolete($"Use the constructor that accepts an {nameof(IOverridablePublishedElementFactory)} to support overriding property values.")]
         public OverridableBlockGridArea(IList<BlockGridItem> list, string alias, int rowSpan, int columnSpan) :
-            this(list, alias, rowSpan, columnSpan, OverridableBlockGridItem.DefaultPublishedElementFactory)
+            this(list, alias, rowSpan, columnSpan, OverridableBlockGridItem.DefaultPublishedElementFactory, StaticServiceProvider.Instance.GetRequiredService<IOverridableBlockModelFilterStoreAccessor>())
         {
         }
 
@@ -20,12 +21,19 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// <param name="rowSpan">The number of rows this area should span.</param>
         /// <param name="columnSpan">The number of columns this area should span.</param>
         /// <param name="publishedElementFactory">A factory to wrap published elements to support overriding property values. The factory must use a request-scoped value store.</param>
-        public OverridableBlockGridArea(IEnumerable<BlockGridItem> list, string alias, int rowSpan, int columnSpan, IOverridablePublishedElementFactory publishedElementFactory)
+        /// <param name="filterStoreAccessor">Accessor for the current request-scoped store for block filters.</param>
+        public OverridableBlockGridArea(IEnumerable<BlockGridItem> list, string alias, int rowSpan, int columnSpan, IOverridablePublishedElementFactory publishedElementFactory, IOverridableBlockModelFilterStoreAccessor filterStoreAccessor)
         {
+            InitialiseFilterStoreAccessor(filterStoreAccessor);
+
             Alias = alias;
             RowSpan = rowSpan;
             ColumnSpan = columnSpan;
-            Items.AddRange(list.Select(item => item as OverridableBlockGridItem ?? new OverridableBlockGridItem(item, publishedElementFactory)));
+
+            foreach (var item in list)
+            {
+                Items.Add(item as OverridableBlockGridItem ?? new OverridableBlockGridItem(item, publishedElementFactory, filterStoreAccessor));
+            }
         }
 
         /// <summary>
@@ -36,8 +44,9 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// <param name="rowSpan">The number of rows this area should span.</param>
         /// <param name="columnSpan">The number of columns this area should span.</param>
         /// <param name="publishedElementFactory">A factory to wrap published elements to support overriding property values. The factory must use a request-scoped value store.</param>
-        public OverridableBlockGridArea(IEnumerable<BlockGridItem> list, string alias, int rowSpan, int columnSpan, Func<IPublishedElement?, IOverridablePublishedElement?> publishedElementFactory) :
-            this(list, alias, rowSpan, columnSpan, new DelegatingOverridablePublishedElementFactory(publishedElementFactory))
+        /// <param name="filterStoreAccessor">Accessor for the current request-scoped store for block filters.</param>
+        public OverridableBlockGridArea(IEnumerable<BlockGridItem> list, string alias, int rowSpan, int columnSpan, Func<IPublishedElement?, IOverridablePublishedElement?> publishedElementFactory, IOverridableBlockModelFilterStoreAccessor filterStoreAccessor) :
+            this(list, alias, rowSpan, columnSpan, new DelegatingOverridablePublishedElementFactory(publishedElementFactory), filterStoreAccessor)
         {
         }
 

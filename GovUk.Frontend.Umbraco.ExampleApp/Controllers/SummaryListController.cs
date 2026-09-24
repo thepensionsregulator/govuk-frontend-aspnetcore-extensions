@@ -4,6 +4,7 @@ using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using ThePensionsRegulator.GovUk.Frontend.Validation;
 using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
@@ -21,7 +22,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         IPublishedContentTypeCache _publishedContentTypeCache,
         IVariationContextAccessor _variationContextAccessor,
         IPublishedValueFallback _publishedValueFallback,
-        IOverridablePublishedElementFactory _publishedElementFactory)
+        IOverridablePublishedElementFactory _publishedElementFactory,
+        IOverridableBlockModelFilterStoreAccessor _filterStoreAccessor)
         : RenderController(_logger, _compositeViewEngine, _umbracoContextAccessor)
     {
         [ModelType(typeof(SummaryList))]
@@ -40,7 +42,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                     summaryListItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
                     summaryListItems.Add(summaryListItem);
                 }
-                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory);
+                summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory, _filterStoreAccessor);
             }
 
             return CurrentTemplate(viewModel);

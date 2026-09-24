@@ -5,6 +5,7 @@ using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using ThePensionsRegulator.GovUk.Frontend.Validation;
 using ThePensionsRegulator.Umbraco.Core;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Core.Web;
@@ -20,7 +21,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         IPublishedValueFallback _publishedValueFallback,
         IPublishedContentTypeCache _publishedContentTypeCache,
         IVariationContextAccessor _variationContextAccessor,
-        IOverridablePublishedElementFactory _publishedElementFactory)
+        IOverridablePublishedElementFactory _publishedElementFactory,
+        IOverridableBlockModelFilterStoreAccessor _filterStoreAccessor)
         : RenderController(_logger, _compositeViewEngine, _umbracoContextAccessor)
     {
         [ModelType(typeof(SelectViewModel))]
@@ -42,7 +44,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             viewModel.Page.Blocks!.FindBlockByClass("external-data")!
                 .Content
-                .OverrideSelectOptions(optionsFromDataSource, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory, viewModel.Page.Blocks!.Filter);
+                .OverrideSelectOptions(optionsFromDataSource, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory, _filterStoreAccessor, viewModel.Page.Blocks!.Filter);
 
             return CurrentTemplate(viewModel);
         }

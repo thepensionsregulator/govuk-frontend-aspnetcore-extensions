@@ -21,19 +21,20 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         private List<OverridableBlockGridArea> _areas = new();
 
         [Obsolete($"Use a factory which accepts an {nameof(IOverridablePublishedElementFactory)} or {nameof(Func<IPublishedElement?, IOverridablePublishedElement?>)} to avoid depending on Umbraco's StaticServiceProvider.")]
-        public OverridableBlockGridItem(BlockGridItem item) : this(item, DefaultPublishedElementFactory) { }
+        public OverridableBlockGridItem(BlockGridItem item) : this(item, DefaultPublishedElementFactory, StaticServiceProvider.Instance.GetRequiredService<IOverridableBlockModelFilterStoreAccessor>()) { }
 
         /// <summary>
         /// Creates an <see cref="OverridableBlockGridItem"/> from a read-only <see cref="BlockGridItem"/>.
         /// </summary>
         /// <param name="item">The block grid item to make overridable.</param>
         /// <param name="publishedElementFactory">A factory to wrap published elements (content and settings) to support overriding property values. The factory must use a request-scoped value store.</param>
-        public OverridableBlockGridItem(BlockGridItem item, IOverridablePublishedElementFactory publishedElementFactory)
+        /// <param name="filterStoreAccessor">Accessor for the current request-scoped store for block filters.</param>
+        public OverridableBlockGridItem(BlockGridItem item, IOverridablePublishedElementFactory publishedElementFactory, IOverridableBlockModelFilterStoreAccessor filterStoreAccessor)
 #nullable disable
             : base(item.ContentKey, publishedElementFactory.Create(item.Content), item.SettingsKey, publishedElementFactory.Create(item.Settings))
 #nullable enable
         {
-            Areas = item.Areas.Select(area => new OverridableBlockGridArea(area, area.Alias, area.RowSpan, area.ColumnSpan, publishedElementFactory)).ToList();
+            Areas = item.Areas.Select(area => new OverridableBlockGridArea(area, area.Alias, area.RowSpan, area.ColumnSpan, publishedElementFactory, filterStoreAccessor)).ToList();
             AreaGridColumns = item.AreaGridColumns;
             GridColumns = item.GridColumns;
             ColumnSpan = item.ColumnSpan;
@@ -45,8 +46,9 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         /// </summary>
         /// <param name="item">The block grid item to make overridable.</param>
         /// <param name="publishedElementFactory">A factory to wrap published elements (content and settings) to support overriding property values. The factory must use a request-scoped value store.</param>
-        public OverridableBlockGridItem(BlockGridItem item, Func<IPublishedElement?, IOverridablePublishedElement?> publishedElementFactory) :
-            this(item, new DelegatingOverridablePublishedElementFactory(publishedElementFactory))
+        /// <param name="filterStoreAccessor">Accessor for the current request-scoped store for block filters.</param>
+        public OverridableBlockGridItem(BlockGridItem item, Func<IPublishedElement?, IOverridablePublishedElement?> publishedElementFactory, IOverridableBlockModelFilterStoreAccessor filterStoreAccessor) :
+            this(item, new DelegatingOverridablePublishedElementFactory(publishedElementFactory), filterStoreAccessor)
         { }
 
         /// <inheritdoc/>

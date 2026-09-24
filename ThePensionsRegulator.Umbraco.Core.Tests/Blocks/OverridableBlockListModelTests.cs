@@ -57,6 +57,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             var model = new OverridableBlockListModel(
                 _testContext.PublishedValueFallback.Object,
                 new DelegatingOverridablePublishedElementFactory(publishedElement => publishedElement is null ? null : new OverridablePublishedElement(publishedElement, () => currentStore)),
+                new TestBlockModelFilterStoreAccessor(),
                 blockList);
             var item = model[0];
 
@@ -74,6 +75,46 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             Assert.Equal(originalValue, secondRequestBeforeOverride);
             Assert.Equal(firstRequestValue, firstRequestAfterSecondOverride);
             Assert.Equal(secondRequestValue, secondRequestAfterOverride);
+        }
+
+        [Fact]
+        public void Reused_cached_block_list_models_resolve_filters_from_the_current_request()
+        {
+            // Arrange
+            var blockList = UmbracoBlockListFactory.CreateBlockListModel(new[]
+            {
+                UmbracoBlockListFactory.CreateBlock(UmbracoBlockListFactory.CreateContentOrSettings("first").Object),
+                UmbracoBlockListFactory.CreateBlock(UmbracoBlockListFactory.CreateContentOrSettings("second").Object)
+            });
+            var filterStoreAccessor = new TestBlockModelFilterStoreAccessor();
+            var firstStore = new OverridableBlockModelFilterStore();
+            var secondStore = new OverridableBlockModelFilterStore();
+            filterStoreAccessor.CurrentStore = firstStore;
+
+            var model = new OverridableBlockListModel(
+                _testContext.PublishedValueFallback.Object,
+                new TestPublishedElementFactory(),
+                filterStoreAccessor,
+                blockList,
+                null);
+            var firstBlock = model[0];
+            var secondBlock = model[1];
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> firstRequestFilter = block => block == firstBlock;
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> secondRequestFilter = block => block == secondBlock;
+
+            // Act
+            model.Filter = firstRequestFilter;
+            filterStoreAccessor.CurrentStore = secondStore;
+            var secondRequestBeforeFilter = model.FilteredBlocks().ToList();
+            model.Filter = secondRequestFilter;
+            var secondRequestAfterFilter = model.FilteredBlocks().ToList();
+            filterStoreAccessor.CurrentStore = firstStore;
+            var firstRequestAfterSecondFilter = model.FilteredBlocks().ToList();
+
+            // Assert
+            Assert.Equal(new[] { firstBlock, secondBlock }, secondRequestBeforeFilter);
+            Assert.Equal(new[] { secondBlock }, secondRequestAfterFilter);
+            Assert.Equal(new[] { firstBlock }, firstRequestAfterSecondFilter);
         }
 
         [Fact]
@@ -131,7 +172,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             };
 
             // Act
-            _ = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, new DelegatingOverridablePublishedElementFactory(factory), parentBlockList);
+            _ = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, new DelegatingOverridablePublishedElementFactory(factory), new TestBlockModelFilterStoreAccessor(), parentBlockList);
 
             // Assert
             Assert.NotNull(convertedChildBlockList);
@@ -166,7 +207,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             parentBlockList[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, overriddenChildBlockList);
 
             // Act
-            var model = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), parentBlockList);
+            var model = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), parentBlockList);
 
             // Assert
             var overriddenBlock = model.FindBlockByContentTypeAlias(OVERRIDDEN_BLOCK_TYPE_ALIAS);
@@ -180,11 +221,15 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
         {
             // Arrange
             var blockLists = CreateThreeNestedOverridableBlockLists();
-
             var filter = new Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>(block => true);
 
             // Act
-            var model = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), blockLists.ParentBlockList, filter);
+            var model = new OverridableBlockListModel(
+                _testContext.PublishedValueFallback.Object,
+                new TestPublishedElementFactory(),
+                new TestBlockModelFilterStoreAccessor(),
+                blockLists.ParentBlockList,
+                filter);
 
             // Assert
             Assert.Equal(filter, model.Filter);
@@ -201,11 +246,15 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
         {
             // Arrange
             var blockLists = CreateThreeNestedOverridableBlockLists();
-
             var filter = new Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>(block => true);
 
             // Act
-            var model = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), blockLists.ParentBlockList, null);
+            var model = new OverridableBlockListModel(
+                _testContext.PublishedValueFallback.Object,
+                new TestPublishedElementFactory(),
+                 new TestBlockModelFilterStoreAccessor(),
+                blockLists.ParentBlockList,
+                null);
             model.Filter = filter;
 
             // Assert
@@ -266,7 +315,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             var parentBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
                 UmbracoBlockListFactory.CreateOverridableBlock(
                     new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings()
-                        .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), Array.Empty<OverridableBlockListItem>()))
+                        .SetupUmbracoBlockListPropertyValue(PROPERTY_ALIAS_CHILD_BLOCKS, new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), Array.Empty<OverridableBlockListItem>()))
                     .Object, () => factory.ValueStore.Object),
                     new OverridablePublishedElement(UmbracoBlockListFactory.CreateContentOrSettings().Object, () => factory.ValueStore.Object)
                 ));
@@ -289,7 +338,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             replacementChildBlock.Content.OverrideValue(CONTENT_PROPERTY_ALIAS_TO_OVERRIDE, CONTENT_PROPERTY_VALUE);
             replacementChildBlock.Settings?.OverrideValue(SETTINGS_PROPERTY_ALIAS_TO_OVERRIDE, SETTINGS_PROPERTY_VALUE);
 
-            var replacementChildBlockList = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, Mock.Of<IOverridablePublishedElementFactory>(), new[] { replacementChildBlock });
+            var replacementChildBlockList = new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, Mock.Of<IOverridablePublishedElementFactory>(), new TestBlockModelFilterStoreAccessor(), new[] { replacementChildBlock });
             parentBlockList[0].Content.OverrideValue(PROPERTY_ALIAS_CHILD_BLOCKS, replacementChildBlockList);
 
             // Assert
@@ -319,7 +368,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
         [Fact]
         public void Can_convert_to_BlockListModel()
         {
-            var converter = TypeDescriptor.GetConverter(new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, null));
+            var converter = TypeDescriptor.GetConverter(new OverridableBlockListModel(_testContext.PublishedValueFallback.Object, Mock.Of<IOverridablePublishedElementFactory>(), new TestBlockModelFilterStoreAccessor()));
 
             Assert.Equal(typeof(OverridableBlockListTypeConverter), converter.GetType());
         }

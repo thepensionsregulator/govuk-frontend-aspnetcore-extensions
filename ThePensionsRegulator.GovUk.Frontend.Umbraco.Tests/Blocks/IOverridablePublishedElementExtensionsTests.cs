@@ -21,11 +21,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
             }
             else
             {
-                var exception = Record.Exception(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                var exception = Record.Exception(() => content.Object.OverrideCheckboxes(Array.Empty<Checkbox>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
                 Assert.Null(exception);
             }
         }
@@ -72,7 +72,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             // Act
-            content.OverrideCheckboxes(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory());
+            content.OverrideCheckboxes(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.Checkboxes);
@@ -99,11 +99,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
             }
             else
             {
-                var exception = Record.Exception(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                var exception = Record.Exception(() => content.Object.OverrideRadioButtons(Array.Empty<RadioButton>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
                 Assert.Null(exception);
             }
         }
@@ -149,7 +149,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             // Act
-            content.OverrideRadioButtons(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory());
+            content.OverrideRadioButtons(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.RadioButtons);
@@ -176,11 +176,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
             }
             else
             {
-                var exception = Record.Exception(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                var exception = Record.Exception(() => content.Object.OverrideSelectOptions(Array.Empty<SelectOption>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
                 Assert.Null(exception);
             }
         }
@@ -218,7 +218,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             // Act
-            content.OverrideSelectOptions(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory());
+            content.OverrideSelectOptions(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.SelectOptions);
@@ -241,11 +241,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
             }
             else
             {
-                var exception = Record.Exception(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                var exception = Record.Exception(() => content.Object.OverrideSummaryCardActions(Array.Empty<SummaryListAction>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
                 Assert.Null(exception);
             }
         }
@@ -283,7 +283,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             };
 
             // Act
-            content.OverrideSummaryCardActions(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory());
+            content.OverrideSummaryCardActions(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, PropertyAliases.SummaryCardActions);
@@ -308,11 +308,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
 
             if (exceptionExpected)
             {
-                Assert.Throws<ArgumentException>(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                Assert.Throws<ArgumentException>(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
             }
             else
             {
-                var exception = Record.Exception(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory()));
+                var exception = Record.Exception(() => content.Object.OverrideSummaryListItems(Array.Empty<SummaryListItem>(), testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null));
                 Assert.Null(exception);
             }
         }
@@ -355,7 +355,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Blocks
             replacement[0].Actions.Add(new SummaryListAction(new Link { Url = "https://example.org/test" }, "Example"));
 
             // Act
-            content.OverrideSummaryListItems(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory());
+            content.OverrideSummaryListItems(replacement, testContext.PublishedContentTypeCache.Object, testContext.VariationContextAccessor.Object, testContext.PublishedValueFallback.Object, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), null);
 
             // Assert
             var options = content.Value<OverridableBlockListModel>(testContext.PublishedValueFallback.Object, listItemsPropertyAlias);

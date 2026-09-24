@@ -146,7 +146,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
                     UmbracoBlockGridFactory.CreateOverridableBlock(
                         UmbracoBlockGridFactory.CreateContentOrSettings(BLOCK_ALIAS).Object
                     )
-                }, "area", 1,1, Mock.Of<IOverridablePublishedElementFactory>())
+                }, "area", 1,1, Mock.Of<IOverridablePublishedElementFactory>(), new TestBlockModelFilterStoreAccessor())
             };
 
             var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
@@ -184,7 +184,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
                         )
                         .Object
                     )
-                }, "area", 1,1, Mock.Of<IOverridablePublishedElementFactory>())
+                }, "area", 1,1, Mock.Of<IOverridablePublishedElementFactory>(), new TestBlockModelFilterStoreAccessor())
             };
 
             var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
@@ -373,7 +373,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
                         new BlockListItem(Guid.NewGuid(), matchingBlockContent1.Object, null, null),
                         factory
                     );
-            var grandChildBlockList = new OverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactory>(), [matchingBlock1, matchingBlock2], null);
+            var grandChildBlockList = new OverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactory>(), new TestBlockModelFilterStoreAccessor(), [matchingBlock1, matchingBlock2], null);
 
             var childBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
                 UmbracoBlockListFactory.CreateOverridableBlock(

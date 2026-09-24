@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Moq;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
@@ -55,10 +53,8 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             contentSettings.Setup(x => x.CurrentValue).Returns(new ContentSettings { ResolveUrlsFromTextString = false });
 
             var blockEditorVarianceHandler = new BlockEditorVarianceHandler(testContext.LanguageService.Object, testContext.ContentTypeService.Object);
-            var httpContextAccessor = new Mock<IHttpContextAccessor>();
-            httpContextAccessor.Setup(x => x.HttpContext).Returns(new DefaultHttpContext { RequestServices = CreateRequestServices(new OverridablePublishedElementValueStore()) });
-
-            var overridablePublishedElementFactory = new DefaultOverridablePublishedElementFactory(httpContextAccessor.Object);
+            var overridablePublishedElementFactory = Mock.Of<IOverridablePublishedElementFactory>();
+            var filterStoreAccessor = Mock.Of<IOverridableBlockModelFilterStoreAccessor>();
 
             return new OverridableBlockGridPropertyValueConverter(
                 testContext.ProfilingLogger.Object,
@@ -72,14 +68,9 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
                 testContext.PublishedValueFallback.Object,
                 testContext.LanguageService.Object,
                 testContext.PropertyRenderingContextAccessor.Object,
-                overridablePublishedElementFactory
+                overridablePublishedElementFactory,
+                filterStoreAccessor
                 );
         }
-
-        private static ServiceProvider CreateRequestServices(IOverridablePublishedElementValueStore valueStore)
-            => new ServiceCollection()
-                .AddSingleton(valueStore)
-                .AddSingleton<IOverridablePublishedElementValueStore>(valueStore)
-                .BuildServiceProvider();
     }
 }

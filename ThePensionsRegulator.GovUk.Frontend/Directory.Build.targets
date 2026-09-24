@@ -20,6 +20,11 @@
 		<Message Text="Installing GOV.UK Frontend submodule" Condition="!Exists('$(GovUkFrontEndFolder)')" />
 		<Exec Command="git submodule update --init" Condition="!Exists('$(GovUkFrontEndFolder)')" />
 
+		<PropertyGroup>
+			<PlainGovUkFrontEndVersion>$([System.String]::Copy($(GovUkFrontEndVersion)).TrimStart('v'))</PlainGovUkFrontEndVersion>
+		</PropertyGroup>
+		<WriteLinesToFile File="Styles/_govuk-version.generated.scss" Lines=':root { --govuk-frontend-version: "$(PlainGovUkFrontEndVersion)"; }' Overwrite="true" />
+
 		<Message Text="Run SassCompiler $(MSBuildProjectFullPath)" Importance="high"/>
 		<XmlPeek XmlInputPath="$(MSBuildProjectFullPath)" Query="Project/ItemGroup/PackageReference[@Include='AspNetCore.SassCompiler']/@Version">
 			<Output TaskParameter="Result" ItemName="SassCompilerVersion" />
@@ -63,16 +68,5 @@
 		</ItemGroup>
 		<Message Text="Deleting obsolete files: @(GovUkFrontend_DirsToRemove)" />
 		<RemoveDir Directories="@(GovUkFrontend_DirsToRemove)" />
-	</Target>
-	
-	<!-- Generate a package SASS partial with the GOV.UK Frontend version. -->
-	<PropertyGroup>
-		<GovUkFrontend_SassVersion>development</GovUkFrontend_SassVersion>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)' == 'Release'">
-		<GovUkFrontend_SassVersion>$(Version)</GovUkFrontend_SassVersion>
-	</PropertyGroup>
-	<Target Name="GovUkFrontend_GenerateVersionPartial" BeforeTargets="GovUkFrontend_BuildSass">
-		<WriteLinesToFile File="Styles/_tpr-version.generated.scss" Lines=':root { --govuk-frontend-version: "$(GovUkFrontend_SassVersion)"; }' Overwrite="true" />
 	</Target>
 </Project>

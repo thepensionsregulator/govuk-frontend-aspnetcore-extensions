@@ -1,14 +1,37 @@
-﻿using System.Collections;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Collections;
 using Umbraco.Cms.Core;
+using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
 namespace ThePensionsRegulator.Umbraco.Core.Blocks
 {
     public abstract class OverridableBlockModel<T> : IEnumerable<T> where T : IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>
     {
+        private readonly Guid _instanceKey = Guid.NewGuid();
+        private Func<IOverridableBlockModelFilterStore> _filterStoreAccessor = ResolveFromStaticServiceProvider<IOverridableBlockModelFilterStore>;
+
         protected readonly IList<T> Items = new List<T>();
-        protected static Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> DefaultFilter = x => true;
-        protected Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> BaseFilter { get; set; } = DefaultFilter;
+        protected static Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> DefaultFilter = _ => true;
+        protected Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool> BaseFilter
+        {
+            get
+            {
+                var filterStore = _filterStoreAccessor();
+                return filterStore.TryGet(_instanceKey, out var filter) && filter is not null ? filter : DefaultFilter;
+            }
+            set
+            {
+                ArgumentNullException.ThrowIfNull(value);
+                _filterStoreAccessor().Set(_instanceKey, value);
+            }
+        }
+
+        protected void InitialiseFilterStoreAccessor(IOverridableBlockModelFilterStoreAccessor filterStoreAccessor)
+            => _filterStoreAccessor = (filterStoreAccessor ?? throw new ArgumentNullException(nameof(filterStoreAccessor))).Get;
+
+        protected static TService ResolveFromStaticServiceProvider<TService>() where TService : notnull
+            => StaticServiceProvider.Instance.GetRequiredService<TService>();
 
         protected void ConvertBlockModelPropertyToOverridable<TBaseModel, TOverridableModel>(
             IPublishedValueFallback publishedValueFallback,

@@ -31,24 +31,27 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 Page = new FilterAndOverrideBlocks(CurrentPage, _publishedValueFallback)
             };
 
+            var originalText = "This is the original text.";
+            var overriddenText = $"This text is overridden at {DateTime.Now.ToLongTimeString()}. This time should update when the page is refreshed to confirm caching works correctly.";
+
             // Filter out a block in the block list and block grid
             viewModel.Page.BlockList!.Filter = block => block.Settings?.Value<string>(_publishedValueFallback, nameof(GovukGrid.CssClassesForRow)) != "filter-this";
             viewModel.Page.Grid!.Filter = block => block.Settings?.Value<string>(_publishedValueFallback, nameof(GovukGrid.CssClassesForRow)) != "filter-this";
 
             // Override content in the block list and block grid
-            viewModel.Page.BlockList.First(x => x.GridRowClassList().Contains("override-this"))?
-                .Content.OverrideValue(nameof(GovukTypography.Text), "<p><strong>This text is overridden.</strong></p>");
+            var blockListContent = viewModel.Page.BlockList.First(x => x.GridRowClassList().Contains("override-this"))?.Content;
+            blockListContent?.OverrideValue(nameof(GovukTypography.Text), blockListContent.Value<string>(_publishedValueFallback, nameof(GovukTypography.Text))?.Replace(originalText, overriddenText) ?? "");
 
-            viewModel.Page.Grid.First(x => x.GridRowClassList().Contains("override-this"))?
-                .Content.OverrideValue(nameof(GovukTypography.Text), "<p><strong>This text is overridden.</strong></p>");
+            var blockGridContent = viewModel.Page.Grid.First(x => x.GridRowClassList().Contains("override-this"))?.Content;
+            blockGridContent?.OverrideValue(nameof(GovukTypography.Text), blockGridContent.Value<string>(_publishedValueFallback, nameof(GovukTypography.Text))?.Replace(originalText, overriddenText) ?? "");
 
             // Override content in a nested block list
             var row = viewModel.Page.BlockList.First(x => x.Content.ContentType.Alias == GovukGridRow.ModelTypeAlias);
             var col = row.Content.Value<OverridableBlockListModel>(_publishedValueFallback, nameof(GovukGridRow.Blocks))?.LastOrDefault(x => x.Content.ContentType.Alias == GovukGridColumn.ModelTypeAlias);
             if (col != null)
             {
-                col.Content.Value<OverridableBlockListModel>(_publishedValueFallback, nameof(GovukGridColumn.Blocks))?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"))?
-                    .Content.OverrideValue("text", "<p><strong>This text is overridden.</strong></p>");
+                var nestedContent = col.Content.Value<OverridableBlockListModel>(_publishedValueFallback, nameof(GovukGridColumn.Blocks))?.FirstOrDefault(x => x.GridRowClassList().Contains("override-this"))?.Content;
+                nestedContent?.OverrideValue("text", nestedContent.Value<string>(_publishedValueFallback, "text")?.Replace(originalText, overriddenText) ?? "");
             }
 
             return CurrentTemplate(viewModel);

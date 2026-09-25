@@ -22,6 +22,13 @@
 			<SourceFolder>$(MsBuildThisFileDirectory)Styles\</SourceFolder>
 			<TargetFolder>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.Frontend\css\</TargetFolder>
 		</PropertyGroup>
+		<Exec Command="git describe --tags" Condition="Exists('$(GovUkFrontEndFolder)')" WorkingDirectory="$(GovUkFrontEndFolder)" ConsoleToMsBuild="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="GovUkFrontEndVersion" />
+		</Exec>
+		<PropertyGroup>
+			<PlainGovUkFrontEndVersion>$([System.String]::Copy($(GovUkFrontEndVersion)).TrimStart('v'))</PlainGovUkFrontEndVersion>
+		</PropertyGroup>
+		<WriteLinesToFile File="$(SourceFolder)_govuk-version.generated.scss" Lines=':root { --govuk-frontend-version: "$(PlainGovUkFrontEndVersion)"; }' Overwrite="true" />
 		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)tpr.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SourceFolder) $(TargetFolder)tpr.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
 

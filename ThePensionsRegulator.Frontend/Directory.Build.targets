@@ -24,6 +24,25 @@
 		</PropertyGroup>
 		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SourceFolder)tpr.scss&quot; | &quot;$(SassPath)dart.exe&quot; &quot;$(SassPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SourceFolder) $(TargetFolder)tpr.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
+
+		<CallTarget Targets="TprFrontend_RemoveDevelopmentVersion" />
+	</Target>
+
+	<Target Name="TprFrontend_RemoveDevelopmentVersion">
+		<PropertyGroup>
+			<CssFilePath>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.Frontend\css\tpr.css</CssFilePath>
+		</PropertyGroup>
+		<ItemGroup>
+			<_CssFile Include="$(CssFilePath)" />
+		</ItemGroup>
+		<ReadLinesFromFile File="@(_CssFile)">
+			<Output TaskParameter="Lines" ItemName="_CssLines" />
+		</ReadLinesFromFile>
+		<PropertyGroup>
+			<_CssContent>@(_CssLines, '')</_CssContent>
+			<_CssContentModified>$(_CssContent.Replace(':root{--govuk-frontend-version: "development"}', ''))</_CssContentModified>
+		</PropertyGroup>
+		<WriteLinesToFile File="$(CssFilePath)" Lines="$(_CssContentModified)" Overwrite="true" />
 	</Target>
 
 	<!-- Create a version to use as a cache-busting parameter for images in SASS -->

@@ -1,6 +1,11 @@
 ﻿@import '_tpr-variables.scss';
 @import 'govuk/base';
 
+// Display in inverse colours on a dark background, otherwise use the default colours.
+.govuk-hint {
+    color: var(--tpr-secondary-text-colour--inverse, govuk-functional-colour(secondary-text));
+}
+
 // GOV.UK warning text don't account for the possibility of multiple paragraphs within.
 .govuk-hint > p.govuk-body {
     @extend .govuk-hint;

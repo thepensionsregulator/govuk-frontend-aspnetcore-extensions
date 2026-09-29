@@ -13,5 +13,5 @@
     "ThePensionsRegulator.GovUk.Frontend/Scripts/**/*.ts",
     "ThePensionsRegulator.GovUk.Frontend/Scripts/**/*.js",
     "ThePensionsRegulator.GovUk.Frontend/__tests__/**/*.ts"
-  ]
+, "ThePensionsRegulator.Frontend/__test-helpers__/mock-address-lookup-content.ts"  ]
 }

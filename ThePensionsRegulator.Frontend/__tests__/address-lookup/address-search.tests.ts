@@ -2,25 +2,25 @@ import { jest } from "@jest/globals";
 import "@testing-library/jest-dom";
 import { renderAddressSearch } from "../../Scripts/address-lookup/address-search";
 import { FetchAddressSearchService } from "../../Scripts/address-lookup/address-search-service";
+import { createMockAddressLookupContent } from "../../__test-helpers__/mock-address-lookup-content";
 import type { AddressSearchCriteria, AddressSearchResult } from "../../Scripts/address-lookup/types";
 
 describe("renderAddressSearch", () => {
     function createSearch(criteria?: AddressSearchCriteria){
-        const searchService = new FetchAddressSearchService({ searchEndpoint: "https://example.com/search", addressByIdEndpoint: "https://example.com/address", fetchFunction: jest.fn(() => Promise.resolve(new Response())) });
-        const searchAddress = jest.fn<(postcode: string) => Promise<AddressSearchResult[]>>()
-            .mockResolvedValue([]);
+        const searchService = new FetchAddressSearchService({ searchEndpoint: "https://example.com/search", fetchFunction: jest.fn(() => Promise.resolve(new Response())) });
+        const searchAddress = jest.fn<(postcode: string) => Promise<AddressSearchResult[]>>().mockResolvedValue([]);
         searchService.searchAddress = searchAddress;
         const onSearchSuccess = jest.fn<(results: AddressSearchResult[], criteria: AddressSearchCriteria) => void>();
         const onInternationalEntryRequested = jest.fn<() => void>(); 
-
-        const component = renderAddressSearch({ searchService, onSearchSuccess, criteria, onInternationalEntryRequested });
+        const content = createMockAddressLookupContent();
+        const component = renderAddressSearch({ searchService, onSearchSuccess, criteria, onInternationalEntryRequested, content });
 
         const buildingInput = component.querySelector<HTMLInputElement>("#building");
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode");
         const button = component.querySelector<HTMLButtonElement>("button");
         const internationalLink = component.querySelector<HTMLAnchorElement>("a");
 
-        return { component, buildingInput, postcodeInput, button, internationalLink, searchOptions: searchAddress, onSearchSuccess, onInternationalEntryRequested };
+        return { component, buildingInput, postcodeInput, button, internationalLink, searchOptions: searchAddress, onSearchSuccess, onInternationalEntryRequested, content };
     }
     
     it("should leave the inputs empty when no criteria is provided", () => {
@@ -45,6 +45,7 @@ describe("renderAddressSearch", () => {
         expect(fieldset).toContainElement(buildingInput);
         expect(fieldset).toContainElement(postcodeInput);
         expect(component).toContainElement(button);
+        expect(button).toHaveAttribute("type", "button");
     });
 
     it("should render a 'Enter an international address' link", () => {
@@ -60,22 +61,22 @@ describe("renderAddressSearch", () => {
     });
 
     it("should show a required error and not search when postcode is empty", () => {
-        const { component, button, searchOptions } = createSearch();
+        const { component, button, searchOptions, content } = createSearch();
 
         button?.click();
 
-        expect(component.querySelector("#postcode-error")).toHaveTextContent("Error: Enter a postcode");
+        expect(component.querySelector("#postcode-error")).toHaveTextContent(`Error: ${content.postcodeRequiredErrorMessage}`);
         expect(searchOptions).not.toHaveBeenCalled();
     });
 
     it("should show a format error and not search for an invalid postcode", () => {
-        const { component, searchOptions: onSearch, postcodeInput, button } = createSearch();
+        const { component, searchOptions: onSearch, postcodeInput, button, content } = createSearch();
         postcodeInput!.value = "not-a-postcode";
 
         button?.click();
 
         expect(component.querySelector("#postcode-error")).toHaveTextContent(
-            "Error: Enter a valid postcode"
+            `Error: ${content.postcodePatternErrorMessage}`
         );
         expect(onSearch).not.toHaveBeenCalled();
     });
@@ -128,7 +129,7 @@ describe("renderAddressSearch", () => {
     });
 
     it("should show an error when no addresses match the building", async () => {
-        const { buildingInput, postcodeInput, button, searchOptions, onSearchSuccess, component } = createSearch();
+        const { buildingInput, postcodeInput, button, searchOptions, onSearchSuccess, component, content } = createSearch();
         searchOptions.mockResolvedValue([
             { UPRN: "1", UDPRN: "1", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "2" }
         ]);
@@ -139,14 +140,14 @@ describe("renderAddressSearch", () => {
         await Promise.resolve();
 
         expect(component.querySelector("#address-search-fieldset-error")).toHaveTextContent(
-            "Error: The address and postcode do not match"
+            `Error: ${content.addressNotFoundMessage}`
         );
         expect(onSearchSuccess).not.toHaveBeenCalled();
         expect(button).not.toBeDisabled();
     });
 
     it("should show an error when address search fails", async () => {
-        const { postcodeInput, button, searchOptions, onSearchSuccess, component } = createSearch();
+        const { postcodeInput, button, searchOptions, onSearchSuccess, component, content } = createSearch();
         searchOptions.mockRejectedValue(new Error("search failed"));
         postcodeInput!.value = "SW1A 2AA";
 
@@ -154,9 +155,15 @@ describe("renderAddressSearch", () => {
         await Promise.resolve();
 
         expect(component.querySelector("#address-search-fieldset-error")).toHaveTextContent(
-            "Error: There was a problem searching for addresses. Please try again."
+            `Error: ${content.serviceUnavailableMessage}`
         );
         expect(onSearchSuccess).not.toHaveBeenCalled();
         expect(button).not.toBeDisabled();
     });
+
+    it("has a fieldset with the 'data-address-lookup-submit-error-anchor' attribute", () => {
+		const { component } = createSearch();
+		const formGroup = component.querySelector(".govuk-form-group");
+		expect(formGroup).toHaveAttribute("data-address-lookup-submit-error-anchor");
+	});
 });

@@ -17,6 +17,7 @@ export interface AddressSearchOptions {
     searchService: AddressSearchService;
     criteria?: AddressSearchCriteria;
     onSearchSuccess: (results: AddressSearchResult[], criteria: AddressSearchCriteria) => void;
+    onInternationalEntryRequested: () => void;
 }
 
 /** A Delivery Point Address as returned by the Ordnance Survey Places API. */
@@ -60,6 +61,26 @@ export interface FetchAddressSearchServiceOptions{
     fetchFunction?: typeof globalThis.fetch;
 }
 
+export interface UkManualEntryAddress {
+    addressLine1: string;
+    addressLine2?: string;
+    addressLine3?: string;
+    postTown: string;
+    county?: string
+    postcode: string;
+}
+
+export interface InternationalManualEntryAddress {
+    addressLine1: string;
+    addressLine2?: string;
+    addressLine3?: string;
+    postTown: string;
+    countyStateProvince?: string;
+    countryId?: string;
+    countryName?: string;
+    postcode?: string;
+}
+
 export interface ConfirmedAddress {
     addressLine1: string;
     addressLine2?: string;
@@ -68,6 +89,6 @@ export interface ConfirmedAddress {
     postCounty?: string;
     countryId?: string;
     countryName?: string;
-    postCode?: string;
+    postcode?: string;
     uprnReference?: string;
 }

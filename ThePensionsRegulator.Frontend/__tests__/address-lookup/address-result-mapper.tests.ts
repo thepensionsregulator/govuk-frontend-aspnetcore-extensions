@@ -1,5 +1,6 @@
-import { mapAddressSearchResult, mapInternationalManualEntryAddress } from "../../Scripts/address-lookup/address-result-mapper";
-import type { AddressSearchResult, ConfirmedAddress, InternationalManualEntryAddress } from "../../Scripts/address-lookup/types";
+import { mapAddressSearchResult, mapInitialAddress, mapInternationalManualEntryAddress } from "../../Scripts/address-lookup/address-result-mapper";
+import type { AddressSearchResult, ConfirmedAddress, InitialAddress, InternationalManualEntryAddress } from "../../Scripts/address-lookup/types";
+import { createMockAddressLookupContent } from "../../__test-helpers__/mock-address-lookup-content";
 
 describe("mapAddressSearchResult", () => {
 	const baseAddress: AddressSearchResult = {
@@ -148,6 +149,51 @@ describe("mapInternationalManualEntryAddress", () => {
 			countryId: undefined,
 			countryName: undefined,
 			postcode: undefined
+		});
+	});
+});
+
+describe("mapInitialAddress", () => {
+	const content = createMockAddressLookupContent();
+
+	it("maps a complete initial address with the UK country ID as a UK address", () => {
+		const initialAddress: InitialAddress = {
+			addressLine1: "1 High Street",
+			postTown: "London",
+			countryId: "GB",
+			countryName: "United Kingdom",
+			postcode: "SW1A 1AA",
+			uprnReference: "123"
+		};
+
+		expect(mapInitialAddress(content, initialAddress, "GB")).toEqual({
+			addressLine1: "1 High Street",
+			addressLine2: undefined,
+			addressLine3: undefined,
+			postTown: "London",
+			postCounty: undefined,
+			countryId: "GB",
+			countryName: "United Kingdom",
+			postcode: "SW1A 1AA",
+			uprnReference: "123"
+		});
+	});
+
+	it("validates an initial address with a different country ID as international", () => {
+		const initialAddress: InitialAddress = {
+			addressLine1: "123 Rue de Rivoli",
+			postTown: "Paris",
+			countryId: "FR",
+			countryName: "France",
+			postcode: "75001"
+		};
+
+		expect(mapInitialAddress(content, initialAddress, "GB")).toMatchObject({
+			addressLine1: "123 Rue de Rivoli",
+			postTown: "Paris",
+			countryId: "FR",
+			countryName: "France",
+			postcode: "75001"
 		});
 	});
 });

@@ -1,10 +1,12 @@
 import "@testing-library/jest-dom";
 import { jest } from "@jest/globals";
 import { renderAddressInternationalManualEntry, validateInternationalUkManualEntryAddress } from "../../Scripts/address-lookup/address-international-manual-entry.js";
+import { CountryOption } from "../../Scripts/address-lookup/types.js";
+import { createMockAddressLookupContent } from "../../__test-helpers__/mock-address-lookup-content";
 
-const countries = [
-	{ value: "FR", text: "France" },
-	{ value: "US", text: "United States" }
+const countries: CountryOption[] = [
+	{ value: "FR", name: "France" },
+	{ value: "US", name: "United States" }
 ];
 
 function createValidValues(overrides: Partial<Parameters<typeof validateInternationalUkManualEntryAddress>[0]> = {}) {
@@ -25,13 +27,14 @@ describe("renderAddressInternationalManualEntry", () => {
 	function createComponent() {
 		const onAddressSubmitted = jest.fn();
 		const onBackToSearchRequested = jest.fn();
-		const component = renderAddressInternationalManualEntry({ onAddressSubmitted, onBackToSearchRequested, countries });
+		const content = createMockAddressLookupContent();
+		const component = renderAddressInternationalManualEntry({ onAddressSubmitted, onBackToSearchRequested, countries, content });
 
-		return { component, onAddressSubmitted, onBackToSearchRequested };
+		return { component, onAddressSubmitted, onBackToSearchRequested, content };
 	}
 
 	it("renders the international entry fields, country options, and secondary actions", () => {
-		const { component } = createComponent();
+		const { component, content } = createComponent();
 		const country = component.querySelector<HTMLSelectElement>("#country");
 		const confirmButton = component.querySelector<HTMLButtonElement>("button");
 		const backLink = component.querySelector<HTMLAnchorElement>("nav a");
@@ -48,9 +51,10 @@ describe("renderAddressInternationalManualEntry", () => {
 			["FR", "France"],
 			["US", "United States"]
 		]);
-		expect(confirmButton).toHaveTextContent("Confirm address");
+		expect(confirmButton).toHaveTextContent(content.confirmAddressLabel);
 		expect(confirmButton).toHaveClass("govuk-button", "govuk-button--secondary");
-		expect(backLink).toHaveTextContent("Back to postcode search");
+		expect(confirmButton).toHaveAttribute("type", "button");
+		expect(backLink).toHaveTextContent(content.backToPostcodeSearchLabel);
 	});
 
 	it("submits the selected country ID and name with a valid international address", () => {
@@ -123,11 +127,19 @@ describe("renderAddressInternationalManualEntry", () => {
 		expect(clickEvent.defaultPrevented).toBe(true);
 		expect(onBackToSearchRequested).toHaveBeenCalledTimes(1);
 	});
+
+	it("uses the fieldset form group as the submission-error anchor", () => {
+		const { component } = createComponent();
+		const fieldset = component.querySelector("fieldset");
+
+		expect(fieldset?.parentElement).toHaveAttribute("data-address-lookup-submit-error-anchor");
+	});
 });
 
 describe("validateInternationalUkManualEntryAddress", () => {
+	const content = createMockAddressLookupContent();
 	it("returns an international address when required fields are valid", () => {
-		expect(validateInternationalUkManualEntryAddress(createValidValues())).toEqual({
+		expect(validateInternationalUkManualEntryAddress(createValidValues(), content)).toEqual({
 			isValid: true,
 			address: createValidValues()
 		});
@@ -144,7 +156,7 @@ describe("validateInternationalUkManualEntryAddress", () => {
 		["countryId", { countryId: "" }],
 		["postcode", { postcode: "a".repeat(11) }]
 	] as const)("returns one error for an invalid %s value", (fieldName, overrides) => {
-		const result = validateInternationalUkManualEntryAddress(createValidValues(overrides));
+		const result = validateInternationalUkManualEntryAddress(createValidValues(overrides), content);
 
 		expect(result.isValid).toBe(false);
 		if (!result.isValid) {
@@ -158,7 +170,7 @@ describe("validateInternationalUkManualEntryAddress", () => {
 			addressLine1: "",
 			postTown: "",
 			countryId: ""
-		}));
+		}), content);
 
 		expect(result).toEqual({
 			isValid: false,

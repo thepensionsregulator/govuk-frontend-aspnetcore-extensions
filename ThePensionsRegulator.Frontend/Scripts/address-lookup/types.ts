@@ -1,6 +1,9 @@
 export interface AddressLookupOptions {
     searchEndpoint: string;
-    addressByIdEndpoint: string;
+    initialAddress?: InitialAddress;
+    fields: AddressFields;
+    countries?: CountryOption[];
+    content: AddressLookupContent;
 }
 
 export interface AddressSearchCriteria {
@@ -10,12 +13,12 @@ export interface AddressSearchCriteria {
 
 export interface AddressSearchService {
     searchAddress(postcode: string): Promise<AddressSearchResult[]>;
-    // getAddressById(uprn: string) : AddressSearchResult | null;
 }
 
 export interface AddressSearchOptions {
     searchService: AddressSearchService;
     criteria?: AddressSearchCriteria;
+    content: AddressLookupContent
     onSearchSuccess: (results: AddressSearchResult[], criteria: AddressSearchCriteria) => void;
     onInternationalEntryRequested: () => void;
 }
@@ -55,9 +58,17 @@ export interface AddressSearchResult {
     LAT?: number;
 }
 
+export type AddressFieldKey = Exclude<keyof InitialAddress, 'countryName'>;
+
+export interface AddressField{
+    name: string;
+    value: string
+}
+
+export type AddressFields = Partial<Record<AddressFieldKey, AddressField>>;
+
 export interface FetchAddressSearchServiceOptions{
     searchEndpoint: string;
-    addressByIdEndpoint: string;
     fetchFunction?: typeof globalThis.fetch;
 }
 
@@ -92,3 +103,87 @@ export interface ConfirmedAddress {
     postcode?: string;
     uprnReference?: string;
 }
+
+export interface InitialAddress {
+    addressLine1?: string;
+    addressLine2?: string;
+    addressLine3?: string;
+    postTown?: string;
+    postCounty?: string;
+    countryId?: string;
+    countryName?: string;
+    postcode?: string;
+    uprnReference?: string;
+}
+
+export interface AddressLookupContent {
+    // component level legend and hint
+    addressLookupLegend: string;
+    addressLookupHint?: string;
+
+    // manual entry labels and error messages
+    addressLine1Label: string;
+    addressLine1RequiredErrorMessage: string;
+    addressLine1MaxLengthErrorMessage: string;
+    addressLine2Label: string;
+    addressLine2MaxLengthErrorMessage: string;
+    addressLine3Label: string;
+    addressLine3MaxLengthErrorMessage: string;
+    postTownLabel: string;
+    postTownRequiredErrorMessage: string;
+    postTownMaxLengthErrorMessage: string;
+    countyLabel: string;
+    countyMaxLengthErrorMessage: string;
+    countyStateProvinceLabel: string;
+    countyStateProvinceMaxLengthErrorMessage: string;
+    postcodeLabel: string;
+    postcodeRequiredErrorMessage: string;
+    postcodeMaxLengthErrorMessage: string;
+    postcodePatternErrorMessage: string;
+    countryLabel: string;
+    countryRequiredErrorMessage: string;
+    buildingNameOrNumberLabel: string;
+
+    // UK manual entry labels
+    ukManualEntryLinkLabel: string;
+    ukManualEntryLegend: string;
+    
+    // international manual entry labels 
+    internationalManualEntryLabel: string;
+    internationalManualEntryLegend: string;
+
+    // search view
+    findAddressButton: string;
+    addressNotFoundMessage: string;
+    serviceUnavailableMessage: string;
+    searchNotConfirmedErrorMessage: string;
+
+    // results view
+    addressSelectLabel: string;
+    confirmAddressLabel: string;
+    backToPostcodeSearchLabel: string;
+    addressSelectErrorMessage: string;
+    resultsNotConfirmedErrorMessage: string;
+
+    // UK manual entry view
+    ukManualEntryNotConfirmedErrorMessage: string;
+
+    // international manual entry view
+    internationalManualEntryNotConfirmedErrorMessage: string;
+
+    // confirmed view
+    changeAddressLabel: string;
+    
+}
+
+export interface AddressLookupSettings {
+    searchEndpoint: string;
+}
+
+export interface AddressLookupInstance {
+    element: HTMLElement;
+    isConfirmed(): boolean;
+    showNotConfirmedError(): void;
+}
+
+export type CountryOption = { value: string, name: string};

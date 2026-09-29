@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom";
 import { jest } from "@jest/globals";
 import { renderConfirmedAddress } from "../../Scripts/address-lookup/address-confirmed";
-import type { ConfirmedAddress } from "../../Scripts/address-lookup/types";
+import type { AddressFields, ConfirmedAddress } from "../../Scripts/address-lookup/types";
+import { createMockAddressLookupContent } from "../../__test-helpers__/mock-address-lookup-content";
 
 describe("renderConfirmedAddress", () => {
     const completeAddress: ConfirmedAddress = {
@@ -14,9 +15,20 @@ describe("renderConfirmedAddress", () => {
         postcode: "SW1A 2AA",
         uprnReference: "100000000001"
     };
+    const fields: AddressFields = {
+        addressLine1: { name: "addressLine1", value: "old value" },
+        addressLine2: { name: "addressLine2",  value: "old value" },
+        addressLine3: { name: "addressLine3",  value: "old value" },
+        postTown: { name: "postTown",  value: "old value" },
+        postCounty: { name: "postCounty",  value: "old value" },
+        countryId: { name: "countryId",  value: "old value" },
+        postcode: { name: "postcode",  value: "old value" },
+        uprnReference: { name: "uprnReference", value: "old value" }
+    };
+    const content = createMockAddressLookupContent();
 
     it("should render populated address fields in a paragraph separated by breaks", () => {
-        const component = renderConfirmedAddress(completeAddress, jest.fn());
+        const component = renderConfirmedAddress({address: completeAddress, onBackToSearchRequested: jest.fn(), fields, content });
         const paragraph = component.querySelector("p");
 
         expect(paragraph).not.toBeNull();
@@ -30,8 +42,8 @@ describe("renderConfirmedAddress", () => {
             postcode: "SW1A 2AA",
             uprnReference: "100000000001"
         };
-
-        const paragraph = renderConfirmedAddress(address, jest.fn()).querySelector("p");
+        
+        const paragraph = renderConfirmedAddress({address, onBackToSearchRequested: jest.fn(), fields, content }).querySelector("p");
 
         expect(paragraph).toHaveTextContent("10 High StreetSW1A 2AA");
         expect(paragraph?.querySelectorAll("br")).toHaveLength(1);
@@ -50,7 +62,7 @@ describe("renderConfirmedAddress", () => {
             uprnReference: ""
         };
 
-        const paragraph = renderConfirmedAddress(address, jest.fn()).querySelector("p");
+        const paragraph = renderConfirmedAddress({address, onBackToSearchRequested: jest.fn(), fields, content }).querySelector("p");
 
         if (expectedCountry) {
             expect(paragraph).toHaveTextContent(countryName);
@@ -60,7 +72,7 @@ describe("renderConfirmedAddress", () => {
     });
 
     it("should create hidden inputs with the confirmed address field IDs", () => {
-        const component = renderConfirmedAddress(completeAddress, jest.fn());
+        const component = renderConfirmedAddress({address: completeAddress, onBackToSearchRequested: jest.fn(), fields, content });
         const expectedValues : ConfirmedAddress = {
             addressLine1: "10 High Street",
             addressLine2: "Flat 2",
@@ -86,7 +98,7 @@ describe("renderConfirmedAddress", () => {
             uprnReference: "100000000001"
         };
 
-        const component = renderConfirmedAddress(address, jest.fn());
+        const component = renderConfirmedAddress({address, onBackToSearchRequested: jest.fn(), fields, content });
 
         expect(component.querySelector("#addressLine2")).toBeNull();
         expect(component.querySelector("#addressLine3")).toBeNull();
@@ -97,7 +109,7 @@ describe("renderConfirmedAddress", () => {
 
     it("should report when the change address link is clicked", () => {
         const onBackToSearchRequested = jest.fn();
-        const component = renderConfirmedAddress(completeAddress, onBackToSearchRequested);
+        const component = renderConfirmedAddress({address: completeAddress, onBackToSearchRequested, fields, content });
         const link = component.querySelector<HTMLAnchorElement>("a")!;
         const event = new MouseEvent("click", { cancelable: true });
 

@@ -1,7 +1,9 @@
-import type { AddressSearchResult, ConfirmedAddress, InternationalManualEntryAddress, UkManualEntryAddress } from './types';
+import type { AddressLookupContent, AddressSearchResult, ConfirmedAddress, InitialAddress, InternationalManualEntryAddress, UkManualEntryAddress } from './types';
+import { validateUkManualEntryAddress } from './address-uk-manual-entry.js';
+import { validateInternationalUkManualEntryAddress } from './address-international-manual-entry.js';
+import { normalisePostcode } from './postcode-normaliser.js';
+import { sanitisePostcode } from './postcode-sanitiser.js';
 
-// const unitedKingdomCountryId = 'GB';
-// const unitedKingdomCountryName = 'United Kingdom';
 
 export function mapAddressSearchResult(address: AddressSearchResult): ConfirmedAddress {
     const lines: string[] = [];
@@ -91,6 +93,73 @@ export function mapInternationalManualEntryAddress(address: InternationalManualE
         countryId: address.countryId ?? undefined,
         countryName: address.countryName ?? undefined,
         postcode: address.postcode ?? undefined
+    };
+}
+
+export function mapInitialAddress(content: AddressLookupContent, address?: InitialAddress, ukCountryId?: string): ConfirmedAddress | undefined {
+    if (address == undefined || !address.addressLine1){
+        return undefined;
+    }
+
+    const isInternational = !!address.countryId && address.countryId !== ukCountryId;
+
+    const ukPostcode = address.postcode ? normalisePostcode(sanitisePostcode(address.postcode)) : '';
+
+    if (!isInternational && address.uprnReference && address.postTown && ukPostcode) {
+        return {
+            addressLine1: address.addressLine1,
+            addressLine2: address.addressLine2 || undefined,
+            addressLine3: address.addressLine3 || undefined,
+            postTown: address.postTown,
+            postCounty: address.postCounty || undefined,
+            countryId: address.countryId,
+            countryName: address.countryName,
+            postcode: ukPostcode,
+            uprnReference: address.uprnReference
+        };
+    }
+
+    // The manual entry validators expect every optional field to be a string.
+    const validationResult = isInternational
+        ? validateInternationalUkManualEntryAddress(
+            {
+                addressLine1: address.addressLine1,
+                addressLine2: address.addressLine2 ?? '',
+                addressLine3: address.addressLine3 ?? '',
+                postTown: address.postTown ?? '',
+                countyStateProvince: address.postCounty ?? '',
+                countryId: address.countryId,
+                countryName: address.countryName,
+                postcode: address.postcode ?? ''
+            },
+            content,
+        )
+        : validateUkManualEntryAddress(
+            {
+                addressLine1: address.addressLine1,
+                addressLine2: address.addressLine2 ?? '',
+                addressLine3: address.addressLine3 ?? '',
+                townOrCity: address.postTown ?? '',
+                county: address.postCounty ?? '',
+                postcode: ukPostcode,
+            },
+            content
+        );
+
+    if (!validationResult.isValid) {
+        return undefined;
+    }
+
+    return {
+        addressLine1: address.addressLine1,
+        addressLine2: address.addressLine2 || undefined,
+        addressLine3: address.addressLine3 || undefined,
+        postTown: address.postTown,
+        postCounty: address.postCounty || undefined,
+        countryId: address.countryId,
+        countryName: address.countryName,
+        postcode: (isInternational ? address.postcode : ukPostcode) || undefined,
+        uprnReference: address.uprnReference || undefined
     };
 }
 

@@ -81,3 +81,7 @@ export interface FieldsetOptions {
     children: HTMLElement[];
     attributes?: Record<string, string>;
 }
+
+export interface FieldsetFormGroupOptions extends FieldsetOptions {
+    id: string;
+}

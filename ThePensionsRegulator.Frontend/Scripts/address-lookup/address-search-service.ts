@@ -3,12 +3,10 @@ import { AddressSearchResult, AddressSearchService, FetchAddressSearchServiceOpt
 
 export class FetchAddressSearchService implements AddressSearchService {
     private readonly searchEndpoint: string;
-    // private readonly addressByIdEndpoint: string;
     private readonly fetchFunction: typeof globalThis.fetch;
     
     constructor(options: FetchAddressSearchServiceOptions) {
         this.searchEndpoint = options.searchEndpoint;
-        // this.addressByIdEndpoint = options.addressByIdEndpoint;
         this.fetchFunction = options.fetchFunction ?? globalThis.fetch.bind(globalThis);
     }
 

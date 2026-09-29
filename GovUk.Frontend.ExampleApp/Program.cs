@@ -1,6 +1,7 @@
 using GovUk.Frontend.ExampleApp;
 using GovUk.Frontend.ExampleApp.Middleware;
 using GovUk.Frontend.ExampleApp.Models.Validators;
+using GovUk.Frontend.ExampleApp.Services;
 using GovUk.Frontend.ExampleSharedResource;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using System.Globalization;
 using System.Reflection;
 using ThePensionsRegulator.Frontend;
+using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.GovUk.Frontend;
 using ThePensionsRegulator.GovUk.Frontend.Validation;
 
@@ -60,6 +62,7 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 
 builder.Services.AddSingleton<IValidationAttributeAdapterProvider, CustomValidationAttributeAdapterProvider>();
 builder.Services.AddSingleton<IValidatorAttributeAdapterFactory, CustomValidatorAttributeAdapterFactory>();
+builder.Services.AddTransient<ITprCountryRepository, ExampleTprCountryRepository>();
 
 var app = builder.Build();
 app.UseTprFrontend();

@@ -1,5 +1,6 @@
 ﻿using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using Umbraco.Extensions;
+using static Umbraco.Cms.Core.Constants.HttpContext;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 {
@@ -18,10 +19,16 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 
             return $"id:{identity.GenerateHash()}"  ;
         }
+
+        public string GetIdentity(string trackingId)
+        {
+            return $"id:{trackingId.Trim()}"; 
+        }
     }
 
     public interface ISummaryItemIdentityProvider
     {
         string GetIdentity(SummaryListItem item);
+        string GetIdentity(string trackingId);
     }
 }

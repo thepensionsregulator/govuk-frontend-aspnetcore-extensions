@@ -8,7 +8,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 {
     public class SessionSummaryListNewItemTracker : ISummaryListNewItemTracker
     {
-        private const string SessionKeyPrefix = "SummaryListNewItems_";
+        private const string SessionKeyPrefix = "GOVUK.SummaryList.NewItems";
 
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ISummaryItemIdentityProvider _summaryItemIdentityProvider;
@@ -18,98 +18,89 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _summaryItemIdentityProvider = summaryItemIdentityProvider ?? throw new ArgumentNullException(nameof(summaryItemIdentityProvider));
         }
-        public async Task<SummaryListTrackingResult> TrackNewItemsAsync(string summaryListId, IReadOnlyList<SummaryListItem> items, CancellationToken cancellationToken = default)
+        public async Task<SummaryListTrackingResult> TrackNewItemsAsync(IReadOnlyList<SummaryListItem> items, CancellationToken cancellationToken = default)
         {
+            if(items.Count == 0) return SummaryListTrackingResult.Empty;
 
-            var session = _httpContextAccessor.HttpContext?.Session;
-
-            if (session is null)
-            {
-                return SummaryListTrackingResult.Empty;
-            }
+            var session = GetSession();
 
             await session.LoadAsync(cancellationToken);
 
-            var currentlyTrackedItems = GetIdentites(items);
+            var pendingItems = GetPendingItems(session);
+            if(pendingItems is null) return SummaryListTrackingResult.Empty;
 
-            var sessionKey = GetSessionKey(summaryListId);
+            var identites = GetIdentities(items);
 
-            var previouslyTrackedItems = GetPreviousIdentites(session, sessionKey);
+            var newItemIndexes = identites.Select((identity, index) => new { Identity = identity, Index = index })
+                                           .Where(x => pendingItems.Contains(x.Identity))
+                                           .Select(x => x.Index)
+                                           .ToHashSet();
 
-            if (previouslyTrackedItems is null)
-            {
-                SaveSnapshot(session, sessionKey, currentlyTrackedItems);
-                return SummaryListTrackingResult.Empty;
-            }
+            if (newItemIndexes.Count == 0) return SummaryListTrackingResult.Empty;
 
-            var previousCounts = previouslyTrackedItems.GroupBy(x => x)
-                                                       .ToDictionary(g => g.Key, g => g.Count());
-            var newItemIndexes = new HashSet<int>();
+            var viewedIdentities = newItemIndexes.Select(index => identites[index]).ToHashSet(StringComparer.OrdinalIgnoreCase);
+            pendingItems.ExceptWith(viewedIdentities);
 
-            for (var i = 0; i < currentlyTrackedItems.Count; i++)
-            {
-                var identity = currentlyTrackedItems[i];
-
-                if (!previousCounts.TryGetValue(identity, out var count) || count == 0)
-                {
-                    newItemIndexes.Add(i);
-                }
-                else
-                {
-                    previousCounts[identity]--;
-                }
-            }
-
-            SaveSnapshot(session, sessionKey, currentlyTrackedItems);
+            SavePendingItems(session, pendingItems);
 
             return new SummaryListTrackingResult(newItemIndexes);
         }
 
-        private IReadOnlyList<string> GetIdentites(IReadOnlyList<SummaryListItem> items)
+        private IReadOnlyList<string> GetIdentities(IReadOnlyList<SummaryListItem> items)
+        {        
+            return items.Select(_summaryItemIdentityProvider.GetIdentity).ToList();
+        }
+
+        public async Task MarkAsNew(string trackingId, CancellationToken cancellationToken = default)
         {
-            var occurances = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+            var session = GetSession();
 
-            var identities = new List<string>(items.Count());
+            if(session is null) { return; }
 
-            foreach (var item in items)
+            await session.LoadAsync(cancellationToken);
+
+            var newItems = GetPendingItems(session);
+
+            newItems.Add(_summaryItemIdentityProvider.GetIdentity(trackingId));
+
+            SavePendingItems(session, newItems);
+
+        }
+
+        private void SavePendingItems(ISession session, HashSet<string> items)
+        {
+            if(items.Count == 0)
             {
-                var identity = _summaryItemIdentityProvider.GetIdentity(item);
-                if (identity is not null)
-                {
-                    identities.Add(identity);
-                }
+                session.Remove(SessionKeyPrefix);
+                return;
             }
 
-            return identities;
+            var value = JsonSerializer.Serialize(items);
+            session.SetString(SessionKeyPrefix, value);
         }
 
-        private IReadOnlyList<string>? GetPreviousIdentites(ISession session, string sessionKey)
+        private HashSet<string> GetPendingItems(ISession session)
         {
-            var value = session.GetString(sessionKey);
-            if (string.IsNullOrWhiteSpace(value))
+            var value = session.GetString(SessionKeyPrefix);
+            if(string.IsNullOrWhiteSpace(value))
             {
-                return null;
+                return new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             }
+           
+            var items = JsonSerializer.Deserialize<HashSet<string>>(value);
 
-            return JsonSerializer.Deserialize<IReadOnlyList<string>>(value);
+            return items is null ? new HashSet<string>(StringComparer.OrdinalIgnoreCase) : new HashSet<string>(items, StringComparer.OrdinalIgnoreCase);
         }
 
-        private static void SaveSnapshot(ISession session, string sessionKey, IReadOnlyList<string> identities)
+        private ISession GetSession()
         {
-            var serialized = JsonSerializer.Serialize(identities);
-            session.SetString(sessionKey, serialized);
+            return _httpContextAccessor.HttpContext?.Session ?? throw new InvalidOperationException("Session is not available.");
         }
-
-        private static string GetSessionKey(string summaryListId)
-        {
-            var hash = SHA256.HashData(Encoding.UTF8.GetBytes(summaryListId));
-            return $"{SessionKeyPrefix}{Convert.ToHexString(hash)}";
-        }
-
     }
 
     public interface ISummaryListNewItemTracker
-    {
-        Task<SummaryListTrackingResult> TrackNewItemsAsync(string summaryListId, IReadOnlyList<SummaryListItem> items, CancellationToken cancellationToken = default);
+    { 
+        Task MarkAsNew(string trackingId, CancellationToken cancellationToken = default);
+        Task<SummaryListTrackingResult> TrackNewItemsAsync(IReadOnlyList<SummaryListItem> items, CancellationToken cancellationToken = default);
     }
 }

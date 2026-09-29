@@ -13,6 +13,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         {
             // Arrange
             var session = new TestSessionContext();
+            var cancellationToken = TestContext.Current.CancellationToken;
 
             var httpContext = new DefaultHttpContext();
             httpContext.Features.Set<ISessionFeature>(
@@ -37,7 +38,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
                 CreateItem("2", "Alice"),
             };
 
-            var initlResults = await tracker.TrackNewItemsAsync(summaryListId, initalItems);
+            await tracker.MarkAsNew("3", cancellationToken);
+            var initlResults = await tracker.TrackNewItemsAsync(initalItems, cancellationToken);
 
             Assert.Empty(initlResults.NewItemIndexs);
 
@@ -50,13 +52,13 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             };
 
-            var newItems = await tracker.TrackNewItemsAsync(summaryListId, itemsWithNewRow);
+            var newItems = await tracker.TrackNewItemsAsync(itemsWithNewRow, cancellationToken);
 
             Assert.False(newItems.IsNew(0));
             Assert.False(newItems.IsNew(1));
             Assert.True(newItems.IsNew(2));
 
-            var refreshedResult = await tracker.TrackNewItemsAsync(summaryListId, itemsWithNewRow);
+            var refreshedResult = await tracker.TrackNewItemsAsync(itemsWithNewRow, cancellationToken);
 
             Assert.False(refreshedResult.IsNew(0));
             Assert.False(refreshedResult.IsNew(1));

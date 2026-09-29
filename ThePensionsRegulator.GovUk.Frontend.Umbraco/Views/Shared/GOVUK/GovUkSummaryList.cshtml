@@ -22,7 +22,7 @@
     var trackingItems = filteredListItems.Select(listItem => new SummaryListItem(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey) ?? string.Empty,
     listItem.Content.Value<HtmlEncodedString>(PropertyAliases.SummaryListItemValue))).ToList();
 
-    var trackingResult = await NewItemTracker.TrackNewItemsAsync(Model.Content.Key.ToString("N"), trackingItems);
+    var trackingResult = await NewItemTracker.TrackNewItemsAsync(trackingItems);
 
     var orderedItems = filteredListItems
 .Select((item, index) => new

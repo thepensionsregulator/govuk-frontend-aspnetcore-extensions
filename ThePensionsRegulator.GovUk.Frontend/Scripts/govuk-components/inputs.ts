@@ -8,8 +8,13 @@ import {
     SelectOptions,
     TextInputFormGroupOptions,
     TextInputOptions,
-    LabeledControlFormGroupOptions,
 } from "./types";
+
+interface LabeledControlFormGroupOptions {
+    labelText: string;
+    hintText?: string;
+    control: HTMLInputElement | HTMLSelectElement;
+}
 
 export function createFormGroup(formGroupOptions: FormGroupOptions): HTMLElement {
     const div = document.createElement("div");
@@ -133,19 +138,10 @@ function createSelectOption(option: Option): HTMLOptionElement {
 }
 
 export function createSelectFormGroup(options: SelectFormGroupOptions): HTMLElement {
-    const hintId = `${options.select.id}-hint`;
-    const selectAttributes = { ...options.select.attributes };
-
-    if (options.hintText) {
-        selectAttributes["aria-describedby"] = [selectAttributes["aria-describedby"], hintId]
-            .filter(Boolean)
-            .join(" ");
-    }
-
-    return createFormGroup({
-        label: createLabel({ labelText: options.labelText, htmlFor: options.select.id }),
-        hint: options.hintText ? createHint({ hintText: options.hintText, id: hintId }) : undefined,
-        control: createSelect({ ...options.select, attributes: selectAttributes }),
+    return createLabeledControlFormGroup({
+        labelText: options.labelText,
+        hintText: options.hintText,
+        control: createSelect(options.select),
     });
 }
 

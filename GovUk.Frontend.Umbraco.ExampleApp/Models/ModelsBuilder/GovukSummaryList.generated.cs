@@ -50,11 +50,34 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Display new tag: Enable this feature to display new tag against newly added items to summary list
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[ImplementPropertyType("displayNewTag")]
+		public virtual bool DisplayNewTag => this.Value<bool>(_publishedValueFallback, "displayNewTag");
+
+		///<summary>
 		/// Items
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("items")]
 		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel Items => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(_publishedValueFallback, "items");
+
+		///<summary>
+		/// New tag classes 
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("newTagCssClasses")]
+		public virtual string NewTagCssClasses => this.Value<string>(_publishedValueFallback, "newTagCssClasses");
+
+		///<summary>
+		/// New tag text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("newTagText")]
+		public virtual string NewTagText => this.Value<string>(_publishedValueFallback, "newTagText");
 	}
 }

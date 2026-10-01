@@ -20,19 +20,21 @@
     var newTagText = Model.Content?.Value<string>(PropertyAliases.SummaryListNewTagText) ?? "New";
     var newTagCssClasses = Model.Content?.Value<string>(PropertyAliases.SummaryListNewTagCssClasses) ?? "govuk-tag--green";
     var trackingItems = filteredListItems.Select(listItem => new SummaryListItem(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey) ?? string.Empty,
-    listItem.Content.Value<HtmlEncodedString>(PropertyAliases.SummaryListItemValue))).ToList();
+    listItem.Content.Value<HtmlEncodedString>(PropertyAliases.SummaryListItemValue)){ TrackingId = listItem.Content.Value<string>(PropertyAliases.SummaryListItemTrackingId) }).ToList();
 
-    var trackingResult = await NewItemTracker.TrackNewItemsAsync(trackingItems);
+    var trackingResult = newTagEnabled ? await NewItemTracker.TrackNewItemsAsync(trackingItems) : null;
 
     var orderedItems = filteredListItems
-.Select((item, index) => new
-{
-  Item = item,
-  IsNew = trackingResult.IsNew(index)
-})
-.OrderByDescending(x => x.IsNew)
-.ToList();
-}
+                            .Select((item, index) => new
+                            {
+                                Item = item,
+                                IsNew = newTagEnabled &&
+                                        trackingResult is not null &&
+                                        trackingResult.IsNew(index)
+                            })
+                            .OrderByDescending(x => x.IsNew)
+                            .ToList();
+                            }
 <govuk-summary-list id="@Model.Content.Key" class="@cssClasses">
     @foreach(var row in orderedItems)
     {
@@ -40,7 +42,7 @@
         var isNew = row.IsNew;
         <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
             <govuk-summary-list-row-key>
-                @(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey)) @if(newTagEnabled && isNew){<strong class="@newTagCssClasses">@newTagText</strong>}
+                @(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey)) @if(newTagEnabled && isNew){<strong class="govuk-tag @newTagCssClasses">@newTagText</strong>}
             </govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
             @{

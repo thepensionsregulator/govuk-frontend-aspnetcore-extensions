@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
+using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services;
 using ThePensionsRegulator.GovUk.Frontend.Validation;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
@@ -23,7 +24,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             IUmbracoContextAccessor umbracoContextAccessor,
             IPublishedContentTypeCache publishedContentTypeCache,
             IVariationContextAccessor variationContextAccessor,
-            IPublishedValueFallback publishedValueFallback)
+            IPublishedValueFallback publishedValueFallback,
+            ISummaryListNewItemTracker summaryListNewItemTracker)
             : base(logger, compositeViewEngine, umbracoContextAccessor)
         {
             _publishedContentTypeCache = publishedContentTypeCache ?? throw new ArgumentNullException(nameof(publishedContentTypeCache));
@@ -72,7 +74,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             for (var i = 1; i <= 3; i++)
             {
-                var summaryListItem = new SummaryListItem($"Data source item {i}", new HtmlEncodedString($"Data source item value {i}")) { /*TrackingId = $"tracking-id-{i}"*/ };
+                var summaryListItem = new SummaryListItem($"Data source item {i}", new HtmlEncodedString($"Data source item value {i}")) { TrackingId = $"tracking-id-{i}" };
                 summaryListItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
                 items.Add(summaryListItem);
             }
@@ -83,9 +85,10 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             itemCount = Math.Clamp(itemCount, 0, 10);
 
-            for(var i = 0; i <= itemCount; i++)
+            for(var i = 1; i <= itemCount; i++)
             {
-                items.Add(new SummaryListItem($"Data source item {i}", new HtmlEncodedString($"Data source item value {i}")) { /*TrackingId = $"tracking-id-{i}"*/ });
+                var id = i + 3;
+                items.Add(new SummaryListItem($"Data source item {id}", new HtmlEncodedString($"Data source item value {id}")) { TrackingId = $"tracking-id-{id}" });
             }
 
             return items;

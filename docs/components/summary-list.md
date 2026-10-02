@@ -52,3 +52,20 @@ public class ExampleController : RenderController
     }
 }
 ```
+### Display "New" Tag
+
+The Summary List component supports highlighting newly added dynamic items with a configurable "New" tag.
+
+Configuration options:
+
+Enable New Tag: Flag to enable or disable display of the new-item tag.
+New Tag Text: Localisable text displayed within the tag. Defaults to "New".
+Additional CSS Classes: Optional CSS classes applied to the tag to support custom styling. These are appended to the standard GOV.UK tag classes. Defaults to "govuk--green".
+
+On post submission of data that will be used to display summary list mark the id of what you want to save to session data, then ensure this ID is used during rendering for the summary list tracking id
+
+1. After successfully saving submitted data, call MarkAsNew() with a stable item identifier.
+2. The identifier should be unique and remain consistent between requests.
+3. When rendering the summary list, ensure the same identifier is used by the summary list tracking provider.
+4. TrackNewItemsAsync() will compare rendered item identifiers against the pending identifiers stored in session state.
+5. Matching items will be flagged as new and can be displayed with the configured "New" tag.

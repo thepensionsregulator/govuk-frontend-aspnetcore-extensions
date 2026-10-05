@@ -706,8 +706,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                 {
                     { PropertyAliases.SummaryListItemKey, item.Key },
                     { PropertyAliases.SummaryListItemValue, item.Value },
-                    { PropertyAliases.SummaryListItemActions, CreateSummaryListActionBlocks(item.Actions, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) }
-                    { PropertyAliases.SummaryListItemActions, CreateSummaryListActionBlocks(item.Actions, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, filter) },
+                    { PropertyAliases.SummaryListItemActions, CreateSummaryListActionBlocks(item.Actions, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) },
                     {PropertyAliases.SummaryListItemTrackingId, item.TrackingId }
                 };
 

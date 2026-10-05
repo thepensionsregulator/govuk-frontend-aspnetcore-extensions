@@ -13,7 +13,9 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         IGovUkFieldsetErrorFinder _fieldsetErrorFinder,
         IOptions<GovUkFrontendUmbracoOptions> _options,
         IEnumerable<IBlockViewInterceptor> _interceptors,
-        IPublishedValueFallback _publishedValueFallback)
+        IPublishedValueFallback _publishedValueFallback,
+        IOverridablePublishedElementFactory _publishedElementFactory,
+        IOverridableBlockModelFilterStoreAccessor _filterStoreAccessor)
     {
         /// <summary>
         /// Builds details of the HTML required to render each block in a block grid.
@@ -30,7 +32,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
             var wrappedModel = blockGridItems as BlockGridViewModel;
             var gridModel = blockGridItems as OverridableBlockGridModel ?? wrappedModel?.BlockGrid;
             var areaModel = blockGridItems as OverridableBlockGridArea;
-            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(_publishedValueFallback, blockGridItems)).ToList();
+            var blocks = (gridModel?.FilteredBlocks() ?? areaModel?.FilteredBlocks() ?? new OverridableBlockGridModel(_publishedValueFallback, _publishedElementFactory, _filterStoreAccessor, blockGridItems)).ToList();
             if (!blocks.Any()) { return blocksToReturn; }
 
             string? previousRowClass = null, previousColumnClass = null;
@@ -157,7 +159,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         {
             var blocksToReturn = new List<BlockViewModel>();
             var wrappedModel = blockListItems as BlockListViewModel;
-            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(_publishedValueFallback, blockListItems);
+            var filteredModel = blockListItems as OverridableBlockListModel ?? wrappedModel?.BlockList ?? new OverridableBlockListModel(_publishedValueFallback, _publishedElementFactory, _filterStoreAccessor, blockListItems);
             var renderGrid = (wrappedModel?.RenderGrid ?? true);
             var blocks = filteredModel.FilteredBlocks().ToList();
             if (!blocks.Any()) { return blocksToReturn; }

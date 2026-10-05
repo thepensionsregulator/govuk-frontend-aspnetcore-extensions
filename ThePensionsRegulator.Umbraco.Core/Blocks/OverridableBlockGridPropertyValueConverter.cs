@@ -6,6 +6,7 @@ using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.PropertyEditors.ValueConverters;
 using Umbraco.Cms.Core.Serialization;
+using Umbraco.Cms.Core.Services;
 
 namespace ThePensionsRegulator.Umbraco.Core.Blocks
 {
@@ -20,9 +21,13 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
             BlockGridPropertyValueConstructorCache _constructorCache,
             IVariationContextAccessor _variationContextAccessor,
             BlockEditorVarianceHandler _blockEditorVarianceHandler,
-            IPublishedValueFallback _publishedValueFallback
+            IPublishedValueFallback _publishedValueFallback,
+            ILanguageService _languageService,
+            IPropertyRenderingContextAccessor _propertyRenderingContextAccessor,
+            IOverridablePublishedElementFactory _overridablePublishedElementFactory,
+            IOverridableBlockModelFilterStoreAccessor _filterStoreAccessor
         )
-        : BlockGridPropertyValueConverter(_proflog, _blockConverter, _jsonSerializer, _apiElementBuilder, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler)
+        : BlockGridPropertyValueConverter(_proflog, _blockConverter, _jsonSerializer, _apiElementBuilder, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler, _languageService, _propertyRenderingContextAccessor)
     {
         /// <inheritdoc />
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
@@ -35,7 +40,9 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
-            return baseModel is BlockGridModel ? new OverridableBlockGridModel(_publishedValueFallback, (BlockGridModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
+            return baseModel is BlockGridModel
+                ? new OverridableBlockGridModel(_publishedValueFallback, _overridablePublishedElementFactory, _filterStoreAccessor, (BlockGridModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters }
+                : baseModel;
         }
 
         /// <inheritdoc />

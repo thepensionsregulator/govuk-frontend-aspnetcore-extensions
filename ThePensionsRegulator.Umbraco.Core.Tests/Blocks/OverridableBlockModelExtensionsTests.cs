@@ -146,7 +146,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
                     UmbracoBlockGridFactory.CreateOverridableBlock(
                         UmbracoBlockGridFactory.CreateContentOrSettings(BLOCK_ALIAS).Object
                     )
-                }, "area", 1,1)
+                }, "area", 1,1, Mock.Of<IOverridablePublishedElementFactory>(), new TestBlockModelFilterStoreAccessor())
             };
 
             var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
@@ -184,7 +184,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
                         )
                         .Object
                     )
-                }, "area", 1,1)
+                }, "area", 1,1, Mock.Of<IOverridablePublishedElementFactory>(), new TestBlockModelFilterStoreAccessor())
             };
 
             var blockGrid = UmbracoBlockGridFactory.CreateOverridableBlockGridModel(block);
@@ -360,18 +360,20 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.Blocks
             var matchingBlockContent1 = new Mock<IOverridablePublishedElement>();
             matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "contentTypeAlias", "value"));
 
+            var factory = new TestPublishedElementFactory();
+
             var matchingBlock1 = new OverridableBlockListItem(
-                new BlockListItem(Guid.NewGuid(), matchingBlockContent1.Object, null, null),
-                            OverridableBlockListItem.NoopPublishedElementFactory
-                        );
+                        new BlockListItem(Guid.NewGuid(), matchingBlockContent1.Object, null, null),
+                        factory
+                    );
             var matchingBlockContent2 = new Mock<IOverridablePublishedElement>();
             matchingBlockContent1.Setup(x => x.GetProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS)).Returns(UmbracoPropertyFactory.CreateTextboxProperty(EXAMPLE_TEXTBOX_PROPERTY_ALIAS, "contentTypeAlias", "value"));
 
             var matchingBlock2 = new OverridableBlockListItem(
                         new BlockListItem(Guid.NewGuid(), matchingBlockContent1.Object, null, null),
-                        OverridableBlockListItem.NoopPublishedElementFactory
+                        factory
                     );
-            var grandChildBlockList = new OverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), new[] { matchingBlock1, matchingBlock2 }, null, OverridableBlockListItem.NoopPublishedElementFactory);
+            var grandChildBlockList = new OverridableBlockListModel(Mock.Of<IPublishedValueFallback>(), Mock.Of<IOverridablePublishedElementFactory>(), new TestBlockModelFilterStoreAccessor(), [matchingBlock1, matchingBlock2], null);
 
             var childBlockList = UmbracoBlockListFactory.CreateOverridableBlockListModel(
                 UmbracoBlockListFactory.CreateOverridableBlock(

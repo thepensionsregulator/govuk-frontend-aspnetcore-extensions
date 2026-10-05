@@ -29,7 +29,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         }
 
         [Fact]
-        public async Task TrackNewItemsAsync_ShouldOnlyMarkItemsAsNew_WhenItemsAreViewedForTheFirstTime()
+        public async Task GetNewItemIndexesAsyc_ShouldOnlyMarkItemsAsNew_WhenItemsAreViewedForTheFirstTime()
         {
 
             var initialItems = new[]
@@ -70,7 +70,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         }
 
         [Fact]
-        public async Task TrackNewItemsAsync_ShouldClearSessionData_WhenTrackedItemsHaveBeenViewed()
+        public async Task GetNewItemIndexesAsyc_ShouldClearSessionData_WhenTrackedItemsHaveBeenViewed()
         {
             var items = new[]
             {
@@ -93,7 +93,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         }
 
         [Fact]
-        public async Task TrackNewItemsAsync_ShouldNotMarkItemAsNew_WhenTrackingIdIsMissing()
+        public async Task GetNewItemIndexesAsyc_ShouldNotMarkItemAsNew_WhenTrackingIdIsMissing()
         {
             var item = new SummaryListItem("Name", new HtmlEncodedString("John"));
 

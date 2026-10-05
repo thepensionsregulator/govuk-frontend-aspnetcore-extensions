@@ -67,5 +67,5 @@ On post submission of data that will be used to display summary list mark the id
 1. After successfully saving submitted data, call MarkAsNew() with a stable item identifier.
 2. The identifier should be unique and remain consistent between requests.
 3. When rendering the summary list, ensure the same identifier is used by the summary list tracking provider.
-4. TrackNewItemsAsync() will compare rendered item identifiers against the pending identifiers stored in session state.
+4. GetNewItemIndexesAsyc() will compare rendered item identifiers against the pending identifiers stored in session state.
 5. Matching items will be flagged as new and can be displayed with the configured "New" tag.

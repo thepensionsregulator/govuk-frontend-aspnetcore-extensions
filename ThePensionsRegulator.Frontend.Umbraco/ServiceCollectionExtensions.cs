@@ -88,6 +88,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<IConsentCookieReader, TprConsentCookieReader>();
             services.AddTransient<IStaticFileCachePolicy, TprStaticFileCachePolicy>();
             services.AddTransient<ITableCsvService, TableCsvService>();
+            services.AddTransient<ITprCountryRepository, DefaultTprCountryRepository>();
 
             var tprFrontendOptions = new TprFrontendOptions();
             configureTprOptions(tprFrontendOptions);

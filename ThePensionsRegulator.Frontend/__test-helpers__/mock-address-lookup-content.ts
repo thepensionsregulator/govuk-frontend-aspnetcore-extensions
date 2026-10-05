@@ -23,6 +23,7 @@ export function createMockAddressLookupContent(): AddressLookupContent {
         postcodeMaxLengthErrorMessage: "Postcode must be 10 characters or fewer",
         postcodePatternErrorMessage: "Enter a valid postcode",
         countryLabel: "Country",
+        countrySelectPlaceholder: "Select a country",
         countryRequiredErrorMessage: "Select a country",
         buildingNameOrNumberLabel: "Building name or number",
         ukManualEntryLinkLabel: "Enter a UK address manually",

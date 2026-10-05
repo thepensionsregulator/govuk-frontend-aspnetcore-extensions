@@ -112,6 +112,7 @@ function getContent(container: HTMLElement): AddressLookupContent {
         postcodeMaxLengthErrorMessage: get("addressLookupPostcodeMaxLengthErrorMessage"),
         postcodePatternErrorMessage: get("addressLookupPostcodePatternErrorMessage"),
         countryLabel: get("addressLookupCountryLabel"),
+        countrySelectPlaceholder: get("addressLookupCountrySelectPlaceholder"),
         countryRequiredErrorMessage: get("addressLookupCountryRequiredErrorMessage"),
         buildingNameOrNumberLabel: get("addressLookupBuildingNameOrNumberLabel"),
         findAddressButton: get("addressLookupFindAddressButton"),

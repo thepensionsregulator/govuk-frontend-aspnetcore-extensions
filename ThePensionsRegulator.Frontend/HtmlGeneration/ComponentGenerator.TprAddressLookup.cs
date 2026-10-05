@@ -7,9 +7,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
     public partial class ComponentGenerator
     {
-        public TagBuilder GenerateTprAddressLookup(ModelExpression @for, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, TprAddressLookupSettings settings, IDictionary<string, int> countries)
+        public TagBuilder GenerateTprAddressLookup(string @for, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, TprAddressLookupSettings settings, IDictionary<string, int> countries)
         {
-            var name = @for.Name;
+            var name = @for;
             var fieldset = new TagBuilder("fieldset");
             fieldset.AddCssClass("govuk-fieldset");
 
@@ -75,6 +75,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             wrapper.Attributes.Add("data-address-lookup-postcode-max-length-error-message", content.PostcodeMaxLengthErrorMessage);
             wrapper.Attributes.Add("data-address-lookup-postcode-pattern-error-message", content.PostcodePatternErrorMessage);
             wrapper.Attributes.Add("data-address-lookup-country-label", content.CountryLabel);
+            wrapper.Attributes.Add("data-address-lookup-country-select-placeholder", content.CountrySelectPlaceholder);
             wrapper.Attributes.Add("data-address-lookup-country-required-error-message", content.CountryRequiredErrorMessage);
             wrapper.Attributes.Add("data-address-lookup-building-name-or-number-label", content.BuildingNameOrNumberLabel);
 
@@ -94,6 +95,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             // results view
             wrapper.Attributes.Add("data-address-lookup-address-select-label", content.AddressSelectLabel);
+            wrapper.Attributes.Add("data-address-lookup-address-select-error-message", content.AddressSelectErrorMessage);
             wrapper.Attributes.Add("data-address-lookup-confirm-address-label", content.ConfirmAddressLabel);
             wrapper.Attributes.Add("data-address-lookup-back-to-postcode-search-label", content.BackToPostcodeSearchLabel);
             wrapper.Attributes.Add("data-address-lookup-results-not-confirmed-error-message", content.ResultsNotConfirmedErrorMessage);

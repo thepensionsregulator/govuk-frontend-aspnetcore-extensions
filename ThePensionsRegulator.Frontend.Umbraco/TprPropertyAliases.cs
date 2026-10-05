@@ -2,6 +2,46 @@ namespace ThePensionsRegulator.Frontend.Umbraco
 {
     public static class TprPropertyAliases
     {
+        public const string AddressLookupLegend = "addressLookupLegend";
+        public const string AddressLookupHint = "addressLookupHint";
+        public const string AddressLookupAddressLine1Label = "addressLine1Label";
+        public const string AddressLookupAddressLine1RequiredErrorMessage = "addressLine1RequiredErrorMessage";
+        public const string AddressLookupAddressLine1MaxLengthErrorMessage = "addressLine1MaxLengthErrorMessage";
+        public const string AddressLookupAddressLine2Label = "addressLine2Label";
+        public const string AddressLookupAddressLine2MaxLengthErrorMessage = "addressLine2MaxLengthErrorMessage";
+        public const string AddressLookupAddressLine3Label = "addressLine3Label";
+        public const string AddressLookupAddressLine3MaxLengthErrorMessage = "addressLine3MaxLengthErrorMessage";
+        public const string AddressLookupPostTownLabel = "postTownLabel";
+        public const string AddressLookupPostTownRequiredErrorMessage = "postTownRequiredErrorMessage";
+        public const string AddressLookupPostTownMaxLengthErrorMessage = "postTownMaxLengthErrorMessage";
+        public const string AddressLookupCountyLabel = "countyLabel";
+        public const string AddressLookupCountyMaxLengthErrorMessage = "countyMaxLengthErrorMessage";
+        public const string AddressLookupCountyStateProvinceLabel = "countyStateProvinceLabel";
+        public const string AddressLookupCountyStateProvinceMaxLengthErrorMessage = "countyStateProvinceMaxLengthErrorMessage";
+        public const string AddressLookupPostcodeLabel = "postcodeLabel";
+        public const string AddressLookupPostcodeRequiredErrorMessage = "postcodeRequiredErrorMessage";
+        public const string AddressLookupPostcodeMaxLengthErrorMessage = "postcodeMaxLengthErrorMessage";
+        public const string AddressLookupPostcodePatternErrorMessage = "postcodePatternErrorMessage";
+        public const string AddressLookupCountryLabel = "countryLabel";
+        public const string AddressLookupCountrySelectPlaceholder = "countrySelectPlaceholder";
+        public const string AddressLookupCountryRequiredErrorMessage = "countryRequiredErrorMessage";
+        public const string AddressLookupBuildingNameOrNumberLabel = "buildingNameOrNumberLabel";
+        public const string AddressLookupUkManualEntryLinkLabel = "ukManualEntryLinkLabel";
+        public const string AddressLookupUkManualEntryLegend = "ukManualEntryLegend";
+        public const string AddressLookupInternationalManualEntryLabel = "internationalManualEntryLabel";
+        public const string AddressLookupInternationalManualEntryLegend = "internationalManualEntryLegend";
+        public const string AddressLookupUkManualEntryNotConfirmedErrorMessage = "ukManualEntryNotConfirmedErrorMessage";
+        public const string AddressLookupInternationalManualEntryNotConfirmedErrorMessage = "internationalManualEntryNotConfirmedErrorMessage";
+        public const string AddressLookupFindAddressButton = "findAddressButton";
+        public const string AddressLookupAddressNotFoundMessage = "addressNotFoundMessage";
+        public const string AddressLookupServiceUnavailableMessage = "serviceUnavailableMessage";
+        public const string AddressLookupSearchNotConfirmedErrorMessage = "searchNotConfirmedErrorMessage";
+        public const string AddressLookupAddressSelectLabel = "addressSelectLabel";
+        public const string AddressLookupAddressSelectErrorMessage = "addressSelectErrorMessage";
+        public const string AddressLookupConfirmAddressLabel = "confirmAddressLabel";
+        public const string AddressLookupBackToPostcodeSearchLabel = "backToPostcodeSearchLabel";
+        public const string AddressLookupResultsNotConfirmedErrorMessage = "resultsNotConfirmedErrorMessage";
+        public const string AddressLookupChangeAddressLabel = "changeAddressLabel";
         public const string BackToMenuText = "text";
         public const string BackToMenuLink = "link";
         public const string Image = "image";

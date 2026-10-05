@@ -34,6 +34,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("for")]
         public ModelExpression For { get; set; } = default!;
 
+        [HtmlAttributeName("content")]
+        public TprAddressLookupContent? Content { get; set; }
+
         // manual entry labels and error messages
         [HtmlAttributeName("address-line-1-label")]
         public string? AddressLine1Label { get; set; }
@@ -92,6 +95,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("country-label")]
         public string? CountryLabel { get; set; }
 
+        [HtmlAttributeName("country-select-placeholder")]
+        public string? CountrySelectPlaceholder { get; set; }
+
         [HtmlAttributeName("country-required-error-message")]
         public string? CountryRequiredErrorMessage { get; set; }
 
@@ -128,6 +134,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         // results view
         [HtmlAttributeName("address-select-label")]
         public string? AddressSelectLabel { get; set; }
+
+        [HtmlAttributeName("address-select-error-message")]
+        public string? AddressSelectErrorMessage { get; set; }
 
         [HtmlAttributeName("confirm-address-label")]
         public string? ConfirmAddressLabel { get; set; }
@@ -185,7 +194,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         private TprAddressLookupContent GetContent()
         {
-            var content = new TprAddressLookupContent();
+            var content = Content ?? new TprAddressLookupContent();
 
             if (AddressLookupLegend is not null) content.AddressLookupLegend = AddressLookupLegend;
             if (AddressLookupHint is not null) content.AddressLookupHint = AddressLookupHint;
@@ -208,6 +217,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             if (PostcodeMaxLengthErrorMessage is not null) content.PostcodeMaxLengthErrorMessage = PostcodeMaxLengthErrorMessage;
             if (PostcodePatternErrorMessage is not null) content.PostcodePatternErrorMessage = PostcodePatternErrorMessage;
             if (CountryLabel is not null) content.CountryLabel = CountryLabel;
+            if (CountrySelectPlaceholder is not null) content.CountrySelectPlaceholder = CountrySelectPlaceholder;
             if (CountryRequiredErrorMessage is not null) content.CountryRequiredErrorMessage = CountryRequiredErrorMessage;
             if (BuildingNameOrNumberLabel is not null) content.BuildingNameOrNumberLabel = BuildingNameOrNumberLabel;
             if (UkManualEntryLinkLabel is not null) content.UkManualEntryLinkLabel = UkManualEntryLinkLabel;
@@ -219,6 +229,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             if (ServiceUnavailableMessage is not null) content.ServiceUnavailableMessage = ServiceUnavailableMessage;
             if (SearchNotConfirmedErrorMessage is not null) content.SearchNotConfirmedErrorMessage = SearchNotConfirmedErrorMessage;
             if (AddressSelectLabel is not null) content.AddressSelectLabel = AddressSelectLabel;
+            if (AddressSelectErrorMessage is not null) content.AddressSelectErrorMessage = AddressSelectErrorMessage;
             if (ConfirmAddressLabel is not null) content.ConfirmAddressLabel = ConfirmAddressLabel;
             if (BackToPostcodeSearchLabel is not null) content.BackToPostcodeSearchLabel = BackToPostcodeSearchLabel;
             if (ResultsNotConfirmedErrorMessage is not null) content.ResultsNotConfirmedErrorMessage = ResultsNotConfirmedErrorMessage;

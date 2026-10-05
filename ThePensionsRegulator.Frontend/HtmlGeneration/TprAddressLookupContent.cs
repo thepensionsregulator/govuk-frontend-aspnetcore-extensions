@@ -24,6 +24,7 @@
         public string PostcodeMaxLengthErrorMessage { get; set; } = "Postcode must be 10 characters or fewer";
         public string PostcodePatternErrorMessage { get; set; } = "Enter a real postcode";
         public string CountryLabel { get; set; } = "Country";
+        public string CountrySelectPlaceholder { get; set; } = "Select a country";
         public string CountryRequiredErrorMessage { get; set; } = "Select a country";
         public string BuildingNameOrNumberLabel { get; set; } = "Building name or number";
 
@@ -43,6 +44,7 @@
 
         // results view
         public string AddressSelectLabel { get; set; } = "Select an address";
+        public string AddressSelectErrorMessage { get; set; } = "Select an address before continuing";
         public string ConfirmAddressLabel { get; set; } = "Confirm address";
         public string BackToPostcodeSearchLabel { get; set; } = "Back to postcode search";
         public string ResultsNotConfirmedErrorMessage { get; set; } = "Select and confirm an address before continuing";

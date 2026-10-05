@@ -153,6 +153,7 @@ export interface AddressLookupContent {
         postcodeMaxLengthErrorMessage: string;
         postcodePatternErrorMessage: string;
         countryLabel: string;
+        countrySelectPlaceholder: string;
         countryRequiredErrorMessage: string;
         buildingNameOrNumberLabel: string;
 

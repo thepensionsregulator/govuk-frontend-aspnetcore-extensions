@@ -21,7 +21,7 @@ export function renderAddressInternationalManualEntry(options: AddressInternatio
     const addressLine3 = createTextInputFormGroup({ labelText: options.content.i18n.addressLine3Label, input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large", attributes: { autocomplete: 'address-line3' } }});
     const postTown = createTextInputFormGroup({ labelText: options.content.i18n.postTownLabel, input: { id: 'post-town', name: 'post-town', type: "text", width: "x-large", attributes: { autocomplete: 'address-level2' } }});
     const countyStateProvince = createTextInputFormGroup({ labelText: options.content.i18n.countyStateProvinceLabel, input: { id: 'county-state-province', name: 'county-state-province', type: "text", width: "x-large", attributes: { autocomplete: 'address-level1' } }});
-    const country = createSelectFormGroup({ labelText: options.content.i18n.countryLabel, select: { id: 'country', name: 'country', width: "x-large", options: [{ value: '', text: 'Select a country' }, ...options.countries.map(c => ({ value: c.value, text: c.name }))] }});
+    const country = createSelectFormGroup({ labelText: options.content.i18n.countryLabel, select: { id: 'country', name: 'country', width: "x-large", options: [{ value: '', text: options.content.i18n.countrySelectPlaceholder }, ...options.countries.map(c => ({ value: c.value, text: c.name }))] }});
     const postcode = createTextInputFormGroup({ labelText: options.content.i18n.postcodeLabel, input: { id: 'postcode', name: 'postcode', type: "text", width: "large", attributes: { autocomplete: 'postal-code' } }});
 
 

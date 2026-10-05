@@ -41,7 +41,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine3, content.AddressLine3Label, false, "govuk-input--width-20", "address-line3"));
             fieldset.InnerHtml.AppendHtml(CreateTextInput(townOrCity, content.PostTownLabel, true, "govuk-input--width-10", "address-level2"));
             fieldset.InnerHtml.AppendHtml(CreateTextInput(postCountry, content.CountyLabel, false, "govuk-input--width-10", "address-level1"));
-            fieldset.InnerHtml.AppendHtml(CreateSelectInput(countryId, content.CountryLabel, content.CountryLabel, true, "govuk-input--width-10", countries));
+            fieldset.InnerHtml.AppendHtml(CreateSelectInput(countryId, content.CountryLabel, content.CountrySelectPlaceholder, true, "govuk-input--width-10", countries));
             fieldset.InnerHtml.AppendHtml(CreateTextInput(postcode, content.PostcodeLabel, false, "govuk-input--width-10", "postal-code"));
 
             var uprnInput = new TagBuilder("input");
@@ -80,6 +80,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             wrapper.Attributes.Add("data-address-lookup-postcode-max-length-error-message", content.PostcodeMaxLengthErrorMessage);
             wrapper.Attributes.Add("data-address-lookup-postcode-pattern-error-message", content.PostcodePatternErrorMessage);
             wrapper.Attributes.Add("data-address-lookup-country-label", content.CountryLabel);
+            wrapper.Attributes.Add("data-address-lookup-country-select-placeholder", content.CountrySelectPlaceholder);
             wrapper.Attributes.Add("data-address-lookup-country-required-error-message", content.CountryRequiredErrorMessage);
             wrapper.Attributes.Add("data-address-lookup-building-name-or-number-label", content.BuildingNameOrNumberLabel);
 
@@ -99,6 +100,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             // results view
             wrapper.Attributes.Add("data-address-lookup-address-select-label", content.AddressSelectLabel);
+            wrapper.Attributes.Add("data-address-lookup-address-select-error-message", content.AddressSelectErrorMessage);
             wrapper.Attributes.Add("data-address-lookup-confirm-address-label", content.ConfirmAddressLabel);
             wrapper.Attributes.Add("data-address-lookup-back-to-postcode-search-label", content.BackToPostcodeSearchLabel);
             wrapper.Attributes.Add("data-address-lookup-results-not-confirmed-error-message", content.ResultsNotConfirmedErrorMessage);

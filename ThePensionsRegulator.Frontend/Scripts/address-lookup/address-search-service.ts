@@ -11,6 +11,8 @@ export class FetchAddressSearchService implements AddressSearchService {
     }
 
     async searchAddress(postcode: string): Promise<AddressSearchResult[]> {
+        console.log(`Searching address for postcode: ${postcode}`);
+        console.log(`Using search endpoint: ${this.searchEndpoint}`);
         const url = new URL(this.searchEndpoint, window.location.origin);
 
         url.searchParams.set("postcode", postcode);

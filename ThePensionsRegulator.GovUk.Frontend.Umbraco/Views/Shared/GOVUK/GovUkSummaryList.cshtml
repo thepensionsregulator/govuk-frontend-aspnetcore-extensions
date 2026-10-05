@@ -22,7 +22,7 @@
     var trackingItems = filteredListItems.Select(listItem => new SummaryListItem(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey) ?? string.Empty,
     listItem.Content.Value<HtmlEncodedString>(PropertyAliases.SummaryListItemValue) ?? new HtmlEncodedString(string.Empty)) { TrackingId = listItem.Content.Value<string>(PropertyAliases.SummaryListItemTrackingId) }).ToList();
  
-    var trackingResult = newTagEnabled ? await NewItemTracker.TrackNewItemsAsync(trackingItems) : null;
+    var trackingResult = newTagEnabled ? await NewItemTracker.GetNewItemIndexesAsyc(trackingItems) : null;
 
     var orderedItems = filteredListItems.Select((item, index) => new { Item = item, IsNew = newTagEnabled && trackingResult is not null && trackingResult.IsNew(index)})
                                         .OrderByDescending(x => x.IsNew)

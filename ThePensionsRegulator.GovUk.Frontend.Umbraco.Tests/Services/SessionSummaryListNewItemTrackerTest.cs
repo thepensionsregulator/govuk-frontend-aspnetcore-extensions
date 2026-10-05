@@ -29,10 +29,10 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         }
 
         [Fact]
-        public async Task Newly_added_item_is_new_until_session_ends()
+        public async Task TrackNewItemsAsync_ShouldOnlyMarkItemsAsNew_WhenItemsAreViewedForTheFirstTime()
         {
 
-            var initalItems = new[]
+            var initialItems = new[]
             {
                 CreateItem("1", "John"),
                 CreateItem("2", "Alice"),
@@ -40,9 +40,9 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             await _sut.MarkAsNew("3", _cancellationToken);
             await _sut.MarkAsNew("4", _cancellationToken);
-            var initlResults = await _sut.TrackNewItemsAsync(initalItems, _cancellationToken);
+            var initialResults = await _sut.GetNewItemIndexesAsyc(initialItems, _cancellationToken);
 
-            Assert.Empty(initlResults.NewItemIndexs);
+            Assert.Empty(initialResults.NewItemIndexes);
 
             var listWithNewRows = new[]
 
@@ -54,14 +54,14 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
 
             };
 
-            var newItems = await _sut.TrackNewItemsAsync(listWithNewRows, _cancellationToken);
+            var newItems = await _sut.GetNewItemIndexesAsyc(listWithNewRows, _cancellationToken);
 
             Assert.False(newItems.IsNew(0));
             Assert.False(newItems.IsNew(1));
             Assert.True(newItems.IsNew(2));
             Assert.True(newItems.IsNew(3));
 
-            var refreshedResult = await _sut.TrackNewItemsAsync(listWithNewRows, _cancellationToken);
+            var refreshedResult = await _sut.GetNewItemIndexesAsyc(listWithNewRows, _cancellationToken);
 
             Assert.False(refreshedResult.IsNew(0));
             Assert.False(refreshedResult.IsNew(1));
@@ -70,7 +70,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         }
 
         [Fact]
-        public async Task TrackNewItemsAsync_Should_RemoveSessionData()
+        public async Task TrackNewItemsAsync_ShouldClearSessionData_WhenTrackedItemsHaveBeenViewed()
         {
             var items = new[]
             {
@@ -84,16 +84,28 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
             var updatedValue = _sessionContext.GetString(SessionKey);
             Assert.DoesNotContain("Alice", updatedValue);
 
-            await _sut.TrackNewItemsAsync(items, _cancellationToken);
+            await _sut.GetNewItemIndexesAsyc(items, _cancellationToken);
             Assert.NotNull(updatedValue);
 
-            await _sut.TrackNewItemsAsync(items, _cancellationToken);
+            await _sut.GetNewItemIndexesAsyc(items, _cancellationToken);
             var finalValue = _sessionContext.GetString(SessionKey);
             Assert.Null(finalValue);
         }
 
         [Fact]
-        public async Task MarkAsNew_Should_OnlyStoreId_InSession() {
+        public async Task TrackNewItemsAsync_ShouldNotMarkItemAsNew_WhenTrackingIdIsMissing()
+        {
+            var item = new SummaryListItem("Name", new HtmlEncodedString("John"));
+
+            await _sut.MarkAsNew("1", _cancellationToken);
+
+            var result = await _sut.GetNewItemIndexesAsyc(new[] { item }, _cancellationToken);
+
+            Assert.False(result.IsNew(0));
+        }
+
+        [Fact]
+        public async Task MarkAsNew_ShouldStoreOnlyTrackingId_WhenAddingItemToSession() {
             var items = new[]
             {
                 CreateItem("1", "John"),
@@ -107,7 +119,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.Services
         }
 
         [Fact]
-        public async Task MarkAsNew_Should_AddTrackingId_ToSession()
+        public async Task MarkAsNew_ShouldAddTrackingIdToSession_WhenItemIsMarkedAsNew()
         {
             // Arrange
             var sessionKey = "GOVUK.SummaryList.NewItems";

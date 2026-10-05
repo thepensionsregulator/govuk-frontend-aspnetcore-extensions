@@ -60,7 +60,7 @@ Configuration options:
 
 Enable New Tag: Flag to enable or disable display of the new-item tag.
 New Tag Text: Localisable text displayed within the tag. Defaults to "New".
-Additional CSS Classes: Optional CSS classes applied to the tag to support custom styling. These are appended to the standard GOV.UK tag classes. Defaults to "govuk--green".
+Additional CSS Classes: Optional CSS classes applied to the tag to support custom styling. These are appended to the standard GOV.UK tag classes. Defaults to "govuk-tag--green".
 
 On post submission of data that will be used to display summary list mark the id of what you want to save to session data, then ensure this ID is used during rendering for the summary list tracking id
 

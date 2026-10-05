@@ -18,7 +18,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
             _summaryItemIdentityProvider = summaryItemIdentityProvider ?? throw new ArgumentNullException(nameof(summaryItemIdentityProvider));
         }
-        public async Task<SummaryListTrackingResult> TrackNewItemsAsync(IReadOnlyList<SummaryListItem> items, CancellationToken cancellationToken = default)
+        public async Task<SummaryListTrackingResult> GetNewItemIndexesAsyc(IReadOnlyList<SummaryListItem> items, CancellationToken cancellationToken = default)
         {
             if(items.Count == 0) return SummaryListTrackingResult.Empty;
 
@@ -48,7 +48,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 
         private IReadOnlyList<string> GetIdentities(IReadOnlyList<SummaryListItem> items)
         {        
-            return items.Select(_summaryItemIdentityProvider.GetIdentity).ToList();
+            return items.Select(_summaryItemIdentityProvider.GetIdentity).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
         }
 
         public async Task MarkAsNew(string trackingId, CancellationToken cancellationToken = default)
@@ -101,6 +101,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
     public interface ISummaryListNewItemTracker
     { 
         Task MarkAsNew(string trackingId, CancellationToken cancellationToken = default);
-        Task<SummaryListTrackingResult> TrackNewItemsAsync(IReadOnlyList<SummaryListItem> items, CancellationToken cancellationToken = default);
+        Task<SummaryListTrackingResult> GetNewItemIndexesAsyc(IReadOnlyList<SummaryListItem> items, CancellationToken cancellationToken = default);
     }
 }

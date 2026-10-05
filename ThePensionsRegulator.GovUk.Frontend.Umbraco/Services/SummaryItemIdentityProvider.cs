@@ -6,18 +6,14 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 {
     public class SummaryItemIdentityProvider : ISummaryItemIdentityProvider
     {
-        public string GetIdentity(SummaryListItem item)
+        public string? GetIdentity(SummaryListItem item)
         {
-            if (!string.IsNullOrWhiteSpace(item.TrackingId))
+            if (string.IsNullOrWhiteSpace(item.TrackingId))
             {
-                return $"id:{item.TrackingId}";
+                return null;
             }
 
-            var value = item.Value?.ToHtmlString() ?? string.Empty;
-
-            var identity = string.Join("\u001F", item.Key.Normalize(), value);
-
-            return $"id:{identity.GenerateHash()}"  ;
+            return GetIdentity(item.TrackingId) ;
         }
 
         public string GetIdentity(string trackingId)

@@ -3,11 +3,11 @@
     public class SummaryListTrackingResult
     {
         public static SummaryListTrackingResult Empty { get; } = new(new HashSet<int>());
-        public IReadOnlySet<int> NewItemIndexs { get; }
+        public IReadOnlySet<int> NewItemIndexes { get; }
         public SummaryListTrackingResult(IReadOnlySet<int> newItemIndexs)
         {
-            NewItemIndexs = newItemIndexs;
+            NewItemIndexes = newItemIndexs;
         }
-        public bool IsNew(int index) => NewItemIndexs.Contains(index);
+        public bool IsNew(int index) => NewItemIndexes.Contains(index);
     }
 }

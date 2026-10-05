@@ -17,5 +17,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Models
         public HtmlEncodedString Value { get; init; }
         public IList<SummaryListAction> Actions { get; } = new List<SummaryListAction>();
         public string? CssClasses { get; set; }
+        public string? TrackingId { get; set; }
     }
 }

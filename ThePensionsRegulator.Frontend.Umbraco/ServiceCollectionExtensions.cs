@@ -106,6 +106,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
             services.AddTransient<IStaticFileCachePolicy, TprUmbracoStaticFileCachePolicy>();
             services.AddTransient<ITprSideNavigationLinksService, UmbracoSideNavigationLinksService>();
+            services.AddSingleton<ISummaryItemIdentityProvider, SummaryItemIdentityProvider>();
+            services.AddScoped<ISummaryListNewItemTracker, SessionSummaryListNewItemTracker>();
 
             return services;
         }

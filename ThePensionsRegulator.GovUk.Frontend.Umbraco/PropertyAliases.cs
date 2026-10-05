@@ -102,9 +102,13 @@
         public const string SummaryListItems = "items";
         public const string SummaryListItemKey = "itemKey";
         public const string SummaryListItemValue = "itemValue";
+        public const string SummaryListItemTrackingId = "trackingId";
         public const string SummaryListItemActions = "actions";
         public const string SummaryListActionLink = "link";
         public const string SummaryListActionLinkText = "text";
+        public const string SummaryListNewTagEnabled = "displayNewTag";
+        public const string SummaryListNewTagText = "newTagText";
+        public const string SummaryListNewTagCssClasses = "newTagCssClasses";
         public const string TaskListTasks = "tasks";
         public const string TaskListTaskName = "taskName";
         public const string TaskListTaskLink = "link";

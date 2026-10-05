@@ -1,21 +1,42 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
 @addTagHelper *, GovUk.Frontend.AspNetCore
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.Umbraco;
 @using ThePensionsRegulator.Umbraco.Core
 @using ThePensionsRegulator.Umbraco.Core.Blocks
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
+@inject ISummaryListNewItemTracker NewItemTracker;
 @{
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
     var listItems = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItems)!;
+
+    var filteredListItems = listItems.FilteredBlocks().ToList();
+
+    var newTagEnabled = Model.Content?.Value<bool>(PropertyAliases.SummaryListNewTagEnabled) ?? false;
+    var newTagText = Model.Content?.Value<string>(PropertyAliases.SummaryListNewTagText) ?? "New";
+    var newTagCssClasses = Model.Content?.Value<string>(PropertyAliases.SummaryListNewTagCssClasses) ?? "govuk-tag--green";
+    var trackingItems = filteredListItems.Select(listItem => new SummaryListItem(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey) ?? string.Empty,
+    listItem.Content.Value<HtmlEncodedString>(PropertyAliases.SummaryListItemValue) ?? new HtmlEncodedString(string.Empty)) { TrackingId = listItem.Content.Value<string>(PropertyAliases.SummaryListItemTrackingId) }).ToList();
+ 
+    var trackingResult = newTagEnabled ? await NewItemTracker.GetNewItemIndexesAsyc(trackingItems) : null;
+
+    var orderedItems = filteredListItems.Select((item, index) => new { Item = item, IsNew = newTagEnabled && trackingResult is not null && trackingResult.IsNew(index)})
+                                        .OrderByDescending(x => x.IsNew)
+                                        .ToList();
 }
 <govuk-summary-list id="@Model.Content.Key" class="@cssClasses">
-    @foreach (var listItem in listItems.FilteredBlocks())
+    @foreach(var row in orderedItems)
     {
+        var listItem = row.Item;
+        var isNew = row.IsNew;
         <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
-            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</govuk-summary-list-row-key>
+            <govuk-summary-list-row-key>
+                @(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey)) @if(newTagEnabled && isNew){<strong class="govuk-tag @newTagCssClasses">@newTagText</strong>}
+            </govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
             @{
                 var actionsModel = listItem.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions)!;

@@ -4,4 +4,9 @@
 // Change GOV.UK styles where the TPR brand diverges from the GOV.UK Design System.
 .govuk-summary-list__key {
     font-weight: $tpr-font-weight-semi-bold;
+    display: table-row;
+}
+
+.govuk-summary-list__value {
+    vertical-align: revert;
 }

@@ -28,7 +28,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.PropertyEditors.Mode
             // Arrange
             var propNames = new List<string>();
             var pathStack = new Stack<Type>();
-            var expected = new[] { "Name", "Address.Line1", "Address.City", "Address.Postcode" };
+            var expected = new[] { "Name", "Address", "Address.Line1", "Address.City", "Address.Postcode" };
 
             // Act
             _controller.CollectProperties(typeof(ModelWithAddress), string.Empty, 0, 5, pathStack, propNames);
@@ -73,7 +73,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.PropertyEditors.Mode
             // Arrange
             var propNames = new List<string>();
             var pathStack = new Stack<Type>();
-            var expected = new[] { "Name", "Metadata.Key", "Metadata.Value" };
+            var expected = new[] { "Name", "Metadata", "Metadata.Key", "Metadata.Value" };
 
             // Act
             _controller.CollectProperties(typeof(ModelWithInterface), string.Empty, 0, 5, pathStack, propNames);

@@ -1,0 +1,10 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+@addTagHelper *, GovUk.Frontend.AspNetCore
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@{
+    var tagText = Model.Content.Value<string>("tagText");
+    var cssClasses = Model.Settings?.Value<string>("tagClasses");
+}
+
+<govuk-tag class="govuk-tag @cssClasses">@tagText</govuk-tag>

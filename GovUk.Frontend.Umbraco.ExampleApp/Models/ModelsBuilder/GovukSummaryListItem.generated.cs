@@ -72,5 +72,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("itemValue")]
 		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString ItemValue => this.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(_publishedValueFallback, "itemValue");
+
+		///<summary>
+		/// Tag
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tag")]
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel Tag => this.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockGridModel>(_publishedValueFallback, "tag");
 	}
 }

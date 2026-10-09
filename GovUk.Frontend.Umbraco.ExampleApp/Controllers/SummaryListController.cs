@@ -45,7 +45,46 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
                 summaryListToOverride.Content.OverrideSummaryListItems(summaryListItems, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory, _filterStoreAccessor);
             }
 
+            OverrideSummaryListItems(viewModel);
+
             return CurrentTemplate(viewModel);
+        }
+
+        private void OverrideSummaryListItems(SummaryList viewModel)
+        {
+            var summaryListToOverride = viewModel.Blocks!.FindBlockByClass("new-tag");
+            if (summaryListToOverride is null) return;
+
+            var items = CreateTestItems();
+
+            summaryListToOverride.Content.OverrideSummaryListItems(items, _publishedContentTypeCache, _variationContextAccessor);
+
+        }
+
+        private List<SummaryListItem> CreateTestItems()
+        {
+            var items = new List<SummaryListItem>();
+
+            for (var i = 1; i <= 3; i++)
+            {
+                var summaryListItem = new SummaryListItem($"Data source item {i}", new HtmlEncodedString($"Data source item value {i}"));
+                summaryListItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
+                items.Add(summaryListItem);
+            }
+            if (!int.TryParse(Request.Query["items"], out var itemCount))
+            {
+                return items;
+            }
+
+            itemCount = Math.Clamp(itemCount, 0, 10);
+
+            for (var i = 1; i <= itemCount; i++)
+            {
+                var id = i + 3;
+                items.Add(new SummaryListItem($"Data source item {id}", new HtmlEncodedString($"Data source item value {id}")) { Tag = new ThePensionsRegulator.GovUk.Frontend.HtmlGeneration.Tag() {Text = "New", CssClass = "govuk-tag--green" } });
+            }
+
+            return items;
         }
     }
 }

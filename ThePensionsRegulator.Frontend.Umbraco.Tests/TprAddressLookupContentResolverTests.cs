@@ -46,7 +46,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests
             var dictionary = new Mock<ICultureDictionary>();
             dictionary.Setup(x => x[It.IsAny<string>()]).Returns(string.Empty);
 
-            var result = TprAddressLookupContentResolver.Resolve(null, dictionary.Object);
+            var result = TprAddressLookupContentResolver.Resolve(null, null, dictionary.Object);
 
             AssertAllPropertiesEqual(new TprAddressLookupContent(), result);
         }
@@ -58,7 +58,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests
             var field = TprAddressLookupContentResolver.Fields[fieldIndex];
             var dictionary = CreateDictionary(field.DictionaryKey, DictionaryValue);
 
-            var result = TprAddressLookupContentResolver.Resolve(CreateBlock(field.PropertyAlias, null), dictionary);
+            var result = TprAddressLookupContentResolver.Resolve(null, null, dictionary);
 
             Assert.Equal(DictionaryValue, FindPropertyFor(field).GetValue(result));
         }
@@ -70,9 +70,26 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests
             var field = TprAddressLookupContentResolver.Fields[fieldIndex];
             var dictionary = CreateDictionary(field.DictionaryKey, DictionaryValue);
 
-            var result = TprAddressLookupContentResolver.Resolve(CreateBlock(field.PropertyAlias, BlockValue), dictionary);
+            var content = field.FromSettings ? null : CreateBlock(field.PropertyAlias, BlockValue);
+            var settings = field.FromSettings ? CreateBlock(field.PropertyAlias, BlockValue) : null;
+            var result = TprAddressLookupContentResolver.Resolve(content, settings, dictionary);
 
             Assert.Equal(BlockValue, FindPropertyFor(field).GetValue(result));
+        }
+
+        [Theory]
+        [MemberData(nameof(FieldIndexes))]
+        public void Value_from_the_wrong_block_source_is_ignored(int fieldIndex)
+        {
+            var field = TprAddressLookupContentResolver.Fields[fieldIndex];
+            var dictionary = CreateDictionary(field.DictionaryKey, string.Empty);
+            var content = field.FromSettings ? CreateBlock(field.PropertyAlias, BlockValue) : null;
+            var settings = field.FromSettings ? null : CreateBlock(field.PropertyAlias, BlockValue);
+            var property = FindPropertyFor(field);
+
+            var result = TprAddressLookupContentResolver.Resolve(content, settings, dictionary);
+
+            Assert.Equal(property.GetValue(new TprAddressLookupContent()), property.GetValue(result));
         }
 
         [Theory]
@@ -82,7 +99,9 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests
             var field = TprAddressLookupContentResolver.Fields[fieldIndex];
             var dictionary = CreateDictionary(field.DictionaryKey, DictionaryValue);
 
-            var result = TprAddressLookupContentResolver.Resolve(CreateBlock(field.PropertyAlias, "  "), dictionary);
+            var content = field.FromSettings ? null : CreateBlock(field.PropertyAlias, "  ");
+            var settings = field.FromSettings ? CreateBlock(field.PropertyAlias, "  ") : null;
+            var result = TprAddressLookupContentResolver.Resolve(content, settings, dictionary);
 
             Assert.Equal(DictionaryValue, FindPropertyFor(field).GetValue(result));
         }
@@ -95,7 +114,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Tests
             var dictionary = CreateDictionary(field.DictionaryKey, "  ");
             var property = FindPropertyFor(field);
 
-            var result = TprAddressLookupContentResolver.Resolve(CreateBlock(field.PropertyAlias, string.Empty), dictionary);
+            var result = TprAddressLookupContentResolver.Resolve(null, null, dictionary);
 
             Assert.Equal(property.GetValue(new TprAddressLookupContent()), property.GetValue(result));
         }

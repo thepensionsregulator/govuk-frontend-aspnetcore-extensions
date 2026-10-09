@@ -36,6 +36,18 @@ describe("renderConfirmedAddress", () => {
         expect(paragraph?.querySelectorAll("br")).toHaveLength(5);
     });
 
+    it("should render a 'change address' button, that calls the backToSearch function when clicked", () => {
+        const backToSearchFunction = jest.fn();
+        const component = renderConfirmedAddress({address: completeAddress, onBackToSearchRequested: backToSearchFunction, fields, content });
+        const button = component.querySelector("button");
+
+        expect(button).not.toBeNull();
+        expect(button).toHaveTextContent(content.changeAddressLabel);
+        expect(backToSearchFunction).not.toHaveBeenCalled();
+        button?.click();
+        expect(backToSearchFunction).toHaveBeenCalled();
+    });
+
     it("should omit optional fields without adding blank lines", () => {
         const address: ConfirmedAddress = {
             addressLine1: "10 High Street",
@@ -105,17 +117,5 @@ describe("renderConfirmedAddress", () => {
         expect(component.querySelector("#postTown")).toBeNull();
         expect(component.querySelector("#postCounty")).toBeNull();
         expect(component.querySelector("#countryId")).toBeNull();
-    });
-
-    it("should report when the change address link is clicked", () => {
-        const onBackToSearchRequested = jest.fn();
-        const component = renderConfirmedAddress({address: completeAddress, onBackToSearchRequested, fields, content });
-        const link = component.querySelector<HTMLAnchorElement>("a")!;
-        const event = new MouseEvent("click", { cancelable: true });
-
-        link.dispatchEvent(event);
-
-        expect(event.defaultPrevented).toBe(true);
-        expect(onBackToSearchRequested).toHaveBeenCalledTimes(1);
     });
 });

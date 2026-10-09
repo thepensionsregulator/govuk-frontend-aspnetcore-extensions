@@ -37,7 +37,7 @@ describe("renderAddressInternationalManualEntry", () => {
 		const { component, content } = createComponent();
 		const country = component.querySelector<HTMLSelectElement>("#country");
 		const confirmButton = component.querySelector<HTMLButtonElement>("button");
-		const backLink = component.querySelector<HTMLAnchorElement>("nav a");
+		const backLink = component.querySelector<HTMLAnchorElement>("a");
 
 		expect(component.querySelector("#address-line-1")).toHaveClass("govuk-input", "govuk-input--width-20");
 		expect(component.querySelector("#address-line-2")).toHaveClass("govuk-input", "govuk-input--width-20");
@@ -122,7 +122,7 @@ describe("renderAddressInternationalManualEntry", () => {
 		const { component, onBackToSearchRequested } = createComponent();
 		const clickEvent = new MouseEvent("click", { cancelable: true });
 
-		component.querySelector<HTMLAnchorElement>("nav a")!.dispatchEvent(clickEvent);
+		component.querySelector<HTMLAnchorElement>("a")!.dispatchEvent(clickEvent);
 
 		expect(clickEvent.defaultPrevented).toBe(true);
 		expect(onBackToSearchRequested).toHaveBeenCalledTimes(1);

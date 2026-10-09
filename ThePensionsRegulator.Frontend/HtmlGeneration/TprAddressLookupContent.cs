@@ -2,60 +2,66 @@
 {
     public class TprAddressLookupContent
     {
+        // overall heading and blurb
+        public string AddressLookupIntroductionHeading { get; set; } = "Add address";
+        public string AddressLookupIntroductionText { get; set; } = "You should give us the full address";
+
+        // No-JS legend
+        public string NoJsLegend { get; set; } = "Enter new address";
+
         // manual entry labels and error messages
-        public string AddressLookupLegend { get; set; } = "Address lookup default";
-        public string AddressLookupHint { get; set; } = "Enter a building name or number and postcode to find your address default";
-        public string AddressLine1Label { get; set; } = "Address line 1 default";
-        public string AddressLine1RequiredErrorMessage { get; set; } = "Enter address line 1 default";
-        public string AddressLine1MaxLengthErrorMessage { get; set; } = "Address line 1 must be 100 characters or less default";
-        public string AddressLine2Label { get; set; } = "Address line 2 default";
-        public string AddressLine2MaxLengthErrorMessage { get; set; } = "Address line 2 must be 100 characters or less default";
-        public string AddressLine3Label { get; set; } = "Address line 3 default";
-        public string AddressLine3MaxLengthErrorMessage { get; set; } = "Address line 3 must be 100 characters or less default";
-        public string PostTownLabel { get; set; } = "Town or city default";
-        public string PostTownRequiredErrorMessage { get; set; } = "Enter town or city default";
-        public string PostTownMaxLengthErrorMessage { get; set; } = "Town or city must be 100 characters or less default";
-        public string CountyLabel { get; set; } = "County default";
-        public string CountyMaxLengthErrorMessage { get; set; } = "County must be 100 characters or less default";
-        public string CountyStateProvinceLabel { get; set; } = "County, state or province default";
-        public string CountyStateProvinceMaxLengthErrorMessage { get; set; } = "County, state or province must be 100 characters or less default";
-        public string PostcodeLabel { get; set; } = "Postcode default";
-        public string PostcodeRequiredErrorMessage { get; set; } = "Enter postcode default";
-        public string PostcodeMaxLengthErrorMessage { get; set; } = "Postcode must be 100 characters or less default";
-        public string PostcodePatternErrorMessage { get; set; } = "Enter a valid postcode default";
-        public string CountryLabel { get; set; } = "Country default";
+        public string AddressLine1Label { get; set; } = "Address line 1";
+        public string AddressLine1RequiredErrorMessage { get; set; } = "Enter address line 1";
+        public string AddressLine1MaxLengthErrorMessage { get; set; } = "Address line 1 must be 100 characters or less";
+        public string AddressLine2Label { get; set; } = "Address line 2";
+        public string AddressLine2MaxLengthErrorMessage { get; set; } = "Address line 2 must be 100 characters or less";
+        public string AddressLine3Label { get; set; } = "Address line 3";
+        public string AddressLine3MaxLengthErrorMessage { get; set; } = "Address line 3 must be 100 characters or less";
+        public string PostTownLabel { get; set; } = "Town or city";
+        public string PostTownRequiredErrorMessage { get; set; } = "Enter town or city";
+        public string PostTownMaxLengthErrorMessage { get; set; } = "Town or city must be 100 characters or less";
+        public string CountyLabel { get; set; } = "County";
+        public string CountyMaxLengthErrorMessage { get; set; } = "County must be 100 characters or less";
+        public string CountyStateProvinceLabel { get; set; } = "County, state or province";
+        public string CountyStateProvinceMaxLengthErrorMessage { get; set; } = "County, state or province must be 100 characters or less";
+        public string PostcodeLabel { get; set; } = "Postcode";
+        public string PostcodeRequiredErrorMessage { get; set; } = "Enter postcode";
+        public string PostcodeMaxLengthErrorMessage { get; set; } = "Postcode must be 100 characters or less";
+        public string PostcodePatternErrorMessage { get; set; } = "Enter a valid postcode";
+        public string CountryLabel { get; set; } = "Country";
         public string CountrySelectPlaceholder { get; set; } = "Select a country";
-        public string CountryRequiredErrorMessage { get; set; } = "Select a country default";
-        public string BuildingNameOrNumberLabel { get; set; } = "Building name or number default";
+        public string CountryRequiredErrorMessage { get; set; } = "Select a country";
+        public string BuildingNameOrNumberLabel { get; set; } = "Building name or number";
 
         // UK manual entry labels
-        public string UkManualEntryLinkLabel { get; set; } = "Enter address manually default";
-        public string UkManualEntryLegend { get; set; } = "Enter your address default";
+        public string UkManualEntryLinkLabel { get; set; } = "Enter address manually";
+        public string UkManualEntryLegend { get; set; } = "Enter your address";
 
         // international manual entry labels
-        public string InternationalManualEntryLabel { get; set; } = "Enter an international address default";
-        public string InternationalManualEntryLegend { get; set; } = "Enter your international address default";
+        public string InternationalManualEntryLabel { get; set; } = "Enter an international address";
+        public string InternationalManualEntryLegend { get; set; } = "Enter your international address";
 
         // search view
-        public string FindAddressButton { get; set; } = "Find address default";
-        public string AddressNotFoundMessage { get; set; } = "We could not find any addresses for this postcode default";
-        public string ServiceUnavailableMessage { get; set; } = "The address lookup service is currently unavailable default";
-        public string SearchNotConfirmedErrorMessage { get; set; } = "Find and confirm an address before continuing default";
+        public string SearchLegend { get; set; } = "Search by postcode";
+        public string FindAddressButton { get; set; } = "Find address";
+        public string AddressNotFoundMessage { get; set; } = "We could not find any addresses for this postcode";
+        public string ServiceUnavailableMessage { get; set; } = "The address lookup service is currently unavailable";
+        public string SearchNotConfirmedErrorMessage { get; set; } = "Find and confirm an address before continuing";
 
         // results view
-        public string AddressSelectLabel { get; set; } = "Select an address default";
-        public string ConfirmAddressLabel { get; set; } = "Confirm address default";
-        public string BackToPostcodeSearchLabel { get; set; } = "Back to postcode search default";
-        public string AddressSelectErrorMessage { get; set; } = "Select an address before continuing default";
-        public string ResultsNotConfirmedErrorMessage { get; set; } = "Select and confirm an address before continuing default";
+        public string AddressSelectLabel { get; set; } = "Select an address";
+        public string ConfirmAddressLabel { get; set; } = "Confirm address";
+        public string BackToPostcodeSearchLabel { get; set; } = "Back to postcode search";
+        public string AddressSelectErrorMessage { get; set; } = "Select an address before continuing";
+        public string ResultsNotConfirmedErrorMessage { get; set; } = "Select and confirm an address before continuing";
 
         // UK manual entry view
-        public string UkManualEntryNotConfirmedErrorMessage { get; set; } = "Enter and confirm an address before continuing default";
+        public string UkManualEntryNotConfirmedErrorMessage { get; set; } = "Enter and confirm an address before continuing";
 
         // international manual entry view
-        public string InternationalManualEntryNotConfirmedErrorMessage { get; set; } = "Enter and confirm an international address before continuing default";
+        public string InternationalManualEntryNotConfirmedErrorMessage { get; set; } = "Enter and confirm an international address before continuing";
 
         // confirmed view
-        public string ChangeAddressLabel { get; set; } = "Change address default";
+        public string ChangeAddressLabel { get; set; } = "Change address";
     }
 }

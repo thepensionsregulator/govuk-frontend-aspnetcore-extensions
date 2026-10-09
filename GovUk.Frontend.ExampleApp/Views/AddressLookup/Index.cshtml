@@ -1,6 +1,15 @@
-﻿@{
+﻿@using ThePensionsRegulator.Frontend.HtmlGeneration
+@{
     ViewData["Title"] = "Address lookup";
+
+    var content = new TprAddressLookupContent
+    {
+        AddressLookupIntroductionHeading = "Find your address from example app view",
+        AddressLookupIntroductionText = "Enter your postcode to find your address from example app view.",
+        SearchLegend = "Search legend from the view"
+    };
 }
+
 @model AddressLookupViewModel
 
 <span class="govuk-caption-xl">Example application</span>
@@ -15,7 +24,9 @@
         <div class="govuk-grid-column govuk-grid-column-full">
             <tpr-address-lookup 
                 address-search-url="/AddressLookupData/Address.json"
-                for="@Model.ShippingAddress" />
+                for="@nameof(Model.ShippingAddress)" 
+                content="@content"
+                govuk-heading-class="govuk-heading-m" />
         </div>
     </div>
     <div class="govuk-grid-row">

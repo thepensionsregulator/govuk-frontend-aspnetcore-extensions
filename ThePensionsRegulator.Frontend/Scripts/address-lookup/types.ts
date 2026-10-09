@@ -128,10 +128,10 @@ export interface InitialAddress {
 
 export interface AddressLookupContent {
     i18n: {
-
         // component level legend and hint
         addressLookupLegend: string;
         addressLookupHint?: string;
+        noJsLegend: string;
 
         // manual entry labels and error messages
         addressLine1Label: string;
@@ -166,6 +166,7 @@ export interface AddressLookupContent {
         internationalManualEntryLegend: string;
 
         // search view
+        searchLegend: string;
         findAddressButton: string;
         addressNotFoundMessage: string;
         serviceUnavailableMessage: string;

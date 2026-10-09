@@ -5,6 +5,7 @@ import { createFieldsetFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js
 import { createSelectFormGroup, createTextInputFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
 import { clearFormGroupError, focusFirstInvalidControl, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
+import { createParagraph } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/paragraph.js";
 
 export interface AddressInternationalManualEntryOptions {
     content: AddressLookupContent;
@@ -41,10 +42,10 @@ export function renderAddressInternationalManualEntry(options: AddressInternatio
     const backToSearch = createLink({ labelText: options.content.i18n.backToPostcodeSearchLabel });
     backToSearch.addEventListener("click", handleBackToSearch);
 
-    const nav = document.createElement("nav");
-    nav.appendChild(backToSearch);
+    const p = createParagraph();
+    p.appendChild(backToSearch);
 
-    div.appendChild(nav);
+    div.appendChild(p);
 
     function handleBackToSearch(event: Event): void {
         event.preventDefault();

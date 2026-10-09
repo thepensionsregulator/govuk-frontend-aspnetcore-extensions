@@ -2,6 +2,13 @@
 {
     public class TprAddressLookupContent
     {
+        // overall heading and blurb
+        public string AddressLookupIntroductionHeading { get; set; } = "Add address";
+        public string AddressLookupIntroductionText { get; set; } = "You should give us the full address";
+
+        // No-JS legend
+        public string NoJsLegend { get; set; } = "Enter new address";
+
         // manual entry labels and error messages
         public string AddressLookupLegend { get; set; } = "Address lookup";
         public string AddressLookupHint { get; set; } = "Enter a building name or number and postcode to find your address";
@@ -37,6 +44,7 @@
         public string InternationalManualEntryLegend { get; set; } = "Enter your international address";
 
         // search view
+        public string SearchLegend { get; set; } = "Search by postcode";
         public string FindAddressButton { get; set; } = "Find address";
         public string AddressNotFoundMessage { get; set; } = "We could not find any addresses for this postcode";
         public string ServiceUnavailableMessage { get; set; } = "The address lookup service is currently unavailable";

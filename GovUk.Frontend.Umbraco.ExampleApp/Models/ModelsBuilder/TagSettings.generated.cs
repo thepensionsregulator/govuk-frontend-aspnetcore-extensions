@@ -50,11 +50,11 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Tag classes
+		/// Tag colour classes
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("tagClasses")]
-		public virtual string TagClasses => this.Value<string>(_publishedValueFallback, "tagClasses");
+		[ImplementPropertyType("tagColour")]
+		public virtual string TagColour => this.Value<string>(_publishedValueFallback, "tagColour");
 	}
 }

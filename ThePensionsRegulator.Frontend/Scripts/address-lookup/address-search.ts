@@ -14,6 +14,7 @@ import { filterAddressesByBuilding } from "./address-filter.js";
 import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 import type { AddressLookupContent, AddressSearchCriteria, AddressSearchOptions } from "./types.js";
 import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
+import { createParagraph } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/paragraph.js";
 import { submitOnEnter } from "./submit-on-enter.js";
 
 export function renderAddressSearch(options: AddressSearchOptions): HTMLElement {
@@ -41,7 +42,7 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     });
     const postcodeInput = postcodeFormGroup.querySelector("input")!;
 
-    const fieldset = createFieldsetFormGroup({legendText: options.content.addressLookupLegend, children: [ buildingNameFormGroup, postcodeFormGroup ], id: "address-search-fieldset"});
+    const fieldset = createFieldsetFormGroup({legendText: options.content.searchLegend, children: [ buildingNameFormGroup, postcodeFormGroup ], id: "address-search-fieldset"});
     fieldset.setAttribute("data-address-lookup-submit-error-anchor", "true");
     addressSearchWrapper.appendChild(fieldset);
     
@@ -53,11 +54,11 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     
     const internationalEntryLink = createLink({labelText: options.content.internationalManualEntryLabel});
     internationalEntryLink.addEventListener("click", handleOnInternationalEntryClicked);
+    const p = createParagraph();
     
-    const nav = document.createElement("nav");
-    nav.appendChild(internationalEntryLink);
+    p.appendChild(internationalEntryLink);
     
-    addressSearchWrapper.appendChild(nav);
+    addressSearchWrapper.appendChild(p);
 
     return addressSearchWrapper;
     

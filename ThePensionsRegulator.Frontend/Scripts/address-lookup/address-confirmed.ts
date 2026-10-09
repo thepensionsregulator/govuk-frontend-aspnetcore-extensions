@@ -1,5 +1,5 @@
 import { AddressFieldKey, AddressFields, AddressLookupContent, ConfirmedAddress } from "./types";
-import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
+import { createButton } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
 
 export interface ConfirmedAddressOptions {
     address: ConfirmedAddress;
@@ -14,10 +14,10 @@ export function renderConfirmedAddress(options: ConfirmedAddressOptions): HTMLEl
     div.appendChild(createAddressParagraph(options.address));
     createHiddenAddressInputs(options.address, options.fields).forEach(input => div.appendChild(input));    
 
-    const backToSearchLink = createLink({labelText: options.content.changeAddressLabel});
-    backToSearchLink.addEventListener("click", handleBackToSearch);
+    const backToSearchButton = createButton({labelText: options.content.changeAddressLabel, type: "button", variant: "secondary" });
+    backToSearchButton.addEventListener("click", handleBackToSearch);
 
-    div.appendChild(backToSearchLink);
+    div.appendChild(backToSearchButton);
 
     return div;
 

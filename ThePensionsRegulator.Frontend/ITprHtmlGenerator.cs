@@ -22,6 +22,7 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprSearchResults(string popularContentUrl, string searchContentUrl, string contentByIdUrl);
         TagBuilder GenerateTprSearchResultsFooterLinks(TprSearchFooterLinks tprSearchFooterLinks);
         TagBuilder GenerateTprSearchResultsInput(int headingLevel, string headingClass, string? label = null);
-        TagBuilder GenerateTprAddressLookup(ModelExpression @for, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, TprAddressLookupSettings settings, IDictionary<string, int> countries);
+        TagBuilder GenerateTprAddressLookupIntroduction(int headingLevel, string headingClass, TprAddressLookupContent content);
+        TagBuilder GenerateTprAddressLookup(string @for, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, IDictionary<string, int> countries);
     }
 }

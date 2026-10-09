@@ -12,6 +12,8 @@ const { initialiseAddressLookups: initiliseAddressLookups } = await import("../.
 const contentMappings: ReadonlyArray<readonly [string, string]> = [
     ["addressLookupLegend", "addressLookupLegend"],
     ["addressLookupHint", "addressLookupHint"],
+    ["noJsLegend", "addressLookupNoJsLegend"],
+    ["searchLegend", "addressLookupSearchLegend"],
     ["addressLine1Label", "addressLookupAddressLine-1Label"],
     ["addressLine1RequiredErrorMessage", "addressLookupAddressLine-1RequiredErrorMessage"],
     ["addressLine1MaxLengthErrorMessage", "addressLookupAddressLine-1MaxLengthErrorMessage"],

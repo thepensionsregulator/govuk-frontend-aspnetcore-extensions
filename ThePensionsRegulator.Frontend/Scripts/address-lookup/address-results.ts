@@ -4,6 +4,7 @@ import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-compon
 import { createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 import { submitOnEnter } from "./submit-on-enter.js";
+import { createParagraph } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/paragraph.js";
 
 export type AddressResultsOptions = {
     addresses: AddressSearchResult[];
@@ -39,17 +40,21 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
 
     const ukManualEntryLink = createLink({labelText: options.content.ukManualEntryLinkLabel});
     ukManualEntryLink.addEventListener("click", handleUkManualEntry);
-
+    const manualEntryPara = createParagraph();
+    manualEntryPara.appendChild(ukManualEntryLink);
+    
     const backToSearchLink = createLink({labelText: options.content.backToPostcodeSearchLabel});
     backToSearchLink.addEventListener("click", handleBackToSearch);
-
+    const backToSearchPara = createParagraph();
+    backToSearchPara.appendChild(backToSearchLink);
+    
     const nav = document.createElement("nav");
     const ul = document.createElement("ul");
     ul.classList = "govuk-list";
     const backToSearchLi = document.createElement("li");
-    backToSearchLi.appendChild(backToSearchLink);
+    backToSearchLi.appendChild(backToSearchPara);
     const ukManualEntryLi = document.createElement("li");
-    ukManualEntryLi.appendChild(ukManualEntryLink);
+    ukManualEntryLi.appendChild(manualEntryPara);
     ul.appendChild(backToSearchLi);
     ul.appendChild(ukManualEntryLi);
     nav.appendChild(ul);

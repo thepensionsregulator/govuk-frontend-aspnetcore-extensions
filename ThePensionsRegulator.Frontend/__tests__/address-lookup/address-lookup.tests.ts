@@ -262,7 +262,7 @@ describe("createAddressLookup", () => {
         const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content, countries });
         const component = addressLookupInstance.element;
 
-        component.querySelector<HTMLAnchorElement>("nav a")!.click();
+        component.querySelector<HTMLAnchorElement>("a")!.click();
 
         component.querySelector<HTMLInputElement>("#address-line-1")!.value = "123 Rue de Rivoli";
         component.querySelector<HTMLInputElement>("#post-town")!.value = "Paris";

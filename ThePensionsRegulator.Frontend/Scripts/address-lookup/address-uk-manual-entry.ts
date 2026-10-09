@@ -7,6 +7,7 @@ import { createButton } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-comp
 import { createFieldsetFormGroup } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js';
 import { createTextInputFormGroup } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js';
 import { createLink } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js';
+import { createParagraph } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/paragraph.js';
 import { clearFormGroupError, showFormGroupError } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js';
 
 export interface AddressUkManualEntryOptions {
@@ -39,7 +40,9 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
 
     const backToSearch = createLink({ labelText: options.content.backToPostcodeSearchLabel});
     backToSearch.addEventListener("click", handleBackToSearch);
-    div.appendChild(backToSearch);
+    const p = createParagraph();
+    p.appendChild(backToSearch);
+    div.appendChild(p);
 
     function handleBackToSearch(event: Event): void {
         event.preventDefault();

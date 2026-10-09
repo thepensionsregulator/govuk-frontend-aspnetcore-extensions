@@ -1,0 +1,21 @@
+@using Microsoft.Extensions.Configuration
+@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Dictionary
+@inject ICultureDictionary CultureDictionary
+@inject IConfiguration Configuration
+
+@addTagHelper *, ThePensionsRegulator.Frontend
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+
+@{
+    var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
+    var description = modelPropertyName + " description";
+    var content = TprAddressLookupContentResolver.Resolve(Model.Content, Model.Settings, CultureDictionary);
+    var addressSearchUrl = Configuration["AddressLookup:SearchEndpoint"];
+}
+
+
+<tpr-address-lookup for=@modelPropertyName content="content" address-search-url="@addressSearchUrl"></tpr-address-lookup>

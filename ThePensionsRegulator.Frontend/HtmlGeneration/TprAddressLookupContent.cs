@@ -2,9 +2,14 @@
 {
     public class TprAddressLookupContent
     {
+        // overall heading and blurb
+        public string AddressLookupIntroductionHeading { get; set; } = "Add address";
+        public string AddressLookupIntroductionText { get; set; } = "You should give us the full address";
+
+        // No-JS legend
+        public string NoJsLegend { get; set; } = "Enter new address";
+
         // manual entry labels and error messages
-        public string AddressLookupLegend { get; set; } = "Address lookup";
-        public string AddressLookupHint { get; set; } = "Enter a building name or number and postcode to find your address";
         public string AddressLine1Label { get; set; } = "Address line 1";
         public string AddressLine1RequiredErrorMessage { get; set; } = "Enter address line 1";
         public string AddressLine1MaxLengthErrorMessage { get; set; } = "Address line 1 must be 100 characters or less";
@@ -24,6 +29,7 @@
         public string PostcodeMaxLengthErrorMessage { get; set; } = "Postcode must be 100 characters or less";
         public string PostcodePatternErrorMessage { get; set; } = "Enter a valid postcode";
         public string CountryLabel { get; set; } = "Country";
+        public string CountrySelectPlaceholder { get; set; } = "Select a country";
         public string CountryRequiredErrorMessage { get; set; } = "Select a country";
         public string BuildingNameOrNumberLabel { get; set; } = "Building name or number";
 
@@ -36,6 +42,7 @@
         public string InternationalManualEntryLegend { get; set; } = "Enter your international address";
 
         // search view
+        public string SearchLegend { get; set; } = "Search by postcode";
         public string FindAddressButton { get; set; } = "Find address";
         public string AddressNotFoundMessage { get; set; } = "We could not find any addresses for this postcode";
         public string ServiceUnavailableMessage { get; set; } = "The address lookup service is currently unavailable";
@@ -45,6 +52,7 @@
         public string AddressSelectLabel { get; set; } = "Select an address";
         public string ConfirmAddressLabel { get; set; } = "Confirm address";
         public string BackToPostcodeSearchLabel { get; set; } = "Back to postcode search";
+        public string AddressSelectErrorMessage { get; set; } = "Select an address before continuing";
         public string ResultsNotConfirmedErrorMessage { get; set; } = "Select and confirm an address before continuing";
 
         // UK manual entry view

@@ -4,6 +4,7 @@ import { createButton } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-comp
 import { createFieldsetFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js";
 import { createSelectFormGroup, createTextInputFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
+import { createParagraph } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/paragraph.js";
 import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 
 export interface AddressInternationalManualEntryOptions {
@@ -20,7 +21,7 @@ export function renderAddressInternationalManualEntry(options: AddressInternatio
     const addressLine3 = createTextInputFormGroup({ labelText: options.content.addressLine3Label, input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large" }});
     const postTown = createTextInputFormGroup({ labelText: options.content.postTownLabel, input: { id: 'post-town', name: 'post-town', type: "text", width: "x-large" }});
     const countyStateProvince = createTextInputFormGroup({ labelText: options.content.countyStateProvinceLabel, input: { id: 'county-state-province', name: 'county-state-province', type: "text", width: "x-large" }});
-    const country = createSelectFormGroup({ labelText: options.content.countryLabel, select: { id: 'country', name: 'country', width: "x-large", options: [{ value: '', text: 'Select a country' },  ...options.countries.map(c => ({ value: c.value, text: c.name }))] }});
+    const country = createSelectFormGroup({ labelText: options.content.countryLabel, select: { id: 'country', name: 'country', width: "x-large", options: [{ value: '', text: options.content.countrySelectPlaceholder },  ...options.countries.map(c => ({ value: c.value, text: c.name }))] }});
     const postcode = createTextInputFormGroup({ labelText: options.content.postcodeLabel, input: { id: 'postcode', name: 'postcode', type: "text", width: "x-large" }});
 
     const fieldsetFormGroup = createFieldsetFormGroup({
@@ -39,10 +40,10 @@ export function renderAddressInternationalManualEntry(options: AddressInternatio
     const backToSearch = createLink({ labelText: options.content.backToPostcodeSearchLabel });
     backToSearch.addEventListener("click", handleBackToSearch);
 
-    const nav = document.createElement("nav");
-    nav.appendChild(backToSearch);
+    const p = createParagraph();
+    p.appendChild(backToSearch);
 
-    div.appendChild(nav);
+    div.appendChild(p);
 
     function handleBackToSearch(event: Event): void {
         event.preventDefault();

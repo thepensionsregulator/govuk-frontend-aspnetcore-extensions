@@ -31,7 +31,10 @@ export function initialiseAddressLookups() {
             content,
         });
 
-        target.replaceChildren(addressLookup.element);
+        const view = target.querySelector<HTMLElement>(".tpr-address-lookup-view");
+        if (view) {
+            view.replaceChildren(addressLookup.element);
+        }
 
         const form = target.closest("form");
         if (!form) return;
@@ -93,6 +96,8 @@ function getContent(container: HTMLElement): AddressLookupContent {
     const content: AddressLookupContent = {
         addressLookupLegend: get("addressLookupLegend"),
         addressLookupHint: get("addressLookupHint"),
+        noJsLegend: get("addressLookupNoJsLegend"),
+        searchLegend: get("addressLookupSearchLegend"),
         addressLine1Label: get("addressLookupAddressLine-1Label"),
         addressLine1RequiredErrorMessage: get("addressLookupAddressLine-1RequiredErrorMessage"),
         addressLine1MaxLengthErrorMessage: get("addressLookupAddressLine-1MaxLengthErrorMessage"),
@@ -112,6 +117,7 @@ function getContent(container: HTMLElement): AddressLookupContent {
         postcodeMaxLengthErrorMessage: get("addressLookupPostcodeMaxLengthErrorMessage"),
         postcodePatternErrorMessage: get("addressLookupPostcodePatternErrorMessage"),
         countryLabel: get("addressLookupCountryLabel"),
+        countrySelectPlaceholder: get("addressLookupCountrySelectPlaceholder"),
         countryRequiredErrorMessage: get("addressLookupCountryRequiredErrorMessage"),
         buildingNameOrNumberLabel: get("addressLookupBuildingNameOrNumberLabel"),
         findAddressButton: get("addressLookupFindAddressButton"),

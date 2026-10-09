@@ -13,7 +13,7 @@
 @{
     var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
     var description = modelPropertyName + " description";
-    var content = TprAddressLookupContentResolver.Resolve(Model.Content, CultureDictionary);
+    var content = TprAddressLookupContentResolver.Resolve(Model.Content, Model.Settings, CultureDictionary);
     var addressSearchUrl = Configuration["AddressLookup:SearchEndpoint"];
 }
 

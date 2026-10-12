@@ -105,6 +105,8 @@
         public const string SummaryListItemActions = "actions";
         public const string SummaryListActionLink = "link";
         public const string SummaryListActionLinkText = "text";
+        public const string TagText = "tagText";
+        public const string TagClass = "tagColour";
         public const string TaskListTasks = "tasks";
         public const string TaskListTaskName = "taskName";
         public const string TaskListTaskLink = "link";

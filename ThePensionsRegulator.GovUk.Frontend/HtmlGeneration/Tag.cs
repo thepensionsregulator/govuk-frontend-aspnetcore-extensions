@@ -5,7 +5,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.HtmlGeneration
     public class Tag
     {
         public AttributeDictionary Attributes { get; set; } = [];
-        public string Text { get; set; } = string.Empty; //maybe required
-        public string CssClass { get; set; } = string.Empty;
+        public string? Text { get; set; }
+        public string? CssClass { get; set; } 
     }
 }

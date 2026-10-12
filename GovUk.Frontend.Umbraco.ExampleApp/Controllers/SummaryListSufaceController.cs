@@ -18,8 +18,12 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
         [HttpPost]
         public async Task<IActionResult> AddTestItem()
         {
+            var itemCount = 0;
+            if (int.TryParse(Request.Query["Items"], out var parsedCount)) { itemCount = parsedCount; }
 
-            return Redirect($"{CurrentPage!.Url()}?Items=1");
+            itemCount = Math.Clamp(itemCount + 1, 1, 10);
+
+                return Redirect($"{CurrentPage!.Url()}?Items={itemCount}");
         }
     }
 }

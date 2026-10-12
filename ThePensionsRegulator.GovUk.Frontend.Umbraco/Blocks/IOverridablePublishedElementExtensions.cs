@@ -708,7 +708,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                     { PropertyAliases.SummaryListItemKey, item.Key },
                     { PropertyAliases.SummaryListItemValue, item.Value },
                     { PropertyAliases.SummaryListItemActions, CreateSummaryListActionBlocks(item.Actions, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) },
-                    {"tag", CreateTagBlockGrid(item.Tag, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) }
+                    {PropertyAliases.SummaryListItemTag, CreateTagBlockList(item.Tag, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) }
                 };
 
                 var settingsFields = new Dictionary<string, object?>()
@@ -747,7 +747,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
             return new OverridableBlockListModel(publishedValueFallback, publishedElementFactory, filterStoreAccessor, blockListItems, filter);
         }
 
-        private static OverridableBlockListModel CreateTagBlockGrid(Tag tag,
+        private static OverridableBlockListModel? CreateTagBlockList(Tag? tag,
             IPublishedContentTypeCache publishedContentTypeCache,
             IVariationContextAccessor variationContextAccessor,
             IPublishedValueFallback publishedValueFallback,
@@ -755,21 +755,28 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
             IOverridableBlockModelFilterStoreAccessor filterStoreAccessor,
             Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
         {
-            if (tag is null)
+            if (tag is null || string.IsNullOrEmpty(tag.Text))
             {
                 return null;
             }
 
-            var tagFields = new Dictionary<string, object?>
-    {
-        { "tagText", tag.Text },
-        { "tagColour", tag.CssClass } //set in settings
-    };
+            var contentFields = new Dictionary<string, object?>
+            {
+                { PropertyAliases.TagText, tag.Text }
+            };
 
+            var settingFields = new Dictionary<string, object?>
+            {
+                { PropertyAliases.TagClass, tag.CssClass }
+            };
             var tagBlock = CreateBlockListItem(
-                "tprTag",
-                tagFields,
-                 null, null, publishedContentTypeCache, variationContextAccessor, publishedElementFactory);
+                ElementTypeAliases.Tag,
+                contentFields,
+                ElementTypeAliases.TagSettings,
+                settingFields,
+                publishedContentTypeCache,
+                variationContextAccessor,
+                publishedElementFactory);
 
             return new OverridableBlockListModel(
                 publishedValueFallback,

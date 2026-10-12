@@ -12,6 +12,7 @@ using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.PublishedModels;
+using Tag = ThePensionsRegulator.GovUk.Frontend.HtmlGeneration.Tag;
 
 namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 {
@@ -57,7 +58,7 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             var items = CreateTestItems();
 
-            summaryListToOverride.Content.OverrideSummaryListItems(items, _publishedContentTypeCache, _variationContextAccessor);
+            summaryListToOverride.Content.OverrideSummaryListItems(items, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory, _filterStoreAccessor);
 
         }
 
@@ -67,9 +68,9 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
 
             for (var i = 1; i <= 3; i++)
             {
-                var summaryListItem = new SummaryListItem($"Data source item {i}", new HtmlEncodedString($"Data source item value {i}"));
-                summaryListItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
-                items.Add(summaryListItem);
+                var item = new SummaryListItem($"Data source item {i}", new HtmlEncodedString($"Data source item value {i}"));
+                item.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {i}"));
+                items.Add(item);
             }
             if (!int.TryParse(Request.Query["items"], out var itemCount))
             {
@@ -81,7 +82,8 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Controllers
             for (var i = 1; i <= itemCount; i++)
             {
                 var id = i + 3;
-                items.Add(new SummaryListItem($"Data source item {id}", new HtmlEncodedString($"Data source item value {id}")) { Tag = new ThePensionsRegulator.GovUk.Frontend.HtmlGeneration.Tag() {Text = "New", CssClass = "govuk-tag--green" } });
+
+                items.Add(new SummaryListItem($"Data source item {id}", new HtmlEncodedString($"Data source item value {id}")) { Actions = { new SummaryListAction(new Link { Url = "https://www.example.org" }, $"Action {id}") }, Tag = new Tag{Text = "New", CssClass = "govuk-tag--green" } });
             }
 
             return items;

@@ -71,6 +71,8 @@
         public const string SummaryListItem = "govukSummaryListItem";
         public const string SummaryListItemSettings = "govukSummaryListItemSettings";
         public const string SummaryListAction = "govukSummaryListAction";
+        public const string Tag = "govukTag";
+        public const string TagSettings = "tagSettings";
         public const string TaskListSummary = "govukTaskListSummary";
         public const string TaskListSummarySettings = "govukTaskListSummarySettings";
         public const string TaskList = "govukTaskList";

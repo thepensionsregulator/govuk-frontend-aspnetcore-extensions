@@ -49,6 +49,10 @@ namespace ThePensionsRegulator.Umbraco.Core.PropertyEditors.ValueConverters
         }
 
         /// <inheritdoc />
-        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.Element;
+        /// <remarks>
+        /// This is set to <see cref="PropertyCacheLevel.None"/> because Umbraco is caching generated links in multi url pickers.
+        /// For example, after loading /page/10000006 and then /page/10000007, any links styled as a button will still end in 10000006.
+        /// </remarks>
+        public override PropertyCacheLevel GetPropertyCacheLevel(IPublishedPropertyType propertyType) => PropertyCacheLevel.None;
     }
 }

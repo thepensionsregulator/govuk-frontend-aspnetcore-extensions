@@ -36,7 +36,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.PropertyEditors.ValueConverter
         }
 
         [Fact]
-        public void GetPropertyCacheLevel_Returns_Element()
+        public void GetPropertyCacheLevel_Returns_None()
         {
             // Arrange
             using var testContext = new UmbracoTestContext();
@@ -47,7 +47,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.PropertyEditors.ValueConverter
             var result = valueConverter.GetPropertyCacheLevel(propertyType);
 
             // Assert
-            Assert.Equal(PropertyCacheLevel.Element, result);
+            Assert.Equal(PropertyCacheLevel.None, result);
         }
 
         private static MultiUrlPickerPropertyValueConverter CreateValueConverter(UmbracoTestContext testContext, IEnumerable<IPropertyValueFormatter>? propertyValueFormatters = null)

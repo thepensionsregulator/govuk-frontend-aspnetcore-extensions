@@ -22,7 +22,10 @@
         var tagColour = tag?.Settings?.Value<string>(PropertyAliases.TagClass);
 
         <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
-            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))@if(!string.IsNullOrWhiteSpace(tagText)){<govuk-tag class="@tagColour">@tagText</govuk-tag>}</govuk-summary-list-row-key>
+            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))@if(!string.IsNullOrWhiteSpace(tagText)){
+                <span><govuk-tag class="@tagColour">@tagText</govuk-tag></span>
+            }
+        </govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
             @{
                 var actionsModel = listItem.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions)!;

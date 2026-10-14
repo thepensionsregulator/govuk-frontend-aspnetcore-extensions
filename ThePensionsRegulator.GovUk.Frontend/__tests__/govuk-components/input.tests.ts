@@ -266,6 +266,15 @@ describe("createCheckbox", () => {
         expect(checkbox).toContainElement(input);
         expect(checkbox).toContainElement(label);
     });
+    it("should trigger the onClick event when the checkbox is clicked", () => {
+        const mockOnClick = jest.fn();
+        const checkboxWithOnClick = createCheckbox({ name: "test-onclick", labelText: "Test OnClick", onClick: mockOnClick });
+        const input = checkboxWithOnClick.querySelector("input");
+        if (input) {
+            input.click();
+        }
+        expect(mockOnClick).toHaveBeenCalled();
+    });
 });
 
 describe("createCheckboxFormGroup", () => {

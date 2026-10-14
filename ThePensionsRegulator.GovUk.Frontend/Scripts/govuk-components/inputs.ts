@@ -166,12 +166,16 @@ export type Checkbox = HTMLDivElement;
 export type CheckboxOptions = {
     name: string;
     labelText: string;
+    onClick?: (event: Event) => void;
 }
 export function createCheckbox(options: CheckboxOptions): Checkbox {
     const container = document.createElement("div");
     container.className = "govuk-checkboxes__item";
     
     const input = createCheckboxInput(options.name);
+    if (options.onClick) {
+        input.addEventListener('click', options.onClick);
+    }
     const label = createCheckboxLabel(options.name, options.labelText);
     
     container.appendChild(input);

@@ -65,5 +65,8 @@
 
         // confirmed view
         public string ChangeAddressLabel { get; set; } = "Change address";
+
+        // same as checkbox
+        public string SameAsLabel { get; set; } = "Same as above";
     }
 }

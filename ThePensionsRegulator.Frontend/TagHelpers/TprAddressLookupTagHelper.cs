@@ -367,6 +367,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             // confirmed view
             attributes.Add("data-address-lookup-change-address-label", content.ChangeAddressLabel);
+
+            // same as checkbox
+            attributes.Add("data-address-lookup-same-as-label", content.SameAsLabel);
         }
     }
 }

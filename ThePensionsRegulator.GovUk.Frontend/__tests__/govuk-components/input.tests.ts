@@ -1,4 +1,4 @@
-import { createFormGroup, createLabel, createHint, createTextInput, createTextInputFormGroup } from "../../Scripts/govuk-components/inputs";
+import { createFormGroup, createLabel, createHint, createTextInput, createTextInputFormGroup, createCheckbox, createCheckboxesFormGroup } from "../../Scripts/govuk-components/inputs";
 import "@testing-library/jest-dom";
 
 describe("createFormGroup", () => {
@@ -218,5 +218,83 @@ describe("createTextInputFormGroup",() => {
         expect(formGroup.children[0]).toHaveClass("govuk-label");
         expect(formGroup.children[1]).toHaveClass("govuk-hint");
         expect(formGroup.children[2]).toHaveClass("govuk-input");
+    });
+});
+
+describe("createCheckbox", () => {
+    const checkbox = createCheckbox({ name: "test", labelText: "Test Label" });
+    it("should create a label", () => {
+        const label = checkbox.querySelector("label");
+        expect(label).not.toBeNull();
+    });
+    it("should create a label with the correct text", () => {
+        const label = checkbox.querySelector("label");
+        expect(label).toHaveTextContent("Test Label");
+    });
+    it("should create a label with the correct classes applied", () => {
+        const label = checkbox.querySelector("label");
+        expect(label).toHaveClass("govuk-label");
+        expect(label).toHaveClass("govuk-checkboxes__label");
+    });
+
+    it("should create an input",() => {
+        const input = checkbox.querySelector("input");
+        expect(input).not.toBeNull();
+    });
+    it("should have the correct type attribute", () => {
+        const input = checkbox.querySelector("input");
+        expect(input).toHaveAttribute("type", "checkbox");
+    });
+    it("should have the correct name attribute", () => {
+        const input = checkbox.querySelector("input");
+        expect(input).toHaveAttribute("name", "test");
+    });
+    it("should have the correct id attribute", () => {
+        const input = checkbox.querySelector("input");
+        expect(input).toHaveAttribute("id", "test");
+    });
+    it("should have the correct classes applied", () => {
+        const input = checkbox.querySelector("input");
+        expect(input).toHaveClass("govuk-checkboxes__input");
+    });
+
+    it("should be wrapped in a div with the correct class", () => {
+        expect(checkbox).toHaveClass("govuk-checkboxes__item");
+
+        const input = checkbox.querySelector("input");
+        const label = checkbox.querySelector("label");
+        expect(checkbox).toContainElement(input);
+        expect(checkbox).toContainElement(label);
+    });
+});
+
+describe("createCheckboxFormGroup", () => {
+    const checkbox1 = createCheckbox({ name: "test1", labelText: "Test Label 1" });
+    const checkbox2 = createCheckbox({ name: "test2", labelText: "Test Label 2" });
+    const formGroup = createCheckboxesFormGroup({
+        checkboxes: [checkbox1, checkbox2],
+    });
+
+    it("should create a div with the correct class", () => {
+        expect(formGroup.tagName).toBe("DIV");
+        expect(formGroup).toHaveClass("govuk-form-group");
+    });
+
+    it("should contain a div with the correct class", () => {
+        const div = formGroup.querySelector("div");
+        expect(div).not.toBeNull();
+        expect(div).toHaveClass("govuk-checkboxes");
+        expect(formGroup).toContainElement(div);
+    });
+
+    it("should contain the individual checkboxes within the inner div", () => {
+        const div = formGroup.querySelector("div");
+        expect(div).toContainElement(checkbox1);
+        expect(div).toContainElement(checkbox2);
+    });
+
+    it("should create a form group containing the checkboxes", () => {
+        expect(formGroup).toContainElement(checkbox1);
+        expect(formGroup).toContainElement(checkbox2);
     });
 });

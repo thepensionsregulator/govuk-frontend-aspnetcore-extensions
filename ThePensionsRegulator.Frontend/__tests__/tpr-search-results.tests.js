@@ -210,8 +210,9 @@ describe('initialise accordion', () => {
         expect(mockEvent.preventDefault).toHaveBeenCalled();
     });
 
-    it('should show all answers when "show more" is clicked', async () => {
+    it('should expand and collapse answers when the show more link is clicked', async () => {
         setupBlankComponent();
+        await resetShowMoreAnswersButton();
 
         const lastSearchResults = [
             { name: "heading 1", pageContent: "content 1", key: "1" },
@@ -224,8 +225,10 @@ describe('initialise accordion', () => {
 
         await showMoreAnswersOnClick();
 
+        const showMoreButton = document.getElementById('tpr-search-results-show-more-questions');
         const results = document.querySelectorAll('.govuk-accordion__section');
         expect(results.length).toBe(lastSearchResults.length);
+        expect(showMoreButton).toHaveTextContent('Show fewer questions');
 
         results.forEach((result, index) => {
             const heading = result.querySelector(".govuk-accordion__section-heading");
@@ -233,6 +236,14 @@ describe('initialise accordion', () => {
             expect(heading).toHaveTextContent(lastSearchResults[index].name);
             expect(content).toHaveTextContent(lastSearchResults[index].pageContent);
         });
+
+        await showMoreAnswersOnClick();
+
+        const collapsedResults = document.querySelectorAll('.govuk-accordion__section');
+        expect(collapsedResults).toHaveLength(2);
+        expect(collapsedResults[0]).toHaveTextContent(lastSearchResults[0].name);
+        expect(collapsedResults[1]).toHaveTextContent(lastSearchResults[1].name);
+        expect(showMoreButton).toHaveTextContent('Show more questions');
     });
 });
 

@@ -176,7 +176,9 @@ export interface AddressLookupContent {
 
     // confirmed view
     changeAddressLabel: string;
-    
+
+    // same as checkbox
+    sameAsLabel: string;
 }
 
 export interface AddressLookupSettings {

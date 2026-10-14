@@ -38,6 +38,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string AddressNotFoundMessage = "Address lookup - address not found message";
         public const string ServiceUnavailableMessage = "Address lookup - service unavailable message";
         public const string SearchNotConfirmedErrorMessage = "Address lookup - search not confirmed error message";
+        public const string SameAsLabel = "Address lookup - same as label";
         public const string AddressSelectLabel = "Address lookup - address select label";
         public const string AddressSelectErrorMessage = "Address lookup - address select error message";
         public const string ConfirmAddressLabel = "Address lookup - confirm address label";

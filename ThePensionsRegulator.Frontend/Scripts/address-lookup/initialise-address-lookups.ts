@@ -135,7 +135,8 @@ function getContent(container: HTMLElement): AddressLookupContent {
         internationalManualEntryNotConfirmedErrorMessage: get("addressLookupInternationalManualEntryNotConfirmedErrorMessage"),
         ukManualEntryNotConfirmedErrorMessage: get("addressLookupUkManualEntryNotConfirmedErrorMessage"),
         resultsNotConfirmedErrorMessage: get("addressLookupResultsNotConfirmedErrorMessage"),
-        searchNotConfirmedErrorMessage: get("addressLookupSearchNotConfirmedErrorMessage")
+        searchNotConfirmedErrorMessage: get("addressLookupSearchNotConfirmedErrorMessage"),
+        sameAsLabel: get("addressLookupSameAsLabel")
     };
 
     return content;

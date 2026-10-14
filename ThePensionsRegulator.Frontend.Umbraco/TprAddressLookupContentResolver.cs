@@ -55,6 +55,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             new(TprPropertyAliases.AddressLookupBackToPostcodeSearchLabel, TprAddressLookupDictionaryKeys.BackToPostcodeSearchLabel, (c, v) => c.BackToPostcodeSearchLabel = v),
             new(TprPropertyAliases.AddressLookupResultsNotConfirmedErrorMessage, TprAddressLookupDictionaryKeys.ResultsNotConfirmedErrorMessage, (c, v) => c.ResultsNotConfirmedErrorMessage = v, true),
             new(TprPropertyAliases.AddressLookupChangeAddressLabel, TprAddressLookupDictionaryKeys.ChangeAddressLabel, (c, v) => c.ChangeAddressLabel = v),
+            new(TprPropertyAliases.AddressLookupSameAsLabel, TprAddressLookupDictionaryKeys.SameAsLabel, (c, v) => c.SameAsLabel = v)
         ];
 
         public static TprAddressLookupContent Resolve(IOverridablePublishedElement? blockContent, IOverridablePublishedElement? blockSettings, ICultureDictionary dictionary)

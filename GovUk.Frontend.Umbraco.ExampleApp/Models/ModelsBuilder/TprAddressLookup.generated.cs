@@ -48,5 +48,181 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		}
 
 		// properties
+
+		///<summary>
+		/// Address line 1 label: Overrides the 'Address lookup - address line 1 label' dictionary item. Defaults to 'Address line 1' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine1Label")]
+		public virtual string AddressLine1Label => this.Value<string>(_publishedValueFallback, "addressLine1Label");
+
+		///<summary>
+		/// Address line 2 label: Overrides the 'Address lookup - address line 2 label' dictionary item. Defaults to 'Address line 2' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine2Label")]
+		public virtual string AddressLine2Label => this.Value<string>(_publishedValueFallback, "addressLine2Label");
+
+		///<summary>
+		/// Address line 3 label: Overrides the 'Address lookup - address line 3 label' dictionary item. Defaults to 'Address line 3' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine3Label")]
+		public virtual string AddressLine3Label => this.Value<string>(_publishedValueFallback, "addressLine3Label");
+
+		///<summary>
+		/// Address lookup hint: Overrides the 'Address lookup - hint' dictionary item. Defaults to 'Enter a building name or number and postcode to find your address' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLookupHint")]
+		public virtual string AddressLookupHint => this.Value<string>(_publishedValueFallback, "addressLookupHint");
+
+		///<summary>
+		/// Address lookup legend: Overrides the 'Address lookup - legend' dictionary item. Defaults to 'Address lookup' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLookupLegend")]
+		public virtual string AddressLookupLegend => this.Value<string>(_publishedValueFallback, "addressLookupLegend");
+
+		///<summary>
+		/// Address select label: Overrides the 'Address lookup - address select label' dictionary item. Defaults to 'Select an address' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressSelectLabel")]
+		public virtual string AddressSelectLabel => this.Value<string>(_publishedValueFallback, "addressSelectLabel");
+
+		///<summary>
+		/// Back to postcode search label: Overrides the 'Address lookup - back to postcode search label' dictionary item. Defaults to 'Back to postcode search' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("backToPostcodeSearchLabel")]
+		public virtual string BackToPostcodeSearchLabel => this.Value<string>(_publishedValueFallback, "backToPostcodeSearchLabel");
+
+		///<summary>
+		/// Building name or number label: Overrides the 'Address lookup - building name or number label' dictionary item. Defaults to 'Building name or number' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("buildingNameOrNumberLabel")]
+		public virtual string BuildingNameOrNumberLabel => this.Value<string>(_publishedValueFallback, "buildingNameOrNumberLabel");
+
+		///<summary>
+		/// Change address label: Overrides the 'Address lookup - change address label' dictionary item. Defaults to 'Change address' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("changeAddressLabel")]
+		public virtual string ChangeAddressLabel => this.Value<string>(_publishedValueFallback, "changeAddressLabel");
+
+		///<summary>
+		/// Confirm address label: Overrides the 'Address lookup - confirm address label' dictionary item. Defaults to 'Confirm address' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("confirmAddressLabel")]
+		public virtual string ConfirmAddressLabel => this.Value<string>(_publishedValueFallback, "confirmAddressLabel");
+
+		///<summary>
+		/// Country label: Overrides the 'Address lookup - country label' dictionary item. Defaults to 'Country' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countryLabel")]
+		public virtual string CountryLabel => this.Value<string>(_publishedValueFallback, "countryLabel");
+
+		///<summary>
+		/// Country select placeholder: Override the 'Address lookup - country select placeholder' dictionary item. Defauls to 'Select a country' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countrySelectPlaceholder")]
+		public virtual string CountrySelectPlaceholder => this.Value<string>(_publishedValueFallback, "countrySelectPlaceholder");
+
+		///<summary>
+		/// County label: Overrides the 'Address lookup - county label' dictionary item. Defaults to 'County' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countyLabel")]
+		public virtual string CountyLabel => this.Value<string>(_publishedValueFallback, "countyLabel");
+
+		///<summary>
+		/// County state province label: Overrides the 'Address lookup - county state province label' dictionary item. Defaults to 'County, state or province' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countyStateProvinceLabel")]
+		public virtual string CountyStateProvinceLabel => this.Value<string>(_publishedValueFallback, "countyStateProvinceLabel");
+
+		///<summary>
+		/// Find address button: Overrides the 'Address lookup - find address button' dictionary item. Defaults to 'Find address' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("findAddressButton")]
+		public virtual string FindAddressButton => this.Value<string>(_publishedValueFallback, "findAddressButton");
+
+		///<summary>
+		/// International manual entry label: Overrides the 'Address lookup - international manual entry label' dictionary item. Defaults to 'Enter an international address' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("internationalManualEntryLabel")]
+		public virtual string InternationalManualEntryLabel => this.Value<string>(_publishedValueFallback, "internationalManualEntryLabel");
+
+		///<summary>
+		/// International manual entry legend: Overrides the 'Address lookup - international manual entry legend' dictionary item. Defaults to 'Enter your international address' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("internationalManualEntryLegend")]
+		public virtual string InternationalManualEntryLegend => this.Value<string>(_publishedValueFallback, "internationalManualEntryLegend");
+
+		///<summary>
+		/// Postcode label: Overrides the 'Address lookup - postcode label' dictionary item. Defaults to 'Postcode' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postcodeLabel")]
+		public virtual string PostcodeLabel => this.Value<string>(_publishedValueFallback, "postcodeLabel");
+
+		///<summary>
+		/// Post town label: Overrides the 'Address lookup - post town label' dictionary item. Defaults to 'Town or city' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postTownLabel")]
+		public virtual string PostTownLabel => this.Value<string>(_publishedValueFallback, "postTownLabel");
+
+		///<summary>
+		/// Same as label: Overrides the 'Address lookup - same as label' dictionary item. Defaults to 'Same as above' if both are left blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("sameAsLabel")]
+		public virtual string SameAsLabel => this.Value<string>(_publishedValueFallback, "sameAsLabel");
+
+		///<summary>
+		/// UK manual entry legend: Overrides the 'Address lookup - UK manual entry legend' dictionary item. Defaults to 'Enter your address' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("ukManualEntryLegend")]
+		public virtual string UkManualEntryLegend => this.Value<string>(_publishedValueFallback, "ukManualEntryLegend");
+
+		///<summary>
+		/// UK manual entry link label: Overrides the 'Address lookup - UK manual entry link label' dictionary item. Defaults to 'Enter address manually' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("ukManualEntryLinkLabel")]
+		public virtual string UkManualEntryLinkLabel => this.Value<string>(_publishedValueFallback, "ukManualEntryLinkLabel");
 	}
 }

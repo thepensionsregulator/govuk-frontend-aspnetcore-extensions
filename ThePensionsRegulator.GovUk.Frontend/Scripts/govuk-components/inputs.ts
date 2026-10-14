@@ -145,6 +145,58 @@ export function createSelectFormGroup(options: SelectFormGroupOptions): HTMLElem
     });
 }
 
+export type CheckboxesOptions = {
+    checkboxes: Checkbox[]
+}
+export function createCheckboxesFormGroup(options: CheckboxesOptions) : HTMLElement{
+    const formGroup = document.createElement("div");
+    formGroup.className = "govuk-form-group";
+    const checkboxes = document.createElement("div");
+    checkboxes.className = "govuk-checkboxes";
+    formGroup.appendChild(checkboxes);
+    options.checkboxes.forEach(checkbox => {
+        checkboxes.appendChild(checkbox);
+    });
+
+    return formGroup;
+}
+
+
+export type Checkbox = HTMLDivElement;
+export type CheckboxOptions = {
+    name: string;
+    labelText: string;
+}
+export function createCheckbox(options: CheckboxOptions): Checkbox {
+    const container = document.createElement("div");
+    container.className = "govuk-checkboxes__item";
+    
+    const input = createCheckboxInput(options.name);
+    const label = createCheckboxLabel(options.name, options.labelText);
+    
+    container.appendChild(input);
+    container.appendChild(label);
+
+    return container;
+}
+
+function createCheckboxInput(name: string) : HTMLInputElement {
+    const input = document.createElement("input");
+    input.className = "govuk-checkboxes__input";
+    input.type = "checkbox";
+    input.name = name;
+    input.id = name;
+    return input;
+} 
+
+function createCheckboxLabel(forId: string, labelText: string) : HTMLLabelElement {
+    const label = document.createElement("label");
+    label.className = "govuk-label govuk-checkboxes__label";
+    label.htmlFor = forId;
+    label.textContent = labelText;
+    return label;
+}
+
 
 const inputWidthClasses: Record<FormControlWidth, string> = {
     "xx-small": "govuk-input--width-2",

@@ -5,7 +5,8 @@
 @using ThePensionsRegulator.Umbraco.Core.Blocks
 @{
     var tagText = Model.Content.Value<string>(PropertyAliases.TagText);
-    var cssClass = Model.Settings?.Value<string>(PropertyAliases.TagClass);
-}
 
-<govuk-tag class="@cssClass">@tagText</govuk-tag>
+    var cssClass = Model.Settings?.Value<string>(PropertyAliases.TagClass);
+    var additionalCssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
+}
+    <govuk-tag class="@cssClass @additionalCssClasses">@tagText</govuk-tag>

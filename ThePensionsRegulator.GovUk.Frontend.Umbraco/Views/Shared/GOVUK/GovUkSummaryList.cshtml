@@ -22,8 +22,9 @@
         var tagColour = tag?.Settings?.Value<string>(PropertyAliases.TagClass);
 
         <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
-            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))@if(!string.IsNullOrWhiteSpace(tagText)){
-                <span><govuk-tag class="@tagColour">@tagText</govuk-tag></span>
+            <govuk-summary-list-row-key>
+                <span class="tpr-summary-list__key-text">@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</span>@if(!string.IsNullOrWhiteSpace(tagText)){
+                <span class="tpr-summary-list__key-tag"><govuk-tag class="@tagColour">@tagText</govuk-tag></span>
             }
         </govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>

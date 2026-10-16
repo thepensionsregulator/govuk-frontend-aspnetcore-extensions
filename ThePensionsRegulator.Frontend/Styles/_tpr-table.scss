@@ -7,10 +7,16 @@
 }
 .govuk-table--tpr-default .govuk-table__header, .govuk-table--tpr-default .govuk-table__header:last-child {
     @include govuk-responsive-padding(4);
+    color: govuk-functional-colour(text);
     background-color: $tpr-colour-whisper;
     border: solid govuk-px-to-rem(2) $tpr-colour-very-light-grey;
 }
 .govuk-table--tpr-default .govuk-table__cell, .govuk-table--tpr-default .govuk-table__cell:last-child {
     @include govuk-responsive-padding(4);
     border: solid govuk-px-to-rem(2) $tpr-colour-very-light-grey;
+}
+
+// Display in inverse colours on a dark background, otherwise use the default colours.
+.govuk-table--tpr-default {
+    color: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
 }

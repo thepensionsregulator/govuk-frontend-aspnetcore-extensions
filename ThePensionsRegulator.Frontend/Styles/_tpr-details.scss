@@ -8,3 +8,16 @@
 .govuk-form-group .govuk-form-group:last-of-type + .govuk-details {
     @include govuk-responsive-margin(6, "top");
 }
+
+// Display in inverse colours on a dark background, otherwise use the default colours.
+.govuk-details {
+    color: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
+}
+
+.govuk-details__summary {
+    color: var(--tpr-link-colour--inverse, govuk-functional-colour(link));
+}
+
+.govuk-details__summary:hover:not(:focus) {
+    color: var(--tpr-link-colour--inverse, govuk-functional-colour(link-hover));
+}

@@ -5,3 +5,20 @@
 .govuk-link {
     font-weight: $tpr-font-weight-semi-bold; 
 }
+
+// Display in inverse colours on a dark background, otherwise use the default colours.
+.govuk-link:link:not(:focus) {
+    color: var(--tpr-link-colour--inverse, govuk-functional-colour(link));
+}
+
+.govuk-link:visited:not(:focus) {
+    color: var(--tpr-link-colour--inverse, govuk-functional-colour(link-visited));
+}
+
+.govuk-link:active:not(:focus) {
+    color: var(--tpr-link-colour--inverse, govuk-functional-colour(link-active));
+}
+
+.govuk-link:hover:not(:focus) {
+    color: var(--tpr-link-colour--inverse, govuk-functional-colour(link-hover));
+}

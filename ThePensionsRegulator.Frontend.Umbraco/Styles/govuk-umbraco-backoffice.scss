@@ -19,7 +19,17 @@ p.tpr-add-link {
     margin: 5px;
 }
 
-// Box and nested box blocks
+/* Tables do not have the extra class that applies TPR styles */
+.backoffice-block-view .govuk-table {
+    @extend .govuk-table--tpr-default;
+}
+
+.backoffice-block-view .govuk-table .govuk-table__cell,
+.backoffice-block-view .govuk-table .govuk-table__cell:last-child {
+    padding: 20px;
+    border-bottom-width: .125rem;
+}
+
 .backoffice-block-header {
     display: block;
     padding: 15px;

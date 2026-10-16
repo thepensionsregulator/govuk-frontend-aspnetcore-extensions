@@ -9,3 +9,14 @@
 .govuk-warning-text__text > p.govuk-body:last-of-type {
     margin-bottom: 0;
 }
+
+// Display in inverse colours if it appears on a dark background, otherwise use the default colours.
+.govuk-warning-text__text {
+    color: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
+}
+
+.govuk-warning-text__icon {
+    color: var(--tpr-warning-icon--inverse, govuk-functional-colour(body-background));
+    background: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
+    border-color: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
+}

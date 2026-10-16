@@ -5,3 +5,8 @@
 .govuk-summary-list__key {
     font-weight: $tpr-font-weight-semi-bold;
 }
+
+// Display in inverse colours on a dark background, otherwise use the default colours.
+.govuk-summary-list {
+    color: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
+}

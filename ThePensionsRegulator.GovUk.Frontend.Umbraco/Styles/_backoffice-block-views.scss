@@ -7,7 +7,7 @@
     padding-top: .1px;
     display: block;
     cursor: pointer;
-    color: govuk-functional-colour(text);
+    color: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
 }
 
 .backoffice-block-view:link, .backoffice-block-view:visited {
@@ -115,7 +115,7 @@
 
 /* Links are disabled by converting them to span, but should still look like links. */
 .backoffice-block-view span.govuk-link {
-    color: govuk-functional-colour(link);
+    color: var(--tpr-link-colour--inverse, govuk-functional-colour(link));
     cursor: pointer;
 }
 .backoffice-block-view .govuk-error-summary span.govuk-link {

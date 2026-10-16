@@ -1,0 +1,15 @@
+﻿@import '_tpr-variables.scss';
+@import 'govuk/base';
+
+// Display in inverse colours on a dark background, otherwise use the default colours.
+.govuk-heading-xl,
+.govuk-heading-l,
+.govuk-heading-m,
+.govuk-heading-s,
+.govuk-body,
+.govuk-body-l,
+.govuk-body-m,
+.govuk-body-s,
+.govuk-list {
+    color: var(--tpr-text-colour--inverse, govuk-functional-colour(text));
+}

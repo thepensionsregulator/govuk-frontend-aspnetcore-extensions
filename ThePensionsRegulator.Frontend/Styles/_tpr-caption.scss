@@ -11,3 +11,10 @@
 .govuk-caption-xl {
     @include govuk-responsive-margin(3, "bottom");
 }
+
+// Display in inverse colours on a dark background, otherwise use the default colours.
+.govuk-caption-xl,
+.govuk-caption-l,
+.govuk-caption-m {
+    color: var(--tpr-secondary-text-colour--inverse, govuk-functional-colour(secondary-text));
+}

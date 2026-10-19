@@ -63,6 +63,7 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     return addressSearchWrapper;
     
     async function handleAddressSearch(): Promise<void> {
+        if (findAddressButton.disabled) { return; }
         const validationResult = readAndValidateCriteria(buildingNameOrNumberInput, postcodeInput, options.content);
         if (!validationResult.isValid) {
             showFormGroupError(postcodeFormGroup, validationResult.errorMessage);

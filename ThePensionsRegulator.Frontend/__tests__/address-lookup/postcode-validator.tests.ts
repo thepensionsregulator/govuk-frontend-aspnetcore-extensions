@@ -22,6 +22,20 @@ describe("validatePostcode", () => {
         expect(result).toEqual({ isValid: false, error: "required" });
     });
 
+    it.each(["Q1 1AA", "V1 1AA", "X1 1AA"])("rejects a prohibited first letter: %s", postcode => {
+        expect(validatePostcode(postcode)).toEqual({ isValid: false, error: "invalid-format" });
+    });
+
+    it.each(["C", "I", "K", "M", "O", "V"])("rejects %s in either inward-code letter position", letter => {
+        for (const postcode of [`SW1A 2${letter}A`, `SW1A 2A${letter}`]) {
+            expect(validatePostcode(postcode)).toEqual({ isValid: false, error: "invalid-format" });
+        }
+    });
+
+    it.each([" SW1A 2AA", "SW1A  2AA", "SW1A 2AA "])("requires normalised spacing: %j", postcode => {
+        expect(validatePostcode(postcode)).toEqual({ isValid: false, error: "invalid-format" });
+    });
+
     it.each([
         "SW1A2AA",  // invalid if validator expects normalised input
         "SW1A 22A", // inward code must begin with one digit

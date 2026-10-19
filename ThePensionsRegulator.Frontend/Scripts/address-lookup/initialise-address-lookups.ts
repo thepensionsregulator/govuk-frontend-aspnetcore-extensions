@@ -1,5 +1,6 @@
-import { InitialAddress, CountryOption, AddressLookupContent, AddressFieldKey, AddressFields, AddressLookupSettings, AddressLookupInstance } from "./types";
+import { InitialAddress, CountryOption, AddressLookupContent, AddressFieldKey, AddressFields, AddressLookupSettings, AddressLookupInstance, AddressLookupRole } from "./types";
 import { createAddressLookup } from "./address-lookup.js";
+import { AddressLookupStateMachine } from "./address-lookup-state-machine.js";
 
 const addressFieldKeys = [
     "addressLine1",
@@ -17,19 +18,36 @@ export function initialiseAddressLookups() {
     const lookupsByForm = new Map<HTMLFormElement, AddressLookupInstance[]>();
     const targets = document.querySelectorAll(".tpr-address-lookup");
 
+    let primaryLookup: AddressLookupStateMachine;
     targets.forEach(target => {
         const fields = getAddressFields(target as HTMLElement);
         const countries = getCountries(target as HTMLElement);
         const content = getContent(target as HTMLElement);
         const settings = getSettings(target as HTMLElement);
 
-        const addressLookup = createAddressLookup({
-            searchEndpoint: settings.searchEndpoint,
-            initialAddress: toInitialAddress(fields, countries),
-            fields, 
-            countries,
-            content,
-        });
+        let addressLookup: AddressLookupInstance;
+        
+        const role = settings.role;
+        if (role === "Primary") {
+            addressLookup = createAddressLookup({
+                settings: settings,
+                initialAddress: toInitialAddress(fields, countries),
+                fields, 
+                countries,
+                content,
+            });
+            primaryLookup = addressLookup.stateMachine;
+        } else {
+            addressLookup = createAddressLookup({
+                settings: settings,
+                initialAddress: toInitialAddress(fields, countries),
+                fields, 
+                countries,
+                content,
+                stateMachine: primaryLookup
+            });
+        }
+
 
         const view = target.querySelector<HTMLElement>(".tpr-address-lookup-view");
         if (view) {
@@ -144,7 +162,8 @@ function getContent(container: HTMLElement): AddressLookupContent {
 
 function getSettings(container: HTMLElement): AddressLookupSettings {
     const searchEndpoint = container.getAttribute("data-address-lookup-search-url") || "";
-    return { searchEndpoint };
+    const role = container.getAttribute("data-address-lookup-role") as AddressLookupRole || 'Primary';
+    return { searchEndpoint, role };
 }
 
 function getCountries(container: HTMLElement): CountryOption[] {

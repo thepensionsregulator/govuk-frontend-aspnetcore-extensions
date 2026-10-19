@@ -39,12 +39,12 @@ describe("renderAddressInternationalManualEntry", () => {
 		const confirmButton = component.querySelector<HTMLButtonElement>("button");
 		const backLink = component.querySelector<HTMLAnchorElement>("a");
 
-		expect(component.querySelector("#address-line-1")).toHaveClass("govuk-input", "govuk-input--width-20");
-		expect(component.querySelector("#address-line-2")).toHaveClass("govuk-input", "govuk-input--width-20");
-		expect(component.querySelector("#address-line-3")).toHaveClass("govuk-input", "govuk-input--width-20");
+		expect(component.querySelector("#address-line-1")).toHaveClass("govuk-input", "govuk-input--width-30");
+		expect(component.querySelector("#address-line-2")).toHaveClass("govuk-input", "govuk-input--width-30");
+		expect(component.querySelector("#address-line-3")).toHaveClass("govuk-input", "govuk-input--width-30");
 		expect(component.querySelector("#post-town")).toHaveClass("govuk-input", "govuk-input--width-20");
 		expect(component.querySelector("#county-state-province")).toHaveClass("govuk-input", "govuk-input--width-20");
-		expect(component.querySelector("#postcode")).toHaveClass("govuk-input", "govuk-input--width-20");
+		expect(component.querySelector("#postcode")).toHaveClass("govuk-input", "govuk-input--width-10");
 		expect(country).toHaveClass("govuk-select", "govuk-input--width-20");
 		expect(Array.from(country!.options).map(option => [option.value, option.text])).toEqual([
 			["", "Select a country"],
@@ -134,10 +134,42 @@ describe("renderAddressInternationalManualEntry", () => {
 
 		expect(fieldset?.parentElement).toHaveAttribute("data-address-lookup-submit-error-anchor");
 	});
+
+	it("confirms on Enter from the country select without default submission", () => {
+		const { component, onAddressSubmitted } = createComponent();
+		component.querySelector<HTMLInputElement>("#address-line-1")!.value = "123 Rue de Rivoli";
+		component.querySelector<HTMLInputElement>("#post-town")!.value = "Paris";
+		const country = component.querySelector<HTMLSelectElement>("#country")!;
+		country.value = "FR";
+		const event = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true });
+
+		country.dispatchEvent(event);
+
+		expect(event.defaultPrevented).toBe(true);
+		expect(onAddressSubmitted).toHaveBeenCalledTimes(1);
+		expect(onAddressSubmitted).toHaveBeenCalledWith(expect.objectContaining({ countryId: "FR", countryName: "France" }));
+	});
 });
 
 describe("validateInternationalUkManualEntryAddress", () => {
 	const content = createMockAddressLookupContent();
+
+	it.each(["addressLine1", "addressLine2", "addressLine3", "postTown", "countyStateProvince"] as const)(
+		"accepts exactly 100 trimmed characters in %s", fieldName => {
+			expect(validateInternationalUkManualEntryAddress(createValidValues({ [fieldName]: ` ${"A".repeat(100)} ` }), content).isValid)
+				.toBe(true);
+		}
+	);
+
+	it.each(["", "1234567890"])("accepts an optional or maximum-length international postcode: %s", postcode => {
+		expect(validateInternationalUkManualEntryAddress(createValidValues({ postcode }), content).isValid).toBe(true);
+	});
+
+	it.each([undefined, "   "])("reports a required-country error for %s", countryId => {
+		expect(validateInternationalUkManualEntryAddress(createValidValues({ countryId }), content)).toEqual({
+			isValid: false, errorMessages: [{ fieldName: "countryId", message: content.countryRequiredErrorMessage }]
+		});
+	});
 	it("returns an international address when required fields are valid", () => {
 		expect(validateInternationalUkManualEntryAddress(createValidValues(), content)).toEqual({
 			isValid: true,
@@ -174,11 +206,11 @@ describe("validateInternationalUkManualEntryAddress", () => {
 
 		expect(result).toEqual({
 			isValid: false,
-			errorMessages: expect.arrayContaining([
-				expect.objectContaining({ fieldName: "addressLine1" }),
-				expect.objectContaining({ fieldName: "postTown" }),
-				expect.objectContaining({ fieldName: "countryId" })
-			])
+			errorMessages: [
+				{ fieldName: "addressLine1", message: content.addressLine1RequiredErrorMessage },
+				{ fieldName: "postTown", message: content.postTownRequiredErrorMessage },
+				{ fieldName: "countryId", message: content.countryRequiredErrorMessage }
+			]
 		});
 	});
 });

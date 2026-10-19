@@ -33,7 +33,7 @@ describe("renderAddressResults", () => {
         const button = component.querySelector<HTMLButtonElement>("button");
         const backLink = component.querySelector<HTMLAnchorElement>("nav a");
 
-        return { component, select, button, backLink, onAddressSelected, onBackToSearchRequested, content };
+        return { component, select, button, backLink, onAddressSelected, onBackToSearchRequested, onUkManualEntryRequested, content };
     }
 
     it("should render a select with a disabled placeholder and an option per address", () => {
@@ -77,6 +77,8 @@ describe("renderAddressResults", () => {
 
     it("should clear the error and confirm the selected address", () => {
         const { component, select, button, onAddressSelected } = createResults();
+        button!.click();
+        expect(component.querySelector("#address-select-error")).not.toBeNull();
         select!.value = addressTwo.UPRN;
 
         button!.click();
@@ -93,6 +95,36 @@ describe("renderAddressResults", () => {
 
         expect(clickEvent.defaultPrevented).toBe(true);
         expect(onBackToSearchRequested).toHaveBeenCalledTimes(1);
+    });
+
+    it("requests UK manual entry without navigating or confirming an address", () => {
+        const { component, onUkManualEntryRequested, onAddressSelected, onBackToSearchRequested } = createResults();
+        const link = component.querySelector<HTMLAnchorElement>("nav li:last-child a")!;
+        const event = new MouseEvent("click", { cancelable: true });
+
+        link.dispatchEvent(event);
+
+        expect(event.defaultPrevented).toBe(true);
+        expect(onUkManualEntryRequested).toHaveBeenCalledTimes(1);
+        expect(onAddressSelected).not.toHaveBeenCalled();
+        expect(onBackToSearchRequested).not.toHaveBeenCalled();
+    });
+
+    it("confirms the selected address on Enter without submitting the enclosing form", () => {
+        const { component, select, onAddressSelected } = createResults();
+        const form = document.createElement("form");
+        const onSubmit = jest.fn();
+        form.appendChild(component);
+        form.addEventListener("submit", onSubmit);
+        select!.value = addressOne.UPRN;
+        const event = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true });
+
+        select!.dispatchEvent(event);
+
+        expect(event.defaultPrevented).toBe(true);
+        expect(onAddressSelected).toHaveBeenCalledTimes(1);
+        expect(onAddressSelected).toHaveBeenCalledWith(addressOne);
+        expect(onSubmit).not.toHaveBeenCalled();
     });
 
     it("has a select with the 'data-address-lookup-submit-error-anchor' attribute", () => {

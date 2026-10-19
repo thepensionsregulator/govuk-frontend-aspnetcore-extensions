@@ -163,6 +163,28 @@ export function mapInitialAddress(content: AddressLookupContent, address?: Initi
     };
 }
 
+export function confirmedAddressesAreEqual(address1: ConfirmedAddress, address2: ConfirmedAddress): boolean {
+    const uprn1 = address1.uprnReference?.trim();
+    const uprn2 = address2.uprnReference?.trim();
+    if (uprn1 && uprn2) { return uprn1 === uprn2; }
+
+    const normalise = (value?: string): string => (value ?? '').trim().toUpperCase();
+    const fields = [
+        'addressLine1', 'addressLine2', 'addressLine3', 'postTown', 'postCounty', 'countryId'
+    ] as const satisfies readonly (keyof ConfirmedAddress)[];
+
+    if (!fields.every(field => normalise(address1[field]) === normalise(address2[field]))) {
+        return false;
+    }
+
+    if (!normalise(address1.countryId) && !normalise(address2.countryId)
+        && normalise(address1.countryName) !== normalise(address2.countryName)) {
+        return false;
+    }
+
+    return normalise(address1.postcode).replace(/\s/g, '') === normalise(address2.postcode).replace(/\s/g, '');
+}
+
 function pushStreetLine(lines: string[], buildingNumber: string, address: AddressSearchResult): void {
     const streetLine = buildStreetLine(buildingNumber, address);
     if (streetLine) {

@@ -75,4 +75,23 @@ describe("filterAddressByBuilding", () => {
 
         expect(result).toHaveLength(2);
     });
+
+    it.each([
+        ["oLd BaK", buildingNameUprn],
+        ["fLaT", subBulidingUprn]
+    ])("matches a case-insensitive name substring: %s", (building, expectedUprn) => {
+        expect(filterAddressesByBuilding(addresses, building).map(address => address.UPRN)).toEqual([expectedUprn]);
+    });
+
+    it("matches building numbers exactly rather than as prefixes", () => {
+        const numberTen = { ...addresses[1], UPRN: "10", BUILDING_NUMBER: "10" };
+
+        expect(filterAddressesByBuilding([addresses[1], numberTen], "1")).toEqual([addresses[1]]);
+    });
+
+    it("does not match an address with no structured building fields", () => {
+        const address = { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 1AA" };
+
+        expect(filterAddressesByBuilding([address], "1")).toEqual([]);
+    });
 });

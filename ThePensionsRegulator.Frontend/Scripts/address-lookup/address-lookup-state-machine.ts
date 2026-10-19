@@ -22,6 +22,7 @@ export interface AddressLookupResultState {
 export interface AddressLookupConfirmedState {
     status: "confirmed";
     address: ConfirmedAddress;
+    sameAsPrimary: boolean;
 }
 
 export interface AddressLookupUkManualEntryState{
@@ -40,11 +41,16 @@ export type AddressLookupEvent =
     | { status: "international-manual-entry-requested" }
     | { status: "uk-manual-address-submitted", address: UkManualEntryAddress }
     | { status: "international-manual-address-submitted", address: InternationalManualEntryAddress }
+    | { status: "same-as-checked", address?: ConfirmedAddress }
+    | { status: "same-as-unchecked" }
+    | { status: "primary-address-state-change", address?: ConfirmedAddress }
+    
 
 export type AddressLookupStateListener = (state: AddressLookupState) => void;
 
 export class AddressLookupStateMachine {
     private state: AddressLookupState;
+    private shouldCopyPrimaryAddress = false;
     private readonly listeners: AddressLookupStateListener[] = [];
     
     constructor(private readonly content: AddressLookupContent, ukCountryId?: string, initialAddress?: InitialAddress){
@@ -54,7 +60,7 @@ export class AddressLookupStateMachine {
     private resolveInitialState (ukCountryId?: string, initialAddress?: InitialAddress,): AddressLookupState {
         const mappedAddress = mapInitialAddress(this.content, initialAddress, ukCountryId);
         if (mappedAddress) {
-            return { status: "confirmed", address: mappedAddress };
+            return { status: "confirmed", address: mappedAddress, sameAsPrimary: false };
         }
 
         return { status: "search" };
@@ -85,39 +91,62 @@ export class AddressLookupStateMachine {
                 }
                 if (event.addresses.length === 1) {
                     const confirmedAddress = mapAddressSearchResult(event.addresses[0]);
-                    return { status: "confirmed", address: confirmedAddress };
-                } else {
-                    return { status: "results", criteria: event.criteria, addresses: event.addresses };
-                }
+                    return { status: "confirmed", address: confirmedAddress, sameAsPrimary: false };
+                } 
+                return { status: "results", criteria: event.criteria, addresses: event.addresses };
             
             case "address-selected":
                 if (state.status !== "results") {
                     return undefined;
                 }
                 const confirmedAddress = mapAddressSearchResult(event.address);
-                return { status: "confirmed", address: confirmedAddress };
+                return { status: "confirmed", address: confirmedAddress, sameAsPrimary: false };
             
             case "back-to-search-requested":
                 if (state.status === "search") {
                     return undefined;
                 }
                 return { status: "search", criteria: state.status === "results" ? state.criteria : undefined };
+
             case "uk-manual-entry-requested":
-                return { status: "uk-manual-entry" }
+                return { status: "uk-manual-entry" };
+
             case "international-manual-entry-requested":
                 return { status: "international-manual-entry" };
+
             case "uk-manual-address-submitted":
                 if (state.status !== "uk-manual-entry") {
                     return undefined;
                 }
                 const confirmedUkAddress = mapUkManualEntryAddress(event.address);
-                return { status: "confirmed", address: confirmedUkAddress };
+                return { status: "confirmed", address: confirmedUkAddress, sameAsPrimary: false };
+            
             case "international-manual-address-submitted":
                 if (state.status !== "international-manual-entry") {
                     return undefined;
                 }
                 const confirmedInternationalAddress = mapInternationalManualEntryAddress(event.address);
-                return { status: "confirmed", address: confirmedInternationalAddress };
+                return { status: "confirmed", address: confirmedInternationalAddress, sameAsPrimary: false };
+            
+            case "same-as-checked":
+                this.shouldCopyPrimaryAddress = true;
+                if (event.address){
+                    return { status: "confirmed", address: event.address, sameAsPrimary: true };
+                } 
+                return { ...state };
+            
+            case "same-as-unchecked":
+                this.shouldCopyPrimaryAddress = false;
+                if (state.status === "confirmed") {
+                    return { ...state, sameAsPrimary: false };
+                }
+                return { ...state };
+
+            case "primary-address-state-change":
+                if (this.shouldCopyPrimaryAddress && event.address) {
+                    return { status: "confirmed", address: event.address, sameAsPrimary: true };
+                }
+                return undefined;
             default:
                 return undefined;
         }

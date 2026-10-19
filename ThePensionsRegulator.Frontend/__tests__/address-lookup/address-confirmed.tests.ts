@@ -118,4 +118,33 @@ describe("renderConfirmedAddress", () => {
         expect(component.querySelector("#postCounty")).toBeNull();
         expect(component.querySelector("#countryId")).toBeNull();
     });
+
+    it("omits the change-address action when no callback is supplied", () => {
+        const component = renderConfirmedAddress({ address: completeAddress, fields, content });
+
+        expect(component.querySelector("button")).toBeNull();
+        expect(component.querySelector("#addressLine1")).toHaveValue(completeAddress.addressLine1);
+    });
+
+    it("uses configured field names and ignores unconfigured fields", () => {
+        const component = renderConfirmedAddress({
+            address: completeAddress,
+            fields: { addressLine1: { name: "Office.AddressLine1", value: "old value" }, postcode: undefined },
+            content
+        });
+
+        expect(component.querySelectorAll("input")).toHaveLength(1);
+        expect(component.querySelector("#addressLine1")).toHaveAttribute("name", "Office.AddressLine1");
+        expect(component.querySelector("#addressLine1")).toHaveValue("10 High Street");
+        expect(component.querySelector("#postcode")).toBeNull();
+    });
+
+    it("title-cases the displayed address but preserves postcode casing and submitted values", () => {
+        const address = { addressLine1: "10 HIGH STREET", postTown: "LONDON", postcode: "SW1A 2AA" };
+        const component = renderConfirmedAddress({ address, fields, content });
+
+        expect(component.querySelector("p")).toHaveTextContent("10 High StreetLondonSW1A 2AA");
+        expect(component.querySelector("#addressLine1")).toHaveValue("10 HIGH STREET");
+        expect(component.querySelector("#postcode")).toHaveValue("SW1A 2AA");
+    });
 });

@@ -7,25 +7,61 @@ import { renderAddressUkManualEntry } from './address-uk-manual-entry.js';
 import { renderConfirmedAddress } from './address-confirmed.js';
 import { renderAddressInternationalManualEntry } from './address-international-manual-entry.js';
 import { clearFormGroupError, showFormGroupError } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js';
+import { renderSameAsCheckbox } from './address-same-as-checkbox.js';
+import { confirmedAddressesAreEqual } from './address-result-mapper.js';
 
 export function createAddressLookup(options: AddressLookupOptions) : AddressLookupInstance {
-    const container = document.createElement("div");
+    const componentContainer = document.createElement("div");
+    const checkboxContainer = document.createElement("div");
+    const stateContainer = document.createElement("div");
     const addressSearchService = new FetchAddressSearchService({
-        searchEndpoint: options.searchEndpoint,
+        searchEndpoint: options.settings.searchEndpoint,
     });
     const ukCountryId = options.countries?.find(x => x.name === "United Kingdom" || x.name === "UK")?.value;
     const stateMachine = new AddressLookupStateMachine(options.content, ukCountryId, options.initialAddress);
+    const primaryStateMachine = options.settings.role === "Secondary" ? options.stateMachine : undefined;
+    let sameAsInput: HTMLInputElement | null;
+
+    if (primaryStateMachine){
+        let sameAsChecked = false;
+        const primaryStateMachineState = primaryStateMachine.getState();
+        const secondaryStateMachineState = stateMachine.getState();
+        if (primaryStateMachineState.status === "confirmed" && secondaryStateMachineState.status === "confirmed") {
+            if (confirmedAddressesAreEqual(primaryStateMachineState.address, secondaryStateMachineState.address)) {
+                stateMachine.dispatch({ status: "same-as-checked", address: primaryStateMachineState.address });
+                sameAsChecked = true;
+            }
+        }
+        const sameAsCheckbox = renderSameAsCheckbox(options.content, sameAsChecked, () => { 
+            if (!isSameAsChecked()){
+                stateMachine.dispatch({ status: "same-as-unchecked" });
+                return;
+            }
+            
+            const primaryState = primaryStateMachine.getState();
+            stateMachine.dispatch({ status: "same-as-checked", address: primaryState.status === "confirmed" ? primaryState.address : undefined });
+        });
+
+        sameAsInput = sameAsCheckbox.querySelector<HTMLInputElement>("input[type='checkbox']");
+        componentContainer.appendChild(checkboxContainer);
+        checkboxContainer.appendChild(sameAsCheckbox);
+        primaryStateMachine?.subscribe(primaryState => stateMachine.dispatch({ status: "primary-address-state-change", address: primaryState.status === "confirmed" ? primaryState.address : undefined }));
+
+    }
+    componentContainer.appendChild(stateContainer);
+
     stateMachine.subscribe(render);
     render(stateMachine.getState());
 
     return {
-        element: container,
+        element: componentContainer,
+        stateMachine: stateMachine,
         isConfirmed: () => stateMachine.getState().status === "confirmed",
         showNotConfirmedError: () => {
             const state = stateMachine.getState();
             if (state.status === "confirmed") { return; }
 
-            const errorAnchor = container.querySelector<HTMLElement>("[data-address-lookup-submit-error-anchor]");
+            const errorAnchor = stateContainer.querySelector<HTMLElement>("[data-address-lookup-submit-error-anchor]");
 
             if (!errorAnchor) { return; }
 
@@ -33,17 +69,23 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
         }
     };
 
-    
-    function render(state: AddressLookupState): void {
-        const previousErrorAnchor = container.querySelector<HTMLElement>("[data-address-lookup-submit-error-anchor]");
+    function isSameAsChecked(): boolean {
+        return sameAsInput?.checked ?? false;
+    }
+
+    function clearSubmitError(): void {
+        const previousErrorAnchor = stateContainer.querySelector<HTMLElement>("[data-address-lookup-submit-error-anchor]");
         if (previousErrorAnchor) {
             clearFormGroupError(previousErrorAnchor);
         }
-
-        container.replaceChildren();
+    }
+    
+    function render(state: AddressLookupState): void {
+        clearSubmitError();
+        stateContainer.replaceChildren();
         switch(state.status){
             case "search":
-                container.appendChild(renderAddressSearch({
+                stateContainer.appendChild(renderAddressSearch({
                     searchService: addressSearchService, 
                     criteria: state.criteria,
                     content: options.content,
@@ -52,7 +94,7 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
                 }));
                 break;
             case "results":
-                container.appendChild(renderAddressResults({
+                stateContainer.appendChild(renderAddressResults({
                     addresses: state.addresses,
                     criteria: state.criteria,
                     content: options.content,
@@ -62,22 +104,23 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
                 }));
                 break;
             case "confirmed":
-                container.appendChild(renderConfirmedAddress({
+                const backToSearch = () => stateMachine.dispatch({ status: "back-to-search-requested" });
+                stateContainer.appendChild(renderConfirmedAddress({
                     address: state.address, 
                     fields: options.fields, 
                     content: options.content, 
-                    onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })
+                    onBackToSearchRequested: !state.sameAsPrimary ? backToSearch : undefined
                 }));
                 break;
             case "uk-manual-entry":
-                container.appendChild(renderAddressUkManualEntry({
+                stateContainer.appendChild(renderAddressUkManualEntry({
                     content: options.content,
                     onAddressSubmitted: (address) => stateMachine.dispatch({ status: "uk-manual-address-submitted", address}),
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })
                 }));
                 break;
             case "international-manual-entry":
-                container.appendChild(renderAddressInternationalManualEntry({
+                stateContainer.appendChild(renderAddressInternationalManualEntry({
                     countries: options.countries || [],
                     content: options.content,
                     onAddressSubmitted: (address) => stateMachine.dispatch({ status: "international-manual-address-submitted", address}),
@@ -102,4 +145,3 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
         }
     }
 }
-

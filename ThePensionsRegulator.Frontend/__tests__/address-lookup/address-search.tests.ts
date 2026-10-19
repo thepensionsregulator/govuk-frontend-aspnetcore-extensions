@@ -166,4 +166,83 @@ describe("renderAddressSearch", () => {
 		const formGroup = component.querySelector(".govuk-form-group");
 		expect(formGroup).toHaveAttribute("data-address-lookup-submit-error-anchor");
 	});
+
+    it.each(["building", "postcode"])("searches on Enter from %s without default submission", fieldId => {
+        const { component, postcodeInput, searchOptions } = createSearch();
+        postcodeInput!.value = "sw1a2aa";
+        const event = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true });
+
+        component.querySelector<HTMLInputElement>(`#${fieldId}`)!.dispatchEvent(event);
+
+        expect(event.defaultPrevented).toBe(true);
+        expect(searchOptions).toHaveBeenCalledTimes(1);
+        expect(searchOptions).toHaveBeenCalledWith("SW1A 2AA");
+    });
+
+    it("keeps the button disabled until the pending search settles", async () => {
+        const { postcodeInput, button, searchOptions } = createSearch();
+        let completeSearch!: (addresses: AddressSearchResult[]) => void;
+        const pending = new Promise<AddressSearchResult[]>(resolve => { completeSearch = resolve; });
+        searchOptions.mockReturnValueOnce(pending);
+        postcodeInput!.value = "SW1A 2AA";
+
+        button!.click();
+        expect(button).toBeDisabled();
+        completeSearch([]);
+        await pending;
+
+        expect(button).not.toBeDisabled();
+    });
+
+    it("clears the postcode validation error after correcting the input", async () => {
+        const { component, postcodeInput, button, searchOptions, onSearchSuccess } = createSearch();
+        button!.click();
+        expect(component.querySelector("#postcode-error")).not.toBeNull();
+        const addresses: AddressSearchResult[] = [{
+            UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POSTCODE: "SW1A 2AA", POST_TOWN: "London"
+        }];
+        searchOptions.mockResolvedValueOnce(addresses);
+        postcodeInput!.value = "SW1A 2AA";
+
+        button!.click();
+        await Promise.resolve();
+
+        expect(component.querySelector("#postcode-error")).toBeNull();
+        expect(onSearchSuccess).toHaveBeenCalledWith(addresses, { buildingName: "", postcode: "SW1A 2AA" });
+    });
+
+    it("clears a service error when a retry succeeds", async () => {
+        const { component, postcodeInput, button, searchOptions, onSearchSuccess } = createSearch();
+        const addresses: AddressSearchResult[] = [{
+            UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POSTCODE: "SW1A 2AA", POST_TOWN: "London"
+        }];
+        searchOptions.mockRejectedValueOnce(new Error("Unavailable")).mockResolvedValueOnce(addresses);
+        postcodeInput!.value = "SW1A 2AA";
+        button!.click();
+        await Promise.resolve();
+        expect(component.querySelector("#address-search-fieldset-error")).not.toBeNull();
+
+        button!.click();
+        await Promise.resolve();
+
+        expect(component.querySelector("#address-search-fieldset-error")).toBeNull();
+        expect(onSearchSuccess).toHaveBeenCalledTimes(1);
+        expect(button).not.toBeDisabled();
+    });
+
+    it("ignores Enter while an address search is already pending", async () => {
+        const { postcodeInput, button, searchOptions } = createSearch();
+        let completeSearch!: (addresses: AddressSearchResult[]) => void;
+        const pending = new Promise<AddressSearchResult[]>(resolve => { completeSearch = resolve; });
+        searchOptions.mockReturnValue(pending);
+        postcodeInput!.value = "SW1A 2AA";
+        button!.click();
+        expect(button).toBeDisabled();
+
+        postcodeInput!.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }));
+        completeSearch([]);
+        await pending;
+
+        expect(searchOptions).toHaveBeenCalledTimes(1);
+    });
 });

@@ -43,6 +43,7 @@ export function createMockAddressLookupContent(): AddressLookupContent {
         internationalManualEntryNotConfirmedErrorMessage: "Confirm the international address",
         ukManualEntryNotConfirmedErrorMessage: "Confirm the UK address",
         resultsNotConfirmedErrorMessage: "Confirm the selected address",
-        searchNotConfirmedErrorMessage: "Confirm the search results"
+        searchNotConfirmedErrorMessage: "Confirm the search results",
+        sameAsLabel: "Same as above"
     };
 }

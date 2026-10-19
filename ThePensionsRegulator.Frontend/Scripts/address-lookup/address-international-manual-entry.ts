@@ -16,13 +16,13 @@ export interface AddressInternationalManualEntryOptions {
 
 export function renderAddressInternationalManualEntry(options: AddressInternationalManualEntryOptions) : HTMLElement {
     const div = document.createElement("div");
-    const addressLine1 = createTextInputFormGroup({ labelText: options.content.addressLine1Label, input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large" }});
-    const addressLine2 = createTextInputFormGroup({ labelText: options.content.addressLine2Label, input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large" }});
-    const addressLine3 = createTextInputFormGroup({ labelText: options.content.addressLine3Label, input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large" }});
+    const addressLine1 = createTextInputFormGroup({ labelText: options.content.addressLine1Label, input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "xx-large" }});
+    const addressLine2 = createTextInputFormGroup({ labelText: options.content.addressLine2Label, input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "xx-large" }});
+    const addressLine3 = createTextInputFormGroup({ labelText: options.content.addressLine3Label, input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "xx-large" }});
     const postTown = createTextInputFormGroup({ labelText: options.content.postTownLabel, input: { id: 'post-town', name: 'post-town', type: "text", width: "x-large" }});
     const countyStateProvince = createTextInputFormGroup({ labelText: options.content.countyStateProvinceLabel, input: { id: 'county-state-province', name: 'county-state-province', type: "text", width: "x-large" }});
     const country = createSelectFormGroup({ labelText: options.content.countryLabel, select: { id: 'country', name: 'country', width: "x-large", options: [{ value: '', text: options.content.countrySelectPlaceholder },  ...options.countries.map(c => ({ value: c.value, text: c.name }))] }});
-    const postcode = createTextInputFormGroup({ labelText: options.content.postcodeLabel, input: { id: 'postcode', name: 'postcode', type: "text", width: "x-large" }});
+    const postcode = createTextInputFormGroup({ labelText: options.content.postcodeLabel, input: { id: 'postcode', name: 'postcode', type: "text", width: "large" }});
 
     const fieldsetFormGroup = createFieldsetFormGroup({
         id: "address-international-manual-entry-fieldset",

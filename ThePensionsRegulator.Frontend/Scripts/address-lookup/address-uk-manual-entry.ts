@@ -19,12 +19,12 @@ export interface AddressUkManualEntryOptions {
 export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions): HTMLElement {    
     const content = options.content;
     const div = document.createElement('div');
-    const addressLine1 = createTextInputFormGroup({ labelText: 'Address line 1', input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large", attributes: { autocomplete: "address-line1"} } });
-    const addressLine2 = createTextInputFormGroup({ labelText: 'Address line 2 (optional)', input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large", attributes: { autocomplete: "address-line2"} } });
-    const addressLine3 = createTextInputFormGroup({ labelText: 'Address line 3 (optional)', input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large", attributes: { autocomplete: "address-line3"} } });
-    const townOrCity = createTextInputFormGroup({ labelText: 'Town or city', input: { id: 'town-or-city', name: 'town-or-city', type: "text", width: "large", attributes: { autocomplete: "address-level2"} } });
-    const county = createTextInputFormGroup({ labelText: 'County (optional)', input: { id: 'county', name: 'county', type: "text", width: "large", attributes: { autocomplete: "address-level1"} } });
-    const postcode = createTextInputFormGroup({ labelText: 'Postcode', input: { id: 'postcode', name: 'postcode', type: "text", width: "large", attributes: { autocomplete: "postal-code"} } });
+    const addressLine1 = createTextInputFormGroup({ labelText: content.i18n.addressLine1Label, input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large", attributes: { autocomplete: "address-line1" } } });
+    const addressLine2 = createTextInputFormGroup({ labelText: content.i18n.addressLine2Label, input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large", attributes: { autocomplete: "address-line2" } } });
+    const addressLine3 = createTextInputFormGroup({ labelText: content.i18n.addressLine3Label, input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large", attributes: { autocomplete: "address-line3" } } });
+    const townOrCity = createTextInputFormGroup({ labelText: content.i18n.postTownLabel, input: { id: 'town-or-city', name: 'town-or-city', type: "text", width: "large", attributes: { autocomplete: "address-level2" } } });
+    const county = createTextInputFormGroup({ labelText: content.i18n.countyLabel, input: { id: 'county', name: 'county', type: "text", width: "large", attributes: { autocomplete: "address-level1" } } });
+    const postcode = createTextInputFormGroup({ labelText: content.i18n.postcodeLabel, input: { id: 'postcode', name: 'postcode', type: "text", width: "large", attributes: { autocomplete: "postal-code" } } });
 
     const fieldsetFormGroup = createFieldsetFormGroup({
         id: "address-uk-manual-entry-fieldset",

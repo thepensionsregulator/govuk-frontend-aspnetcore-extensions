@@ -16,7 +16,6 @@ export interface AddressInternationalManualEntryOptions {
 
 export function renderAddressInternationalManualEntry(options: AddressInternationalManualEntryOptions) : HTMLElement {
     const div = document.createElement("div");
-
     const addressLine1 = createTextInputFormGroup({ labelText: options.content.i18n.addressLine1Label, input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large", attributes: { autocomplete: 'address-line1' }  }});
     const addressLine2 = createTextInputFormGroup({ labelText: options.content.i18n.addressLine2Label, input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large",  attributes: { autocomplete: 'address-line2' } }});
     const addressLine3 = createTextInputFormGroup({ labelText: options.content.i18n.addressLine3Label, input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large", attributes: { autocomplete: 'address-line3' } }});
@@ -24,7 +23,6 @@ export function renderAddressInternationalManualEntry(options: AddressInternatio
     const countyStateProvince = createTextInputFormGroup({ labelText: options.content.i18n.countyStateProvinceLabel, input: { id: 'county-state-province', name: 'county-state-province', type: "text", width: "x-large", attributes: { autocomplete: 'address-level1' } }});
     const country = createSelectFormGroup({ labelText: options.content.i18n.countryLabel, select: { id: 'country', name: 'country', width: "x-large", options: [{ value: '', text: options.content.i18n.countrySelectPlaceholder }, ...options.countries.map(c => ({ value: c.value, text: c.name }))] }});
     const postcode = createTextInputFormGroup({ labelText: options.content.i18n.postcodeLabel, input: { id: 'postcode', name: 'postcode', type: "text", width: "large", attributes: { autocomplete: 'postal-code' } }});
-
 
     const fieldsetFormGroup = createFieldsetFormGroup({
         id: "address-international-manual-entry-fieldset",

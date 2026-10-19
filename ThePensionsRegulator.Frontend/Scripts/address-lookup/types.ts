@@ -1,9 +1,12 @@
+import type { AddressLookupStateMachine } from "./address-lookup-state-machine";
+
 export interface AddressLookupOptions {
-    searchEndpoint: string;
+    settings: AddressLookupSettings;
     initialAddress?: InitialAddress;
     fields: AddressFields;
     countries?: CountryOption[];
     content: AddressLookupContent;
+    stateMachine?: AddressLookupStateMachine;
 }
 
 export interface AddressSearchCriteria {
@@ -193,12 +196,15 @@ export interface AddressLookupContent {
     };
 }
 
+export type AddressLookupRole = 'Primary' | 'Secondary';
 export interface AddressLookupSettings {
     searchEndpoint: string;
+    role: AddressLookupRole;
 }
 
 export interface AddressLookupInstance {
     element: HTMLElement;
+    stateMachine: AddressLookupStateMachine;
     isConfirmed(): boolean;
     showNotConfirmedError(): void;
 }

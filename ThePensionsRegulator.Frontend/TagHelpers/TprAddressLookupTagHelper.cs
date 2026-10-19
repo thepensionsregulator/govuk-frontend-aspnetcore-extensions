@@ -32,6 +32,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("error-message")]
         public string ErrorMessage { get; set; }
 
+        [HtmlAttributeName("role")]
+        public TprAddressLookupRole? Role { get; set; }
+
         [HtmlAttributeName("for")]
         public ModelExpression For { get; set; } = default!;
 
@@ -232,6 +235,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             var addressLookupContent = GetContent();
             var addressLookupSettings = GetSettings();
 
+
             var introduction = _htmlGenerator.GenerateTprAddressLookupIntroduction(HeadingLevel, HeadingClass, addressLookupContent);
             var fieldset = _htmlGenerator.GenerateTprAddressLookup(For, ViewContext.ModelState, addressLookupContent, addressLookupSettings, await countries);
 
@@ -301,11 +305,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         }
 
         private TprAddressLookupSettings GetSettings()
-
         {
             var settings = new TprAddressLookupSettings
             {
                 SearchUrl = SearchUrl,
+                Role = Role
             };
 
             return settings;
@@ -313,7 +317,10 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         private void PopulateDataAttribute(TagHelperAttributeList attributes, TprAddressLookupContent content, TprAddressLookupSettings settings)
         {
-            //TODO: Add role attribute
+            if (settings.Role is not null)
+            {
+                attributes.Add("data-address-lookup-role", settings.Role);
+            }
             attributes.Add("data-address-lookup-search-url", settings.SearchUrl);
             attributes.Add("data-address-lookup-legend", content.AddressLookupIntroductionHeading);
             attributes.Add("data-address-lookup-hint", content.AddressLookupIntroductionText);

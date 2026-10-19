@@ -179,10 +179,43 @@ describe("renderAddressUkManualEntry", () => {
 
         expect(fieldset?.parentElement).toHaveAttribute("data-address-lookup-submit-error-anchor");
     });
+
+    it("confirms a valid address on Enter and prevents default submission", () => {
+        const component = renderAddressUkManualEntry({ onAddressSubmitted, onBackToSearchRequested, content });
+        component.querySelector<HTMLInputElement>("#address-line-1")!.value = "1 High Street";
+        component.querySelector<HTMLInputElement>("#town-or-city")!.value = "London";
+        const postcode = component.querySelector<HTMLInputElement>("#postcode")!;
+        postcode.value = "sw1a1aa";
+        const event = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true });
+
+        postcode.dispatchEvent(event);
+
+        expect(event.defaultPrevented).toBe(true);
+        expect(onAddressSubmitted).toHaveBeenCalledTimes(1);
+        expect(onAddressSubmitted).toHaveBeenCalledWith(expect.objectContaining({ postcode: "SW1A 1AA" }));
+    });
 });
 
 describe("validateUkManualEntryAddress", () => {
     const content = createMockAddressLookupContent();
+
+    it.each(["addressLine1", "addressLine2", "addressLine3", "townOrCity", "county"] as const)(
+        "accepts exactly 100 trimmed characters in %s", fieldName => {
+            const result = validateUkManualEntryAddress(createValidValues({ [fieldName]: ` ${"A".repeat(100)} ` }), content);
+
+            expect(result.isValid).toBe(true);
+        }
+    );
+
+    it.each([
+        ["addressLine1", content.addressLine1RequiredErrorMessage],
+        ["townOrCity", content.postTownRequiredErrorMessage],
+        ["postcode", content.postcodeRequiredErrorMessage]
+    ] as const)("rejects whitespace-only %s as required", (fieldName, message) => {
+        expect(validateUkManualEntryAddress(createValidValues({ [fieldName]: "   " }), content)).toEqual({
+            isValid: false, errorMessages: [{ fieldName, message }]
+        });
+    });
     it("returns the mapped address when all required fields are valid", () => {
         const result = validateUkManualEntryAddress(createValidValues(), content);
 

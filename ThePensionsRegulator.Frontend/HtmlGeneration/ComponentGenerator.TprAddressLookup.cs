@@ -37,13 +37,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var postcode = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
             var uprn = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Uprn), AddressFieldNames.Uprn, modelStateDictionary);
 
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, "govuk-input--width-20", "address-line1"));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, "govuk-input--width-20", "address-line2"));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine3, content.AddressLine3Label, false, "govuk-input--width-20", "address-line3"));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(townOrCity, content.PostTownLabel, true, "govuk-input--width-10", "address-level2"));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(postCountry, content.CountyLabel, false, "govuk-input--width-10", "address-level1"));
-            fieldset.InnerHtml.AppendHtml(CreateSelectInput(countryId, content.CountryLabel, content.CountrySelectPlaceholder, true, "govuk-input--width-10", countries));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(postcode, content.PostcodeLabel, false, "govuk-input--width-10", "postal-code"));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, "govuk-input--width-20", "address-line1", content.AddressLine1RequiredErrorMessage, 100, content.AddressLine1MaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, "govuk-input--width-20", "address-line2", maxLength: 100, maxLengthErrorMessage: content.AddressLine2MaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine3, content.AddressLine3Label, false, "govuk-input--width-20", "address-line3", maxLength: 100, maxLengthErrorMessage: content.AddressLine3MaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(townOrCity, content.PostTownLabel, true, "govuk-input--width-10", "address-level2", content.PostTownRequiredErrorMessage, 100, content.PostTownMaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(postCountry, content.CountyLabel, false, "govuk-input--width-10", "address-level1", maxLength: 100, maxLengthErrorMessage: content.CountyMaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateSelectInput(countryId, content.CountryLabel, content.CountrySelectPlaceholder, true, content.CountryRequiredErrorMessage, "govuk-input--width-10", countries));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(postcode, content.PostcodeLabel, false, "govuk-input--width-10", "postal-code", maxLength: 10, maxLengthErrorMessage: content.PostcodeMaxLengthErrorMessage));
 
             var uprnInput = new TagBuilder("input");
             uprnInput.Attributes.Add("type", "hidden");
@@ -59,7 +59,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             return fieldset;
         }
 
-        private static TagBuilder CreateTextInput(FieldState fieldState, string labelText, bool required, string widthClass, string autocomplete)
+        private static TagBuilder CreateTextInput(FieldState fieldState, string labelText, bool required, string widthClass, string autocomplete, string? requiredErrorMessage = null, int? maxLength = null, string? maxLengthErrorMessage = null)
         {
             var label = new TagBuilder("label");
             label.AddCssClass("govuk-label");
@@ -77,6 +77,15 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             {
                 input.Attributes.Add("required", "");
                 input.Attributes.Add("aria-required", "true");
+                input.Attributes["data-val"] = "true";
+                input.Attributes.Add("data-val-required", requiredErrorMessage ?? string.Empty);
+            }
+            if (maxLength is not null)
+            {
+                input.Attributes.Add("maxlength", maxLength.Value.ToString(CultureInfo.InvariantCulture));
+                input.Attributes["data-val"] = "true";
+                input.Attributes.Add("data-val-length", maxLengthErrorMessage ?? string.Empty);
+                input.Attributes.Add("data-val-length-max", maxLength.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             if (fieldState.AttemptedValue is not null)
@@ -95,7 +104,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             return group;
         }
 
-        private static TagBuilder CreateSelectInput(FieldState fieldState, string labelText, string placeholderText, bool required, string widthClass, IDictionary<string, int> options)
+        private static TagBuilder CreateSelectInput(FieldState fieldState, string labelText, string placeholderText, bool required, string requiredErrorMessage, string widthClass, IDictionary<string, int> options)
         {
             var label = new TagBuilder("label");
             label.AddCssClass("govuk-label");
@@ -110,6 +119,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             if (required)
             {
                 select.Attributes.Add("required", "");
+                select.Attributes.Add("aria-required", "true");
+                select.Attributes.Add("data-val", "true");
+                select.Attributes.Add("data-val-required", requiredErrorMessage);
             }
 
             var hasSelection = !string.IsNullOrEmpty(fieldState.AttemptedValue);
@@ -154,6 +166,11 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             input.AddCssClass(errorClass);
             input.Attributes.Add("aria-describedby", $"{fieldState.Name}-error");
             group.AddCssClass("govuk-form-group--error");
+            group.InnerHtml.AppendHtml(CreateErrorMessage(fieldState));
+        }
+
+        private static TagBuilder CreateErrorMessage(FieldState fieldState)
+        {
             var errorMessage = new TagBuilder("p");
             errorMessage.AddCssClass("govuk-error-message");
             errorMessage.Attributes.Add("id", $"{fieldState.Name}-error");
@@ -163,7 +180,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             errorMessageSpan.InnerHtml.Append("Error:");
             errorMessage.InnerHtml.AppendHtml(errorMessageSpan);
             errorMessage.InnerHtml.Append(fieldState.Errors[0].ErrorMessage);
-            group.InnerHtml.AppendHtml(errorMessage);
+            return errorMessage;
         }
 
         private sealed record FieldState(string Name, string FieldKey)

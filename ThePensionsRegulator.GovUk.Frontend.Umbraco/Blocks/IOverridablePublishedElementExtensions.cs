@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using ThePensionsRegulator.GovUk.Frontend.HtmlGeneration;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
@@ -706,7 +707,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                 {
                     { PropertyAliases.SummaryListItemKey, item.Key },
                     { PropertyAliases.SummaryListItemValue, item.Value },
-                    { PropertyAliases.SummaryListItemActions, CreateSummaryListActionBlocks(item.Actions, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) }
+                    { PropertyAliases.SummaryListItemActions, CreateSummaryListActionBlocks(item.Actions, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) },
+                    {PropertyAliases.SummaryListItemTag, CreateTagBlockList(item.Tag, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) }
                 };
 
                 var settingsFields = new Dictionary<string, object?>()
@@ -743,6 +745,45 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
             }
 
             return new OverridableBlockListModel(publishedValueFallback, publishedElementFactory, filterStoreAccessor, blockListItems, filter);
+        }
+
+        private static OverridableBlockListModel? CreateTagBlockList(Tag? tag,
+            IPublishedContentTypeCache publishedContentTypeCache,
+            IVariationContextAccessor variationContextAccessor,
+            IPublishedValueFallback publishedValueFallback,
+            IOverridablePublishedElementFactory publishedElementFactory,
+            IOverridableBlockModelFilterStoreAccessor filterStoreAccessor,
+            Func<IOverridableBlockReference<IOverridablePublishedElement, IOverridablePublishedElement>, bool>? filter)
+        {
+            if (tag is null || string.IsNullOrEmpty(tag.Text))
+            {
+                return null;
+            }
+
+            var contentFields = new Dictionary<string, object?>
+            {
+                { PropertyAliases.TagText, tag.Text }
+            };
+
+            var settingFields = new Dictionary<string, object?>
+            {
+                { PropertyAliases.TagClass, tag.CssClass }
+            };
+            var tagBlock = CreateBlockListItem(
+                ElementTypeAliases.Tag,
+                contentFields,
+                ElementTypeAliases.TagSettings,
+                settingFields,
+                publishedContentTypeCache,
+                variationContextAccessor,
+                publishedElementFactory);
+
+            return new OverridableBlockListModel(
+                publishedValueFallback,
+                publishedElementFactory,
+                filterStoreAccessor,
+                new[] { tagBlock },
+                filter);
         }
 
         private static OverridableBlockListItem CreateBlockListItem(

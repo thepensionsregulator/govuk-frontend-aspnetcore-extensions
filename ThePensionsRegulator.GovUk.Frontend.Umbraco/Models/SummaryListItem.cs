@@ -1,4 +1,5 @@
-﻿using Umbraco.Cms.Core.Strings;
+﻿using ThePensionsRegulator.GovUk.Frontend.HtmlGeneration;
+using Umbraco.Cms.Core.Strings;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Models
 {
@@ -17,5 +18,6 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Models
         public HtmlEncodedString Value { get; init; }
         public IList<SummaryListAction> Actions { get; } = new List<SummaryListAction>();
         public string? CssClasses { get; set; }
+        public Tag? Tag { get; set; }
     }
 }

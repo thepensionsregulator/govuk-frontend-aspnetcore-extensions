@@ -82,5 +82,39 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             Assert.Equal("Search legend", output.Attributes["data-address-lookup-search-legend"].Value);
         }
 
+        [Fact]
+        public async Task Fallback_validation_uses_content_messages_and_preserves_model_state_overrides()
+        {
+            var countries = new Mock<ITprCountryRepository>();
+            countries.Setup(x => x.GetCountries()).ReturnsAsync(new Dictionary<string, int>());
+            var tagHelper = new TprAddressLookupTagHelper(new ComponentGenerator(), countries.Object)
+            {
+                For = "Address",
+                Content = new TprAddressLookupContent
+                {
+                    AddressLine1RequiredErrorMessage = "Custom address line 1 required",
+                    AddressLine1MaxLengthErrorMessage = "Custom address line 1 length",
+                    PostTownRequiredErrorMessage = "Custom town required",
+                    CountryRequiredErrorMessage = "Custom country required"
+                },
+                ViewContext = new ViewContext { ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) }
+            };
+            tagHelper.ViewContext.ModelState.AddModelError("Address.CountryId", "Country ModelState override");
+
+            var context = new TagHelperContext([], new Dictionary<object, object>(), Guid.NewGuid().ToString());
+            var output = new TagHelperOutput(TprAddressLookupTagHelper.TagName, [], (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+
+            await tagHelper.ProcessAsync(context, output);
+
+            var html = output.Content.GetContent();
+            Assert.Contains("data-val-required=\"Custom address line 1 required\"", html);
+            Assert.Contains("data-val-length=\"Custom address line 1 length\"", html);
+            Assert.Contains("data-val-required=\"Custom town required\"", html);
+            Assert.Contains("data-val-required=\"Custom country required\"", html);
+            Assert.Contains("Country ModelState override", html);
+            Assert.Contains("govuk-select--error", html);
+            Assert.Contains("aria-describedby=\"Address.CountryId-error\"", html);
+        }
+
     }
 }

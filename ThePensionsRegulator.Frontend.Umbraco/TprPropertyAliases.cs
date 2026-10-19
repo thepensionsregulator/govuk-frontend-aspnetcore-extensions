@@ -44,6 +44,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string AddressLookupBackToPostcodeSearchLabel = "backToPostcodeSearchLabel";
         public const string AddressLookupResultsNotConfirmedErrorMessage = "resultsNotConfirmedErrorMessage";
         public const string AddressLookupChangeAddressLabel = "changeAddressLabel";
+        public const string AddressLookupRole = "addressLookupIsPrimary";
         public const string AddressLookupSameAsLabel = "sameAsLabel";
         public const string BackToMenuText = "text";
         public const string BackToMenuLink = "link";

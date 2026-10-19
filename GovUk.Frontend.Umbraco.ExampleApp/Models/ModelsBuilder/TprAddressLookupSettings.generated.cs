@@ -50,6 +50,165 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
+		/// Address line 1 max length error message: Overrides the 'Address lookup - address line 1 max length error message' dictionary item. Defaults to 'Address line 1 must be 100 characters or less' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine1MaxLengthErrorMessage")]
+		public virtual string AddressLine1MaxLengthErrorMessage => this.Value<string>(_publishedValueFallback, "addressLine1MaxLengthErrorMessage");
+
+		///<summary>
+		/// Address line 1 required error message: Overrides the 'Address lookup - address line 1 required error message' dictionary item. Defaults to 'Enter address line 1' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine1RequiredErrorMessage")]
+		public virtual string AddressLine1RequiredErrorMessage => this.Value<string>(_publishedValueFallback, "addressLine1RequiredErrorMessage");
+
+		///<summary>
+		/// Address line 2 max length error message: Overrides the 'Address lookup - address line 2 max length error message' dictionary item. Defaults to 'Address line 2 must be 100 characters or less' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine2MaxLengthErrorMessage")]
+		public virtual string AddressLine2MaxLengthErrorMessage => this.Value<string>(_publishedValueFallback, "addressLine2MaxLengthErrorMessage");
+
+		///<summary>
+		/// Address line 3 max length error message: Overrides the 'Address lookup - address line 3 max length error message' dictionary item. Defaults to 'Address line 3 must be 100 characters or less' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressLine3MaxLengthErrorMessage")]
+		public virtual string AddressLine3MaxLengthErrorMessage => this.Value<string>(_publishedValueFallback, "addressLine3MaxLengthErrorMessage");
+
+		///<summary>
+		/// Address Lookup is Primary
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[ImplementPropertyType("addressLookupIsPrimary")]
+		public virtual bool AddressLookupIsPrimary => this.Value<bool>(_publishedValueFallback, "addressLookupIsPrimary");
+
+		///<summary>
+		/// Address not found message: Overrides the 'Address lookup - address not found message' dictionary item. Defaults to 'We could not find any addresses for this postcode' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressNotFoundMessage")]
+		public virtual string AddressNotFoundMessage => this.Value<string>(_publishedValueFallback, "addressNotFoundMessage");
+
+		///<summary>
+		/// Address select error message: Overrides the 'Address lookup - address select error message' dictionary item. Defaults to 'Select an address to continue' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("addressSelectErrorMessage")]
+		public virtual string AddressSelectErrorMessage => this.Value<string>(_publishedValueFallback, "addressSelectErrorMessage");
+
+		///<summary>
+		/// Country required error message: Overrides the 'Address lookup - country required error message' dictionary item. Defaults to 'Select a country' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countryRequiredErrorMessage")]
+		public virtual string CountryRequiredErrorMessage => this.Value<string>(_publishedValueFallback, "countryRequiredErrorMessage");
+
+		///<summary>
+		/// County max length error message: Overrides the 'Address lookup - county max length error message' dictionary item. Defaults to 'County must be 100 characters or less' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countyMaxLengthErrorMessage")]
+		public virtual string CountyMaxLengthErrorMessage => this.Value<string>(_publishedValueFallback, "countyMaxLengthErrorMessage");
+
+		///<summary>
+		/// County state province max length error message: Overrides the 'Address lookup - county state province max length error message' dictionary item. Defaults to 'County, state or province must be 100 characters or less' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("countyStateProvinceMaxLengthErrorMessage")]
+		public virtual string CountyStateProvinceMaxLengthErrorMessage => this.Value<string>(_publishedValueFallback, "countyStateProvinceMaxLengthErrorMessage");
+
+		///<summary>
+		/// International manual entry not confirmed error message: Overrides the 'Address lookup - international manual entry not confirmed error message' dictionary item. Defaults to 'Enter and confirm an international address before continuing' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("internationalManualEntryNotConfirmedErrorMessage")]
+		public virtual string InternationalManualEntryNotConfirmedErrorMessage => this.Value<string>(_publishedValueFallback, "internationalManualEntryNotConfirmedErrorMessage");
+
+		///<summary>
+		/// Postcode max length error message: Overrides the 'Address lookup - postcode max length error message' dictionary item. Defaults to 'Postcode must be 100 characters or less' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postcodeMaxLengthErrorMessage")]
+		public virtual string PostcodeMaxLengthErrorMessage => this.Value<string>(_publishedValueFallback, "postcodeMaxLengthErrorMessage");
+
+		///<summary>
+		/// Postcode pattern error message: Overrides the 'Address lookup - postcode pattern error message' dictionary item. Defaults to 'Enter a valid postcode' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postcodePatternErrorMessage")]
+		public virtual string PostcodePatternErrorMessage => this.Value<string>(_publishedValueFallback, "postcodePatternErrorMessage");
+
+		///<summary>
+		/// Postcode required error message: Overrides the 'Address lookup - postcode required error message' dictionary item. Defaults to 'Enter postcode' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postcodeRequiredErrorMessage")]
+		public virtual string PostcodeRequiredErrorMessage => this.Value<string>(_publishedValueFallback, "postcodeRequiredErrorMessage");
+
+		///<summary>
+		/// Post town max length error message: Overrides the 'Address lookup - post town max length error message' dictionary item. Defaults to 'Town or city must be 100 characters or less' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postTownMaxLengthErrorMessage")]
+		public virtual string PostTownMaxLengthErrorMessage => this.Value<string>(_publishedValueFallback, "postTownMaxLengthErrorMessage");
+
+		///<summary>
+		/// Post town required error message: Overrides the 'Address lookup - post town required error message' dictionary item. Defaults to 'Enter town or city' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("postTownRequiredErrorMessage")]
+		public virtual string PostTownRequiredErrorMessage => this.Value<string>(_publishedValueFallback, "postTownRequiredErrorMessage");
+
+		///<summary>
+		/// Results not confirmed error message: Overrides the 'Address lookup - results not confirmed error message' dictionary item. Defaults to 'Select and confirm an address before continuing' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("resultsNotConfirmedErrorMessage")]
+		public virtual string ResultsNotConfirmedErrorMessage => this.Value<string>(_publishedValueFallback, "resultsNotConfirmedErrorMessage");
+
+		///<summary>
+		/// Search not confirmed error message: Overrides the 'Address lookup - search not confirmed error message' dictionary item. Defaults to 'Find and confirm an address before continuing' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("searchNotConfirmedErrorMessage")]
+		public virtual string SearchNotConfirmedErrorMessage => this.Value<string>(_publishedValueFallback, "searchNotConfirmedErrorMessage");
+
+		///<summary>
+		/// Service unavailable message: Overrides the 'Address lookup - service unavailable message' dictionary item. Defaults to 'The address lookup service is currently unavailable' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("serviceUnavailableMessage")]
+		public virtual string ServiceUnavailableMessage => this.Value<string>(_publishedValueFallback, "serviceUnavailableMessage");
+
+		///<summary>
+		/// UK manual entry not confirmed error message: Overrides the 'Address lookup - UK manual entry not confirmed error message' dictionary item. Defaults to 'Enter and confirm an address before continuing' if both are blank.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("ukManualEntryNotConfirmedErrorMessage")]
+		public virtual string UkManualEntryNotConfirmedErrorMessage => this.Value<string>(_publishedValueFallback, "ukManualEntryNotConfirmedErrorMessage");
+
+		///<summary>
 		/// CSS classes: Applied to the outermost HTML element of the component.
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]

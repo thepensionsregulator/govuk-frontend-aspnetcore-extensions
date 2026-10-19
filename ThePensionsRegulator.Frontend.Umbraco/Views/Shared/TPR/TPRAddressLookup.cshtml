@@ -1,4 +1,5 @@
 @using Microsoft.Extensions.Configuration
+@using ThePensionsRegulator.Frontend.Models
 @using ThePensionsRegulator.Frontend.Umbraco
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco
 @using ThePensionsRegulator.Umbraco.Core
@@ -15,7 +16,8 @@
     var description = modelPropertyName + " description";
     var content = TprAddressLookupContentResolver.Resolve(Model.Content, Model.Settings, CultureDictionary);
     var addressSearchUrl = Configuration["AddressLookup:SearchEndpoint"];
+    var role = Model.Settings?.Value<bool>(TprPropertyAliases.AddressLookupRole) == true ? TprAddressLookupRole.Primary : TprAddressLookupRole.Secondary;
 }
 
 
-<tpr-address-lookup for=@modelPropertyName content="content" address-search-url="@addressSearchUrl"></tpr-address-lookup>
+<tpr-address-lookup for=@modelPropertyName content="content" address-search-url="@addressSearchUrl" role="@role"></tpr-address-lookup>

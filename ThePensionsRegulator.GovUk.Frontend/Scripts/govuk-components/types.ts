@@ -29,7 +29,7 @@ export interface HintOptions {
 }
 
 export type FormControlWidth = 
-    |"xx-small" 
+    | "xx-small" 
     | "x-small" 
     | "small" 
     | "medium"

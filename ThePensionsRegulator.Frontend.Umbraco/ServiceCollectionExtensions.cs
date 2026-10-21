@@ -1,5 +1,6 @@
 using GovUk.Frontend.AspNetCore;
 using GovUk.Frontend.Umbraco.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -9,6 +10,7 @@ using ThePensionsRegulator.Frontend.Services;
 using ThePensionsRegulator.Frontend.Umbraco.Caching;
 using ThePensionsRegulator.Frontend.Umbraco.PropertyEditors.ValueFormatters;
 using ThePensionsRegulator.Frontend.Umbraco.Services;
+using ThePensionsRegulator.Frontend.Umbraco.Validation;
 using ThePensionsRegulator.GovUk.Frontend.Caching;
 using ThePensionsRegulator.GovUk.Frontend.Security;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco;
@@ -107,7 +109,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco
             services.AddTransient<ITprGlobalNavigationService, TprGlobalNavigationService>();
             services.AddTransient<IStaticFileCachePolicy, TprUmbracoStaticFileCachePolicy>();
             services.AddTransient<ITprSideNavigationLinksService, UmbracoSideNavigationLinksService>();
+            services.AddScoped<ITprAddressLookupValidationMessageResolver, TprAddressLookupValidationMessageResolver>();
+            services.AddScoped<TprAddressLookupValidationMessageFilter>();
 
+            services.Configure<MvcOptions>(options => options.Filters.AddService<TprAddressLookupValidationMessageFilter>());
             return services;
         }
     }

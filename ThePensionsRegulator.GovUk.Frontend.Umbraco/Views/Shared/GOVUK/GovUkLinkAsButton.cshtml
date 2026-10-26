@@ -21,16 +21,19 @@
     if (buttonStyle.Length > 0 && !string.IsNullOrEmpty(cssClasses)) { cssClasses = " " + cssClasses; }
 }
 
-@if (openInNewTab)
+@if (link is not null && !string.IsNullOrEmpty(link.Url))
 {
-    <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses" target="_blank" rel="noreferrer noopener">
-        @text
-        <span class="govuk-visually-hidden">@Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)</span>
-    </govuk-button-link>
-}
-else
-{
-    <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses">
-        @text
-    </govuk-button-link>
+    @if (openInNewTab)
+    {
+        <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses" target="_blank" rel="noreferrer noopener">
+            @text
+            <span class="govuk-visually-hidden">@Umbraco.GetDictionaryValueOrDefault(DictionaryConstants.OpensInNewTab, DictionaryConstants.OpensInNewTab)</span>
+        </govuk-button-link>
+    }
+    else
+    {
+        <govuk-button-link is-start-button="@isStartButton" href="@link?.Url" id="@Model.Content.Key" class="@string.Join(' ', buttonStyle)@cssClasses">
+            @text
+        </govuk-button-link>
+    }
 }

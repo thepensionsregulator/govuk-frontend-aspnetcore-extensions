@@ -34,6 +34,10 @@
 		<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
 		<PackageReference Include="GovUk.Frontend.AspNetCore" Version="4.1.0" />
 		<PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
+		<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="7.0.0">
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		  <PrivateAssets>all</PrivateAssets>
+		</PackageReference>
 	</ItemGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
@@ -327,5 +331,9 @@
 
 	<ItemGroup>
 		<UpToDateCheckInput Remove="styles\_tpr-section-cards.scss" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\ThePensionsRegulator.Frontend\js\" />
 	</ItemGroup>
 </Project>

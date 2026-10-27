@@ -48,6 +48,16 @@
         </div>
     </div>
 
+    <h2 class="govuk-heading-m">JavaScript buttons</h2>
+    <p class="govuk-body">Buttons (not links styled as buttons) can be created using JavaScript imported from the ThePensionsRegulator.GovUk.Frontend package.</p>
+    <p class="govuk-body"><code>
+            import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
+        </code>
+    </p>
+    <p class="govuk-body">See <a href="~/js/javascript-components-examples.js">javascript-components-examples.js</a> for example code.</p>
+    <div class="javascript-target"></div>
+
+
     <h2 class="govuk-heading-m">Button in a box</h2>
     <p class="govuk-body">Using TPR styles when you put a button as the last child within a box,
         or in a row with a divider applied, we need an extra style rule to preserve the padding correctly.
@@ -323,3 +333,7 @@
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script src="~/js/javascript-components-examples.js" type="module" asp-append-version="true"></script>
+}

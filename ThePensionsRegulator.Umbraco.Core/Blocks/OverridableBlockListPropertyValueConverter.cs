@@ -23,9 +23,13 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         IVariationContextAccessor _variationContextAccessor,
         BlockEditorVarianceHandler _blockEditorVarianceHandler,
         IPublishedValueFallback _publishedValueFallback,
-        IEnumerable<IPropertyValueFormatter> _propertyValueFormatters
+        ILanguageService _languageService,
+        IPropertyRenderingContextAccessor _propertyRenderingContextAccessor,
+        IEnumerable<IPropertyValueFormatter> _propertyValueFormatters,
+        IOverridablePublishedElementFactory _overridablePublishedElementFactory,
+        IOverridableBlockModelFilterStoreAccessor _filterStoreAccessor
         )
-        : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _jsonSerializer, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler)
+        : BlockListPropertyValueConverter(_proflog, _blockConverter, _contentTypeService, _apiElementBuilder, _jsonSerializer, _constructorCache, _variationContextAccessor, _blockEditorVarianceHandler, _languageService, _propertyRenderingContextAccessor)
     {
         /// <inheritdoc />
         public override Type GetPropertyValueType(IPublishedPropertyType propertyType)
@@ -38,7 +42,9 @@ namespace ThePensionsRegulator.Umbraco.Core.Blocks
         public override object? ConvertIntermediateToObject(IPublishedElement owner, IPublishedPropertyType propertyType, PropertyCacheLevel referenceCacheLevel, object? inter, bool preview)
         {
             var baseModel = base.ConvertIntermediateToObject(owner, propertyType, referenceCacheLevel, inter, preview);
-            return baseModel is BlockListModel ? new OverridableBlockListModel(_publishedValueFallback, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters } : baseModel;
+            return baseModel is BlockListModel
+                ? new OverridableBlockListModel(_publishedValueFallback, _overridablePublishedElementFactory, _filterStoreAccessor, (BlockListModel)baseModel) { PropertyValueFormatters = _propertyValueFormatters }
+                : baseModel;
         }
 
         /// <inheritdoc />

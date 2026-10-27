@@ -64,7 +64,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockGridModel CreateOverridableBlockGridModel(IPublishedValueFallback publishedValueFallback, IEnumerable<BlockGridItem> blockGridItems)
         {
-            return new OverridableBlockGridModel(publishedValueFallback, blockGridItems, null, OverridableBlockGridItem.NoopPublishedElementFactory);
+            return new OverridableBlockGridModel(publishedValueFallback, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), blockGridItems, null);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockGridArea CreateOverridableBlockGridArea(IEnumerable<BlockGridItem> blockGridItems, string alias, int rowSpan = 1, int columnSpan = 1)
         {
-            return new OverridableBlockGridArea(blockGridItems, alias, rowSpan, columnSpan, OverridableBlockGridItem.NoopPublishedElementFactory);
+            return new OverridableBlockGridArea(blockGridItems, alias, rowSpan, columnSpan, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor());
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockGridItem CreateOverridableBlock(IPublishedElement content)
         {
-            return new OverridableBlockGridItem(CreateBlock(content), OverridableBlockGridItem.NoopPublishedElementFactory);
+            return new OverridableBlockGridItem(CreateBlock(content), new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor());
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockGridItem CreateOverridableBlock(IPublishedElement content, IPublishedElement settings)
         {
-            return new OverridableBlockGridItem(CreateBlock(content, settings), OverridableBlockGridItem.NoopPublishedElementFactory);
+            return new OverridableBlockGridItem(CreateBlock(content, settings), new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor());
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockGridItem CreateOverridableBlock(string contentTypeAliasForContent)
         {
-            return new OverridableBlockGridItem(CreateBlock(CreateContentOrSettings(contentTypeAliasForContent).Object), OverridableBlockGridItem.NoopPublishedElementFactory);
+            return new OverridableBlockGridItem(CreateBlock(CreateContentOrSettings(contentTypeAliasForContent).Object), new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor());
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using ThePensionsRegulator.Umbraco.Testing;
+﻿using Moq;
+using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Strings;
 
@@ -8,12 +9,8 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
     {
         private const string PROPERTY_ALIAS = "property";
         private const string ELEMENT_TYPE_ALIAS = "elementType";
-        private readonly UmbracoTestContext _testContext;
-
-        public OverridablePublishedElementTests()
-        {
-            _testContext = new UmbracoTestContext().SetupContentType(ELEMENT_TYPE_ALIAS);
-        }
+        private readonly UmbracoTestContext _testContext = new UmbracoTestContext().SetupContentType(ELEMENT_TYPE_ALIAS);
+        private readonly OverridablePublishedElementValueStore _valueStore = new();
 
         public void Dispose() => _testContext.Dispose();
 
@@ -26,7 +23,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
 
             var content = new OverridablePublishedElement(UmbracoContentFactory.CreateContent<IPublishedElement>(ELEMENT_TYPE_ALIAS)
                 .SetupUmbracoRichTextPropertyValue(PROPERTY_ALIAS, textBefore)
-                .Object);
+                .Object, () => _valueStore);
 
             // Act
             content.OverrideValue(PROPERTY_ALIAS, textAfter);
@@ -45,7 +42,7 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
 
             var content = new OverridablePublishedElement(UmbracoContentFactory.CreateContent<IPublishedElement>(ELEMENT_TYPE_ALIAS)
                  .SetupUmbracoRichTextPropertyValue(PROPERTY_ALIAS, textBefore)
-                 .Object);
+                 .Object, () => _valueStore);
 
             // Act
             content.OverrideValue(PROPERTY_ALIAS, textAfter);
@@ -53,6 +50,58 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests
             // Assert
             var updatedValue = content.Value<string>(_testContext.PublishedValueFallback.Object, PROPERTY_ALIAS);
             Assert.Equal(textAfter, updatedValue);
+        }
+
+        [Fact]
+        public void OverrideValue_is_isolated_between_value_stores_when_wrapper_is_reused()
+        {
+            // Arrange
+            var originalValue = "<p>This example has a {{token}} to update.</p>";
+            var firstRequestValue = "<p>This example has a first request override.</p>";
+            var secondRequestValue = "<p>This example has a second request override.</p>";
+            var firstStore = new OverridablePublishedElementValueStore();
+            var secondStore = new OverridablePublishedElementValueStore();
+            IOverridablePublishedElementValueStore currentStore = firstStore;
+
+            var content = new OverridablePublishedElement(
+                UmbracoContentFactory.CreateContent<IPublishedElement>(ELEMENT_TYPE_ALIAS)
+                    .SetupUmbracoRichTextPropertyValue(PROPERTY_ALIAS, originalValue)
+                    .Object,
+                () => currentStore);
+
+            // Act
+            content.OverrideValue(PROPERTY_ALIAS, firstRequestValue);
+            currentStore = secondStore;
+            var secondRequestBeforeOverride = content.Value<string>(_testContext.PublishedValueFallback.Object, PROPERTY_ALIAS);
+            content.OverrideValue(PROPERTY_ALIAS, secondRequestValue);
+            currentStore = firstStore;
+            var firstRequestAfterSecondOverride = content.Value<string>(_testContext.PublishedValueFallback.Object, PROPERTY_ALIAS);
+            currentStore = secondStore;
+            var secondRequestAfterOverride = content.Value<string>(_testContext.PublishedValueFallback.Object, PROPERTY_ALIAS);
+
+            // Assert
+            Assert.Equal(originalValue, secondRequestBeforeOverride);
+            Assert.Equal(firstRequestValue, firstRequestAfterSecondOverride);
+            Assert.Equal(secondRequestValue, secondRequestAfterOverride);
+        }
+
+        [Fact]
+        public void OverrideValue_is_shared_by_wrappers_for_the_same_element_key_within_one_store()
+        {
+            // Arrange
+            var originalValue = "<p>This example has a {{token}} to update.</p>";
+            var overrideValue = "<p>This example has a shared override.</p>";
+            var publishedElement = UmbracoContentFactory.CreateContent<IPublishedElement>(ELEMENT_TYPE_ALIAS)
+                .SetupUmbracoRichTextPropertyValue(PROPERTY_ALIAS, originalValue)
+                .Object;
+            var firstWrapper = new OverridablePublishedElement(publishedElement, () => _valueStore);
+            var secondWrapper = new OverridablePublishedElement(publishedElement, () => _valueStore);
+
+            // Act
+            firstWrapper.OverrideValue(PROPERTY_ALIAS, overrideValue);
+
+            // Assert
+            Assert.Equal(overrideValue, secondWrapper.Value<string>(_testContext.PublishedValueFallback.Object, PROPERTY_ALIAS));
         }
     }
 }

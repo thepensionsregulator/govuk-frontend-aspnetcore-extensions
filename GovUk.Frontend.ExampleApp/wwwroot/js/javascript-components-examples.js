@@ -2,10 +2,8 @@ import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Fro
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("JS loaded");
     const target = document.getElementsByClassName("javascript-target")[0];
     const buttonGroup = createButtonGroup();
-    console.log("target", target);  
     const primaryButton = createButton({
          labelText: "Primary button",
          variant: "primary",

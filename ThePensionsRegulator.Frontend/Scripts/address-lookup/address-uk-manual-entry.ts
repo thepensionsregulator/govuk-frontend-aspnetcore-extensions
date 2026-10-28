@@ -1,36 +1,43 @@
 import { normalisePostcode } from './postcode-normaliser.js';
 import { sanitisePostcode } from './postcode-sanitiser.js';
 import { validatePostcode } from './postcode-validator.js';
-import type { UkManualEntryAddress } from './types.js';
+import { submitOnEnter } from './submit-on-enter.js';
+import type { AddressLookupContent, UkManualEntryAddress } from './types.js';
 import { createButton } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js';
-import { createFieldset } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js';
+import { createFieldsetFormGroup } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js';
 import { createTextInputFormGroup } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js';
 import { createLink } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js';
 import { clearFormGroupError, showFormGroupError } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js';
 
 export interface AddressUkManualEntryOptions {
+    content: AddressLookupContent
     onAddressSubmitted: (address: UkManualEntryAddress) => void;
     onBackToSearchRequested: () => void;
 }
 
 export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions): HTMLElement {    
     const div = document.createElement('div');
-    const addressLine1 = createTextInputFormGroup({ labelText: 'Address line 1', input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large" } });
-    const addressLine2 = createTextInputFormGroup({ labelText: 'Address line 2 (optional)', input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large" } });
-    const addressLine3 = createTextInputFormGroup({ labelText: 'Address line 3 (optional)', input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large" } });
-    const townOrCity = createTextInputFormGroup({ labelText: 'Town or city', input: { id: 'town-or-city', name: 'town-or-city', type: "text", width: "large" } });
-    const county = createTextInputFormGroup({ labelText: 'County (optional)', input: { id: 'county', name: 'county', type: "text", width: "large" } });
-    const postcode = createTextInputFormGroup({ labelText: 'Postcode', input: { id: 'postcode', name: 'postcode', type: "text", width: "medium" } });
+    const addressLine1 = createTextInputFormGroup({ labelText: options.content.addressLine1Label, input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large" } });
+    const addressLine2 = createTextInputFormGroup({ labelText: options.content.addressLine2Label, input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large" } });
+    const addressLine3 = createTextInputFormGroup({ labelText: options.content.addressLine3Label, input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large" } });
+    const townOrCity = createTextInputFormGroup({ labelText: options.content.postTownLabel, input: { id: 'town-or-city', name: 'town-or-city', type: "text", width: "large" } });
+    const county = createTextInputFormGroup({ labelText: options.content.countyLabel, input: { id: 'county', name: 'county', type: "text", width: "large" } });
+    const postcode = createTextInputFormGroup({ labelText: options.content.postcodeLabel, input: { id: 'postcode', name: 'postcode', type: "text", width: "medium" } });
 
-    const fieldset = createFieldset({ legendText: 'Enter new Uk address', children: [addressLine1, addressLine2, addressLine3, townOrCity, county, postcode] });
+    const fieldsetFormGroup = createFieldsetFormGroup({
+        id: "address-uk-manual-entry-fieldset",
+        legendText: options.content.ukManualEntryLegend,
+        children: [addressLine1, addressLine2, addressLine3, townOrCity, county, postcode]
+    });
+    fieldsetFormGroup.setAttribute("data-address-lookup-submit-error-anchor", "true");
+    div.appendChild(fieldsetFormGroup);
 
-    div.appendChild(fieldset);
-
-    const confirmButton = createButton({ labelText: 'Confirm address', type: 'submit', variant: 'secondary' });
+    const confirmButton = createButton({ labelText: options.content.confirmAddressLabel, type: 'button', variant: 'secondary' });
+    submitOnEnter(div, () => confirmButton.click());
     confirmButton.addEventListener("click", handleConfirmAddress);
     div.appendChild(confirmButton);
 
-    const backToSearch = createLink({ labelText: "Back to postcode search"});
+    const backToSearch = createLink({ labelText: options.content.backToPostcodeSearchLabel});
     backToSearch.addEventListener("click", handleBackToSearch);
     div.appendChild(backToSearch);
 
@@ -45,7 +52,7 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
         event.preventDefault();
         const formGroupsByField: Record<keyof UkManualEntryValues, HTMLElement> = { addressLine1, addressLine2, addressLine3, townOrCity, county, postcode };
         Object.values(formGroupsByField).forEach(clearFormGroupError);
-        const validationResult = validateUkManualEntryAddress(readValues(addressLine1, addressLine2, addressLine3, townOrCity, county, postcode));
+        const validationResult = validateUkManualEntryAddress(readValues(addressLine1, addressLine2, addressLine3, townOrCity, county, postcode), options.content);
         if (!validationResult.isValid) {
             validationResult.errorMessages.forEach(({ fieldName, message }) => showFormGroupError(formGroupsByField[fieldName], message));
             return;
@@ -61,30 +68,34 @@ type UkManualEntryValidationResult =
     | { isValid: true; address: UkManualEntryAddress }
     | { isValid: false; errorMessages: ErrorMessage[] };
 
-export function validateUkManualEntryAddress(values: UkManualEntryValues): UkManualEntryValidationResult {
+export function validateUkManualEntryAddress(values: UkManualEntryValues, content: AddressLookupContent): UkManualEntryValidationResult {
 
     const fieldRuleSets: FieldRuleSet[] = [
+
+        //TODO: Validation messages are too tightly coupled to the validation logic and content. Decouple for better maintainability. 
+        //      A validator should define rules of type 'required' 'maxLength' 'pattern etc. A lookup function should then lookup a value in a map by content[`${fieldName}${rule}ErrorMessage`]
+
         { fieldName: 'addressLine1', validators: [ 
-            { message: 'Address line 1 is required', isValid: () => values.addressLine1.trim() !== '' },
-            { message: 'Address line 1 must be 100 characters or fewer', isValid: () => values.addressLine1.trim().length <= 100 } 
+            { message: content.addressLine1RequiredErrorMessage, isValid: () => values.addressLine1.trim() !== '' },
+            { message: content.addressLine1MaxLengthErrorMessage, isValid: () => values.addressLine1.trim().length <= 100 } 
         ]},
-        { fieldName: 'addressLine2', validators: [ { message: 'Address line 2 must be 100 characters or fewer', isValid: () => values.addressLine2.trim().length <= 100 }] },
-        { fieldName: 'addressLine3', validators: [ { message: 'Address line 3 must be 100 characters or fewer', isValid: () => values.addressLine3.trim().length <= 100 }] },
+        { fieldName: 'addressLine2', validators: [ { message: content.addressLine2MaxLengthErrorMessage, isValid: () => values.addressLine2.trim().length <= 100 }] },
+        { fieldName: 'addressLine3', validators: [ { message: content.addressLine3MaxLengthErrorMessage, isValid: () => values.addressLine3.trim().length <= 100 }] },
         { fieldName: 'townOrCity', validators: [ 
-            { message: 'Enter a post town', isValid: () => values.townOrCity.trim() !== '' },
-            { message: 'Town or city is required', isValid: () => values.townOrCity.trim() !== '' }, { message: 'Town or city must be 100 characters or fewer', isValid: () => values.townOrCity.trim().length <= 100 }
+            { message: content.postTownRequiredErrorMessage, isValid: () => values.townOrCity.trim() !== '' },
+            { message: content.postTownMaxLengthErrorMessage, isValid: () => values.townOrCity.trim().length <= 100 }
         ]},
-        { fieldName: 'county', validators: [ { message: 'County must be 100 characters or fewer', isValid: () => values.county.trim().length <= 100 }] },
+        { fieldName: 'county', validators: [ { message: content.countyMaxLengthErrorMessage, isValid: () => values.county.trim().length <= 100 }] },
         { fieldName: 'postcode', validators: [ 
-            { message: 'Enter a postcode', isValid: () => values.postcode.trim() !== '' },
-            { message: 'Enter a real postcode', isValid: () => validatePostcode(values.postcode).isValid },
-            { message: 'Postcode must be 10 characters or fewer', isValid: () => values.postcode.trim().length <= 10 }
+            { message: content.postcodeRequiredErrorMessage, isValid: () => values.postcode.trim() !== '' },
+            { message: content.postcodePatternErrorMessage, isValid: () => validatePostcode(values.postcode).isValid },
+            { message: content.postcodeMaxLengthErrorMessage, isValid: () => values.postcode.trim().length <= 10 }
         ]}
     ];
 
     const errorMessages = fieldRuleSets
         .map(({ fieldName, validators }) => {
-            const firstFailure = validators.find( v => !v.isValid()); // Run the validators foreach form group until one fails
+            const firstFailure = validators.find( v => !v.isValid());
             return firstFailure ? { fieldName: fieldName, message: firstFailure.message } : null;
         })
         .filter(x => x != null);

@@ -1,4 +1,12 @@
 {
   "jest.jestCommandLine": "npx jest",
-  "snyk.advanced.autoSelectOrganization": true
+  "snyk.advanced.autoSelectOrganization": true,
+  "csharp.experimental.debug.hotReload": true,
+  "csharp.debug.hotReloadOnSave": true,
+  "chat.tools.terminal.autoApprove": {
+    "/^cd \"c:/dev/govuk-frontend-aspnetcore-extensions-v17\" && node --experimental-vm-modules node_modules/jest/bin/jest\\.js --ci --watchAll=false --coverage=false --runInBand$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
 }

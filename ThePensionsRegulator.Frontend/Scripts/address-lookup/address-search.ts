@@ -12,14 +12,15 @@ import { normalisePostcode } from "./postcode-normaliser.js";
 import { validatePostcode } from "./postcode-validator.js";
 import { filterAddressesByBuilding } from "./address-filter.js";
 import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
-import type { AddressSearchCriteria, AddressSearchOptions } from "./types.js";
+import type { AddressLookupContent, AddressSearchCriteria, AddressSearchOptions } from "./types.js";
 import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
+import { submitOnEnter } from "./submit-on-enter.js";
 
 export function renderAddressSearch(options: AddressSearchOptions): HTMLElement {
     const addressSearchWrapper = document.createElement("div");
 
     const buildingNameFormGroup = createTextInputFormGroup({
-        labelText: "Building name or number",
+        labelText: options.content.buildingNameOrNumberLabel,
         input: {
             id: "building",
             name: "building",
@@ -30,7 +31,7 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     const buildingNameOrNumberInput = buildingNameFormGroup.querySelector("input")!;
 
     const postcodeFormGroup = createTextInputFormGroup({
-        labelText: "Postcode",
+        labelText: options.content.postcodeLabel,
         input:{
             id: "postcode",
             name: "postcode",
@@ -40,15 +41,17 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     });
     const postcodeInput = postcodeFormGroup.querySelector("input")!;
 
-    const fieldset = createFieldsetFormGroup({legendText: "Search by postcode", children: [ buildingNameFormGroup, postcodeFormGroup ], id: "address-search-fieldset"});
+    const fieldset = createFieldsetFormGroup({legendText: options.content.addressLookupLegend, children: [ buildingNameFormGroup, postcodeFormGroup ], id: "address-search-fieldset"});
+    fieldset.setAttribute("data-address-lookup-submit-error-anchor", "true");
     addressSearchWrapper.appendChild(fieldset);
     
-    const findAddressButton = createButton({labelText: "Find address", variant: "secondary", type: "button"});
+    const findAddressButton = createButton({labelText: options.content.findAddressButton, variant: "secondary", type: "button"});
+    submitOnEnter(addressSearchWrapper, handleAddressSearch);
     findAddressButton.addEventListener("click", handleAddressSearch);
     addressSearchWrapper.appendChild(findAddressButton);
 
     
-    const internationalEntryLink = createLink({labelText: "Enter an international address"});
+    const internationalEntryLink = createLink({labelText: options.content.internationalManualEntryLabel});
     internationalEntryLink.addEventListener("click", handleOnInternationalEntryClicked);
     
     const nav = document.createElement("nav");
@@ -59,7 +62,7 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     return addressSearchWrapper;
     
     async function handleAddressSearch(): Promise<void> {
-        const validationResult = readAndValidateCriteria(buildingNameOrNumberInput, postcodeInput);
+        const validationResult = readAndValidateCriteria(buildingNameOrNumberInput, postcodeInput, options.content);
         if (!validationResult.isValid) {
             showFormGroupError(postcodeFormGroup, validationResult.errorMessage);
             return;
@@ -74,14 +77,14 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
             const matches = buildingName ? filterAddressesByBuilding(addresses, buildingName) : addresses;
 
             if (matches.length === 0) {
-                showFormGroupError(fieldset, "The address and postcode do not match");
+                showFormGroupError(fieldset, options.content.addressNotFoundMessage);
                 return;
             }
 
             clearFormGroupError(fieldset);
             options.onSearchSuccess(matches, validationResult.criteria);
         } catch {
-            showFormGroupError(fieldset, "There was a problem searching for addresses. Please try again.");
+            showFormGroupError(fieldset, options.content.serviceUnavailableMessage);
         } 
         finally {
              findAddressButton.disabled = false;
@@ -98,14 +101,14 @@ type CriteriaValidationResult =
     | { isValid: true; criteria: AddressSearchCriteria }
     | { isValid: false; errorMessage: string };
 
-function readAndValidateCriteria(buildingNameInput: HTMLInputElement, postcodeInput: HTMLInputElement): CriteriaValidationResult {
+function readAndValidateCriteria(buildingNameInput: HTMLInputElement, postcodeInput: HTMLInputElement, content: AddressLookupContent): CriteriaValidationResult {
     const buildingName = buildingNameInput.value.trim();
     const sanitisedPostcode = sanitisePostcode(postcodeInput.value);
     const normalisedPostcode = normalisePostcode(sanitisedPostcode);
 
     const validatePostcodeResult = validatePostcode(normalisedPostcode);
     if (!validatePostcodeResult.isValid) {
-        const errorMessage = validatePostcodeResult.error === "required" ? "Enter a postcode" : "Enter a valid postcode";
+        const errorMessage = validatePostcodeResult.error === "required" ? content.postcodeRequiredErrorMessage : content.postcodePatternErrorMessage;
         return { isValid: false, errorMessage };
     }
 

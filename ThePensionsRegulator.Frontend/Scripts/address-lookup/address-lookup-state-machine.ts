@@ -1,5 +1,6 @@
 import { mapAddressSearchResult, mapInternationalManualEntryAddress, mapUkManualEntryAddress } from './address-result-mapper.js';
-import type { AddressSearchCriteria, AddressSearchResult, ConfirmedAddress, InternationalManualEntryAddress, UkManualEntryAddress } from './types';
+import type { AddressLookupContent, AddressSearchCriteria, AddressSearchResult, ConfirmedAddress, InitialAddress, InternationalManualEntryAddress, UkManualEntryAddress } from './types';
+import { mapInitialAddress } from './address-result-mapper.js';
 
 export type AddressLookupState = 
     | AddressLookupSearchState
@@ -18,7 +19,6 @@ export interface AddressLookupResultState {
     criteria: AddressSearchCriteria;
     addresses: AddressSearchResult[];
 }
-
 export interface AddressLookupConfirmedState {
     status: "confirmed";
     address: ConfirmedAddress;
@@ -44,8 +44,22 @@ export type AddressLookupEvent =
 export type AddressLookupStateListener = (state: AddressLookupState) => void;
 
 export class AddressLookupStateMachine {
-    private state: AddressLookupState = { status: "search" };
+    private state: AddressLookupState;
     private readonly listeners: AddressLookupStateListener[] = [];
+    
+    constructor(private readonly content: AddressLookupContent, ukCountryId?: string, initialAddress?: InitialAddress){
+        this.state = this.resolveInitialState(ukCountryId, initialAddress);
+    }
+
+    private resolveInitialState (ukCountryId?: string, initialAddress?: InitialAddress,): AddressLookupState {
+        const mappedAddress = mapInitialAddress(this.content, initialAddress, ukCountryId);
+        if (mappedAddress) {
+            return { status: "confirmed", address: mappedAddress };
+        }
+
+        return { status: "search" };
+    }
+
 
     public getState(): AddressLookupState {
         return this.state;
@@ -98,8 +112,6 @@ export class AddressLookupStateMachine {
                 }
                 const confirmedUkAddress = mapUkManualEntryAddress(event.address);
                 return { status: "confirmed", address: confirmedUkAddress };
-            case "international-manual-entry-requested":
-                return { status: "international-manual-entry" };
             case "international-manual-address-submitted":
                 if (state.status !== "international-manual-entry") {
                     return undefined;

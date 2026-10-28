@@ -11,14 +11,16 @@ describe("renderAddressSearch", () => {
             .mockResolvedValue([]);
         searchService.searchAddress = searchAddress;
         const onSearchSuccess = jest.fn<(results: AddressSearchResult[], criteria: AddressSearchCriteria) => void>();
+        const onInternationalEntryRequested = jest.fn<() => void>(); 
 
-        const component = renderAddressSearch({ searchService, onSearchSuccess, criteria });
+        const component = renderAddressSearch({ searchService, onSearchSuccess, criteria, onInternationalEntryRequested });
 
         const buildingInput = component.querySelector<HTMLInputElement>("#building");
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode");
         const button = component.querySelector<HTMLButtonElement>("button");
+        const internationalLink = component.querySelector<HTMLAnchorElement>("a");
 
-        return { component, buildingInput, postcodeInput, button, searchOptions: searchAddress, onSearchSuccess };
+        return { component, buildingInput, postcodeInput, button, internationalLink, searchOptions: searchAddress, onSearchSuccess, onInternationalEntryRequested };
     }
     
     it("should leave the inputs empty when no criteria is provided", () => {
@@ -43,6 +45,18 @@ describe("renderAddressSearch", () => {
         expect(fieldset).toContainElement(buildingInput);
         expect(fieldset).toContainElement(postcodeInput);
         expect(component).toContainElement(button);
+    });
+
+    it("should render a 'Enter an international address' link", () => {
+        const { component, internationalLink } = createSearch();
+        
+        expect(component).toContainElement(internationalLink);
+    });
+
+    it("should call 'onInternationalEntryRequested' when the international link is clicked", () => {
+        const { internationalLink, onInternationalEntryRequested } = createSearch();
+        internationalLink?.click();
+        expect(onInternationalEntryRequested).toHaveBeenCalled();
     });
 
     it("should show a required error and not search when postcode is empty", () => {
@@ -145,5 +159,4 @@ describe("renderAddressSearch", () => {
         expect(onSearchSuccess).not.toHaveBeenCalled();
         expect(button).not.toBeDisabled();
     });
-
 });

@@ -12,12 +12,5 @@
       "wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-js-test.js"
     ],
     "minify": { "enabled": true }
-  },
-  {
-    "outputFileName": "wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-validation.min.js",
-    "inputFiles": [
-      "wwwroot/ThePensionsRegulator.GovUk.Frontend/js/govuk-validation.js"
-    ],
-    "minify": { "enabled": true }
   }
 ]

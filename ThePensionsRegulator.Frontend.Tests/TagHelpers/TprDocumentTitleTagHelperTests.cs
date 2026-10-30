@@ -84,7 +84,7 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
         private static string RenderHtml(TagHelperOutput output)
         {
             using var result = new StringWriter();
-            output.WriteTo(result, HtmlEncoder.Create());
+            output.WriteTo(result, HtmlEncoder.Default);
             return result.ToString();
         }
     }

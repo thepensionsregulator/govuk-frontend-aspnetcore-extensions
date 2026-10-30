@@ -20,6 +20,7 @@
     </div>
 
     <p class="govuk-body">The following button styles are supported when using The Pensions Regulator branding. Combining button classes to produce other combinations is not yet supported.</p>
+    <p class="govuk-body">Buttons can also be created using JavaScript &ndash; see <a href="/javascriptcomponents">JavaScript components</a>.</p>
 
     <govuk-button-link is-start-button="true" href="/">Start now</govuk-button-link>
 
@@ -47,16 +48,6 @@
             <govuk-button class="govuk-button--inverse" type="button">Reversed button</govuk-button>
         </div>
     </div>
-
-    <h2 class="govuk-heading-m">JavaScript buttons</h2>
-    <p class="govuk-body">Buttons (not links styled as buttons) can be created using JavaScript imported from the ThePensionsRegulator.GovUk.Frontend package.</p>
-    <p class="govuk-body"><code>
-            import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
-        </code>
-    </p>
-    <p class="govuk-body">See <a href="~/js/javascript-components-examples.js">javascript-components-examples.js</a> for example code.</p>
-    <div class="javascript-target"></div>
-
 
     <h2 class="govuk-heading-m">Button in a box</h2>
     <p class="govuk-body">Using TPR styles when you put a button as the last child within a box,
@@ -333,7 +324,3 @@
         </div>
     </div>
 </div>
-
-@section scripts {
-    <script src="~/js/javascript-components-examples.js" type="module" asp-append-version="true"></script>
-}

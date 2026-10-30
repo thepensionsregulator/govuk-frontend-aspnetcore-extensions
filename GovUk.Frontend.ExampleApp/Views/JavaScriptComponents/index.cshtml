@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "JavaScript components";
+}
+
+<div class="govuk-width-container">
+    <span class="govuk-caption-xl">Example application</span>
+    <div class="govuk-grid-row govuk-grid-row--tpr-divider">
+        <div class="govuk-grid-column govuk-grid-column-full">
+            <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+        </div>
+    </div>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column govuk-grid-column-two-thirds">
+            <p class="govuk-body">To meet the GOV.UK Service Standard, <strong>you cannot rely on JavaScript for forms</strong>. You may use JavaScript to enhance the user experience, but the core functionality must work without it.</p>
+            <p class="govuk-body">The following components can be created using JavaScript imported from the ThePensionsRegulator.GovUk.Frontend package.</p>
+            <p class="govuk-body">See <a href="~/js/javascript-components-examples.js">javascript-components-examples.js</a> for example code.</p>
+
+            <h2 class="govuk-heading-m">Button</h2>
+            <p class="govuk-body">Buttons are supported. Links styled as buttons are not.</p>
+            <div class="button-target"></div>
+
+            <h2 class="govuk-heading-m">Text input</h2>
+            <div class="input-target"></div>
+
+            <h2 class="govuk-heading-m">Select</h2>
+            <div class="select-target"></div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    <script src="~/js/javascript-components-examples.js" type="module"></script>
+}

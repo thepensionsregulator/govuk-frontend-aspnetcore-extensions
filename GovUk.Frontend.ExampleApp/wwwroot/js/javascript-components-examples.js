@@ -1,13 +1,13 @@
 import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
-
+import { createTextInputFormGroup, createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 
 document.addEventListener("DOMContentLoaded", function () {
-    const target = document.getElementsByClassName("javascript-target")[0];
+    const buttonTarget = document.querySelector(".button-target");
     const buttonGroup = createButtonGroup();
     const primaryButton = createButton({
-         labelText: "Primary button",
-         variant: "primary",
-         type: "button"
+        labelText: "Primary button",
+        variant: "primary",
+        type: "button"
     });
 
     const primaryDisabled = createButton({
@@ -77,5 +77,41 @@ document.addEventListener("DOMContentLoaded", function () {
     buttonGroup.appendChild(secondaryWarning);
     buttonGroup.appendChild(secondaryWarningDisabled);
 
-    target.appendChild(buttonGroup);
+    buttonTarget.appendChild(buttonGroup);
+
+    const inputTarget = document.querySelector(".input-target");
+
+    const postcodeInput = createTextInputFormGroup({
+        labelText: "Postcode",
+        hintText: "For example, SW1A 2AA",
+        input: {
+            id: "postcode",
+            name: "postcode",
+            width: "large",
+            attributes: {
+                autocomplete: "postal-code",
+            },
+        },
+    });
+
+    inputTarget.appendChild(postcodeInput);
+
+    const selectTarget = document.querySelector(".select-target");
+    const select = createSelectFormGroup({
+        labelText: "Select an option",
+        hintText: "For example, choose one",
+        select: {
+            id: "example-select",
+            name: "example-select",
+            width: "large",
+            options: [
+                { value: "", text: "Please select" },
+                { value: "option1", text: "Option 1" },
+                { value: "option2", text: "Option 2" },
+            ],
+            attributes: {},
+        },
+    });
+
+    selectTarget.appendChild(select);
 });

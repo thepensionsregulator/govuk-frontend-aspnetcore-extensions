@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fieldsetTarget = document.querySelector(".fieldset-target");
     const fieldset = createFieldset({
         legendText: "Contact details",
-        legendSize: "medium",
+        legendSize: "small",
         children: [
             createTextInputFormGroup({
                 labelText: "First name",

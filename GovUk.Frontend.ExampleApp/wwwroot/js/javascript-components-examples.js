@@ -1,6 +1,7 @@
 import { createButton, createButtonGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
 import { createTextInputFormGroup, createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
-import { createFieldset } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js";
+import { createFieldsetFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js";
+import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     const buttonTarget = document.querySelector(".button-target");
@@ -96,6 +97,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
     inputTarget.appendChild(postcodeInput);
 
+    const validationButtonGroup = createButtonGroup();
+    const showErrorButton = createButton({
+        labelText: "Show input error",
+        type: "button",
+    });
+    const updateErrorButton = createButton({
+        labelText: "Update input error",
+        variant: "secondary"
+    });
+
+    const clearErrorButton = createButton({
+        labelText: "Clear input error",
+        type: "button",
+        variant: "warning",
+    });
+
+    showErrorButton.addEventListener("click", () => {
+        showFormGroupError(postcodeInput, "Enter a valid postcode");
+    });
+    updateErrorButton.addEventListener("click", () => {
+        showFormGroupError(postcodeInput, "Enter a valid postcode (updated)");
+    });
+    clearErrorButton.addEventListener("click", () => {
+        clearFormGroupError(postcodeInput);
+    });
+
+    validationButtonGroup.appendChild(showErrorButton);
+    validationButtonGroup.appendChild(updateErrorButton);
+    validationButtonGroup.appendChild(clearErrorButton);
+    inputTarget.appendChild(validationButtonGroup);
+
     const selectTarget = document.querySelector(".select-target");
     const select = createSelectFormGroup({
         labelText: "Select an option",
@@ -116,18 +148,21 @@ document.addEventListener("DOMContentLoaded", function () {
     selectTarget.appendChild(select);
 
     const fieldsetTarget = document.querySelector(".fieldset-target");
-    const fieldset = createFieldset({
+    const firstInput = createTextInputFormGroup({
+        labelText: "First name",
+        input: {
+            id: "first-name",
+            name: "first-name",
+            width: "x-large",
+        },
+    });
+
+    const fieldset = createFieldsetFormGroup({
+        id: "contact-details",
         legendText: "Contact details",
-        legendSize: "small",
+        legendSize: "medium",
         children: [
-            createTextInputFormGroup({
-                labelText: "First name",
-                input: {
-                    id: "first-name",
-                    name: "first-name",
-                    width: "x-large",
-                },
-            }),
+            firstInput,
             createTextInputFormGroup({
                 labelText: "Last name",
                 input: {
@@ -139,6 +174,49 @@ document.addEventListener("DOMContentLoaded", function () {
         ],
     });
 
-    fieldsetTarget.appendChild(fieldset);
+    const showFieldsetErrorButton = createButton({
+        labelText: "Show fieldset error"
+    });
+    const showFirstNameErrorButton = createButton({
+        labelText: "Show first name error",
+        variant: "secondary",
+        type: "button",
+    });
+    const updateFieldsetErrorButton = createButton({
+        labelText: "Update fieldset error",
+        variant: "secondary"
+    });
+    const clearFieldsetErrorButton = createButton({
+        labelText: "Clear fieldset error",
+        variant: "warning"
+    });
+    const clearFirstNameErrorButton = createButton({
+        labelText: "Clear first name error",
+        variant: "secondary-warning",
+    });
+    const fieldsetButtonGroup = createButtonGroup();
 
+    showFieldsetErrorButton.addEventListener("click", () => {
+        showFormGroupError(fieldset, "Enter valid contact details");
+    });
+    showFirstNameErrorButton.addEventListener("click", () => {
+        showFormGroupError(firstInput, "Enter a first name");
+    });
+    updateFieldsetErrorButton.addEventListener("click", () => {
+        showFormGroupError(fieldset, "Enter valid contact details (updated)");
+    });
+    clearFieldsetErrorButton.addEventListener("click", () => {
+        clearFormGroupError(fieldset);
+    });
+    clearFirstNameErrorButton.addEventListener("click", () => {
+        clearFormGroupError(firstInput);
+    });
+
+    fieldsetTarget.appendChild(fieldset);
+    fieldsetButtonGroup.appendChild(showFieldsetErrorButton);
+    fieldsetButtonGroup.appendChild(updateFieldsetErrorButton);
+    fieldsetButtonGroup.appendChild(showFirstNameErrorButton);
+    fieldsetButtonGroup.appendChild(clearFieldsetErrorButton);
+    fieldsetButtonGroup.appendChild(clearFirstNameErrorButton);
+    fieldsetTarget.appendChild(fieldsetButtonGroup);
 });

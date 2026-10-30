@@ -48,7 +48,7 @@ export interface TextInputFormGroupOptions {
 export interface FormGroupOptions {
     control: FormControl,
     label: HTMLLabelElement,
-  hint?: HTMLDivElement,
+    hint?: HTMLDivElement,
 }
 
 export interface Option {
@@ -80,4 +80,8 @@ export interface FieldsetOptions {
     legendSize?: LegendSize;
     children: HTMLElement[];
     attributes?: Record<string, string>;
+}
+
+export interface FieldsetFormGroupOptions extends FieldsetOptions {
+    id: string;
 }

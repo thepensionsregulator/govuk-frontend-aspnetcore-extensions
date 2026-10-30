@@ -20,9 +20,11 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 var fileExtension = System.IO.Path.GetExtension(documentContext.Href);
                 var isMediaLink = knownFileExtensions.Contains(fileExtension);
 
-                output.TagName = $"a class=\"govuk-link\" href=\"{documentContext.Href}\"";
-
-                if (isMediaLink) { output.TagName += "download"; }
+                output.TagName = "a";
+                output.Attributes.SetAttribute("class", "govuk-link");
+                output.Attributes.SetAttribute("href", documentContext.Href);
+                
+                if (isMediaLink) { output.Attributes.SetAttribute("download", ""); }
 
                 switch (fileExtension)
                 {

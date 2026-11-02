@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Fieldset";
+}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider-for-fieldset">
+    <div class="govuk-grid-column govuk-grid-column-two-thirds">
+
+        <govuk-fieldset>
+            <govuk-fieldset-legend is-page-heading="true" class="govuk-fieldset__legend--l">@ViewData["Title"]</govuk-fieldset-legend>
+            <p class="govuk-body">A fieldset groups together related fields, and is important for assistive technology. It should always have a legend explaining the purpose of the fieldset.</p>
+            <p class="govuk-body">Where the fieldset includes all the fields on the page, the legend also needs to be the page heading as in this first example.</p>
+            <p class="govuk-body">Fieldsets can also be created using JavaScript &ndash; see <a href="/javascriptcomponents">JavaScript components</a>.</p>
+            <govuk-input name="field1">
+                <govuk-input-label>Field 1</govuk-input-label>
+            </govuk-input>
+            <govuk-input name="field2">
+                <govuk-input-label>Field 2</govuk-input-label>
+            </govuk-input>
+        </govuk-fieldset>
+
+        <govuk-fieldset>
+            <govuk-fieldset-legend class="govuk-fieldset__legend--for-fieldset">Another fieldset, but the legend is not the page heading</govuk-fieldset-legend>
+            <govuk-input name="field3">
+                <govuk-input-label>Field 3</govuk-input-label>
+            </govuk-input>
+            <govuk-input name="field4">
+                <govuk-input-label>Field 4</govuk-input-label>
+            </govuk-input>
+        </govuk-fieldset>
+    </div>
+</div>

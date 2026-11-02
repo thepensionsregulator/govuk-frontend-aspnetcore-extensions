@@ -67,6 +67,7 @@ graph TD
 - [Use GOV.UK and TPR styles in the Umbraco backoffice](/docs/contributing/use-styles-in-backoffice.md)
 - [Where to add settings in Umbraco](/docs/contributing/where-to-add-settings-in-umbraco.md)
 - [Include client-side files in packages](/docs/contributing/include-client-side-files-in-packages.md)
+- [TypeScript for client-side scripts](/docs/contributing/typescript-development.md)
 - [Allow a TPR component as a child of a GOV.UK component](/docs/contributing/allow-tpr-component.md)
 - [Run tests](/docs/contributing/run-tests.md)
 - [Test pre-release NuGet packages](/docs/contributing/test-nuget-packages.md)

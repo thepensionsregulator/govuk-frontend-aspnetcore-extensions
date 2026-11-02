@@ -1,6 +1,14 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SummaryList>
+﻿@using GovUk.Frontend.Umbraco.ExampleApp.Controllers
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<SummaryList>
 @section head{
 	<title>@Model.PageHeadingOrName()</title>
 }
 
 <partial name="GOVUK/BlockList" model="Model.Blocks" />
+
+@using (Html.BeginUmbracoForm<SummaryListSurfaceController>(nameof(SummaryListSurfaceController.AddTestItem)))
+{
+	<div class="govuk-width-container">
+		<button type="submit" class="govuk-button">Add test item</button>
+	</div>
+}

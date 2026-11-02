@@ -26,6 +26,8 @@
 		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)tpr.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --style=compressed --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SassPath) $(WwwrootPath)tpr.css"/>
 		<Exec Command="powershell -NonInteractive -NoProfile Get-Content &quot;$(SassPath)govuk-umbraco-backoffice.scss&quot; | &quot;$(SassCompilerPath)dart.exe&quot; &quot;$(SassCompilerPath)sass.snapshot&quot; --stdin --quiet-deps --silence-deprecation=import --load-path=$(GovUkFrontEndFolder) --load-path=$(GovUkFrontEndExtensionsFolder) --load-path=$(SassPath) $(WwwrootPath)govuk-umbraco-backoffice.css"/>
 		<Message Text="SassCompiler complete for $(MSBuildProjectFullPath)" Importance="high"/>
+
+		<CallTarget Targets="TprFrontendUmbraco_RemoveDevelopmentVersion" />
 	</Target>
 	<!-- uSync files are authored in GovUk.Frontend.Umbraco.ExampleApp. Copy here to include them in the NuGet package. 
 		 They must be physically present in the project folder to generate a reference in the <contentFiles> section of the .nuspec file. 
@@ -41,6 +43,23 @@
 		<Copy SourceFiles="@(ContentTypes)"
 			DestinationFiles="$(ProjectDir)uSync\ThePensionsRegulator.Frontend.Umbraco\ContentTypes\%(RecursiveDir)%(Filename)%(Extension)"
 			SkipUnchangedFiles="true"/>
+	</Target>
+
+	<Target Name="TprFrontendUmbraco_RemoveDevelopmentVersion">
+		<PropertyGroup>
+			<CssFilePath>$(MsBuildThisFileDirectory)wwwroot\ThePensionsRegulator.Frontend.Umbraco\css\tpr.css</CssFilePath>
+		</PropertyGroup>
+		<ItemGroup>
+			<_CssFile Include="$(CssFilePath)" />
+		</ItemGroup>
+		<ReadLinesFromFile File="@(_CssFile)">
+			<Output TaskParameter="Lines" ItemName="_CssLines" />
+		</ReadLinesFromFile>
+		<PropertyGroup>
+			<_CssContent>@(_CssLines, '')</_CssContent>
+			<_CssContentModified>$(_CssContent.Replace(':root{--govuk-frontend-version: "development"}', ''))</_CssContentModified>
+		</PropertyGroup>
+		<WriteLinesToFile File="$(CssFilePath)" Lines="$(_CssContentModified)" Overwrite="true" />
 	</Target>
 
 	<!-- Clean up obsolete files from previous versions where they would cause a conflict. -->

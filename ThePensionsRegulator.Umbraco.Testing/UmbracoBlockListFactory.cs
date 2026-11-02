@@ -46,7 +46,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockListModel CreateOverridableBlockListModel(IPublishedValueFallback publishedValueFallback, IEnumerable<BlockListItem> blockListItems)
         {
-            return new OverridableBlockListModel(publishedValueFallback, blockListItems, null, OverridableBlockListItem.NoopPublishedElementFactory);
+            return new OverridableBlockListModel(publishedValueFallback, new TestPublishedElementFactory(), new TestBlockModelFilterStoreAccessor(), blockListItems, null);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockListItem CreateOverridableBlock(IPublishedElement content)
         {
-            return new OverridableBlockListItem(CreateBlock(content), OverridableBlockListItem.NoopPublishedElementFactory);
+            return new OverridableBlockListItem(CreateBlock(content), new TestPublishedElementFactory());
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockListItem CreateOverridableBlock(IPublishedElement content, IPublishedElement settings)
         {
-            return new OverridableBlockListItem(CreateBlock(content, settings), OverridableBlockListItem.NoopPublishedElementFactory);
+            return new OverridableBlockListItem(CreateBlock(content, settings), new TestPublishedElementFactory());
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace ThePensionsRegulator.Umbraco.Testing
         /// </summary>
         public static OverridableBlockListItem CreateOverridableBlock(string contentTypeAliasForContent)
         {
-            return new OverridableBlockListItem(CreateBlock(CreateContentOrSettings(contentTypeAliasForContent).Object), OverridableBlockListItem.NoopPublishedElementFactory);
+            return new OverridableBlockListItem(CreateBlock(CreateContentOrSettings(contentTypeAliasForContent).Object), new TestPublishedElementFactory());
         }
 
         /// <summary>

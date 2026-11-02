@@ -78,6 +78,7 @@ Must be inside a `<govuk-header-bar>` element.
 | `placeholder`      | `string` | Supports setting custom placeholder for generated input elements.                                                                                                              |
 | `aria-label`       | `string` | Programmatically setting aria-label value of button element                                                                                                                    |
 | `input-name`       | `string` | Enables configuration so that destination page can choose what query string parameter it wants to handle (value for name attribute on input element). Default value is "query" |
+| `form-id`          | `string` | Sets the ID for the search form element.                                                                                                                                       |
 
 TPR Header Search will display when there is no header content and DisplayHeaderSearch property is set to true. On smaller screen sizes the TPR mobile menu component will take over, and the header search will display as part of the mobile menu when expanded.
 Mobile Menu behaviour has not yet been implemented therefore is a desktop-only component at this time.
@@ -95,6 +96,7 @@ Views which require the `<tpr-header-search>` should also include the `TPRHeader
 | `no-js-navigation`     | `string` | Sets destination for a page that displays all navigation items in the mobile menu when JavaScript is disabled. |
 | `open-label`           | `string` | Sets value for the mobile menu toggle label when the menu is expanded.                                         |
 | `close-label`          | `string` | Sets value for the mobile menu toggle label when the menu is collapsed.                                        |
+| `search-id`            | `string` | Sets the ID of the search form element to be used in the mobile menu.                                         |
 
 Using the `<tpr-header-menu>` tag will generate the toggle as part of the header bar and the associated nav which will dispay underneath the header.
 Adding `<tpr-header-menu-item>` will create items to populate the the menu and `<tpr-header-menu-child-item>` can be nested inside these parent items to populate each sub menu.

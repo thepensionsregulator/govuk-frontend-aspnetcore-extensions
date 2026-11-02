@@ -24,7 +24,6 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.PropertyEditors.ValueConverter
             // Arrange
             using var testContext = new UmbracoTestContext();
             var propertyType = UmbracoPropertyFactory.CreateRichTextProperty("myAlias", "contentTypeAlias", new HtmlEncodedString(string.Empty)).PropertyType;
-            var urlProvider = testContext.PublishedUrlProvider.Object;
 
             const string INITIAL_VALUE = "<p>Some html</p>";
             const string EXPECTED_VALUE = "<p>Expected</p>";
@@ -33,16 +32,76 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.PropertyEditors.ValueConverter
             formatter.Setup(x => x.IsFormatter(propertyType)).Returns(true);
             formatter.Setup(x => x.FormatValue(It.Is<HtmlEncodedString>(x => x.ToHtmlString() == INITIAL_VALUE))).Returns<HtmlEncodedString>(x => new HtmlEncodedString(EXPECTED_VALUE));
 
+            var valueConverter = CreateValueConverter(testContext, [formatter.Object]);
+
+            // Act
+            var result = valueConverter.ConvertIntermediateToObject(
+                UmbracoContentFactory.CreateContent<IPublishedElement>().Object,
+                propertyType, PropertyCacheLevel.Element, new FakeRichTextIntermediateValue { Markup = INITIAL_VALUE }, false);
+
+            // Assert
+            Assert.Equal(EXPECTED_VALUE, ((IHtmlEncodedString?)result)?.ToHtmlString());
+        }
+
+        [Fact]
+        public void IsConverter_Returns_True_For_RichTextEditor_Alias()
+        {
+            // Arrange
+            using var testContext = new UmbracoTestContext();
+            var valueConverter = CreateValueConverter(testContext);
+            var propertyType = UmbracoPropertyFactory.CreateRichTextProperty("myAlias", "contentTypeAlias", new HtmlEncodedString(string.Empty)).PropertyType;
+
+            // Act
+            var result = valueConverter.IsConverter(propertyType);
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsConverter_Returns_False_For_Other_Editor_Alias()
+        {
+            // Arrange
+            using var testContext = new UmbracoTestContext();
+            var valueConverter = CreateValueConverter(testContext);
+            var propertyType = UmbracoPropertyFactory.CreateTextboxProperty("myAlias", "contentTypeAlias", string.Empty).PropertyType;
+
+            // Act
+            var result = valueConverter.IsConverter(propertyType);
+
+            // Assert
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void GetPropertyCacheLevel_Returns_None()
+        {
+            // Arrange
+            using var testContext = new UmbracoTestContext();
+            var valueConverter = CreateValueConverter(testContext);
+            var propertyType = UmbracoPropertyFactory.CreateRichTextProperty("myAlias", "contentTypeAlias", new HtmlEncodedString(string.Empty)).PropertyType;
+
+            // Act
+            var result = valueConverter.GetPropertyCacheLevel(propertyType);
+
+            // Assert
+            Assert.Equal(PropertyCacheLevel.None, result);
+        }
+
+        private static RichTextEditorPropertyValueConverter CreateValueConverter(UmbracoTestContext testContext, IEnumerable<IPropertyValueFormatter>? propertyValueFormatters = null)
+        {
+            var urlProvider = testContext.PublishedUrlProvider.Object;
+
             var contentSettings = new Mock<IOptionsMonitor<ContentSettings>>();
             contentSettings.Setup(x => x.CurrentValue).Returns(new ContentSettings { ResolveUrlsFromTextString = false });
 
-            var blockEditorVarianceHandler =  new BlockEditorVarianceHandler(testContext.LanguageService.Object, testContext.ContentTypeService.Object);
+            var blockEditorVarianceHandler = new BlockEditorVarianceHandler(testContext.LanguageService.Object, testContext.ContentTypeService.Object);
 
-            var valueConverter = new RichTextEditorPropertyValueConverter(
+            return new RichTextEditorPropertyValueConverter(
                 new HtmlLocalLinkParser(urlProvider),
                 new HtmlUrlParser(contentSettings.Object, Mock.Of<ILogger<HtmlUrlParser>>(), Mock.Of<IProfilingLogger>(), Mock.Of<IIOHelper>()),
                 new HtmlImageSourceParser(urlProvider),
-                new List<IPropertyValueFormatter> { formatter.Object },
+                propertyValueFormatters ?? new List<IPropertyValueFormatter>(),
                 testContext.ApiRichTextElementParser.Object,
                 testContext.ApiRichTextMarkupParser.Object,
                 testContext.PartialViewBlockEngine.Object,
@@ -53,16 +112,10 @@ namespace ThePensionsRegulator.Umbraco.Core.Tests.PropertyEditors.ValueConverter
                 Mock.Of<ILogger<RteBlockRenderingValueConverter>>(),
                 blockEditorVarianceHandler,
                 testContext.VariationContextAccessor.Object,
-                Mock.Of<IOptionsMonitor<DeliveryApiSettings>>()
+                Mock.Of<IOptionsMonitor<DeliveryApiSettings>>(),
+                testContext.LanguageService.Object,
+                testContext.PropertyRenderingContextAccessor.Object
                 );
-
-            // Act
-            var result = valueConverter.ConvertIntermediateToObject(
-                UmbracoContentFactory.CreateContent<IPublishedElement>().Object,
-                propertyType, PropertyCacheLevel.Element, new FakeRichTextIntermediateValue { Markup = INITIAL_VALUE }, false);
-
-            // Assert
-            Assert.Equal(EXPECTED_VALUE, ((IHtmlEncodedString?)result)?.ToHtmlString());
         }
 
         private class FakeRichTextIntermediateValue : IRichTextEditorIntermediateValue

@@ -154,31 +154,23 @@ The card title will automatically be used as visually-hidden text on each action
 You can also supply card actions and summary list items at runtime from a database or other data source.
 
 ```csharp
+using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks;
 using ThePensionsRegulator.GovUk.Frontend.Umbraco.Models;
 using Umbraco.Cms.Core.PublishedCache;
 using Umbraco.Cms.Web.Common.PublishedModels;
 
-public class ExampleController : RenderController
+public class ExampleController(ILogger<RenderController> _logger,
+        ICompositeViewEngine _compositeViewEngine,
+        IUmbracoContextAccessor _umbracoContextAccessor,
+        IPublishedValueFallback _publishedValueFallback,
+        IPublishedContentTypeCache _publishedContentTypeCache,
+        IVariationContextAccessor _variationContextAccessor,
+        IOverridablePublishedElementFactory _publishedElementFactory,
+        IOverridableBlockModelFilterStoreAccessor _filterStoreAccessor)
+        ) : RenderController(logger, compositeViewEngine, umbracoContextAccessor)
 {
-    private readonly IPublishedValueFallback _publishedValueFallback;
-    private readonly IPublishedContentTypeCache _publishedContentTypeCache;
-    private readonly IVariationContextAccessor _variationContextAccessor;
-
-    public ExampleController(ILogger<RenderController> logger,
-        ICompositeViewEngine compositeViewEngine,
-        IUmbracoContextAccessor umbracoContextAccessor,
-        IPublishedValueFallback publishedValueFallback,
-        IPublishedContentTypeCache publishedContentTypeCache,
-        IVariationContextAccessor variationContextAccessor
-        ) : base(logger, compositeViewEngine, umbracoContextAccessor)
-    {
-        _publishedValueFallback = publishedValueFallback;
-        _publishedContentTypeCache = publishedContentTypeCache;
-        _variationContextAccessor = variationContextAccessor;
-    }
-
     [ModelType(typeof(ExampleViewModel))]
     public override IActionResult Index()
     {
@@ -193,8 +185,8 @@ public class ExampleController : RenderController
         listItem.Actions.Add(new SummaryListAction(new Link { Url = "https://www.example.org/change-the-thing" }, "Change"));
 
         var block = viewModel.Page.Blocks.FindBlockByContentTypeAlias(GovukSummaryList.ModelTypeAlias);
-        block.Content.OverrideSummaryCardActions(new[] { cardAction }, _publishedContentTypeCache, _variationContextAccessor);
-        block.Content.OverrideSummaryListItems(new[] { listItem }, _publishedContentTypeCache, _variationContextAccessor);
+        block.Content.OverrideSummaryCardActions(new[] { cardAction }, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory, _filterStoreAccessor);
+        block.Content.OverrideSummaryListItems(new[] { listItem }, _publishedContentTypeCache, _variationContextAccessor, _publishedValueFallback, _publishedElementFactory, _filterStoreAccessor);
 
         return CurrentTemplate(viewModel);
     }

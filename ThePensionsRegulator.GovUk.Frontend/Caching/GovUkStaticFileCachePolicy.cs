@@ -10,5 +10,11 @@ namespace ThePensionsRegulator.GovUk.Frontend.Caching
                    query.ContainsKey("v") &&
                    !string.IsNullOrEmpty(query["v"]);
         }
+
+        public bool MustRevalidate(string path, IQueryCollection query)
+        {
+            return path.StartsWith("/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/", StringComparison.OrdinalIgnoreCase) &&
+                   !query.ContainsKey("v");
+        }
     }
 }

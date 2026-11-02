@@ -23,6 +23,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Caching
                 context.Response.Headers.CacheControl = $"public, max-age={CacheDurationDays * 24 * 60 * 60}, immutable";
             }
 
+            if (_pathProviders.Any(p => p.MustRevalidate(context.Request.Path.Value ?? string.Empty, context.Request.Query)))
+            {
+                // Allow caching, but the browser must revalidate the cache before using it
+                context.Response.Headers.CacheControl = $"no-store";
+            }
+
             await _next(context);
         }
     }

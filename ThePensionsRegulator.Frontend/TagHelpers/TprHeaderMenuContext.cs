@@ -14,6 +14,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         public string? MobileMenuNoJsNavPage {  get; set; }
         public string? HeaderMenuToggleOpen {  get; set; }
         public string? HeaderMenuToggleClosed {  get; set; }
+        public string? HeaderMenuSearchFormId { get; set; }
      
         public void AddMenuItem(TprHeaderMenuItemContext item)
         {

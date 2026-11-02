@@ -5,3 +5,15 @@
 .govuk-summary-list__key {
     font-weight: $tpr-font-weight-semi-bold;
 }
+
+.tpr-summary-list__key-text {
+    display: table-cell;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    width:100%;
+}
+
+.tpr-summary-list__key-tag {
+    display: table-cell;
+    padding-left: 1rem;
+}

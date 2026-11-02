@@ -28,6 +28,7 @@ namespace ThePensionsRegulator.Frontend.Models
         public virtual string? Context2 { get; set; }
         public virtual string? Context3 { get; set; }
         public virtual bool ShowSearch { get; init; }
+        public virtual string? SearchFormId { get; set; }
         public virtual string? HeaderSearchActionPath { get; set; } 
         public virtual string? HeaderSearchAutocompleteUrl { get; set; }
         public virtual string? HeaderSearchPlaceholderText { get; set; } 
@@ -39,6 +40,7 @@ namespace ThePensionsRegulator.Frontend.Models
         public virtual string? HeaderMenuNoJSNavPage { get; set; }
         public virtual string? HeaderMenuToggleOpen { get; set; }
         public virtual string? HeaderMenuToggleClosed { get; set; }
+        public virtual string? HeaderMenuSearchFormId { get; set; }
         public virtual IList<TprHeaderMenuItem>? HeaderMenuItems { get; set; }
     }
 }

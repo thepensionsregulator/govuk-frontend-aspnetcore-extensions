@@ -80,6 +80,7 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 ContentAllowHtml = barContext.ContentAllowHtml,
                 ShowSearch = barContext.ShowSearch,
                 SearchAttributes = barContext?.SearchAttributes,
+                SearchFormId = barContext?.SearchFormId,
                 ActionPath = barContext?.ActionPath,
                 AutoCompleteUrl = barContext?.AutoCompleteUrl,
                 SearchPlaceholderText = barContext?.SearchPlaceholderText,
@@ -92,7 +93,8 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 HeaderMenuItemAriaLabel = barContext?.HeaderMenuItemAriaLabel,
                 MobileMenuNoJsNavPage = barContext?.MobileMenuNoJsNavPage,
                 HeaderMenuToggleClosed = barContext?.HeaderMenuToggleClosed,
-                HeaderMenuToggleOpen = barContext?.HeaderMenuToggleOpen
+                HeaderMenuToggleOpen = barContext?.HeaderMenuToggleOpen,
+                HeaderMenuSearchFormId = barContext?.HeaderMenuSearchFormId
 
             });
 

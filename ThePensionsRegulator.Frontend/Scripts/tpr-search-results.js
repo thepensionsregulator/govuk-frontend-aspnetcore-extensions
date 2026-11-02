@@ -188,7 +188,7 @@ async function displayResults()
     });
 
     await createAccordion(accordionSections);
-    await updateShowMoreButton();
+    await updateShowMoreButton(searchResults.length);
 }
 
 function removeAccordion(id) {
@@ -314,13 +314,13 @@ async function showMoreAnswersOnClick() {
         showMoreQuestions = false;
         setSearchTermQueryString(SHOW_MORE_QUERY_PARAM,undefined);
     }
-    updateShowMoreButton()
+    await updateShowMoreButton(searchResults.length);
     await displayResults();
 }
 
-async function updateShowMoreButton(){
+async function updateShowMoreButton(numberOfResults){
 
-    if(searchResults.length <= INITIAL_VISIBLE_RESULTS)
+    if(numberOfResults <= INITIAL_VISIBLE_RESULTS)
     {
         hideShowMoreQuestionsButton(true);
         return;
@@ -328,13 +328,18 @@ async function updateShowMoreButton(){
     else
     {
         hideShowMoreQuestionsButton(false);
-        const showMoreButton = getShowMoreQuestionsButton();
         if (showMoreQuestions === false) {
-            if (showMoreButton) showMoreButton.textContent = 'Show more questions';
+            setShowMoreButtonText('Show more questions');
         }
         else {
-            if (showMoreButton) showMoreButton.textContent = 'Show fewer questions';
+            setShowMoreButtonText('Show fewer questions');
         }
+    }
+}
+
+function setShowMoreButtonText(text) {
+    if (getShowMoreQuestionsButton() != null) {
+        getShowMoreQuestionsButton().textContent = text;
     }
 }
 

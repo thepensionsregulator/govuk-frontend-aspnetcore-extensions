@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { jest } from '@jest/globals';
-import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, hasMergedCells, tableToCsv, initTableCsvDownload, downloadCsv, hasExistingDownloadButton, findServerSideDownloadForm } from '../wwwroot/ThePensionsRegulator.Frontend/js/tpr-table-csv-download';
+import { getButtonText, sanitizeFileName, getCellText, escapeCsvValue, hasMergedCells, tableToCsv, initTableCsvDownload, downloadCsv, hasExistingDownloadButton, findServerSideDownloadForm } from '../Scripts/tpr-table-csv-download';
 
 beforeEach(() => {
     document.body.innerHTML = "";

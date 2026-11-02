@@ -10,12 +10,23 @@
 @{
     var cssClasses = Model.Settings?.Value<string>(PropertyAliases.CssClasses);
     var listItems = Model.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItems)!;
+ 
 }
 <govuk-summary-list id="@Model.Content.Key" class="@cssClasses">
     @foreach (var listItem in listItems.FilteredBlocks())
     {
+        var tagBlocks = listItem.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemTag);
+        var tag = tagBlocks?.FilteredBlocks().FirstOrDefault();
+
+        var tagText = tag?.Content.Value<string>(PropertyAliases.TagText);
+        var tagColour = tag?.Settings?.Value<string>(PropertyAliases.TagClass);
+
         <govuk-summary-list-row class="@(listItem.Settings?.Value<string>(PropertyAliases.CssClasses))">
-            <govuk-summary-list-row-key>@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</govuk-summary-list-row-key>
+            <govuk-summary-list-row-key>
+                <span class="tpr-summary-list__key-text">@(listItem.Content.Value<string>(PropertyAliases.SummaryListItemKey))</span>@if(!string.IsNullOrWhiteSpace(tagText)){
+                <span class="tpr-summary-list__key-tag"><govuk-tag class="@tagColour">@tagText</govuk-tag></span>
+            }
+        </govuk-summary-list-row-key>
             <govuk-summary-list-row-value>@(listItem.Content.Value<IHtmlEncodedString>(PropertyAliases.SummaryListItemValue))</govuk-summary-list-row-value>
             @{
                 var actionsModel = listItem.Content.Value<OverridableBlockListModel>(PropertyAliases.SummaryListItemActions)!;

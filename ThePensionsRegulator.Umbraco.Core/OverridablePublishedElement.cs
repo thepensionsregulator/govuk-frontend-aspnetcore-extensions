@@ -1,26 +1,55 @@
-﻿using ThePensionsRegulator.Umbraco.Core.Blocks;
+﻿using Microsoft.Extensions.DependencyInjection;
+using ThePensionsRegulator.Umbraco.Core.Blocks;
 using ThePensionsRegulator.Umbraco.Core.PropertyEditors;
+using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Extensions;
 
 namespace ThePensionsRegulator.Umbraco.Core
 {
     /// <summary>
-    /// A wrapper for <see cref="IPublishedElement"/> which allows property values to be overriden.
+    /// A wrapper for <see cref="IPublishedElement"/> which allows property values to be overridden.
     /// </summary>
     public class OverridablePublishedElement : IPublishedElement, IOverridablePublishedElement
     {
         private readonly IPublishedElement _publishedElement;
-        private readonly Dictionary<string, object> _propertyValues = new();
+        private readonly Func<IOverridablePublishedElementValueStore> _valueStoreAccessor;
         private IEnumerable<IPropertyValueFormatter>? _propertyValueFormatters;
 
-        public OverridablePublishedElement(IPublishedElement publishedElement) => _publishedElement = publishedElement;
+        private IOverridablePublishedElementValueStore ValueStore => _valueStoreAccessor();
+
+        [Obsolete("Use a constructor that accepts a value store accessor to avoid depending on Umbraco's StaticServiceProvider.")]
+        public OverridablePublishedElement(IPublishedElement publishedElement)
+            : this(publishedElement, ResolveValueStoreFromStaticServiceProvider)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OverridablePublishedElement"/> class.
+        /// </summary>
+        /// <param name="publishedElement">The published element to wrap.</param>
+        /// <param name="valueStoreAccessor">Accessor for the current request-scoped store for overridden property values.</param>
+        /// <exception cref="ArgumentNullException">Thrown if any argument is <c>null</c>.</exception>
+        /// <remarks>
+        /// Umbraco caches this object instance at PropertyCacheLevel.Element, so it can be reused by multiple requests.
+        /// Request overrides must therefore live in the request-scoped store <see cref="IOverridablePublishedElementValueStore"/>
+        /// rather than on this cached object instance, and that store must always be looked up using an accessor rather than 
+        /// captured by this object instance.
+        /// </remarks>
+        public OverridablePublishedElement(IPublishedElement publishedElement, Func<IOverridablePublishedElementValueStore> valueStoreAccessor)
+        {
+            _publishedElement = publishedElement ?? throw new ArgumentNullException(nameof(publishedElement));
+            _valueStoreAccessor = valueStoreAccessor ?? throw new ArgumentNullException(nameof(valueStoreAccessor));
+        }
+
+        private static IOverridablePublishedElementValueStore ResolveValueStoreFromStaticServiceProvider()
+            => StaticServiceProvider.Instance.GetRequiredService<IOverridablePublishedElementValueStore>();
 
         /// <summary>
         /// Property value formatters which may be applied when a property is overridden with a new value.
         /// </summary>
         /// <remarks>
-        /// This should remain internal and is intended to be set by <see cref="OverridableBlockListPropertyValueConverter"/> or <see cref="OverridableBlockGridPropertyValueConverter"/> 
+        /// This should remain internal and is intended to be set by <see cref="OverridableBlockListPropertyValueConverter"/> or <see cref="OverridableBlockGridPropertyValueConverter"/>
         /// to pass down via <see cref="OverridableBlockListModel"/> or <see cref="OverridableBlockGridModel"/>,
         /// because the property value converter is the nearest place that can inject the property value formatters registered with the dependency injection container.
         /// </remarks>
@@ -33,12 +62,13 @@ namespace ThePensionsRegulator.Umbraco.Core
 
                 if (_propertyValueFormatters is not null)
                 {
-                    foreach (var alias in _propertyValues.Keys)
+                    var propertyValues = ValueStore.Get(Key);
+                    foreach (var alias in new List<string>(propertyValues.Keys))
                     {
                         var propertyType = GetProperty(alias)?.PropertyType;
                         if (propertyType is not null)
                         {
-                            _propertyValues[alias] = _propertyValueFormatters.ApplyFormatters(propertyType, _propertyValues[alias]);
+                            propertyValues[alias] = _propertyValueFormatters.ApplyFormatters(propertyType, propertyValues[alias]);
                         }
                     }
                 }
@@ -70,9 +100,9 @@ namespace ThePensionsRegulator.Umbraco.Core
         /// <returns>The property identified by the alias.</returns>
         /// <remarks>
         /// If a content type has no property with that alias, including inherited properties, returns <c>null</c>.
-        /// 
+        ///
         /// Otherwise return a property -- that may have no value (ie <c>HasValue</c> is <c>false</c>).
-        /// 
+        ///
         /// The alias is case insensitive.
         /// </remarks>
         public IPublishedProperty? GetProperty(string alias) => _publishedElement.GetProperty(alias);
@@ -84,6 +114,8 @@ namespace ThePensionsRegulator.Umbraco.Core
         /// <param name="value">The new property value.</param>
         public void OverrideValue(string alias, object value)
         {
+            var propertyValues = ValueStore.Get(Key);
+
             // Apply property value formatters so that any automatic changes that would have been applied
             // by a property value converter that supports property value formatters will also be applied to the new value.
             if (PropertyValueFormatters is not null && PropertyValueFormatters.Any())
@@ -97,13 +129,13 @@ namespace ThePensionsRegulator.Umbraco.Core
 
             // Set the new value
             var key = alias.ToUpperInvariant();
-            if (_propertyValues.ContainsKey(key))
+            if (propertyValues.ContainsKey(key))
             {
-                _propertyValues[key] = value;
+                propertyValues[key] = value;
             }
             else
             {
-                _propertyValues.Add(key, value);
+                propertyValues.Add(key, value);
             }
         }
 
@@ -119,17 +151,19 @@ namespace ThePensionsRegulator.Umbraco.Core
         /// <returns></returns>
         /// <remarks>
         /// The value comes a value passed to <see cref="OverrideValue"/>, or from the <see cref="IPublishedProperty"/> field <c>Value</c> ie it is suitable for use when rendering content.
-        /// 
+        ///
         /// If no property with the specified alias exists, or if the property has no value, or if it could not be converted, returns <c>default(T)</c>.
-        /// 
+        ///
         /// The alias is case-insensitive.
         /// </remarks>
         public T? Value<T>(string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default)
         {
+            var propertyValues = ValueStore.Get(Key);
+
             var key = alias.ToUpperInvariant();
-            if (_propertyValues.ContainsKey(key))
+            if (propertyValues.ContainsKey(key))
             {
-                return (T)_propertyValues[key];
+                return (T)propertyValues[key];
             }
 
             return _publishedElement != null ? _publishedElement.Value(alias, culture, segment, fallback, defaultValue) : default;
@@ -148,17 +182,19 @@ namespace ThePensionsRegulator.Umbraco.Core
         /// <returns></returns>
         /// <remarks>
         /// The value comes a value passed to <see cref="OverrideValue"/>, or from the <see cref="IPublishedProperty"/> field <c>Value</c> ie it is suitable for use when rendering content.
-        /// 
+        ///
         /// If no property with the specified alias exists, or if the property has no value, or if it could not be converted, returns <c>default(T)</c>.
-        /// 
+        ///
         /// The alias is case-insensitive.
         /// </remarks>
         public T? Value<T>(IPublishedValueFallback publishedValueFallback, string alias, string? culture = null, string? segment = null, Fallback fallback = default, T? defaultValue = default)
         {
+            var propertyValues = ValueStore.Get(Key);
+
             var key = alias.ToUpperInvariant();
-            if (_propertyValues.ContainsKey(key))
+            if (propertyValues.ContainsKey(key))
             {
-                return (T)_propertyValues[key];
+                return (T)propertyValues[key];
             }
 
             return _publishedElement != null ? _publishedElement.Value(publishedValueFallback, alias, culture, segment, fallback, defaultValue) : default;

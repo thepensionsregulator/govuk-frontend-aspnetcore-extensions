@@ -19,6 +19,8 @@ Configure minification in `bundleconfig.json` at the root of the project. This i
 <script src="/<package-name>/js/my-js-file.min.js" type="module" asp-append-version="true"></script>
 ```
 
+Scripts can be written in JavaScript or [TypeScript](https://www.typescriptlang.org/). Source files live in a `Scripts` folder at the root of the project and are compiled into `wwwroot\<package-name>\js` automatically as part of `dotnet build`, before minification runs. See [TypeScript for client-side scripts](/docs/contributing/typescript-development.md) for details.
+
 ### CSS files
 
 Create a SASS file in the `Styles` folder, and configure build including minification in `Directory.Build.targets` at the root of the project. The `--style=compressed` switch enables minification. This is processed by Dart SASS, which comes with the `AspNetCore.SassCompiler` NuGet package. Then use `asp-append-version="true"` to add a cache-busting parameter:

@@ -6,10 +6,8 @@
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco.Services
 @using ThePensionsRegulator.GovUk.Frontend.Umbraco.Validation
-@using ThePensionsRegulator.Umbraco;
 @using ThePensionsRegulator.Umbraco.Core
 @using ThePensionsRegulator.Umbraco.Core.Blocks
-@using Umbraco.Cms.Core.Models.Blocks
 @using Umbraco.Cms.Core.Strings;
 @using Umbraco.Extensions
 @{
@@ -28,11 +26,13 @@
     var errorMessagePrefix = Model.Settings?.Value<string>(PropertyAliases.ErrorMessagePrefix);
     if (string.IsNullOrEmpty(errorMessagePrefix)) { errorMessagePrefix = "Error"; }
     var allowMultiple = Model.Settings?.Value<bool>(PropertyAliases.FileUploadAllowMultiple) ?? false;
+    var buttonText = Umbraco.GetDictionaryValueOrDefault("Choose files button text", "Choose file");
+    var dropInstructionText = Umbraco.GetDictionaryValueOrDefault("File drop instruction text", "or drop file");
 }
 <govuk-client-side-validation
     error-message-required="@(Model.Settings?.Value<string>(PropertyAliases.ErrorMessageRequired))">
 
-    <govuk-file-upload name="@modelPropertyName" class="@cssClass" input-accept="@fileTypes" javascript-enhancements="true" multiple="@allowMultiple">
+    <govuk-file-upload name="@modelPropertyName" class="@cssClass" input-accept="@fileTypes" javascript-enhancements="true" multiple="@allowMultiple" choose-files-button-text="@buttonText" drop-instruction-text="@dropInstructionText">
         <govuk-file-upload-label is-page-heading="@labelIsPageHeading" class="@labelClass">@label</govuk-file-upload-label>
         @if (!string.IsNullOrWhiteSpace(hint?.ToHtmlString()))
         {

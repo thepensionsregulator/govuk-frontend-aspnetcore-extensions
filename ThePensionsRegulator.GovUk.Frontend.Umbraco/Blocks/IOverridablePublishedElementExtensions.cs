@@ -578,7 +578,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
 
             var overridablePublishedElementFactory = publishedElementFactory;
 
-            blockContent.OverrideValue(PropertyAliases.SummaryCardActions, CreateSummaryListActionBlocks(items, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter));
+            blockContent.OverrideValue(PropertyAliases.SummaryCardActions,
+                CreateSummaryListActionBlocks(items, ElementTypeAliases.SummaryCardAction, ElementTypeAliases.SummaryCardActionSettings, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter));
         }
 
         /// <summary>
@@ -707,7 +708,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                 {
                     { PropertyAliases.SummaryListItemKey, item.Key },
                     { PropertyAliases.SummaryListItemValue, item.Value },
-                    { PropertyAliases.SummaryListItemActions, CreateSummaryListActionBlocks(item.Actions, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) },
+                    { PropertyAliases.SummaryListItemActions, CreateSummaryListActionBlocks(item.Actions, ElementTypeAliases.SummaryListAction, ElementTypeAliases.SummaryListActionSettings, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) },
                     {PropertyAliases.SummaryListItemTag, CreateTagBlockList(item.Tag, publishedContentTypeCache, variationContextAccessor, publishedValueFallback, publishedElementFactory, filterStoreAccessor, filter) }
                 };
 
@@ -725,6 +726,8 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
         }
 
         private static OverridableBlockListModel CreateSummaryListActionBlocks(IEnumerable<SummaryListAction> items,
+            string contentTypeAlias,
+            string settingsTypeAlias,
             IPublishedContentTypeCache publishedContentTypeCache,
             IVariationContextAccessor variationContextAccessor,
             IPublishedValueFallback publishedValueFallback,
@@ -741,7 +744,12 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Blocks
                     { PropertyAliases.SummaryListActionLinkText, item.LinkText }
                 };
 
-                blockListItems.Add(CreateBlockListItem(ElementTypeAliases.SummaryListAction, actionFields, null, null, publishedContentTypeCache, variationContextAccessor, publishedElementFactory));
+                var settingsFields = new Dictionary<string, object?>()
+                {
+                    { PropertyAliases.CssClasses, item.CssClasses }
+                };
+
+                blockListItems.Add(CreateBlockListItem(contentTypeAlias, actionFields, settingsTypeAlias, settingsFields, publishedContentTypeCache, variationContextAccessor, publishedElementFactory));
             }
 
             return new OverridableBlockListModel(publishedValueFallback, publishedElementFactory, filterStoreAccessor, blockListItems, filter);

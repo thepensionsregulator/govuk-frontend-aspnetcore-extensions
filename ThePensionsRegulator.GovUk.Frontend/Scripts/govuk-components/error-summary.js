@@ -9,7 +9,9 @@ export function ensureErrorSummary() {
 
     const newErrorSummary = createErrorSummary();
     const main = document.querySelector("main");
-    main?.insertBefore(newErrorSummary, main.firstChild);
+    if (main) {
+        main.insertBefore(newErrorSummary, main.firstChild);
+    }
 
     return newErrorSummary;
 }
@@ -66,29 +68,29 @@ export function updateErrorSummary() {
 
     const updatedErrors = [].slice
         .call(
-          document.querySelectorAll(
-            ".govuk-error-message:not(.govuk-character-count__status)"
-          )
+            document.querySelectorAll(
+                ".govuk-error-message:not(.govuk-character-count__status)"
+            )
         )
         .map(function (error) {
-          const link = document.createElement("a");
-          const prefix = error.querySelector(".govuk-visually-hidden");
-          [].slice.call(error.childNodes).map(function (x) {
-            if (
-              x !== prefix &&
-              (x.nodeType !== textNode || x.textContent.trim())
-            ) {
-              link.appendChild(x.cloneNode(true));
+            const link = document.createElement("a");
+            const prefix = error.querySelector(".govuk-visually-hidden");
+            [].slice.call(error.childNodes).map(function (x) {
+                if (
+                    x !== prefix &&
+                    (x.nodeType !== textNode || x.textContent.trim())
+                ) {
+                    link.appendChild(x.cloneNode(true));
+                }
+            });
+            if (!link.hasChildNodes()) {
+                return;
             }
-          });
-          if (!link.hasChildNodes()) {
-            return;
-          }
-          link.href = "#" + error.id.substring(0, error.id.length - 6);
-          return link;
+            link.href = "#" + error.id.substring(0, error.id.length - 6);
+            return link;
         })
         .filter(function (link) {
-          return link !== undefined;
+            return link !== undefined;
         });
 
     function findErrorsNotMatched(errorsToLookFor, errorsToSearch) {

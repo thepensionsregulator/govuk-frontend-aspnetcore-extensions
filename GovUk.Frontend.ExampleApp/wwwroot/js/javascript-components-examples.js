@@ -160,7 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const fieldset = createFieldsetFormGroup({
         id: "contact-details",
         legendText: "Contact details",
-        legendSize: "medium",
+        legendSize: "small",
         children: [
             firstInput,
             createTextInputFormGroup({

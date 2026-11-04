@@ -1,5 +1,42 @@
-import { createFieldset } from "../../Scripts/govuk-components/fieldset";
+import { createFieldset, createFieldsetFormGroup } from "../../Scripts/govuk-components/fieldset";
 import "@testing-library/jest-dom";
+
+describe("createFieldsetFormGroup", () => {
+	it("should wrap a fieldset in a GOV.UK form group", () => {
+        const formGroup = createFieldsetFormGroup({
+            id: "address",
+            legendText: "Your address",
+            children: [],
+        });
+
+        expect(formGroup.tagName).toBe("DIV");
+        expect(formGroup).toHaveClass("govuk-form-group");
+    });
+
+    it("should assign the supplied ID to the fieldset", () => {
+        const formGroup = createFieldsetFormGroup({
+            id: "address",
+            legendText: "Your address",
+            children: [],
+        });
+
+        expect(formGroup.querySelector("fieldset")).toHaveAttribute(
+            "id",
+            "address"
+        );
+    });
+
+    it("should contain the fieldset as its only child", () => {
+        const formGroup = createFieldsetFormGroup({
+            id: "address",
+            legendText: "Your address",
+            children: [],
+        });
+
+        expect(formGroup.children).toHaveLength(1);
+        expect(formGroup.children[0].tagName).toBe("FIELDSET");
+    });
+});
 
 describe("createFieldset", () => {
 	it("should render a fieldset with the GOV.UK fieldset class", () => {

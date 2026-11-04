@@ -1,6 +1,9 @@
 import { jest } from "@jest/globals";
 import { createFieldsetFormGroup } from "../../Scripts/govuk-components/fieldset";
-import { createTextInputFormGroup } from "../../Scripts/govuk-components/inputs";
+import {
+	createSelectFormGroup,
+	createTextInputFormGroup,
+} from "../../Scripts/govuk-components/inputs";
 import "@testing-library/jest-dom";
 
 
@@ -179,6 +182,44 @@ describe("clearFormGroupError", () => {
     	expect(ensureErrorSummary).not.toHaveBeenCalled();
     	expect(updateErrorSummary).toHaveBeenCalledTimes(1);
     	expect(updateTitle).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe("select control errors", () => {
+	it("should add and clear a select error", () => {
+		const formGroup = createSelectFormGroup({
+			labelText: "Country",
+			hintText: "Select your country",
+			select: {
+				id: "country",
+				name: "country",
+				options: [{ value: "uk", text: "United Kingdom" }],
+			},
+		});
+		const select = formGroup.querySelector("select");
+
+		if (!select) {
+			throw new Error("Expected a select control");
+		}
+
+		showFormGroupError(formGroup, "Select a country");
+
+		expect(formGroup).toHaveClass("govuk-form-group--error");
+		expect(select).toHaveClass("govuk-select--error");
+		expect(formGroup.querySelector("#country-error")).toHaveTextContent(
+			"Error: Select a country"
+		);
+		expect(select).toHaveAttribute(
+			"aria-describedby",
+			"country-hint country-error"
+		);
+
+		clearFormGroupError(formGroup);
+
+		expect(formGroup).not.toHaveClass("govuk-form-group--error");
+		expect(select).not.toHaveClass("govuk-select--error");
+		expect(formGroup.querySelector("#country-error")).toBeNull();
+		expect(select).toHaveAttribute("aria-describedby", "country-hint");
 	});
 });
 

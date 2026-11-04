@@ -140,6 +140,37 @@ describe("updateErrorSummary", () => {
 		expect(links?.[1]).toHaveAttribute("href", "#country");
 	});
 
+	it("should replace stale summary links with the current errors", () => {
+		document.body.innerHTML = `
+			<main>
+				<div class="govuk-error-summary">
+					<div class="govuk-error-summary__body">
+						<ul class="govuk-list govuk-error-summary__list">
+							<li><a href="#old1">Old one</a></li>
+							<li><a href="#old2">Old two</a></li>
+						</ul>
+					</div>
+				</div>
+			</main>
+			<p id="new1-error" class="govuk-error-message">New one</p>
+			<p id="new2-error" class="govuk-error-message">New two</p>`;
+
+		updateErrorSummary();
+
+		const links = document.querySelectorAll(
+			".govuk-error-summary__list a"
+		);
+		expect(links).toHaveLength(2);
+		expect(links[0]).toHaveAttribute("href", "#new1");
+		expect(links[1]).toHaveAttribute("href", "#new2");
+		expect(
+			document.querySelector(".govuk-error-summary a[href='#old1']")
+		).toBeNull();
+		expect(
+			document.querySelector(".govuk-error-summary a[href='#old2']")
+		).toBeNull();
+	});
+
 	it("should not copy the visually hidden error prefix into a summary link", () => {
 		const error = document.createElement("p");
 		error.id = "postcode-error";

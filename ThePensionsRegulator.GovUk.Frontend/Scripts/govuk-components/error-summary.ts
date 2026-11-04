@@ -1,5 +1,3 @@
-// Intentionally a .js file, so it can be imported into a .ts file without needing to be compiled first. This is because the govuk-validation.js file is imported into the validator.ts file, which is then compiled into govuk-validation.js. If this file was a .ts file, it would create a circular dependency and cause an error when compiling.
-
 export function ensureErrorSummary() {
     const existingErrorSummary = document.querySelector(".govuk-error-summary");
 

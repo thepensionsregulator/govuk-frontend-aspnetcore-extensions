@@ -31,6 +31,7 @@ function createGovUkValidator() {
     updateTitle,
 
     /**
+     * @deprecated Use ensureErrorSummary instead. 
      * Creates a hidden error summary component if one does not already exist
      * @returns void
      */
@@ -38,6 +39,11 @@ function createGovUkValidator() {
       return ensureErrorSummary();
     },
 
+    /**
+     * Returns the existing error summary. If no error summary exists, it will a hidden error summary component.
+     * @returns Element
+     */
+    ensureErrorSummary,
     /**
      * Updates the error summary to match all .govuk-error-message elements displayed on the page
      * @returns void

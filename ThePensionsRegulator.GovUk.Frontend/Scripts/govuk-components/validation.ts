@@ -112,11 +112,14 @@ export function clearFormGroupError(formGroup: HTMLElement): void {
 }
 
 function clearFieldsetError(formGroup: HTMLElement, fieldset: HTMLFieldSetElement): void {
-    formGroup.classList.remove("govuk-form-group--error");
     fieldset.classList.remove("govuk-fieldset--error");
 
     removeErrorMessage(formGroup, fieldset.id);
     removeDescriptionId(fieldset, fieldset.id + "-error");
+
+    if (!fieldset.querySelector(".govuk-form-group--error, .govuk-error-message")) {
+        formGroup.classList.remove("govuk-form-group--error");
+    }
 
     updateErrorSummary();
     updateTitle();

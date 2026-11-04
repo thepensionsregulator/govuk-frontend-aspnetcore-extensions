@@ -211,6 +211,7 @@ document.addEventListener("DOMContentLoaded", function () {
     clearFirstNameErrorButton.addEventListener("click", () => {
         clearFormGroupError(firstInput);
     });
+    
     fieldsetTarget.appendChild(fieldset);
     fieldsetButtonGroup.appendChild(showFieldsetErrorButton);
     fieldsetButtonGroup.appendChild(updateFieldsetErrorButton);

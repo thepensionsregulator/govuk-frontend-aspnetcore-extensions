@@ -33,9 +33,7 @@ function createGovUkValidator() {
     /**
      * Ensures the page title is prefixed with the data-govuk-error-prefix attribute, or 'Error: ' when there is at least one .govuk-error-message displayed
      */
-    updateTitle: function () {
-      return updateTitle();
-    },
+    updateTitle,
 
     /**
      * Creates a hidden error summary component if one does not already exist
@@ -49,9 +47,7 @@ function createGovUkValidator() {
      * Updates the error summary to match all .govuk-error-message elements displayed on the page
      * @returns void
      */
-    updateErrorSummary: function () {
-      return updateErrorSummary();
-    },
+    updateErrorSummary,
 
     /**
      * Finds the appropriate .govuk-form-group that encompasses a form element or set of elements

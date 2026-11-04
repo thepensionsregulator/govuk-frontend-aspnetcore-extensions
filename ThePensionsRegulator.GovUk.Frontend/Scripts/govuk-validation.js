@@ -1,10 +1,5 @@
-﻿import { ensureErrorSummary, updateErrorSummary, updateTitle } from "./govuk-components/error-summary.ts";
+﻿import { ensureErrorSummary, updateErrorSummary, updateTitle } from "./govuk-components/error-summary";
 "use strict";
-
-// For Jest tests
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-    module.exports = createGovUkValidator;
-}
 
 function createGovUkValidator() {
   function closest(element, selector) {

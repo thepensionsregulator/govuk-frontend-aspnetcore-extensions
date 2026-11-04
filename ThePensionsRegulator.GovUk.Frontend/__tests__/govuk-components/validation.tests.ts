@@ -249,6 +249,20 @@ describe("fieldset form group errors", () => {
 		expect(fieldsetFormGroup.querySelectorAll(".govuk-error-message")).toHaveLength(2);
 	});
 
+	it("should preserve fieldset error styling when clearing a nested input error", () => {
+		const { fieldsetFormGroup, firstInputFormGroup } =
+			createFieldsetWithInputs();
+
+		showFormGroupError(firstInputFormGroup, "Enter a first name");
+		showFormGroupError(fieldsetFormGroup, "Enter valid contact details");
+		clearFormGroupError(firstInputFormGroup);
+
+		expect(fieldsetFormGroup).toHaveClass("govuk-form-group--error");
+		expect(
+			fieldsetFormGroup.querySelector("#contact-details-error")
+		).toHaveTextContent("Error: Enter valid contact details");
+	});
+
 	it("should add a fieldset error after the legend and describe the fieldset", () => {
 		const formGroup = createContactDetailsFieldsetFormGroup();
 		const fieldset = formGroup.querySelector("fieldset");

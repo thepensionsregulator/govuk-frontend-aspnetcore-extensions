@@ -160,7 +160,9 @@ function clearFieldsetFormGroupError(control: HTMLInputElement | HTMLSelectEleme
     if (
         fieldsetFormGroup &&
         fieldsetFormGroup.classList.contains("govuk-form-group") &&
-        !fieldset.querySelector(".govuk-form-group--error")
+        !fieldset.querySelector(
+            ".govuk-form-group--error, .govuk-error-message"
+        )
     ) {
         fieldsetFormGroup.classList.remove("govuk-form-group--error");
     }

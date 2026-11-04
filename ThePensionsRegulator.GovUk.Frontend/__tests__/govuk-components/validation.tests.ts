@@ -224,7 +224,7 @@ describe("select control errors", () => {
 });
 
 describe("nested control errors", () => {
-	it("should style the containing fieldset form group while retaining the input error", () => {
+	it("should style only the input and its form group when there is no fieldset error", () => {
 		const {
 			fieldsetFormGroup,
 			firstInputFormGroup,
@@ -233,7 +233,7 @@ describe("nested control errors", () => {
 
 		showFormGroupError(firstInputFormGroup, "Enter a first name");
 
-		expect(fieldsetFormGroup).toHaveClass("govuk-form-group--error");
+		expect(fieldsetFormGroup).not.toHaveClass("govuk-form-group--error");
 		expect(firstInputFormGroup).toHaveClass("govuk-form-group--error");
 		expect(firstInput).toHaveClass("govuk-input--error");
 		expect(firstInputFormGroup.querySelector("#first-name-error")).toHaveTextContent(
@@ -242,21 +242,25 @@ describe("nested control errors", () => {
 		expect(firstInput).toHaveAttribute("aria-describedby", "first-name-error");
 	});
 
-	it("should preserve the fieldset error styling while another nested input has an error", () => {
+	it("should leave the fieldset wrapper unstyled while another nested input has an error", () => {
 		const {
 			fieldsetFormGroup,
 			firstInputFormGroup,
 			secondInputFormGroup,
+			secondInput,
 		} = createFieldsetWithInputs();
 
 		showFormGroupError(firstInputFormGroup, "Enter a first name");
 		showFormGroupError(secondInputFormGroup, "Enter a last name");
 		clearFormGroupError(firstInputFormGroup);
 
-		expect(fieldsetFormGroup).toHaveClass("govuk-form-group--error");
+		expect(fieldsetFormGroup).not.toHaveClass("govuk-form-group--error");
+		expect(firstInputFormGroup).not.toHaveClass("govuk-form-group--error");
+		expect(secondInputFormGroup).toHaveClass("govuk-form-group--error");
+		expect(secondInput).toHaveClass("govuk-input--error");
 	});
 
-	it("should clear the fieldset error styling after its final nested input error is cleared", () => {
+	it("should leave the fieldset wrapper unstyled after its final nested input error is cleared", () => {
 		const {
 			fieldsetFormGroup,
 			firstInputFormGroup,
@@ -304,17 +308,20 @@ describe("fieldset form group errors", () => {
 		).toHaveTextContent("Error: Enter valid contact details");
 	});
 
-	it("should preserve nested input error styling when clearing a fieldset error", () => {
+	it("should clear the fieldset wrapper styling while preserving a nested input error", () => {
 		const { fieldsetFormGroup, firstInputFormGroup, firstInput } =
 			createFieldsetWithInputs();
 		const fieldset = fieldsetFormGroup.querySelector("fieldset");
 
 		showFormGroupError(firstInputFormGroup, "Enter a first name");
 		showFormGroupError(fieldsetFormGroup, "Enter valid contact details");
+		expect(fieldsetFormGroup).toHaveClass("govuk-form-group--error");
+
 		clearFormGroupError(fieldsetFormGroup);
 
-		expect(fieldsetFormGroup).toHaveClass("govuk-form-group--error");
+		expect(fieldsetFormGroup).not.toHaveClass("govuk-form-group--error");
 		expect(firstInputFormGroup).toHaveClass("govuk-form-group--error");
+		expect(firstInput).toHaveClass("govuk-input--error");
 		expect(firstInputFormGroup.querySelector("#first-name-error")).toHaveTextContent(
 			"Error: Enter a first name"
 		);

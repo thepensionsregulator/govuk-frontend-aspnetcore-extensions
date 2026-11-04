@@ -14,7 +14,8 @@ jest.unstable_mockModule(
         ensureErrorSummary,
         updateErrorSummary,
         updateTitle,
-    })
+	}),
+	{ virtual: true }
 );
 
 const { clearFormGroupError, showFormGroupError } = await import("../../Scripts/govuk-components/validation");

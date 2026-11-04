@@ -1,4 +1,4 @@
-﻿import { ensureErrorSummary, updateErrorSummary, updateTitle } from "./govuk-components/error-summary.js";
+﻿import { ensureErrorSummary, updateErrorSummary, updateTitle } from "./govuk-components/error-summary.ts";
 "use strict";
 
 // For Jest tests

@@ -2,7 +2,7 @@ import {
 	ensureErrorSummary,
 	updateErrorSummary,
 	updateTitle,
-} from "../../Scripts/govuk-components/error-summary.js";
+} from "../../Scripts/govuk-components/error-summary";
 import "@testing-library/jest-dom";
 
 describe("ensureErrorSummary", () => {

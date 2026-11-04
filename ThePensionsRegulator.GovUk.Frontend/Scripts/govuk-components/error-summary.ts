@@ -64,21 +64,22 @@ export function updateErrorSummary() {
     const textNode = 3;
 
     // Get the current links in the error summary, and the links that need to be there
-    const currentErrors = [].slice.call(list.querySelectorAll("a"));
+    const currentErrors = Array.from(
+        list.querySelectorAll<HTMLAnchorElement>("a")
+    );
 
-    const updatedErrors = [].slice
-        .call(
-            document.querySelectorAll(
-                ".govuk-error-message:not(.govuk-character-count__status)"
-            )
+    const updatedErrors = Array.from(
+        document.querySelectorAll<HTMLElement>(
+            ".govuk-error-message:not(.govuk-character-count__status)"
         )
-        .map(function (error) {
+    )
+        .map(function (error: Element) {
             const link = document.createElement("a");
             const prefix = error.querySelector(".govuk-visually-hidden");
-            [].slice.call(error.childNodes).map(function (x) {
+            Array.from(error.childNodes).forEach(function (x) {
                 if (
                     x !== prefix &&
-                    (x.nodeType !== textNode || x.textContent.trim())
+                    (x.nodeType !== textNode || (x.textContent ?? "").trim())
                 ) {
                     link.appendChild(x.cloneNode(true));
                 }
@@ -89,14 +90,17 @@ export function updateErrorSummary() {
             link.href = "#" + error.id.substring(0, error.id.length - 6);
             return link;
         })
-        .filter(function (link) {
+        .filter(function (link): link is HTMLAnchorElement {
             return link !== undefined;
         });
 
-    function findErrorsNotMatched(errorsToLookFor, errorsToSearch) {
-        const result = [];
+    function findErrorsNotMatched(
+        errorsToLookFor: HTMLAnchorElement[],
+        errorsToSearch: HTMLAnchorElement[]
+    ): HTMLAnchorElement[] {
+        const result: HTMLAnchorElement[] = [];
         for (let i = 0; i < errorsToLookFor.length; i++) {
-            let matchingErrors = errorsToSearch.filter(function (link) {
+            const matchingErrors = errorsToSearch.filter(function (link) {
                 return matchErrorLink(link, errorsToLookFor[i]);
             });
             if (!matchingErrors.length) {
@@ -106,7 +110,10 @@ export function updateErrorSummary() {
         return result;
     }
 
-    function matchErrorLink(link1, link2) {
+    function matchErrorLink(
+        link1: HTMLAnchorElement,
+        link2: HTMLAnchorElement
+    ): boolean {
         return (
             link1.href === link2.href && link1.textContent == link2.textContent
         );
@@ -116,7 +123,10 @@ export function updateErrorSummary() {
     const errorsToRemove = findErrorsNotMatched(currentErrors, updatedErrors);
 
     for (let i = 0; i < errorsToRemove.length; i++) {
-        list.removeChild(errorsToRemove[i].parentElement);
+        const errorElement = errorsToRemove[i].parentElement;
+        if (errorElement) {
+            list.removeChild(errorElement);
+        }
     }
 
     // Find any new errors and insert them at the correct position in the error summary.
@@ -137,13 +147,13 @@ export function updateErrorSummary() {
                 list.insertBefore(summaryError, list.firstChild);
             } else {
                 let errorToInsertAfter = updatedErrors[indexOfThisError - 1];
-                for (let j = 0; j < list.childNodes.length; j++) {
-                    let link = list.childNodes[j].querySelector("a");
-                    if (matchErrorLink(link, errorToInsertAfter)) {
-                        if (list.childNodes[j].nextSibling) {
+                for (let j = 0; j < list.children.length; j++) {
+                    const link = list.children[j].querySelector<HTMLAnchorElement>("a");
+                    if (link && matchErrorLink(link, errorToInsertAfter)) {
+                        if (list.children[j].nextSibling) {
                             list.insertBefore(
                                 summaryError,
-                                list.childNodes[j].nextSibling
+                                list.children[j].nextSibling
                             );
                         } else {
                             list.appendChild(summaryError);
@@ -171,27 +181,26 @@ export function updateTitle() {
     if (!titleTag || titleTag.getAttribute("data-govuk-error-prefix") == null) {
         prefix = "Error: ";
     } else {
-        prefix = titleTag.getAttribute("data-govuk-error-prefix");
+        prefix = titleTag.getAttribute("data-govuk-error-prefix") ?? "";
     }
 
-    const hasError = [].slice
-        .call(document.querySelectorAll(".govuk-error-message"))
-        .filter(function (error) {
+    const hasError = Array.from(
+        document.querySelectorAll<HTMLElement>(".govuk-error-message")
+    ).some(function (error) {
             const errorPrefix = error.querySelector(".govuk-visually-hidden");
             const textNode = 3;
 
-            for (let i = 0; i < error.childNodes.length; i++) {
-                let childNode = error.childNodes[i];
+            for (const childNode of error.childNodes) {
                 if (
                     childNode !== errorPrefix &&
-                    (childNode.nodeType !== textNode || childNode.textContent.trim())
+                    (childNode.nodeType !== textNode || (childNode.textContent ?? "").trim())
                 ) {
                     return true;
                 }
             }
 
             return false;
-        }).length;
+        });
 
     const index = document.title.indexOf(prefix);
     if (hasError && index !== 0) {

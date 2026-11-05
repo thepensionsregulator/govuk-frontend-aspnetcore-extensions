@@ -71,4 +71,27 @@ describe("createAddressSearch", () => {
             postcode: "SW1A 2AA",
         });
     });
+
+    it("building input should contain autocomplete attribute", () => {
+        const { buildingInput } = createSearch();
+        expect(buildingInput).toHaveAttribute("autocomplete", "address-line1");
+    });
+
+    it("postcode input should contain autocomplete attribute", () => {
+        const { postcodeInput } = createSearch();
+        expect(postcodeInput).toHaveAttribute("autocomplete", "postal-code");
+    });
+
+    it("building input and postcode input are provided to onSearch function", () => {
+        const { buildingInput, postcodeInput, button, searchOptions } = createSearch();
+        buildingInput!.value = "10";
+        postcodeInput!.value = "sw1a2aa";
+
+        button!.click();
+
+        expect(searchOptions).toHaveBeenCalledWith({
+            buildingName: "10",
+            postcode: "SW1A 2AA",
+        });
+    });
 });

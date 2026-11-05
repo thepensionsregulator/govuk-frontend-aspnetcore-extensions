@@ -294,6 +294,42 @@ describe("fieldset form group errors", () => {
 		expect(fieldsetFormGroup.querySelectorAll(".govuk-error-message")).toHaveLength(2);
 	});
 
+	it("should preserve fieldset error styling when clearing a nested input error", () => {
+		const { fieldsetFormGroup, firstInputFormGroup } =
+			createFieldsetWithInputs();
+
+		showFormGroupError(firstInputFormGroup, "Enter a first name");
+		showFormGroupError(fieldsetFormGroup, "Enter valid contact details");
+		clearFormGroupError(firstInputFormGroup);
+
+		expect(fieldsetFormGroup).toHaveClass("govuk-form-group--error");
+		expect(
+			fieldsetFormGroup.querySelector("#contact-details-error")
+		).toHaveTextContent("Error: Enter valid contact details");
+	});
+
+	it("should clear the fieldset wrapper styling while preserving a nested input error", () => {
+		const { fieldsetFormGroup, firstInputFormGroup, firstInput } =
+			createFieldsetWithInputs();
+		const fieldset = fieldsetFormGroup.querySelector("fieldset");
+
+		showFormGroupError(firstInputFormGroup, "Enter a first name");
+		showFormGroupError(fieldsetFormGroup, "Enter valid contact details");
+		expect(fieldsetFormGroup).toHaveClass("govuk-form-group--error");
+
+		clearFormGroupError(fieldsetFormGroup);
+
+		expect(fieldsetFormGroup).not.toHaveClass("govuk-form-group--error");
+		expect(firstInputFormGroup).toHaveClass("govuk-form-group--error");
+		expect(firstInput).toHaveClass("govuk-input--error");
+		expect(firstInputFormGroup.querySelector("#first-name-error")).toHaveTextContent(
+			"Error: Enter a first name"
+		);
+		expect(firstInput).toHaveAttribute("aria-describedby", "first-name-error");
+		expect(fieldsetFormGroup.querySelector("#contact-details-error")).toBeNull();
+		expect(fieldset).not.toHaveAttribute("aria-describedby");
+	});
+	
 	it("should add a fieldset error after the legend and describe the fieldset", () => {
 		const formGroup = createContactDetailsFieldsetFormGroup();
 		const fieldset = formGroup.querySelector("fieldset");

@@ -21,7 +21,10 @@ export function createAddressSearch(options: AddressSearchOptions): HTMLElement{
         input: {
             id: "building",
             name: "building",
-            width: "x-large"
+            width: "x-large",
+            attributes: {
+                autocomplete: "address-line1"
+            }
         }
     });
     const buildingNameOrNumberInput = buildingNameFormGroup.querySelector("input");
@@ -31,7 +34,10 @@ export function createAddressSearch(options: AddressSearchOptions): HTMLElement{
         input:{
             id: "postcode",
             name: "postcode",
-            width: "large"
+            width: "large",
+            attributes: {
+                autocomplete: "postal-code"
+            }
         }
     });
     const postcodeInput = postcodeFormGroup.querySelector("input");

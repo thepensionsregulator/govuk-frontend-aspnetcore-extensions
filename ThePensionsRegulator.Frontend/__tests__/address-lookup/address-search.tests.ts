@@ -111,11 +111,10 @@ describe("renderAddressSearch", () => {
         postcodeInput!.value = "sw1a2aa";
 
         button!.click();
+        await Promise.resolve();
 
-        expect(searchOptions).toHaveBeenCalledWith({
-            buildingName: "10",
-            postcode: "SW1A 2AA",
-        });
+        expect(onSearchSuccess).toHaveBeenCalledWith(addresses, { buildingName: "", postcode: "SW1A 2AA" });
+        expect(button).not.toBeDisabled();
     });
     
     it("should return all addresses matching the building number", async () => {

@@ -2,7 +2,11 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "Scripts",
-    "outDir": "wwwroot/ThePensionsRegulator.GovUk.Frontend/js"
+    "outDir": "wwwroot/ThePensionsRegulator.GovUk.Frontend/js",
+    "composite": true,
+    "declaration": true,
+    "declarationDir": "types",
+    "tsBuildInfoFile": "obj/tsconfig.tsbuildinfo"
   },
   "include": ["Scripts/**/*.ts", "Scripts/**/*.js"]
 }

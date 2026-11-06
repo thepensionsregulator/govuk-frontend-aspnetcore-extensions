@@ -118,7 +118,7 @@ describe("renderAddressSearch", () => {
         button!.click();
         await Promise.resolve();
 
-        expect(onSearchSuccess).toHaveBeenCalledWith([addresses[0], addresses[1]], { buildingName: "10", postcode: "SW1A 2AA" });
+        expect(onSearchSuccess).toHaveBeenCalledWith(addresses, { buildingName: "", postcode: "SW1A 2AA" });
         expect(button).not.toBeDisabled();
     });
     

@@ -329,7 +329,7 @@ describe("fieldset form group errors", () => {
 		expect(fieldsetFormGroup.querySelector("#contact-details-error")).toBeNull();
 		expect(fieldset).not.toHaveAttribute("aria-describedby");
 	});
-
+	
 	it("should add a fieldset error after the legend and describe the fieldset", () => {
 		const formGroup = createContactDetailsFieldsetFormGroup();
 		const fieldset = formGroup.querySelector("fieldset");

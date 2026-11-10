@@ -82,6 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     buttonTarget.appendChild(buttonGroup);
 
     const linkTarget = document.querySelector(".link-target");
+    const backLinkTarget = document.querySelector(".back-link-target");
     const link = createLink({ labelText: "Back to search", href: "#" });
     const backLink = createLink({ labelText: "Back", variant: "back", href: "#" });
 
@@ -95,7 +96,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     linkTarget.appendChild(link);
-    linkTarget.appendChild(backLink);
+    linkTarget.appendChild(document.createElement("br"));
+    backLinkTarget.appendChild(backLink);
 
     const inputTarget = document.querySelector(".input-target");
 

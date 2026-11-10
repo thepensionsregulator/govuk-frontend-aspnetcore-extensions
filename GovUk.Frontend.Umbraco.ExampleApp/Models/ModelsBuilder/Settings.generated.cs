@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Settings</summary>
 	[PublishedModel("settings")]
-	public partial class Settings : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprBackToTop, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprFooter, ITprHeader, ITprHeaderMenu
+	public partial class Settings : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprBackToTop, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprFooter, ITprHeader, ITprHeaderMenu, ITprSessionTimeout
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -254,5 +254,53 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprHeaderMenuToggleOpenText")]
 		public virtual string TprHeaderMenuToggleOpenText => global::Umbraco.Cms.Web.Common.PublishedModels.TprHeaderMenu.GetTprHeaderMenuToggleOpenText(this, _publishedValueFallback);
+
+		///<summary>
+		/// Content
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutContent")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprSessionTimeoutContent => global::Umbraco.Cms.Web.Common.PublishedModels.TprSessionTimeout.GetTprSessionTimeoutContent(this, _publishedValueFallback);
+
+		///<summary>
+		/// Primary action text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutPrimaryActionText")]
+		public virtual string TprSessionTimeoutPrimaryActionText => global::Umbraco.Cms.Web.Common.PublishedModels.TprSessionTimeout.GetTprSessionTimeoutPrimaryActionText(this, _publishedValueFallback);
+
+		///<summary>
+		/// Primary action URL
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutPrimaryActionUrl")]
+		public virtual global::Umbraco.Cms.Core.Models.Link TprSessionTimeoutPrimaryActionUrl => global::Umbraco.Cms.Web.Common.PublishedModels.TprSessionTimeout.GetTprSessionTimeoutPrimaryActionUrl(this, _publishedValueFallback);
+
+		///<summary>
+		/// Secondary action text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutSecondaryActionText")]
+		public virtual string TprSessionTimeoutSecondaryActionText => global::Umbraco.Cms.Web.Common.PublishedModels.TprSessionTimeout.GetTprSessionTimeoutSecondaryActionText(this, _publishedValueFallback);
+
+		///<summary>
+		/// Secondary action URL
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutSecondaryActionUrl")]
+		public virtual global::Umbraco.Cms.Core.Models.Link TprSessionTimeoutSecondaryActionUrl => global::Umbraco.Cms.Web.Common.PublishedModels.TprSessionTimeout.GetTprSessionTimeoutSecondaryActionUrl(this, _publishedValueFallback);
+
+		///<summary>
+		/// Title
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutTitle")]
+		public virtual string TprSessionTimeoutTitle => global::Umbraco.Cms.Web.Common.PublishedModels.TprSessionTimeout.GetTprSessionTimeoutTitle(this, _publishedValueFallback);
 	}
 }

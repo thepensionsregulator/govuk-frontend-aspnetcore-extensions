@@ -1,7 +1,9 @@
 ﻿@using ThePensionsRegulator.Frontend.Models
+@using Microsoft.AspNetCore.Html
 @using ThePensionsRegulator.Frontend.Umbraco
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Strings
 @using Umbraco.Cms.Web.Common
 @using Umbraco.Cms.Web.Common.PublishedModels
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SessionTimeout>
@@ -14,8 +16,8 @@
 	var title = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutTitle) //string null or whitespace check needed
 		?? "Your session is about to time out";
 
-	var content = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutContent)
-		?? "For your security, we will end this session in 2 minutes.";
+	var content = settings?.Value<IHtmlEncodedString>(publishedValueFallback, TprPropertyAliases.SessionTimeoutContent);
+	var fallbackContent = "For your security, we will end this session in 2 minutes.";
 
 	var primaryActionText = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionText)
 		?? "Continue";
@@ -30,7 +32,8 @@
 	var sessionTimeoutWarning = new TprSessionTimeOutModel
 	{
 		Title = title,
-		Content = content,
+		Content = content is null ? fallbackContent : null,
+		ContentHtml = content is null ? null : new HtmlString(content.ToHtmlString()),
 		DisplayPrimaryAction = !string.IsNullOrWhiteSpace(primaryActionText),
 		PrimaryActionText = primaryActionText,
 		PrimaryActionUrl = primaryActionUrl,

@@ -18,9 +18,44 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
+	// Mixin Content Type with alias "tprSessionTimeout"
+	/// <summary>TPR session timeout</summary>
+	public partial interface ITprSessionTimeout : IPublishedElement
+	{
+		/// <summary>Title</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string TprSessionTimeoutTitle { get; }
+
+		/// <summary>Content</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprSessionTimeoutContent { get; }
+
+		/// <summary>Primary action text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string TprSessionTimeoutPrimaryActionText { get; }
+
+		/// <summary>Primary action URL</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::Umbraco.Cms.Core.Models.Link TprSessionTimeoutPrimaryActionUrl { get; }
+
+		/// <summary>Secondary action text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		string TprSessionTimeoutSecondaryActionText { get; }
+
+		/// <summary>Secondary action URL</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::Umbraco.Cms.Core.Models.Link TprSessionTimeoutSecondaryActionUrl { get; }
+	}
+
 	/// <summary>TPR session timeout</summary>
 	[PublishedModel("tprSessionTimeout")]
-	public partial class TprSessionTimeout : PublishedContentModel
+	public partial class TprSessionTimeout : PublishedElementModel, ITprSessionTimeout
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -41,7 +76,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		private IPublishedValueFallback _publishedValueFallback;
 
 		// ctor
-		public TprSessionTimeout(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+		public TprSessionTimeout(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
 			: base(content, publishedValueFallback)
 		{
 			_publishedValueFallback = publishedValueFallback;
@@ -50,35 +85,81 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		// properties
 
 		///<summary>
-		/// Message
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("message")]
-		public virtual string Message => this.Value<string>(_publishedValueFallback, "message");
-
-		///<summary>
-		/// Primary action
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("primaryAction")]
-		public virtual string PrimaryAction => this.Value<string>(_publishedValueFallback, "primaryAction");
-
-		///<summary>
-		/// Secondary action
-		///</summary>
-		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("secondaryAction")]
-		public virtual global::Umbraco.Cms.Core.Models.Link SecondaryAction => this.Value<global::Umbraco.Cms.Core.Models.Link>(_publishedValueFallback, "secondaryAction");
-
-		///<summary>
 		/// Title
 		///</summary>
 		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
-		[ImplementPropertyType("title")]
-		public virtual string Title => this.Value<string>(_publishedValueFallback, "title");
+		[ImplementPropertyType("tprSessionTimeoutTitle")]
+		public virtual string TprSessionTimeoutTitle => GetTprSessionTimeoutTitle(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Title</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetTprSessionTimeoutTitle(ITprSessionTimeout that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprSessionTimeoutTitle");
+
+		///<summary>
+		/// Content
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutContent")]
+		public virtual global::Umbraco.Cms.Core.Strings.IHtmlEncodedString TprSessionTimeoutContent => GetTprSessionTimeoutContent(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Content</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::Umbraco.Cms.Core.Strings.IHtmlEncodedString GetTprSessionTimeoutContent(ITprSessionTimeout that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Strings.IHtmlEncodedString>(publishedValueFallback, "tprSessionTimeoutContent");
+
+		///<summary>
+		/// Primary action text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutPrimaryActionText")]
+		public virtual string TprSessionTimeoutPrimaryActionText => GetTprSessionTimeoutPrimaryActionText(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Primary action text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetTprSessionTimeoutPrimaryActionText(ITprSessionTimeout that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprSessionTimeoutPrimaryActionText");
+
+		///<summary>
+		/// Primary action URL
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutPrimaryActionUrl")]
+		public virtual global::Umbraco.Cms.Core.Models.Link TprSessionTimeoutPrimaryActionUrl => GetTprSessionTimeoutPrimaryActionUrl(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Primary action URL</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::Umbraco.Cms.Core.Models.Link GetTprSessionTimeoutPrimaryActionUrl(ITprSessionTimeout that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.Link>(publishedValueFallback, "tprSessionTimeoutPrimaryActionUrl");
+
+		///<summary>
+		/// Secondary action text
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutSecondaryActionText")]
+		public virtual string TprSessionTimeoutSecondaryActionText => GetTprSessionTimeoutSecondaryActionText(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Secondary action text</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static string GetTprSessionTimeoutSecondaryActionText(ITprSessionTimeout that, IPublishedValueFallback publishedValueFallback) => that.Value<string>(publishedValueFallback, "tprSessionTimeoutSecondaryActionText");
+
+		///<summary>
+		/// Secondary action URL
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutSecondaryActionUrl")]
+		public virtual global::Umbraco.Cms.Core.Models.Link TprSessionTimeoutSecondaryActionUrl => GetTprSessionTimeoutSecondaryActionUrl(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Secondary action URL</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::Umbraco.Cms.Core.Models.Link GetTprSessionTimeoutSecondaryActionUrl(ITprSessionTimeout that, IPublishedValueFallback publishedValueFallback) => that.Value<global::Umbraco.Cms.Core.Models.Link>(publishedValueFallback, "tprSessionTimeoutSecondaryActionUrl");
 	}
 }

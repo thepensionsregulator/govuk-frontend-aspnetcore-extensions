@@ -4,14 +4,20 @@
     padding: 1rem;
 }
 
-/* Demo page only: override the default fixed/full-screen presentation to show variants together */
 .session-timeout-variants__item .tpr-session-timeout-warning {
     position: static;
     transform: none;
     left: auto;
     top: auto;
-    width: 100%;
-    max-width: none;
+    width: 280px;
+    max-width: 100%;
     max-height: none;
+    margin: 0 auto;
     z-index: auto;
+}
+
+@media (min-width: 40.0625em) {
+    .session-timeout-variants__item .tpr-session-timeout-warning {
+        width: 525px;
+    }
 }

@@ -19,6 +19,12 @@ describe("createLink", () => {
     expect(link.getAttribute("class")).toEqual("govuk-back-link");
   });
 
+  it("should not apply the back link class for non back variants", () => {
+    const link = createLink({ labelText: "Back" });
+
+    expect(link.getAttribute("class")).not.toContain("govuk-back-link");
+  });
+
   it("should default the href to # when not provided", () => {
     const link = createLink({ labelText: "Back to search" });
 

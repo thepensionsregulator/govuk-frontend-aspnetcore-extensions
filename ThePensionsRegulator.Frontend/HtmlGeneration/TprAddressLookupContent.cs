@@ -27,7 +27,7 @@
         public string PostcodeLabel { get; set; } = "Postcode";
         public string PostcodeRequiredErrorMessage { get; set; } = "Enter postcode";
         public string PostcodeMaxLengthErrorMessage { get; set; } = "Postcode must be 100 characters or less";
-        public string PostcodePatternErrorMessage { get; set; } = "Enter a valid postcode";
+        public string PostcodePatternErrorMessage { get; set; } = "Enter a real postcode";
         public string CountryLabel { get; set; } = "Country";
         public string CountrySelectPlaceholder { get; set; } = "Select a country";
         public string CountryRequiredErrorMessage { get; set; } = "Select a country";

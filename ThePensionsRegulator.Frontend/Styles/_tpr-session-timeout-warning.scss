@@ -1,0 +1,24 @@
+
+.tpr-session-timeout-warning {
+    background-color: #fff;
+    border: 5px solid #0b0c0c;
+    box-sizing: border-box;
+    left: 50%;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: auto;
+    padding: 30px;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    z-index: 1002;
+}
+
+
+@media (min-width: 40.0625em) {
+    .tpr-session-timeout-warning {
+        max-width: 100%;
+        width: 525px;
+    }
+}

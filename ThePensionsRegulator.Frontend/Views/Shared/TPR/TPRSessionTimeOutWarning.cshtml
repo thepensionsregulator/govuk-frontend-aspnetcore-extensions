@@ -1,0 +1,18 @@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model TprSessionTimeOutModel;
+@using ThePensionsRegulator.Frontend.Models;
+
+<div id="tpr-session-timeout" class="tpr-session-timeout-warning" role="alertdialog" aria-labelledby="tpr-session-timeout-title" aria-describedby="tpr-session-timeout-description" data-module="govuk-modal">
+    <h2 class="govuk-heading-m">@Model.Title</h2>
+    <div class="govuk-body">
+        <p>
+            @Model.Content
+        </p>
+       @*  <p>Do you need more time?</p> *@
+    
+    <button class="govuk-button">Continue</button>
+    <div>
+        <a class="govuk-link" href="/">Sign out</a>
+    </div>
+    </div>
+</div>

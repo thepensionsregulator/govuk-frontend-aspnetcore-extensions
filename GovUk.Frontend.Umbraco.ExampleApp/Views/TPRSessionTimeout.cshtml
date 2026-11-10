@@ -1,0 +1,12 @@
+﻿@using ThePensionsRegulator.Frontend.Models
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SessionTimeout>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+	var sessionTimeoutWarning = new TprSessionTimeOutModel();
+    sessionTimeoutWarning.Title = /* "Your session is about to time out" */
+    sessionTimeoutWarning.Content = "For your security, we will end this session in 2 minutes."; 
+    
+}
+
+<partial name="TPR/TPRSessionTimeOutWarning" model="sessionTimeoutWarning" />

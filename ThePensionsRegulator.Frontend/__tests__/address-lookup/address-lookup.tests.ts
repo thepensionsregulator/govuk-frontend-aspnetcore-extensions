@@ -69,6 +69,7 @@ describe("createAddressLookup", () => {
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
         const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         const button = component.querySelector<HTMLButtonElement>("button")!;
         postcodeInput.value = "SW1A 2AA";
@@ -78,6 +79,8 @@ describe("createAddressLookup", () => {
 
         expect(component.querySelector("#postcode")).toBeNull();
         expect(component.querySelector("#address-select")).not.toBeNull();
+        expect(document.activeElement).toBe(component.querySelector("#address-select"));
+        document.body.removeChild(component);
     });
 
     it("should only ever show one view's markup at a time", async () => {

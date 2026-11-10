@@ -28,12 +28,14 @@ export function createAddressLookup(options: AddressLookupOptions){
                 }));
                 break;
             case "results":
-                container.appendChild(renderAddressResults({
+                const resultsView = renderAddressResults({
                     addresses: state.addresses,
                     criteria: state.criteria,
                     onAddressSelected: (address) => stateMachine.dispatch({ status: "address-selected", address }),
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })
-                }));
+                });
+                container.appendChild(resultsView);
+                resultsView.querySelector<HTMLSelectElement>("#address-select")?.focus();
                 break;
             case "confirmed":
                 console.log("Address confirmed:", state.address);

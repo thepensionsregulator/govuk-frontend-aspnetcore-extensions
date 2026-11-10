@@ -11,7 +11,7 @@ import { sanitisePostcode } from "./postcode-sanitiser.js";
 import { normalisePostcode } from "./postcode-normaliser.js";
 import { validatePostcode } from "./postcode-validator.js";
 import { filterAddressesByBuilding } from "./address-filter.js";
-import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
+import { clearFormGroupError, focusFirstInvalidControl, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 import type { AddressSearchCriteria, AddressSearchOptions } from "./types.js";
 
 export function renderAddressSearch(options: AddressSearchOptions): HTMLElement {
@@ -58,6 +58,10 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
         const validationResult = readAndValidateCriteria(buildingNameOrNumberInput, postcodeInput);
         if (!validationResult.isValid) {
             showFormGroupError(postcodeFormGroup, validationResult.errorMessage);
+            const form = fieldset.closest("form");
+             if (form) {
+                 focusFirstInvalidControl(form);
+             }
             return;
         }
         const { buildingName, postcode: normalisedPostcode } = validationResult.criteria;
@@ -81,6 +85,10 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
         } 
         finally {
              findAddressButton.disabled = false;
+             const form = fieldset.closest("form");
+             if (form) {
+                 focusFirstInvalidControl(form);
+             }
         }
     } 
 }

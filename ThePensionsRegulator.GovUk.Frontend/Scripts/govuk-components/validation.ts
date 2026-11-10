@@ -27,6 +27,10 @@ export function showFormGroupError(formGroup: HTMLElement, errorMessage: string)
     }else{
         showControlError(formGroup, validatableElement as HTMLInputElement | HTMLSelectElement, errorMessage);
     }
+
+    ensureErrorSummary();
+    updateErrorSummary();
+    updateTitle();
 }
 
 
@@ -49,10 +53,6 @@ function showControlError(formGroup: HTMLElement, control: HTMLInputElement | HT
 
     setErrorMessage(errorMessageElement, errorMessage);
     addDescriptionId(control, errorId);
-
-    ensureErrorSummary();
-    updateErrorSummary();
-    updateTitle();
 }
 
 function showFieldsetError(formGroup: HTMLElement, fieldset: HTMLFieldSetElement, errorMessage: string): void {
@@ -71,10 +71,6 @@ function showFieldsetError(formGroup: HTMLElement, fieldset: HTMLFieldSetElement
 
     setErrorMessage(errorMessageElement, errorMessage);
     addDescriptionId(fieldset, errorId);
-
-    ensureErrorSummary();
-    updateErrorSummary();
-    updateTitle();
 }
 
 function setErrorMessage(errorMessageElement: HTMLElement, errorMessage: string): void {
@@ -108,6 +104,23 @@ export function clearFormGroupError(formGroup: HTMLElement): void {
     } else {
         clearControlError(formGroup, validatableElement as HTMLInputElement | HTMLSelectElement);
     }
+
+    updateErrorSummary();
+    updateTitle();
+}
+
+export function focusFirstInvalidControl(form: HTMLFormElement): void {
+    const firstInvalidGroup = form.querySelector<HTMLElement>(".govuk-form-group--error");
+    if (!firstInvalidGroup) {
+        return;
+    }
+
+    const firstInvalidControl = getValidatableElement(firstInvalidGroup);
+    if (firstInvalidControl instanceof HTMLFieldSetElement) {
+        firstInvalidControl.querySelector<HTMLInputElement>("input")?.focus();
+    } else {
+        firstInvalidControl?.focus();
+    }
 }
 
 function clearFieldsetError(formGroup: HTMLElement, fieldset: HTMLFieldSetElement): void {
@@ -117,9 +130,6 @@ function clearFieldsetError(formGroup: HTMLElement, fieldset: HTMLFieldSetElemen
     removeDescriptionId(fieldset, fieldset.id + "-error");
 
     formGroup.classList.remove("govuk-form-group--error");
-
-    updateErrorSummary();
-    updateTitle();
 }
 
 function clearControlError(formGroup: HTMLElement, control: HTMLInputElement | HTMLSelectElement): void {
@@ -129,9 +139,6 @@ function clearControlError(formGroup: HTMLElement, control: HTMLInputElement | H
     removeErrorMessage(formGroup, control.id);
 
     removeDescriptionId(control, control.id + "-error");
-
-    updateErrorSummary();
-    updateTitle();
 }
 
 function removeErrorMessage(formGroup: HTMLElement, validatableElementId: string): void {

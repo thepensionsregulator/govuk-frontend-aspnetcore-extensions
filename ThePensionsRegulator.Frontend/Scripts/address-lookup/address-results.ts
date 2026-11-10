@@ -2,7 +2,7 @@ import { AddressSearchCriteria, AddressSearchResult } from "./types";
 import { createButton } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
 import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
 import { createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
-import { clearFormGroupError, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
+import { clearFormGroupError, focusFirstInvalidControl, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 
 export type AddressResultsOptions = {
     addresses: AddressSearchResult[];
@@ -49,7 +49,11 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
 
         if(!selectedAddress){
             showFormGroupError(selectFormGroup, "Select an address");
-            return;
+            const form = selectFormGroup.closest("form");
+            if (form) {
+                focusFirstInvalidControl(form);
+            }
+            return; 
         }
 
         clearFormGroupError(selectFormGroup);

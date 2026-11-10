@@ -4,6 +4,7 @@ namespace ThePensionsRegulator.Frontend.Models
 {
     public class TprSessionTimeOutModel
     {
+        public virtual string? MessageKey { get; set; }
         public virtual string? Title { get; set; }
         public virtual string? Content { get; set; }
         public virtual IHtmlContent? ContentHtml { get; set; }

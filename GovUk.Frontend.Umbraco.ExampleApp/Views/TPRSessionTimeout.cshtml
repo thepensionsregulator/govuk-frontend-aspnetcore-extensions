@@ -1,6 +1,9 @@
-﻿@using ThePensionsRegulator.Frontend.Models
+﻿@using System.Collections.Generic
+@using System.Linq
 @using Microsoft.AspNetCore.Html
+@using ThePensionsRegulator.Frontend.Models
 @using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco.Core.Blocks
 @using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Core.Strings
@@ -10,37 +13,89 @@
 @inject UmbracoHelper Umbraco
 @inject IPublishedValueFallback publishedValueFallback
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+@section head {
+	<title>@Model.Name</title>
+	<link rel="stylesheet" href="~/css/session-timeout-variants.css" asp-append-version="true" />
+}
 @{
 	var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
+	List<TprSessionTimeOutModel> messages = [];
+	var variants = settings?.Value<OverridableBlockListModel>(publishedValueFallback, TprPropertyAliases.SessionTimeoutMessagesBlockList);
 
-	var title = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutTitle) //string null or whitespace check needed
-		?? "Your session is about to time out";
-
-	var content = settings?.Value<IHtmlEncodedString>(publishedValueFallback, TprPropertyAliases.SessionTimeoutContent);
-	var fallbackContent = "For your security, we will end this session in 2 minutes.";
-
-	var primaryActionText = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionText)
-		?? "Continue";
-	var primaryActionLink = settings?.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionUrl);
-	var primaryActionUrl = primaryActionLink?.Url ?? "#";
-
-	var secondaryActionText = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionText)
-		?? "Sign out";
-	var secondaryActionLink = settings?.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionUrl);
-	var secondaryActionUrl = secondaryActionLink?.Url ?? "/";
-
-	var sessionTimeoutWarning = new TprSessionTimeOutModel
+	if (variants != null)
 	{
-		Title = title,
-		Content = content is null ? fallbackContent : null,
-		ContentHtml = content is null ? null : new HtmlString(content.ToHtmlString()),
-		DisplayPrimaryAction = !string.IsNullOrWhiteSpace(primaryActionText),
-		PrimaryActionText = primaryActionText,
-		PrimaryActionUrl = primaryActionUrl,
-		DisplaySecondaryAction = !string.IsNullOrWhiteSpace(secondaryActionText),
-		SecondaryActionText = secondaryActionText,
-		SecondaryActionUrl = secondaryActionUrl
-	};
+		foreach (var variant in variants)
+		{
+			var content = variant?.Content;
+			if (content == null) { continue; }
+
+			var richText = content.Value<IHtmlEncodedString>(publishedValueFallback, TprPropertyAliases.SessionTimeoutContent);
+			var primaryActionText = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionText);
+			var secondaryActionText = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionText);
+			var primaryActionLink = content.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionUrl);
+			var secondaryActionLink = content.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionUrl);
+
+			messages.Add(new TprSessionTimeOutModel
+			{
+				MessageKey = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutMessageKey),
+				Title = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutTitle),
+				ContentHtml = richText is null ? null : new HtmlString(richText.ToHtmlString()),
+				DisplayPrimaryAction = !string.IsNullOrWhiteSpace(primaryActionText),
+				PrimaryActionText = primaryActionText,
+				PrimaryActionUrl = primaryActionLink?.Url,
+				DisplaySecondaryAction = !string.IsNullOrWhiteSpace(secondaryActionText),
+				SecondaryActionText = secondaryActionText,
+				SecondaryActionUrl = secondaryActionLink?.Url
+			});
+		}
+	}
+
+	if (!messages.Any())
+	{
+		var title = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutTitle)
+			?? "Your session is about to time out";
+		var content = settings?.Value<IHtmlEncodedString>(publishedValueFallback, TprPropertyAliases.SessionTimeoutContent);
+		var fallbackContent = "For your security, we will end this session in 2 minutes.";
+		var primaryActionText = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionText)
+			?? "Continue";
+		var primaryActionLink = settings?.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionUrl);
+		var secondaryActionText = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionText)
+			?? "Sign out";
+		var secondaryActionLink = settings?.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionUrl);
+
+		messages.Add(new TprSessionTimeOutModel
+		{
+			MessageKey = "default",
+			Title = title,
+			Content = content is null ? fallbackContent : null,
+			ContentHtml = content is null ? null : new HtmlString(content.ToHtmlString()),
+			DisplayPrimaryAction = !string.IsNullOrWhiteSpace(primaryActionText),
+			PrimaryActionText = primaryActionText,
+			PrimaryActionUrl = primaryActionLink?.Url ?? "#",
+			DisplaySecondaryAction = !string.IsNullOrWhiteSpace(secondaryActionText),
+			SecondaryActionText = secondaryActionText,
+			SecondaryActionUrl = secondaryActionLink?.Url ?? "/"
+		});
+	}
 }
 
-<partial name="TPR/TPRSessionTimeOutWarning" model="sessionTimeoutWarning" />
+<div class="govuk-width-container">
+	<div class="govuk-warning-text">
+		<span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+		<strong class="govuk-warning-text__text">
+			<span class="govuk-warning-text__assistive">Warning</span>
+			This page displays session-timeout components outside their normal full-screen presentation for demonstration only.
+		</strong>
+	</div>
+
+	@foreach (var message in messages)
+	{
+		<div class="session-timeout-variants__item">
+			<div class="govuk-body govuk-!-margin-bottom-2">
+				<strong>Message key:</strong> @message.MessageKey
+				<a class="govuk-link govuk-!-margin-left-2" href="/session-timeout-preview?messageKey=@message.MessageKey">Preview</a>
+			</div>
+			<partial name="TPR/TPRSessionTimeOutWarning" model="message" />
+		</div>
+	}
+</div>

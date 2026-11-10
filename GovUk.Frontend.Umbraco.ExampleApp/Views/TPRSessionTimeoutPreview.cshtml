@@ -1,0 +1,86 @@
+﻿@using System.Collections.Generic
+@using System.Linq
+@using Microsoft.AspNetCore.Html
+@using ThePensionsRegulator.Frontend.Models
+@using ThePensionsRegulator.Frontend.Services
+@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Strings
+@using Umbraco.Cms.Web.Common
+@using Umbraco.Cms.Web.Common.PublishedModels
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SessionTimeoutPreview>
+@inject UmbracoHelper Umbraco
+@inject IPublishedValueFallback publishedValueFallback
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+@section head {
+    <title>@Model.Name</title>
+}
+@{
+    var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
+    var selectedMessageKey = Context?.Request?.Query["messageKey"].ToString();
+    List<TprSessionTimeOutModel> messages = [];
+
+    var variants = settings?.Value<OverridableBlockListModel>(publishedValueFallback, TprPropertyAliases.SessionTimeoutMessagesBlockList);
+    if (variants != null)
+    {
+        foreach (var variant in variants)
+        {
+            var content = variant?.Content;
+            if (content == null) { continue; }
+
+            var richText = content.Value<IHtmlEncodedString>(publishedValueFallback, TprPropertyAliases.SessionTimeoutContent);
+            var primaryActionText = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionText);
+            var secondaryActionText = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionText);
+            var primaryActionLink = content.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionUrl);
+            var secondaryActionLink = content.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionUrl);
+
+            messages.Add(new TprSessionTimeOutModel
+            {
+                MessageKey = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutMessageKey),
+                Title = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutTitle),
+                ContentHtml = richText is null ? null : new HtmlString(richText.ToHtmlString()),
+                DisplayPrimaryAction = !string.IsNullOrWhiteSpace(primaryActionText),
+                PrimaryActionText = primaryActionText,
+                PrimaryActionUrl = primaryActionLink?.Url,
+                DisplaySecondaryAction = !string.IsNullOrWhiteSpace(secondaryActionText),
+                SecondaryActionText = secondaryActionText,
+                SecondaryActionUrl = secondaryActionLink?.Url
+            });
+        }
+    }
+
+    var selected = TprSessionTimeOutMessageSelector.SelectByKey(messages, selectedMessageKey);
+}
+
+<div class="govuk-width-container">
+    <p class="govuk-body"><a class="govuk-link" href="/session-timeout">Back to session-timeout variants list</a></p>
+
+    @if (string.IsNullOrWhiteSpace(selectedMessageKey))
+    {
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Missing message key. Showing the default configured message variant.</strong>
+        </div>
+    }
+    else if (selected == null || !messages.Any(m => string.Equals(m.MessageKey, selectedMessageKey, System.StringComparison.OrdinalIgnoreCase)))
+    {
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Unknown message key '@selectedMessageKey'. Showing the default configured message variant.</strong>
+        </div>
+    }
+
+    @if (selected != null)
+    {
+        <partial name="TPR/TPRSessionTimeOutWarning" model="selected" />
+    }
+    else
+    {
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>No session-timeout message variants are configured.</strong>
+        </div>
+    }
+</div>

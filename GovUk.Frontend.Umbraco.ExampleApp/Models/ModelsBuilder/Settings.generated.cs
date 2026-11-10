@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>Settings</summary>
 	[PublishedModel("settings")]
-	public partial class Settings : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprBackToTop, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprFooter, ITprHeader, ITprHeaderMenu, ITprSessionTimeout
+	public partial class Settings : PublishedContentModel, IGovukPhaseBanner, IGovukSkipLink, ITprBackToTop, ITprContextBar1, ITprContextBar2, ITprContextBar3, ITprFooter, ITprHeader, ITprHeaderMenu, ITprSessionTimeout, ITprSessionTimeoutMessages
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant
@@ -302,5 +302,13 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
 		[ImplementPropertyType("tprSessionTimeoutTitle")]
 		public virtual string TprSessionTimeoutTitle => global::Umbraco.Cms.Web.Common.PublishedModels.TprSessionTimeout.GetTprSessionTimeoutTitle(this, _publishedValueFallback);
+
+		///<summary>
+		/// Warning messages
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutMessagesBlockList")]
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprSessionTimeoutMessagesBlockList => global::Umbraco.Cms.Web.Common.PublishedModels.TprSessionTimeoutMessages.GetTprSessionTimeoutMessagesBlockList(this, _publishedValueFallback);
 	}
 }

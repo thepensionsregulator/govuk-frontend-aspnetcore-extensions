@@ -70,5 +70,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string SessionTimeoutPrimaryActionUrl = "tprSessionTimeoutPrimaryActionUrl";
         public const string SessionTimeoutSecondaryActionText = "tprSessionTimeoutSecondaryActionText";
         public const string SessionTimeoutSecondaryActionUrl = "tprSessionTimeoutSecondaryActionUrl";
+        public const string SessionTimeoutMessageKey = "tprSessionTimeoutMessageKey";
+        public const string SessionTimeoutMessagesBlockList = "tprSessionTimeoutMessagesBlockList";
     }
 }

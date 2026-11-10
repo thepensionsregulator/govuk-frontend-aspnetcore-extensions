@@ -1,0 +1,17 @@
+.session-timeout-variants__item {
+    border: 1px solid #b1b4b6;
+    margin-bottom: 2rem;
+    padding: 1rem;
+}
+
+/* Demo page only: override the default fixed/full-screen presentation to show variants together */
+.session-timeout-variants__item .tpr-session-timeout-warning {
+    position: static;
+    transform: none;
+    left: auto;
+    top: auto;
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    z-index: auto;
+}

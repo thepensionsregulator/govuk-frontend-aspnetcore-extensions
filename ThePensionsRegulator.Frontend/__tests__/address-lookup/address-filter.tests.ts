@@ -5,7 +5,7 @@ describe("filterAddressByBuilding", () => {
     let addresses: AddressSearchResult[];
     const buildingNameUprn = "100000000001"
     const buildingNumberUprn = "100000000002";
-    const subBulidingUprn = "100000000003";
+    const subBuildingUprn = "100000000003";
     beforeEach(() => {
         addresses = [
             {
@@ -33,7 +33,7 @@ describe("filterAddressByBuilding", () => {
                 BUILDING_NUMBER: "1"
             },
             {
-                UPRN: subBulidingUprn,
+                UPRN: subBuildingUprn,
                 UDPRN: "200000000003",
                 ADDRESS: "Flat 2, The Old Bakery, High Street, London, SW1A 1AC",
                 POST_TOWN: "London",
@@ -60,7 +60,7 @@ describe("filterAddressByBuilding", () => {
         const result = filterAddressesByBuilding(addresses, "Flat 2");
 
         expect(result).toHaveLength(1);
-        expect(result[0].UPRN).toBe(subBulidingUprn);
+        expect(result[0].UPRN).toBe(subBuildingUprn);
     });
 
     it("should return a match if the BUILDING_NAME matches", () => {
@@ -70,7 +70,7 @@ describe("filterAddressByBuilding", () => {
         expect(result[0].UPRN).toBe(buildingNameUprn);
     });
 
-    it("should return multiple matches if provided number is in BULIDING_NUMBER", () => {
+    it("should return multiple matches if provided number is in BUILDING_NUMBER", () => {
         const result = filterAddressesByBuilding(addresses, "1");
 
         expect(result).toHaveLength(2);

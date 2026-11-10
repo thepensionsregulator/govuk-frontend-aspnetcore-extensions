@@ -1,18 +1,24 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model TprSessionTimeOutModel;
-@using ThePensionsRegulator.Frontend.Models;
+@model TprSessionTimeOutModel
+@using ThePensionsRegulator.Frontend.Models
 
 <div id="tpr-session-timeout" class="tpr-session-timeout-warning" role="alertdialog" aria-labelledby="tpr-session-timeout-title" aria-describedby="tpr-session-timeout-description" data-module="govuk-modal">
-    <h2 class="govuk-heading-m">@Model.Title</h2>
-    <div class="govuk-body">
+    <h2 id="tpr-session-timeout-title" class="govuk-heading-m">@Model.Title</h2>
+    <div id="tpr-session-timeout-description" class="govuk-body">
         <p>
             @Model.Content
         </p>
-       @*  <p>Do you need more time?</p> *@
-    
-    <button class="govuk-button">Continue</button>
-    <div>
-        <a class="govuk-link" href="/">Sign out</a>
-    </div>
+
+        @if (Model.DisplayPrimaryAction && !string.IsNullOrWhiteSpace(Model.PrimaryActionText))
+        {
+            <a class="govuk-button" href="@Model.PrimaryActionUrl">@Model.PrimaryActionText</a>
+        }
+
+        @if (Model.DisplaySecondaryAction && !string.IsNullOrWhiteSpace(Model.SecondaryActionText))
+        {
+            <div>
+                <a class="govuk-link" href="@Model.SecondaryActionUrl">@Model.SecondaryActionText</a>
+            </div>
+        }
     </div>
 </div>

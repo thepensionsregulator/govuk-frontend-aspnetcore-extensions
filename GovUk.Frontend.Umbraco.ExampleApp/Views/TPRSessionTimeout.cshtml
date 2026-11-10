@@ -1,12 +1,43 @@
 ﻿@using ThePensionsRegulator.Frontend.Models
-@using Umbraco.Cms.Web.Common.PublishedModels;
+@using ThePensionsRegulator.Frontend.Umbraco
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Web.Common
+@using Umbraco.Cms.Web.Common.PublishedModels
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SessionTimeout>
-@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@inject UmbracoHelper Umbraco
+@inject IPublishedValueFallback publishedValueFallback
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
 @{
-	var sessionTimeoutWarning = new TprSessionTimeOutModel();
-    sessionTimeoutWarning.Title = /* "Your session is about to time out" */
-    sessionTimeoutWarning.Content = "For your security, we will end this session in 2 minutes."; 
-    
+	var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
+
+	var title = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutTitle) //string null or whitespace check needed
+		?? "Your session is about to time out";
+
+	var content = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutContent)
+		?? "For your security, we will end this session in 2 minutes.";
+
+	var primaryActionText = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionText)
+		?? "Continue";
+	var primaryActionLink = settings?.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionUrl);
+	var primaryActionUrl = primaryActionLink?.Url ?? "#";
+
+	var secondaryActionText = settings?.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionText)
+		?? "Sign out";
+	var secondaryActionLink = settings?.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionUrl);
+	var secondaryActionUrl = secondaryActionLink?.Url ?? "/";
+
+	var sessionTimeoutWarning = new TprSessionTimeOutModel
+	{
+		Title = title,
+		Content = content,
+		DisplayPrimaryAction = !string.IsNullOrWhiteSpace(primaryActionText),
+		PrimaryActionText = primaryActionText,
+		PrimaryActionUrl = primaryActionUrl,
+		DisplaySecondaryAction = !string.IsNullOrWhiteSpace(secondaryActionText),
+		SecondaryActionText = secondaryActionText,
+		SecondaryActionUrl = secondaryActionUrl
+	};
 }
 
 <partial name="TPR/TPRSessionTimeOutWarning" model="sessionTimeoutWarning" />

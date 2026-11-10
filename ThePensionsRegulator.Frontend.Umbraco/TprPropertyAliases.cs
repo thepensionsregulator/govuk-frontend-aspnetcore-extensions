@@ -64,5 +64,11 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string VideoDescription = "description";
         public const string VideoHeadingLevel = "headingLevel";
         public const string VideoHeadingSize = "headingClass";
+        public const string SessionTimeoutTitle = "tprSessionTimeoutTitle";
+        public const string SessionTimeoutContent = "tprSessionTimeoutContent";
+        public const string SessionTimeoutPrimaryActionText = "tprSessionTimeoutPrimaryActionText";
+        public const string SessionTimeoutPrimaryActionUrl = "tprSessionTimeoutPrimaryActionUrl";
+        public const string SessionTimeoutSecondaryActionText = "tprSessionTimeoutSecondaryActionText";
+        public const string SessionTimeoutSecondaryActionUrl = "tprSessionTimeoutSecondaryActionUrl";
     }
 }

@@ -24,12 +24,16 @@ export function createAddressLookup(options: AddressLookupOptions){
         container.replaceChildren();
         switch(state.status){
             case "search":
-                container.appendChild(renderAddressSearch({
+                const searchView = renderAddressSearch({
                     searchService: addressSearchService, 
                     onSearchSuccess: (results, criteria) => stateMachine.dispatch({ status: "search-succeeded", addresses: results, criteria: criteria }),
                     criteria: state.criteria,
                     onInternationalEntryRequested: () => stateMachine.dispatch({ status: "international-manual-entry-requested" })
-                }));
+                });
+                container.appendChild(searchView);
+                if (state.from !== "initial"){
+                    searchView.querySelector<HTMLInputElement>("#building")?.focus();
+                }
                 break;
             case "results":
                 const resultsView = renderAddressResults({
@@ -39,25 +43,31 @@ export function createAddressLookup(options: AddressLookupOptions){
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" }),
                     onUkManualEntryRequested: () => stateMachine.dispatch({ status: "uk-manual-entry-requested" })
                 });
-                
                 container.appendChild(resultsView);
                 resultsView.querySelector<HTMLSelectElement>("#address-select")?.focus();
                 break;
             case "confirmed":
-                container.appendChild(renderConfirmedAddress(state.address, () => stateMachine.dispatch({ status: "back-to-search-requested" })));
+                const confirmedView = renderConfirmedAddress(state.address, () => stateMachine.dispatch({ status: "back-to-search-requested" }));
+                container.appendChild(confirmedView);
+                const confirmedParagraph = confirmedView.querySelector<HTMLParagraphElement>("p");
+                confirmedParagraph?.focus();
                 break;
             case "uk-manual-entry":
-                container.appendChild(renderAddressUkManualEntry({
+                const ukManualEntryView = renderAddressUkManualEntry({
                     onAddressSubmitted: (address) => stateMachine.dispatch({ status: "uk-manual-address-submitted", address}),
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })
-                }));
+                });
+                container.appendChild(ukManualEntryView);
+                ukManualEntryView.querySelector<HTMLInputElement>("input")?.focus();
                 break;
             case "international-manual-entry":
-                container.appendChild(renderAddressInternationalManualEntry({
+                const manualEntryView = renderAddressInternationalManualEntry({
                     onAddressSubmitted: (address) => stateMachine.dispatch({ status: "international-manual-address-submitted", address}),
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" }),
                     countries: [{ value: 'FR', text: 'France' }]
-                }));
+                });
+                container.appendChild(manualEntryView);
+                manualEntryView.querySelector<HTMLInputElement>("input")?.focus()
                 break;
         }
     }

@@ -20,10 +20,14 @@ export function renderConfirmedAddress(address: ConfirmedAddress, onBackToSearch
     }
 }
 
-
 function createAddressParagraph(address: ConfirmedAddress): HTMLParagraphElement { 
     const paragraph = document.createElement("p");
     paragraph.classList.add("govuk-body");
+    paragraph.tabIndex = -1;
+    const context = document.createElement("span");
+    context.classList.add("govuk-visually-hidden");
+    context.textContent = "Confirmed address: ";
+    paragraph.appendChild(context);
 
     const filteredAddress = [
         address.addressLine1,

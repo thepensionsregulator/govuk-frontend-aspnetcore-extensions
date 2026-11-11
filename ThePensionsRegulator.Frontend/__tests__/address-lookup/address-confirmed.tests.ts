@@ -24,6 +24,17 @@ describe("renderConfirmedAddress", () => {
         expect(paragraph?.querySelectorAll("br")).toHaveLength(5);
     });
 
+    it("should render a visually hidden context for screen readers, the paragraph should be able to be tabbed to", () => {
+        const component = renderConfirmedAddress(completeAddress, jest.fn());
+        const paragraph = component.querySelector("p");
+
+        expect(paragraph).not.toBeNull();
+        expect(paragraph).toHaveAttribute("tabindex", "-1");
+        const context = paragraph?.querySelector("span.govuk-visually-hidden");
+        expect(context).not.toBeNull();
+        expect(context).toHaveTextContent("Confirmed address:");
+    });
+
     it("should omit optional fields without adding blank lines", () => {
         const address: ConfirmedAddress = {
             addressLine1: "10 High Street",

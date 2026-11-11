@@ -47,7 +47,10 @@
                 PrimaryActionUrl = primaryActionLink?.Url,
                 DisplaySecondaryAction = !string.IsNullOrWhiteSpace(secondaryActionText),
                 SecondaryActionText = secondaryActionText,
-                SecondaryActionUrl = secondaryActionLink?.Url
+                SecondaryActionUrl = secondaryActionLink?.Url,
+                EnableClientSideSessionTimeout = true,
+                SessionTimeoutMilliseconds = 3000,
+                ResetTimeoutCountdownOnActivity = true
             });
         }
     }

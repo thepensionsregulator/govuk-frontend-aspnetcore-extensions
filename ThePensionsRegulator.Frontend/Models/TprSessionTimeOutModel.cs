@@ -14,5 +14,8 @@ namespace ThePensionsRegulator.Frontend.Models
         public virtual bool DisplaySecondaryAction { get; set; }
         public virtual string? SecondaryActionText { get; set; }
         public virtual string? SecondaryActionUrl { get; set; }
+        public virtual bool EnableClientSideSessionTimeout { get; set; }
+        public virtual int SessionTimeoutMilliseconds { get; set; } = 900000;
+        public virtual bool ResetTimeoutCountdownOnActivity { get; set; }
     }
 }

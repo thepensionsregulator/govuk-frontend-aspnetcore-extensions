@@ -21,6 +21,13 @@
     "minify": { "enabled": true }
   },
   {
+    "outputFileName": "wwwroot/ThePensionsRegulator.Frontend/js/tpr-session-timeout-warning.min.js",
+    "inputFiles": [
+      "wwwroot/ThePensionsRegulator.Frontend/js/tpr-session-timeout-warning.js"
+    ],
+    "minify": { "enabled": true }
+  },
+  {
     "outputFileName": "wwwroot/ThePensionsRegulator.Frontend/js/tpr-search-results.min.js",
     "inputFiles": [
       "wwwroot/ThePensionsRegulator.Frontend/js/tpr-search-results.js"

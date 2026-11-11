@@ -3,6 +3,7 @@
 @inject IOptions<TprFrontendOptions> tprOptions
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 <partial name="GOVUK/BodyClosing" />
+<script src="/ThePensionsRegulator.Frontend/js/tpr-session-timeout-warning.min.js" type="module" asp-append-version="true"></script>
 <script src="/ThePensionsRegulator.Frontend/js/tpr-back-to-top.min.js" type="module" asp-append-version="true"></script>
 @if (tprOptions.Value.EnableTableCsvDownload)
 {

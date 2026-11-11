@@ -1,6 +1,16 @@
-import "@testing-library/jest-dom";
 import { jest } from "@jest/globals";
-import { renderAddressInternationalManualEntry, validateInternationalUkManualEntryAddress } from "../../Scripts/address-lookup/address-international-manual-entry.js";
+import "@testing-library/jest-dom";
+import * as realValidation from "../../../ThePensionsRegulator.GovUk.Frontend/Scripts/govuk-components/validation.js";
+
+const focusFirstInvalidControl = jest.fn<(form: HTMLFormElement) => void>();
+
+jest.unstable_mockModule(
+    "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js",
+    () => ({ ...realValidation, focusFirstInvalidControl })
+);
+
+const { renderAddressInternationalManualEntry, validateInternationalUkManualEntryAddress } =
+    await import("../../Scripts/address-lookup/address-international-manual-entry.js");
 
 const countries = [
 	{ value: "FR", text: "France" },
@@ -94,6 +104,18 @@ describe("renderAddressInternationalManualEntry", () => {
 		expect(component.querySelector("#post-town-error")).toHaveClass("govuk-error-message");
 		expect(component.querySelector("#country-error")).toHaveClass("govuk-error-message");
 	});
+
+	it("focuses on the first invalid element", () => {
+		const { component } = createComponent();
+		const form = document.createElement("form");
+		form.appendChild(component);
+
+		component.querySelector<HTMLButtonElement>("button")!.click();
+
+		expect(focusFirstInvalidControl).toHaveBeenCalledWith(form);
+	});
+
+	
 
 	it("clears validation errors when corrected values are confirmed", () => {
 		const { component, onAddressSubmitted } = createComponent();

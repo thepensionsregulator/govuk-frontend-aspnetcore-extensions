@@ -29,7 +29,7 @@ describe("AddressLookupStateMachine", () => {
     it("should start in the search state", () => {
         const stateMachine = new AddressLookupStateMachine();
 
-        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(stateMachine.getState()).toEqual({ status: "search", from: "initial" });
     });
 
     it("should move to the results state when more than one address is found", () => {
@@ -106,7 +106,7 @@ describe("AddressLookupStateMachine", () => {
         stateMachine.dispatch({ status: "back-to-search-requested" });
         stateMachine.dispatch({ status: "international-manual-address-submitted", address: internationalAddress });
 
-        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(stateMachine.getState()).toEqual({ status: "search", from: "initial" });
         expect(listener).not.toHaveBeenCalled();
     });
 
@@ -135,7 +135,7 @@ describe("AddressLookupStateMachine", () => {
 
         stateMachine.dispatch({ status: "address-selected", address: addressOne });
 
-        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(stateMachine.getState()).toEqual({ status: "search", from: "initial" });
         expect(listener).not.toHaveBeenCalled();
     });
 
@@ -145,78 +145,32 @@ describe("AddressLookupStateMachine", () => {
 
         stateMachine.dispatch({ status: "back-to-search-requested" });
 
-        expect(stateMachine.getState()).toEqual({ status: "search", criteria });
+        expect(stateMachine.getState()).toEqual({ status: "search", criteria, from: "results" });
     });
 
-    it("should reject back-to-search-requested when not in the results state", () => {
+    it("should reject back-to-search-requested when already in the search state", () => {
         const stateMachine = new AddressLookupStateMachine();
         const listener = jest.fn<(state: AddressLookupState) => void>();
         stateMachine.subscribe(listener);
 
         stateMachine.dispatch({ status: "back-to-search-requested" });
 
-        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(stateMachine.getState()).toEqual({ status: "search", from: "initial" });
         expect(listener).not.toHaveBeenCalled();
     });
 
-    it("should move back to the search state with the given criteria", () => {
+    it.each([
+        { from: "confirmed", event: { status: "address-selected", address: addressOne } },
+        { from: "uk-manual-entry", event: { status: "uk-manual-entry-requested" } },
+        { from: "international-manual-entry", event: { status: "international-manual-entry-requested" } }
+    ] as const)("should return to search without criteria from $from", ({ from, event }) => {
         const stateMachine = new AddressLookupStateMachine();
         stateMachine.dispatch({ status: "search-succeeded", criteria, addresses: [addressOne, addressTwo] });
+        stateMachine.dispatch(event);
 
         stateMachine.dispatch({ status: "back-to-search-requested" });
 
-        expect(stateMachine.getState()).toEqual({ status: "search", criteria });
-    });
-
-    it("should reject back-to-search-requested when not in the results state", () => {
-        const stateMachine = new AddressLookupStateMachine();
-        const listener = jest.fn<(state: AddressLookupState) => void>();
-        stateMachine.subscribe(listener);
-
-        stateMachine.dispatch({ status: "back-to-search-requested" });
-
-        expect(stateMachine.getState()).toEqual({ status: "search" });
-        expect(listener).not.toHaveBeenCalled();
-    });
-
-    it("should move back to the search state with the given criteria", () => {
-        const stateMachine = new AddressLookupStateMachine();
-        stateMachine.dispatch({ status: "search-succeeded", criteria, addresses: [addressOne, addressTwo] });
-
-        stateMachine.dispatch({ status: "back-to-search-requested" });
-
-        expect(stateMachine.getState()).toEqual({ status: "search", criteria });
-    });
-
-    it("should reject back-to-search-requested when not in the results state", () => {
-        const stateMachine = new AddressLookupStateMachine();
-        const listener = jest.fn<(state: AddressLookupState) => void>();
-        stateMachine.subscribe(listener);
-
-        stateMachine.dispatch({ status: "back-to-search-requested" });
-
-        expect(stateMachine.getState()).toEqual({ status: "search" });
-        expect(listener).not.toHaveBeenCalled();
-    });
-
-    it("should move back to the search state with the given criteria", () => {
-        const stateMachine = new AddressLookupStateMachine();
-        stateMachine.dispatch({ status: "search-succeeded", criteria, addresses: [addressOne, addressTwo] });
-
-        stateMachine.dispatch({ status: "back-to-search-requested" });
-
-        expect(stateMachine.getState()).toEqual({ status: "search", criteria });
-    });
-
-    it("should reject back-to-search-requested when not in the results state", () => {
-        const stateMachine = new AddressLookupStateMachine();
-        const listener = jest.fn<(state: AddressLookupState) => void>();
-        stateMachine.subscribe(listener);
-
-        stateMachine.dispatch({ status: "back-to-search-requested" });
-
-        expect(stateMachine.getState()).toEqual({ status: "search" });
-        expect(listener).not.toHaveBeenCalled();
+        expect(stateMachine.getState()).toStrictEqual({ status: "search", criteria: undefined, from });
     });
 
     it("should notify a subscribed listener with the new state after a dispatch", () => {

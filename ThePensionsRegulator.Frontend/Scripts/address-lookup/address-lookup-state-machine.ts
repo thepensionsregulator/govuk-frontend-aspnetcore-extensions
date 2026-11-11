@@ -11,6 +11,7 @@ export type AddressLookupState =
 export interface AddressLookupSearchState {
     status: "search";
     criteria?: AddressSearchCriteria;
+    from: "initial" | "results" | "confirmed" | "uk-manual-entry" | "international-manual-entry"
 }
 
 export interface AddressLookupResultState {
@@ -24,7 +25,7 @@ export interface AddressLookupConfirmedState {
     address: ConfirmedAddress;
 }
 
-export interface AddressLookupUkManualEntryState{
+export interface AddressLookupUkManualEntryState {
     status: "uk-manual-entry";
 }
 
@@ -44,7 +45,7 @@ export type AddressLookupEvent =
 export type AddressLookupStateListener = (state: AddressLookupState) => void;
 
 export class AddressLookupStateMachine {
-    private state: AddressLookupState = { status: "search" };
+    private state: AddressLookupState = { status: "search", from: "initial" };
     private readonly listeners: AddressLookupStateListener[] = [];
 
     public getState(): AddressLookupState {
@@ -86,18 +87,30 @@ export class AddressLookupStateMachine {
             case "back-to-search-requested":
                 if (state.status === "search") {
                     return undefined;
+                } else if (state.status === "results") {
+                    return { status: "search", criteria: state.criteria, from: "results" };
+                } else if (state.status === "confirmed"){
+                    return { status: "search", criteria: undefined, from: "confirmed" };
+                } else if (state.status === "international-manual-entry") {
+                    return { status: "search", criteria: undefined, from: "international-manual-entry" };
+                } else if (state.status === "uk-manual-entry") {
+                    return { status: "search", criteria: undefined, from: "uk-manual-entry" };
                 }
-                return { status: "search", criteria: state.status === "results" ? state.criteria : undefined };
+                return undefined;
+    
             case "uk-manual-entry-requested":
                 return { status: "uk-manual-entry" }
+    
             case "international-manual-entry-requested":
                 return { status: "international-manual-entry" };
+    
             case "uk-manual-address-submitted":
                 if (state.status !== "uk-manual-entry") {
                     return undefined;
                 }
                 const confirmedUkAddress = mapUkManualEntryAddress(event.address);
                 return { status: "confirmed", address: confirmedUkAddress };
+            
             case "international-manual-entry-requested":
                 return { status: "international-manual-entry" };
             case "international-manual-address-submitted":

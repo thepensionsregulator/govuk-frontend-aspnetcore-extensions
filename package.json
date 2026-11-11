@@ -66,9 +66,8 @@
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --ci --watchAll=false --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
     "build:ts": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.Frontend",
-    "build:ts:frontend": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.Frontend",
     "build:ts:govuk-frontend": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.GovUk.Frontend",
-    "watch:ts:frontend": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.Frontend --watch",
+    "watch:ts": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.Frontend --watch",
     "watch:ts:govuk-frontend": "node node_modules/typescript/bin/tsc -b ThePensionsRegulator.GovUk.Frontend --watch",
     "govuk": "npm install && cd GovUk.Frontend.AspNetCore.Extensions.ConformanceTests && npm install",
     "generate-version": "node scripts/generate-version.js",

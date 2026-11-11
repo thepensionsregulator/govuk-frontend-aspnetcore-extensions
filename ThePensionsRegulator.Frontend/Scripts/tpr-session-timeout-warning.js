@@ -1,31 +1,34 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var warning = document.querySelector(".tpr-session-timeout-warning[data-session-timeout-enabled='true']");
-    var overlay;
-    var extendButton;
-    var timeoutMilliseconds;
-    var timeoutId;
-    var resetOnActivity;
-    var warningVisible = false;
-    var lastMouseMoveAt = 0;
-    var mouseMoveThrottleMilliseconds = 1000;
+    const warning = document.querySelector(".tpr-session-timeout-warning[data-session-timeout-enabled='true']");
+    if (!warning) {
+        return;
+    }
 
-    function hideSessionTimeoutWarning() {
-        warning.classList.add("govuk-visually-hidden");
+    const overlay = document.querySelector(".tpr-session-timeout-warning-overlay");
+    const extendButton = warning.querySelector("[data-session-extend]");
+    const resetOnActivity = warning.getAttribute("data-session-timeout-reset-on-activity") === "true";
+    const timeoutAttribute = warning.getAttribute("data-session-timeout-ms");
+    const configuredTimeout = Number.parseInt(timeoutAttribute || "", 10);
+    const timeoutMilliseconds = Number.isFinite(configuredTimeout) && configuredTimeout > 0 ? configuredTimeout : 900000;
+    const activityEvents = ["click", "keydown", "pointerdown", "scroll", "touchstart", "mousemove"];
+    const hiddenClass = "govuk-visually-hidden";
+    const mouseMoveThrottleMilliseconds = 1000;
 
-        if (overlay) {
-            overlay.classList.add("govuk-visually-hidden");
+    let timeoutId;
+    let warningVisible = false;
+    let lastMouseMoveAt = 0;
+
+    function setHidden(element, isHidden) {
+        if (!element) {
+            return;
         }
 
-        warningVisible = false;
+        element.classList.toggle(hiddenClass, isHidden);
     }
 
     function showSessionTimeoutWarning() {
-        warning.classList.remove("govuk-visually-hidden");
-
-        if (overlay) {
-            overlay.classList.remove("govuk-visually-hidden");
-        }
-
+        setHidden(warning, false);
+        setHidden(overlay, false);
         warningVisible = true;
         warning.focus();
     }
@@ -39,7 +42,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function resetSessionTimeoutTimer() {
-        hideSessionTimeoutWarning();
+        setHidden(warning, true);
+        setHidden(overlay, true);
+        warningVisible = false;
         scheduleSessionTimeoutWarning();
     }
 
@@ -62,7 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function extendSession() {
         const url = extendButton ? extendButton.getAttribute("data-session-extend-url") : null;
-
         if (!url) {
             resetSessionTimeoutTimer();
             return;
@@ -83,23 +87,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    if (!warning) {
-        return;
-    }
-
-    overlay = document.querySelector(".tpr-session-timeout-warning-overlay");
-    extendButton = warning.querySelector("[data-session-extend]");
-    resetOnActivity = warning.getAttribute("data-session-timeout-reset-on-activity") === "true";
-
-    const defaultTimeoutMilliseconds = 900000;
-    const timeoutAttribute = warning.getAttribute("data-session-timeout-ms");
-    const configuredTimeout = Number.parseInt(timeoutAttribute || "", 10);
-    timeoutMilliseconds = Number.isFinite(configuredTimeout) && configuredTimeout > 0
-        ? configuredTimeout
-        : defaultTimeoutMilliseconds;
-
     if (resetOnActivity) {
-        ["click", "keydown", "pointerdown", "scroll", "touchstart", "mousemove"].forEach(function (eventName) {
+        activityEvents.forEach(function (eventName) {
             document.addEventListener(eventName, onUserActivity);
         });
     }

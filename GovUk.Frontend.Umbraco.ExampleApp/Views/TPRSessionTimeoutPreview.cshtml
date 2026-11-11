@@ -16,6 +16,7 @@
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
 @section head {
     <title>@Model.Name</title>
+    <link rel="stylesheet" href="~/css/session-timeout-preview.css" asp-append-version="true" />
 }
 @{
     var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
@@ -55,7 +56,7 @@
 }
 
 <div class="govuk-width-container">
-    <p class="govuk-body"><a class="govuk-link" href="/session-timeout">Back to session-timeout variants list</a></p>
+    <p class="govuk-body tpr-session-timeout-preview__back-link"><a class="govuk-link" href="/session-timeout">Back to session-timeout variants list</a></p>
 
     @if (string.IsNullOrWhiteSpace(selectedMessageKey))
     {

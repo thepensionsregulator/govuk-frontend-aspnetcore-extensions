@@ -13,6 +13,7 @@ using ThePensionsRegulator.Umbraco.Core;
 using ThePensionsRegulator.Umbraco.Testing;
 using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Web.Common;
+using static Umbraco.Cms.Infrastructure.ModelsBuilder.Building.TypeModel;
 
 namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.ModelBinding
 {
@@ -443,36 +444,39 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.Tests.ModelBinding
         }
 
         [Theory]
-        [InlineData("", "4", "2020", false, DateInputParseErrors.MissingDay)]
-        [InlineData(null, "4", "2020", false, DateInputParseErrors.MissingDay)]
-        [InlineData("1", "", "2020", false, DateInputParseErrors.MissingMonth)]
-        [InlineData("1", null, "2020", false, DateInputParseErrors.MissingMonth)]
-        [InlineData("1", "4", null, false, DateInputParseErrors.MissingYear)]
-        [InlineData("1", "4", "", false, DateInputParseErrors.MissingYear)]
-        [InlineData("0", "4", "2020", false, DateInputParseErrors.InvalidDay)]
-        [InlineData("-1", "4", "2020", false, DateInputParseErrors.InvalidDay)]
-        [InlineData("32", "4", "2020", false, DateInputParseErrors.InvalidDay)]
-        [InlineData("x", "4", "2020", false, DateInputParseErrors.InvalidDay)]
-        [InlineData("1", "0", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [InlineData("1", "-1", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [InlineData("1", "13", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [InlineData("1", "x", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [InlineData("1", "4", "15", false, DateInputParseErrors.InvalidYear)]
-        [InlineData("1", "4", "0", false, DateInputParseErrors.InvalidYear)]
-        [InlineData("1", "4", "-1", false, DateInputParseErrors.InvalidYear)]
-        [InlineData("1", "4", "10000", false, DateInputParseErrors.InvalidYear)]
-        [InlineData("1", "4", "x", false, DateInputParseErrors.InvalidYear)]
-        [InlineData("1", "x", "2020", true, DateInputParseErrors.InvalidMonth)]
-        [InlineData("1", "dec", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [InlineData("31", "January", "2020", false, DateInputParseErrors.InvalidMonth)]
-        [InlineData("29", "February", "2023", true, DateInputParseErrors.InvalidDay)]
-        public void Parse_InvalidDate_ComputesExpectedParseErrors(
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "", "4", "2020", false, DateInputParseErrors.MissingDay)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, null, "4", "2020", false, DateInputParseErrors.MissingDay)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "", "2020", false, DateInputParseErrors.MissingMonth)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", null, "2020", false, DateInputParseErrors.MissingMonth)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "4", null, false, DateInputParseErrors.MissingYear)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "4", "", false, DateInputParseErrors.MissingYear)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "0", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "-1", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "32", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "x", "4", "2020", false, DateInputParseErrors.InvalidDay)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "0", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "-1", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "13", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "x", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "4", "15", false, DateInputParseErrors.InvalidYear)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "4", "0", false, DateInputParseErrors.InvalidYear)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "4", "-1", false, DateInputParseErrors.InvalidYear)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "4", "10000", false, DateInputParseErrors.InvalidYear)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "4", "x", false, DateInputParseErrors.InvalidYear)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "x", "2020", true, DateInputParseErrors.InvalidMonth)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "1", "dec", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "31", "January", "2020", false, DateInputParseErrors.InvalidMonth)]
+        [InlineData(DateInputItemTypes.DayMonthAndYear, "29", "February", "2023", true, DateInputParseErrors.InvalidDay)]
+        [InlineData(DateInputItemTypes.DayAndMonth, "29", "February", null, true, DateInputParseErrors.InvalidDay)]
+        [InlineData(DateInputItemTypes.DayAndMonth, "32", "March", null, true, DateInputParseErrors.InvalidDay)]
+        [InlineData(DateInputItemTypes.DayAndMonth, "0", "March", null, true, DateInputParseErrors.InvalidDay)]
+        public void Parse_InvalidDate_ComputesExpectedParseErrors(DateInputItemTypes itemTypes,
             string? day, string? month, string? year, bool acceptMonthNames, DateInputParseErrors expectedParseErrors)
         {
             // Arrange
 
             // Act
-            var result = UmbracoDateInputModelBinder.Parse(DateInputItemTypes.DayMonthAndYear, day, month, year, acceptMonthNames, out var dateComponents);
+            var result = UmbracoDateInputModelBinder.Parse(itemTypes, day, month, year, acceptMonthNames, out var dateComponents);
 
             // Assert
             Assert.Null(dateComponents.Day);

@@ -1,3 +1,4 @@
+/*Demo page styles*/
 .session-timeout-variants__item {
     border: 1px solid #b1b4b6;
     margin-bottom: 2rem;
@@ -14,6 +15,10 @@
     max-height: none;
     margin: 0 auto;
     z-index: auto;
+}
+
+.tpr-session-timeout-warning-overlay{
+    display:none;
 }
 
 @media (min-width: 40.0625em) {

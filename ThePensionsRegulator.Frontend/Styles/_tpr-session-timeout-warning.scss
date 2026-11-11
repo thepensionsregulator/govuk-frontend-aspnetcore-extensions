@@ -15,6 +15,18 @@
     z-index: 1002;
 }
 
+.tpr-session-timeout-warning-overlay {
+    background-color: #0b0c0c;
+    filter: alpha(opacity=80);
+    height: 100%;
+    left: 0;
+    opacity: .8;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1001;
+}
+
 
 @media (min-width: 40.0625em) {
     .tpr-session-timeout-warning {

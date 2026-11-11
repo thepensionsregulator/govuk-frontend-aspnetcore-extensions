@@ -1,6 +1,14 @@
 import "@testing-library/jest-dom";
 import { jest } from "@jest/globals";
-import { renderAddressUkManualEntry, validateUkManualEntryAddress } from "../../Scripts/address-lookup/address-uk-manual-entry.js";
+import * as realValidation from "../../../ThePensionsRegulator.GovUk.Frontend/Scripts/govuk-components/validation.js";
+
+const focusFirstInvalidControl = jest.fn<(form: HTMLFormElement) => void>();
+
+jest.unstable_mockModule(
+    "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js",
+    () => ({ ...realValidation, focusFirstInvalidControl })
+);
+const { renderAddressUkManualEntry, validateUkManualEntryAddress } = await import("../../Scripts/address-lookup/address-uk-manual-entry.js");
 
 function createValidValues(overrides: Partial<Parameters<typeof validateUkManualEntryAddress>[0]> = {}) {
     return {
@@ -133,6 +141,20 @@ describe("renderAddressUkManualEntry", () => {
         expect(component.querySelector("#address-line-1-error")).toBeNull();
         expect(component.querySelector("#town-or-city-error")).toBeNull();
         expect(component.querySelector("#postcode-error")).toBeNull();
+    });
+
+    it("focuses on the first invalid element", () => {
+        const onAddressSubmitted = jest.fn();
+        const onBackToSearchRequested = jest.fn();
+        const component = renderAddressUkManualEntry({ onAddressSubmitted, onBackToSearchRequested });
+        const form = document.createElement("form");
+        form.appendChild(component);
+
+        const confirmButton = component.querySelector<HTMLButtonElement>("button");
+        confirmButton!.click();
+
+        expect(focusFirstInvalidControl).toHaveBeenCalledTimes(1);
+        expect(focusFirstInvalidControl).toHaveBeenCalledWith(form);
     });
 });
 

@@ -6,7 +6,7 @@ import { createButton } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-comp
 import { createFieldset } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js';
 import { createTextInputFormGroup } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js';
 import { createLink } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js';
-import { clearFormGroupError, showFormGroupError } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js';
+import { clearFormGroupError, showFormGroupError, focusFirstInvalidControl } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js';
 
 export interface AddressUkManualEntryOptions {
     onAddressSubmitted: (address: UkManualEntryAddress) => void;
@@ -48,6 +48,10 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
         const validationResult = validateUkManualEntryAddress(readValues(addressLine1, addressLine2, addressLine3, townOrCity, county, postcode));
         if (!validationResult.isValid) {
             validationResult.errorMessages.forEach(({ fieldName, message }) => showFormGroupError(formGroupsByField[fieldName], message));
+            const form = fieldset.closest("form");
+            if (form) { 
+                focusFirstInvalidControl(form);
+            }
             return;
         }
         

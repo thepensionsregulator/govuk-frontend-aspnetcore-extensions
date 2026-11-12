@@ -19,7 +19,7 @@
         <button class="govuk-button" type="button" data-session-timeout-extend data-session-timeout-extend-url="@Model.PrimaryActionUrl">@Model.PrimaryActionText</button>
         }
 
-        @if (Model.DisplaySecondaryAction && !string.IsNullOrWhiteSpace(Model.SecondaryActionText))
+        @if (Model.DisplaySecondaryAction && !string.IsNullOrWhiteSpace(Model.SecondaryActionText) && !string.IsNullOrWhiteSpace(Model.SecondaryActionUrl))
         {
             <div>
                 <a class="govuk-link" href="@Model.SecondaryActionUrl">@Model.SecondaryActionText</a>

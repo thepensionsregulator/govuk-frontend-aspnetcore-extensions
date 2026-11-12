@@ -18,31 +18,35 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    /// <summary>TPR session timeout preview</summary>
-    [PublishedModel("sessionTimeoutPreview")]
-    public partial class SessionTimeoutPreview : PublishedContentModel
-    {
-#pragma warning disable 0109
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        public new const string ModelTypeAlias = "sessionTimeoutPreview";
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        public new const PublishedItemType ModelItemType = PublishedItemType.Content;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        [return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-        public new static IPublishedContentType GetModelContentType(IPublishedContentTypeCache contentTypeCache)
-            => PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        [return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-        public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<SessionTimeoutPreview, TValue>> selector)
-            => PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
+	/// <summary>TPR session timeout preview</summary>
+	[PublishedModel("sessionTimeoutPreview")]
+	public partial class SessionTimeoutPreview : PublishedContentModel
+	{
+		// helpers
+#pragma warning disable 0109 // new is redundant
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		public new const string ModelTypeAlias = "sessionTimeoutPreview";
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public new static IPublishedContentType GetModelContentType(IPublishedContentTypeCache contentTypeCache)
+			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<SessionTimeoutPreview, TValue>> selector)
+			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
-        private readonly IPublishedValueFallback _publishedValueFallback;
+		private IPublishedValueFallback _publishedValueFallback;
 
-        public SessionTimeoutPreview(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
-            : base(content, publishedValueFallback)
-        {
-            _publishedValueFallback = publishedValueFallback;
-        }
-    }
+		// ctor
+		public SessionTimeoutPreview(IPublishedContent content, IPublishedValueFallback publishedValueFallback)
+			: base(content, publishedValueFallback)
+		{
+			_publishedValueFallback = publishedValueFallback;
+		}
+
+		// properties
+	}
 }

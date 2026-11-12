@@ -18,50 +18,58 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-    // Mixin Content Type with alias "tprSessionTimeoutMessages"
-    /// <summary>TPR session timeout messages</summary>
-    public partial interface ITprSessionTimeoutMessages : IPublishedElement
-    {
-        /// <summary>Warning messages</summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        [global::System.Diagnostics.CodeAnalysis.MaybeNull]
-        global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprSessionTimeoutMessagesBlockList { get; }
-    }
+	// Mixin Content Type with alias "tprSessionTimeoutMessages"
+	/// <summary>TPR session timeout messages</summary>
+	public partial interface ITprSessionTimeoutMessages : IPublishedElement
+	{
+		/// <summary>Warning messages</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprSessionTimeoutMessagesBlockList { get; }
+	}
 
-    /// <summary>TPR session timeout messages</summary>
-    [PublishedModel("tprSessionTimeoutMessages")]
-    public partial class TprSessionTimeoutMessages : PublishedElementModel, ITprSessionTimeoutMessages
-    {
-#pragma warning disable 0109
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        public new const string ModelTypeAlias = "tprSessionTimeoutMessages";
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        public new const PublishedItemType ModelItemType = PublishedItemType.Content;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        [return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-        public new static IPublishedContentType GetModelContentType(IPublishedContentTypeCache contentTypeCache)
-            => PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        [return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-        public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<TprSessionTimeoutMessages, TValue>> selector)
-            => PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
+	/// <summary>TPR session timeout messages</summary>
+	[PublishedModel("tprSessionTimeoutMessages")]
+	public partial class TprSessionTimeoutMessages : PublishedElementModel, ITprSessionTimeoutMessages
+	{
+		// helpers
+#pragma warning disable 0109 // new is redundant
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		public new const string ModelTypeAlias = "tprSessionTimeoutMessages";
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public new static IPublishedContentType GetModelContentType(IPublishedContentTypeCache contentTypeCache)
+			=> PublishedModelUtility.GetModelContentType(contentTypeCache, ModelItemType, ModelTypeAlias);
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static IPublishedPropertyType GetModelPropertyType<TValue>(IPublishedContentTypeCache contentTypeCache, Expression<Func<TprSessionTimeoutMessages, TValue>> selector)
+			=> PublishedModelUtility.GetModelPropertyType(GetModelContentType(contentTypeCache), selector);
 #pragma warning restore 0109
 
-        private readonly IPublishedValueFallback _publishedValueFallback;
+		private IPublishedValueFallback _publishedValueFallback;
 
-        public TprSessionTimeoutMessages(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
-            : base(content, publishedValueFallback)
-        {
-            _publishedValueFallback = publishedValueFallback;
-        }
+		// ctor
+		public TprSessionTimeoutMessages(IPublishedElement content, IPublishedValueFallback publishedValueFallback)
+			: base(content, publishedValueFallback)
+		{
+			_publishedValueFallback = publishedValueFallback;
+		}
 
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        [global::System.Diagnostics.CodeAnalysis.MaybeNull]
-        [ImplementPropertyType("tprSessionTimeoutMessagesBlockList")]
-        public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprSessionTimeoutMessagesBlockList => GetTprSessionTimeoutMessagesBlockList(this, _publishedValueFallback);
+		// properties
 
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
-        [return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
-        public static global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel GetTprSessionTimeoutMessagesBlockList(ITprSessionTimeoutMessages that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(publishedValueFallback, "tprSessionTimeoutMessagesBlockList");
-    }
+		///<summary>
+		/// Warning messages: Configure all available session-timeout warning message variants.
+		///</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		[ImplementPropertyType("tprSessionTimeoutMessagesBlockList")]
+		public virtual global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel TprSessionTimeoutMessagesBlockList => GetTprSessionTimeoutMessagesBlockList(this, _publishedValueFallback);
+
+		/// <summary>Static getter for Warning messages</summary>
+		[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Umbraco.ModelsBuilder.Embedded", "")]
+		[return: global::System.Diagnostics.CodeAnalysis.MaybeNull]
+		public static global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel GetTprSessionTimeoutMessagesBlockList(ITprSessionTimeoutMessages that, IPublishedValueFallback publishedValueFallback) => that.Value<global::ThePensionsRegulator.Umbraco.Core.Blocks.OverridableBlockListModel>(publishedValueFallback, "tprSessionTimeoutMessagesBlockList");
+	}
 }

@@ -14,10 +14,9 @@
             <p>@Model.Content</p>
         }
     </div>
-
         @if (Model.DisplayPrimaryAction && !string.IsNullOrWhiteSpace(Model.PrimaryActionText))
         {
-            <a class="govuk-button" href="@Model.PrimaryActionUrl">@Model.PrimaryActionText</a>
+        <button class="govuk-button" type="button" data-session-timeout-extend data-session-timeout-extend-url="@Model.PrimaryActionUrl">@Model.PrimaryActionText</button>
         }
 
         @if (Model.DisplaySecondaryAction && !string.IsNullOrWhiteSpace(Model.SecondaryActionText))

@@ -19,37 +19,7 @@
 }
 @{
 	var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
-	List<TprSessionTimeOutModel> messages = [];
-	var variants = settings?.Value<OverridableBlockListModel>(publishedValueFallback, TprPropertyAliases.SessionTimeoutMessagesBlockList);
-
-	if (variants != null)
-	{
-		foreach (var variant in variants)
-		{
-			var content = variant?.Content;
-			if (content == null) { continue; }
-
-			var richText = content.Value<IHtmlEncodedString>(publishedValueFallback, TprPropertyAliases.SessionTimeoutContent);
-			var primaryActionText = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionText);
-			var secondaryActionText = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionText);
-			var primaryActionLink = content.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionUrl);
-			var secondaryActionLink = content.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionUrl);
-
-			messages.Add(new TprSessionTimeOutModel
-			{
-				MessageKey = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutMessageKey),
-				Title = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutTitle),
-				ContentHtml = richText is null ? null : new HtmlString(richText.ToHtmlString()),
-				DisplayPrimaryAction = !string.IsNullOrWhiteSpace(primaryActionText),
-				PrimaryActionText = primaryActionText,
-				PrimaryActionUrl = primaryActionLink?.Url,
-				DisplaySecondaryAction = !string.IsNullOrWhiteSpace(secondaryActionText),
-				SecondaryActionText = secondaryActionText,
-				SecondaryActionUrl = secondaryActionLink?.Url
-			});
-		}
-	}
-
+	var messages = SessionTimeoutDemoMessages.GetMessages(settings, publishedValueFallback);
 }
 
 <div class="govuk-width-container" data-tpr-session-timeout-display="inline">

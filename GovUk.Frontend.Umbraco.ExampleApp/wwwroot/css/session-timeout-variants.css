@@ -17,10 +17,6 @@
     z-index: auto;
 }
 
-.tpr-session-timeout-warning-overlay{
-    display:none;
-}
-
 @media (min-width: 40.0625em) {
     .session-timeout-variants__item .tpr-session-timeout-warning {
         width: 525px;

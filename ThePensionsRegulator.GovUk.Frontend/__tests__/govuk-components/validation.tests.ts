@@ -21,7 +21,11 @@ jest.unstable_mockModule(
 	{ virtual: true }
 );
 
-const { clearFormGroupError, showFormGroupError } = await import("../../Scripts/govuk-components/validation");
+const {
+	clearFormGroupError,
+	focusFirstInvalidControl,
+	showFormGroupError,
+} = await import("../../Scripts/govuk-components/validation");
 
 function createInputFormGroup(id: string): { formGroup: HTMLElement; input: HTMLInputElement } {
 	const formGroup = createTextInputFormGroup({
@@ -329,7 +333,7 @@ describe("fieldset form group errors", () => {
 		expect(fieldsetFormGroup.querySelector("#contact-details-error")).toBeNull();
 		expect(fieldset).not.toHaveAttribute("aria-describedby");
 	});
-
+	
 	it("should add a fieldset error after the legend and describe the fieldset", () => {
 		const formGroup = createContactDetailsFieldsetFormGroup();
 		const fieldset = formGroup.querySelector("fieldset");
@@ -361,5 +365,35 @@ describe("fieldset form group errors", () => {
 		expect(ensureErrorSummary).not.toHaveBeenCalled();
 		expect(updateErrorSummary).toHaveBeenCalledTimes(1);
 		expect(updateTitle).toHaveBeenCalledTimes(1);
+	});
+});
+
+describe("focusFirstInvalidControl", () => {
+	it ("should focus on the first invalid element in a form", () => {
+		const { fieldsetFormGroup, secondInput, secondInputFormGroup } = createFieldsetWithInputs();
+		const form = document.createElement("form");
+		form.appendChild(fieldsetFormGroup);
+		document.body.appendChild(form);
+		showFormGroupError(secondInputFormGroup, "Enter a second name");
+
+		focusFirstInvalidControl(form);
+
+		expect(document.activeElement).toBe(secondInput);
+		document.body.removeChild(form);
+	});
+
+	it ("should focus on the first input in the fieldset if the fieldset has an error", () => {
+		const firstInputFormGroup = createTextInputFormGroup({ labelText: "First element", input : { name: "first-element", id: "first-element" }});
+		const { fieldsetFormGroup, firstInput } = createFieldsetWithInputs();
+		const form = document.createElement("form");
+		form.appendChild(firstInputFormGroup);
+		form.appendChild(fieldsetFormGroup);
+		document.body.appendChild(form);
+		showFormGroupError(fieldsetFormGroup, "Enter valid contact details");
+
+		focusFirstInvalidControl(form);
+
+		expect(document.activeElement).toBe(firstInput);
+		document.body.removeChild(form);
 	});
 });

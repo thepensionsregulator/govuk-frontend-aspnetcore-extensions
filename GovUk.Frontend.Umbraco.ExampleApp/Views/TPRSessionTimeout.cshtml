@@ -2,47 +2,43 @@
 @using GovUk.Frontend.Umbraco.ExampleApp.Services
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Web.Common
-@using Umbraco.Cms.Web.Common.PublishedModels
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SessionTimeout>
 @inject UmbracoHelper Umbraco
 @inject IPublishedValueFallback publishedValueFallback
-@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
 @section head {
-	<title>@Model.Name</title>
-	<link rel="stylesheet" href="~/css/session-timeout-variants.css" asp-append-version="true" />
+    <title>@Model.Name</title>
+    <link rel="stylesheet" href="~/css/session-timeout-variants.css" asp-append-version="true" />
 }
 @{
-	var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
-	var messages = SessionTimeoutMessagesBuilder.Build(settings, publishedValueFallback);
+    var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
+    var messages = SessionTimeoutMessagesBuilder.Build(settings, publishedValueFallback);
 }
-
 <div class="govuk-width-container">
-	<div class="govuk-warning-text">
-		<span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-		<strong class="govuk-warning-text__text">
-			<span class="govuk-warning-text__assistive">Warning</span>
-			This page displays session-timeout components outside their normal full-screen presentation for demonstration only.
-		</strong>
-	</div>
-
-	@if (messages.Any())
-	{
-		@foreach (var message in messages)
-		{
-			<div class="session-timeout-variants__item">
-				<div class="govuk-body govuk-!-margin-bottom-2">
-					<strong>Message key:</strong> @message.MessageKey
-					<a class="govuk-link govuk-!-margin-left-2" href="/session-timeout-preview?messageKey=@message.MessageKey">Preview</a>
-				</div>
-				<partial name="TPR/TPRSessionTimeOutWarning" model="message" />
-			</div>
-		}
-	}
-	else
-	{
-		<div class="govuk-warning-text">
-			<span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-			<strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>No session-timeout message variants are configured.</strong>
-		</div>
-	}
+    <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            These are inline, non-modal examples. Select Preview to test the full modal behaviour.
+        </strong>
+    </div>
+    @if (messages.Any())
+    {
+        @foreach (var message in messages)
+        {
+            message.RenderInline = true;
+            <div class="session-timeout-variants__item">
+                <p class="govuk-body govuk-!-margin-bottom-2">
+                    <strong>Message key:</strong> @message.MessageKey
+                    <a class="govuk-link govuk-!-margin-left-2"
+                       href="/session-timeout-preview?messageKey=@Uri.EscapeDataString(message.MessageKey ?? string.Empty)">Preview</a>
+                </p>
+                <partial name="TPR/TPRSessionTimeOutWarning" model="message" />
+            </div>
+        }
+    }
+    else
+    {
+        <p class="govuk-body">No session-timeout message variants are configured.</p>
+    }
 </div>

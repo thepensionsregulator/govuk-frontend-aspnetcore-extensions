@@ -13,29 +13,30 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
     {
         public static List<TprSessionTimeOutModel> Build(
             IPublishedContent? settings,
-            IPublishedValueFallback publishedValueFallback,
-            bool enableClientSideSessionTimeout = false,
-            int sessionTimeoutMilliseconds = 900000,
-            bool resetTimeoutCountdownOnActivity = false)
+            IPublishedValueFallback publishedValueFallback)
         {
             List<TprSessionTimeOutModel> messages = [];
+            var variants = settings?.Value<OverridableBlockListModel>(
+                publishedValueFallback,
+                TprPropertyAliases.SessionTimeoutMessagesBlockList);
 
-            var variants = settings?.Value<OverridableBlockListModel>(publishedValueFallback, TprPropertyAliases.SessionTimeoutMessagesBlockList);
-            if (variants == null)
-            {
-                return messages;
-            }
+            if (variants == null) return messages;
 
             foreach (var variant in variants)
             {
                 var content = variant?.Content;
-                if (content == null) { continue; }
+                if (content == null) continue;
 
-                var richText = content.Value<IHtmlEncodedString>(publishedValueFallback, TprPropertyAliases.SessionTimeoutContent);
-                var primaryActionText = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionText);
-                var secondaryActionText = content.Value<string>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionText);
-                var primaryActionLink = content.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionUrl);
-                var secondaryActionLink = content.Value<Link>(publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionUrl);
+                var richText = content.Value<IHtmlEncodedString>(
+                    publishedValueFallback, TprPropertyAliases.SessionTimeoutContent);
+                var primaryActionText = content.Value<string>(
+                    publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionText);
+                var secondaryActionText = content.Value<string>(
+                    publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionText);
+                var primaryActionLink = content.Value<Link>(
+                    publishedValueFallback, TprPropertyAliases.SessionTimeoutPrimaryActionUrl);
+                var secondaryActionLink = content.Value<Link>(
+                    publishedValueFallback, TprPropertyAliases.SessionTimeoutSecondaryActionUrl);
 
                 messages.Add(new TprSessionTimeOutModel
                 {
@@ -45,12 +46,10 @@ namespace GovUk.Frontend.Umbraco.ExampleApp.Services
                     DisplayPrimaryAction = !string.IsNullOrWhiteSpace(primaryActionText),
                     PrimaryActionText = primaryActionText,
                     PrimaryActionUrl = primaryActionLink?.Url,
-                    DisplaySecondaryAction = !string.IsNullOrWhiteSpace(secondaryActionText),
+                    DisplaySecondaryAction = !string.IsNullOrWhiteSpace(secondaryActionText)
+                        && !string.IsNullOrWhiteSpace(secondaryActionLink?.Url),
                     SecondaryActionText = secondaryActionText,
-                    SecondaryActionUrl = secondaryActionLink?.Url,
-                    EnableClientSideSessionTimeout = enableClientSideSessionTimeout,
-                    SessionTimeoutMilliseconds = sessionTimeoutMilliseconds,
-                    ResetTimeoutCountdownOnActivity = resetTimeoutCountdownOnActivity
+                    SecondaryActionUrl = secondaryActionLink?.Url
                 });
             }
 

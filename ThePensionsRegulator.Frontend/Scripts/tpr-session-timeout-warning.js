@@ -1,104 +1,93 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const warning = document.querySelector(".tpr-session-timeout-warning[data-session-timeout-enabled='true']");
-    if (!warning) {
-        return;
-    }
 
-    const overlay = document.querySelector(".tpr-session-timeout-warning-overlay");
-    const extendButton = warning.querySelector("[data-session-extend]");
-    const resetOnActivity = warning.getAttribute("data-session-timeout-reset-on-activity") === "true";
-    const timeoutAttribute = warning.getAttribute("data-session-timeout-ms");
-    const configuredTimeout = Number.parseInt(timeoutAttribute || "", 10);
-    const timeoutMilliseconds = Number.isFinite(configuredTimeout) && configuredTimeout > 0 ? configuredTimeout : 900000;
-    const activityEvents = ["click", "keydown", "pointerdown", "scroll", "touchstart", "mousemove"];
-    const hiddenClass = "govuk-visually-hidden";
-    const mouseMoveThrottleMilliseconds = 1000;
+(function () {
+    "use strict";
 
-    let timeoutId;
-    let warningVisible = false;
-    let lastMouseMoveAt = 0;
+    const warnings = new Map();
 
-    function setHidden(element, isHidden) {
-        if (!element) {
-            return;
+    class WarningController {
+        constructor(dialog) {
+            this.dialog = dialog;
+            this.previouslyFocused = null;
+            this.error = dialog.querySelector(".govuk-error-message[role='alert']");
+
+            dialog.addEventListener("cancel", function (event) {
+                event.preventDefault();
+            });
         }
 
-        element.classList.toggle(hiddenClass, isHidden);
-    }
-
-    function showSessionTimeoutWarning() {
-        setHidden(warning, false);
-        setHidden(overlay, false);
-        warningVisible = true;
-        warning.focus();
-    }
-
-    function scheduleSessionTimeoutWarning() {
-        if (timeoutId) {
-            window.clearTimeout(timeoutId);
-        }
-
-        timeoutId = window.setTimeout(showSessionTimeoutWarning, timeoutMilliseconds);
-    }
-
-    function resetSessionTimeoutTimer() {
-        setHidden(warning, true);
-        setHidden(overlay, true);
-        warningVisible = false;
-        scheduleSessionTimeoutWarning();
-    }
-
-    function onUserActivity(event) {
-        if (!resetOnActivity || warningVisible) {
-            return;
-        }
-
-        if (event && event.type === "mousemove") {
-            const now = Date.now();
-            if (now - lastMouseMoveAt < mouseMoveThrottleMilliseconds) {
+        show() {
+            if (this.dialog.open) {
                 return;
             }
 
-            lastMouseMoveAt = now;
-        }
-
-        scheduleSessionTimeoutWarning();
-    }
-
-    async function extendSession() {
-        const url = extendButton ? extendButton.getAttribute("data-session-extend-url") : null;
-        if (!url) {
-            resetSessionTimeoutTimer();
-            return;
-        }
-
-        try {
-            const response = await fetch(url, {
-                method: "POST",
-                credentials: "same-origin"
-            });
-
-            if (response.ok) {
-                resetSessionTimeoutTimer();
+            this.previouslyFocused = document.activeElement;
+            this.clearError();
+            this.dialog.showModal(); 
+            const heading = this.dialog.querySelector("h2[tabindex='-1']");
+            if (heading) {
+                heading.focus();
             }
         }
-        catch (error) {
-            console.error("Failed to extend session timeout", error);
+
+        hide() {
+            if (!this.dialog.open) {
+                return;
+            }
+
+            this.dialog.close();
+            this.clearError();
+            const previous = this.previouslyFocused;
+            this.previouslyFocused = null;
+            if (previous && previous.isConnected && typeof previous.focus === "function") {
+                previous.focus();
+            }
+        }
+
+        setError(message) {
+            if (!this.error) {
+                return;
+            }
+            this.error.textContent = message;
+            this.error.hidden = !message;
+        }
+
+        clearError() {
+            this.setError("");
         }
     }
 
-    if (resetOnActivity) {
-        activityEvents.forEach(function (eventName) {
-            document.addEventListener(eventName, onUserActivity);
+    function initialise() {
+        document.querySelectorAll("dialog[data-tpr-session-timeout='true']").forEach(function (dialog) {
+            if (!dialog.id || warnings.has(dialog.id)) {
+                return;
+            }
+            warnings.set(dialog.id, new WarningController(dialog));
         });
+
+        document.dispatchEvent(new CustomEvent("tpr:session-timeout:ready"));
     }
 
-    if (extendButton) {
-        extendButton.addEventListener("click", function (event) {
-            event.preventDefault();
-            void extendSession();
-        });
-    }
+    window.TprSessionTimeoutWarning = Object.freeze({
+        get: function (id) {
+            return warnings.get(id) || null;
+        },
+        show: function (id) {
+            const controller = warnings.get(id);
+            if (controller) controller.show();
+        },
+        hide: function (id) {
+            const controller = warnings.get(id);
+            if (controller) controller.hide();
+        },
+        setError: function (id, message) {
+            const controller = warnings.get(id);
+            if (controller) controller.setError(message);
+        }
+    });
 
-    resetSessionTimeoutTimer();
-});
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initialise, { once: true });
+    } else {
+        initialise();
+    }
+})();

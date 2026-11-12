@@ -1,10 +1,26 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model TprSessionTimeOutModel
 @using ThePensionsRegulator.Frontend.Models
-
-<div id="tpr-session-timeout" class="tpr-session-timeout-warning@(Model.EnableClientSideSessionTimeout ? " govuk-visually-hidden" : string.Empty)" role="alertdialog" aria-labelledby="tpr-session-timeout-title" aria-describedby="tpr-session-timeout-description" tabindex="-1" data-module="govuk-modal" data-session-timeout-enabled="@(Model.EnableClientSideSessionTimeout ? "true" : "false")" data-session-timeout-ms="@Model.SessionTimeoutMilliseconds" data-session-timeout-reset-on-activity="@(Model.ResetTimeoutCountdownOnActivity ? "true" : "false")">
-    <h2 id="tpr-session-timeout-title" class="govuk-heading-m">@Model.Title</h2>
-    <div id="tpr-session-timeout-description" class="govuk-body">
+@model TprSessionTimeOutModel
+@{
+    var id = string.IsNullOrWhiteSpace(Model.Id)
+        ? $"tpr-session-timeout-{Guid.NewGuid():N}"
+        : Model.Id;
+    var titleId = $"{id}-title";
+    var descriptionId = $"{id}-description";
+    var errorId = $"{id}-error";
+    var hasSecondaryAction = Model.DisplaySecondaryAction
+        && !string.IsNullOrWhiteSpace(Model.SecondaryActionText)
+        && !string.IsNullOrWhiteSpace(Model.SecondaryActionUrl);
+}
+<dialog id="@id"
+        class="tpr-session-timeout-warning@(Model.RenderInline ? " tpr-session-timeout-warning--inline" : string.Empty)"
+        role="@(Model.RenderInline ? "dialog" : "alertdialog")"
+        aria-labelledby="@titleId"
+        aria-describedby="@descriptionId @errorId"
+        open="@Model.RenderInline"
+        data-tpr-session-timeout="@(Model.RenderInline ? null : "true")">
+    <h2 id="@titleId" class="govuk-heading-m" tabindex="-1">@Model.Title</h2>
+    <div id="@descriptionId" class="govuk-body">
         @if (Model.ContentHtml is not null)
         {
             @Model.ContentHtml
@@ -13,18 +29,25 @@
         {
             <p>@Model.Content</p>
         }
-
-        @if (Model.DisplayPrimaryAction && !string.IsNullOrWhiteSpace(Model.PrimaryActionText))
-        {
-            <button type="button" class="govuk-button" data-module="govuk-button" data-session-extend data-session-extend-url="@Model.PrimaryActionUrl">@Model.PrimaryActionText</button>
-        }
-
-        @if (Model.DisplaySecondaryAction && !string.IsNullOrWhiteSpace(Model.SecondaryActionText))
-        {
-            <div>
-                <a class="govuk-link" href="@Model.SecondaryActionUrl">@Model.SecondaryActionText</a>
-            </div>
-        }
     </div>
-</div>
-<div id="tpr-timeout-overlay" class="tpr-session-timeout-warning-overlay govuk-visually-hidden"></div>
+
+    <p id="@errorId" class="govuk-error-message" role="alert" hidden></p>
+
+    @if (Model.DisplayPrimaryAction && !string.IsNullOrWhiteSpace(Model.PrimaryActionText))
+    {
+        <button type="button"
+                class="govuk-button"
+                data-module="govuk-button"
+                data-session-timeout-primary
+                data-session-extend-url="@Model.PrimaryActionUrl">
+            @Model.PrimaryActionText
+        </button>
+    }
+
+    @if (hasSecondaryAction)
+    {
+        <div>
+            <a class="govuk-link" href="@Model.SecondaryActionUrl">@Model.SecondaryActionText</a>
+        </div>
+    }
+</dialog>

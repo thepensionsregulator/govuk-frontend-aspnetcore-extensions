@@ -3,40 +3,52 @@
 @using ThePensionsRegulator.Frontend.Services
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Web.Common
-@using Umbraco.Cms.Web.Common.PublishedModels
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SessionTimeoutPreview>
 @inject UmbracoHelper Umbraco
 @inject IPublishedValueFallback publishedValueFallback
-@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
 @section head {
     <title>@Model.Name</title>
     <link rel="stylesheet" href="~/css/session-timeout-preview.css" asp-append-version="true" />
 }
 @{
     var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
-    var selectedMessageKey = Context?.Request?.Query["messageKey"].ToString();
-    var messages = SessionTimeoutMessagesBuilder.Build(
-        settings,
-        publishedValueFallback,
-        enableClientSideSessionTimeout: true,
-        sessionTimeoutMilliseconds: 3000,
-        resetTimeoutCountdownOnActivity: true);
-
+    var selectedMessageKey = Context.Request.Query["messageKey"].ToString();
+    var messages = SessionTimeoutMessagesBuilder.Build(settings, publishedValueFallback);
     var selected = TprSessionTimeOutMessageSelector.SelectByKey(messages, selectedMessageKey);
+    if (selected != null)
+    {
+        selected.Id = "tpr-session-timeout-preview";
+    }
 }
-
 <div class="govuk-width-container">
-    <p class="govuk-body tpr-session-timeout-preview__back-link"><a class="govuk-link" href="/session-timeout">Back to session-timeout variants list</a></p>
-
+    <p class="govuk-body tpr-session-timeout-preview__back-link">
+        <a class="govuk-link" href="/session-timeout">Back to session-timeout variants list</a>
+    </p>
+    <p class="govuk-body">This preview opens the modal after three seconds. It does not renew a real session.</p>
     @if (selected != null)
     {
         <partial name="TPR/TPRSessionTimeOutWarning" model="selected" />
     }
     else
     {
-        <div class="govuk-warning-text">
-            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-            <strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>No session-timeout message variants are configured.</strong>
-        </div>
+        <p class="govuk-body">No message matches the selected key, or no variants are configured.</p>
     }
 </div>
+@if (selected != null)
+{
+    <script>
+        (function () {
+            function startPreview() {
+                window.setTimeout(function () {
+                    window.TprSessionTimeoutWarning.show("tpr-session-timeout-preview");
+                }, 3000);
+            }
+            if (window.TprSessionTimeoutWarning) {
+                startPreview();
+            } else {
+                document.addEventListener("tpr:session-timeout:ready", startPreview, { once: true });
+            }
+        })();
+    </script>
+}

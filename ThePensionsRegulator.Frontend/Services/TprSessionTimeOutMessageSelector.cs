@@ -6,25 +6,26 @@ namespace ThePensionsRegulator.Frontend.Services
 {
     public static class TprSessionTimeOutMessageSelector
     {
-        public static TprSessionTimeOutModel? SelectByKey(IEnumerable<TprSessionTimeOutModel> messages, string? messageKey)
+        public static TprSessionTimeOutModel? SelectByKey(
+            IEnumerable<TprSessionTimeOutModel> messages,
+            string? messageKey)
         {
             ArgumentNullException.ThrowIfNull(messages);
 
-            TprSessionTimeOutModel? fallback = null;
-
+            TprSessionTimeOutModel? first = null;
             foreach (var message in messages)
             {
-                if (message is null) { continue; }
+                if (message is null) continue;
+                first ??= message;
 
-                fallback ??= message;
-
-                if (!string.IsNullOrWhiteSpace(messageKey) && string.Equals(message.MessageKey, messageKey, StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(messageKey)
+                    && string.Equals(message.MessageKey, messageKey, StringComparison.OrdinalIgnoreCase))
                 {
                     return message;
                 }
             }
 
-            return fallback;
+            return string.IsNullOrWhiteSpace(messageKey) ? first : null;
         }
     }
 }

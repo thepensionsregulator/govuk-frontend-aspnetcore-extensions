@@ -1,8 +1,3 @@
 .tpr-session-timeout-preview__back-link {
-    background: #fff;
-    left: 0;
-    padding: 10px 15px;
-    position: fixed;
-    top: 0;
-    z-index: 1003;
+    margin-top: 1rem;
 }

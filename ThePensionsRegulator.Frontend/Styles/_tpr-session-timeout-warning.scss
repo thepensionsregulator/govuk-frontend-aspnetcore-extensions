@@ -5,39 +5,37 @@
     background-color: $tpr-colour-white;
     border: 5px solid $tpr-colour-black;
     box-sizing: border-box;
-    left: 50%;
-    max-height: 100%;
-    max-width: 100%;
+    color: $tpr-colour-black;
+    max-height: calc(100vh - 2rem);
+    max-height: calc(100dvh - 2rem);
+    max-width: calc(100vw - 2rem);
     overflow: auto;
     padding: 30px;
-    position: fixed;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 280px;
-    z-index: 1002;
+    width: 525px;
+    &::backdrop {
+        background-color: rgba($tpr-colour-black, .8);
+    }
 
-    &:focus {
+    &:focus,
+    h2:focus {
         outline: $govuk-focus-width solid $tpr-colour-tangerine-yellow;
         outline-offset: 0;
     }
-}
-
-.tpr-session-timeout-warning-overlay {
-    background-color: $tpr-colour-black;
-    filter: alpha(opacity=80);
-    height: 100%;
-    left: 0;
-    opacity: .8;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1001;
-}
-
-
-@media (min-width: 40.0625em) {
-    .tpr-session-timeout-warning {
+    &--inline {
+        position: static;
+        margin: 0;
+        max-height: none;
         max-width: 100%;
-        width: 525px;
+    }
+
+    .govuk-error-message[hidden] {
+        display: none;
+    }
+}
+
+@media (max-width: 40.0625em) {
+    .tpr-session-timeout-warning {
+        width: 280px;
+        padding: 20px;
     }
 }

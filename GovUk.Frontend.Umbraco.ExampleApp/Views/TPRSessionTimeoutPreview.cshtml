@@ -12,6 +12,7 @@
     <title>@Model.Name</title>
     <link rel="stylesheet" href="~/css/session-timeout-preview.css" asp-append-version="true" />
 }
+@section secondary_navigation {}
 @{
     var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
     var selectedMessageKey = Context?.Request?.Query["messageKey"].ToString();
@@ -20,6 +21,9 @@
 }
 
 <div class="govuk-width-container">
+    <p class="govuk-body">
+        <a class="govuk-link" href="/session-timeout">Back to session-timeout variants</a>
+    </p>
     @if (selected != null)
     {
         <partial name="TPR/TPRSessionTimeOutWarning" model="selected" />

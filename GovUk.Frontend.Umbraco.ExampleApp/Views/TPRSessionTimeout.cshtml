@@ -52,7 +52,7 @@
 
 }
 
-<div class="govuk-width-container">
+<div class="govuk-width-container" data-tpr-session-timeout-display="inline">
 	<div class="govuk-warning-text">
 		<span class="govuk-warning-text__icon" aria-hidden="true">!</span>
 		<strong class="govuk-warning-text__text">
@@ -68,7 +68,7 @@
 			<div class="session-timeout-variants__item">
 				<div class="govuk-body govuk-!-margin-bottom-2">
 					<strong>Message key:</strong> @message.MessageKey
-					<a class="govuk-link govuk-!-margin-left-2" href="/session-timeout-preview?messageKey=@message.MessageKey">Preview</a>
+					<a class="govuk-link govuk-!-margin-left-2" href="/session-timeout-preview?messageKey=@message.MessageKey" target="_blank">Preview (opens in a new tab)</a>
 				</div>
 				<partial name="TPR/TPRSessionTimeOutWarning" model="message" />
 			</div>
@@ -82,3 +82,7 @@
 		</div>
 	}
 </div>
+
+@section scripts {
+	<script src="~/js/session-timeout-demo.js" type="module" asp-append-version="true"></script>
+}

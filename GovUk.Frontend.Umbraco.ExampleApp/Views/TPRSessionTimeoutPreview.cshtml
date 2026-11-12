@@ -56,23 +56,6 @@
 }
 
 <div class="govuk-width-container">
-    <p class="govuk-body tpr-session-timeout-preview__back-link"><a class="govuk-link" href="/session-timeout">Back to session-timeout variants list</a></p>
-
-    @if (string.IsNullOrWhiteSpace(selectedMessageKey))
-    {
-        <div class="govuk-warning-text">
-            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-            <strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Missing message key. Showing the default configured message variant.</strong>
-        </div>
-    }
-    else if (selected == null || !messages.Any(m => string.Equals(m.MessageKey, selectedMessageKey, System.StringComparison.OrdinalIgnoreCase)))
-    {
-        <div class="govuk-warning-text">
-            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-            <strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>Unknown message key '@selectedMessageKey'. Showing the default configured message variant.</strong>
-        </div>
-    }
-
     @if (selected != null)
     {
         <partial name="TPR/TPRSessionTimeOutWarning" model="selected" />
@@ -85,3 +68,7 @@
         </div>
     }
 </div>
+
+@section scripts {
+    <script src="~/js/session-timeout-demo.js" type="module" asp-append-version="true"></script>
+}

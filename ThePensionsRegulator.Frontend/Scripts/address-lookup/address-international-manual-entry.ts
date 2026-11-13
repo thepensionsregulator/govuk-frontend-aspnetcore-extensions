@@ -13,13 +13,13 @@ export interface AddressInternationalManualEntryOptions {
 
 export function renderAddressInternationalManualEntry(options: AddressInternationalManualEntryOptions) : HTMLElement {
     const div = document.createElement("div");
-    const addressLine1 = createTextInputFormGroup({ labelText: 'Address line 1', input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large" }});
-    const addressLine2 = createTextInputFormGroup({ labelText: 'Address line 2', input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large" }});
-    const addressLine3 = createTextInputFormGroup({ labelText: 'Address line 3', input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large" }});
-    const postTown = createTextInputFormGroup({ labelText: 'Town or City', input: { id: 'post-town', name: 'post-town', type: "text", width: "x-large" }});
-    const countyStateProvince = createTextInputFormGroup({ labelText: 'County / State / Province', input: { id: 'county-state-province', name: 'county-state-province', type: "text", width: "x-large" }});
+    const addressLine1 = createTextInputFormGroup({ labelText: 'Address line 1', input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large", attributes: { autocomplete: 'address-line1' } }});
+    const addressLine2 = createTextInputFormGroup({ labelText: 'Address line 2 (optional)', input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large", attributes: { autocomplete: 'address-line2' } }});
+    const addressLine3 = createTextInputFormGroup({ labelText: 'Address line 3 (optional)', input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large", attributes: { autocomplete: 'address-line3' } }});
+    const postTown = createTextInputFormGroup({ labelText: 'Town or City', input: { id: 'post-town', name: 'post-town', type: "text", width: "x-large", attributes: { autocomplete: 'address-level2' } }});
+    const countyStateProvince = createTextInputFormGroup({ labelText: 'County / State / Province', input: { id: 'county-state-province', name: 'county-state-province', type: "text", width: "x-large", attributes: { autocomplete: 'address-level1' } }});
     const country = createSelectFormGroup({ labelText: 'Country', select: { id: 'country', name: 'country', width: "x-large", options: [{ value: '', text: 'Select a country' }, ...options.countries] }});
-    const postcode = createTextInputFormGroup({ labelText: 'Postcode', input: { id: 'postcode', name: 'postcode', type: "text", width: "x-large" }});
+    const postcode = createTextInputFormGroup({ labelText: 'Postcode', input: { id: 'postcode', name: 'postcode', type: "text", width: "x-large", attributes: { autocomplete: 'postal-code' } }});
 
     const fieldset = createFieldset({ legendText: 'Enter an international address', children: [addressLine1, addressLine2, addressLine3, postTown, countyStateProvince, country, postcode]})
     

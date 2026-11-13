@@ -42,16 +42,34 @@ describe("renderAddressInternationalManualEntry", () => {
 
 	it("renders the international entry fields, country options, and secondary actions", () => {
 		const { component } = createComponent();
-		const country = component.querySelector<HTMLSelectElement>("#country");
 		const confirmButton = component.querySelector<HTMLButtonElement>("button");
 		const backLink = component.querySelector<HTMLAnchorElement>("nav a");
+		
+		const addressLine1 = component.querySelector<HTMLInputElement>("#address-line-1");
+		expect(addressLine1).toHaveClass("govuk-input", "govuk-input--width-20");
+		expect(addressLine1).toHaveAttribute("autocomplete", "address-line1");
 
-		expect(component.querySelector("#address-line-1")).toHaveClass("govuk-input", "govuk-input--width-20");
-		expect(component.querySelector("#address-line-2")).toHaveClass("govuk-input", "govuk-input--width-20");
-		expect(component.querySelector("#address-line-3")).toHaveClass("govuk-input", "govuk-input--width-20");
-		expect(component.querySelector("#post-town")).toHaveClass("govuk-input", "govuk-input--width-20");
-		expect(component.querySelector("#county-state-province")).toHaveClass("govuk-input", "govuk-input--width-20");
-		expect(component.querySelector("#postcode")).toHaveClass("govuk-input", "govuk-input--width-20");
+		const addressLine2 = component.querySelector<HTMLInputElement>("#address-line-2");
+		expect(addressLine2).toHaveClass("govuk-input", "govuk-input--width-20");
+		expect(addressLine2).toHaveAttribute("autocomplete", "address-line2");
+		
+		const addressLine3 = component.querySelector<HTMLInputElement>("#address-line-3");
+		expect(addressLine3).toHaveClass("govuk-input", "govuk-input--width-20");
+		expect(addressLine3).toHaveAttribute("autocomplete", "address-line3");
+		
+		const postTown = component.querySelector<HTMLInputElement>("#post-town");
+		expect(postTown).toHaveClass("govuk-input", "govuk-input--width-20");
+		expect(postTown).toHaveAttribute("autocomplete", "address-level2");
+		
+		const countyStateProvince = component.querySelector<HTMLInputElement>("#county-state-province");
+		expect(countyStateProvince).toHaveClass("govuk-input", "govuk-input--width-20");
+		expect(countyStateProvince).toHaveAttribute("autocomplete", "address-level1");
+		
+		const postcode = component.querySelector<HTMLInputElement>("#postcode");
+		expect(postcode).toHaveClass("govuk-input", "govuk-input--width-20");
+		expect(postcode).toHaveAttribute("autocomplete", "postal-code");
+		
+		const country = component.querySelector<HTMLSelectElement>("#country");
 		expect(country).toHaveClass("govuk-select", "govuk-input--width-20");
 		expect(Array.from(country!.options).map(option => [option.value, option.text])).toEqual([
 			["", "Select a country"],

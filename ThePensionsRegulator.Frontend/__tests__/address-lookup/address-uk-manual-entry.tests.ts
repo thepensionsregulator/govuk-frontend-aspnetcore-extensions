@@ -39,11 +39,17 @@ describe("renderAddressUkManualEntry", () => {
 
         expect(addressLine1).toHaveAttribute("name", "address-line-1");
         expect(addressLine1).toHaveClass("govuk-input", "govuk-input--width-20");
+        expect(addressLine1).toHaveAttribute("autocomplete", "address-line1");
         expect(addressLine2).toHaveClass("govuk-input", "govuk-input--width-20");
+        expect(addressLine2).toHaveAttribute("autocomplete", "address-line2");
         expect(addressLine3).toHaveClass("govuk-input", "govuk-input--width-20");
+        expect(addressLine3).toHaveAttribute("autocomplete", "address-line3");
         expect(townOrCity).toHaveClass("govuk-input", "govuk-input--width-10");
+        expect(townOrCity).toHaveAttribute("autocomplete", "address-level2");
         expect(county).toHaveClass("govuk-input", "govuk-input--width-10");
+        expect(county).toHaveAttribute("autocomplete", "address-level1");
         expect(postcode).toHaveClass("govuk-input", "govuk-input--width-5");
+        expect(postcode).toHaveAttribute("autocomplete", "postal-code");
 
         expect(confirmButton).toHaveTextContent("Confirm address");
         expect(confirmButton).toHaveClass("govuk-button", "govuk-button--secondary");

@@ -15,12 +15,12 @@ export interface AddressUkManualEntryOptions {
 
 export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions): HTMLElement {    
     const div = document.createElement('div');
-    const addressLine1 = createTextInputFormGroup({ labelText: 'Address line 1', input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large" } });
-    const addressLine2 = createTextInputFormGroup({ labelText: 'Address line 2 (optional)', input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large" } });
-    const addressLine3 = createTextInputFormGroup({ labelText: 'Address line 3 (optional)', input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large" } });
-    const townOrCity = createTextInputFormGroup({ labelText: 'Town or city', input: { id: 'town-or-city', name: 'town-or-city', type: "text", width: "large" } });
-    const county = createTextInputFormGroup({ labelText: 'County (optional)', input: { id: 'county', name: 'county', type: "text", width: "large" } });
-    const postcode = createTextInputFormGroup({ labelText: 'Postcode', input: { id: 'postcode', name: 'postcode', type: "text", width: "medium" } });
+    const addressLine1 = createTextInputFormGroup({ labelText: 'Address line 1', input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large", attributes: { autocomplete: "address-line1"} } });
+    const addressLine2 = createTextInputFormGroup({ labelText: 'Address line 2 (optional)', input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large", attributes: { autocomplete: "address-line2"} } });
+    const addressLine3 = createTextInputFormGroup({ labelText: 'Address line 3 (optional)', input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large", attributes: { autocomplete: "address-line3"} } });
+    const townOrCity = createTextInputFormGroup({ labelText: 'Town or city', input: { id: 'town-or-city', name: 'town-or-city', type: "text", width: "large", attributes: { autocomplete: "address-level2"} } });
+    const county = createTextInputFormGroup({ labelText: 'County (optional)', input: { id: 'county', name: 'county', type: "text", width: "large", attributes: { autocomplete: "address-level1"} } });
+    const postcode = createTextInputFormGroup({ labelText: 'Postcode', input: { id: 'postcode', name: 'postcode', type: "text", width: "medium", attributes: { autocomplete: "postal-code"} } });
 
     const fieldset = createFieldset({ legendText: 'Enter new Uk address', children: [addressLine1, addressLine2, addressLine3, townOrCity, county, postcode] });
 

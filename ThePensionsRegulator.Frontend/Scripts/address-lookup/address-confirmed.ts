@@ -20,7 +20,8 @@ export function renderConfirmedAddress(address: ConfirmedAddress, onBackToSearch
     }
 }
 
-function createAddressParagraph(address: ConfirmedAddress): HTMLParagraphElement { 
+function createAddressParagraph(address: ConfirmedAddress): HTMLParagraphElement {
+    console.log("Creating address paragraph for:", address);
     const paragraph = document.createElement("p");
     paragraph.classList.add("govuk-body");
     paragraph.tabIndex = -1;
@@ -37,7 +38,7 @@ function createAddressParagraph(address: ConfirmedAddress): HTMLParagraphElement
         address.postCounty,
         ...(address.countryId !== "GB" && address.countryName ? [address.countryName] : []),
         address.postcode
-    ].filter(line => line !== undefined);
+    ].filter(line => line !== undefined).filter(line => line !== "");
 
     filteredAddress.forEach((addressLine, index) => {
         if (addressLine === address.postcode) {

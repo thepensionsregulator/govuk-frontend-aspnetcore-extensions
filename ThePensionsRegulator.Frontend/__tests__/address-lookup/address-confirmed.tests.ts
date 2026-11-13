@@ -48,6 +48,24 @@ describe("renderConfirmedAddress", () => {
         expect(paragraph?.querySelectorAll("br")).toHaveLength(1);
     });
 
+    it("should omit optional fields when they are empty string without adding blank lines", () => {
+        const address: ConfirmedAddress = {
+            addressLine1: "10 High Street",
+            addressLine2: "",
+            addressLine3: "",
+            postTown: "",
+            postCounty: "",
+            countryId: "GB",
+            postcode: "SW1A 2AA",
+            uprnReference: "100000000001"
+        };
+
+        const paragraph = renderConfirmedAddress(address, jest.fn()).querySelector("p");
+
+        expect(paragraph).toHaveTextContent("10 High StreetSW1A 2AA");
+        expect(paragraph?.querySelectorAll("br")).toHaveLength(1);
+    });
+
     it.each([
         { countryId: "GB", countryName: "United Kingdom", expectedCountry: false },
         { countryId: "FR", countryName: "France", expectedCountry: true }

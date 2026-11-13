@@ -1,0 +1,42 @@
+﻿@using System.Linq
+@using GovUk.Frontend.Umbraco.ExampleApp.Services
+@using ThePensionsRegulator.Frontend.Services
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Web.Common
+@using Umbraco.Cms.Web.Common.PublishedModels
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.SessionTimeoutPreview>
+@inject UmbracoHelper Umbraco
+@inject IPublishedValueFallback publishedValueFallback
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
+@section head {
+    <title>@Model.Name</title>
+    <link rel="stylesheet" href="~/css/session-timeout-preview.css" asp-append-version="true" />
+}
+@section secondary_navigation {}
+@{
+    var settings = Umbraco.ContentAtRoot().SingleOrDefault(x => x.ContentType.Alias == "settings");
+    var selectedMessageKey = Context?.Request?.Query["messageKey"].ToString();
+    var messages = SessionTimeoutDemoMessages.GetMessages(settings, publishedValueFallback);
+    var selected = TprSessionTimeOutMessageSelector.SelectByKey(messages, selectedMessageKey);
+}
+
+<div class="govuk-width-container">
+    <p class="govuk-body">
+        <a class="govuk-link" href="/session-timeout">Back to session-timeout variants</a>
+    </p>
+    @if (selected != null)
+    {
+        <partial name="TPR/TPRSessionTimeOutWarning" model="selected" />
+    }
+    else
+    {
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+            <strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>No session-timeout message variants are configured.</strong>
+        </div>
+    }
+</div>
+
+@section scripts {
+    <script src="~/js/session-timeout-demo.js" type="module" asp-append-version="true"></script>
+}

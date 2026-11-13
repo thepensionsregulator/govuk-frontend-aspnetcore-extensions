@@ -1,0 +1,24 @@
+/*Demo page styles*/
+.session-timeout-variants__item {
+    border: 1px solid #b1b4b6;
+    margin-bottom: 2rem;
+    padding: 1rem;
+}
+
+.session-timeout-variants__item .tpr-session-timeout-warning {
+    position: static;
+    transform: none;
+    left: auto;
+    top: auto;
+    width: 280px;
+    max-width: 100%;
+    max-height: none;
+    margin: 0 auto;
+    z-index: auto;
+}
+
+@media (min-width: 40.0625em) {
+    .session-timeout-variants__item .tpr-session-timeout-warning {
+        width: 525px;
+    }
+}

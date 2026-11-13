@@ -1,0 +1,31 @@
+@import '_tpr-variables.scss';
+@import 'govuk/base';
+
+.tpr-session-timeout-warning {
+    background-color: $tpr-colour-white;
+    border: 5px solid $tpr-colour-black;
+    box-sizing: border-box;
+    left: 50%;
+    margin: 0;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: auto;
+    padding: 30px;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    z-index: 1002;
+}
+
+.tpr-session-timeout-warning::backdrop {
+    background-color: $tpr-colour-black;
+    opacity: .8;
+}
+
+@media (min-width: 40.0625em) {
+    .tpr-session-timeout-warning {
+        max-width: 100%;
+        width: 525px;
+    }
+}

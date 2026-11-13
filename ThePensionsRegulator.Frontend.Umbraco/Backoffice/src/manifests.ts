@@ -82,6 +82,13 @@ export const manifests: Array<UmbExtensionManifest> = [
         name: "Block editor custom view for 'Section cards' blocks",
         element: () => import('./blocks/views/tpr-section-cards'),
         forContentTypeAlias: 'tprSectionCards'
+    }, 
+    {
+        type: 'blockEditorCustomView',
+        alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprSessionTimeoutVariant',
+        name: "Block editor custom view for 'Session timeout' blocks",
+        element: () => import('./blocks/views/tpr-session-timout'),
+        forContentTypeAlias: 'tprSessionTimeoutVariant'
     },
     {
         type: 'blockEditorCustomView',

@@ -20,6 +20,8 @@ describe("renderConfirmedAddress", () => {
         const paragraph = component.querySelector("p");
 
         expect(paragraph).not.toBeNull();
+        expect(paragraph).toHaveClass("govuk-body");
+        expect(paragraph).toHaveClass("confirmed-address");
         expect(paragraph).toHaveTextContent("10 High StreetFlat 2West EndLondonGreater LondonSW1A 2AA");
         expect(paragraph?.querySelectorAll("br")).toHaveLength(5);
     });

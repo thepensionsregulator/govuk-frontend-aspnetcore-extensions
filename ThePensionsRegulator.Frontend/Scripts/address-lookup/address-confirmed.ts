@@ -21,9 +21,9 @@ export function renderConfirmedAddress(address: ConfirmedAddress, onBackToSearch
 }
 
 function createAddressParagraph(address: ConfirmedAddress): HTMLParagraphElement {
-    console.log("Creating address paragraph for:", address);
     const paragraph = document.createElement("p");
     paragraph.classList.add("govuk-body");
+    paragraph.classList.add("confirmed-address");
     paragraph.tabIndex = -1;
     const context = document.createElement("span");
     context.classList.add("govuk-visually-hidden");

@@ -80,7 +80,7 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
                 break;
             
             case "uk-manual-entry":
-                container.appendChild(renderAddressUkManualEntry({
+                const ukManualEntryView = renderAddressUkManualEntry({
                     content: options.content,
                     onAddressSubmitted: (address) => stateMachine.dispatch({ status: "uk-manual-address-submitted", address}),
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })

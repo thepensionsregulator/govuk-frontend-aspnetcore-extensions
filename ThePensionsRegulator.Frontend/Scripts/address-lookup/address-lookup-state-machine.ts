@@ -58,7 +58,7 @@ export class AddressLookupStateMachine {
             return { status: "confirmed", address: mappedAddress };
         }
 
-        return { status: "search" };
+        return { status: "search", from: "initial" };
     }
 
 

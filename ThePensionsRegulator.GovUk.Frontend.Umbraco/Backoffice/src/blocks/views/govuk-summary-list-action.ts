@@ -9,11 +9,18 @@ interface IGovUkSummaryListActionContent extends UmbBlockDataType {
     text: string;
 }
 
+interface IGovUkSummaryListActionSettings extends UmbBlockDataType {
+    cssClasses: string;
+}
+
 @customElement('govuk-summary-list-action')
 export class GovUkSummaryListActionView extends UmbElementMixin(LitElement) implements UmbBlockEditorCustomViewElement {
 
     @property({ attribute: false })
     content?: IGovUkSummaryListActionContent;
+
+    @property({ attribute: false })
+    settings?: IGovUkSummaryListActionSettings;
 
     @property({ attribute: false })
     config?: UmbBlockEditorCustomViewConfiguration;
@@ -25,7 +32,7 @@ export class GovUkSummaryListActionView extends UmbElementMixin(LitElement) impl
         return html`
         <link rel="stylesheet" href="/css/govuk-umbraco-backoffice.css?v=${PACKAGE_VERSION}" />
         <a href="${this.config?.editContentPath ?? ''}" class="backoffice-block-view">
-            ${renderSummaryListAction(this.content?.text)}
+            ${renderSummaryListAction(this.content?.text, this.settings?.cssClasses)}
         </a>`;
     }
 }

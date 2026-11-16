@@ -20,7 +20,7 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
     const addressLine3 = createTextInputFormGroup({ labelText: 'Address line 3 (optional)', input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large", attributes: { autocomplete: "address-line3"} } });
     const townOrCity = createTextInputFormGroup({ labelText: 'Town or city', input: { id: 'town-or-city', name: 'town-or-city', type: "text", width: "large", attributes: { autocomplete: "address-level2"} } });
     const county = createTextInputFormGroup({ labelText: 'County (optional)', input: { id: 'county', name: 'county', type: "text", width: "large", attributes: { autocomplete: "address-level1"} } });
-    const postcode = createTextInputFormGroup({ labelText: 'Postcode', input: { id: 'postcode', name: 'postcode', type: "text", width: "medium", attributes: { autocomplete: "postal-code"} } });
+    const postcode = createTextInputFormGroup({ labelText: 'Postcode', input: { id: 'postcode', name: 'postcode', type: "text", width: "large", attributes: { autocomplete: "postal-code"} } });
 
     const fieldset = createFieldset({ legendText: 'Enter new Uk address', children: [addressLine1, addressLine2, addressLine3, townOrCity, county, postcode] });
 

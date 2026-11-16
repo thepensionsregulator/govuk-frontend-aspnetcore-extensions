@@ -66,7 +66,7 @@ describe("renderAddressInternationalManualEntry", () => {
 		expect(countyStateProvince).toHaveAttribute("autocomplete", "address-level1");
 		
 		const postcode = component.querySelector<HTMLInputElement>("#postcode");
-		expect(postcode).toHaveClass("govuk-input", "govuk-input--width-20");
+		expect(postcode).toHaveClass("govuk-input", "govuk-input--width-10");
 		expect(postcode).toHaveAttribute("autocomplete", "postal-code");
 		
 		const country = component.querySelector<HTMLSelectElement>("#country");

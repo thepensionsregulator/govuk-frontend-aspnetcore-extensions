@@ -170,6 +170,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 searchInput.Attributes.Add("placeholder", tprHeaderBar.SearchPlaceholderText);
             }
             searchInput.Attributes.Add("type", "search");
+            searchInput.Attributes.Add("aria-label", "search input");
             if (!string.IsNullOrEmpty(tprHeaderBar.SearchInputName))
             {
                 searchInput.Attributes.Add("name", tprHeaderBar.SearchInputName);

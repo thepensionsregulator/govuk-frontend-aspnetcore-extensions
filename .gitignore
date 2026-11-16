@@ -149,6 +149,8 @@ coverage*.info
 
 # Jest code coverage results
 coverage/
+*.tsbuildinfo
+ThePensionsRegulator.GovUk.Frontend/types/
 
 # Visual Studio code coverage results
 *.coverage

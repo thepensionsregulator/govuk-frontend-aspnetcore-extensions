@@ -12,7 +12,7 @@ export function renderConfirmedAddress(options: ConfirmedAddressOptions): HTMLEl
     const div = document.createElement("div");
 
     div.appendChild(createAddressParagraph(options.address));
-    createHiddenAddressInputs(options.address, options.fields).forEach(input => div.appendChild(input));    
+    createHiddenAddressInputs(options.address, options.fields).forEach(input => div.appendChild(input));
 
     const backToSearchLink = createLink({labelText: options.content.changeAddressLabel});
     backToSearchLink.addEventListener("click", handleBackToSearch);

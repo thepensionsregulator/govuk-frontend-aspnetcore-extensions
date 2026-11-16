@@ -10,11 +10,13 @@ import { clearFormGroupError, showFormGroupError } from '/ThePensionsRegulator.G
 
 export function createAddressLookup(options: AddressLookupOptions) : AddressLookupInstance {
     const container = document.createElement("div");
+    const content = options.content;
+    const fields = options.fields;
     const addressSearchService = new FetchAddressSearchService({
         searchEndpoint: options.searchEndpoint,
     });
     const ukCountryId = options.countries?.find(x => x.name === "United Kingdom" || x.name === "UK")?.value;
-    const stateMachine = new AddressLookupStateMachine(options.content, ukCountryId, options.initialAddress);
+    const stateMachine = new AddressLookupStateMachine(content, ukCountryId, options.initialAddress);
     stateMachine.subscribe(render);
     render(stateMachine.getState());
 
@@ -46,7 +48,7 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
                 const searchView = renderAddressSearch({
                     searchService: addressSearchService, 
                     criteria: state.criteria,
-                    content: options.content,
+                    content,
                     onSearchSuccess: (results, criteria) => stateMachine.dispatch({ status: "search-succeeded", addresses: results, criteria: criteria }),
                     onInternationalEntryRequested: () => stateMachine.dispatch({ status: "international-manual-entry-requested" })
                 });
@@ -59,7 +61,7 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
                 const resultsView = renderAddressResults({
                     addresses: state.addresses,
                     criteria: state.criteria,
-                    content: options.content,
+                    content,
                     onAddressSelected: (address) => stateMachine.dispatch({ status: "address-selected", address }),
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" }),
                     onUkManualEntryRequested: () => stateMachine.dispatch({ status: "uk-manual-entry-requested" })
@@ -70,8 +72,8 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
             case "confirmed":
                 const confirmedView = renderConfirmedAddress({
                     address: state.address, 
-                    fields: options.fields, 
-                    content: options.content, 
+                    fields,
+                    content,
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })
                 });
                 container.appendChild(confirmedView);
@@ -81,7 +83,7 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
             
             case "uk-manual-entry":
                 const ukManualEntryView = renderAddressUkManualEntry({
-                    content: options.content,
+                    content,
                     onAddressSubmitted: (address) => stateMachine.dispatch({ status: "uk-manual-address-submitted", address}),
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" })
                 });
@@ -93,7 +95,7 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
                     onAddressSubmitted: (address) => stateMachine.dispatch({ status: "international-manual-address-submitted", address}),
                     onBackToSearchRequested: () => stateMachine.dispatch({ status: "back-to-search-requested" }),
                     countries: options.countries || [],
-                    content: options.content,
+                    content,
                 });
                 container.appendChild(manualEntryView);
                 manualEntryView.querySelector<HTMLInputElement>("input")?.focus()
@@ -104,13 +106,13 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
     function getNotConfirmedErrorMessage(state: AddressLookupState): string {
         switch (state.status){
             case "search":
-                return options.content.searchNotConfirmedErrorMessage;
+                return content.searchNotConfirmedErrorMessage;
             case "results":
-                return options.content.resultsNotConfirmedErrorMessage;
+                return content.resultsNotConfirmedErrorMessage;
             case "uk-manual-entry":
-                return options.content.ukManualEntryNotConfirmedErrorMessage;
+                return content.ukManualEntryNotConfirmedErrorMessage;
             case "international-manual-entry":
-                return options.content.internationalManualEntryNotConfirmedErrorMessage;
+                return content.internationalManualEntryNotConfirmedErrorMessage;
             case "confirmed":
                 throw new Error("A confirmed address does not need a submission error");
         }

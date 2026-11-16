@@ -11,7 +11,7 @@ describe("renderConfirmedAddress", () => {
         postTown: "London",
         postCounty: "Greater London",
         countryId: "GB",
-        postCode: "SW1A 2AA",
+        postcode: "SW1A 2AA",
         uprnReference: "100000000001"
     };
 
@@ -20,14 +20,45 @@ describe("renderConfirmedAddress", () => {
         const paragraph = component.querySelector("p");
 
         expect(paragraph).not.toBeNull();
+        expect(paragraph).toHaveClass("govuk-body");
+        expect(paragraph).toHaveClass("confirmed-address");
         expect(paragraph).toHaveTextContent("10 High StreetFlat 2West EndLondonGreater LondonSW1A 2AA");
         expect(paragraph?.querySelectorAll("br")).toHaveLength(5);
+    });
+
+    it("should render a visually hidden context for screen readers, the paragraph should be able to be tabbed to", () => {
+        const component = renderConfirmedAddress(completeAddress, jest.fn());
+        const paragraph = component.querySelector("p");
+
+        expect(paragraph).not.toBeNull();
+        expect(paragraph).toHaveAttribute("tabindex", "-1");
+        const context = paragraph?.querySelector("span.govuk-visually-hidden");
+        expect(context).not.toBeNull();
+        expect(context).toHaveTextContent("Confirmed address:");
     });
 
     it("should omit optional fields without adding blank lines", () => {
         const address: ConfirmedAddress = {
             addressLine1: "10 High Street",
-            postCode: "SW1A 2AA",
+            postcode: "SW1A 2AA",
+            uprnReference: "100000000001"
+        };
+
+        const paragraph = renderConfirmedAddress(address, jest.fn()).querySelector("p");
+
+        expect(paragraph).toHaveTextContent("10 High StreetSW1A 2AA");
+        expect(paragraph?.querySelectorAll("br")).toHaveLength(1);
+    });
+
+    it("should omit optional fields when they are empty string without adding blank lines", () => {
+        const address: ConfirmedAddress = {
+            addressLine1: "10 High Street",
+            addressLine2: "",
+            addressLine3: "",
+            postTown: "",
+            postCounty: "",
+            countryId: "GB",
+            postcode: "SW1A 2AA",
             uprnReference: "100000000001"
         };
 
@@ -46,7 +77,7 @@ describe("renderConfirmedAddress", () => {
             postTown: "Paris",
             countryId,
             countryName,
-            postCode: "75001",
+            postcode: "75001",
             uprnReference: ""
         };
 
@@ -61,15 +92,15 @@ describe("renderConfirmedAddress", () => {
 
     it("should create hidden inputs with the confirmed address field IDs", () => {
         const component = renderConfirmedAddress(completeAddress, jest.fn());
-        const expectedValues = {
-            AddressLine1: "10 High Street",
-            AddressLine2: "Flat 2",
-            AddressLine3: "West End",
-            PostTown: "London",
-            PostCounty: "Greater London",
-            CountryId: "GB",
-            PostCode: "SW1A 2AA",
-            UPRNReference: "100000000001"
+        const expectedValues : ConfirmedAddress = {
+            addressLine1: "10 High Street",
+            addressLine2: "Flat 2",
+            addressLine3: "West End",
+            postTown: "London",
+            postCounty: "Greater London",
+            countryId: "GB",
+            postcode: "SW1A 2AA",
+            uprnReference: "100000000001"
         };
 
         for (const [id, value] of Object.entries(expectedValues)) {
@@ -82,17 +113,17 @@ describe("renderConfirmedAddress", () => {
     it("should omit hidden inputs for absent optional values", () => {
         const address: ConfirmedAddress = {
             addressLine1: "10 High Street",
-            postCode: "SW1A 2AA",
+            postcode: "SW1A 2AA",
             uprnReference: "100000000001"
         };
 
         const component = renderConfirmedAddress(address, jest.fn());
 
-        expect(component.querySelector("#AddressLine2")).toBeNull();
-        expect(component.querySelector("#AddressLine3")).toBeNull();
-        expect(component.querySelector("#PostTown")).toBeNull();
-        expect(component.querySelector("#PostCounty")).toBeNull();
-        expect(component.querySelector("#CountryId")).toBeNull();
+        expect(component.querySelector("#addressLine2")).toBeNull();
+        expect(component.querySelector("#addressLine3")).toBeNull();
+        expect(component.querySelector("#postTown")).toBeNull();
+        expect(component.querySelector("#postCounty")).toBeNull();
+        expect(component.querySelector("#countryId")).toBeNull();
     });
 
     it("should report when the change address link is clicked", () => {

@@ -16,6 +16,7 @@ export interface AddressUkManualEntryOptions {
 }
 
 export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions): HTMLElement {    
+    const content = options.content;
     const div = document.createElement('div');
     const addressLine1 = createTextInputFormGroup({ labelText: 'Address line 1', input: { id: 'address-line-1', name: 'address-line-1', type: "text", width: "x-large", attributes: { autocomplete: "address-line1"} } });
     const addressLine2 = createTextInputFormGroup({ labelText: 'Address line 2 (optional)', input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large", attributes: { autocomplete: "address-line2"} } });
@@ -26,18 +27,18 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
 
     const fieldsetFormGroup = createFieldsetFormGroup({
         id: "address-uk-manual-entry-fieldset",
-        legendText: options.content.ukManualEntryLegend,
+        legendText: content.ukManualEntryLegend,
         children: [addressLine1, addressLine2, addressLine3, townOrCity, county, postcode]
     });
     fieldsetFormGroup.setAttribute("data-address-lookup-submit-error-anchor", "true");
     div.appendChild(fieldsetFormGroup);
 
-    const confirmButton = createButton({ labelText: options.content.confirmAddressLabel, type: 'button', variant: 'secondary' });
+    const confirmButton = createButton({ labelText: content.confirmAddressLabel, type: 'button', variant: 'secondary' });
     submitOnEnter(div, () => confirmButton.click());
     confirmButton.addEventListener("click", handleConfirmAddress);
     div.appendChild(confirmButton);
 
-    const backToSearch = createLink({ labelText: options.content.backToPostcodeSearchLabel});
+    const backToSearch = createLink({ labelText: content.backToPostcodeSearchLabel});
     backToSearch.addEventListener("click", handleBackToSearch);
     div.appendChild(backToSearch);
 
@@ -52,7 +53,7 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
         event.preventDefault();
         const formGroupsByField: Record<keyof UkManualEntryValues, HTMLElement> = { addressLine1, addressLine2, addressLine3, townOrCity, county, postcode };
         Object.values(formGroupsByField).forEach(clearFormGroupError);
-        const validationResult = validateUkManualEntryAddress(readValues(addressLine1, addressLine2, addressLine3, townOrCity, county, postcode), options.content);
+        const validationResult = validateUkManualEntryAddress(readValues(addressLine1, addressLine2, addressLine3, townOrCity, county, postcode), content);
         if (!validationResult.isValid) {
             validationResult.errorMessages.forEach(({ fieldName, message }) => showFormGroupError(formGroupsByField[fieldName], message));
             const form = fieldsetFormGroup.closest("form");

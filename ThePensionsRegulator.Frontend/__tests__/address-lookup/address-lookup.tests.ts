@@ -117,6 +117,7 @@ describe("createAddressLookup", () => {
         const fetchMock = mockFetchResults([]);
         const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
         const component = addressLookupInstance.element;
+        document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         const button = component.querySelector<HTMLButtonElement>("button")!;
         postcodeInput.value = "SW1A 2AA";
@@ -127,6 +128,7 @@ describe("createAddressLookup", () => {
         const [requestedUrl] = fetchMock.mock.calls[0] as unknown as [URL, RequestInit];
         expect(requestedUrl.pathname).toBe("/api/address-search");
         expect(requestedUrl.searchParams.get("postcode")).toBe("SW1A 2AA");
+        component.remove();
     });
 
     it("should render the results view when multiple addresses are found", async () => {
@@ -136,6 +138,7 @@ describe("createAddressLookup", () => {
         ]);
         const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
         const component = addressLookupInstance.element;
+        document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         const button = component.querySelector<HTMLButtonElement>("button")!;
         postcodeInput.value = "SW1A 2AA";
@@ -146,8 +149,8 @@ describe("createAddressLookup", () => {
         expect(component.querySelector("#postcode")).toBeNull();
         expect(component.querySelector("#address-select")).not.toBeNull();
         expect(document.activeElement).toBe(component.querySelector("#address-select"));
-        document.body.removeChild(component);
         expect(addressLookupInstance.isConfirmed()).toBe(false);
+        component.remove();
     });
 
     it("should only ever show one view's markup at a time", async () => {
@@ -157,6 +160,7 @@ describe("createAddressLookup", () => {
         ]);
         const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
         const component = addressLookupInstance.element;
+        document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         const button = component.querySelector<HTMLButtonElement>("button")!;
         postcodeInput.value = "SW1A 2AA";
@@ -165,6 +169,7 @@ describe("createAddressLookup", () => {
         await flushPromises();
 
         expect(component.children).toHaveLength(1);
+        component.remove();
     });
 
     it("should confirm the selected address from the results view", async () => {
@@ -174,6 +179,7 @@ describe("createAddressLookup", () => {
         ]);
         const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
         const component = addressLookupInstance.element;
+        document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         postcodeInput.value = "SW1A 2AA";
         component.querySelector<HTMLButtonElement>("button")!.click();
@@ -188,7 +194,8 @@ describe("createAddressLookup", () => {
         expect(component.querySelector<HTMLInputElement>("#addressLine1")).toHaveValue("2 High Street");
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
         expect(component.querySelector<HTMLInputElement>("#uprnReference")).toHaveValue("2");
-                expect(addressLookupInstance.isConfirmed()).toBe(true);
+        expect(addressLookupInstance.isConfirmed()).toBe(true);
+        component.remove();
     });
 
     it("should render the confirmed view when a single address is found", async () => {
@@ -217,6 +224,7 @@ describe("createAddressLookup", () => {
         ]);
         const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
         const component = addressLookupInstance.element;
+        document.body.appendChild(component);
         const buildingInput = component.querySelector<HTMLInputElement>("#building")!;
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         buildingInput.value = "1";
@@ -230,7 +238,7 @@ describe("createAddressLookup", () => {
         expect(buildingInputAfterBack).toHaveValue("1");
         expect(buildingInputAfterBack).toHaveFocus();
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
-
+        component.remove();
     });
 
     it("should render the UK manual entry view and focus the first address line", async () => {

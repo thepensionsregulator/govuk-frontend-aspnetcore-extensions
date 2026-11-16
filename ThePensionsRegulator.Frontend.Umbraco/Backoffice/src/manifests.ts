@@ -87,7 +87,7 @@ export const manifests: Array<UmbExtensionManifest> = [
         type: 'blockEditorCustomView',
         alias: 'ThePensionsRegulator.GovUk.Frontend.Umbraco.BlockEditorViews.tprSessionTimeoutVariant',
         name: "Block editor custom view for 'Session timeout' blocks",
-        element: () => import('./blocks/views/tpr-session-timout'),
+        element: () => import('./blocks/views/tpr-session-timeout'),
         forContentTypeAlias: 'tprSessionTimeoutVariant'
     },
     {

@@ -17,9 +17,9 @@ export function renderAddressInternationalManualEntry(options: AddressInternatio
     const addressLine2 = createTextInputFormGroup({ labelText: 'Address line 2 (optional)', input: { id: 'address-line-2', name: 'address-line-2', type: "text", width: "x-large", attributes: { autocomplete: 'address-line2' } }});
     const addressLine3 = createTextInputFormGroup({ labelText: 'Address line 3 (optional)', input: { id: 'address-line-3', name: 'address-line-3', type: "text", width: "x-large", attributes: { autocomplete: 'address-line3' } }});
     const postTown = createTextInputFormGroup({ labelText: 'Town or City', input: { id: 'post-town', name: 'post-town', type: "text", width: "x-large", attributes: { autocomplete: 'address-level2' } }});
-    const countyStateProvince = createTextInputFormGroup({ labelText: 'County / State / Province', input: { id: 'county-state-province', name: 'county-state-province', type: "text", width: "x-large", attributes: { autocomplete: 'address-level1' } }});
+    const countyStateProvince = createTextInputFormGroup({ labelText: 'County / State / Province (optional)', input: { id: 'county-state-province', name: 'county-state-province', type: "text", width: "x-large", attributes: { autocomplete: 'address-level1' } }});
     const country = createSelectFormGroup({ labelText: 'Country', select: { id: 'country', name: 'country', width: "x-large", options: [{ value: '', text: 'Select a country' }, ...options.countries] }});
-    const postcode = createTextInputFormGroup({ labelText: 'Postcode', input: { id: 'postcode', name: 'postcode', type: "text", width: "x-large", attributes: { autocomplete: 'postal-code' } }});
+    const postcode = createTextInputFormGroup({ labelText: 'Postcode (optional)', input: { id: 'postcode', name: 'postcode', type: "text", width: "x-large", attributes: { autocomplete: 'postal-code' } }});
 
     const fieldset = createFieldset({ legendText: 'Enter an international address', children: [addressLine1, addressLine2, addressLine3, postTown, countyStateProvince, country, postcode]})
     

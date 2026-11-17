@@ -38,9 +38,11 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
     confirmButton.addEventListener("click", handleConfirmAddress);
     div.appendChild(confirmButton);
 
+    const backToSearchNav = document.createElement("nav");
+    div.appendChild(backToSearchNav);
     const backToSearch = createLink({ labelText: content.backToPostcodeSearchLabel});
     backToSearch.addEventListener("click", handleBackToSearch);
-    div.appendChild(backToSearch);
+    backToSearchNav.appendChild(backToSearch);
 
     function handleBackToSearch(event: Event): void {
         event.preventDefault();

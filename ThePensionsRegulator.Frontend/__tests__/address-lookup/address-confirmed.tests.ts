@@ -39,7 +39,7 @@ describe("renderConfirmedAddress", () => {
     });
 
     it("should render a visually hidden context for screen readers, the paragraph should be able to be tabbed to", () => {
-        const component = renderConfirmedAddress(completeAddress, jest.fn());
+        const component = renderConfirmedAddress({address: completeAddress, onBackToSearchRequested: jest.fn(), fields, content });
         const paragraph = component.querySelector("p");
 
         expect(paragraph).not.toBeNull();
@@ -74,7 +74,7 @@ describe("renderConfirmedAddress", () => {
             uprnReference: "100000000001"
         };
 
-        const paragraph = renderConfirmedAddress(address, jest.fn()).querySelector("p");
+        const paragraph = renderConfirmedAddress({address, onBackToSearchRequested: jest.fn(), fields, content }).querySelector("p");
 
         expect(paragraph).toHaveTextContent("10 High StreetSW1A 2AA");
         expect(paragraph?.querySelectorAll("br")).toHaveLength(1);

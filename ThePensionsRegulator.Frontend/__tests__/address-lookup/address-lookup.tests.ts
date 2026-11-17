@@ -246,7 +246,7 @@ describe("createAddressLookup", () => {
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const component = createAddressLookup({ content, fields, searchEndpoint: "/api/address-search" }).element;
         document.body.appendChild(component);
 
         try {
@@ -255,7 +255,7 @@ describe("createAddressLookup", () => {
             await flushPromises();
 
             const manualEntryLink = Array.from(component.querySelectorAll<HTMLAnchorElement>("nav a"))
-                .find(link => link.textContent === "Enter address not on list")!;
+                .find(link => link.textContent === content.ukManualEntryLinkLabel)!;
             manualEntryLink.click();
 
             expect(component.querySelector("#address-select")).toBeNull();
@@ -267,7 +267,7 @@ describe("createAddressLookup", () => {
     });
 
     it("should render the international manual entry view and focus the first address line", () => {
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const component = createAddressLookup({ content, fields, searchEndpoint: "/api/address-search" }).element;
         document.body.appendChild(component);
 
         try {
@@ -289,7 +289,7 @@ describe("createAddressLookup", () => {
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
-        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
+        const addressLookupInstance = createAddressLookup({ content, fields, searchEndpoint: "/api/address-search" });
         const component = addressLookupInstance.element;
         main.appendChild(component);
         try {

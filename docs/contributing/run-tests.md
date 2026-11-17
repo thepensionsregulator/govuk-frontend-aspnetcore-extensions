@@ -1,4 +1,4 @@
-m# Run tests
+# Run tests
 
 Install [Node.js](https://nodejs.org/en) before running the following commands.
 

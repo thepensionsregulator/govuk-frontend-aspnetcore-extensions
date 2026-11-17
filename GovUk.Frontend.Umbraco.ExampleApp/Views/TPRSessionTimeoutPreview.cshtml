@@ -20,12 +20,16 @@
     var selected = TprSessionTimeOutMessageSelector.SelectByKey(messages, selectedMessageKey);
 }
 
-<div class="govuk-width-container">
+<div class="govuk-width-container" data-session-timeout-preview data-timeout-ms="125000" data-extension-ms="180000" data-warning-ms="120000">
     <p class="govuk-body">
         <a class="govuk-link" href="/session-timeout">Back to session-timeout variants</a>
     </p>
     @if (selected != null)
     {
+        <h1 class="govuk-heading-l">Session timeout preview</h1>
+        <p class="govuk-body">The warning will appear after 5 seconds, with 2 minutes remaining. It displays 2 minutes for a full minute. When 1 minute remains, it switches to 60 seconds and counts down to zero.</p>
+        <p class="govuk-body">Continuing simulates a successful extension to 3 minutes; the warning will appear again with 2 minutes remaining.</p>
+        <p class="govuk-body">This preview does not extend a real session. At zero, the countdown stops without signing you out or redirecting you. Reload the page to restart the preview.</p>
         <partial name="TPR/TPRSessionTimeOutWarning" model="selected" />
     }
     else
@@ -38,5 +42,5 @@
 </div>
 
 @section scripts {
-    <script src="~/js/session-timeout-demo.js" type="module" asp-append-version="true"></script>
+    <script src="~/js/session-timeout-preview.js" type="module" asp-append-version="true"></script>
 }

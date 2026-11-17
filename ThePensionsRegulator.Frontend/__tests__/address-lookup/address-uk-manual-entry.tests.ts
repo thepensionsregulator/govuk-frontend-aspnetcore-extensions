@@ -160,7 +160,7 @@ describe("renderAddressUkManualEntry", () => {
     it("focuses on the first invalid element", () => {
         const onAddressSubmitted = jest.fn();
         const onBackToSearchRequested = jest.fn();
-        const component = renderAddressUkManualEntry({ onAddressSubmitted, onBackToSearchRequested });
+        const component = renderAddressUkManualEntry({ content, onAddressSubmitted, onBackToSearchRequested });
         const form = document.createElement("form");
         form.appendChild(component);
 

@@ -51,6 +51,7 @@ We add support for:
   - [TPR section cards](/docs/components/tpr-section-cards.md)
   - [TPR table CSV download](/docs/components/tpr-table-csv-download.md)
   - [TPR side navigation](/docs/components/tpr-side-navigation.md)
+  - [TPR session timeout](/docs/components/tpr-session-timeout.md)
   - [TPR timeline](/docs/components/tpr-timeline.md)
   - [TPR YouTube video](/docs/components/tpr-youtube-video.md)
 

@@ -14,7 +14,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             fieldset.AddCssClass("govuk-fieldset");
 
             var legendElement = new TagBuilder("legend");
-            legendElement.AddCssClass("govuk-fieldset__legend govuk-fieldset__legend--l");
+            legendElement.AddCssClass("govuk-fieldset__legend govuk-fieldset__legend--for-fieldset");
             legendElement.InnerHtml.Append(content.AddressLookupLegend);
             fieldset.InnerHtml.AppendHtml(legendElement);
 

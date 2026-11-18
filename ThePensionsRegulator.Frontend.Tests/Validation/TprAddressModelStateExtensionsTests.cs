@@ -36,7 +36,7 @@ namespace ThePensionsRegulator.Frontend.Tests.Validation
             Assert.Equal(address.PostTown, modelState[nameof(TprAddress.PostTown)]!.AttemptedValue);
             Assert.Equal(address.PostCounty, modelState[nameof(TprAddress.PostCounty)]!.AttemptedValue);
             Assert.Equal(address.Postcode, modelState[nameof(TprAddress.Postcode)]!.AttemptedValue);
-            Assert.Equal("44", modelState[nameof(TprAddress.CountryId)]!.AttemptedValue);
+            Assert.Equal(address.CountryId.ToString(), modelState[nameof(TprAddress.CountryId)]!.AttemptedValue);
             Assert.Equal(address.Uprn, modelState[nameof(TprAddress.Uprn)]!.AttemptedValue);
         }
 
@@ -56,7 +56,7 @@ namespace ThePensionsRegulator.Frontend.Tests.Validation
             Assert.Equal(address.PostTown, modelState[$"address.{nameof(TprAddress.PostTown)}"]!.AttemptedValue);
             Assert.Equal(address.PostCounty, modelState[$"address.{nameof(TprAddress.PostCounty)}"]!.AttemptedValue);
             Assert.Equal(address.Postcode, modelState[$"address.{nameof(TprAddress.Postcode)}"]!.AttemptedValue);
-            Assert.Equal("44", modelState[$"address.{nameof(TprAddress.CountryId)}"]!.AttemptedValue);
+            Assert.Equal(address.CountryId.ToString(), modelState[$"address.{nameof(TprAddress.CountryId)}"]!.AttemptedValue);
             Assert.Equal(address.Uprn, modelState[$"address.{nameof(TprAddress.Uprn)}"]!.AttemptedValue);
         }
 

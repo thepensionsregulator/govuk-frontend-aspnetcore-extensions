@@ -35,13 +35,13 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var postcode = GetFieldState(name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
             var uprnReference = GetFieldState(name, nameof(TprAddress.UPRNReference), AddressFieldNames.UprnReference, modelStateDictionary);
 
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, null));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, null));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine3, content.AddressLine3Label, false, null));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(townOrCity, content.PostTownLabel, true, "govuk-input--width-20"));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(postCountry, content.CountyLabel, false, "govuk-input--width-20"));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, "govuk-input--width-20", "address-line1"));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, "govuk-input--width-20", "address-line2"));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine3, content.AddressLine3Label, false, "govuk-input--width-20", "address-line3"));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(townOrCity, content.PostTownLabel, true, "govuk-input--width-10", "address-level2"));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(postCountry, content.CountyLabel, false, "govuk-input--width-10", "address-level1"));
             fieldset.InnerHtml.AppendHtml(CreateSelectInput(countryId, content.CountryLabel, content.CountryLabel, true, "govuk-input--width-10", countries));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(postcode, content.PostcodeLabel, false, "govuk-input--width-10"));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(postcode, content.PostcodeLabel, false, "govuk-input--width-10", "postal-code"));
 
             var uprnReferenceInput = new TagBuilder("input");
             uprnReferenceInput.Attributes.Add("type", "hidden");
@@ -111,7 +111,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             return wrapper;
         }
 
-        private static TagBuilder CreateTextInput(FieldState fieldState, string labelText, bool required, string? widthClass = null)
+        private static TagBuilder CreateTextInput(FieldState fieldState, string labelText, bool required, string widthClass, string autocomplete)
         {
             var label = new TagBuilder("label");
             label.AddCssClass("govuk-label");
@@ -124,6 +124,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             input.Attributes.Add("id", fieldState.Name);
             input.Attributes.Add("name", fieldState.Name);
             input.Attributes.Add("data-address-field", fieldState.FieldKey);
+            input.Attributes.Add("autocomplete", autocomplete);
             if (required)
             {
                 input.Attributes.Add("required", "");
@@ -139,10 +140,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var group = new TagBuilder("div");
             group.AddCssClass("govuk-form-group");
-            if (!string.IsNullOrEmpty(widthClass))
-            {
-                group.AddCssClass(widthClass);
-            }
+            group.AddCssClass(widthClass);
             group.InnerHtml.AppendHtml(label);
 
             if (fieldState.HasErrors)

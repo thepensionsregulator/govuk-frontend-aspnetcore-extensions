@@ -25,7 +25,7 @@ namespace GovUk.Frontend.ExampleApp.Controllers
                 }
             };
 
-            ModelState.SetModelValues(viewModel.ShippingAddress, nameof(viewModel.ShippingAddress));
+            ModelState.SetInitialValues(viewModel.ShippingAddress, nameof(viewModel.ShippingAddress));
 
             return View(viewModel);
         }
@@ -34,6 +34,11 @@ namespace GovUk.Frontend.ExampleApp.Controllers
         [ActionName("Index")]
         public IActionResult IndexPost(AddressLookupViewModel viewModel)
         {
+            if(!ModelState.IsValid)
+            {
+                ModelState.SetModelValues(viewModel.ShippingAddress, nameof(viewModel.ShippingAddress));
+            };
+
             return View("Index", viewModel);
         }
     }

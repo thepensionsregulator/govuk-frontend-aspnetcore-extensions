@@ -85,6 +85,34 @@ namespace ThePensionsRegulator.Frontend.Tests.Validation
             Assert.Null(modelState[nameof(TprAddress.CountryId)]!.AttemptedValue);
         }
 
+        [Fact]
+        public void SetInitialValues_SetsAllFields_WithoutPrefix()
+        {
+            var modelState = new ModelStateDictionary();
+            var address = CreateAddress();
+            modelState.SetInitialValues(address);
+            Assert.Equal(address.AddressLine1, modelState[nameof(TprAddress.AddressLine1)]!.AttemptedValue);
+            Assert.Equal(address.AddressLine2, modelState[nameof(TprAddress.AddressLine2)]!.AttemptedValue);
+            Assert.Equal(address.AddressLine3, modelState[nameof(TprAddress.AddressLine3)]!.AttemptedValue);
+            Assert.Equal(address.PostTown, modelState[nameof(TprAddress.PostTown)]!.AttemptedValue);
+            Assert.Equal(address.PostCounty, modelState[nameof(TprAddress.PostCounty)]!.AttemptedValue);
+            Assert.Equal(address.Postcode, modelState[nameof(TprAddress.Postcode)]!.AttemptedValue);
+            Assert.Equal(address.CountryId.ToString(), modelState[nameof(TprAddress.CountryId)]!.AttemptedValue);
+            Assert.Equal(address.Uprn, modelState[nameof(TprAddress.Uprn)]!.AttemptedValue);
+        }
+
+        [Fact]
+        public void SetInitialValues_MarksFieldsAsSkipped()
+        {
+            var modelState = new ModelStateDictionary();
+            var address = CreateAddress();
+            modelState.SetInitialValues(address);
+            foreach (var key in modelState.Keys)
+            {
+                Assert.Equal(ModelValidationState.Skipped, modelState[key]!.ValidationState);
+            }
+        }
+
         private static TprAddress CreateAddress() => new()
         {
             AddressLine1 = "1 High Street",

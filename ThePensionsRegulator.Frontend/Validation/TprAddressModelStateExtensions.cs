@@ -23,5 +23,24 @@ namespace ThePensionsRegulator.Frontend.Validation
             modelState.SetModelValue(prefix + nameof(TprAddress.CountryId), null, address.CountryId?.ToString(CultureInfo.InvariantCulture));
             modelState.SetModelValue(prefix + nameof(TprAddress.Uprn), null, address.Uprn);
         }
+
+        public static void SetInitialValues(this ModelStateDictionary modelState, ITprAddress address, string? keyPrefix = null)
+        {
+            modelState.SetInitialAddressValue(address, keyPrefix, nameof(TprAddress.AddressLine1), address.AddressLine1);
+            modelState.SetInitialAddressValue(address, keyPrefix, nameof(TprAddress.AddressLine2), address.AddressLine2);
+            modelState.SetInitialAddressValue(address, keyPrefix, nameof(TprAddress.AddressLine3), address.AddressLine3);
+            modelState.SetInitialAddressValue(address, keyPrefix, nameof(TprAddress.PostTown), address.PostTown);
+            modelState.SetInitialAddressValue(address, keyPrefix, nameof(TprAddress.PostCounty), address.PostCounty);
+            modelState.SetInitialAddressValue(address, keyPrefix, nameof(TprAddress.Postcode), address.Postcode);
+            modelState.SetInitialAddressValue(address, keyPrefix, nameof(TprAddress.CountryId), address.CountryId?.ToString(CultureInfo.InvariantCulture));
+            modelState.SetInitialAddressValue(address, keyPrefix, nameof(TprAddress.Uprn), address.Uprn);
+        }
+
+        private static void SetInitialAddressValue(this ModelStateDictionary modelState, ITprAddress? address, string? keyPrefix, string field, string? attemptedValue)
+        {
+            var prefix = string.IsNullOrWhiteSpace(keyPrefix) ? string.Empty : keyPrefix!.TrimEnd('.') + ".";
+            modelState.SetModelValue(prefix + field, null, attemptedValue);
+            modelState.MarkFieldSkipped(prefix + field);
+        }
     }
 }

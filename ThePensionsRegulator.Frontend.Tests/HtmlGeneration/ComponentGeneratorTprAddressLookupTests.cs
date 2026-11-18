@@ -93,6 +93,30 @@ public class ComponentGeneratorTprAddressLookupTests
     }
 
     [Fact]
+    public void GenerateTprAddressLookupComponent_UsesNativeRequiredValidationWithoutJQueryValidationAttributes()
+    {
+        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var document = Parse(component);
+        var textInputs = document.DocumentNode.SelectNodes("//input[@type='text']");
+
+        Assert.NotNull(textInputs);
+        Assert.All(textInputs, input =>
+        {
+            Assert.Null(input.Attributes["data-val"]);
+            Assert.Null(input.Attributes["data-val-required"]);
+        });
+
+        var requiredInput = document.GetElementbyId($"{MODEL_FOR}.{nameof(TprAddress.AddressLine1)}");
+        Assert.NotNull(requiredInput);
+        Assert.NotNull(requiredInput.Attributes["required"]);
+        AssertAttribute("true", requiredInput, "aria-required");
+
+        var optionalInput = document.GetElementbyId($"{MODEL_FOR}.{nameof(TprAddress.AddressLine2)}");
+        Assert.NotNull(optionalInput);
+        Assert.Null(optionalInput.Attributes["required"]);
+    }
+
+    [Fact]
     public void GenerateTprAddressLookupComponent_UsesModelValuesWhenModelStateHasNoEntry()
     {
         // Arrange

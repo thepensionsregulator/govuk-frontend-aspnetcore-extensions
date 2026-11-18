@@ -134,8 +134,6 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             {
                 input.Attributes.Add("required", "");
                 input.Attributes.Add("aria-required", "true");
-                input.Attributes.Add("data-val-required", "required error message");
-                input.Attributes.Add("data-val", "true");
             }
 
             if (fieldState.AttemptedValue is not null)

@@ -24,26 +24,16 @@ function getNextUpdateDelay(remainingMs, warningMs) {
     return Math.min(ONE_SECOND_MS, remainingMs);
 }
 
-function getTimeParts(ms) {
-    const totalSeconds = Math.ceil(ms / ONE_SECOND_MS);
-
-    return {
-        minutes: Math.floor(totalSeconds / SECONDS_PER_MINUTE),
-        seconds: totalSeconds % SECONDS_PER_MINUTE
-    };
-}
-
 function formatUnit(value, unit) {
     return `${value} ${unit}${value === 1 ? '' : 's'}`;
 }
 
 function formatRemainingTime(ms) {
-    const { minutes, seconds } = getTimeParts(ms);
-    const secondsText = formatUnit(seconds, 'second');
+    const seconds = Math.ceil(ms / ONE_SECOND_MS);
 
-    return minutes > 0
-        ? `${formatUnit(minutes, 'minute')} ${secondsText}`
-        : secondsText;
+    return seconds > SECONDS_PER_MINUTE
+        ? formatUnit(Math.ceil(seconds / SECONDS_PER_MINUTE), 'minute')
+        : formatUnit(seconds, 'second');
 }
 
 function createCountdown(tagName) {

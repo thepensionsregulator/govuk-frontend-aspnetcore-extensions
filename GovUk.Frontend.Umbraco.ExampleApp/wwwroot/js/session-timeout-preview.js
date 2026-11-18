@@ -8,13 +8,6 @@ if (dialog) {
         timeoutMs: Number(preview.dataset.timeoutMs),
         extensionMs: Number(preview.dataset.extensionMs),
         warningMs: Number(preview.dataset.warningMs),
-        formatRemainingTime: (remainingMs) => {
-            const seconds = Math.ceil(remainingMs / 1000);
-            const minutes = Math.ceil(seconds / 60);
-            return seconds > 60
-                ? `${minutes} ${minutes === 1 ? 'minute' : 'minutes'}`
-                : `${seconds} ${seconds === 1 ? 'second' : 'seconds'}`;
-        },
         // Preview only: no server-side session is changed.
         extendSession: () => true
     });

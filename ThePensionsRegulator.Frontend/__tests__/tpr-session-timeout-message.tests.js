@@ -69,13 +69,16 @@ test('updates the visible remaining time during the warning', () => {
 });
 
 test.each([
-    [121000, '2 minutes 1 second'],
-    [120000, '2 minutes 0 seconds'],
-    [61000, '1 minute 1 second'],
-    [60000, '1 minute 0 seconds'],
+    [1800000, '30 minutes'],
+    [121000, '3 minutes'],
+    [120000, '2 minutes'],
+    [61000, '2 minutes'],
+    [60001, '2 minutes'],
+    [60000, '60 seconds'],
+    [59000, '59 seconds'],
     [1000, '1 second'],
     [1, '1 second']
-])('formats %i milliseconds as %s', (remaining, expected) => {
+])('formats %i milliseconds as %s by default', (remaining, expected) => {
     initialise({ ...config, timeoutMs: remaining + 1000, warningMs: remaining });
     jest.advanceTimersByTime(1000);
     expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe(expected);
@@ -111,13 +114,13 @@ test.each([120000, 180000])('resets expiry only after successful extension at %i
     await jest.advanceTimersByTimeAsync(0);
     expect(controller.expiryTime).toBe(Date.now() + config.extensionMs);
     expect(dialog.open).toBe(false);
-    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('5 minutes 0 seconds');
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('5 minutes');
     expect(jest.getTimerCount()).toBe(1);
     jest.advanceTimersByTime(config.extensionMs - config.warningMs - 1);
     expect(dialog.open).toBe(false);
     jest.advanceTimersByTime(1);
     expect(dialog.open).toBe(true);
-    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('1 minute 0 seconds');
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('60 seconds');
 });
 
 test.each([
@@ -288,7 +291,7 @@ test.each([
     initialise();
     jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
     const countdown = content.querySelector('[data-session-timeout-countdown]');
-    expect(content.textContent).toBe('Your session expires in 1 minute 0 seconds.');
+    expect(content.textContent).toBe('Your session expires in 60 seconds.');
     expect(countdown.tagName).toBe('SPAN');
     expect(dialog.querySelectorAll('[data-session-timeout-countdown]')).toHaveLength(1);
     expect(content.innerHTML).toContain(html.includes('<strong>') ? '<strong>' : '<p>');
@@ -297,7 +300,7 @@ test.each([
     controller.destroy();
     expect(content.innerHTML).toBe(html);
     initialise();
-    expect(content.textContent).toBe('Your session expires in 3 minutes 0 seconds.');
+    expect(content.textContent).toBe('Your session expires in 3 minutes.');
 });
 
 test('places the fallback countdown in content before the actions', () => {
@@ -317,7 +320,7 @@ test('updates every placeholder without replacing surrounding rich-text elements
     initialise();
     jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
     expect(content.querySelectorAll('[data-session-timeout-countdown]')).toHaveLength(2);
-    expect(content.textContent).toBe('1 minute 0 seconds remaining. 1 minute 0 seconds Help');
+    expect(content.textContent).toBe('60 seconds remaining. 60 seconds Help');
     expect(content.querySelector('a')).toBe(link);
     link.dispatchEvent(new Event('click'));
     expect(onClick).toHaveBeenCalledTimes(1);
@@ -340,7 +343,44 @@ test('uses an application formatter for initial, delayed, extended and expired r
     expect(formatRemainingTime).toHaveBeenLastCalledWith(0);
 });
 
+test('documented formatter displays seconds throughout the countdown', () => {
+    initialise({
+        ...config,
+        warningMs: 120000,
+        formatRemainingTime: remainingMs => Math.ceil(remainingMs / 1000) + 's'
+    });
+    const countdown = dialog.querySelector('[data-session-timeout-countdown]');
+    expect(countdown.textContent).toBe('180s');
+    jest.advanceTimersByTime(60000);
+    expect(dialog.open).toBe(true);
+    expect(countdown.textContent).toBe('120s');
+    jest.advanceTimersByTime(1000);
+    expect(countdown.textContent).toBe('119s');
+    jest.advanceTimersByTime(118000);
+    expect(countdown.textContent).toBe('1s');
+    jest.advanceTimersByTime(1000);
+    expect(countdown.textContent).toBe('0s');
+    jest.advanceTimersByTime(1000);
+    expect(countdown.textContent).toBe('0s');
+});
+
 test('rejects a configured formatter that is not a function', () => {
     expect(() => initialise({ ...config, formatRemainingTime: 'minutes' })).toThrow(TypeError);
     expect(jest.getTimerCount()).toBe(0);
+});
+
+test('default formatting holds minutes until the final 60-second countdown', () => {
+    initialise({ ...config, timeoutMs: 120000, warningMs: 120000 });
+    const countdown = dialog.querySelector('[data-session-timeout-countdown]');
+    expect(countdown.textContent).toBe('2 minutes');
+    const staticText = countdown.firstChild;
+    jest.advanceTimersByTime(59000);
+    expect(countdown.textContent).toBe('2 minutes');
+    expect(countdown.firstChild).toBe(staticText);
+    jest.advanceTimersByTime(1000);
+    expect(countdown.textContent).toBe('60 seconds');
+    jest.advanceTimersByTime(1000);
+    expect(countdown.textContent).toBe('59 seconds');
+    jest.advanceTimersByTime(59000);
+    expect(countdown.textContent).toBe('0 seconds');
 });

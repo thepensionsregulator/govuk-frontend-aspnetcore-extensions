@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
-import { submitOnEnter } from "../../Scripts/address-lookup/submit-on-enter.js";
+import { runActionOnEnter } from "../../Scripts/address-lookup/run-action-on-enter.js";
 
-describe("submitOnEnter", () => {
+describe("runActionOnEnter", () => {
 	function dispatchKeydown(target: HTMLElement, key: string, isComposing = false): KeyboardEvent {
 		const event = new KeyboardEvent("keydown", {
 			key,
@@ -18,7 +18,7 @@ describe("submitOnEnter", () => {
 		const target = document.createElement(tagName);
 		const action = jest.fn<() => void>();
 		container.appendChild(target);
-		submitOnEnter(container, action);
+		runActionOnEnter(container, action);
 
 		const event = dispatchKeydown(target, "Enter");
 
@@ -31,7 +31,7 @@ describe("submitOnEnter", () => {
 		const input = document.createElement("input");
 		const action = jest.fn<() => void>();
 		container.appendChild(input);
-		submitOnEnter(container, action);
+		runActionOnEnter(container, action);
 
 		const event = dispatchKeydown(input, "Enter", true);
 
@@ -44,7 +44,7 @@ describe("submitOnEnter", () => {
 		const input = document.createElement("input");
 		const action = jest.fn<() => void>();
 		container.appendChild(input);
-		submitOnEnter(container, action);
+		runActionOnEnter(container, action);
 
 		const event = dispatchKeydown(input, "Escape");
 
@@ -57,7 +57,7 @@ describe("submitOnEnter", () => {
 		const target = document.createElement(tagName);
 		const action = jest.fn<() => void>();
 		container.appendChild(target);
-		submitOnEnter(container, action);
+		runActionOnEnter(container, action);
 
 		const event = dispatchKeydown(target, "Enter");
 

@@ -1,7 +1,7 @@
 import { normalisePostcode } from './postcode-normaliser.js';
 import { sanitisePostcode } from './postcode-sanitiser.js';
 import { validatePostcode } from './postcode-validator.js';
-import { submitOnEnter } from './submit-on-enter.js';
+import { runActionOnEnter } from './run-action-on-enter.js';
 import type { AddressLookupContent, UkManualEntryAddress } from './types.js';
 import { createButton } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js';
 import { createFieldsetFormGroup } from '/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js';
@@ -34,7 +34,7 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
     div.appendChild(fieldsetFormGroup);
 
     const confirmButton = createButton({ labelText: content.confirmAddressLabel, type: 'button', variant: 'secondary' });
-    submitOnEnter(div, () => confirmButton.click());
+    runActionOnEnter(div, () => confirmButton.click());
     confirmButton.addEventListener("click", handleConfirmAddress);
     div.appendChild(confirmButton);
 

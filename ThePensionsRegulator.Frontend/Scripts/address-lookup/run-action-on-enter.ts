@@ -1,4 +1,4 @@
-export function submitOnEnter(container: HTMLElement, action: () => void): void {
+export function runActionOnEnter(container: HTMLElement, action: () => void): void {
     container.addEventListener("keydown", event => {
         if (event.key !== "Enter" || event.isComposing) {
             return;

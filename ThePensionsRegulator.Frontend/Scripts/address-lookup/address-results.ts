@@ -3,7 +3,7 @@ import { createButton } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-comp
 import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
 import { createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 import { clearFormGroupError, focusFirstInvalidControl, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
-import { submitOnEnter } from "./submit-on-enter.js";
+import { runActionOnEnter } from "./run-action-on-enter.js";
 
 export type AddressResultsOptions = {
     addresses: AddressSearchResult[];
@@ -34,7 +34,7 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
     selectFormGroup.setAttribute("data-address-lookup-submit-error-anchor", "true");
     const addressSelect = selectFormGroup.querySelector("select")!;
     const button = createButton({labelText: options.content.confirmAddressLabel, variant: "secondary", type: "button"});
-    submitOnEnter(selectFormGroup, () => button.click());
+    runActionOnEnter(selectFormGroup, () => button.click());
     button.addEventListener("click", handleAddressSelect);
 
     const ukManualEntryLink = createLink({labelText: options.content.ukManualEntryLinkLabel});

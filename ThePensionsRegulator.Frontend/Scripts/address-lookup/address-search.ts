@@ -14,7 +14,7 @@ import { filterAddressesByBuilding } from "./address-filter.js";
 import { clearFormGroupError, focusFirstInvalidControl, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
 import type { AddressLookupContent, AddressSearchCriteria, AddressSearchOptions } from "./types.js";
 import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
-import { submitOnEnter } from "./submit-on-enter.js";
+import { runActionOnEnter } from "./run-action-on-enter.js";
 
 export function renderAddressSearch(options: AddressSearchOptions): HTMLElement {
     const addressSearchWrapper = document.createElement("div");
@@ -52,7 +52,7 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     addressSearchWrapper.appendChild(fieldset);
     
     const findAddressButton = createButton({labelText: options.content.findAddressButton, variant: "secondary", type: "button"});
-    submitOnEnter(addressSearchWrapper, handleAddressSearch);
+    runActionOnEnter(addressSearchWrapper, handleAddressSearch);
     findAddressButton.addEventListener("click", handleAddressSearch);
     addressSearchWrapper.appendChild(findAddressButton);
 

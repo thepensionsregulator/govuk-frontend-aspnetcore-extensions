@@ -1,4 +1,4 @@
-import { submitOnEnter } from "./submit-on-enter.js";
+import { runActionOnEnter } from "./run-action-on-enter.js";
 import { InternationalManualEntryAddress, CountryOption, AddressLookupContent } from "./types";
 import { createButton } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
 import { createFieldsetFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/fieldset.js";
@@ -34,7 +34,7 @@ export function renderAddressInternationalManualEntry(options: AddressInternatio
     div.appendChild(fieldsetFormGroup);
 
     const confirmButton = createButton({ labelText: options.content.confirmAddressLabel, type: 'button', variant: 'secondary' });
-    submitOnEnter(div, () => confirmButton.click());
+    runActionOnEnter(div, () => confirmButton.click());
     confirmButton.addEventListener("click", handleConfirmAddress);
     div.appendChild(confirmButton);
 

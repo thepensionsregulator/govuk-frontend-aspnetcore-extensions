@@ -1,5 +1,5 @@
-import { mapAddressSearchResult } from "../../Scripts/address-lookup/address-result-mapper";
-import type { AddressSearchResult, ConfirmedAddress } from "../../Scripts/address-lookup/types";
+import { mapAddressSearchResult, mapInternationalManualEntryAddress } from "../../Scripts/address-lookup/address-result-mapper";
+import type { AddressSearchResult, ConfirmedAddress, InternationalManualEntryAddress } from "../../Scripts/address-lookup/types";
 
 describe("mapAddressSearchResult", () => {
 	const baseAddress: AddressSearchResult = {
@@ -99,11 +99,55 @@ describe("mapAddressSearchResult", () => {
 
 		expect(mappedAddress).toMatchObject({
 			postTown: "London",
-			postCode: "SW1A 2AA",
+			postcode: "SW1A 2AA",
 			uprnReference: "100000000001"
 		});
 		expect(mappedAddress).not.toHaveProperty("postCounty");
 		expect(mappedAddress).not.toHaveProperty("countryId");
 		expect(mappedAddress).not.toHaveProperty("countryName");
+	});
+});
+
+describe("mapInternationalManualEntryAddress", () => {
+	it("should map all international manual-entry fields to a confirmed address", () => {
+		const address: InternationalManualEntryAddress = {
+			addressLine1: "123 Rue de Rivoli",
+			addressLine2: "Apartment 4B",
+			addressLine3: "3rd arrondissement",
+			postTown: "Paris",
+			countyStateProvince: "Ile-de-France",
+			countryId: "FR",
+			countryName: "France",
+			postcode: "75001"
+		};
+
+		expect(mapInternationalManualEntryAddress(address)).toEqual({
+			addressLine1: "123 Rue de Rivoli",
+			addressLine2: "Apartment 4B",
+			addressLine3: "3rd arrondissement",
+			postTown: "Paris",
+			postCounty: "Ile-de-France",
+			countryId: "FR",
+			countryName: "France",
+			postcode: "75001"
+		});
+	});
+
+	it("should omit optional international manual-entry fields when they are not supplied", () => {
+		const address: InternationalManualEntryAddress = {
+			addressLine1: "123 Main Street",
+			postTown: "New York"
+		};
+
+		expect(mapInternationalManualEntryAddress(address)).toEqual({
+			addressLine1: "123 Main Street",
+			addressLine2: undefined,
+			addressLine3: undefined,
+			postTown: "New York",
+			postCounty: undefined,
+			countryId: undefined,
+			countryName: undefined,
+			postcode: undefined
+		});
 	});
 });

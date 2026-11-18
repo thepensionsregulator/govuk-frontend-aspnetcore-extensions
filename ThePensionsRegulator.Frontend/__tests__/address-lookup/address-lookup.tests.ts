@@ -105,6 +105,7 @@ describe("createAddressLookup", () => {
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", BUILDING_NUMBER: "2", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
         const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         postcodeInput.value = "SW1A 2AA";
         component.querySelector<HTMLButtonElement>("button")!.click();
@@ -114,10 +115,11 @@ describe("createAddressLookup", () => {
         select.value = "2";
         component.querySelector<HTMLButtonElement>("button")!.click();
 
+        expect(component.querySelector("p")).toHaveFocus();
         expect(component.querySelector("p")).toHaveTextContent("2 High StreetLondonSW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#AddressLine1")).toHaveValue("2 High Street");
-        expect(component.querySelector<HTMLInputElement>("#PostCode")).toHaveValue("SW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#UPRNReference")).toHaveValue("2");
+        expect(component.querySelector<HTMLInputElement>("#addressLine1")).toHaveValue("2 High Street");
+        expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
+        expect(component.querySelector<HTMLInputElement>("#uprnReference")).toHaveValue("2");
     });
 
     it("should render the confirmed view when a single address is found", async () => {
@@ -133,9 +135,9 @@ describe("createAddressLookup", () => {
         await flushPromises();
 
         expect(component.querySelector("p")).toHaveTextContent("1 High StreetLondonSW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#AddressLine1")).toHaveValue("1 High Street");
-        expect(component.querySelector<HTMLInputElement>("#PostCode")).toHaveValue("SW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#UPRNReference")).toHaveValue("1");
+        expect(component.querySelector<HTMLInputElement>("#addressLine1")).toHaveValue("1 High Street");
+        expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
+        expect(component.querySelector<HTMLInputElement>("#uprnReference")).toHaveValue("1");
     });
 
     it("should return to a pre-filled search form when back-to-search is requested", async () => {
@@ -144,6 +146,8 @@ describe("createAddressLookup", () => {
             { UPRN: "2", UDPRN: "2", ADDRESS: "1 Station Road", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "1" }
         ]);
         const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        
+        document.body.appendChild(component);
         const buildingInput = component.querySelector<HTMLInputElement>("#building")!;
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         buildingInput.value = "1";
@@ -153,7 +157,64 @@ describe("createAddressLookup", () => {
 
         component.querySelector<HTMLAnchorElement>("nav a")!.click();
 
-        expect(component.querySelector<HTMLInputElement>("#building")).toHaveValue("1");
+        const buildingInputAfterBack = component.querySelector<HTMLInputElement>("#building")!;
+        expect(buildingInputAfterBack).toHaveValue("1");
+        expect(buildingInputAfterBack).toHaveFocus();
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
+
+    });
+
+    it("should render the UK manual entry view and focus the first address line", async () => {
+        mockFetchResults([
+            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
+            { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
+        ]);
+        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        document.body.appendChild(component);
+
+        try {
+            component.querySelector<HTMLInputElement>("#postcode")!.value = "SW1A 2AA";
+            component.querySelector<HTMLButtonElement>("button")!.click();
+            await flushPromises();
+
+            const manualEntryLink = Array.from(component.querySelectorAll<HTMLAnchorElement>("nav a"))
+                .find(link => link.textContent === "Enter address not on list")!;
+            manualEntryLink.click();
+
+            expect(component.querySelector("#address-select")).toBeNull();
+            expect(component.querySelector("#town-or-city")).toBeInTheDocument();
+            expect(component.querySelector("#address-line-1")).toHaveFocus();
+        } finally {
+            component.remove();
+        }
+    });
+
+    it("should render the international manual entry view and focus the first address line", () => {
+        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        document.body.appendChild(component);
+
+        try {
+            component.querySelector<HTMLAnchorElement>("nav a")!.click();
+
+            expect(component.querySelector("#building")).toBeNull();
+            expect(component.querySelector("#country")).toBeInTheDocument();
+            expect(component.querySelector("#address-line-1")).toHaveFocus();
+        } finally {
+            component.remove();
+        }
+    });
+
+    it("should confirm an international address with its country name and ID", () => {
+        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+
+        component.querySelector<HTMLAnchorElement>("nav a")!.click();
+
+        component.querySelector<HTMLInputElement>("#address-line-1")!.value = "123 Rue de Rivoli";
+        component.querySelector<HTMLInputElement>("#post-town")!.value = "Paris";
+        component.querySelector<HTMLSelectElement>("#country")!.value = "FR";
+        component.querySelector<HTMLButtonElement>("button")!.click();
+
+        expect(component.querySelector("p")).toHaveTextContent("France");
+        expect(component.querySelector<HTMLInputElement>("#countryId")).toHaveValue("FR");
     });
 });

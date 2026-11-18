@@ -6,7 +6,7 @@
         public string AddressLookupLegend { get; set; } = "Address lookup";
         public string AddressLookupHint { get; set; } = "Enter a building name or number and postcode to find your address";
         public string AddressLine1Label { get; set; } = "Address line 1";
-        public string AddressLine1RequiredErrorMessage { get; set; } = "Enter address line 1";
+        public string AddressLine1RequiredErrorMessage { get; set; } = "Enter address line 1 from default content";
         public string AddressLine1MaxLengthErrorMessage { get; set; } = "Address line 1 must be 100 characters or fewer";
         public string AddressLine2Label { get; set; } = "Address line 2 (optional)";
         public string AddressLine2MaxLengthErrorMessage { get; set; } = "Address line 2 must be 100 characters or fewer";

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
+using ThePensionsRegulator.Frontend.Models;
 
 namespace ThePensionsRegulator.Frontend.Tests.HtmlGeneration;
 
@@ -22,13 +23,15 @@ public class ComponentGeneratorTprAddressLookupTests
     const string MODEL_FOR = "test";
     private readonly ModelStateDictionary _modelStateDictionary = new ModelStateDictionary();
     private readonly ModelExpression _modelExpression;
+    private readonly TprAddress _address;
 
     public ComponentGeneratorTprAddressLookupTests()
     {
         _content = new();
         _settings = new();
         var metadataProvider = new EmptyModelMetadataProvider();
-        var modelExplorer = new ModelExplorer(metadataProvider, metadataProvider.GetMetadataForType(typeof(object)), null);
+        _address = new TprAddress();
+        var modelExplorer = new ModelExplorer(metadataProvider, metadataProvider.GetMetadataForType(typeof(TprAddress)), _address);
         _modelExpression = new ModelExpression("test", modelExplorer);
         _componentGenerator = new ComponentGenerator();
     }
@@ -87,6 +90,109 @@ public class ComponentGeneratorTprAddressLookupTests
             () => AssertInputRenderedCorrectly(countyLabel, $"{MODEL_FOR}.PostCounty", "govuk-input--width-10", "address-level1", "postCounty", document),
             () => AssertInputRenderedCorrectly(postcodeLabel, $"{MODEL_FOR}.Postcode", "govuk-input--width-10", "postal-code", "postcode", document)
         );
+    }
+
+    [Fact]
+    public void GenerateTprAddressLookupComponent_UsesModelValuesWhenModelStateHasNoEntry()
+    {
+        // Arrange
+        _address.AddressLine1 = "Address from view model";
+        _address.CountryId = 2;
+        _address.Uprn = "UPRN123";
+
+        // Act
+        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var document = Parse(component);
+
+        // Assert
+        var addressLine1 = document.GetElementbyId($"{MODEL_FOR}.{nameof(TprAddress.AddressLine1)}");
+        Assert.NotNull(addressLine1);
+        AssertAttribute("Address from view model", addressLine1, "value");
+
+        var selectedCountry = document.DocumentNode.SelectSingleNode($"//select[@id='{MODEL_FOR}.{nameof(TprAddress.CountryId)}']/option[@value='2']");
+        Assert.NotNull(selectedCountry);
+        AssertAttribute("selected", selectedCountry, "selected");
+
+        var uprn = document.GetElementbyId("uprnReference");
+        Assert.NotNull(uprn);
+        AssertAttribute("UPRN123", uprn, "value");
+    }
+
+    [Fact]
+    public void GenerateTprAddressLookupComponent_PrefersModelStateValueOverModelValue()
+    {
+        // Arrange
+        _address.AddressLine1 = "Address from view model";
+        _modelStateDictionary.SetModelValue($"{MODEL_FOR}.{nameof(TprAddress.AddressLine1)}", "Address from request", "Address from request");
+
+        // Act
+        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var document = Parse(component);
+
+        // Assert
+        var addressLine1 = document.GetElementbyId($"{MODEL_FOR}.{nameof(TprAddress.AddressLine1)}");
+        Assert.NotNull(addressLine1);
+        AssertAttribute("Address from request", addressLine1, "value");
+    }
+
+    [Theory]
+    [InlineData(nameof(TprAddress.AddressLine1), "govuk-input--error")]
+    [InlineData(nameof(TprAddress.CountryId), "govuk-select--error")]
+    public void GenerateTprAddressLookupComponent_RendersFieldErrors(string propertyName, string errorClass)
+    {
+        var fieldName = $"{MODEL_FOR}.{propertyName}";
+        const string errorText = "Choose a value <required>";
+        _modelStateDictionary.AddModelError(fieldName, errorText);
+        _modelStateDictionary.AddModelError(fieldName, "Another error");
+
+        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var document = Parse(component);
+
+        var input = document.GetElementbyId(fieldName);
+        Assert.NotNull(input);
+        AssertCssClass(errorClass, input);
+        AssertAttribute($"{fieldName}-error", input, "aria-describedby");
+        AssertCssClass("govuk-form-group--error", input.ParentNode);
+
+        var errorMessage = input.ParentNode.SelectSingleNode("./p[@class='govuk-error-message']");
+        Assert.NotNull(errorMessage);
+        AssertAttribute($"{fieldName}-error", errorMessage, "id");
+        Assert.Equal("Error:" + errorText, HtmlEntity.DeEntitize(errorMessage.InnerText));
+        Assert.Equal("label", errorMessage.PreviousSibling.Name);
+        Assert.Same(input, errorMessage.NextSibling);
+
+        var hiddenPrefix = errorMessage.SelectSingleNode("./span");
+        Assert.NotNull(hiddenPrefix);
+        AssertCssClass("govuk-visually-hidden", hiddenPrefix);
+        Assert.Equal("Error:", hiddenPrefix.InnerText);
+        Assert.Single(errorMessage.ChildNodes, node => node.NodeType == HtmlNodeType.Element);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void GenerateTprAddressLookupComponent_PreservesCountrySelectionWithOrWithoutErrors(bool hasErrors)
+    {
+        var fieldName = $"{MODEL_FOR}.{nameof(TprAddress.CountryId)}";
+        _address.CountryId = 3;
+        _modelStateDictionary.SetModelValue(fieldName, "2", "2");
+        if (hasErrors)
+        {
+            _modelStateDictionary.AddModelError(fieldName, "Country is not available");
+        }
+
+        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var document = Parse(component);
+
+        var select = document.GetElementbyId(fieldName);
+        Assert.NotNull(select);
+        AssertCssClass("govuk-select", select);
+        var selectedOption = Assert.Single(select.SelectNodes("./option[@selected]"));
+        AssertAttribute("2", selectedOption, "value");
+        Assert.Equal(hasErrors, select.HasClass("govuk-select--error"));
+        Assert.Equal(hasErrors, select.ParentNode.HasClass("govuk-form-group--error"));
+        Assert.Equal(hasErrors, select.Attributes["aria-describedby"] is not null);
+        Assert.Equal(hasErrors, select.ParentNode.SelectSingleNode("./p[@class='govuk-error-message']") is not null);
     }
 
     private static void AssertInputRenderedCorrectly(string expectedLabelText, string expectedInputId, string expectedWidthClass, string expectedAutocomplete, string expectedAddressField, HtmlDocument document)

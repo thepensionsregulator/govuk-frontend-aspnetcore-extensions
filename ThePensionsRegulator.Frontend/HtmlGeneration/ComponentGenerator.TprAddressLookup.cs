@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using System.Globalization;
 using ThePensionsRegulator.Frontend.Models;
 
 namespace ThePensionsRegulator.Frontend.HtmlGeneration
@@ -26,14 +27,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
                 fieldset.InnerHtml.AppendHtml(hintElement);
             }
 
-            var addressLine1 = GetFieldState(name, nameof(TprAddress.AddressLine1), AddressFieldNames.AddressLine1, modelStateDictionary);
-            var addressLine2 = GetFieldState(name, nameof(TprAddress.AddressLine2), AddressFieldNames.AddressLine2, modelStateDictionary);
-            var addressLine3 = GetFieldState(name, nameof(TprAddress.AddressLine3), AddressFieldNames.AddressLine3, modelStateDictionary);
-            var townOrCity = GetFieldState(name, nameof(TprAddress.PostTown), AddressFieldNames.PostTown, modelStateDictionary);
-            var postCountry = GetFieldState(name, nameof(TprAddress.PostCounty), AddressFieldNames.PostCounty, modelStateDictionary);
-            var countryId = GetFieldState(name, nameof(TprAddress.CountryId), AddressFieldNames.CountryId, modelStateDictionary);
-            var postcode = GetFieldState(name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
-            var uprnReference = GetFieldState(name, nameof(TprAddress.Uprn), AddressFieldNames.UprnReference, modelStateDictionary);
+            var addressLine1 = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.AddressLine1), AddressFieldNames.AddressLine1, modelStateDictionary);
+            var addressLine2 = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.AddressLine2), AddressFieldNames.AddressLine2, modelStateDictionary);
+            var addressLine3 = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.AddressLine3), AddressFieldNames.AddressLine3, modelStateDictionary);
+            var townOrCity = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.PostTown), AddressFieldNames.PostTown, modelStateDictionary);
+            var postCountry = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.PostCounty), AddressFieldNames.PostCounty, modelStateDictionary);
+            var countryId = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.CountryId), AddressFieldNames.CountryId, modelStateDictionary);
+            var postcode = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
+            var uprnReference = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Uprn), AddressFieldNames.UprnReference, modelStateDictionary);
 
             fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, "govuk-input--width-20", "address-line1"));
             fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, "govuk-input--width-20", "address-line2"));
@@ -48,6 +49,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             uprnReferenceInput.Attributes.Add("id", "uprnReference");
             uprnReferenceInput.Attributes.Add("name", $"{name}.uprnReference");
             uprnReferenceInput.Attributes.Add("data-address-field", uprnReference.FieldKey);
+            if (uprnReference.AttemptedValue is not null)
+            {
+                uprnReferenceInput.Attributes.Add("value", uprnReference.AttemptedValue);
+            }
             fieldset.InnerHtml.AppendHtml(uprnReferenceInput);
 
             var wrapper = new TagBuilder("div");
@@ -142,23 +147,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             group.AddCssClass("govuk-form-group");
             group.AddCssClass(widthClass);
             group.InnerHtml.AppendHtml(label);
-
-            if (fieldState.HasErrors)
-            {
-                input.AddCssClass("govuk-input--error");
-                input.Attributes.Add("aria-describedby", $"{fieldState.Name}-error");
-                group.AddCssClass("govuk-form-group--error");
-                var errorMessage = new TagBuilder("p");
-                errorMessage.AddCssClass("govuk-error-message");
-                errorMessage.Attributes.Add("id", $"{fieldState.Name}-error");
-
-                var errorMessageSpan = new TagBuilder("span");
-                errorMessageSpan.AddCssClass("govuk-visually-hidden");
-                errorMessageSpan.InnerHtml.Append("Error:");
-                errorMessage.InnerHtml.AppendHtml(errorMessageSpan);
-                errorMessage.InnerHtml.Append(fieldState.Errors[0].ErrorMessage);
-                group.InnerHtml.AppendHtml(errorMessage);
-            }
+            AppendFieldError(fieldState, input, group, "govuk-input--error");
 
             group.InnerHtml.AppendHtml(input);
 
@@ -209,8 +198,31 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             group.AddCssClass("govuk-form-group");
             group.AddCssClass(widthClass);
             group.InnerHtml.AppendHtml(label);
+            AppendFieldError(fieldState, select, group, "govuk-select--error");
             group.InnerHtml.AppendHtml(select);
             return group;
+        }
+
+        private static void AppendFieldError(FieldState fieldState, TagBuilder input, TagBuilder group, string errorClass)
+        {
+            if (!fieldState.HasErrors)
+            {
+                return;
+            }
+
+            input.AddCssClass(errorClass);
+            input.Attributes.Add("aria-describedby", $"{fieldState.Name}-error");
+            group.AddCssClass("govuk-form-group--error");
+            var errorMessage = new TagBuilder("p");
+            errorMessage.AddCssClass("govuk-error-message");
+            errorMessage.Attributes.Add("id", $"{fieldState.Name}-error");
+
+            var errorMessageSpan = new TagBuilder("span");
+            errorMessageSpan.AddCssClass("govuk-visually-hidden");
+            errorMessageSpan.InnerHtml.Append("Error:");
+            errorMessage.InnerHtml.AppendHtml(errorMessageSpan);
+            errorMessage.InnerHtml.Append(fieldState.Errors[0].ErrorMessage);
+            group.InnerHtml.AppendHtml(errorMessage);
         }
 
         private sealed record FieldState(string Name, string FieldKey)
@@ -221,13 +233,16 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             public bool HasErrors => Errors is { Count: > 0 };
         }
 
-        private FieldState GetFieldState(string prefix, string propertyName, string fieldKey, ModelStateDictionary modelState)
+        private FieldState GetFieldState(ModelExplorer modelExplorer, string prefix, string propertyName, string fieldKey, ModelStateDictionary modelState)
         {
             var fullName = $"{prefix}.{propertyName}";
 
             if (!modelState.TryGetValue(fullName, out var entry))
             {
-                return new FieldState(fullName, fieldKey);
+                return new FieldState(fullName, fieldKey)
+                {
+                    AttemptedValue = Convert.ToString(modelExplorer.GetExplorerForProperty(propertyName).Model, CultureInfo.CurrentCulture)
+                };
             }
 
             return new FieldState(fullName, fieldKey)

@@ -12,7 +12,7 @@ beforeEach(() => {
     jest.setSystemTime(new Date('2026-01-01T12:00:00Z'));
     document.body.innerHTML = `
         <dialog class="tpr-session-timeout-warning" role="alertdialog" aria-describedby="description">
-            <div id="description" data-session-timeout-content>Your session is about to expire.</div>
+            <div id="description" data-session-timeout-content>Your session is about to expire. {remainingTime}</div>
             <button type="button" data-session-timeout-extend data-session-timeout-extend-url="/session/extend">Continue</button>
         </dialog>`;
     dialog = document.querySelector('dialog');
@@ -303,12 +303,29 @@ test.each([
     expect(content.textContent).toBe('Your session expires in 3 minutes.');
 });
 
-test('places the fallback countdown in content before the actions', () => {
-    initialise();
+test.each([true, false])('does not insert a countdown without a token (content hook: %s)', async (hasContentHook) => {
     const content = dialog.querySelector('[data-session-timeout-content]');
-    const countdown = dialog.querySelector('[data-session-timeout-countdown]');
-    expect(content.contains(countdown)).toBe(true);
-    expect(countdown.compareDocumentPosition(button) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    content.innerHTML = '<p>Your session is about to expire.</p>';
+    if (!hasContentHook) content.removeAttribute('data-session-timeout-content');
+    const originalMarkup = dialog.innerHTML;
+    initialise();
+    expect(dialog.querySelector('[data-session-timeout-countdown]')).toBeNull();
+    expect(dialog.innerHTML).toBe(originalMarkup);
+    jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
+    expect(dialog.open).toBe(true);
+    expect(dialog.innerHTML).toBe(originalMarkup);
+    button.click();
+    await jest.advanceTimersByTimeAsync(0);
+    expect(config.extendSession).toHaveBeenCalledTimes(1);
+    expect(controller.expiryTime).toBe(Date.now() + config.extensionMs);
+    expect(dialog.open).toBe(false);
+    expect(dialog.innerHTML).toBe(originalMarkup);
+    jest.advanceTimersByTime(config.extensionMs);
+    expect(dialog.open).toBe(true);
+    expect(jest.getTimerCount()).toBe(0);
+    expect(dialog.innerHTML).toBe(originalMarkup);
+    controller.destroy();
+    expect(dialog.innerHTML).toBe(originalMarkup);
 });
 
 test('updates every placeholder without replacing surrounding rich-text elements', () => {

@@ -36,7 +36,7 @@ The component uses a native `<dialog>` element with `role="alertdialog"`, and as
 
 Write `{remainingTime}` wherever the live countdown belongs, for example: `Your session will end in {remainingTime}.` This works in the plain-text `Content` property, in `ContentHtml`, and in the Umbraco Content rich text editor. No Umbraco dependency is required. In rich text, you can format the complete placeholder (for example, make it bold), but do not split its characters across different formatting elements.
 
-The JavaScript replaces each placeholder with an inline timer, preserving surrounding text, links and formatting. If no placeholder is present, it adds a countdown at the end of the content area, before the buttons. Existing Umbraco messages containing a fixed duration such as `2 minutes` should be edited to use `{remainingTime}` and republished; the example uSync content uses this token too.
+The JavaScript replaces each placeholder with an inline timer, preserving surrounding text, links and formatting. If no placeholder is present, it leaves the content unchanged and does not add a visible countdown. Warning timing and session-extension behaviour still work without the placeholder. To show a live countdown in existing Umbraco messages containing a fixed duration such as `2 minutes`, replace that duration with `{remainingTime}` and republish; the example uSync content uses this token too.
 
 ## Initialise the timeout behaviour
 

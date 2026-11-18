@@ -36,8 +36,8 @@ function formatRemainingTime(ms) {
         : formatUnit(seconds, 'second');
 }
 
-function createCountdown(tagName) {
-    const element = document.createElement(tagName);
+function createCountdown() {
+    const element = document.createElement('span');
     element.setAttribute('data-session-timeout-countdown', '');
     element.setAttribute('role', 'timer');
     element.setAttribute('aria-live', 'off');
@@ -61,7 +61,7 @@ function prepareCountdowns(dialog) {
 
         node.textContent.split(PLACEHOLDER).forEach((text, index) => {
             if (index > 0) {
-                const countdown = createCountdown('span');
+                const countdown = createCountdown();
                 countdowns.push(countdown);
                 fragment.append(countdown);
             }
@@ -72,31 +72,14 @@ function prepareCountdowns(dialog) {
         node.replaceWith(fragment);
     }
 
-    if (countdowns.length === 0) {
-        const countdown = createCountdown('p');
-        countdown.className = 'govuk-body';
-
-        const button = dialog.querySelector('[data-session-timeout-extend]');
-        const before = content === dialog && button?.parentNode === content
-            ? button
-            : null;
-
-        content.insertBefore(countdown, before);
-        countdowns.push(countdown);
-    }
-
     return {
         countdowns,
 
         restore() {
             for (const countdown of countdowns) {
-                if (matchingNodes.length) {
-                    countdown.replaceWith(
-                        document.createTextNode(PLACEHOLDER)
-                    );
-                } else {
-                    countdown.remove();
-                }
+                countdown.replaceWith(
+                    document.createTextNode(PLACEHOLDER)
+                );
             }
         }
     };

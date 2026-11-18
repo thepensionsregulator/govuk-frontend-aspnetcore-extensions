@@ -21,7 +21,7 @@ namespace ThePensionsRegulator.Frontend.Validation
             modelState.SetModelValue(prefix + nameof(TprAddress.PostCounty), null, address.PostCounty);
             modelState.SetModelValue(prefix + nameof(TprAddress.Postcode), null, address.Postcode);
             modelState.SetModelValue(prefix + nameof(TprAddress.CountryId), null, address.CountryId?.ToString(CultureInfo.InvariantCulture));
-            modelState.SetModelValue(prefix + nameof(TprAddress.UPRNReference), null, address.UPRNReference);
+            modelState.SetModelValue(prefix + nameof(TprAddress.Uprn), null, address.Uprn);
         }
     }
 }

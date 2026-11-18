@@ -33,7 +33,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var postCountry = GetFieldState(name, nameof(TprAddress.PostCounty), AddressFieldNames.PostCounty, modelStateDictionary);
             var countryId = GetFieldState(name, nameof(TprAddress.CountryId), AddressFieldNames.CountryId, modelStateDictionary);
             var postcode = GetFieldState(name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
-            var uprnReference = GetFieldState(name, nameof(TprAddress.UPRNReference), AddressFieldNames.UprnReference, modelStateDictionary);
+            var uprnReference = GetFieldState(name, nameof(TprAddress.Uprn), AddressFieldNames.UprnReference, modelStateDictionary);
 
             fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, "govuk-input--width-20", "address-line1"));
             fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, "govuk-input--width-20", "address-line2"));

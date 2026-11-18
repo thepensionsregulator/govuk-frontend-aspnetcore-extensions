@@ -2,7 +2,7 @@ namespace ThePensionsRegulator.Frontend.Models
 {
     public interface ITprAddress
     {
-        public string? UPRNReference { get; set; }
+        public string? Uprn { get; set; }
         public string? AddressLine1 { get; set; }
 
         public string? AddressLine2 { get; set; }

@@ -21,7 +21,7 @@ namespace GovUk.Frontend.ExampleApp.Controllers
                     PostTown = "Post town value",
                     PostCounty = "Post county value",
                     Postcode = "BN1 4DW",
-                    UPRNReference = "UPRN123"
+                    Uprn = "UPRN123"
                 }
             };
 

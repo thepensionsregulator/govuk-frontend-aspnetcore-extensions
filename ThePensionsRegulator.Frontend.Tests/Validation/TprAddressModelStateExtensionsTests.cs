@@ -37,7 +37,7 @@ namespace ThePensionsRegulator.Frontend.Tests.Validation
             Assert.Equal(address.PostCounty, modelState[nameof(TprAddress.PostCounty)]!.AttemptedValue);
             Assert.Equal(address.Postcode, modelState[nameof(TprAddress.Postcode)]!.AttemptedValue);
             Assert.Equal("44", modelState[nameof(TprAddress.CountryId)]!.AttemptedValue);
-            Assert.Equal(address.UPRNReference, modelState[nameof(TprAddress.UPRNReference)]!.AttemptedValue);
+            Assert.Equal(address.Uprn, modelState[nameof(TprAddress.Uprn)]!.AttemptedValue);
         }
 
         [Theory]
@@ -57,7 +57,7 @@ namespace ThePensionsRegulator.Frontend.Tests.Validation
             Assert.Equal(address.PostCounty, modelState[$"address.{nameof(TprAddress.PostCounty)}"]!.AttemptedValue);
             Assert.Equal(address.Postcode, modelState[$"address.{nameof(TprAddress.Postcode)}"]!.AttemptedValue);
             Assert.Equal("44", modelState[$"address.{nameof(TprAddress.CountryId)}"]!.AttemptedValue);
-            Assert.Equal(address.UPRNReference, modelState[$"address.{nameof(TprAddress.UPRNReference)}"]!.AttemptedValue);
+            Assert.Equal(address.Uprn, modelState[$"address.{nameof(TprAddress.Uprn)}"]!.AttemptedValue);
         }
 
         [Fact]
@@ -94,7 +94,7 @@ namespace ThePensionsRegulator.Frontend.Tests.Validation
             PostCounty = "Greater Manchester",
             Postcode = "M1 1AA",
             CountryId = 44,
-            UPRNReference = "100021064336"
+            Uprn = "100021064336"
         };
     }
 }

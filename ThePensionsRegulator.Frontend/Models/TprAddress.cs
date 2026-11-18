@@ -4,7 +4,7 @@ namespace ThePensionsRegulator.Frontend.Models
 {
     public class TprAddress : ITprAddress
     {
-        public virtual string? UPRNReference { get; set; }
+        public virtual string? Uprn { get; set; }
 
         [Required(ErrorMessage = "Enter address line 1")]
         [MaxLength(100, ErrorMessage = "Address line 1 must not exceed 100 characters")]
@@ -39,7 +39,7 @@ namespace ThePensionsRegulator.Frontend.Models
             PostCounty = address.PostCounty?.Trim();
             Postcode = address.Postcode?.Trim().ToUpper();
             CountryId = address.CountryId;
-            UPRNReference = address.UPRNReference?.Trim();
+            Uprn = address.Uprn?.Trim();
         }
     }
 }

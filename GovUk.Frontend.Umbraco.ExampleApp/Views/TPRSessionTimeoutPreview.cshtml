@@ -1,6 +1,7 @@
 ﻿@using System.Linq
 @using GovUk.Frontend.Umbraco.ExampleApp.Services
 @using ThePensionsRegulator.Frontend.Services
+@using ThePensionsRegulator.Frontend.Models
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Web.Common
 @using Umbraco.Cms.Web.Common.PublishedModels
@@ -18,9 +19,19 @@
     var selectedMessageKey = Context?.Request?.Query["messageKey"].ToString();
     var messages = SessionTimeoutDemoMessages.GetMessages(settings, publishedValueFallback);
     var selected = TprSessionTimeOutMessageSelector.SelectByKey(messages, selectedMessageKey);
+    if (selected is not null)
+    {
+        selected.Settings = new SessionTimeoutSettings
+        {
+            RemainingTime = TimeSpan.FromSeconds(125),
+            ExtensionLength = TimeSpan.FromMinutes(3),
+            WarningBeforeExpiry = TimeSpan.FromMinutes(2),
+            ExpiryUrl = "/session-timeout"
+        };
+    }
 }
 
-<div class="govuk-width-container" data-session-timeout-preview data-timeout-ms="125000" data-extension-ms="180000" data-warning-ms="120000">
+<div class="govuk-width-container">
     <p class="govuk-body">
         <a class="govuk-link" href="/session-timeout">Back to session-timeout variants</a>
     </p>
@@ -29,7 +40,7 @@
         <h1 class="govuk-heading-l">Session timeout preview</h1>
         <p class="govuk-body">The warning will appear after 5 seconds, with 2 minutes remaining. It displays 2 minutes for a full minute. When 1 minute remains, it switches to 60 seconds and counts down to zero.</p>
         <p class="govuk-body">Continuing simulates a successful extension to 3 minutes; the warning will appear again with 2 minutes remaining.</p>
-        <p class="govuk-body">This preview does not extend a real session. At zero, the countdown stops without signing you out or redirecting you. Reload the page to restart the preview.</p>
+        <p class="govuk-body">This preview does not extend a real session. When the countdown reaches zero, you will return to the session-timeout examples page.</p>
         <partial name="TPR/TPRSessionTimeOutWarning" model="selected" />
     }
     else

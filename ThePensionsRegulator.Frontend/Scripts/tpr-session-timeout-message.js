@@ -114,14 +114,29 @@ function validateConfig(config) {
     ) {
         throw new TypeError('formatRemainingTime must be a function.');
     }
+
+    if (config.expiryUrl !== undefined && config.expiryUrl !== null) {
+        if (typeof config.expiryUrl !== 'string' || !config.expiryUrl.trim()) {
+            throw new TypeError('expiryUrl must be a non-empty HTTP(S) URL.');
+        }
+        const url = new URL(config.expiryUrl, document.baseURI);
+        if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+            throw new TypeError('expiryUrl must use HTTP or HTTPS.');
+        }
+    }
+}
+
+function readDuration(value) {
+    return value === undefined || !value.trim() ? NaN : Number(value);
 }
 
 /**
  * @param {HTMLDialogElement} dialog
  * @param {{
- *   timeoutMs: number,
- *   extensionMs: number,
- *   warningMs: number,
+ *   timeoutMs?: number,
+ *   extensionMs?: number,
+ *   warningMs?: number,
+ *   expiryUrl?: string | null,
  *   formatRemainingTime?: (remainingMs: number) => string,
  *   extendSession: (url: string | undefined) => boolean | Promise<boolean>
  * }} config
@@ -131,6 +146,13 @@ export function initSessionTimeout(dialog, config) {
         return instances.get(dialog);
     }
 
+    config = {
+        timeoutMs: readDuration(dialog.dataset.timeoutMs),
+        extensionMs: readDuration(dialog.dataset.extensionMs),
+        warningMs: readDuration(dialog.dataset.warningMs),
+        expiryUrl: dialog.dataset.sessionTimeoutExpiryUrl || undefined,
+        ...config
+    };
     validateConfig(config);
 
     const button = dialog.querySelector('[data-session-timeout-extend]');
@@ -141,6 +163,7 @@ export function initSessionTimeout(dialog, config) {
     let timer;
     let extending = false;
     let destroyed = false;
+    let expired = false;
 
     function updateCountdown() {
         if (destroyed) return;
@@ -165,6 +188,15 @@ export function initSessionTimeout(dialog, config) {
                 updateCountdown,
                 getNextUpdateDelay(remaining, config.warningMs)
             );
+        } else if (!expired) {
+            expired = true;
+            const navigate = dialog.dispatchEvent(new CustomEvent('tpr-session-timeout:expired', {
+                bubbles: true,
+                cancelable: true
+            }));
+            if (navigate && config.expiryUrl) {
+                window.location.assign(config.expiryUrl);
+            }
         }
     }
 
@@ -186,6 +218,7 @@ export function initSessionTimeout(dialog, config) {
             if (destroyed) return;
 
             expiryTime = getExpiryTime(config.extensionMs);
+            expired = false;
 
             if (dialog.open) {
                 dialog.close();

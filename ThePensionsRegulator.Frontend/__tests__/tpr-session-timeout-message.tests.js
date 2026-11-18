@@ -401,3 +401,113 @@ test('default formatting holds minutes until the final 60-second countdown', () 
     jest.advanceTimersByTime(59000);
     expect(countdown.textContent).toBe('0 seconds');
 });
+
+test('emits one bubbling expiry event at zero, even without a countdown token', () => {
+    dialog.querySelector('[data-session-timeout-content]').textContent = 'Your session is about to expire.';
+    const onExpired = jest.fn();
+    const parent = dialog.parentElement;
+    parent.addEventListener('tpr-session-timeout:expired', onExpired);
+    try {
+        initialise();
+        jest.advanceTimersByTime(config.timeoutMs - 1);
+        expect(onExpired).not.toHaveBeenCalled();
+        jest.advanceTimersByTime(1);
+        expect(onExpired).toHaveBeenCalledTimes(1);
+        expect(onExpired.mock.calls[0][0].target).toBe(dialog);
+        document.dispatchEvent(new Event('visibilitychange'));
+        window.dispatchEvent(new Event('pageshow'));
+        jest.advanceTimersByTime(5000);
+        expect(onExpired).toHaveBeenCalledTimes(1);
+    } finally {
+        parent.removeEventListener('tpr-session-timeout:expired', onExpired);
+    }
+});
+
+test('emits expiry for the extended deadline, not the original deadline', async () => {
+    const onExpired = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+    initialise();
+    jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
+    button.click();
+    await jest.advanceTimersByTimeAsync(0);
+    jest.advanceTimersByTime(config.warningMs);
+    expect(onExpired).not.toHaveBeenCalled();
+    jest.advanceTimersByTime(config.extensionMs - config.warningMs);
+    expect(onExpired).toHaveBeenCalledTimes(1);
+    button.click();
+    await jest.advanceTimersByTimeAsync(0);
+    jest.setSystemTime(controller.expiryTime + 1000);
+    document.dispatchEvent(new Event('visibilitychange'));
+    expect(onExpired).toHaveBeenCalledTimes(2);
+    controller.destroy();
+    window.dispatchEvent(new Event('pageshow'));
+    expect(onExpired).toHaveBeenCalledTimes(2);
+});
+
+test('reads shared dialog timing attributes when only the application extension callback is supplied', async () => {
+    dialog.dataset.timeoutMs = '125000';
+    dialog.dataset.extensionMs = '180000';
+    dialog.dataset.warningMs = '120000';
+    initialise({ extendSession: config.extendSession });
+    expect(controller.expiryTime).toBe(Date.now() + 125000);
+    jest.advanceTimersByTime(4999);
+    expect(dialog.open).toBe(false);
+    jest.advanceTimersByTime(1);
+    expect(dialog.open).toBe(true);
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('2 minutes');
+    button.click();
+    await jest.advanceTimersByTimeAsync(0);
+    expect(controller.expiryTime).toBe(Date.now() + 180000);
+    expect(dialog.open).toBe(false);
+});
+
+test('explicit JavaScript durations override dialog attributes', () => {
+    dialog.dataset.timeoutMs = '125000';
+    dialog.dataset.extensionMs = '180000';
+    dialog.dataset.warningMs = '120000';
+    initialise();
+    expect(controller.expiryTime).toBe(Date.now() + config.timeoutMs);
+    jest.advanceTimersByTime(5000);
+    expect(dialog.open).toBe(false);
+});
+
+test.each(['', 'invalid', '-1'])('rejects invalid dialog timing %s before changing content', value => {
+    dialog.dataset.timeoutMs = '125000';
+    dialog.dataset.extensionMs = '180000';
+    dialog.dataset.warningMs = value;
+    expect(() => initialise({ extendSession: config.extendSession })).toThrow(RangeError);
+    expect(dialog.querySelector('[data-session-timeout-countdown]')).toBeNull();
+});
+
+test('navigates to the configured expiry URL once the countdown reaches zero', () => {
+    dialog.dataset.sessionTimeoutExpiryUrl = '#session-expired';
+    const originalUrl = window.location.href;
+    try {
+        initialise();
+        jest.advanceTimersByTime(config.timeoutMs - 1);
+        expect(window.location.hash).toBe('');
+        jest.advanceTimersByTime(1);
+        expect(window.location.hash).toBe('#session-expired');
+    } finally {
+        window.history.replaceState(null, '', originalUrl);
+    }
+});
+
+test('allows an application to cancel default expiry navigation and handle its own request', () => {
+    dialog.dataset.sessionTimeoutExpiryUrl = '#session-expired';
+    dialog.addEventListener('tpr-session-timeout:expired', event => event.preventDefault());
+    const originalUrl = window.location.href;
+    try {
+        initialise();
+        jest.advanceTimersByTime(config.timeoutMs);
+        expect(window.location.hash).toBe('');
+    } finally {
+        window.history.replaceState(null, '', originalUrl);
+    }
+});
+
+test.each(['javascript:alert(1)', 'data:text/html,test', 'https://[invalid'])('rejects unsafe or invalid expiry URL %s', expiryUrl => {
+    expect(() => initialise({ ...config, expiryUrl })).toThrow(/expiryUrl|Invalid URL/);
+    expect(jest.getTimerCount()).toBe(0);
+    expect(dialog.querySelector('[data-session-timeout-countdown]')).toBeNull();
+});

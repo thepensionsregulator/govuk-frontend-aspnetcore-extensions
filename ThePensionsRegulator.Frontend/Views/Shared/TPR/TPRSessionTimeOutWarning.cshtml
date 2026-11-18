@@ -1,8 +1,14 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model TprSessionTimeOutModel
 @using ThePensionsRegulator.Frontend.Models
+@using System.Globalization
 
-<dialog id="tpr-session-timeout" class="tpr-session-timeout-warning" role="alertdialog" aria-labelledby="tpr-session-timeout-title" aria-describedby="tpr-session-timeout-description">
+<dialog id="tpr-session-timeout" class="tpr-session-timeout-warning" role="alertdialog" aria-labelledby="tpr-session-timeout-title" aria-describedby="tpr-session-timeout-description"
+        data-module="@(Model.Settings is null ? null : "tpr-session-timeout")"
+        data-timeout-ms="@Model.Settings?.RemainingTime.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)"
+        data-extension-ms="@Model.Settings?.ExtensionLength.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)"
+        data-warning-ms="@Model.Settings?.WarningBeforeExpiry.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)"
+        data-session-timeout-expiry-url="@Model.Settings?.ExpiryUrl">
     <h2 id="tpr-session-timeout-title" class="govuk-heading-m">@Model.Title</h2>
     <div id="tpr-session-timeout-description" class="govuk-body" data-session-timeout-content>
         @if (Model.ContentHtml is not null)

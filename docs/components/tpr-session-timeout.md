@@ -16,6 +16,13 @@ Create a `TprSessionTimeOutModel` and render the partial. Load the TPR styleshee
 	{
 		Title = "Your session is about to expire",
 		Content = "Your session will end in {remainingTime}. Select continue to keep working, or sign out.",
+		Settings = new SessionTimeoutSettings
+		{
+			RemainingTime = TimeSpan.FromMinutes(20),
+			ExtensionLength = TimeSpan.FromMinutes(20),
+			WarningBeforeExpiry = TimeSpan.FromMinutes(2),
+			ExpiryUrl = "/signed-out"
+		},
 		DisplayPrimaryAction = true,
 		PrimaryActionText = "Continue",
 		PrimaryActionUrl = "/session/extend",
@@ -40,7 +47,7 @@ The JavaScript replaces each placeholder with an inline timer, preserving surrou
 
 ## Initialise the timeout behaviour
 
-Import `initSessionTimeout` from the published module after rendering the partial. All durations are in milliseconds. These example values belong to the consuming application, not the UI library:
+Import `initSessionTimeout` from the published module after rendering the partial. The shared partial renders `Settings` on the dialog as `data-timeout-ms`, `data-extension-ms`, `data-warning-ms` and `data-session-timeout-expiry-url`, with a `data-module="tpr-session-timeout"` marker. Durations are converted from `TimeSpan` to culture-independent milliseconds. 
 
 ```razor
 @Html.AntiForgeryToken()
@@ -48,11 +55,8 @@ Import `initSessionTimeout` from the published module after rendering the partia
 <script type="module">
     import { initSessionTimeout } from '/ThePensionsRegulator.Frontend/js/tpr-session-timeout-message.js';
 
-    const dialog = document.querySelector('.tpr-session-timeout-warning');
+    const dialog = document.querySelector('[data-module="tpr-session-timeout"]');
     const timeout = initSessionTimeout(dialog, {
-        timeoutMs: 20 * 60 * 1000,
-        extensionMs: 20 * 60 * 1000,
-        warningMs: 2 * 60 * 1000,
         extendSession: async (url) => {
             const response = await fetch(url, {
                 method: 'POST',
@@ -71,15 +75,18 @@ The example assumes your application implements the extension endpoint set in `P
 
 | Option | Description |
 | --- | --- |
-| `timeoutMs` | Remaining session lifetime when initialisation runs. Required, finite and greater than zero. |
-| `extensionMs` | New remaining lifetime after a successful extension, measured from callback completion. Required, finite and greater than zero. |
-| `warningMs` | How long before expiry to open the warning. Required, finite, non-negative and no greater than `timeoutMs`. |
+| `timeoutMs` | Remaining session lifetime when initialisation runs. Read from `Settings.RemainingTime` unless explicitly supplied in JavaScript. Finite and greater than zero. |
+| `extensionMs` | New remaining lifetime after a successful extension, measured from callback completion. Read from `Settings.ExtensionLength` unless explicitly supplied. Finite and greater than zero. |
+| `warningMs` | How long before expiry to open the warning. Read from `Settings.WarningBeforeExpiry` unless explicitly supplied. Finite, non-negative and no greater than `timeoutMs`. |
+| `expiryUrl` | Optional HTTP(S) or relative destination to navigate to at zero. Read from `Settings.ExpiryUrl` unless explicitly supplied. Set to `null` to disable a model-configured destination. |
 | `extendSession` | Required application callback, receiving the button URL (or `undefined` if absent) and returning a boolean or a promise of a boolean. |
 | `formatRemainingTime` | Optional callback receiving non-negative remaining milliseconds and returning display text. By default, displays rounded-up whole minutes above one minute, then counts down from `60 seconds` to zero. Override for application-specific wording or formatting; this works without Umbraco too. |
 
 For example, to display seconds throughout, add `formatRemainingTime: remainingMs => Math.ceil(remainingMs / 1000) + 's'` to the configuration. Omit the option to use the default formatting.
 
-Initialise when the application's session timing is known. If the session is already running, pass its remaining lifetime as `timeoutMs`, rather than the original full duration. Keep these values consistent with the server; the UI timer does not create, authenticate or extend a server session.
+Initialise when the application's session timing is known. If the session is already running, supply its remaining lifetime through `Settings.RemainingTime` or `timeoutMs`, rather than the original full duration. Keep these values consistent with the server; the UI timer does not create, authenticate or extend a server session. Explicit JavaScript settings override the rendered attributes, including zero for `warningMs`. Existing JavaScript-only configuration remains supported: provide `timeoutMs`, `extensionMs` and `warningMs` when the model has no `Settings`. Nothing starts automatically; dialogs without runtime settings are not selected by the marker above.
+
+`ExpiryUrl` performs a browser navigation (GET), not a sign-out POST. Use a destination your application permits, such as a signed-out page or an appropriate expiry endpoint. Authentication expiry, anti-forgery and identity-provider flows remain application-owned. If sign-out requires a POST, leave `ExpiryUrl` unset and handle `tpr-session-timeout:expired` in application code. If a destination is configured, an event listener can call `event.preventDefault()` to suppress default navigation and perform its own request instead. The secondary link's `SecondaryActionUrl` is independent of the automatic expiry destination.
 
 The module:
 
@@ -89,11 +96,12 @@ The module:
 - Marks countdowns with `role="timer"` and `aria-live="off"`, so visual updates are not live announcements every second. The dialog description includes the current time when opened, and the timer remains available to screen-reader users.
 - Disables the primary button while an extension is pending. On success it closes the warning and resets expiry to the current time plus `extensionMs`. On failure the original expiry and countdown continue, and the button becomes available to retry.
 - Logs extension failures and emits a bubbling `tpr-session-timeout:error` event on the dialog, with the error in `event.detail`. Your application can listen to this event to show its own error notification.
+- Emits a bubbling, cancelable `tpr-session-timeout:expired` event on the dialog once when the remaining time reaches zero, even without a countdown placeholder. It then navigates to `expiryUrl` if configured and not prevented. A successful extension starts a new expiry period. Listen before initialisation to implement application-owned expiry actions.
 - Returns the same controller when initialised again for the same dialog, without resetting expiry or duplicating timers, markup or handlers. The original configuration remains in use.
 
-The returned controller exposes the read-only `expiryTime` timestamp and a `destroy()` method to remove timers, event handlers and the generated countdown. Call `destroy()` before removing the component or initialising it with different configuration. Pending extensions cannot restart a destroyed controller. Reaching zero does not sign out or redirect the user; expiry policy remains with your application.
+The returned controller exposes the read-only `expiryTime` timestamp and a `destroy()` method to remove timers, event handlers and the generated countdown. Call `destroy()` before removing the component or initialising it with different configuration. Pending extensions cannot restart a destroyed controller. Without an expiry destination or an application event handler, reaching zero does not navigate or sign out; expiry policy remains with your application.
 
-The example Umbraco application's `/session-timeout` page displays the configured variants inline, replacing `{remainingTime}` with a static example value of `2 minutes`; it does not start a countdown. Its `/session-timeout-preview` page uses application-owned demo settings: a 125-second timeout, a warning 2 minutes before expiry (after 5 seconds) and a 3-minute extension. It uses the library's default formatting without a `formatRemainingTime` override: `2 minutes` stays displayed for a full minute, then switches to `60 seconds` when one minute remains and counts down to zero. Longer durations decrease once per elapsed minute (for example, `30 minutes`, then `29 minutes` after one minute). Unchanged text is not rewritten each second. The preview's extension callback simulates success without making a server request or changing a real session. At zero it does not sign out or redirect; reload to restart.
+The example Umbraco application's `/session-timeout` page displays the configured variants inline, replacing `{remainingTime}` with a static example value of `2 minutes`; it does not start a countdown. Its `/session-timeout-preview` page uses application-owned demo settings: a 125-second timeout, a warning 2 minutes before expiry (after 5 seconds) and a 3-minute extension. It uses the library's default formatting without a `formatRemainingTime` override: `2 minutes` stays displayed for a full minute, then switches to `60 seconds` when one minute remains and counts down to zero. Longer durations decrease once per elapsed minute (for example, `30 minutes`, then `29 minutes` after one minute). Unchanged text is not rewritten each second. The preview's extension callback simulates success without making a server request or changing a real session. The preview attaches `SessionTimeoutSettings` to the selected message, with `ExpiryUrl = "/session-timeout"`; the shared partial and library handle the return at zero. The preview script only supplies its simulated extension callback. The static variants page does not attach runtime settings.
 
 ## Configure message variants in Umbraco
 
@@ -124,6 +132,7 @@ var message = TprSessionTimeOutMessageSelector.SelectByKey(messages, "session-ex
 
 | Property | Type | Description |
 | --- | --- | --- |
+| `Settings` | `SessionTimeoutSettings?` | Optional application-owned runtime settings.|
 | `MessageKey` | `string?` | Stable key used to select a message variant. |
 | `Title` | `string?` | Dialog heading. |
 | `Content` | `string?` | Plain-text content, rendered inside a paragraph when `ContentHtml` is not set. |
@@ -134,3 +143,12 @@ var message = TprSessionTimeOutMessageSelector.SelectByKey(messages, "session-ex
 | `DisplaySecondaryAction` | `bool` | Enables rendering the secondary link when both its text and URL are not blank. |
 | `SecondaryActionText` | `string?` | Secondary link label. |
 | `SecondaryActionUrl` | `string?` | Secondary link destination. |
+
+### SessionTimeoutSettings
+
+| Property | Type | Description |
+| --- | --- | --- |
+| `RemainingTime` | `TimeSpan` | Remaining lifetime at initialisation; greater than zero. |
+| `ExtensionLength` | `TimeSpan` | Lifetime after a confirmed extension; greater than zero. |
+| `WarningBeforeExpiry` | `TimeSpan` | Warning period; non-negative and no greater than `RemainingTime`. |
+| `ExpiryUrl` | `string?` | Optional application-owned navigation destination at zero, separate from the manual secondary action. |

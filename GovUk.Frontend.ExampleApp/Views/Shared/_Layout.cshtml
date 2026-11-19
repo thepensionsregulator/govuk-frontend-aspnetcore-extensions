@@ -28,6 +28,7 @@
     <script src="/scripts/purify.min.js" type="module" asp-append-version="true"></script>
     <script src="/scripts/trusted-types-policy.js" type="module" asp-append-version="true"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    @RenderSection("head", required: false)
 </head>
 <body class="govuk-template__body ">
     <partial name="GOVUK/BodyOpen" />

@@ -1,0 +1,43 @@
+@using ThePensionsRegulator.Frontend.Models
+@model IReadOnlyList<TprSessionTimeOutModel>
+@{
+    ViewData["Title"] = "Session timeout";
+}
+@section secondary_navigation {}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<div class="govuk-warning-text">
+    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text"><span class="govuk-warning-text__assistive">Warning</span>This page displays the session-timeout components with a static example time of 2 minutes. Select Preview to see the countdown behaviour.</strong>
+</div>
+
+@if (Model.Count > 0)
+{
+    @foreach (var message in Model)
+    {
+        <div class="session-timeout-variants__item">
+            <div class="govuk-body govuk-!-margin-bottom-2">
+                <strong>Message key:</strong> @message.MessageKey
+                <a class="govuk-link govuk-!-margin-left-2" asp-controller="SessionTimeout" asp-action="Preview" asp-route-messageKey="@message.MessageKey">Preview</a>
+            </div>
+            <partial name="TPR/TPRSessionTimeOutWarning" model="message" />
+        </div>
+    }
+}
+else
+{
+    <p class="govuk-body">No session-timeout message examples are configured.</p>
+}
+
+@section head {
+    <link rel="stylesheet" href="~/css/session-timeout-examples.css" asp-append-version="true" />
+}
+@section scripts {
+    <script src="~/js/session-timeout-examples.js" type="module" asp-append-version="true"></script>
+}

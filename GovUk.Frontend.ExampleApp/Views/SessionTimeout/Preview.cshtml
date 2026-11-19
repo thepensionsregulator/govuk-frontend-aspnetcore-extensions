@@ -1,0 +1,32 @@
+@using ThePensionsRegulator.Frontend.Models
+@model TprSessionTimeOutModel?
+@{
+    ViewData["Title"] = "Session timeout preview";
+}
+@section secondary_navigation {}
+
+<span class="govuk-caption-xl">Example application</span>
+<div class="govuk-grid-row govuk-grid-row--tpr-divider">
+    <div class="govuk-grid-column govuk-grid-column-full">
+        <h1 class="govuk-heading-l">@ViewData["Title"]</h1>
+    </div>
+</div>
+
+<p class="govuk-body"><a class="govuk-link" href="/sessiontimeout">Back to session-timeout examples</a></p>
+@if (Model is not null)
+{
+    <p class="govuk-body">The warning appears after 5 seconds with 2 minutes remaining. It displays 2 minutes for a full minute, then switches to 60 seconds and counts down to zero.</p>
+    <p class="govuk-body">Continuing simulates a successful extension to 3 minutes. This example does not extend a real session. At zero, it returns to the session-timeout examples page.</p>
+    <partial name="TPR/TPRSessionTimeOutWarning" model="Model" />
+}
+else
+{
+    <p class="govuk-body">No session-timeout message examples are configured.</p>
+}
+
+@section head {
+    <link rel="stylesheet" href="~/css/session-timeout-examples.css" asp-append-version="true" />
+}
+@section scripts {
+    <script src="~/js/session-timeout-preview.js" type="module" asp-append-version="true"></script>
+}

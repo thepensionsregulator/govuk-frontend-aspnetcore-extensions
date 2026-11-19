@@ -1,0 +1,43 @@
+.session-timeout-variants__item {
+    border: 1px solid #b1b4b6;
+    margin-bottom: 2rem;
+    padding: 1rem;
+}
+
+.tpr-session-timeout-warning {
+    background-color: #fff;
+    border: 5px solid #0b0c0c;
+    box-sizing: border-box;
+    left: 50%;
+    margin: 0;
+    max-height: 100%;
+    max-width: 100%;
+    overflow: auto;
+    padding: 30px;
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    z-index: 1002;
+}
+
+.tpr-session-timeout-warning::backdrop {
+    background-color: #0b0c0c;
+    opacity: .8;
+}
+
+.session-timeout-variants__item .tpr-session-timeout-warning {
+    left: auto;
+    max-height: none;
+    position: static;
+    top: auto;
+    transform: none;
+    width: 100%;
+    z-index: auto;
+}
+
+@media (min-width: 40.0625em) {
+    .tpr-session-timeout-warning {
+        width: 525px;
+    }
+}

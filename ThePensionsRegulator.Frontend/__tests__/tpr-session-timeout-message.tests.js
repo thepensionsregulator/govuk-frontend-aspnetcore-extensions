@@ -247,9 +247,53 @@ test.each([
     expect(dialog.querySelector('[data-session-timeout-countdown]')).toBeNull();
 });
 
-test('rejects a missing extension mechanism', () => {
-    expect(() => initialise({ ...config, extendSession: undefined })).toThrow(TypeError);
+test.each([undefined, null, true])('rejects extension callback %s when an extension button is present', extendSession => {
+    expect(() => initialise({ ...config, extendSession })).toThrow(TypeError);
     expect(jest.getTimerCount()).toBe(0);
+});
+
+test.each(['omitted', 'invalid', 'attributes'])('supports warning and expiry without extension configuration when no extension button is present (%s)', async source => {
+    button.remove();
+    const onExpired = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+    const originalUrl = window.location.href;
+    const options = { timeoutMs: 2000, warningMs: 1000, expiryUrl: '#expired' };
+    if (source === 'invalid') {
+        Object.assign(options, { extendSession: false, extensionMs: 0, extensionRequestTimeoutMs: -1 });
+    } else if (source === 'attributes') {
+        dialog.dataset.timeoutMs = '2000';
+        dialog.dataset.warningMs = '1000';
+        dialog.dataset.sessionTimeoutExpiryUrl = '#expired';
+    }
+    try {
+        controller = source === 'attributes'
+            ? sessionTimeout.initSessionTimeout(dialog)
+            : initialise(options);
+        expect(controller.expiryTime).toBe(Date.now() + 2000);
+        expect(dialog.open).toBe(false);
+        expect(jest.getTimerCount()).toBe(1);
+        jest.advanceTimersByTime(1000);
+        expect(dialog.open).toBe(true);
+        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('1 second');
+        expect(onExpired).not.toHaveBeenCalled();
+        jest.advanceTimersByTime(1000);
+        expect(onExpired).toHaveBeenCalledTimes(1);
+        expect(window.location.hash).toBe('#expired');
+        await jest.advanceTimersByTimeAsync(1);
+        expect(jest.getTimerCount()).toBe(0);
+        controller.destroy();
+        expect(dialog.querySelector('[data-session-timeout-countdown]')).toBeNull();
+        expect(config.extendSession).not.toHaveBeenCalled();
+    } finally {
+        window.history.replaceState(null, '', originalUrl);
+    }
+});
+
+test.each([['timeoutMs', 0], ['warningMs', -1], ['warningMs', 3000]])('still validates %s without an extension button', (name, value) => {
+    button.remove();
+    expect(() => initialise({ timeoutMs: 2000, warningMs: 1000, [name]: value })).toThrow(RangeError);
+    expect(jest.getTimerCount()).toBe(0);
+    expect(dialog.querySelector('[data-session-timeout-countdown]')).toBeNull();
 });
 
 test('destroy prevents pending extension completion from reviving a timer', async () => {
@@ -280,6 +324,35 @@ test('destroy is idempotent and allows clean reinitialisation', () => {
     expect(second).not.toBe(first);
     expect(jest.getTimerCount()).toBe(1);
     expect(dialog.querySelectorAll('[data-session-timeout-countdown]')).toHaveLength(1);
+});
+
+test.each([false, true])('destroy closes an open dialog and stops pending work (extension pending: %s)', async pending => {
+    let completeExtension;
+    config.extendSession.mockImplementation(() => new Promise(resolve => { completeExtension = resolve; }));
+    initialise();
+    jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
+    expect(dialog.open).toBe(true);
+    if (pending) button.click();
+    controller.destroy();
+    expect(dialog.open).toBe(false);
+    expect(dialog.close).toHaveBeenCalledTimes(1);
+    expect(button.disabled).toBe(false);
+    expect(jest.getTimerCount()).toBe(0);
+    controller.destroy();
+    expect(dialog.close).toHaveBeenCalledTimes(1);
+    if (pending) completeExtension(true);
+    await jest.advanceTimersByTimeAsync(config.timeoutMs);
+    document.dispatchEvent(new Event('visibilitychange'));
+    expect(dialog.open).toBe(false);
+    expect(dialog.showModal).toHaveBeenCalledTimes(1);
+    expect(jest.getTimerCount()).toBe(0);
+});
+
+test('destroy does not close an already closed dialog', () => {
+    initialise();
+    controller.destroy();
+    expect(dialog.close).not.toHaveBeenCalled();
+    expect(jest.getTimerCount()).toBe(0);
 });
 
 test.each([
@@ -508,6 +581,192 @@ test('allows an application to cancel default expiry navigation and handle its o
 
 test.each(['javascript:alert(1)', 'data:text/html,test', 'https://[invalid'])('rejects unsafe or invalid expiry URL %s', expiryUrl => {
     expect(() => initialise({ ...config, expiryUrl })).toThrow(/expiryUrl|Invalid URL/);
+    expect(jest.getTimerCount()).toBe(0);
+    expect(dialog.querySelector('[data-session-timeout-countdown]')).toBeNull();
+});
+
+test.each([true, false, 'rejection'])('defers expiry until the extension request settles after the deadline (%s)', async result => {
+    let resolveRequest;
+    let rejectRequest;
+    config.extendSession.mockImplementation(() => new Promise((resolve, reject) => {
+        resolveRequest = resolve;
+        rejectRequest = reject;
+    }));
+    const onExpired = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+    const log = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const originalUrl = window.location.href;
+    initialise({ ...config, expiryUrl: '#expired', extensionRequestTimeoutMs: 5000 });
+    const originalExpiry = controller.expiryTime;
+    try {
+        jest.advanceTimersByTime(config.timeoutMs - 1000);
+        button.click();
+        await jest.advanceTimersByTimeAsync(2000);
+        document.dispatchEvent(new Event('visibilitychange'));
+        window.dispatchEvent(new Event('pageshow'));
+
+        expect(controller.expiryTime).toBe(originalExpiry);
+        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('0 seconds');
+        expect(button.disabled).toBe(true);
+        expect(onExpired).not.toHaveBeenCalled();
+        expect(window.location.hash).toBe('');
+
+        if (result === 'rejection') rejectRequest(new Error('Network failed'));
+        else resolveRequest(result);
+        await jest.advanceTimersByTimeAsync(0);
+
+        expect(button.disabled).toBe(false);
+        if (result === true) {
+            expect(controller.expiryTime).toBe(Date.now() + config.extensionMs);
+            expect(dialog.open).toBe(false);
+            expect(log).not.toHaveBeenCalled();
+            expect(onExpired).not.toHaveBeenCalled();
+            expect(window.location.hash).toBe('');
+            jest.advanceTimersByTime(config.extensionMs);
+        } else {
+            expect(controller.expiryTime).toBe(originalExpiry);
+            expect(log).toHaveBeenCalledTimes(1);
+        }
+        expect(onExpired).toHaveBeenCalledTimes(1);
+        expect(window.location.hash).toBe('#expired');
+        window.dispatchEvent(new Event('pageshow'));
+        expect(onExpired).toHaveBeenCalledTimes(1);
+    } finally {
+        window.history.replaceState(null, '', originalUrl);
+    }
+});
+
+test.each([[1000, true], [5000, true], [1000, 'rejection']])('processes the original expiry when the request times out after %i ms (late %s)', async (extensionRequestTimeoutMs, lateResult) => {
+    let resolveRequest;
+    let rejectRequest;
+    config.extendSession.mockImplementation(() => new Promise((resolve, reject) => {
+        resolveRequest = resolve;
+        rejectRequest = reject;
+    }));
+    const onExpired = jest.fn();
+    const onError = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+    dialog.addEventListener('tpr-session-timeout:error', onError);
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs });
+    const originalExpiry = controller.expiryTime;
+    jest.advanceTimersByTime(config.timeoutMs - 500);
+
+    button.click();
+    await jest.advanceTimersByTimeAsync(extensionRequestTimeoutMs - 1);
+
+    expect(onExpired).not.toHaveBeenCalled();
+    expect(button.disabled).toBe(true);
+
+    await jest.advanceTimersByTimeAsync(1);
+
+    expect(onExpired).toHaveBeenCalledTimes(1);
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(onError.mock.calls[0][0].detail.message).toMatch(/timed out/i);
+    expect(controller.expiryTime).toBe(originalExpiry);
+    expect(button.disabled).toBe(false);
+    expect(jest.getTimerCount()).toBe(0);
+
+    if (lateResult === 'rejection') rejectRequest(new Error('Late network failure'));
+    else resolveRequest(lateResult);
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(controller.expiryTime).toBe(originalExpiry);
+    expect(onExpired).toHaveBeenCalledTimes(1);
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(jest.getTimerCount()).toBe(0);
+});
+
+test('uses a bounded default when the extension request timeout is not configured', async () => {
+    config.extendSession.mockImplementation(() => new Promise(() => {}));
+    const onError = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:error', onError);
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise();
+
+    button.click();
+    await jest.advanceTimersByTimeAsync(9999);
+
+    expect(button.disabled).toBe(true);
+    expect(onError).not.toHaveBeenCalled();
+
+    await jest.advanceTimersByTimeAsync(1);
+
+    expect(button.disabled).toBe(false);
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(jest.getTimerCount()).toBe(1);
+});
+
+test.each([false, 'timeout'])('retains the original deadline and allows a retry when a request fails before expiry (%s)', async result => {
+    let resolveRequest;
+    config.extendSession.mockImplementationOnce(() => new Promise(resolve => { resolveRequest = resolve; }));
+    const onExpired = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+    const originalExpiry = controller.expiryTime;
+
+    button.click();
+    if (result === false) resolveRequest(false);
+    await jest.advanceTimersByTimeAsync(1000);
+
+    expect(controller.expiryTime).toBe(originalExpiry);
+    expect(onExpired).not.toHaveBeenCalled();
+    expect(button.disabled).toBe(false);
+
+    button.click();
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(config.extendSession).toHaveBeenCalledTimes(2);
+    expect(controller.expiryTime).toBe(Date.now() + config.extensionMs);
+    expect(jest.getTimerCount()).toBe(1);
+});
+
+test.each(['visibilitychange', 'pageshow', 'settlement'])('rejects an overdue response when timeout callbacks are delayed (%s)', async trigger => {
+    let resolveRequest;
+    config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+    const onExpired = jest.fn();
+    const onError = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+    dialog.addEventListener('tpr-session-timeout:error', onError);
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+    const originalExpiry = controller.expiryTime;
+    button.click();
+
+    jest.setSystemTime(originalExpiry + 5000);
+    if (trigger === 'settlement') resolveRequest(true);
+    else (trigger === 'pageshow' ? window : document).dispatchEvent(new Event(trigger));
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(controller.expiryTime).toBe(originalExpiry);
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(onExpired).toHaveBeenCalledTimes(1);
+    expect(button.disabled).toBe(false);
+    expect(jest.getTimerCount()).toBe(0);
+});
+
+test('clears the extension request timeout when destroying a pending extension', async () => {
+    config.extendSession.mockImplementation(() => new Promise(() => {}));
+    const onError = jest.fn();
+    const onExpired = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:error', onError);
+    dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+    initialise();
+    button.click();
+    expect(jest.getTimerCount()).toBe(2);
+
+    controller.destroy();
+    await jest.advanceTimersByTimeAsync(config.timeoutMs);
+
+    expect(jest.getTimerCount()).toBe(0);
+    expect(button.disabled).toBe(false);
+    expect(onError).not.toHaveBeenCalled();
+    expect(onExpired).not.toHaveBeenCalled();
+});
+
+test.each([0, -1, NaN, Infinity, '5000', 2147483648])('rejects an invalid extension request timeout value %s', extensionRequestTimeoutMs => {
+    expect(() => initialise({ ...config, extensionRequestTimeoutMs })).toThrow(RangeError);
     expect(jest.getTimerCount()).toBe(0);
     expect(dialog.querySelector('[data-session-timeout-countdown]')).toBeNull();
 });

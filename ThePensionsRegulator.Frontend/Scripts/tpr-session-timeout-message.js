@@ -5,6 +5,8 @@ const instances = new WeakMap();
 const PLACEHOLDER = '{remainingTime}';
 const ONE_SECOND_MS = 1000;
 const SECONDS_PER_MINUTE = 60;
+const DEFAULT_EXTENSION_REQUEST_TIMEOUT_MS = 10000;
+const MAX_TIMER_DELAY_MS = 2147483647;
 
 function getExpiryTime(durationMs) {
     return Date.now() + durationMs;
@@ -85,12 +87,15 @@ function prepareCountdowns(dialog) {
     };
 }
 
-function validateConfig(config) {
-    if (!config || typeof config.extendSession !== 'function') {
-        throw new TypeError('An extendSession callback is required.');
+function validateConfig(config, hasExtensionButton) {
+    if (hasExtensionButton && typeof config.extendSession !== 'function') {
+        throw new TypeError('An extendSession callback is required when an extension button is present.');
     }
 
-    for (const name of ['timeoutMs', 'extensionMs', 'warningMs']) {
+    const durations = hasExtensionButton
+        ? ['timeoutMs', 'extensionMs', 'warningMs']
+        : ['timeoutMs', 'warningMs'];
+    for (const name of durations) {
         const value = config[name];
 
         if (
@@ -106,6 +111,13 @@ function validateConfig(config) {
 
     if (config.warningMs > config.timeoutMs) {
         throw new RangeError('warningMs must not exceed timeoutMs.');
+    }
+
+    if (hasExtensionButton && (
+        !Number.isFinite(config.extensionRequestTimeoutMs) ||
+        config.extensionRequestTimeoutMs <= 0 ||
+        config.extensionRequestTimeoutMs > MAX_TIMER_DELAY_MS)) {
+        throw new RangeError('extensionRequestTimeoutMs must be greater than zero and no greater than 2147483647 milliseconds.');
     }
 
     if (
@@ -137,9 +149,10 @@ function readDuration(value) {
  *   extensionMs?: number,
  *   warningMs?: number,
  *   expiryUrl?: string | null,
+ *   extensionRequestTimeoutMs?: number,
  *   formatRemainingTime?: (remainingMs: number) => string,
- *   extendSession: (url: string | undefined) => boolean | Promise<boolean>
- * }} config
+ *   extendSession?: (url: string | undefined) => boolean | Promise<boolean>
+ * }} [config]
  */
 export function initSessionTimeout(dialog, config) {
     if (instances.has(dialog)) {
@@ -151,11 +164,12 @@ export function initSessionTimeout(dialog, config) {
         extensionMs: readDuration(dialog.dataset.extensionMs),
         warningMs: readDuration(dialog.dataset.warningMs),
         expiryUrl: dialog.dataset.sessionTimeoutExpiryUrl || undefined,
-        ...config
+        ...config,
+        extensionRequestTimeoutMs: config?.extensionRequestTimeoutMs ?? DEFAULT_EXTENSION_REQUEST_TIMEOUT_MS
     };
-    validateConfig(config);
-
     const button = dialog.querySelector('[data-session-timeout-extend]');
+    validateConfig(config, button !== null);
+
     const { countdowns, restore } = prepareCountdowns(dialog);
     const formatTime = config.formatRemainingTime || formatRemainingTime;
 
@@ -164,11 +178,16 @@ export function initSessionTimeout(dialog, config) {
     let extending = false;
     let destroyed = false;
     let expired = false;
+    let extensionRequest;
 
     function updateCountdown() {
         if (destroyed) return;
 
         clearTimeout(timer);
+
+        if (extensionRequest && Date.now() >= extensionRequest.deadline) {
+            extensionRequest.reject(extensionRequest.timeoutError);
+        }
 
         const remaining = getRemainingTime(expiryTime);
         const text = formatTime(remaining);
@@ -188,7 +207,7 @@ export function initSessionTimeout(dialog, config) {
                 updateCountdown,
                 getNextUpdateDelay(remaining, config.warningMs)
             );
-        } else if (!expired) {
+        } else if (!expired && !extending) {
             expired = true;
             const navigate = dialog.dispatchEvent(new CustomEvent('tpr-session-timeout:expired', {
                 bubbles: true,
@@ -205,11 +224,25 @@ export function initSessionTimeout(dialog, config) {
 
         extending = true;
         button.disabled = true;
+        const request = {
+            deadline: getExpiryTime(config.extensionRequestTimeoutMs),
+            timeoutError: new Error('Session extension request timed out.')
+        };
+        extensionRequest = request;
+        const timeout = new Promise((resolve, reject) => {
+            request.reject = reject;
+            request.timer = setTimeout(() => reject(request.timeoutError), config.extensionRequestTimeoutMs);
+        });
 
         try {
-            const succeeded = await config.extendSession(
-                button.dataset.sessionTimeoutExtendUrl
-            );
+            const succeeded = await Promise.race([
+                config.extendSession(button.dataset.sessionTimeoutExtendUrl),
+                timeout
+            ]);
+
+            if (Date.now() >= request.deadline) {
+                throw request.timeoutError;
+            }
 
             if (succeeded !== true) {
                 throw new Error('Session extension was not confirmed.');
@@ -223,9 +256,6 @@ export function initSessionTimeout(dialog, config) {
             if (dialog.open) {
                 dialog.close();
             }
-
-            updateCountdown();
-
         } catch (error) {
             if (!destroyed) {
                 console.error('Failed to extend session:', error);
@@ -238,10 +268,13 @@ export function initSessionTimeout(dialog, config) {
                 );
             }
         } finally {
+            clearTimeout(request.timer);
+            extensionRequest = undefined;
             extending = false;
 
             if (!destroyed) {
                 button.disabled = false;
+                updateCountdown();
             }
         }
     }
@@ -252,6 +285,10 @@ export function initSessionTimeout(dialog, config) {
         destroyed = true;
 
         clearTimeout(timer);
+        if (extensionRequest) {
+            clearTimeout(extensionRequest.timer);
+            extensionRequest.reject(new Error('Session timeout component was destroyed.'));
+        }
 
         if (extending) {
             button.disabled = false;
@@ -263,6 +300,10 @@ export function initSessionTimeout(dialog, config) {
 
         restore();
         instances.delete(dialog);
+
+        if (dialog.open) {
+            dialog.close();
+        }
     }
 
     updateCountdown();

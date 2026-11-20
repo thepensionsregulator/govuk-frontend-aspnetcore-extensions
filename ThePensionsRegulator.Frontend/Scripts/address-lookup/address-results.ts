@@ -1,12 +1,14 @@
-import { AddressSearchCriteria, AddressSearchResult } from "./types";
+import { AddressLookupContent, AddressSearchCriteria, AddressSearchResult } from "./types";
 import { createButton } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
 import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
 import { createSelectFormGroup } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/inputs.js";
 import { clearFormGroupError, focusFirstInvalidControl, showFormGroupError } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/validation.js";
+import { runActionOnEnter } from "./run-action-on-enter.js";
 
 export type AddressResultsOptions = {
     addresses: AddressSearchResult[];
     criteria: AddressSearchCriteria;
+    content: AddressLookupContent;
     onAddressSelected: (address: AddressSearchResult) => void;
     onBackToSearchRequested: () => void;
     onUkManualEntryRequested: () => void;
@@ -15,13 +17,13 @@ export type AddressResultsOptions = {
 export function renderAddressResults(options: AddressResultsOptions): HTMLElement {
     const addressResultsWrapper = document.createElement("div");
     const selectFormGroup = createSelectFormGroup({
-        labelText: "Select an address",
+        labelText: options.content.i18n.addressSelectLabel,
         select: {
             id: "address-select",
             name: "address-select",
             value: "",
             options: [ 
-                {value: "", text: "Select an address", disabled: true},
+                {value: "", text: options.content.i18n.addressSelectLabel, disabled: true},
                 ...options.addresses.map(address => ({
                     value: address.UPRN,
                     text: address.ADDRESS
@@ -29,14 +31,16 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
             ]
         }
     });
+    selectFormGroup.setAttribute("data-address-lookup-submit-error-anchor", "true");
     const addressSelect = selectFormGroup.querySelector("select")!;
-    const button = createButton({labelText: "Confirm address", variant: "secondary", type: "button"});
+    const button = createButton({labelText: options.content.i18n.confirmAddressLabel, variant: "secondary", type: "button"});
+    runActionOnEnter(selectFormGroup, () => button.click());
     button.addEventListener("click", handleAddressSelect);
 
-    const ukManualEntryLink = createLink({labelText: "Enter address not on list"});
+    const ukManualEntryLink = createLink({labelText: options.content.i18n.ukManualEntryLinkLabel});
     ukManualEntryLink.addEventListener("click", handleUkManualEntry);
 
-    const backToSearchLink = createLink({labelText: "Return to postcode search"});
+    const backToSearchLink = createLink({labelText: options.content.i18n.backToPostcodeSearchLabel});
     backToSearchLink.addEventListener("click", handleBackToSearch);
 
     const nav = document.createElement("nav");
@@ -60,7 +64,7 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
         const selectedAddress = options.addresses.find(address => address.UPRN === selectedUprn);
 
         if(!selectedAddress){
-            showFormGroupError(selectFormGroup, "Select an address");
+            showFormGroupError(selectFormGroup, options.content.i18n.addressSelectErrorMessage);
             const form = selectFormGroup.closest("form");
             if (form) {
                 focusFirstInvalidControl(form);

@@ -1,6 +1,8 @@
 import { jest } from "@jest/globals";
 import "@testing-library/jest-dom";
 import { createAddressLookup } from "../../Scripts/address-lookup/address-lookup";
+import { AddressFields } from "../../Scripts/address-lookup/types";
+import { createMockAddressLookupContent } from "../../__test-helpers__/mock-address-lookup-content";
 
 describe("createAddressLookup", () => {
     let originalFetch: typeof globalThis.fetch;
@@ -34,23 +36,88 @@ describe("createAddressLookup", () => {
         return new Promise(resolve => setTimeout(resolve, 0));
     }
 
+    const fields: AddressFields = {
+        addressLine1: { name: "addressLine1", value: "" },
+        addressLine2: { name: "addressLine2", value: "" },
+        addressLine3: { name: "addressLine3", value: "" },
+        postTown: { name: "postTown", value: "" },
+        postCounty: { name: "postCounty", value: "" },
+        countryId: { name: "countryId", value: "" },
+        postcode: { name: "postcode", value: "" },
+        uprn: { name: "uprn", value: "" }
+    };
+    const content = createMockAddressLookupContent();
+    const countries = [
+        { value: "GB", name: "United Kingdom" },
+        { value: "FR", name: "France" }
+    ];
     it("should return an HTMLElement", () => {
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
 
-        expect(component).toBeInstanceOf(HTMLElement);
+        expect(addressLookupInstance.element).toBeInstanceOf(HTMLElement);
     });
 
     it("should render the search form initially", () => {
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
+        const component = addressLookupInstance.element;
 
         expect(component.querySelector("#building")).not.toBeNull();
         expect(component.querySelector("#postcode")).not.toBeNull();
         expect(component.querySelector("button")).not.toBeNull();
     });
 
+    it("should show the search not-confirmed error", () => {
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
+
+        addressLookupInstance.showNotConfirmedError();
+
+        expect(addressLookupInstance.element.querySelector("#address-search-fieldset-error"))
+            .toHaveTextContent(`Error: ${content.i18n.searchNotConfirmedErrorMessage}`);
+    });
+
+    it("should use the UK country option to validate a pre-filled UK address", () => {
+        const addressLookupInstance = createAddressLookup({
+            searchEndpoint: "/api/address-search",
+            fields,
+            content,
+            countries,
+            initialAddress: {
+                addressLine1: "1 High Street",
+                postTown: "London",
+                countryId: "GB",
+                countryName: "United Kingdom",
+                postcode: "NOTREAL"
+            }
+        });
+
+        expect(addressLookupInstance.isConfirmed()).toBe(false);
+        expect(addressLookupInstance.element.querySelector("#postcode")).not.toBeNull();
+    });
+
+    it("should initialize a pre-filled international address as confirmed", () => {
+        const addressLookupInstance = createAddressLookup({
+            searchEndpoint: "/api/address-search",
+            fields,
+            content,
+            countries,
+            initialAddress: {
+                addressLine1: "123 Rue de Rivoli",
+                postTown: "Paris",
+                countryId: "FR",
+                countryName: "France",
+                postcode: "75001"
+            }
+        });
+
+        expect(addressLookupInstance.isConfirmed()).toBe(true);
+        expect(addressLookupInstance.element.querySelector("p")).toHaveTextContent("France");
+    });
+
     it("should search using the configured search endpoint", async () => {
         const fetchMock = mockFetchResults([]);
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
+        const component = addressLookupInstance.element;
+        document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         const button = component.querySelector<HTMLButtonElement>("button")!;
         postcodeInput.value = "SW1A 2AA";
@@ -61,6 +128,7 @@ describe("createAddressLookup", () => {
         const [requestedUrl] = fetchMock.mock.calls[0] as unknown as [URL, RequestInit];
         expect(requestedUrl.pathname).toBe("/api/address-search");
         expect(requestedUrl.searchParams.get("postcode")).toBe("SW1A 2AA");
+        component.remove();
     });
 
     it("should render the results view when multiple addresses are found", async () => {
@@ -68,7 +136,8 @@ describe("createAddressLookup", () => {
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", BUILDING_NUMBER: "1", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", BUILDING_NUMBER: "2", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
+        const component = addressLookupInstance.element;
         document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         const button = component.querySelector<HTMLButtonElement>("button")!;
@@ -80,7 +149,8 @@ describe("createAddressLookup", () => {
         expect(component.querySelector("#postcode")).toBeNull();
         expect(component.querySelector("#address-select")).not.toBeNull();
         expect(document.activeElement).toBe(component.querySelector("#address-select"));
-        document.body.removeChild(component);
+        expect(addressLookupInstance.isConfirmed()).toBe(false);
+        component.remove();
     });
 
     it("should only ever show one view's markup at a time", async () => {
@@ -88,7 +158,9 @@ describe("createAddressLookup", () => {
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
+        const component = addressLookupInstance.element;
+        document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         const button = component.querySelector<HTMLButtonElement>("button")!;
         postcodeInput.value = "SW1A 2AA";
@@ -97,6 +169,7 @@ describe("createAddressLookup", () => {
         await flushPromises();
 
         expect(component.children).toHaveLength(1);
+        component.remove();
     });
 
     it("should confirm the selected address from the results view", async () => {
@@ -104,7 +177,8 @@ describe("createAddressLookup", () => {
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", BUILDING_NUMBER: "1", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", BUILDING_NUMBER: "2", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
+        const component = addressLookupInstance.element;
         document.body.appendChild(component);
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         postcodeInput.value = "SW1A 2AA";
@@ -119,14 +193,17 @@ describe("createAddressLookup", () => {
         expect(component.querySelector("p")).toHaveTextContent("2 High StreetLondonSW1A 2AA");
         expect(component.querySelector<HTMLInputElement>("#addressLine1")).toHaveValue("2 High Street");
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#uprnReference")).toHaveValue("2");
+        expect(component.querySelector<HTMLInputElement>("#uprn")).toHaveValue("2");
+        expect(addressLookupInstance.isConfirmed()).toBe(true);
+        component.remove();
     });
 
     it("should render the confirmed view when a single address is found", async () => {
         mockFetchResults([
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", BUILDING_NUMBER: "1", THOROUGHFARE_NAME: "High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
+        const component = addressLookupInstance.element;
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
         const button = component.querySelector<HTMLButtonElement>("button")!;
         postcodeInput.value = "SW1A 2AA";
@@ -137,7 +214,7 @@ describe("createAddressLookup", () => {
         expect(component.querySelector("p")).toHaveTextContent("1 High StreetLondonSW1A 2AA");
         expect(component.querySelector<HTMLInputElement>("#addressLine1")).toHaveValue("1 High Street");
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#uprnReference")).toHaveValue("1");
+        expect(component.querySelector<HTMLInputElement>("#uprn")).toHaveValue("1");
     });
 
     it("should return to a pre-filled search form when back-to-search is requested", async () => {
@@ -145,8 +222,8 @@ describe("createAddressLookup", () => {
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "1" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "1 Station Road", POST_TOWN: "London", POSTCODE: "SW1A 2AA", BUILDING_NUMBER: "1" }
         ]);
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
-        
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content });
+        const component = addressLookupInstance.element;
         document.body.appendChild(component);
         const buildingInput = component.querySelector<HTMLInputElement>("#building")!;
         const postcodeInput = component.querySelector<HTMLInputElement>("#postcode")!;
@@ -161,7 +238,7 @@ describe("createAddressLookup", () => {
         expect(buildingInputAfterBack).toHaveValue("1");
         expect(buildingInputAfterBack).toHaveFocus();
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
-
+        component.remove();
     });
 
     it("should render the UK manual entry view and focus the first address line", async () => {
@@ -169,7 +246,7 @@ describe("createAddressLookup", () => {
             { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
             { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
         ]);
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const component = createAddressLookup({ content, fields, searchEndpoint: "/api/address-search" }).element;
         document.body.appendChild(component);
 
         try {
@@ -178,7 +255,7 @@ describe("createAddressLookup", () => {
             await flushPromises();
 
             const manualEntryLink = Array.from(component.querySelectorAll<HTMLAnchorElement>("nav a"))
-                .find(link => link.textContent === "Enter address not on list")!;
+                .find(link => link.textContent === content.i18n.ukManualEntryLinkLabel)!;
             manualEntryLink.click();
 
             expect(component.querySelector("#address-select")).toBeNull();
@@ -190,7 +267,7 @@ describe("createAddressLookup", () => {
     });
 
     it("should render the international manual entry view and focus the first address line", () => {
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const component = createAddressLookup({ content, fields, searchEndpoint: "/api/address-search" }).element;
         document.body.appendChild(component);
 
         try {
@@ -204,8 +281,40 @@ describe("createAddressLookup", () => {
         }
     });
 
+    it("should remove the results submission error from the summary when returning to search", async () => {
+        const originalTitle = document.title;
+        const main = document.createElement("main");
+        document.body.appendChild(main);
+        mockFetchResults([
+            { UPRN: "1", UDPRN: "1", ADDRESS: "1 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" },
+            { UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA" }
+        ]);
+        const addressLookupInstance = createAddressLookup({ content, fields, searchEndpoint: "/api/address-search" });
+        const component = addressLookupInstance.element;
+        main.appendChild(component);
+        try {
+            component.querySelector<HTMLInputElement>("#postcode")!.value = "SW1A 2AA";
+            component.querySelector<HTMLButtonElement>("button")!.click();
+            await flushPromises();
+
+            addressLookupInstance.showNotConfirmedError();
+            expect(main.querySelector(".govuk-error-summary__list"))
+                .toHaveTextContent(content.i18n.resultsNotConfirmedErrorMessage);
+
+            component.querySelector<HTMLAnchorElement>("nav a")!.click();
+
+            expect(main.querySelector(".govuk-error-summary__list")).not.toHaveTextContent(
+                content.i18n.resultsNotConfirmedErrorMessage
+            );
+        } finally {
+            main.remove();
+            document.title = originalTitle;
+        }
+    });
+
     it("should confirm an international address with its country name and ID", () => {
-        const component = createAddressLookup({ searchEndpoint: "/api/address-search", addressByIdEndpoint: "/api/address" });
+        const addressLookupInstance = createAddressLookup({ searchEndpoint: "/api/address-search", fields, content, countries });
+        const component = addressLookupInstance.element;
 
         component.querySelector<HTMLAnchorElement>("nav a")!.click();
 

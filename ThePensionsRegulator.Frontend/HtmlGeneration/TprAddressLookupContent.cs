@@ -10,20 +10,20 @@
         public string AddressLine1MaxLengthErrorMessage { get; set; } = "Address line 1 must be 100 characters or fewer";
         public string AddressLine2Label { get; set; } = "Address line 2 (optional)";
         public string AddressLine2MaxLengthErrorMessage { get; set; } = "Address line 2 must be 100 characters or fewer";
-        public string AddressLine3Label { get; set; } = "Address line 3";
+        public string AddressLine3Label { get; set; } = "Address line 3 (optional)";
         public string AddressLine3MaxLengthErrorMessage { get; set; } = "Address line 3 must be 100 characters or fewer";
-        public string PostTownLabel { get; set; } = "Town or city (optional)";
+        public string PostTownLabel { get; set; } = "Town or city";
         public string PostTownRequiredErrorMessage { get; set; } = "Enter town or city";
         public string PostTownMaxLengthErrorMessage { get; set; } = "Town or city must be 100 characters or fewer";
         public string CountyLabel { get; set; } = "County";
         public string CountyMaxLengthErrorMessage { get; set; } = "County must be 100 characters or fewer";
         public string CountyStateProvinceLabel { get; set; } = "County, state or province";
         public string CountyStateProvinceMaxLengthErrorMessage { get; set; } = "County, state or province must be 100 characters or fewer";
-        public string PostcodeLabel { get; set; } = "Postcode (optional)";
+        public string PostcodeLabel { get; set; } = "Postcode";
         public string PostcodeRequiredErrorMessage { get; set; } = "Enter postcode";
         public string PostcodeMaxLengthErrorMessage { get; set; } = "Postcode must be 10 characters or fewer";
         public string PostcodePatternErrorMessage { get; set; } = "Enter a real postcode";
-        public string CountryLabel { get; set; } = "Country";
+        public string CountryLabel { get; set; } = "Country (optional)";
         public string CountryRequiredErrorMessage { get; set; } = "Select a country";
         public string BuildingNameOrNumberLabel { get; set; } = "Building name or number";
 

@@ -48,6 +48,78 @@ test('initialises expiry using the consuming application timeout', () => {
     expect(config.extendSession).not.toHaveBeenCalled();
 });
 
+test('applies an authoritative expiry immediately and reschedules the warning without duplicate timers', () => {
+    initialise();
+    jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
+    expect(dialog.open).toBe(true);
+    const expiryTime = Date.now() + 240000;
+
+    controller.setExpiryTime(expiryTime);
+    controller.setExpiryTime(expiryTime);
+
+    expect(controller.expiryTime).toBe(expiryTime);
+    expect(dialog.open).toBe(false);
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('4 minutes');
+    expect(jest.getTimerCount()).toBe(1);
+    expect(config.extendSession).not.toHaveBeenCalled();
+    jest.advanceTimersByTime(180000 - 1);
+    expect(dialog.open).toBe(false);
+    jest.advanceTimersByTime(1);
+    expect(dialog.open).toBe(true);
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('60 seconds');
+});
+
+test('opens the warning immediately when an authoritative expiry is within the warning period', () => {
+    initialise();
+
+    controller.setExpiryTime(Date.now() + 30000);
+
+    expect(dialog.open).toBe(true);
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('30 seconds');
+    expect(jest.getTimerCount()).toBe(1);
+});
+
+test.each([0, -1000])('processes an authoritative expiry at or before now without duplicate expiry events (%i)', offset => {
+    button.remove();
+    const onExpired = jest.fn(event => event.preventDefault());
+    dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+    initialise({ timeoutMs: config.timeoutMs, warningMs: config.warningMs });
+    const expiryTime = Date.now() + offset;
+
+    controller.setExpiryTime(expiryTime);
+    controller.setExpiryTime(expiryTime);
+    document.dispatchEvent(new Event('visibilitychange'));
+
+    expect(controller.expiryTime).toBe(expiryTime);
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('0 seconds');
+    expect(onExpired).toHaveBeenCalledTimes(1);
+    expect(jest.getTimerCount()).toBe(0);
+
+    controller.setExpiryTime(Date.now() + 120000);
+    expect(dialog.open).toBe(false);
+    jest.advanceTimersByTime(120000);
+    expect(onExpired).toHaveBeenCalledTimes(2);
+});
+
+test.each([NaN, Infinity, -Infinity, undefined, null, '180000', true])('rejects invalid authoritative expiry %s without changing the countdown', expiryTime => {
+    initialise();
+    const originalExpiry = controller.expiryTime;
+
+    expect(() => controller.setExpiryTime(expiryTime)).toThrow(RangeError);
+    expect(controller.expiryTime).toBe(originalExpiry);
+    expect(jest.getTimerCount()).toBe(1);
+    expect(dialog.open).toBe(false);
+});
+
+test('rejects authoritative expiry updates after destroy without restarting timers', () => {
+    initialise();
+    controller.destroy();
+
+    expect(() => controller.setExpiryTime(Date.now() + 120000)).toThrow(/destroyed/i);
+    expect(jest.getTimerCount()).toBe(0);
+    expect(dialog.open).toBe(false);
+});
+
 test('opens the existing warning exactly at the configured warning point', () => {
     initialise();
     jest.advanceTimersByTime(config.timeoutMs - config.warningMs - 1);
@@ -122,6 +194,96 @@ test.each([120000, 180000])('resets expiry only after successful extension at %i
     jest.advanceTimersByTime(1);
     expect(dialog.open).toBe(true);
     expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('60 seconds');
+});
+
+test('uses the server expiry returned by an extension rather than adding the configured duration', async () => {
+    let resolveRequest;
+    config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+    initialise();
+    jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
+    const expiryTime = Date.now() + 120000;
+
+    button.click();
+    await jest.advanceTimersByTimeAsync(2000);
+    resolveRequest({ expiryTime });
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(controller.expiryTime).toBe(expiryTime);
+    expect(dialog.open).toBe(false);
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('2 minutes');
+    expect(jest.getTimerCount()).toBe(1);
+    jest.advanceTimersByTime(expiryTime - Date.now() - config.warningMs);
+    expect(dialog.open).toBe(true);
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('60 seconds');
+});
+
+test('processes a server expiry that has already passed instead of granting extra time', async () => {
+    const expiryTime = Date.now() - 1000;
+    config.extendSession.mockResolvedValue({ expiryTime });
+    const onExpired = jest.fn(event => event.preventDefault());
+    dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+    initialise();
+
+    button.click();
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(controller.expiryTime).toBe(expiryTime);
+    expect(onExpired).toHaveBeenCalledTimes(1);
+    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('0 seconds');
+    expect(jest.getTimerCount()).toBe(0);
+});
+
+test.each([NaN, Infinity, undefined, null, '180000'])('reports invalid server expiry %s without resetting the deadline', async expiryTime => {
+    config.extendSession.mockResolvedValue({ expiryTime });
+    const onError = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:error', onError);
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise();
+    const originalExpiry = controller.expiryTime;
+
+    button.click();
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(controller.expiryTime).toBe(originalExpiry);
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(onError.mock.calls[0][0].detail).toBeInstanceOf(RangeError);
+    expect(button.disabled).toBe(false);
+    expect(jest.getTimerCount()).toBe(1);
+});
+
+test.each(['success', 'server expiry', 'failure', 'timeout'])('preserves a newer external expiry when an older extension finishes (%s)', async result => {
+    let resolveRequest;
+    config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+    const expiryTime = Date.now() + 120000;
+
+    button.click();
+    controller.setExpiryTime(expiryTime);
+    if (result === 'success') resolveRequest(true);
+    if (result === 'server expiry') resolveRequest({ expiryTime: Date.now() + 900000 });
+    if (result === 'failure') resolveRequest(false);
+    await jest.advanceTimersByTimeAsync(1000);
+
+    expect(controller.expiryTime).toBe(expiryTime);
+    expect(button.disabled).toBe(false);
+    expect(jest.getTimerCount()).toBe(1);
+});
+
+test('ignores a server expiry response received after the bounded request timeout', async () => {
+    let resolveRequest;
+    config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+    const originalExpiry = controller.expiryTime;
+
+    button.click();
+    await jest.advanceTimersByTimeAsync(1000);
+    resolveRequest({ expiryTime: Date.now() + 900000 });
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(controller.expiryTime).toBe(originalExpiry);
+    expect(jest.getTimerCount()).toBe(1);
 });
 
 test.each([

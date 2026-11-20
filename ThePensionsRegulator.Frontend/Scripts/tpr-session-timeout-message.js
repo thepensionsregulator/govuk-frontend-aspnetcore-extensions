@@ -151,7 +151,7 @@ function readDuration(value) {
  *   expiryUrl?: string | null,
  *   extensionRequestTimeoutMs?: number,
  *   formatRemainingTime?: (remainingMs: number) => string,
- *   extendSession?: (url: string | undefined, signal: AbortSignal) => boolean | Promise<boolean>
+ *   extendSession?: (url: string | undefined, signal: AbortSignal) => boolean | { expiryTime: number } | Promise<boolean | { expiryTime: number }>
  * }} [config]
  */
 export function initSessionTimeout(dialog, config) {
@@ -179,6 +179,28 @@ export function initSessionTimeout(dialog, config) {
     let destroyed = false;
     let expired = false;
     let extensionRequest;
+    let expiryRevision = 0;
+
+    /** @param {number} timestamp Absolute expiry in Unix milliseconds. */
+    function setExpiryTime(timestamp) {
+        if (destroyed) {
+            throw new Error('Session timeout component was destroyed.');
+        }
+        if (!Number.isFinite(timestamp)) {
+            throw new RangeError('expiryTime must be a finite Unix timestamp in milliseconds.');
+        }
+
+        if (timestamp !== expiryTime) {
+            expired = false;
+        }
+        expiryTime = timestamp;
+        expiryRevision++;
+
+        if (getRemainingTime(expiryTime) > config.warningMs && dialog.open) {
+            dialog.close();
+        }
+        updateCountdown();
+    }
 
     function updateCountdown() {
         if (destroyed) return;
@@ -227,7 +249,8 @@ export function initSessionTimeout(dialog, config) {
         const abortController = new AbortController();
         const request = {
             deadline: getExpiryTime(config.extensionRequestTimeoutMs),
-            timeoutError: new Error('Session extension request timed out.')
+            timeoutError: new Error('Session extension request timed out.'),
+            expiryRevision
         };
         extensionRequest = request;
         const timeout = new Promise((resolve, reject) => {
@@ -249,18 +272,13 @@ export function initSessionTimeout(dialog, config) {
                 throw request.timeoutError;
             }
 
-            if (succeeded !== true) {
+            if (succeeded !== true && (succeeded === null || typeof succeeded !== 'object')) {
                 throw new Error('Session extension was not confirmed.');
             }
 
-            if (destroyed) return;
+            if (destroyed || request.expiryRevision !== expiryRevision) return;
 
-            expiryTime = getExpiryTime(config.extensionMs);
-            expired = false;
-
-            if (dialog.open) {
-                dialog.close();
-            }
+            setExpiryTime(succeeded === true ? getExpiryTime(config.extensionMs) : succeeded.expiryTime);
         } catch (error) {
             if (!destroyed) {
                 console.error('Failed to extend session:', error);
@@ -321,6 +339,7 @@ export function initSessionTimeout(dialog, config) {
         get expiryTime() {
             return expiryTime;
         },
+        setExpiryTime,
         destroy
     };
 

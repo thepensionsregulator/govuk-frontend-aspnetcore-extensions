@@ -15,7 +15,7 @@
         public string PostTownLabel { get; set; } = "Town or city";
         public string PostTownRequiredErrorMessage { get; set; } = "Enter town or city";
         public string PostTownMaxLengthErrorMessage { get; set; } = "Town or city must be 100 characters or fewer";
-        public string CountyLabel { get; set; } = "County";
+        public string CountyLabel { get; set; } = "County (optional)";
         public string CountyMaxLengthErrorMessage { get; set; } = "County must be 100 characters or fewer";
         public string CountyStateProvinceLabel { get; set; } = "County, state or province";
         public string CountyStateProvinceMaxLengthErrorMessage { get; set; } = "County, state or province must be 100 characters or fewer";

@@ -1,7 +1,7 @@
 import type { AddressLookupContent } from "../Scripts/address-lookup/types.js";
 
 export function createMockAddressLookupContent(): AddressLookupContent {
-    return {
+    const i18n: AddressLookupContent["i18n"] = {
         addressLookupLegend: "Find address",
         addressLookupHint: "lookup hint",
         addressLine1Label: "Address line 1",
@@ -42,4 +42,6 @@ export function createMockAddressLookupContent(): AddressLookupContent {
         resultsNotConfirmedErrorMessage: "Confirm the selected address",
         searchNotConfirmedErrorMessage: "Confirm the search results"
     };
+
+    return { i18n };
 }

@@ -79,10 +79,10 @@ describe("renderAddressInternationalManualEntry", () => {
 			["FR", "France"],
 			["US", "United States"]
 		]);
-		expect(confirmButton).toHaveTextContent(content.confirmAddressLabel);
+		expect(confirmButton).toHaveTextContent(content.i18n.confirmAddressLabel);
 		expect(confirmButton).toHaveClass("govuk-button", "govuk-button--secondary");
 		expect(confirmButton).toHaveAttribute("type", "button");
-		expect(backLink).toHaveTextContent(content.backToPostcodeSearchLabel);
+		expect(backLink).toHaveTextContent(content.i18n.backToPostcodeSearchLabel);
 	});
 
 	it("submits the selected country ID and name with a valid international address", () => {

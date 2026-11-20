@@ -90,7 +90,7 @@ function toInitialAddress(fields: AddressFields, countries: CountryOption[]): In
 function getContent(container: HTMLElement): AddressLookupContent {
     const get = (name: string): string => container.dataset[name] ?? "";
 
-    const content: AddressLookupContent = {
+    const i18n: AddressLookupContent["i18n"] = {
         addressLookupLegend: get("addressLookupLegend"),
         addressLookupHint: get("addressLookupHint"),
         addressLine1Label: get("addressLookupAddressLine-1Label"),
@@ -132,7 +132,7 @@ function getContent(container: HTMLElement): AddressLookupContent {
         searchNotConfirmedErrorMessage: get("addressLookupSearchNotConfirmedErrorMessage")
     };
 
-    return content;
+    return { i18n };
 }
 
 function getSettings(container: HTMLElement): AddressLookupSettings {

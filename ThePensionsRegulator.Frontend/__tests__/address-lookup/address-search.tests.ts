@@ -65,7 +65,7 @@ describe("renderAddressSearch", () => {
 
         button?.click();
 
-        expect(component.querySelector("#postcode-error")).toHaveTextContent(`Error: ${content.postcodeRequiredErrorMessage}`);
+        expect(component.querySelector("#postcode-error")).toHaveTextContent(`Error: ${content.i18n.postcodeRequiredErrorMessage}`);
         expect(searchOptions).not.toHaveBeenCalled();
     });
 
@@ -76,7 +76,7 @@ describe("renderAddressSearch", () => {
         button?.click();
 
         expect(component.querySelector("#postcode-error")).toHaveTextContent(
-            `Error: ${content.postcodePatternErrorMessage}`
+            `Error: ${content.i18n.postcodePatternErrorMessage}`
         );
         expect(onSearch).not.toHaveBeenCalled();
     });
@@ -167,7 +167,7 @@ describe("renderAddressSearch", () => {
         await Promise.resolve();
 
         expect(component.querySelector("#address-search-fieldset-error")).toHaveTextContent(
-            `Error: ${content.addressNotFoundMessage}`
+            `Error: ${content.i18n.addressNotFoundMessage}`
         );
         expect(onSearchSuccess).not.toHaveBeenCalled();
         expect(button).not.toBeDisabled();
@@ -182,7 +182,7 @@ describe("renderAddressSearch", () => {
         await Promise.resolve();
 
         expect(component.querySelector("#address-search-fieldset-error")).toHaveTextContent(
-            `Error: ${content.serviceUnavailableMessage}`
+            `Error: ${content.i18n.serviceUnavailableMessage}`
         );
         expect(onSearchSuccess).not.toHaveBeenCalled();
         expect(button).not.toBeDisabled();

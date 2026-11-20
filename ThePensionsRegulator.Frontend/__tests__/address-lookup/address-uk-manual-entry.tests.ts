@@ -65,7 +65,10 @@ describe("renderAddressUkManualEntry", () => {
     it("uses the configured confirm address label", () => {
         const customContent = {
             ...content,
-            confirmAddressLabel: "Save this address"
+            i18n: {
+                ...content.i18n,
+                confirmAddressLabel: "Save this address"
+            }
         };
         const component = renderAddressUkManualEntry({ onAddressSubmitted, onBackToSearchRequested, content: customContent });
 
@@ -207,15 +210,15 @@ describe("validateUkManualEntryAddress", () => {
     });
 
     it.each([
-        ["addressLine1", { addressLine1: "" }, content.addressLine1RequiredErrorMessage],
-        ["addressLine1", { addressLine1: "a".repeat(101) }, content.addressLine1MaxLengthErrorMessage],
-        ["addressLine2", { addressLine2: "a".repeat(101) }, content.addressLine2MaxLengthErrorMessage],
-        ["addressLine3", { addressLine3: "a".repeat(101) }, content.addressLine3MaxLengthErrorMessage],
-        ["townOrCity", { townOrCity: "" }, content.postTownRequiredErrorMessage],
-        ["townOrCity", { townOrCity: "a".repeat(101) }, content.postTownMaxLengthErrorMessage],
-        ["county", { county: "a".repeat(101) }, content.countyMaxLengthErrorMessage],
-        ["postcode", { postcode: "" }, content.postcodeRequiredErrorMessage],
-        ["postcode", { postcode: "NOTREAL" }, content.postcodePatternErrorMessage]
+        ["addressLine1", { addressLine1: "" }, content.i18n.addressLine1RequiredErrorMessage],
+        ["addressLine1", { addressLine1: "a".repeat(101) }, content.i18n.addressLine1MaxLengthErrorMessage],
+        ["addressLine2", { addressLine2: "a".repeat(101) }, content.i18n.addressLine2MaxLengthErrorMessage],
+        ["addressLine3", { addressLine3: "a".repeat(101) }, content.i18n.addressLine3MaxLengthErrorMessage],
+        ["townOrCity", { townOrCity: "" }, content.i18n.postTownRequiredErrorMessage],
+        ["townOrCity", { townOrCity: "a".repeat(101) }, content.i18n.postTownMaxLengthErrorMessage],
+        ["county", { county: "a".repeat(101) }, content.i18n.countyMaxLengthErrorMessage],
+        ["postcode", { postcode: "" }, content.i18n.postcodeRequiredErrorMessage],
+        ["postcode", { postcode: "NOTREAL" }, content.i18n.postcodePatternErrorMessage]
     ] as const)("returns a %s error: %s", (fieldName, overrides, message) => {
         const result = validateUkManualEntryAddress(createValidValues(overrides), content);
 
@@ -230,7 +233,7 @@ describe("validateUkManualEntryAddress", () => {
 
         expect(result.isValid).toBe(false);
         if (!result.isValid) {
-            expect(result.errorMessages).toEqual([{ fieldName: "postcode", message: content.postcodeRequiredErrorMessage }]);
+            expect(result.errorMessages).toEqual([{ fieldName: "postcode", message: content.i18n.postcodeRequiredErrorMessage }]);
         }
     });
 
@@ -240,9 +243,9 @@ describe("validateUkManualEntryAddress", () => {
         expect(result.isValid).toBe(false);
         if (!result.isValid) {
             expect(result.errorMessages).toEqual([
-                { fieldName: "addressLine1", message: content.addressLine1RequiredErrorMessage },
-                { fieldName: "townOrCity", message: content.postTownRequiredErrorMessage },
-                { fieldName: "postcode", message: content.postcodeRequiredErrorMessage }
+                { fieldName: "addressLine1", message: content.i18n.addressLine1RequiredErrorMessage },
+                { fieldName: "townOrCity", message: content.i18n.postTownRequiredErrorMessage },
+                { fieldName: "postcode", message: content.i18n.postcodeRequiredErrorMessage }
             ]);
         }
     });

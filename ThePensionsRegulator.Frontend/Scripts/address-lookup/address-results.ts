@@ -17,13 +17,13 @@ export type AddressResultsOptions = {
 export function renderAddressResults(options: AddressResultsOptions): HTMLElement {
     const addressResultsWrapper = document.createElement("div");
     const selectFormGroup = createSelectFormGroup({
-        labelText: options.content.addressSelectLabel,
+        labelText: options.content.i18n.addressSelectLabel,
         select: {
             id: "address-select",
             name: "address-select",
             value: "",
             options: [ 
-                {value: "", text: options.content.addressSelectLabel, disabled: true},
+                {value: "", text: options.content.i18n.addressSelectLabel, disabled: true},
                 ...options.addresses.map(address => ({
                     value: address.UPRN,
                     text: address.ADDRESS
@@ -33,14 +33,14 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
     });
     selectFormGroup.setAttribute("data-address-lookup-submit-error-anchor", "true");
     const addressSelect = selectFormGroup.querySelector("select")!;
-    const button = createButton({labelText: options.content.confirmAddressLabel, variant: "secondary", type: "button"});
+    const button = createButton({labelText: options.content.i18n.confirmAddressLabel, variant: "secondary", type: "button"});
     runActionOnEnter(selectFormGroup, () => button.click());
     button.addEventListener("click", handleAddressSelect);
 
-    const ukManualEntryLink = createLink({labelText: options.content.ukManualEntryLinkLabel});
+    const ukManualEntryLink = createLink({labelText: options.content.i18n.ukManualEntryLinkLabel});
     ukManualEntryLink.addEventListener("click", handleUkManualEntry);
 
-    const backToSearchLink = createLink({labelText: options.content.backToPostcodeSearchLabel});
+    const backToSearchLink = createLink({labelText: options.content.i18n.backToPostcodeSearchLabel});
     backToSearchLink.addEventListener("click", handleBackToSearch);
 
     const nav = document.createElement("nav");
@@ -64,7 +64,7 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
         const selectedAddress = options.addresses.find(address => address.UPRN === selectedUprn);
 
         if(!selectedAddress){
-            showFormGroupError(selectFormGroup, options.content.addressSelectErrorMessage);
+            showFormGroupError(selectFormGroup, options.content.i18n.addressSelectErrorMessage);
             const form = selectFormGroup.closest("form");
             if (form) {
                 focusFirstInvalidControl(form);

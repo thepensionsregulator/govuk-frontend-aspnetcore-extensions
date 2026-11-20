@@ -106,13 +106,13 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
     function getNotConfirmedErrorMessage(state: AddressLookupState): string {
         switch (state.status){
             case "search":
-                return content.searchNotConfirmedErrorMessage;
+                return content.i18n.searchNotConfirmedErrorMessage;
             case "results":
-                return content.resultsNotConfirmedErrorMessage;
+                return content.i18n.resultsNotConfirmedErrorMessage;
             case "uk-manual-entry":
-                return content.ukManualEntryNotConfirmedErrorMessage;
+                return content.i18n.ukManualEntryNotConfirmedErrorMessage;
             case "international-manual-entry":
-                return content.internationalManualEntryNotConfirmedErrorMessage;
+                return content.i18n.internationalManualEntryNotConfirmedErrorMessage;
             case "confirmed":
                 throw new Error("A confirmed address does not need a submission error");
         }

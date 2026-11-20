@@ -58,9 +58,9 @@ describe("renderAddressResults", () => {
     it("should render a Confirm address button and a Return to postcode search link", () => {
         const { component, button, backLink, content } = createResults();
 
-        expect(button).toHaveTextContent(content.confirmAddressLabel);
+        expect(button).toHaveTextContent(content.i18n.confirmAddressLabel);
         expect(button).toHaveAttribute("type", "button");
-        expect(backLink).toHaveTextContent(content.backToPostcodeSearchLabel);
+        expect(backLink).toHaveTextContent(content.i18n.backToPostcodeSearchLabel);
         expect(component.querySelector("nav")).toContainElement(backLink);
     });
 
@@ -70,7 +70,7 @@ describe("renderAddressResults", () => {
         button!.click();
 
         expect(component.querySelector("#address-select-error")).toHaveTextContent(
-            `Error: ${content.addressSelectErrorMessage}`
+            `Error: ${content.i18n.addressSelectErrorMessage}`
         );
         expect(onAddressSelected).not.toHaveBeenCalled();
     });

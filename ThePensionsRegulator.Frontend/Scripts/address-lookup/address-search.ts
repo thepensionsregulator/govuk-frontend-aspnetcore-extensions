@@ -20,7 +20,7 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     const addressSearchWrapper = document.createElement("div");
 
     const buildingNameFormGroup = createTextInputFormGroup({
-        labelText: options.content.buildingNameOrNumberLabel,
+        labelText: options.content.i18n.buildingNameOrNumberLabel,
         input: {
             id: "building",
             name: "building",
@@ -34,7 +34,7 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     const buildingNameOrNumberInput = buildingNameFormGroup.querySelector("input")!;
 
     const postcodeFormGroup = createTextInputFormGroup({
-        labelText: options.content.postcodeLabel,
+        labelText: options.content.i18n.postcodeLabel,
         input:{
             id: "postcode",
             name: "postcode",
@@ -47,17 +47,17 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     });
     const postcodeInput = postcodeFormGroup.querySelector("input")!;
 
-    const fieldset = createFieldsetFormGroup({legendText: options.content.addressLookupLegend, children: [ buildingNameFormGroup, postcodeFormGroup ], id: "address-search-fieldset"});
+    const fieldset = createFieldsetFormGroup({legendText: options.content.i18n.addressLookupLegend, children: [ buildingNameFormGroup, postcodeFormGroup ], id: "address-search-fieldset"});
     fieldset.setAttribute("data-address-lookup-submit-error-anchor", "true");
     addressSearchWrapper.appendChild(fieldset);
     
-    const findAddressButton = createButton({labelText: options.content.findAddressButton, variant: "secondary", type: "button"});
+    const findAddressButton = createButton({labelText: options.content.i18n.findAddressButton, variant: "secondary", type: "button"});
     runActionOnEnter(addressSearchWrapper, handleAddressSearch);
     findAddressButton.addEventListener("click", handleAddressSearch);
     addressSearchWrapper.appendChild(findAddressButton);
 
     
-    const internationalEntryLink = createLink({labelText: options.content.internationalManualEntryLabel});
+    const internationalEntryLink = createLink({labelText: options.content.i18n.internationalManualEntryLabel});
     internationalEntryLink.addEventListener("click", handleOnInternationalEntryClicked);
     
     const nav = document.createElement("nav");
@@ -87,14 +87,14 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
             const matches = buildingName ? filterAddressesByBuilding(addresses, buildingName) : addresses;
 
             if (matches.length === 0) {
-                showFormGroupError(fieldset, options.content.addressNotFoundMessage);
+                showFormGroupError(fieldset, options.content.i18n.addressNotFoundMessage);
                 return;
             }
 
             clearFormGroupError(fieldset);
             options.onSearchSuccess(matches, validationResult.criteria);
         } catch {
-            showFormGroupError(fieldset, options.content.serviceUnavailableMessage);
+            showFormGroupError(fieldset, options.content.i18n.serviceUnavailableMessage);
         } 
         finally {
              findAddressButton.disabled = false;
@@ -122,7 +122,7 @@ function readAndValidateCriteria(buildingNameInput: HTMLInputElement, postcodeIn
 
     const validatePostcodeResult = validatePostcode(normalisedPostcode);
     if (!validatePostcodeResult.isValid) {
-        const errorMessage = validatePostcodeResult.error === "required" ? content.postcodeRequiredErrorMessage : content.postcodePatternErrorMessage;
+        const errorMessage = validatePostcodeResult.error === "required" ? content.i18n.postcodeRequiredErrorMessage : content.i18n.postcodePatternErrorMessage;
         return { isValid: false, errorMessage };
     }
 

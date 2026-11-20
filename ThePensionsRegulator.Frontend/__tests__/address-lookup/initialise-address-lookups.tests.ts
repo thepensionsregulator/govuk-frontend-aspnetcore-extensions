@@ -119,7 +119,22 @@ describe("initialiseAddressLookups", () => {
         initiliseAddressLookups();
 
         expect(createAddressLookup).toHaveBeenCalledWith(expect.objectContaining({
-            content: expect.objectContaining({ [contentProperty]: expectedValue })
+            content: expect.objectContaining({
+                i18n: expect.objectContaining({ [contentProperty]: expectedValue })
+            })
+        }));
+    });
+
+    it("uses an empty string for missing content", () => {
+        createAddressLookup.mockReturnValue(createLookup(true));
+        renderForm("address-form", 1);
+
+        initiliseAddressLookups();
+
+        expect(createAddressLookup).toHaveBeenCalledWith(expect.objectContaining({
+            content: expect.objectContaining({
+                i18n: expect.objectContaining({ addressLookupLegend: "" })
+            })
         }));
     });
 

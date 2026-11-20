@@ -27,20 +27,20 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
 
     const fieldsetFormGroup = createFieldsetFormGroup({
         id: "address-uk-manual-entry-fieldset",
-        legendText: content.ukManualEntryLegend,
+        legendText: content.i18n.ukManualEntryLegend,
         children: [addressLine1, addressLine2, addressLine3, townOrCity, county, postcode]
     });
     fieldsetFormGroup.setAttribute("data-address-lookup-submit-error-anchor", "true");
     div.appendChild(fieldsetFormGroup);
 
-    const confirmButton = createButton({ labelText: content.confirmAddressLabel, type: 'button', variant: 'secondary' });
+    const confirmButton = createButton({ labelText: content.i18n.confirmAddressLabel, type: 'button', variant: 'secondary' });
     runActionOnEnter(div, () => confirmButton.click());
     confirmButton.addEventListener("click", handleConfirmAddress);
     div.appendChild(confirmButton);
 
     const backToSearchNav = document.createElement("nav");
     div.appendChild(backToSearchNav);
-    const backToSearch = createLink({ labelText: content.backToPostcodeSearchLabel});
+    const backToSearch = createLink({ labelText: content.i18n.backToPostcodeSearchLabel});
     backToSearch.addEventListener("click", handleBackToSearch);
     backToSearchNav.appendChild(backToSearch);
 
@@ -83,20 +83,20 @@ export function validateUkManualEntryAddress(values: UkManualEntryValues, conten
         //      A validator should define rules of type 'required' 'maxLength' 'pattern etc. A lookup function should then lookup a value in a map by content[`${fieldName}${rule}ErrorMessage`]
 
         { fieldName: 'addressLine1', validators: [ 
-            { message: content.addressLine1RequiredErrorMessage, isValid: () => values.addressLine1.trim() !== '' },
-            { message: content.addressLine1MaxLengthErrorMessage, isValid: () => values.addressLine1.trim().length <= 100 } 
+            { message: content.i18n.addressLine1RequiredErrorMessage, isValid: () => values.addressLine1.trim() !== '' },
+            { message: content.i18n.addressLine1MaxLengthErrorMessage, isValid: () => values.addressLine1.trim().length <= 100 }
         ]},
-        { fieldName: 'addressLine2', validators: [ { message: content.addressLine2MaxLengthErrorMessage, isValid: () => values.addressLine2.trim().length <= 100 }] },
-        { fieldName: 'addressLine3', validators: [ { message: content.addressLine3MaxLengthErrorMessage, isValid: () => values.addressLine3.trim().length <= 100 }] },
+        { fieldName: 'addressLine2', validators: [ { message: content.i18n.addressLine2MaxLengthErrorMessage, isValid: () => values.addressLine2.trim().length <= 100 }] },
+        { fieldName: 'addressLine3', validators: [ { message: content.i18n.addressLine3MaxLengthErrorMessage, isValid: () => values.addressLine3.trim().length <= 100 }] },
         { fieldName: 'townOrCity', validators: [ 
-            { message: content.postTownRequiredErrorMessage, isValid: () => values.townOrCity.trim() !== '' },
-            { message: content.postTownMaxLengthErrorMessage, isValid: () => values.townOrCity.trim().length <= 100 }
+            { message: content.i18n.postTownRequiredErrorMessage, isValid: () => values.townOrCity.trim() !== '' },
+            { message: content.i18n.postTownMaxLengthErrorMessage, isValid: () => values.townOrCity.trim().length <= 100 }
         ]},
-        { fieldName: 'county', validators: [ { message: content.countyMaxLengthErrorMessage, isValid: () => values.county.trim().length <= 100 }] },
+        { fieldName: 'county', validators: [ { message: content.i18n.countyMaxLengthErrorMessage, isValid: () => values.county.trim().length <= 100 }] },
         { fieldName: 'postcode', validators: [ 
-            { message: content.postcodeRequiredErrorMessage, isValid: () => values.postcode.trim() !== '' },
-            { message: content.postcodePatternErrorMessage, isValid: () => validatePostcode(values.postcode).isValid },
-            { message: content.postcodeMaxLengthErrorMessage, isValid: () => values.postcode.trim().length <= 10 }
+            { message: content.i18n.postcodeRequiredErrorMessage, isValid: () => values.postcode.trim() !== '' },
+            { message: content.i18n.postcodePatternErrorMessage, isValid: () => validatePostcode(values.postcode).isValid },
+            { message: content.i18n.postcodeMaxLengthErrorMessage, isValid: () => values.postcode.trim().length <= 10 }
         ]}
     ];
 

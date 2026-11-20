@@ -72,7 +72,7 @@ describe("createAddressLookup", () => {
         addressLookupInstance.showNotConfirmedError();
 
         expect(addressLookupInstance.element.querySelector("#address-search-fieldset-error"))
-            .toHaveTextContent(`Error: ${content.searchNotConfirmedErrorMessage}`);
+            .toHaveTextContent(`Error: ${content.i18n.searchNotConfirmedErrorMessage}`);
     });
 
     it("should use the UK country option to validate a pre-filled UK address", () => {
@@ -255,7 +255,7 @@ describe("createAddressLookup", () => {
             await flushPromises();
 
             const manualEntryLink = Array.from(component.querySelectorAll<HTMLAnchorElement>("nav a"))
-                .find(link => link.textContent === content.ukManualEntryLinkLabel)!;
+                .find(link => link.textContent === content.i18n.ukManualEntryLinkLabel)!;
             manualEntryLink.click();
 
             expect(component.querySelector("#address-select")).toBeNull();
@@ -299,12 +299,12 @@ describe("createAddressLookup", () => {
 
             addressLookupInstance.showNotConfirmedError();
             expect(main.querySelector(".govuk-error-summary__list"))
-                .toHaveTextContent(content.resultsNotConfirmedErrorMessage);
+                .toHaveTextContent(content.i18n.resultsNotConfirmedErrorMessage);
 
             component.querySelector<HTMLAnchorElement>("nav a")!.click();
 
             expect(main.querySelector(".govuk-error-summary__list")).not.toHaveTextContent(
-                content.resultsNotConfirmedErrorMessage
+                content.i18n.resultsNotConfirmedErrorMessage
             );
         } finally {
             main.remove();

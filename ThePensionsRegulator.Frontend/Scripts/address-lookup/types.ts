@@ -122,63 +122,65 @@ export interface InitialAddress {
 }
 
 export interface AddressLookupContent {
-    // component level legend and hint
-    addressLookupLegend: string;
-    addressLookupHint?: string;
+    i18n: {
 
-    // manual entry labels and error messages
-    addressLine1Label: string;
-    addressLine1RequiredErrorMessage: string;
-    addressLine1MaxLengthErrorMessage: string;
-    addressLine2Label: string;
-    addressLine2MaxLengthErrorMessage: string;
-    addressLine3Label: string;
-    addressLine3MaxLengthErrorMessage: string;
-    postTownLabel: string;
-    postTownRequiredErrorMessage: string;
-    postTownMaxLengthErrorMessage: string;
-    countyLabel: string;
-    countyMaxLengthErrorMessage: string;
-    countyStateProvinceLabel: string;
-    countyStateProvinceMaxLengthErrorMessage: string;
-    postcodeLabel: string;
-    postcodeRequiredErrorMessage: string;
-    postcodeMaxLengthErrorMessage: string;
-    postcodePatternErrorMessage: string;
-    countryLabel: string;
-    countryRequiredErrorMessage: string;
-    buildingNameOrNumberLabel: string;
+        // component level legend and hint
+        addressLookupLegend: string;
+        addressLookupHint?: string;
 
-    // UK manual entry labels
-    ukManualEntryLinkLabel: string;
-    ukManualEntryLegend: string;
-    
-    // international manual entry labels 
-    internationalManualEntryLabel: string;
-    internationalManualEntryLegend: string;
+        // manual entry labels and error messages
+        addressLine1Label: string;
+        addressLine1RequiredErrorMessage: string;
+        addressLine1MaxLengthErrorMessage: string;
+        addressLine2Label: string;
+        addressLine2MaxLengthErrorMessage: string;
+        addressLine3Label: string;
+        addressLine3MaxLengthErrorMessage: string;
+        postTownLabel: string;
+        postTownRequiredErrorMessage: string;
+        postTownMaxLengthErrorMessage: string;
+        countyLabel: string;
+        countyMaxLengthErrorMessage: string;
+        countyStateProvinceLabel: string;
+        countyStateProvinceMaxLengthErrorMessage: string;
+        postcodeLabel: string;
+        postcodeRequiredErrorMessage: string;
+        postcodeMaxLengthErrorMessage: string;
+        postcodePatternErrorMessage: string;
+        countryLabel: string;
+        countryRequiredErrorMessage: string;
+        buildingNameOrNumberLabel: string;
 
-    // search view
-    findAddressButton: string;
-    addressNotFoundMessage: string;
-    serviceUnavailableMessage: string;
-    searchNotConfirmedErrorMessage: string;
+        // UK manual entry labels
+        ukManualEntryLinkLabel: string;
+        ukManualEntryLegend: string;
 
-    // results view
-    addressSelectLabel: string;
-    confirmAddressLabel: string;
-    backToPostcodeSearchLabel: string;
-    addressSelectErrorMessage: string;
-    resultsNotConfirmedErrorMessage: string;
+        // international manual entry labels
+        internationalManualEntryLabel: string;
+        internationalManualEntryLegend: string;
 
-    // UK manual entry view
-    ukManualEntryNotConfirmedErrorMessage: string;
+        // search view
+        findAddressButton: string;
+        addressNotFoundMessage: string;
+        serviceUnavailableMessage: string;
+        searchNotConfirmedErrorMessage: string;
 
-    // international manual entry view
-    internationalManualEntryNotConfirmedErrorMessage: string;
+        // results view
+        addressSelectLabel: string;
+        confirmAddressLabel: string;
+        backToPostcodeSearchLabel: string;
+        addressSelectErrorMessage: string;
+        resultsNotConfirmedErrorMessage: string;
 
-    // confirmed view
-    changeAddressLabel: string;
-    
+        // UK manual entry view
+        ukManualEntryNotConfirmedErrorMessage: string;
+
+        // international manual entry view
+        internationalManualEntryNotConfirmedErrorMessage: string;
+
+        // confirmed view
+        changeAddressLabel: string;
+    };
 }
 
 export interface AddressLookupSettings {

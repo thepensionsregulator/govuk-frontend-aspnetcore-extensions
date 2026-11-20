@@ -101,7 +101,7 @@ describe("mapAddressSearchResult", () => {
 		expect(mappedAddress).toMatchObject({
 			postTown: "London",
 			postcode: "SW1A 2AA",
-			uprnReference: "100000000001"
+			uprn: "100000000001"
 		});
 		expect(mappedAddress).not.toHaveProperty("postCounty");
 		expect(mappedAddress).not.toHaveProperty("countryId");
@@ -163,7 +163,7 @@ describe("mapInitialAddress", () => {
 			countryId: "GB",
 			countryName: "United Kingdom",
 			postcode: "SW1A 1AA",
-			uprnReference: "123"
+			uprn: "123"
 		};
 
 		expect(mapInitialAddress(content, initialAddress, "GB")).toEqual({
@@ -175,7 +175,7 @@ describe("mapInitialAddress", () => {
 			countryId: "GB",
 			countryName: "United Kingdom",
 			postcode: "SW1A 1AA",
-			uprnReference: "123"
+			uprn: "123"
 		});
 	});
 

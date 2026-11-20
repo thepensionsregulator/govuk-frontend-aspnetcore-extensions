@@ -13,7 +13,7 @@ describe("renderConfirmedAddress", () => {
         postCounty: "Greater London",
         countryId: "GB",
         postcode: "SW1A 2AA",
-        uprnReference: "100000000001"
+        uprn: "100000000001"
     };
     const fields: AddressFields = {
         addressLine1: { name: "addressLine1", value: "old value" },
@@ -23,7 +23,7 @@ describe("renderConfirmedAddress", () => {
         postCounty: { name: "postCounty",  value: "old value" },
         countryId: { name: "countryId",  value: "old value" },
         postcode: { name: "postcode",  value: "old value" },
-        uprnReference: { name: "uprnReference", value: "old value" }
+        uprn: { name: "uprn", value: "old value" }
     };
     const content = createMockAddressLookupContent();
 
@@ -53,7 +53,7 @@ describe("renderConfirmedAddress", () => {
         const address: ConfirmedAddress = {
             addressLine1: "10 High Street",
             postcode: "SW1A 2AA",
-            uprnReference: "100000000001"
+            uprn: "100000000001"
         };
         
         const paragraph = renderConfirmedAddress({address, onBackToSearchRequested: jest.fn(), fields, content }).querySelector("p");
@@ -71,7 +71,7 @@ describe("renderConfirmedAddress", () => {
             postCounty: "",
             countryId: "GB",
             postcode: "SW1A 2AA",
-            uprnReference: "100000000001"
+            uprn: "100000000001"
         };
 
         const paragraph = renderConfirmedAddress({address, onBackToSearchRequested: jest.fn(), fields, content }).querySelector("p");
@@ -90,7 +90,7 @@ describe("renderConfirmedAddress", () => {
             countryId,
             countryName,
             postcode: "75001",
-            uprnReference: ""
+            uprn: ""
         };
 
         const paragraph = renderConfirmedAddress({address, onBackToSearchRequested: jest.fn(), fields, content }).querySelector("p");
@@ -112,7 +112,7 @@ describe("renderConfirmedAddress", () => {
             postCounty: "Greater London",
             countryId: "GB",
             postcode: "SW1A 2AA",
-            uprnReference: "100000000001"
+            uprn: "100000000001"
         };
 
         for (const [id, value] of Object.entries(expectedValues)) {
@@ -126,7 +126,7 @@ describe("renderConfirmedAddress", () => {
         const address: ConfirmedAddress = {
             addressLine1: "10 High Street",
             postcode: "SW1A 2AA",
-            uprnReference: "100000000001"
+            uprn: "100000000001"
         };
 
         const component = renderConfirmedAddress({address, onBackToSearchRequested: jest.fn(), fields, content });

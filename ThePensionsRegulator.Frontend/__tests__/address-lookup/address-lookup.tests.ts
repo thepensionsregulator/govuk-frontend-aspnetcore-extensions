@@ -44,7 +44,7 @@ describe("createAddressLookup", () => {
         postCounty: { name: "postCounty", value: "" },
         countryId: { name: "countryId", value: "" },
         postcode: { name: "postcode", value: "" },
-        uprnReference: { name: "uprnReference", value: "" }
+        uprn: { name: "uprn", value: "" }
     };
     const content = createMockAddressLookupContent();
     const countries = [
@@ -193,7 +193,7 @@ describe("createAddressLookup", () => {
         expect(component.querySelector("p")).toHaveTextContent("2 High StreetLondonSW1A 2AA");
         expect(component.querySelector<HTMLInputElement>("#addressLine1")).toHaveValue("2 High Street");
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#uprnReference")).toHaveValue("2");
+        expect(component.querySelector<HTMLInputElement>("#uprn")).toHaveValue("2");
         expect(addressLookupInstance.isConfirmed()).toBe(true);
         component.remove();
     });
@@ -214,7 +214,7 @@ describe("createAddressLookup", () => {
         expect(component.querySelector("p")).toHaveTextContent("1 High StreetLondonSW1A 2AA");
         expect(component.querySelector<HTMLInputElement>("#addressLine1")).toHaveValue("1 High Street");
         expect(component.querySelector<HTMLInputElement>("#postcode")).toHaveValue("SW1A 2AA");
-        expect(component.querySelector<HTMLInputElement>("#uprnReference")).toHaveValue("1");
+        expect(component.querySelector<HTMLInputElement>("#uprn")).toHaveValue("1");
     });
 
     it("should return to a pre-filled search form when back-to-search is requested", async () => {

@@ -66,7 +66,7 @@ export function mapAddressSearchResult(address: AddressSearchResult): ConfirmedA
         addressLine3: lines[2] ?? undefined,
         postTown: address.POST_TOWN?.trim() || undefined,
         postcode: address.POSTCODE,
-        uprnReference: address.UPRN ?? undefined
+        uprn: address.UPRN ?? undefined
     };
 }
 
@@ -105,7 +105,7 @@ export function mapInitialAddress(content: AddressLookupContent, address?: Initi
 
     const ukPostcode = address.postcode ? normalisePostcode(sanitisePostcode(address.postcode)) : '';
 
-    if (!isInternational && address.uprnReference && address.postTown && ukPostcode) {
+    if (!isInternational && address.uprn && address.postTown && ukPostcode) {
         return {
             addressLine1: address.addressLine1,
             addressLine2: address.addressLine2 || undefined,
@@ -115,7 +115,7 @@ export function mapInitialAddress(content: AddressLookupContent, address?: Initi
             countryId: address.countryId,
             countryName: address.countryName,
             postcode: ukPostcode,
-            uprnReference: address.uprnReference
+            uprn: address.uprn
         };
     }
 
@@ -159,7 +159,7 @@ export function mapInitialAddress(content: AddressLookupContent, address?: Initi
         countryId: address.countryId,
         countryName: address.countryName,
         postcode: (isInternational ? address.postcode : ukPostcode) || undefined,
-        uprnReference: address.uprnReference || undefined
+        uprn: address.uprn || undefined
     };
 }
 

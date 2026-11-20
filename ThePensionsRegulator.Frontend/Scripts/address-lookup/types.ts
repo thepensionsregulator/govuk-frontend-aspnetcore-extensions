@@ -106,7 +106,7 @@ export interface ConfirmedAddress {
     countryId?: string;
     countryName?: string;
     postcode?: string;
-    uprnReference?: string;
+    uprn?: string;
 }
 
 export interface InitialAddress {
@@ -118,7 +118,7 @@ export interface InitialAddress {
     countryId?: string;
     countryName?: string;
     postcode?: string;
-    uprnReference?: string;
+    uprn?: string;
 }
 
 export interface AddressLookupContent {

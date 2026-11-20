@@ -34,7 +34,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             var postCountry = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.PostCounty), AddressFieldNames.PostCounty, modelStateDictionary);
             var countryId = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.CountryId), AddressFieldNames.CountryId, modelStateDictionary);
             var postcode = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
-            var uprnReference = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Uprn), AddressFieldNames.UprnReference, modelStateDictionary);
+            var uprn = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Uprn), AddressFieldNames.Uprn, modelStateDictionary);
 
             fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, "govuk-input--width-20", "address-line1"));
             fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, "govuk-input--width-20", "address-line2"));
@@ -44,16 +44,16 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             fieldset.InnerHtml.AppendHtml(CreateSelectInput(countryId, content.CountryLabel, content.CountryLabel, true, "govuk-input--width-10", countries));
             fieldset.InnerHtml.AppendHtml(CreateTextInput(postcode, content.PostcodeLabel, false, "govuk-input--width-10", "postal-code"));
 
-            var uprnReferenceInput = new TagBuilder("input");
-            uprnReferenceInput.Attributes.Add("type", "hidden");
-            uprnReferenceInput.Attributes.Add("id", "uprnReference");
-            uprnReferenceInput.Attributes.Add("name", $"{name}.uprnReference");
-            uprnReferenceInput.Attributes.Add("data-address-field", uprnReference.FieldKey);
-            if (uprnReference.AttemptedValue is not null)
+            var uprnInput = new TagBuilder("input");
+            uprnInput.Attributes.Add("type", "hidden");
+            uprnInput.Attributes.Add("id", "uprn");
+            uprnInput.Attributes.Add("name", $"{name}.uprn");
+            uprnInput.Attributes.Add("data-address-field", uprn.FieldKey);
+            if (uprn.AttemptedValue is not null)
             {
-                uprnReferenceInput.Attributes.Add("value", uprnReference.AttemptedValue);
+                uprnInput.Attributes.Add("value", uprn.AttemptedValue);
             }
-            fieldset.InnerHtml.AppendHtml(uprnReferenceInput);
+            fieldset.InnerHtml.AppendHtml(uprnInput);
 
             var wrapper = new TagBuilder("div");
             wrapper.AddCssClass("tpr-address-lookup");
@@ -259,7 +259,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             public const string PostCounty = "postCounty";
             public const string CountryId = "countryId";
             public const string Postcode = "postcode";
-            public const string UprnReference = "uprnReference";
+            public const string Uprn = "uprn";
         }
     }
 }

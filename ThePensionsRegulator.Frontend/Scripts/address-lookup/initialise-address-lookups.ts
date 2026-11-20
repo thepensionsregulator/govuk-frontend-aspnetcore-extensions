@@ -9,7 +9,7 @@ const addressFieldKeys = [
     "postCounty",
     "countryId",
     "postcode",
-    "uprnReference"
+    "uprn"
 ] as const satisfies readonly AddressFieldKey[];
 
 

@@ -137,7 +137,7 @@ public class ComponentGeneratorTprAddressLookupTests
         Assert.NotNull(selectedCountry);
         AssertAttribute("selected", selectedCountry, "selected");
 
-        var uprn = document.GetElementbyId("uprnReference");
+        var uprn = document.GetElementbyId("uprn");
         Assert.NotNull(uprn);
         AssertAttribute("UPRN123", uprn, "value");
     }

@@ -58,10 +58,11 @@ Import `initSessionTimeout` from the published module after rendering the partia
     const dialog = document.querySelector('[data-module="tpr-session-timeout"]');
     const timeout = initSessionTimeout(dialog, {
         extensionRequestTimeoutMs: 10000,
-        extendSession: async (url) => {
+        extendSession: async (url, signal) => {
             const response = await fetch(url, {
                 method: 'POST',
                 redirect: 'error',
+                signal,
                 headers: {
                     RequestVerificationToken: document.querySelector('input[name="__RequestVerificationToken"]').value
                 }
@@ -80,7 +81,7 @@ The example assumes your application implements the extension endpoint set in `P
 | `extensionMs` | New remaining lifetime after a successful extension, measured from callback completion. Read from `Settings.ExtensionLength` unless explicitly supplied. Required, finite and greater than zero only when an extension button is present; otherwise ignored. |
 | `warningMs` | How long before expiry to open the warning. Read from `Settings.WarningBeforeExpiry` unless explicitly supplied. Finite, non-negative and no greater than `timeoutMs`. |
 | `expiryUrl` | Optional HTTP(S) or relative destination to navigate to at zero. Read from `Settings.ExpiryUrl` unless explicitly supplied. Set to `null` to disable a model-configured destination. |
-| `extendSession` | Required only when a `[data-session-timeout-extend]` button is rendered. Application callback receiving the button URL (or `undefined` if absent) and returning a boolean or a promise of a boolean. Ignored without an extension button. |
+| `extendSession` | Required only when a `[data-session-timeout-extend]` button is rendered. Application callback receiving the button URL (or `undefined` if absent) and an `AbortSignal`, and returning a boolean or a promise of a boolean. Callbacks that only accept the URL remain supported. Ignored without an extension button. |
 | `extensionRequestTimeoutMs` | Optional JavaScript callback wait limit, in milliseconds. Defaults to `10000` (10 seconds). With an extension button, must be finite, greater than zero and at most `2147483647`; otherwise ignored. Separate from the session's extension length. |
 | `formatRemainingTime` | Optional callback receiving non-negative remaining milliseconds and returning display text. By default, displays rounded-up whole minutes above one minute, then counts down from `60 seconds` to zero. Override for application-specific wording or formatting; this works without Umbraco too. |
 
@@ -104,9 +105,9 @@ The module:
 - Emits a bubbling, cancelable `tpr-session-timeout:expired` event on the dialog once when the remaining time reaches zero and no extension is pending, even without a countdown placeholder. It then navigates to `expiryUrl` if configured and not prevented. A successful extension starts a new expiry period. Listen before initialisation to implement application-owned expiry actions.
 - Returns the same controller when initialised again for the same dialog, without resetting expiry or duplicating timers, markup or handlers. The original configuration remains in use.
 
-The request timeout bounds the frontend wait; it does not cancel an application's network request or undo server-side renewal. The application callback owns transport cancellation if required. As with all browser timers, timeout processing resumes when JavaScript can run after suspension; an overdue response is not accepted as a successful extension.
+The request timeout bounds the frontend wait, even if the callback ignores cancellation. Each extension attempt receives a new `AbortSignal`, which is aborted when the request times out (including an overdue request detected after browser suspension) or when `destroy()` is called; `signal.reason` contains the timeout or destroy error. The signal is not aborted when the callback settles in time. Pass the signal to `fetch` (or your own transport) to cancel the network request. Cancellation is cooperative: it cannot undo server-side renewal if the server already processed the request. As with all browser timers, timeout processing resumes when JavaScript can run after suspension; an overdue response is not accepted as a successful extension.
 
-The returned controller exposes the read-only `expiryTime` timestamp and a `destroy()` method to close the dialog if open and remove timers (including pending request timeouts), event handlers and the generated countdown. Call `destroy()` before removing the component or initialising it with different configuration. Pending extensions cannot restart a destroyed controller. Without an expiry destination or an application event handler, reaching zero does not navigate or sign out; expiry policy remains with your application.
+The returned controller exposes the read-only `expiryTime` timestamp and a `destroy()` method to close the dialog if open and abort any pending extension signal, and remove timers (including pending request timeouts), event handlers and the generated countdown. Call `destroy()` before removing the component or initialising it with different configuration. Pending extensions cannot restart a destroyed controller. Without an expiry destination or an application event handler, reaching zero does not navigate or sign out; expiry policy remains with your application.
 
 The example Umbraco application's `/session-timeout` page displays the configured variants inline, replacing `{remainingTime}` with a static example value of `2 minutes`; it does not start a countdown. Its `/session-timeout-preview` page uses application-owned demo settings: a 125-second timeout, a warning 2 minutes before expiry (after 5 seconds) and a 3-minute extension. It uses the library's default formatting without a `formatRemainingTime` override: `2 minutes` stays displayed for a full minute, then switches to `60 seconds` when one minute remains and counts down to zero. Longer durations decrease once per elapsed minute (for example, `30 minutes`, then `29 minutes` after one minute). Unchanged text is not rewritten each second. The preview's extension callback simulates success without making a server request or changing a real session. The preview attaches `SessionTimeoutSettings` to the selected message, with `ExpiryUrl = "/session-timeout"`; the shared partial and library handle the return at zero. The preview script only supplies its simulated extension callback. The static variants page does not attach runtime settings.
 

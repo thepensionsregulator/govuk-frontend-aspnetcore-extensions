@@ -98,7 +98,8 @@ test('calls the application extension mechanism with the configured button URL',
     jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
     button.click();
     expect(config.extendSession).toHaveBeenCalledTimes(1);
-    expect(config.extendSession).toHaveBeenCalledWith('/session/extend');
+    expect(config.extendSession).toHaveBeenCalledWith('/session/extend', expect.any(AbortSignal));
+    expect(config.extendSession.mock.calls[0][1].aborted).toBe(false);
 });
 
 test.each([120000, 180000])('resets expiry only after successful extension at %i ms', async (elapsed) => {
@@ -763,6 +764,121 @@ test('clears the extension request timeout when destroying a pending extension',
     expect(button.disabled).toBe(false);
     expect(onError).not.toHaveBeenCalled();
     expect(onExpired).not.toHaveBeenCalled();
+});
+
+test('aborts the extension signal when the request times out and ignores a late success', async () => {
+    let resolveRequest;
+    config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+    const onError = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:error', onError);
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+    const originalExpiry = controller.expiryTime;
+
+    button.click();
+    const signal = config.extendSession.mock.calls[0][1];
+    await jest.advanceTimersByTimeAsync(999);
+
+    expect(signal.aborted).toBe(false);
+
+    await jest.advanceTimersByTimeAsync(1);
+
+    expect(signal.aborted).toBe(true);
+    expect(signal.reason).toBe(onError.mock.calls[0][0].detail);
+    expect(signal.reason.message).toMatch(/timed out/i);
+
+    resolveRequest(true);
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(controller.expiryTime).toBe(originalExpiry);
+});
+
+test.each(['visibilitychange', 'pageshow'])('aborts the extension signal when an overdue request is detected on %s', async eventName => {
+    config.extendSession.mockImplementation(() => new Promise(() => {}));
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+    button.click();
+    const signal = config.extendSession.mock.calls[0][1];
+
+    jest.setSystemTime(Date.now() + 5000);
+    (eventName === 'pageshow' ? window : document).dispatchEvent(new Event(eventName));
+    await jest.advanceTimersByTimeAsync(0);
+
+    expect(signal.aborted).toBe(true);
+    expect(signal.reason.message).toMatch(/timed out/i);
+});
+
+test('aborts the extension signal when destroyed without reporting an error', async () => {
+    let resolveRequest;
+    config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+    const onError = jest.fn();
+    dialog.addEventListener('tpr-session-timeout:error', onError);
+    initialise();
+    jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
+    button.click();
+    const signal = config.extendSession.mock.calls[0][1];
+
+    controller.destroy();
+
+    expect(signal.aborted).toBe(true);
+    expect(signal.reason.message).toMatch(/destroyed/i);
+
+    resolveRequest(true);
+    await jest.advanceTimersByTimeAsync(config.timeoutMs);
+
+    expect(onError).not.toHaveBeenCalled();
+    expect(dialog.showModal).toHaveBeenCalledTimes(1);
+    expect(dialog.open).toBe(false);
+    expect(jest.getTimerCount()).toBe(0);
+});
+
+test.each([true, false, 'rejection'])('does not abort the extension signal when the request settles in time (%s)', async result => {
+    config.extendSession.mockImplementation(() => result === 'rejection'
+        ? Promise.reject(new Error('Network failure'))
+        : Promise.resolve(result));
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+
+    button.click();
+    await jest.advanceTimersByTimeAsync(5000);
+
+    expect(config.extendSession.mock.calls[0][1].aborted).toBe(false);
+});
+
+test('reports the request timeout when aborting the callback rejects its promise', async () => {
+    const onError = jest.fn();
+    config.extendSession.mockImplementation((url, signal) => new Promise((resolve, reject) => {
+        signal.addEventListener('abort', () => reject(new Error('Request aborted by callback')));
+    }));
+    dialog.addEventListener('tpr-session-timeout:error', onError);
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+
+    button.click();
+    const signal = config.extendSession.mock.calls[0][1];
+    await jest.advanceTimersByTimeAsync(1000);
+
+    expect(signal.aborted).toBe(true);
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(onError.mock.calls[0][0].detail).toBe(signal.reason);
+    expect(onError.mock.calls[0][0].detail.message).toMatch(/timed out/i);
+});
+
+test('provides a fresh signal for each extension attempt', async () => {
+    config.extendSession.mockImplementationOnce(() => new Promise(() => {}));
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+
+    button.click();
+    await jest.advanceTimersByTimeAsync(1000);
+    button.click();
+    await jest.advanceTimersByTimeAsync(0);
+
+    const [first, second] = config.extendSession.mock.calls.map(call => call[1]);
+    expect(first.aborted).toBe(true);
+    expect(second).not.toBe(first);
+    expect(second.aborted).toBe(false);
+    expect(controller.expiryTime).toBe(Date.now() + config.extensionMs);
 });
 
 test.each([0, -1, NaN, Infinity, '5000', 2147483648])('rejects an invalid extension request timeout value %s', extensionRequestTimeoutMs => {

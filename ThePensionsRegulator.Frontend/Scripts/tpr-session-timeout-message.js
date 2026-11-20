@@ -151,7 +151,7 @@ function readDuration(value) {
  *   expiryUrl?: string | null,
  *   extensionRequestTimeoutMs?: number,
  *   formatRemainingTime?: (remainingMs: number) => string,
- *   extendSession?: (url: string | undefined) => boolean | Promise<boolean>
+ *   extendSession?: (url: string | undefined, signal: AbortSignal) => boolean | Promise<boolean>
  * }} [config]
  */
 export function initSessionTimeout(dialog, config) {
@@ -186,7 +186,7 @@ export function initSessionTimeout(dialog, config) {
         clearTimeout(timer);
 
         if (extensionRequest && Date.now() >= extensionRequest.deadline) {
-            extensionRequest.reject(extensionRequest.timeoutError);
+            extensionRequest.cancel(extensionRequest.timeoutError);
         }
 
         const remaining = getRemainingTime(expiryTime);
@@ -224,23 +224,28 @@ export function initSessionTimeout(dialog, config) {
 
         extending = true;
         button.disabled = true;
+        const abortController = new AbortController();
         const request = {
             deadline: getExpiryTime(config.extensionRequestTimeoutMs),
             timeoutError: new Error('Session extension request timed out.')
         };
         extensionRequest = request;
         const timeout = new Promise((resolve, reject) => {
-            request.reject = reject;
-            request.timer = setTimeout(() => reject(request.timeoutError), config.extensionRequestTimeoutMs);
+            request.cancel = reason => {
+                reject(reason);
+                abortController.abort(reason);
+            };
+            request.timer = setTimeout(() => request.cancel(request.timeoutError), config.extensionRequestTimeoutMs);
         });
 
         try {
             const succeeded = await Promise.race([
-                config.extendSession(button.dataset.sessionTimeoutExtendUrl),
+                config.extendSession(button.dataset.sessionTimeoutExtendUrl, abortController.signal),
                 timeout
             ]);
 
             if (Date.now() >= request.deadline) {
+                abortController.abort(request.timeoutError);
                 throw request.timeoutError;
             }
 
@@ -287,7 +292,7 @@ export function initSessionTimeout(dialog, config) {
         clearTimeout(timer);
         if (extensionRequest) {
             clearTimeout(extensionRequest.timer);
-            extensionRequest.reject(new Error('Session timeout component was destroyed.'));
+            extensionRequest.cancel(new Error('Session timeout component was destroyed.'));
         }
 
         if (extending) {

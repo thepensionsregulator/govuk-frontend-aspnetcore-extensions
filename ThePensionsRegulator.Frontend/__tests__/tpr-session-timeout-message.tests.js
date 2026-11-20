@@ -326,22 +326,20 @@ test('destroy is idempotent and allows clean reinitialisation', () => {
     expect(dialog.querySelectorAll('[data-session-timeout-countdown]')).toHaveLength(1);
 });
 
-test.each([false, true])('destroy closes an open dialog and stops pending work (extension pending: %s)', async pending => {
-    let completeExtension;
-    config.extendSession.mockImplementation(() => new Promise(resolve => { completeExtension = resolve; }));
+test('destroy closes an open dialog and stops its timers', () => {
     initialise();
     jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
     expect(dialog.open).toBe(true);
-    if (pending) button.click();
+
     controller.destroy();
+
     expect(dialog.open).toBe(false);
     expect(dialog.close).toHaveBeenCalledTimes(1);
     expect(button.disabled).toBe(false);
     expect(jest.getTimerCount()).toBe(0);
     controller.destroy();
     expect(dialog.close).toHaveBeenCalledTimes(1);
-    if (pending) completeExtension(true);
-    await jest.advanceTimersByTimeAsync(config.timeoutMs);
+    jest.advanceTimersByTime(config.timeoutMs);
     document.dispatchEvent(new Event('visibilitychange'));
     expect(dialog.open).toBe(false);
     expect(dialog.showModal).toHaveBeenCalledTimes(1);

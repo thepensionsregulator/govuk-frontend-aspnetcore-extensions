@@ -27,7 +27,6 @@ namespace ThePensionsRegulator.Frontend.Models
         [MaxLength(10, ErrorMessage = "Postcode must be 10 characters or fewer")]
         public virtual string? Postcode { get; set; }
 
-        [Required(ErrorMessage = "Select a country")]
         public virtual int? CountryId { get; set; }
 
         public void PopulateAddress(ITprAddress address)

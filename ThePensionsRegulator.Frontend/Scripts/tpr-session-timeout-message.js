@@ -181,7 +181,6 @@ export function initSessionTimeout(dialog, config) {
     let extensionRequest;
     let expiryRevision = 0;
 
-    /** @param {number} timestamp Absolute expiry in Unix milliseconds. */
     function setExpiryTime(timestamp) {
         if (destroyed) {
             throw new Error('Session timeout component was destroyed.');
@@ -281,6 +280,10 @@ export function initSessionTimeout(dialog, config) {
             setExpiryTime(succeeded === true ? getExpiryTime(config.extensionMs) : succeeded.expiryTime);
         } catch (error) {
             if (!destroyed) {
+                if (Date.now() >= request.deadline) {
+                    abortController.abort(request.timeoutError);
+                    error = request.timeoutError;
+                }
                 console.error('Failed to extend session:', error);
 
                 dialog.dispatchEvent(

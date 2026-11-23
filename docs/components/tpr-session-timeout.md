@@ -71,7 +71,7 @@ Import `initSessionTimeout` after rendering the partial. The component does not 
 </script>
 ```
 
-This example assumes the endpoint in `PrimaryActionUrl` accepts the anti-forgery header and returns a successful HTTP status only when the session has been extended. Adapt it to your application's authentication and anti-forgery configuration. The callback must return `true` only after a confirmed extension; `false`, other return values, thrown errors and rejected promises are failures. `PrimaryActionUrl` may be omitted if the callback uses another mechanism.
+This example assumes the endpoint in `PrimaryActionUrl` accepts the anti-forgery header and returns a successful HTTP status only when the session has been extended. Adapt it to your application's authentication and anti-forgery configuration. Return `true` only after a confirmed extension, or return `{ expiryTime }` containing the server's absolute expiry in Unix milliseconds. `false`, invalid results, thrown errors and rejected promises are failures. `PrimaryActionUrl` may be omitted if the callback uses another mechanism.
 
 JavaScript options override the rendered attributes. Without `Settings`, select the dialog directly and supply `timeoutMs` and `warningMs`, plus `extensionMs` and `extendSession` when an extension button is present. If there is no extension button, no extension callback or duration is required; when the timing attributes are present, call `initSessionTimeout(dialog)`.
 
@@ -91,27 +91,51 @@ JavaScript options override the rendered attributes. Without `Settings`, select 
 
 Add `{remainingTime}` to `Content`, `ContentHtml` or Umbraco rich text where the countdown should appear. For example: `Your session will end in {remainingTime}.` In rich text, you can format the entire placeholder, but do not split its characters across formatting elements. The script replaces each placeholder with an inline timer while preserving surrounding content. Without a placeholder, no visible countdown is added, but warning and extension behaviour still work.
 
-By default, the countdown displays rounded-up whole minutes above one minute, then seconds from `60 seconds` to zero. Partial seconds are rounded up and negative values are never displayed. To display seconds throughout, add a formatter to the JavaScript options:
-
-```javascript
-formatRemainingTime: remainingMs => Math.ceil(remainingMs / 1000) + 's'
-```
+By default, the countdown displays rounded-up whole minutes above one minute, then seconds from `60 seconds` to zero. Partial seconds are rounded up and negative values are never displayed. For example, to display seconds throughout, add `formatRemainingTime: remainingMs => Math.ceil(remainingMs / 1000) + 's'` to the configuration. Omit the option to use the default formatting.
 
 The countdown uses `role="timer"` and `aria-live="off"` so its visual updates are not announced every second. Remaining time is calculated from `expiryTime - Date.now()` and refreshed after delayed timer callbacks and on `visibilitychange` and `pageshow`.
 
 ## Session extension and expiry
 
-When the user selects the primary button, the component disables it and calls `extendSession`. On confirmed success, it closes the warning and sets a new expiry to the current time plus `extensionMs`. On failure, it keeps the original expiry, re-enables the button, logs the error and emits a bubbling `tpr-session-timeout:error` event with the error in `event.detail`.
+When the user selects the primary button, the component disables it and calls `extendSession`. On confirmed success, it uses the returned `{ expiryTime }`, or the current time plus `extensionMs` when the callback returns `true`. It closes the warning if the new expiry is outside the warning period. On failure, it keeps the current expiry, re-enables the button, logs the error and emits a bubbling `tpr-session-timeout:error` event with the error in `event.detail`.
 
-While the request is pending, the countdown can reach zero, but the expiry event and navigation wait until the request settles or `extensionRequestTimeoutMs` is reached. If the request fails or times out after the original deadline, expiry is processed immediately. Late results are ignored. The timeout bounds frontend waiting but does not cancel the network request or undo server-side renewal; the application owns transport cancellation. Browser suspension can delay processing, but overdue responses are not accepted as successful extensions.
+While the request is pending, the countdown can reach zero, but the expiry event and navigation wait until the request settles or `extensionRequestTimeoutMs` is reached. If the request fails or times out after the current deadline, expiry is processed immediately. Late results are ignored. Browser suspension can delay processing, but overdue responses are not accepted as successful extensions.
+
+Each request receives a fresh `AbortSignal`, which is aborted on timeout or `destroy()`, with the timeout or destroy error in `signal.reason`. Pass it to `fetch` or another cooperative transport, as in the example above. Callbacks that accept only the URL still work. The bounded wait also applies when a callback ignores the signal, and cancellation cannot undo a server-side renewal that has already occurred. A request that settles within its deadline is not aborted.
 
 At expiry, the component emits a bubbling, cancelable `tpr-session-timeout:expired` event once per expiry period, even without a countdown placeholder. If configured, `ExpiryUrl` then triggers a browser navigation (GET); the component does not itself invalidate the session. For application-specific handling, listen for the event before initialisation and call `event.preventDefault()` to suppress configured navigation. If sign-out requires a POST, leave `ExpiryUrl` unset and perform the request in your handler. The secondary action link is independent of automatic expiry navigation.
 
 ## Controller lifecycle
 
-`initSessionTimeout` returns a controller with a read-only `expiryTime` timestamp and a `destroy()` method. Reinitialising the same dialog returns the existing controller without resetting its deadline or adding duplicate timers or handlers.
+`initSessionTimeout` returns a controller with a read-only `expiryTime` timestamp, `setExpiryTime(timestamp)` and a `destroy()` method. Reinitialising the same dialog returns the existing controller without resetting its deadline or adding duplicate timers or handlers.
 
-Call `destroy()` before removing the component or initialising it with different configuration. It closes an open dialog, clears timers and handlers, and restores the countdown placeholders. Pending requests cannot restart a destroyed controller.
+Call `destroy()` before removing the component or initialising it with different configuration. It closes an open dialog, aborts any pending extension signal, clears timers and handlers, and restores the countdown placeholders. Pending requests cannot restart a destroyed controller.
+
+### Authoritative expiry and multiple tabs
+
+Use `timeout.setExpiryTime(expiryTime)` when the application receives a confirmed expiry from the server, including updates from another tab. The argument must be a finite number of Unix milliseconds, not a duration, date string or seconds value. Invalid values throw a `RangeError` without changing expiry; calling it after `destroy()` throws an error.
+
+The setter updates the countdown immediately and reschedules the warning without duplicate timers. It closes an open warning if the new expiry is outside the warning period, or opens it if the expiry is within that period. An expiry at or before now is processed immediately unless an extension request is pending; the bounded deferral still applies. Reapplying the same timestamp does not emit another expiry event. A new future deadline restarts a stopped countdown, but cannot undo navigation that has already occurred.
+
+An extension callback can instead return `{ expiryTime: number }` from its server response. The timestamp is used unchanged, rather than adding `extensionMs` after the response arrives. Invalid timestamps use normal extension-error reporting without changing expiry. If `setExpiryTime` is called while a request is pending, the external update takes precedence over that request's result.
+
+Cross-tab communication is application-owned. For example, using the `timeout` controller from above:
+
+```javascript
+const sessionUpdates = new BroadcastChannel('session-expiry');
+
+// Call after obtaining and validating a confirmed expiry from the server.
+function applyConfirmedExpiry(expiryTime) {
+    timeout.setExpiryTime(expiryTime);
+    sessionUpdates.postMessage({ expiryTime });
+}
+
+sessionUpdates.addEventListener('message', ({ data }) => {
+    timeout.setExpiryTime(data.expiryTime);
+});
+```
+
+Only publish confirmed server expiries for the same session. The application must discard stale or out-of-order notifications, for example using a server-provided session revision; the library cannot determine freshness from the expiry timestamp alone. Earlier expiries are valid, so it does not simply keep the largest timestamp. `BroadcastChannel` does not persist messages: recheck the server on focus or reconnection to catch missed updates, and call `sessionUpdates.close()` when tearing down this wiring. Unix timestamps assume sufficiently aligned client and server clocks; clock-skew correction and server-side session enforcement remain application responsibilities.
 
 ## Umbraco
 

@@ -179,65 +179,6 @@ describe('warning and countdown', () => {
         expect(dialog.querySelector('#description')).toHaveTextContent('Your session is about to expire.');
     });
 
-test('updates the visible remaining time during the warning', () => {
-    config.warningMs = 5000;
-    initialise();
-    jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
-    const countdown = dialog.querySelector('[data-session-timeout-countdown]');
-    expect(countdown).toHaveTextContent('5 seconds');
-    jest.advanceTimersByTime(1000);
-    expect(countdown).toHaveTextContent('4 seconds');
-});
-
-test.each([
-    [1800000, '30 minutes'],
-    [121000, '3 minutes'],
-    [120000, '2 minutes'],
-    [61000, '2 minutes'],
-    [60001, '2 minutes'],
-    [60000, '60 seconds'],
-    [59000, '59 seconds'],
-    [1000, '1 second'],
-    [1, '1 second']
-])('formats %i milliseconds as %s by default', (remaining, expected) => {
-    initialise({ ...config, timeoutMs: remaining + 1000, warningMs: remaining });
-    jest.advanceTimersByTime(1000);
-    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe(expected);
-});
-
-test('stops at zero and never displays negative time', () => {
-    initialise();
-    jest.advanceTimersByTime(config.timeoutMs);
-    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('0 seconds');
-    jest.advanceTimersByTime(10000);
-    expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('0 seconds');
-    expect(jest.getTimerCount()).toBe(0);
-});
-
-    test('calculates remaining time from the clock when timer callbacks are delayed', () => {
-        initialise();
-        const expiry = controller.expiryTime;
-        jest.setSystemTime(expiry - 28500);
-        jest.advanceTimersByTime(1000);
-        expect(dialog.open).toBe(true);
-        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('28 seconds');
-        jest.setSystemTime(expiry + 10000);
-        jest.advanceTimersByTime(1000);
-        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('0 seconds');
-        expect(jest.getTimerCount()).toBe(0);
-    });
-
-describe('warning and countdown', () => {
-    test('opens the existing warning exactly at the configured warning point', () => {
-        initialise();
-        jest.advanceTimersByTime(config.timeoutMs - config.warningMs - 1);
-        expect(dialog.showModal).not.toHaveBeenCalled();
-        jest.advanceTimersByTime(1);
-        expect(dialog.showModal).toHaveBeenCalledTimes(1);
-        expect(dialog.open).toBe(true);
-        expect(dialog.querySelector('#description')).toHaveTextContent('Your session is about to expire.');
-    });
-
     test('updates the visible remaining time during the warning', () => {
         config.warningMs = 5000;
         initialise();
@@ -451,7 +392,8 @@ describe('session extension', () => {
         jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
         button.click();
         expect(config.extendSession).toHaveBeenCalledTimes(1);
-        expect(config.extendSession).toHaveBeenCalledWith('/session/extend');
+        expect(config.extendSession).toHaveBeenCalledWith('/session/extend', expect.any(AbortSignal));
+        expect(config.extendSession.mock.calls[0][1].aborted).toBe(false);
     });
 
     test.each([120000, 180000])('resets expiry only after successful extension at %i ms', async (elapsed) => {
@@ -474,6 +416,96 @@ describe('session extension', () => {
         jest.advanceTimersByTime(1);
         expect(dialog.open).toBe(true);
         expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('60 seconds');
+    });
+
+    test('uses the server expiry returned by an extension rather than adding the configured duration', async () => {
+        let resolveRequest;
+        config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+        initialise();
+        jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
+        const expiryTime = Date.now() + 120000;
+
+        button.click();
+        await jest.advanceTimersByTimeAsync(2000);
+        resolveRequest({ expiryTime });
+        await jest.advanceTimersByTimeAsync(0);
+
+        expect(controller.expiryTime).toBe(expiryTime);
+        expect(dialog.open).toBe(false);
+        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('2 minutes');
+        expect(jest.getTimerCount()).toBe(1);
+        jest.advanceTimersByTime(expiryTime - Date.now() - config.warningMs);
+        expect(dialog.open).toBe(true);
+        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('60 seconds');
+    });
+
+    test('processes a server expiry that has already passed instead of granting extra time', async () => {
+        const expiryTime = Date.now() - 1000;
+        config.extendSession.mockResolvedValue({ expiryTime });
+        const onExpired = jest.fn(event => event.preventDefault());
+        dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+        initialise();
+
+        button.click();
+        await jest.advanceTimersByTimeAsync(0);
+
+        expect(controller.expiryTime).toBe(expiryTime);
+        expect(onExpired).toHaveBeenCalledTimes(1);
+        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('0 seconds');
+        expect(jest.getTimerCount()).toBe(0);
+    });
+
+    test.each([NaN, Infinity, undefined, null, '180000'])('reports invalid server expiry %s without resetting the deadline', async expiryTime => {
+        config.extendSession.mockResolvedValue({ expiryTime });
+        const onError = jest.fn();
+        dialog.addEventListener('tpr-session-timeout:error', onError);
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        initialise();
+        const originalExpiry = controller.expiryTime;
+
+        button.click();
+        await jest.advanceTimersByTimeAsync(0);
+
+        expect(controller.expiryTime).toBe(originalExpiry);
+        expect(onError).toHaveBeenCalledTimes(1);
+        expect(onError.mock.calls[0][0].detail).toBeInstanceOf(RangeError);
+        expect(button.disabled).toBe(false);
+        expect(jest.getTimerCount()).toBe(1);
+    });
+
+    test.each(['success', 'server expiry', 'failure', 'timeout'])('preserves a newer external expiry when an older extension finishes (%s)', async result => {
+        let resolveRequest;
+        config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+        const expiryTime = Date.now() + 120000;
+
+        button.click();
+        controller.setExpiryTime(expiryTime);
+        if (result === 'success') resolveRequest(true);
+        if (result === 'server expiry') resolveRequest({ expiryTime: Date.now() + 900000 });
+        if (result === 'failure') resolveRequest(false);
+        await jest.advanceTimersByTimeAsync(1000);
+
+        expect(controller.expiryTime).toBe(expiryTime);
+        expect(button.disabled).toBe(false);
+        expect(jest.getTimerCount()).toBe(1);
+    });
+
+    test('ignores a server expiry response received after the request timeout', async () => {
+        let resolveRequest;
+        config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+        const originalExpiry = controller.expiryTime;
+
+        button.click();
+        await jest.advanceTimersByTimeAsync(1000);
+        resolveRequest({ expiryTime: Date.now() + 900000 });
+        await jest.advanceTimersByTimeAsync(0);
+
+        expect(controller.expiryTime).toBe(originalExpiry);
+        expect(jest.getTimerCount()).toBe(1);
     });
 
     test.each([
@@ -678,6 +710,75 @@ describe('session extension', () => {
     });
 });
 
+describe('authoritative expiry updates', () => {
+    test('updates expiry and reschedules the warning without duplicate timers', () => {
+        initialise();
+        jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
+        expect(dialog.open).toBe(true);
+        const expiryTime = Date.now() + 240000;
+
+        controller.setExpiryTime(expiryTime);
+        controller.setExpiryTime(expiryTime);
+
+        expect(controller.expiryTime).toBe(expiryTime);
+        expect(dialog.open).toBe(false);
+        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('4 minutes');
+        expect(jest.getTimerCount()).toBe(1);
+        expect(config.extendSession).not.toHaveBeenCalled();
+        jest.advanceTimersByTime(180000 - 1);
+        expect(dialog.open).toBe(false);
+        jest.advanceTimersByTime(1);
+        expect(dialog.open).toBe(true);
+        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('60 seconds');
+    });
+
+    test('opens the warning immediately when the updated expiry is within the warning period', () => {
+        initialise();
+        controller.setExpiryTime(Date.now() + 30000);
+        expect(dialog.open).toBe(true);
+        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('30 seconds');
+        expect(jest.getTimerCount()).toBe(1);
+    });
+
+    test.each([0, -1000])('processes an expiry at or before now without duplicate expiry events (%i)', offset => {
+        button.remove();
+        const onExpired = jest.fn(event => event.preventDefault());
+        dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+        initialise({ timeoutMs: config.timeoutMs, warningMs: config.warningMs });
+        const expiryTime = Date.now() + offset;
+
+        controller.setExpiryTime(expiryTime);
+        controller.setExpiryTime(expiryTime);
+        document.dispatchEvent(new Event('visibilitychange'));
+        expect(controller.expiryTime).toBe(expiryTime);
+        expect(dialog.querySelector('[data-session-timeout-countdown]').textContent).toBe('0 seconds');
+        expect(onExpired).toHaveBeenCalledTimes(1);
+        expect(jest.getTimerCount()).toBe(0);
+
+        controller.setExpiryTime(Date.now() + 120000);
+        expect(dialog.open).toBe(false);
+        jest.advanceTimersByTime(120000);
+        expect(onExpired).toHaveBeenCalledTimes(2);
+    });
+
+    test.each([NaN, Infinity, -Infinity, undefined, null, '180000', true])('rejects invalid expiry %s without changing the countdown', expiryTime => {
+        initialise();
+        const originalExpiry = controller.expiryTime;
+        expect(() => controller.setExpiryTime(expiryTime)).toThrow(RangeError);
+        expect(controller.expiryTime).toBe(originalExpiry);
+        expect(jest.getTimerCount()).toBe(1);
+        expect(dialog.open).toBe(false);
+    });
+
+    test('rejects updates after destroy without restarting timers', () => {
+        initialise();
+        controller.destroy();
+        expect(() => controller.setExpiryTime(Date.now() + 120000)).toThrow(/destroyed/i);
+        expect(jest.getTimerCount()).toBe(0);
+        expect(dialog.open).toBe(false);
+    });
+});
+
 describe('expiry events and navigation', () => {
     test('emits one bubbling expiry event at zero, even without a countdown token', () => {
         dialog.querySelector('[data-session-timeout-content]').textContent = 'Your session is about to expire.';
@@ -746,6 +847,137 @@ describe('expiry events and navigation', () => {
         } finally {
             window.history.replaceState(null, '', originalUrl);
         }
+    });
+});
+
+describe('extension request cancellation', () => {
+    test('aborts on request timeout and ignores a late success', async () => {
+        let resolveRequest;
+        config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+        const onError = jest.fn();
+        dialog.addEventListener('tpr-session-timeout:error', onError);
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+        const originalExpiry = controller.expiryTime;
+
+        button.click();
+        const signal = config.extendSession.mock.calls[0][1];
+        await jest.advanceTimersByTimeAsync(999);
+        expect(signal.aborted).toBe(false);
+        await jest.advanceTimersByTimeAsync(1);
+        expect(signal.aborted).toBe(true);
+        expect(signal.reason).toBe(onError.mock.calls[0][0].detail);
+        expect(signal.reason.message).toMatch(/timed out/i);
+
+        resolveRequest(true);
+        await jest.advanceTimersByTimeAsync(0);
+        expect(controller.expiryTime).toBe(originalExpiry);
+    });
+
+    test.each(['visibilitychange', 'pageshow', 'settlement'])('aborts an overdue request on %s', async trigger => {
+        let resolveRequest;
+        config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+        button.click();
+        const signal = config.extendSession.mock.calls[0][1];
+
+        jest.setSystemTime(Date.now() + 5000);
+        if (trigger === 'settlement') resolveRequest(true);
+        else (trigger === 'pageshow' ? window : document).dispatchEvent(new Event(trigger));
+        await jest.advanceTimersByTimeAsync(0);
+        expect(signal.aborted).toBe(true);
+        expect(signal.reason.message).toMatch(/timed out/i);
+    });
+
+    test('aborts and reports a timeout when an overdue callback rejects before delayed timers run', async () => {
+        let rejectRequest;
+        config.extendSession.mockImplementation(() => new Promise((resolve, reject) => { rejectRequest = reject; }));
+        const onError = jest.fn();
+        dialog.addEventListener('tpr-session-timeout:error', onError);
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+        const originalExpiry = controller.expiryTime;
+        button.click();
+        const signal = config.extendSession.mock.calls[0][1];
+
+        jest.setSystemTime(Date.now() + 5000);
+        rejectRequest(new Error('Late network failure'));
+        await jest.advanceTimersByTimeAsync(0);
+
+        expect(signal.aborted).toBe(true);
+        expect(signal.reason.message).toMatch(/timed out/i);
+        expect(onError).toHaveBeenCalledTimes(1);
+        expect(onError.mock.calls[0][0].detail).toBe(signal.reason);
+        expect(controller.expiryTime).toBe(originalExpiry);
+        expect(button.disabled).toBe(false);
+    });
+
+    test('aborts on destroy without reporting an error or expiry', async () => {
+        let resolveRequest;
+        config.extendSession.mockImplementation(() => new Promise(resolve => { resolveRequest = resolve; }));
+        const onError = jest.fn();
+        const onExpired = jest.fn();
+        dialog.addEventListener('tpr-session-timeout:error', onError);
+        dialog.addEventListener('tpr-session-timeout:expired', onExpired);
+        initialise();
+        jest.advanceTimersByTime(config.timeoutMs - config.warningMs);
+        button.click();
+        const signal = config.extendSession.mock.calls[0][1];
+
+        controller.destroy();
+        expect(signal.aborted).toBe(true);
+        expect(signal.reason.message).toMatch(/destroyed/i);
+        resolveRequest(true);
+        await jest.advanceTimersByTimeAsync(config.timeoutMs);
+        expect(onError).not.toHaveBeenCalled();
+        expect(onExpired).not.toHaveBeenCalled();
+        expect(dialog.showModal).toHaveBeenCalledTimes(1);
+        expect(dialog.open).toBe(false);
+        expect(jest.getTimerCount()).toBe(0);
+    });
+
+    test.each([true, false, 'rejection'])('does not abort when the request settles in time (%s)', async result => {
+        config.extendSession.mockImplementation(() => result === 'rejection'
+            ? Promise.reject(new Error('Network failure'))
+            : Promise.resolve(result));
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+        button.click();
+        await jest.advanceTimersByTimeAsync(5000);
+        expect(config.extendSession.mock.calls[0][1].aborted).toBe(false);
+    });
+
+    test('reports the timeout when aborting causes the callback to reject', async () => {
+        const onError = jest.fn();
+        config.extendSession.mockImplementation((url, signal) => new Promise((resolve, reject) => {
+            signal.addEventListener('abort', () => reject(new Error('Request aborted by callback')));
+        }));
+        dialog.addEventListener('tpr-session-timeout:error', onError);
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+        button.click();
+        const signal = config.extendSession.mock.calls[0][1];
+        await jest.advanceTimersByTimeAsync(1000);
+        expect(signal.aborted).toBe(true);
+        expect(onError).toHaveBeenCalledTimes(1);
+        expect(onError.mock.calls[0][0].detail).toBe(signal.reason);
+        expect(signal.reason.message).toMatch(/timed out/i);
+    });
+
+    test('provides a fresh signal for each extension attempt', async () => {
+        config.extendSession.mockImplementationOnce(() => new Promise(() => {}));
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        initialise({ ...config, extensionRequestTimeoutMs: 1000 });
+        button.click();
+        await jest.advanceTimersByTimeAsync(1000);
+        button.click();
+        await jest.advanceTimersByTimeAsync(0);
+        const [first, second] = config.extendSession.mock.calls.map(call => call[1]);
+        expect(first.aborted).toBe(true);
+        expect(second).not.toBe(first);
+        expect(second.aborted).toBe(false);
+        expect(controller.expiryTime).toBe(Date.now() + config.extensionMs);
     });
 });
 

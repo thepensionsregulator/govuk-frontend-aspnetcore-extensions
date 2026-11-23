@@ -120,9 +120,7 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
                 });
                 stateContainer.appendChild(confirmedView);
                 const confirmedParagraph = confirmedView.querySelector<HTMLParagraphElement>("p");
-                if (!state.sameAsPrimary) {
-                    confirmedParagraph?.focus();
-                }
+                confirmedParagraph?.focus();
                 break;
 
             case "uk-manual-entry":

@@ -135,6 +135,7 @@ export interface AddressLookupContent {
         addressLookupLegend: string;
         addressLookupHint?: string;
         noJsLegend: string;
+        errorPrefix: string;
 
         // manual entry labels and error messages
         addressLine1Label: string;

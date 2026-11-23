@@ -60,7 +60,7 @@ export function renderAddressUkManualEntry(options: AddressUkManualEntryOptions)
         Object.values(formGroupsByField).forEach(clearFormGroupError);
         const validationResult = validateUkManualEntryAddress(readValues(addressLine1, addressLine2, addressLine3, townOrCity, county, postcode), content);
         if (!validationResult.isValid) {
-            validationResult.errorMessages.forEach(({ fieldName, message }) => showFormGroupError(formGroupsByField[fieldName], message));
+            validationResult.errorMessages.forEach(({ fieldName, message }) => showFormGroupError(formGroupsByField[fieldName], message, content.i18n.errorPrefix));
             const form = fieldsetFormGroup.closest("form");
             if (form) { 
                 focusFirstInvalidControl(form);

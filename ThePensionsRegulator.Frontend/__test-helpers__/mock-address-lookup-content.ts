@@ -5,6 +5,7 @@ export function createMockAddressLookupContent(): AddressLookupContent {
         addressLookupLegend: "Find address",
         addressLookupHint: "lookup hint",
         noJsLegend: "Enter a new address",
+        errorPrefix: "Error: ",
         searchLegend: "Search by postcode",
         addressLine1Label: "Address line 1",
         addressLine1RequiredErrorMessage: "Address line 1 is required",

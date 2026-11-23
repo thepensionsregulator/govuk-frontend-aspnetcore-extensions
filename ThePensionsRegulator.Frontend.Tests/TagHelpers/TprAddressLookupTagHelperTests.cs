@@ -62,7 +62,9 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
                 Content = new TprAddressLookupContent
                 {
                     AddressLookupIntroductionHeading = "Introduction heading",
-                    AddressLookupIntroductionText = "Introduction text",
+                    AddressLookupIntroductionText = "No-JS introduction text",
+                    AddressLookupHint = "Enhanced search hint",
+                    ErrorPrefix = "Problem: ",
                     NoJsLegend = "No-JS legend",
                     SearchLegend = "Search legend"
                 },
@@ -77,12 +79,14 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             var html = output.Content.GetContent();
             Assert.Contains("<h2", html);
             Assert.Contains("Introduction heading", html);
-            Assert.Contains("Introduction text", html);
+            Assert.Contains("No-JS introduction text", html);
+            Assert.DoesNotContain("Enhanced search hint", html);
             Assert.Contains("<legend", html);
             Assert.Contains("No-JS legend", html);
             Assert.Equal("Introduction heading", output.Attributes["data-address-lookup-legend"].Value);
-            Assert.Equal("Introduction text", output.Attributes["data-address-lookup-hint"].Value);
+            Assert.Equal("Enhanced search hint", output.Attributes["data-address-lookup-hint"].Value);
             Assert.Equal("No-JS legend", output.Attributes["data-address-lookup-no-js-legend"].Value);
+            Assert.Equal("Problem: ", output.Attributes["data-address-lookup-error-prefix"].Value);
             Assert.Equal("Search legend", output.Attributes["data-address-lookup-search-legend"].Value);
         }
 

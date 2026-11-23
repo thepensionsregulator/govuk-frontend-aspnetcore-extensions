@@ -67,7 +67,7 @@ export function createAddressLookup(options: AddressLookupOptions) : AddressLook
 
             if (!errorAnchor) { return; }
 
-            showFormGroupError(errorAnchor, getNotConfirmedErrorMessage(state))
+            showFormGroupError(errorAnchor, getNotConfirmedErrorMessage(state), content.i18n.errorPrefix)
         }
     };
 

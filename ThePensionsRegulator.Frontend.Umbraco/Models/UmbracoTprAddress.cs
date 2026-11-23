@@ -5,7 +5,7 @@ namespace ThePensionsRegulator.Frontend.Umbraco.Models;
 
 public class UmbracoTprAddress : ITprAddress
 {
-    public string? UPRNReference { get; set; }
+    public string? Uprn { get; set; }
 
     [Required]
     [MaxLength(100)]

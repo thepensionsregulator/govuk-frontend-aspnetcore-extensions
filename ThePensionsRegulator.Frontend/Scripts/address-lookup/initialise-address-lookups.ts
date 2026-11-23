@@ -24,6 +24,10 @@ export function initialiseAddressLookups() {
         const countries = getCountries(target as HTMLElement);
         const content = getContent(target as HTMLElement);
         const settings = getSettings(target as HTMLElement);
+        const introduction = target.querySelector<HTMLElement>(".tpr-address-lookup-introduction p");
+        if (introduction) {
+            introduction.textContent = content.i18n.addressLookupHint ?? "";
+        }
 
         let addressLookup: AddressLookupInstance;
 
@@ -115,6 +119,7 @@ function getContent(container: HTMLElement): AddressLookupContent {
         addressLookupLegend: get("addressLookupLegend"),
         addressLookupHint: get("addressLookupHint"),
         noJsLegend: get("addressLookupNoJsLegend"),
+        errorPrefix: get("addressLookupErrorPrefix"),
         searchLegend: get("addressLookupSearchLegend"),
         addressLine1Label: get("addressLookupAddressLine-1Label"),
         addressLine1RequiredErrorMessage: get("addressLookupAddressLine-1RequiredErrorMessage"),

@@ -2,15 +2,15 @@
 {
     public class TprAddressLookupContent
     {
-        // overall heading and blurb
+        // overall heading and no-JS introduction
         public string AddressLookupIntroductionHeading { get; set; } = "Add address";
-        public string AddressLookupIntroductionText { get; set; } = "You should give us the full address";
+        public string AddressLookupIntroductionText { get; set; } = "Enter your address details.";
 
-        // No-JS legend
+        // No-JS form
         public string NoJsLegend { get; set; } = "Enter new address";
+        public string ErrorPrefix { get; set; } = "Error: ";
 
         // manual entry labels and error messages
-        public string AddressLookupLegend { get; set; } = "Address lookup";
         public string AddressLookupHint { get; set; } = "Enter a building name or number and postcode to find your address";
         public string AddressLine1Label { get; set; } = "Address line 1";
         public string AddressLine1RequiredErrorMessage { get; set; } = "Enter address line 1";

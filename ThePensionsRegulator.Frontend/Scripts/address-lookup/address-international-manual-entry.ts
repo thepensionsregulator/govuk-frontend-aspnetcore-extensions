@@ -58,7 +58,7 @@ export function renderAddressInternationalManualEntry(options: AddressInternatio
         Object.values(formGroupsByField).forEach(clearFormGroupError);
         const validationResult = validateInternationalUkManualEntryAddress(readValues(addressLine1, addressLine2, addressLine3, postTown, countyStateProvince, country, postcode), options.content);
         if (!validationResult.isValid) {
-            validationResult.errorMessages.forEach(({ fieldName, message }) => showFormGroupError(formGroupsByField[fieldName], message));
+            validationResult.errorMessages.forEach(({ fieldName, message }) => showFormGroupError(formGroupsByField[fieldName], message, options.content.i18n.errorPrefix));
             const form = fieldsetFormGroup.closest("form");
             if (form) {
                 focusFirstInvalidControl(form);

@@ -15,6 +15,7 @@ const contentMappings: ReadonlyArray<readonly [string, string]> = [
     ["addressLookupLegend", "addressLookupLegend"],
     ["addressLookupHint", "addressLookupHint"],
     ["noJsLegend", "addressLookupNoJsLegend"],
+    ["errorPrefix", "addressLookupErrorPrefix"],
     ["searchLegend", "addressLookupSearchLegend"],
     ["addressLine1Label", "addressLookupAddressLine-1Label"],
     ["addressLine1RequiredErrorMessage", "addressLookupAddressLine-1RequiredErrorMessage"],
@@ -130,6 +131,25 @@ describe("initialiseAddressLookups", () => {
                 i18n: expect.objectContaining({ [contentProperty]: expectedValue })
             })
         }));
+    });
+
+    it("replaces the no-JavaScript introduction with the enhanced-flow hint", () => {
+        createAddressLookup.mockReturnValue(createLookup(true));
+        const target = document.createElement("div");
+        target.className = "tpr-address-lookup";
+        target.dataset.addressLookupHint = "Enter a postcode to search.";
+
+        const introduction = document.createElement("div");
+        introduction.className = "tpr-address-lookup-introduction";
+        const description = document.createElement("p");
+        description.textContent = "Enter your address details.";
+        introduction.appendChild(description);
+        target.appendChild(introduction);
+        document.body.appendChild(target);
+
+        initiliseAddressLookups();
+
+        expect(description).toHaveTextContent("Enter a postcode to search.");
     });
 
     it("uses an empty string for missing content", () => {

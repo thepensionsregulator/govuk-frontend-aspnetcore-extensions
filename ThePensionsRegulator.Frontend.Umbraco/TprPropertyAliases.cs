@@ -5,6 +5,8 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         public const string AddressLookupLegend = "addressLookupLegend";
         public const string AddressLookupHint = "addressLookupHint";
         public const string AddressLookupNoJsLegend = "noJsLegend";
+        public const string AddressLookupNoJsHint = "noJsHint";
+        public const string AddressLookupErrorPrefix = "errorPrefix";
         public const string AddressLookupSearchLegend = "searchLegend";
         public const string AddressLookupAddressLine1Label = "addressLine1Label";
         public const string AddressLookupAddressLine1RequiredErrorMessage = "addressLine1RequiredErrorMessage";

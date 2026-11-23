@@ -26,6 +26,12 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("address-hint")]
         public string AddressLookupHint { get; set; }
 
+        [HtmlAttributeName("no-js-hint")]
+        public string? NoJsHint { get; set; }
+
+        [HtmlAttributeName("error-prefix")]
+        public string? ErrorPrefix { get; set; }
+
         [HtmlAttributeName("search-button-text")]
         public string SearchButtonText { get; set; }
 
@@ -254,14 +260,14 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
             if (AddressLookupLegend is not null)
             {
-                content.AddressLookupLegend = AddressLookupLegend;
                 content.AddressLookupIntroductionHeading = AddressLookupLegend;
             }
             if (AddressLookupHint is not null)
             {
                 content.AddressLookupHint = AddressLookupHint;
-                content.AddressLookupIntroductionText = AddressLookupHint;
             }
+            if (NoJsHint is not null) content.AddressLookupIntroductionText = NoJsHint;
+            if (ErrorPrefix is not null) content.ErrorPrefix = ErrorPrefix;
             if (AddressLine1Label is not null) content.AddressLine1Label = AddressLine1Label;
             if (AddressLine1RequiredErrorMessage is not null) content.AddressLine1RequiredErrorMessage = AddressLine1RequiredErrorMessage;
             if (AddressLine1MaxLengthErrorMessage is not null) content.AddressLine1MaxLengthErrorMessage = AddressLine1MaxLengthErrorMessage;
@@ -323,8 +329,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
             }
             attributes.Add("data-address-lookup-search-url", settings.SearchUrl);
             attributes.Add("data-address-lookup-legend", content.AddressLookupIntroductionHeading);
-            attributes.Add("data-address-lookup-hint", content.AddressLookupIntroductionText);
+            attributes.Add("data-address-lookup-hint", content.AddressLookupHint);
             attributes.Add("data-address-lookup-no-js-legend", content.NoJsLegend);
+            attributes.Add("data-address-lookup-error-prefix", content.ErrorPrefix);
             attributes.Add("data-address-lookup-address-line-1-label", content.AddressLine1Label);
             attributes.Add("data-address-lookup-address-line-1-required-error-message", content.AddressLine1RequiredErrorMessage);
             attributes.Add("data-address-lookup-address-line-1-max-length-error-message", content.AddressLine1MaxLengthErrorMessage);

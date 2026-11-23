@@ -68,7 +68,7 @@ export function renderAddressResults(options: AddressResultsOptions): HTMLElemen
         const selectedAddress = options.addresses.find(address => address.UPRN === selectedUprn);
 
         if(!selectedAddress){
-            showFormGroupError(selectFormGroup, options.content.i18n.addressSelectErrorMessage);
+            showFormGroupError(selectFormGroup, options.content.i18n.addressSelectErrorMessage, options.content.i18n.errorPrefix);
             const form = selectFormGroup.closest("form");
             if (form) {
                 focusFirstInvalidControl(form);

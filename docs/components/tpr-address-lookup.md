@@ -4,7 +4,7 @@ The Pensions Regulator (TPR) address lookup lets users search for a UK address b
 
 The component is provided by `ThePensionsRegulator.Frontend`. Follow [Configure a new ASP.NET project (TPR)](../aspnet/new-aspnet-project-tpr.md) for service registration, static assets and layout setup. Umbraco applications should follow [Configure a new Umbraco project (TPR)](../umbraco/new-umbraco-project-tpr.md).
 
-Provide your application's country list by implementing `ITprCountryRepository` from `ThePensionsRegulator.Frontend.Services`. Its `GetCountries()` method returns `Task<IDictionary<string, int>>`, mapping country names to the IDs used by your model's `CountryId`. Include `United Kingdom`: the JavaScript uses that name to identify UK addresses. The default repository supplies a placeholder, not a production country list. See [the example repository](../../GovUk.Frontend.ExampleApp/Services/ExampleTprCountryRepository.cs).
+Provide your application's country list by implementing `ITprCountryRepository` from `ThePensionsRegulator.Frontend.Services`. Its `GetCountries()` method returns `Task<IDictionary<string, int>>`, mapping country names to the Ids used by your model's `CountryId`. Include `United Kingdom`: the JavaScript uses that name to identify UK addresses. The default repository supplies a placeholder, not a production country list. See [the example repository](../../GovUk.Frontend.ExampleApp/Services/ExampleTprCountryRepository.cs).
 
 Register your implementation after `AddTprFrontend()` (or `AddTprFrontendUmbraco()`):
 
@@ -86,7 +86,7 @@ Call the initializer once after the components are in the document. It enhances 
 
 | Attribute | Type | Description |
 | --------- | ---- | ----------- |
-| `for` | `string` | Required. Model property prefix, such as `ShippingAddress`. Generates names such as `ShippingAddress.AddressLine1`. This is a string, not an `asp-for` expression. |
+| `for` | `ModelExpression` | Required. Model property prefix, such as `ShippingAddress`. Generates names such as `ShippingAddress.AddressLine1`. This is a string, not an `asp-for` expression. |
 | `address-search-url` | `string` | Required for postcode lookup. URL of an endpoint returning the response described below. |
 | `role` | `TprAddressLookupRole?` | `Primary` or `Secondary`. Set `Primary` for a standalone lookup. For linked addresses, render the primary before the secondary. |
 | `content` | `TprAddressLookupContent` | Labels, hints, legends, buttons, links and client-side error messages. Omit to use library defaults, or override individual properties. |
@@ -148,8 +148,12 @@ To match the MVC example:
 | Block property alias | Equivalent `TprAddressLookupContent` property | Example value |
 | -------------------- | ------------------------------------------- | ------------- |
 | `addressLookupLegend` | `AddressLookupIntroductionHeading` | Billing address |
-| `addressLookupHint` | `AddressLookupIntroductionText` | Enter the address to use for billing. |
+| `addressLookupHint` | `AddressLookupHint` | Enter the address to use for billing. |
+| `noJsHint` | `AddressLookupIntroductionText` | Enter the address to use for billing. |
 | `searchLegend` | `SearchLegend` | Find your billing address |
+| `errorPrefix` | `ErrorPrefix` | Error: |
+| `ukManualEntryLinkLabel` | `UkManualEntryLinkLabel` | Enter address manually (optional) |
+| `internationalManualEntryLabel` | `InternationalManualEntryLabel` | Enter an international address (optional) |
 | `sameAsLabel` | `SameAsLabel` | Same as shipping address |
 
 Render the block list inside the usual `Html.BeginUmbracoForm` form, with a submit button after both blocks. Keep content in the blocks rather than hardcoding it into the page template. Include the JavaScript module shown above and the normal `GOVUK/Validation` partial.
@@ -166,7 +170,7 @@ The block renderer reads the endpoint from application configuration:
 
 ### Content and dictionary overrides
 
-Labels, hints, legends and button/link text are properties of the content block. Error-message overrides are properties of its settings element. Text is resolved separately for each field in this order:
+Labels, hints, legends, button/link text and the error prefix are properties of the content block. Validation error-message overrides are properties of its settings element. Text is resolved separately for each field in this order:
 
 1. A non-empty block property (content or settings, as appropriate).
 2. A non-empty Umbraco dictionary translation, such as `Address lookup - county label`.
@@ -175,3 +179,5 @@ Labels, hints, legends and button/link text are properties of the content block.
 Whitespace-only values are treated as empty. An empty dictionary translation does not hide the label: it restores the library default when the block property is also empty. Dictionary translations provide shared text; block properties provide instance-specific overrides.
 
 The example application's address lookup dictionary entries deliberately have empty translations. Its primary block therefore demonstrates library defaults, while its secondary block demonstrates content-property overrides. See [the dictionary key definitions](../../ThePensionsRegulator.Frontend.Umbraco/TprAddressLookupDictionaryKeys.cs) for the available keys.
+
+The `addressLookupHint` is applied to the enhanced experience after JavaScript starts. The separate `noJsHint` is shown in the server-rendered fallback, so its text should not refer to JavaScript-only search or confirmation steps. Both properties, like the `errorPrefix` property, follow the same block → dictionary → library-default order.

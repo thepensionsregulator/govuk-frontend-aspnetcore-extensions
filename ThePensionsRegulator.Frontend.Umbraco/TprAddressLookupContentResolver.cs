@@ -14,8 +14,10 @@ namespace ThePensionsRegulator.Frontend.Umbraco
         internal static readonly IReadOnlyList<Field> Fields =
         [
             new(TprPropertyAliases.AddressLookupLegend, TprAddressLookupDictionaryKeys.AddressLookupLegend, (c, v) => c.AddressLookupIntroductionHeading = v),
-            new(TprPropertyAliases.AddressLookupHint, TprAddressLookupDictionaryKeys.AddressLookupHint, (c, v) => c.AddressLookupIntroductionText = v),
+            new(TprPropertyAliases.AddressLookupHint, TprAddressLookupDictionaryKeys.AddressLookupHint, (c, v) => c.AddressLookupHint = v),
             new(TprPropertyAliases.AddressLookupNoJsLegend, TprAddressLookupDictionaryKeys.AddressLookupNoJsLegend, (c, v) => c.NoJsLegend = v),
+            new(TprPropertyAliases.AddressLookupNoJsHint, TprAddressLookupDictionaryKeys.AddressLookupNoJsHint, (c, v) => c.AddressLookupIntroductionText = v),
+            new(TprPropertyAliases.AddressLookupErrorPrefix, TprAddressLookupDictionaryKeys.AddressLookupErrorPrefix, (c, v) => c.ErrorPrefix = v),
             new(TprPropertyAliases.AddressLookupAddressLine1Label, TprAddressLookupDictionaryKeys.AddressLine1Label, (c, v) => c.AddressLine1Label = v),
             new(TprPropertyAliases.AddressLookupAddressLine1RequiredErrorMessage, TprAddressLookupDictionaryKeys.AddressLine1RequiredErrorMessage, (c, v) => c.AddressLine1RequiredErrorMessage = v, true),
             new(TprPropertyAliases.AddressLookupAddressLine1MaxLengthErrorMessage, TprAddressLookupDictionaryKeys.AddressLine1MaxLengthErrorMessage, (c, v) => c.AddressLine1MaxLengthErrorMessage = v, true),

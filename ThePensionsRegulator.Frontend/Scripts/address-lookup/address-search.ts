@@ -72,7 +72,7 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
         if (findAddressButton.disabled) { return; }
         const validationResult = readAndValidateCriteria(buildingNameOrNumberInput, postcodeInput, options.content);
         if (!validationResult.isValid) {
-            showFormGroupError(postcodeFormGroup, validationResult.errorMessage);
+            showFormGroupError(postcodeFormGroup, validationResult.errorMessage, options.content.i18n.errorPrefix);
             const form = fieldset.closest("form");
              if (form) {
                  focusFirstInvalidControl(form);
@@ -89,14 +89,14 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
             const matches = buildingName ? filterAddressesByBuilding(addresses, buildingName) : addresses;
 
             if (matches.length === 0) {
-                showFormGroupError(fieldset, options.content.i18n.addressNotFoundMessage);
+                showFormGroupError(fieldset, options.content.i18n.addressNotFoundMessage, options.content.i18n.errorPrefix);
                 return;
             }
 
             clearFormGroupError(fieldset);
             options.onSearchSuccess(matches, validationResult.criteria);
         } catch {
-            showFormGroupError(fieldset, options.content.i18n.serviceUnavailableMessage);
+            showFormGroupError(fieldset, options.content.i18n.serviceUnavailableMessage, options.content.i18n.errorPrefix);
         } 
         finally {
              findAddressButton.disabled = false;

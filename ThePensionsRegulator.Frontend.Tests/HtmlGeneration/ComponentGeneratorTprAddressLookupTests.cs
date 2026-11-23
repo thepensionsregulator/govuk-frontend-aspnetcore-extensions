@@ -41,7 +41,7 @@ public class ComponentGeneratorTprAddressLookupTests
     {
         // Arrange
         const string exampleLegend = "Address details";
-        _content.AddressLookupLegend = exampleLegend;
+        _content.NoJsLegend = exampleLegend;
         // Act
         var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
         var document = Parse(component);
@@ -58,6 +58,22 @@ public class ComponentGeneratorTprAddressLookupTests
             () => AssertCssClass("govuk-fieldset__legend--for-fieldset", legend),
             () => Assert.Equal(exampleLegend, HtmlEntity.DeEntitize(legend.InnerText))
         );
+    }
+
+    [Fact]
+    public void GenerateTprAddressLookupComponent_UsesNoJsHint()
+    {
+        const string hint = "Enter your address details without searching.";
+        _content.AddressLookupIntroductionText = hint;
+        _content.AddressLookupHint = "Search by postcode and confirm a result.";
+
+        var component = _componentGenerator.GenerateTprAddressLookupIntroduction(2, "govuk-heading-m", _content);
+        var document = Parse(component);
+
+        var hintElement = document.DocumentNode.SelectSingleNode("/div/p");
+        Assert.NotNull(hintElement);
+        Assert.Equal(hint, HtmlEntity.DeEntitize(hintElement.InnerText));
+        Assert.DoesNotContain(_content.AddressLookupHint, document.DocumentNode.InnerText);
     }
 
     [Fact]
@@ -166,6 +182,7 @@ public class ComponentGeneratorTprAddressLookupTests
     {
         var fieldName = $"{MODEL_FOR}.{propertyName}";
         const string errorText = "Choose a value <required>";
+        _content.ErrorPrefix = "Issue: ";
         _modelStateDictionary.AddModelError(fieldName, errorText);
         _modelStateDictionary.AddModelError(fieldName, "Another error");
 
@@ -181,14 +198,14 @@ public class ComponentGeneratorTprAddressLookupTests
         var errorMessage = input.ParentNode.SelectSingleNode("./p[@class='govuk-error-message']");
         Assert.NotNull(errorMessage);
         AssertAttribute($"{fieldName}-error", errorMessage, "id");
-        Assert.Equal("Error:" + errorText, HtmlEntity.DeEntitize(errorMessage.InnerText));
+        Assert.Equal("Issue: " + errorText, HtmlEntity.DeEntitize(errorMessage.InnerText));
         Assert.Equal("label", errorMessage.PreviousSibling.Name);
         Assert.Same(input, errorMessage.NextSibling);
 
         var hiddenPrefix = errorMessage.SelectSingleNode("./span");
         Assert.NotNull(hiddenPrefix);
         AssertCssClass("govuk-visually-hidden", hiddenPrefix);
-        Assert.Equal("Error:", hiddenPrefix.InnerText);
+        Assert.Equal("Issue: ", hiddenPrefix.InnerText);
         Assert.Single(errorMessage.ChildNodes, node => node.NodeType == HtmlNodeType.Element);
     }
 

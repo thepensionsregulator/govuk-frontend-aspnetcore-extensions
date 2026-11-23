@@ -208,9 +208,9 @@ describe("validateUkManualEntryAddress", () => {
     );
 
     it.each([
-        ["addressLine1", content.addressLine1RequiredErrorMessage],
-        ["townOrCity", content.postTownRequiredErrorMessage],
-        ["postcode", content.postcodeRequiredErrorMessage]
+        ["addressLine1", content.i18n.addressLine1RequiredErrorMessage],
+        ["townOrCity", content.i18n.postTownRequiredErrorMessage],
+        ["postcode", content.i18n.postcodeRequiredErrorMessage]
     ] as const)("rejects whitespace-only %s as required", (fieldName, message) => {
         expect(validateUkManualEntryAddress(createValidValues({ [fieldName]: "   " }), content)).toEqual({
             isValid: false, errorMessages: [{ fieldName, message }]

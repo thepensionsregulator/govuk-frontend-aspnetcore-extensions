@@ -273,7 +273,9 @@ describe("createAddressLookup", () => {
         document.body.appendChild(component);
 
         try {
-            component.querySelector<HTMLAnchorElement>("nav a")!.click();
+            const internationalEntryLink = Array.from(component.querySelectorAll<HTMLAnchorElement>("a"))
+                .find(link => link.textContent === content.i18n.internationalManualEntryLabel)!;
+            internationalEntryLink.click();
 
             expect(component.querySelector("#building")).toBeNull();
             expect(component.querySelector("#country")).toBeInTheDocument();
@@ -456,7 +458,7 @@ describe("createAddressLookup", () => {
         lookup.element.querySelector<HTMLButtonElement>("button")!.click();
         await flushPromises();
         const manualEntryLink = Array.from(lookup.element.querySelectorAll<HTMLAnchorElement>("a"))
-            .find(link => link.textContent === content.ukManualEntryLinkLabel)!;
+            .find(link => link.textContent === content.i18n.ukManualEntryLinkLabel)!;
 
         manualEntryLink.click();
         expect(lookup.stateMachine.getState()).toEqual({ status: "uk-manual-entry" });

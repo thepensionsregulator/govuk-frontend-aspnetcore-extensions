@@ -207,7 +207,7 @@ describe("validateInternationalUkManualEntryAddress", () => {
 
 	it.each([undefined, "   "])("reports a required-country error for %s", countryId => {
 		expect(validateInternationalUkManualEntryAddress(createValidValues({ countryId }), content)).toEqual({
-			isValid: false, errorMessages: [{ fieldName: "countryId", message: content.countryRequiredErrorMessage }]
+			isValid: false, errorMessages: [{ fieldName: "countryId", message: content.i18n.countryRequiredErrorMessage }]
 		});
 	});
 	it("returns an international address when required fields are valid", () => {
@@ -247,9 +247,9 @@ describe("validateInternationalUkManualEntryAddress", () => {
 		expect(result).toEqual({
 			isValid: false,
 			errorMessages: [
-				{ fieldName: "addressLine1", message: content.addressLine1RequiredErrorMessage },
-				{ fieldName: "postTown", message: content.postTownRequiredErrorMessage },
-				{ fieldName: "countryId", message: content.countryRequiredErrorMessage }
+				{ fieldName: "addressLine1", message: content.i18n.addressLine1RequiredErrorMessage },
+				{ fieldName: "postTown", message: content.i18n.postTownRequiredErrorMessage },
+				{ fieldName: "countryId", message: content.i18n.countryRequiredErrorMessage }
 			]
 		});
 	});

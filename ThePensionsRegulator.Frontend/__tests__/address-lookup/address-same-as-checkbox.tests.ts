@@ -13,7 +13,11 @@ describe("renderSameAsCheckbox", () => {
     });
 
     it.each(["", "Same as registered office"])("renders an associated label for %s", sameAsLabel => {
-        const component = renderSameAsCheckbox({ ...createMockAddressLookupContent(), sameAsLabel }, false);
+        const content = createMockAddressLookupContent();
+        const component = renderSameAsCheckbox({
+            ...content,
+            i18n: { ...content.i18n, sameAsLabel }
+        }, false);
         const input = component.querySelector<HTMLInputElement>("input[type='checkbox']")!;
         const label = component.querySelector("label")!;
 

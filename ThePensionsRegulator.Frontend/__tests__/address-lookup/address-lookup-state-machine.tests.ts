@@ -227,7 +227,7 @@ describe("AddressLookupStateMachine", () => {
     it("waits for a confirmed primary address and copies successive updates", () => {
         const stateMachine = new AddressLookupStateMachine(content);
         stateMachine.dispatch({ status: "same-as-checked" });
-        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(stateMachine.getState()).toEqual({ status: "search", from: "initial" });
 
         for (const result of [addressOne, addressTwo]) {
             const address = mapAddressSearchResult(result);
@@ -262,7 +262,7 @@ describe("AddressLookupStateMachine", () => {
 
         stateMachine.dispatch({ status: "primary-address-state-change", address: mapAddressSearchResult(addressOne) });
 
-        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(stateMachine.getState()).toEqual({ status: "search", from: "initial" });
         expect(listener).not.toHaveBeenCalled();
     });
 
@@ -274,7 +274,7 @@ describe("AddressLookupStateMachine", () => {
 
         stateMachine.dispatch({ status: "primary-address-state-change" });
 
-        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(stateMachine.getState()).toEqual({ status: "search", from: "initial" });
         expect(listener).not.toHaveBeenCalled();
     });
 
@@ -285,7 +285,7 @@ describe("AddressLookupStateMachine", () => {
 
         stateMachine.dispatch({ status: "primary-address-state-change", address: mapAddressSearchResult(addressOne) });
 
-        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(stateMachine.getState()).toEqual({ status: "search", from: "initial" });
         expect(listener).not.toHaveBeenCalled();
     });
 
@@ -296,7 +296,7 @@ describe("AddressLookupStateMachine", () => {
 
         stateMachine.dispatch({ status: "uk-manual-address-submitted", address: manualUkAddress });
 
-        expect(stateMachine.getState()).toEqual({ status: "search" });
+        expect(stateMachine.getState()).toEqual({ status: "search", from: "initial" });
         expect(listener).not.toHaveBeenCalled();
     });
 

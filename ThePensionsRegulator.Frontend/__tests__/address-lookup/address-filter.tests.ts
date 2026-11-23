@@ -106,7 +106,7 @@ describe("filterAddressByBuilding", () => {
 
     it.each([
         ["oLd BaK", buildingNameUprn],
-        ["fLaT", subBulidingUprn]
+        ["fLaT", subBuildingUprn]
     ])("matches a case-insensitive name substring: %s", (building, expectedUprn) => {
         expect(filterAddressesByBuilding(addresses, building).map(address => address.UPRN)).toEqual([expectedUprn]);
     });

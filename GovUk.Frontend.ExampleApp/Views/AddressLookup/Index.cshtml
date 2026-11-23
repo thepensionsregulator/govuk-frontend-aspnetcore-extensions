@@ -24,14 +24,13 @@
 <form method="post">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column govuk-grid-column-full">
-            <tpr-address-lookup address-search-url="/AddressLookupData/Address.json"
-                                for="@nameof(Model.ShippingAddress)" role="@TprAddressLookupRole.Primary"
-                                govuk-heading-class="govuk-heading-m" />
+            <tpr-address-lookup address-search-url="/AddressLookupData/Address.json" for=@Model.ShippingAddress
+                                role="@TprAddressLookupRole.Primary" govuk-heading-class="govuk-heading-m" />
         </div>
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column govuk-grid-column-full">
-            <tpr-address-lookup address-search-url="/AddressLookupData/Address.json" for="@nameof(Model.BillingAddress)"
+            <tpr-address-lookup address-search-url="/AddressLookupData/Address.json" for=@Model.BillingAddress
                                 role="@TprAddressLookupRole.Secondary" content="@billingContent"
                                 govuk-heading-class="govuk-heading-m" />
         </div>

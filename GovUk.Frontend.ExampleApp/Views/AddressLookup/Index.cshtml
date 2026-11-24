@@ -36,7 +36,7 @@
         <div class="govuk-grid-column govuk-grid-column-full">
             <tpr-address-lookup 
                 address-search-url="/AddressLookupData/Address.json"
-                name="@nameof(Model.BillingAddress)" value="@Model.BillingAddress"
+                name="@nameof(Model.BillingAddress)"
                 role="@TprAddressLookupRole.Secondary" 
                 content="@billingContent"
                 govuk-heading-class="govuk-heading-m" 
@@ -46,6 +46,7 @@
                 post-town-value="@Model.BillingAddress.PostTown"
                 post-county-value="@Model.BillingAddress.PostCounty"
                 postcode-value="@Model.BillingAddress.Postcode"
+                country-value="@Model.BillingAddress.CountryId"
                 uprn-value="@Model.BillingAddress.Uprn" />
         </div>
     </div>

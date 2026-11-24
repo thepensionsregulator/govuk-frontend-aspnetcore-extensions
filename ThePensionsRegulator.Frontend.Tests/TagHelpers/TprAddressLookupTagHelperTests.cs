@@ -101,7 +101,8 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
                     AddressLine1RequiredErrorMessage = "Custom address line 1 required",
                     AddressLine1MaxLengthErrorMessage = "Custom address line 1 length",
                     PostTownRequiredErrorMessage = "Custom town required",
-                    CountryRequiredErrorMessage = "Custom country required"
+                    CountryRequiredErrorMessage = "Custom country required",
+                    ErrorPrefix = "Issue: "
                 },
                 ViewContext = new ViewContext { ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) }
             };
@@ -117,7 +118,7 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             Assert.Contains("data-val-length=\"Custom address line 1 length\"", html);
             Assert.Contains("data-val-required=\"Custom town required\"", html);
             Assert.Contains("data-val-required=\"Custom country required\"", html);
-            Assert.Contains("Country ModelState override", html);
+            Assert.Contains("<span class=\"govuk-visually-hidden\">Issue: </span>Country ModelState override", html);
             Assert.Contains("govuk-select--error", html);
             Assert.Contains("aria-describedby=\"Address.CountryId-error\"", html);
         }

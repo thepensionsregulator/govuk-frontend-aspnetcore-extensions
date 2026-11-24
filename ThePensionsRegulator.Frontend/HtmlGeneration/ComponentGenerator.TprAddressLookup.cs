@@ -168,7 +168,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 
             var errorMessageSpan = new TagBuilder("span");
             errorMessageSpan.AddCssClass("govuk-visually-hidden");
-            errorMessageSpan.InnerHtml.Append(content.AddressLookupIntroductionText);
+            errorMessageSpan.InnerHtml.Append(content.ErrorPrefix);
             errorMessage.InnerHtml.AppendHtml(errorMessageSpan);
             errorMessage.InnerHtml.Append(fieldState.Errors[0].ErrorMessage);
             return errorMessage;

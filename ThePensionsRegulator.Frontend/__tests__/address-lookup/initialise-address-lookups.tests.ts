@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import { jest } from "@jest/globals";
 import type { AddressLookupInstance, AddressLookupOptions } from "../../Scripts/address-lookup/types";
 import { AddressLookupStateMachine } from "../../Scripts/address-lookup/address-lookup-state-machine";

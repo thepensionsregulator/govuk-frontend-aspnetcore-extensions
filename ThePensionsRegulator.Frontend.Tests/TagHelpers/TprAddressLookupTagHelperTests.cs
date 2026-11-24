@@ -20,17 +20,16 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             var generator = new Mock<ITprHtmlGenerator>();
             generator.Setup(x => x.GenerateTprAddressLookupIntroduction(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<TprAddressLookupContent>()))
                 .Returns(new TagBuilder("div"));
-            generator.Setup(x => x.GenerateTprAddressLookup(It.IsAny<ModelExpression>(), It.IsAny<ModelStateDictionary>(), It.IsAny<TprAddressLookupContent>(), It.IsAny<TprAddressLookupSettings>(), It.IsAny<IDictionary<string, int>>()))
-                .Callback<ModelExpression, ModelStateDictionary, TprAddressLookupContent, TprAddressLookupSettings, IDictionary<string, int>>((_, _, content, _, _) => generatedContent = content)
+            generator.Setup(x => x.GenerateTprAddressLookup(It.IsAny<string>(), It.IsAny<ITprAddress>(), It.IsAny<ModelStateDictionary>(), It.IsAny<TprAddressLookupContent>(), It.IsAny<TprAddressLookupSettings>(), It.IsAny<IDictionary<string, int>>()))
+                .Callback<string, ITprAddress, ModelStateDictionary, TprAddressLookupContent, TprAddressLookupSettings, IDictionary<string, int>>((_, _, _, content, _, _) => generatedContent = content)
                 .Returns(new TagBuilder("div"));
 
             var countries = new Mock<ITprCountryRepository>();
             countries.Setup(x => x.GetCountries()).ReturnsAsync(new Dictionary<string, int>());
 
-            var metadataProvider = new EmptyModelMetadataProvider();
             var tagHelper = new TprAddressLookupTagHelper(generator.Object, countries.Object)
             {
-                For = new ModelExpression("Address", metadataProvider.GetModelExplorerForType(typeof(TprAddress), new TprAddress())),
+                Name = "Address",
                 Content = new TprAddressLookupContent { FindAddressButton = "From content", AddressSelectErrorMessage = "From content", CountrySelectPlaceholder = "Pick a country" },
                 ViewContext = new ViewContext { ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) }
             };
@@ -54,11 +53,10 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
         {
             var countries = new Mock<ITprCountryRepository>();
             countries.Setup(x => x.GetCountries()).ReturnsAsync(new Dictionary<string, int>());
-            var metadataProvider = new EmptyModelMetadataProvider();
 
             var tagHelper = new TprAddressLookupTagHelper(new ComponentGenerator(), countries.Object)
             {
-                For = new ModelExpression("Address", metadataProvider.GetModelExplorerForType(typeof(TprAddress), new TprAddress())),
+                Name = "Address",
                 Content = new TprAddressLookupContent
                 {
                     AddressLookupIntroductionHeading = "Introduction heading",
@@ -129,16 +127,14 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
         {
             var countries = new Mock<ITprCountryRepository>();
             countries.Setup(x => x.GetCountries()).ReturnsAsync(new Dictionary<string, int> { ["United Kingdom"] = 1, ["France"] = 2 });
-            var address = new Mock<ITprAddress>();
-            address.SetupGet(x => x.AddressLine1).Returns("Existing address");
-            address.SetupGet(x => x.AddressLine2).Returns("Existing second line");
-            address.SetupGet(x => x.PostTown).Returns("Existing town");
-            address.SetupGet(x => x.CountryId).Returns(1);
-            address.SetupGet(x => x.Uprn).Returns("123");
             var tagHelper = new TprAddressLookupTagHelper(new ComponentGenerator(), countries.Object)
             {
                 Name = "Addresses[0].Shipping",
-                Value = address.Object,
+                AddressLine1Value = "Existing address",
+                AddressLine2Value = "Existing second line",
+                PostTownValue = "Existing town",
+                CountryValue = 1,
+                UprnValue = "123",
                 ViewContext = new ViewContext { ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) }
             };
             tagHelper.ViewContext.ModelState.SetModelValue("Addresses[0].Shipping.AddressLine1", "Submitted address", "Submitted address");
@@ -181,24 +177,51 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             Assert.Contains("value=\"Submitted address\"", output.Content.GetContent());
         }
 
-        [Theory]
-        [InlineData(false, null, false)]
-        [InlineData(false, " ", false)]
-        [InlineData(true, "Address", false)]
-        [InlineData(true, null, true)]
-        public async Task Invalid_attribute_combinations_are_rejected(bool hasFor, string? name, bool hasValue)
+        [Fact]
+        public async Task Name_and_individual_values_are_passed_to_generator()
         {
-            var metadataProvider = new EmptyModelMetadataProvider();
-            var tagHelper = new TprAddressLookupTagHelper(Mock.Of<ITprCountryRepository>())
+            string? generatedName = null;
+            ITprAddress? generatedAddress = null;
+            var generator = new Mock<ITprHtmlGenerator>();
+            generator.Setup(x => x.GenerateTprAddressLookupIntroduction(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<TprAddressLookupContent>()))
+                .Returns(new TagBuilder("div"));
+            generator.Setup(x => x.GenerateTprAddressLookup(It.IsAny<string>(), It.IsAny<ITprAddress>(), It.IsAny<ModelStateDictionary>(), It.IsAny<TprAddressLookupContent>(), It.IsAny<TprAddressLookupSettings>(), It.IsAny<IDictionary<string, int>>()))
+                .Callback<string, ITprAddress, ModelStateDictionary, TprAddressLookupContent, TprAddressLookupSettings, IDictionary<string, int>>((name, address, _, _, _, _) =>
+                {
+                    generatedName = name;
+                    generatedAddress = address;
+                })
+                .Returns(new TagBuilder("div"));
+            var countries = new Mock<ITprCountryRepository>();
+            countries.Setup(x => x.GetCountries()).ReturnsAsync(new Dictionary<string, int>());
+            var tagHelper = new TprAddressLookupTagHelper(generator.Object, countries.Object)
             {
-                For = hasFor ? new ModelExpression("Address", metadataProvider.GetModelExplorerForType(typeof(TprAddress), new TprAddress())) : null,
-                Name = name,
-                Value = hasValue ? new TprAddress() : null
+                Name = "Address",
+                AddressLine1Value = "Line 1",
+                AddressLine2Value = "Line 2",
+                AddressLine3Value = "Line 3",
+                PostTownValue = "Town",
+                PostCountyValue = "County",
+                PostcodeValue = "SW1A 2AA",
+                CountryValue = 1,
+                UprnValue = "123",
+                ViewContext = new ViewContext { ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) }
             };
             var context = new TagHelperContext([], new Dictionary<object, object>(), Guid.NewGuid().ToString());
             var output = new TagHelperOutput(TprAddressLookupTagHelper.TagName, [], (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() => tagHelper.ProcessAsync(context, output));
+            await tagHelper.ProcessAsync(context, output);
+
+            Assert.Equal("Address", generatedName);
+            Assert.NotNull(generatedAddress);
+            Assert.Equal("Line 1", generatedAddress.AddressLine1);
+            Assert.Equal("Line 2", generatedAddress.AddressLine2);
+            Assert.Equal("Line 3", generatedAddress.AddressLine3);
+            Assert.Equal("Town", generatedAddress.PostTown);
+            Assert.Equal("County", generatedAddress.PostCounty);
+            Assert.Equal("SW1A 2AA", generatedAddress.Postcode);
+            Assert.Equal(1, generatedAddress.CountryId);
+            Assert.Equal("123", generatedAddress.Uprn);
         }
 
     }

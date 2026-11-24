@@ -19,7 +19,8 @@ public class UmbracoTprAddress : ITprAddress
     public string? PostTown { get; set; }
     [MaxLength(100)]
     public string? PostCounty { get; set; }
-    public string? Postcode { get; set; }
     [Required]
+    [MaxLength(10)]
+    public string? Postcode { get; set; }
     public int? CountryId { get; set; }
 }

@@ -25,15 +25,28 @@
 <form method="post">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column govuk-grid-column-full">
-            <tpr-address-lookup address-search-url="/AddressLookupData/Address.json" for=@Model.ShippingAddress
-                                role="@TprAddressLookupRole.Primary" govuk-heading-class="govuk-heading-m" />
+            <tpr-address-lookup 
+                address-search-url="/AddressLookupData/Address.json" 
+                name="@nameof(Model.ShippingAddress)"
+                role="@TprAddressLookupRole.Primary" 
+                govuk-heading-class="govuk-heading-m" />
         </div>
     </div>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column govuk-grid-column-full">
-            <tpr-address-lookup address-search-url="/AddressLookupData/Address.json" for=@Model.BillingAddress
-                                role="@TprAddressLookupRole.Secondary" content="@billingContent"
-                                govuk-heading-class="govuk-heading-m" />
+            <tpr-address-lookup 
+                address-search-url="/AddressLookupData/Address.json"
+                name="@nameof(Model.BillingAddress)" value="@Model.BillingAddress"
+                role="@TprAddressLookupRole.Secondary" 
+                content="@billingContent"
+                govuk-heading-class="govuk-heading-m" 
+                address-line-1-value="@Model.BillingAddress.AddressLine1" 
+                address-line-2-value="@Model.BillingAddress.AddressLine2"
+                address-line-3-value="@Model.BillingAddress.AddressLine3"
+                post-town-value="@Model.BillingAddress.PostTown"
+                post-county-value="@Model.BillingAddress.PostCounty"
+                postcode-value="@Model.BillingAddress.Postcode"
+                uprn-value="@Model.BillingAddress.Uprn" />
         </div>
     </div>
     <div class="govuk-grid-row">

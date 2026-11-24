@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
+using ThePensionsRegulator.Frontend.Models;
 
 namespace ThePensionsRegulator.Frontend
 {
@@ -22,7 +23,7 @@ namespace ThePensionsRegulator.Frontend
         TagBuilder GenerateTprSearchResults(string popularContentUrl, string searchContentUrl, string contentByIdUrl);
         TagBuilder GenerateTprSearchResultsFooterLinks(TprSearchFooterLinks tprSearchFooterLinks);
         TagBuilder GenerateTprSearchResultsInput(int headingLevel, string headingClass, string? label = null);
-        TagBuilder GenerateTprAddressLookup(ModelExpression @for, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, TprAddressLookupSettings settings, IDictionary<string, int> countries);
+        TagBuilder GenerateTprAddressLookup(string name, ITprAddress values, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, TprAddressLookupSettings settings, IDictionary<string, int> countries);
         TagBuilder GenerateTprAddressLookupIntroduction(int headingLevel, string headingClass, TprAddressLookupContent content);
     }
 }

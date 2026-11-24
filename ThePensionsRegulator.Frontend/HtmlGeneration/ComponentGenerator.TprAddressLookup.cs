@@ -8,9 +8,8 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
     public partial class ComponentGenerator
     {
-        public TagBuilder GenerateTprAddressLookup(ModelExpression @for, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, TprAddressLookupSettings settings, IDictionary<string, int> countries)
+        public TagBuilder GenerateTprAddressLookup(string name, ITprAddress values, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, TprAddressLookupSettings settings, IDictionary<string, int> countries)
         {
-            var name = @for.Name;
             var fieldset = new TagBuilder("fieldset");
             fieldset.AddCssClass("govuk-fieldset");
             fieldset.AddCssClass("tpr-address-lookup-view");
@@ -20,14 +19,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             legendElement.InnerHtml.Append(content.NoJsLegend);
             fieldset.InnerHtml.AppendHtml(legendElement);
 
-            var addressLine1 = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.AddressLine1), AddressFieldNames.AddressLine1, modelStateDictionary);
-            var addressLine2 = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.AddressLine2), AddressFieldNames.AddressLine2, modelStateDictionary);
-            var addressLine3 = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.AddressLine3), AddressFieldNames.AddressLine3, modelStateDictionary);
-            var townOrCity = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.PostTown), AddressFieldNames.PostTown, modelStateDictionary);
-            var postCountry = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.PostCounty), AddressFieldNames.PostCounty, modelStateDictionary);
-            var countryId = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.CountryId), AddressFieldNames.CountryId, modelStateDictionary);
-            var postcode = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
-            var uprn = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Uprn), AddressFieldNames.Uprn, modelStateDictionary);
+            var addressLine1 = GetFieldState(values.AddressLine1, name, nameof(TprAddress.AddressLine1), AddressFieldNames.AddressLine1, modelStateDictionary);
+            var addressLine2 = GetFieldState(values.AddressLine2, name, nameof(TprAddress.AddressLine2), AddressFieldNames.AddressLine2, modelStateDictionary);
+            var addressLine3 = GetFieldState(values.AddressLine3, name, nameof(TprAddress.AddressLine3), AddressFieldNames.AddressLine3, modelStateDictionary);
+            var townOrCity = GetFieldState(values.PostTown, name, nameof(TprAddress.PostTown), AddressFieldNames.PostTown, modelStateDictionary);
+            var postCountry = GetFieldState(values.PostCounty, name, nameof(TprAddress.PostCounty), AddressFieldNames.PostCounty, modelStateDictionary);
+            var countryId = GetFieldState(values.CountryId.ToString(), name, nameof(TprAddress.CountryId), AddressFieldNames.CountryId, modelStateDictionary);
+            var postcode = GetFieldState(values.Postcode, name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
+            var uprn = GetFieldState(values.Uprn, name, nameof(TprAddress.Uprn), AddressFieldNames.Uprn, modelStateDictionary);
 
             fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, "govuk-input--width-20", "address-line1", content, content.AddressLine1RequiredErrorMessage, 100, content.AddressLine1MaxLengthErrorMessage));
             fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, "govuk-input--width-20", "address-line2", content, maxLength: 100, maxLengthErrorMessage: content.AddressLine2MaxLengthErrorMessage));
@@ -183,7 +182,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             public bool HasErrors => Errors is { Count: > 0 };
         }
 
-        private FieldState GetFieldState(ModelExplorer modelExplorer, string prefix, string propertyName, string fieldKey, ModelStateDictionary modelState)
+        private FieldState GetFieldState(string? value, string prefix, string propertyName, string fieldKey, ModelStateDictionary modelState)
         {
             var fullName = $"{prefix}.{propertyName}";
 
@@ -191,7 +190,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             {
                 return new FieldState(fullName, fieldKey)
                 {
-                    AttemptedValue = Convert.ToString(modelExplorer.GetExplorerForProperty(propertyName).Model, CultureInfo.CurrentCulture)
+                    AttemptedValue = value
                 };
             }
 

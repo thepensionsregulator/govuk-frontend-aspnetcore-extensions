@@ -23,8 +23,32 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("role")]
         public TprAddressLookupRole? Role { get; set; }
 
-        [HtmlAttributeName("for")]
-        public ModelExpression For { get; set; } = default!;
+        [HtmlAttributeName("name")]
+        public string? Name { get; set; }
+
+        [HtmlAttributeName("address-line-1-value")]
+        public string? AddressLine1Value { get; set; }
+
+        [HtmlAttributeName("address-line-2-value")]
+        public string? AddressLine2Value { get; set; }
+
+        [HtmlAttributeName("address-line-3-value")]
+        public string? AddressLine3Value { get; set; }
+
+        [HtmlAttributeName("post-town-value")]
+        public string? PostTownValue { get; set; }
+
+        [HtmlAttributeName("post-county-value")]
+        public string? PostCountyValue { get; set; }
+
+        [HtmlAttributeName("postcode-value")]
+        public string? PostcodeValue { get; set; }
+
+        [HtmlAttributeName("country-value")]
+        public int? CountryValue { get; set; }
+
+        [HtmlAttributeName("uprn-value")]
+        public string? UprnValue { get; set; }
 
         [HtmlAttributeName("content")]
         public TprAddressLookupContent? Content { get; set; }
@@ -96,18 +120,23 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
 
         public async override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
-            if (!typeof(ITprAddress).IsAssignableFrom(For.ModelExplorer.ModelType))
-            {
-                throw new InvalidOperationException($"The 'for' attribute must be of type '{typeof(ITprAddress).FullName}'.");
-            }
-
             var countries = _countryRepository.GetCountries();
             var addressLookupContent = GetContent();
             var addressLookupSettings = GetSettings();
-
+            var values = new TprAddress
+            {
+                AddressLine1 = AddressLine1Value,
+                AddressLine2 = AddressLine2Value,
+                AddressLine3 = AddressLine3Value,
+                PostTown = PostTownValue,
+                PostCounty = PostCountyValue,
+                CountryId = CountryValue,
+                Postcode = PostcodeValue,
+                Uprn = UprnValue
+            };
 
             var introduction = _htmlGenerator.GenerateTprAddressLookupIntroduction(HeadingLevel, HeadingClass, addressLookupContent);
-            var fieldset = _htmlGenerator.GenerateTprAddressLookup(For, ViewContext.ModelState, addressLookupContent, addressLookupSettings, await countries);
+            var fieldset = _htmlGenerator.GenerateTprAddressLookup(Name!, values, ViewContext.ModelState, addressLookupContent, addressLookupSettings, await countries);
 
             output.TagName = "div";
             output.TagMode = TagMode.StartTagAndEndTag;

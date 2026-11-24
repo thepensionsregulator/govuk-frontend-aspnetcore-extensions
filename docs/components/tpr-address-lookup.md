@@ -26,7 +26,7 @@ public class AddressLookupViewModel
 }
 ```
 
-Render both components inside the same form, with the primary address before the secondary address. The shipping component uses the library's default content. The billing component overrides selected text while keeping the other defaults.
+Render both components inside the same form, with the primary address before the secondary address. The shipping component uses `for` and the library's default content. The billing component uses `name` and `value` and overrides selected text while keeping the other defaults.
 
 ```razor
 @model AddressLookupViewModel
@@ -46,13 +46,14 @@ Render both components inside the same form, with the primary address before the
 
 <form method="post">
     <tpr-address-lookup
-        for="@nameof(Model.ShippingAddress)"
+        for="@Model.ShippingAddress"
         role="@TprAddressLookupRole.Primary"
         address-search-url="/AddressLookupData/Address.json"
         govuk-heading-class="govuk-heading-m" />
 
     <tpr-address-lookup
-        for="@nameof(Model.BillingAddress)"
+        name="@nameof(Model.BillingAddress)"
+        value="@Model.BillingAddress"
         role="@TprAddressLookupRole.Secondary"
         address-search-url="/AddressLookupData/Address.json"
         content="@billingContent"
@@ -86,7 +87,9 @@ Call the initializer once after the components are in the document. It enhances 
 
 | Attribute | Type | Description |
 | --------- | ---- | ----------- |
-| `for` | `ModelExpression` | Required. Model property prefix, such as `ShippingAddress`. Generates names such as `ShippingAddress.AddressLine1`. This is a string, not an `asp-for` expression. |
+| `for` | `ModelExpression` | Model expression for an `ITprAddress` property, such as `@Model.ShippingAddress`. Use either `for` or `name`, not both. |
+| `name` | `string` | Model property prefix, such as `ShippingAddress`. Generates names such as `ShippingAddress.AddressLine1`. Required when `for` is not supplied. |
+| `value` | `ITprAddress?` | Optional initial address when using `name`; cannot be combined with `for`. |
 | `address-search-url` | `string` | Required for postcode lookup. URL of an endpoint returning the response described below. |
 | `role` | `TprAddressLookupRole?` | `Primary` or `Secondary`. Set `Primary` for a standalone lookup. For linked addresses, render the primary before the secondary. |
 | `content` | `TprAddressLookupContent` | Labels, hints, legends, buttons, links and client-side error messages. Omit to use library defaults, or override individual properties. |
@@ -95,13 +98,20 @@ Call the initializer once after the components are in the document. It enhances 
 
 ### Model binding and validation
 
-`TprAddress` contains `AddressLine1`, `AddressLine2`, `AddressLine3`, `PostTown`, `PostCounty`, `Postcode`, `CountryId` and `UPRNReference`. Each component needs a distinct `for` prefix so the two addresses bind independently on POST. The same-as checkbox copies the primary address into the secondary address's fields.
+`TprAddress` contains `AddressLine1`, `AddressLine2`, `AddressLine3`, `PostTown`, `PostCounty`, `Postcode`, `CountryId` and `Uprn`. Each component needs a distinct `for` expression or `name` prefix so the two addresses bind independently on POST. The same-as checkbox copies the primary address into the secondary address's fields.
 
 Use the normal ASP.NET form and anti-forgery conventions. Validate `ModelState.IsValid` on the server before saving an address; JavaScript confirmation is not a substitute for server-side validation. `TprAddress` supplies data-annotation validation. Customising `TprAddressLookupContent` changes the component's text, not the server-side model's validation rules. See [Localisation and validation in ASP.NET projects](../aspnet/localisation-and-validation.md).
 
 Align server-side rules with the addresses your application accepts. In particular, `TprAddress` requires a postcode, while the JavaScript international manual-entry form permits it to be empty.
 
-For an invalid POST, return the submitted model to the view and preserve `ModelState`. When loading an existing address on GET, populate the fields using `ModelState.SetInitialValues(address, propertyPrefix)` from `ThePensionsRegulator.Frontend.Validation`, as the tag helper reads initial field values from model state.
+For an invalid POST, return the submitted model to the view and preserve `ModelState`. ModelState values take precedence over values supplied by `for` or `value`. When using `name` without `value`, fields without ModelState entries are empty. This is how the Umbraco block renders; to prepopulate it on GET, use `ModelState.SetInitialValues(address, propertyPrefix)` from `ThePensionsRegulator.Frontend.Validation`.
+
+Alternatively, an MVC view can supply a name and initial value explicitly:
+
+```razor
+<tpr-address-lookup name="ShippingAddress" value="@Model.ShippingAddress"
+                    address-search-url="/AddressLookupData/Address.json" />
+```
 
 ### Search endpoint
 

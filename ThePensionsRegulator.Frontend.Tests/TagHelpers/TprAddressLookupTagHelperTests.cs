@@ -97,7 +97,7 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             countries.Setup(x => x.GetCountries()).ReturnsAsync(new Dictionary<string, int>());
             var tagHelper = new TprAddressLookupTagHelper(new ComponentGenerator(), countries.Object)
             {
-                For = "Address",
+                Name = "Address",
                 Content = new TprAddressLookupContent
                 {
                     AddressLine1RequiredErrorMessage = "Custom address line 1 required",
@@ -122,6 +122,83 @@ namespace ThePensionsRegulator.Frontend.Tests.TagHelpers
             Assert.Contains("Country ModelState override", html);
             Assert.Contains("govuk-select--error", html);
             Assert.Contains("aria-describedby=\"Address.CountryId-error\"", html);
+        }
+
+        [Fact]
+        public async Task Name_and_value_use_model_state_before_address_values()
+        {
+            var countries = new Mock<ITprCountryRepository>();
+            countries.Setup(x => x.GetCountries()).ReturnsAsync(new Dictionary<string, int> { ["United Kingdom"] = 1, ["France"] = 2 });
+            var address = new Mock<ITprAddress>();
+            address.SetupGet(x => x.AddressLine1).Returns("Existing address");
+            address.SetupGet(x => x.AddressLine2).Returns("Existing second line");
+            address.SetupGet(x => x.PostTown).Returns("Existing town");
+            address.SetupGet(x => x.CountryId).Returns(1);
+            address.SetupGet(x => x.Uprn).Returns("123");
+            var tagHelper = new TprAddressLookupTagHelper(new ComponentGenerator(), countries.Object)
+            {
+                Name = "Addresses[0].Shipping",
+                Value = address.Object,
+                ViewContext = new ViewContext { ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) }
+            };
+            tagHelper.ViewContext.ModelState.SetModelValue("Addresses[0].Shipping.AddressLine1", "Submitted address", "Submitted address");
+            tagHelper.ViewContext.ModelState.SetModelValue("Addresses[0].Shipping.AddressLine2", "", "");
+            tagHelper.ViewContext.ModelState.SetModelValue("Addresses[0].Shipping.CountryId", "2", "2");
+            tagHelper.ViewContext.ModelState.AddModelError("Addresses[0].Shipping.CountryId", "Invalid country");
+            var context = new TagHelperContext([], new Dictionary<object, object>(), Guid.NewGuid().ToString());
+            var output = new TagHelperOutput(TprAddressLookupTagHelper.TagName, [], (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+
+            await tagHelper.ProcessAsync(context, output);
+
+            var html = output.Content.GetContent();
+            Assert.Contains("name=\"Addresses[0].Shipping.AddressLine1\"", html);
+            Assert.Contains("value=\"Submitted address\"", html);
+            Assert.DoesNotContain("Existing address", html);
+            Assert.DoesNotContain("Existing second line", html);
+            Assert.Contains("value=\"Existing town\"", html);
+            Assert.Contains("value=\"123\"", html);
+            Assert.Contains("selected=\"selected\" value=\"2\"", html);
+            Assert.Contains("Invalid country", html);
+        }
+
+        [Fact]
+        public async Task Name_without_value_uses_model_state()
+        {
+            var countries = new Mock<ITprCountryRepository>();
+            countries.Setup(x => x.GetCountries()).ReturnsAsync(new Dictionary<string, int>());
+            var tagHelper = new TprAddressLookupTagHelper(new ComponentGenerator(), countries.Object)
+            {
+                Name = "Address",
+                ViewContext = new ViewContext { ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) }
+            };
+            tagHelper.ViewContext.ModelState.SetModelValue("Address.AddressLine1", "Submitted address", "Submitted address");
+            var context = new TagHelperContext([], new Dictionary<object, object>(), Guid.NewGuid().ToString());
+            var output = new TagHelperOutput(TprAddressLookupTagHelper.TagName, [], (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+
+            await tagHelper.ProcessAsync(context, output);
+
+            Assert.Contains("name=\"Address.AddressLine1\"", output.Content.GetContent());
+            Assert.Contains("value=\"Submitted address\"", output.Content.GetContent());
+        }
+
+        [Theory]
+        [InlineData(false, null, false)]
+        [InlineData(false, " ", false)]
+        [InlineData(true, "Address", false)]
+        [InlineData(true, null, true)]
+        public async Task Invalid_attribute_combinations_are_rejected(bool hasFor, string? name, bool hasValue)
+        {
+            var metadataProvider = new EmptyModelMetadataProvider();
+            var tagHelper = new TprAddressLookupTagHelper(Mock.Of<ITprCountryRepository>())
+            {
+                For = hasFor ? new ModelExpression("Address", metadataProvider.GetModelExplorerForType(typeof(TprAddress), new TprAddress())) : null,
+                Name = name,
+                Value = hasValue ? new TprAddress() : null
+            };
+            var context = new TagHelperContext([], new Dictionary<object, object>(), Guid.NewGuid().ToString());
+            var output = new TagHelperOutput(TprAddressLookupTagHelper.TagName, [], (_, _) => Task.FromResult<TagHelperContent>(new DefaultTagHelperContent()));
+
+            await Assert.ThrowsAsync<InvalidOperationException>(() => tagHelper.ProcessAsync(context, output));
         }
 
     }

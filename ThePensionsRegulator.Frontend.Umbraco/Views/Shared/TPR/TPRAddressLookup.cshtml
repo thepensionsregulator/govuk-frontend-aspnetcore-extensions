@@ -1,0 +1,59 @@
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.Extensions.Configuration
+@using ThePensionsRegulator.Frontend.Models
+@using ThePensionsRegulator.Frontend.Umbraco
+@using ThePensionsRegulator.GovUk.Frontend.Umbraco
+@using ThePensionsRegulator.Umbraco.Core
+@using ThePensionsRegulator.Umbraco.Core.Blocks
+@using Umbraco.Cms.Core.Dictionary
+@inject ICultureDictionary CultureDictionary
+@inject IConfiguration Configuration
+
+@addTagHelper *, ThePensionsRegulator.Frontend
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<IOverridableBlockReference<IOverridablePublishedElement,IOverridablePublishedElement>>;
+
+@{
+    var modelPropertyName = Model.Settings?.Value<string>(PropertyAliases.ModelProperty);
+    ModelStateEntry? addressLine1Value = null;
+    ModelStateEntry? addressLine2Value = null;
+    ModelStateEntry? addressLine3Value = null;
+    ModelStateEntry? postTownValue = null;
+    ModelStateEntry? postCountyValue = null;
+    ModelStateEntry? postCodeValue = null;
+    ModelStateEntry? countryValue = null;
+    bool couldParseCountry = false;
+    int countryIdValue = 0;
+    ModelStateEntry? uprnValue = null;
+    if (!string.IsNullOrEmpty(modelPropertyName))
+    {
+        ViewContext.ModelState.TryGetValue(modelPropertyName + ".AddressLine1", out addressLine1Value);
+        ViewContext.ModelState.TryGetValue(modelPropertyName + ".AddressLine2", out addressLine2Value);
+        ViewContext.ModelState.TryGetValue(modelPropertyName + ".AddressLine3", out addressLine3Value);
+        ViewContext.ModelState.TryGetValue(modelPropertyName + ".PostTown", out postTownValue);
+        ViewContext.ModelState.TryGetValue(modelPropertyName + ".PostCounty", out postCountyValue);
+        ViewContext.ModelState.TryGetValue(modelPropertyName + ".PostCode", out postCodeValue);
+        ViewContext.ModelState.TryGetValue(modelPropertyName + ".Country", out countryValue);
+        couldParseCountry = int.TryParse($"{countryValue?.AttemptedValue}", out countryIdValue);
+        ViewContext.ModelState.TryGetValue(modelPropertyName + ".Uprn", out uprnValue);
+    }
+    var description = modelPropertyName + " description";
+    var content = TprAddressLookupContentResolver.Resolve(Model.Content, Model.Settings, CultureDictionary);
+    var addressSearchUrl = Configuration["AddressLookup:SearchEndpoint"];
+    var role = Model.Settings?.Value<bool>(TprPropertyAliases.AddressLookupRole) == true ? TprAddressLookupRole.Primary : TprAddressLookupRole.Secondary;
+}
+
+
+<tpr-address-lookup 
+    name="@modelPropertyName" 
+    address-line-1-value="@addressLine1Value?.AttemptedValue" 
+    address-line-2-value="@addressLine2Value?.AttemptedValue"
+    address-line-3-value="@addressLine3Value?.AttemptedValue"
+    post-town-value="@postTownValue?.AttemptedValue"
+    post-county-value="@postCountyValue?.AttemptedValue"
+    postcode-value="@postCodeValue?.AttemptedValue"
+    country-value="@(couldParseCountry ? countryIdValue : (int?)null)"
+    uprn-value="@uprnValue?.AttemptedValue"
+    content="content"    
+    address-search-url="@addressSearchUrl" 
+    role="@role">
+</tpr-address-lookup>

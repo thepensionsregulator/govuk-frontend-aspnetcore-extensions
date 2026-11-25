@@ -1,11 +1,11 @@
 import { AddressFieldKey, AddressFields, AddressLookupContent, ConfirmedAddress } from "./types";
-import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
+import { createButton } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/button.js";
 
 export interface ConfirmedAddressOptions {
     address: ConfirmedAddress;
     fields: AddressFields;
     content: AddressLookupContent;
-    onBackToSearchRequested: () => void;
+    onBackToSearchRequested?: () => void;
 }
 
 export function renderConfirmedAddress(options: ConfirmedAddressOptions): HTMLElement {
@@ -14,15 +14,17 @@ export function renderConfirmedAddress(options: ConfirmedAddressOptions): HTMLEl
     div.appendChild(createAddressParagraph(options.address));
     createHiddenAddressInputs(options.address, options.fields).forEach(input => div.appendChild(input));
 
-    const backToSearchLink = createLink({labelText: options.content.i18n.changeAddressLabel});
-    backToSearchLink.addEventListener("click", handleBackToSearch);
-
-    div.appendChild(backToSearchLink);
+    if (options.onBackToSearchRequested){
+        const backToSearchButton = createButton({labelText: options.content.i18n.changeAddressLabel, type: "button", variant: "secondary" });
+        backToSearchButton.addEventListener("click", handleBackToSearch);
+        div.appendChild(backToSearchButton);
+    }
 
     return div;
 
     function handleBackToSearch(event: Event): void {
         event.preventDefault();
+        if (!options.onBackToSearchRequested) { return; }
         options.onBackToSearchRequested();
     }
 }
@@ -58,13 +60,13 @@ function createAddressParagraph(address: ConfirmedAddress): HTMLParagraphElement
             paragraph.appendChild(document.createElement("br"));
         }
     });
-        
+
     return paragraph;
 }
 
 function createHiddenAddressInputs(address: ConfirmedAddress, fields: AddressFields) : HTMLInputElement[] {
     const inputs: HTMLInputElement[] = [];
-    
+
     (Object.keys(fields) as AddressFieldKey[]).forEach(key => {
         const field = fields[key];
 
@@ -77,7 +79,6 @@ function createHiddenAddressInputs(address: ConfirmedAddress, fields: AddressFie
             inputs.push(input);
         }
     });
-
     return inputs;
 }
 

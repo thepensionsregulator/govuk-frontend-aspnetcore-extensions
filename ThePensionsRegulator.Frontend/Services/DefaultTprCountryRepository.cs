@@ -1,6 +1,6 @@
 ﻿namespace ThePensionsRegulator.Frontend.Services
 {
-    internal class DefaultTprCountryRepository : ITprCountryRepository
+    public class DefaultTprCountryRepository : ITprCountryRepository
     {
         public Task<IDictionary<string, int>> GetCountries()
         {

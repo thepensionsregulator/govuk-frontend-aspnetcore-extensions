@@ -1,5 +1,6 @@
-import { InitialAddress, CountryOption, AddressLookupContent, AddressFieldKey, AddressFields, AddressLookupSettings, AddressLookupInstance } from "./types";
+import { InitialAddress, CountryOption, AddressLookupContent, AddressFieldKey, AddressFields, AddressLookupSettings, AddressLookupInstance, AddressLookupRole } from "./types";
 import { createAddressLookup } from "./address-lookup.js";
+import { AddressLookupStateMachine } from "./address-lookup-state-machine.js";
 
 const addressFieldKeys = [
     "addressLine1",
@@ -17,21 +18,45 @@ export function initialiseAddressLookups() {
     const lookupsByForm = new Map<HTMLFormElement, AddressLookupInstance[]>();
     const targets = document.querySelectorAll(".tpr-address-lookup");
 
+    let primaryLookup: AddressLookupStateMachine | undefined;
     targets.forEach(target => {
         const fields = getAddressFields(target as HTMLElement);
         const countries = getCountries(target as HTMLElement);
         const content = getContent(target as HTMLElement);
         const settings = getSettings(target as HTMLElement);
+        const introduction = target.querySelector<HTMLElement>(".tpr-address-lookup-introduction p");
+        if (introduction) {
+            introduction.textContent = content.i18n.addressLookupHint ?? "";
+        }
 
-        const addressLookup = createAddressLookup({
-            searchEndpoint: settings.searchEndpoint,
-            initialAddress: toInitialAddress(fields, countries),
-            fields, 
-            countries,
-            content,
-        });
+        let addressLookup: AddressLookupInstance;
 
-        target.replaceChildren(addressLookup.element);
+        const role = settings.role;
+        if (role === "Primary") {
+            addressLookup = createAddressLookup({
+                settings: settings,
+                initialAddress: toInitialAddress(fields, countries),
+                fields,
+                countries,
+                content,
+            });
+            primaryLookup = addressLookup.stateMachine;
+        } else {
+            addressLookup = createAddressLookup({
+                settings: settings,
+                initialAddress: toInitialAddress(fields, countries),
+                fields,
+                countries,
+                content,
+                stateMachine: primaryLookup
+            });
+        }
+
+
+        const view = target.querySelector<HTMLElement>(".tpr-address-lookup-view");
+        if (view) {
+            view.replaceChildren(addressLookup.element);
+        }
 
         const form = target.closest("form");
         if (!form) return;
@@ -49,7 +74,7 @@ export function initialiseAddressLookups() {
             }
 
             event.preventDefault();
-            
+
             unconfirmedLookups.forEach(lookup => lookup.showNotConfirmedError());
         });
     })
@@ -93,6 +118,9 @@ function getContent(container: HTMLElement): AddressLookupContent {
     const i18n: AddressLookupContent["i18n"] = {
         addressLookupLegend: get("addressLookupLegend"),
         addressLookupHint: get("addressLookupHint"),
+        noJsLegend: get("addressLookupNoJsLegend"),
+        errorPrefix: get("addressLookupErrorPrefix"),
+        searchLegend: get("addressLookupSearchLegend"),
         addressLine1Label: get("addressLookupAddressLine-1Label"),
         addressLine1RequiredErrorMessage: get("addressLookupAddressLine-1RequiredErrorMessage"),
         addressLine1MaxLengthErrorMessage: get("addressLookupAddressLine-1MaxLengthErrorMessage"),
@@ -112,6 +140,7 @@ function getContent(container: HTMLElement): AddressLookupContent {
         postcodeMaxLengthErrorMessage: get("addressLookupPostcodeMaxLengthErrorMessage"),
         postcodePatternErrorMessage: get("addressLookupPostcodePatternErrorMessage"),
         countryLabel: get("addressLookupCountryLabel"),
+        countrySelectPlaceholder: get("addressLookupCountrySelectPlaceholder"),
         countryRequiredErrorMessage: get("addressLookupCountryRequiredErrorMessage"),
         buildingNameOrNumberLabel: get("addressLookupBuildingNameOrNumberLabel"),
         findAddressButton: get("addressLookupFindAddressButton"),
@@ -129,7 +158,8 @@ function getContent(container: HTMLElement): AddressLookupContent {
         internationalManualEntryNotConfirmedErrorMessage: get("addressLookupInternationalManualEntryNotConfirmedErrorMessage"),
         ukManualEntryNotConfirmedErrorMessage: get("addressLookupUkManualEntryNotConfirmedErrorMessage"),
         resultsNotConfirmedErrorMessage: get("addressLookupResultsNotConfirmedErrorMessage"),
-        searchNotConfirmedErrorMessage: get("addressLookupSearchNotConfirmedErrorMessage")
+        searchNotConfirmedErrorMessage: get("addressLookupSearchNotConfirmedErrorMessage"),
+        sameAsLabel: get("addressLookupSameAsLabel")
     };
 
     return { i18n };
@@ -137,7 +167,8 @@ function getContent(container: HTMLElement): AddressLookupContent {
 
 function getSettings(container: HTMLElement): AddressLookupSettings {
     const searchEndpoint = container.getAttribute("data-address-lookup-search-url") || "";
-    return { searchEndpoint };
+    const role = container.getAttribute("data-address-lookup-role") as AddressLookupRole || 'Primary';
+    return { searchEndpoint, role };
 }
 
 function getCountries(container: HTMLElement): CountryOption[] {
@@ -158,5 +189,3 @@ function getCountries(container: HTMLElement): CountryOption[] {
 
     return countries;
 }
-
-

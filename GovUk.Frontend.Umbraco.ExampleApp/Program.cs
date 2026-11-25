@@ -39,6 +39,7 @@ else
 builder.Services.AddTransient<ITprSearchResultsEndpointUrlProvider, TprQueryBasedSearchResultsEndpointUrlProvider>();
 builder.Services.AddTransient<IBlockViewInterceptor, SideNavigationBlockViewInterceptor>();
 builder.Services.AddTransient<IPropertyValueFormatter, ExampleAppNoParagraphsPropertyValueFormatter>();
+builder.Services.AddTransient<ITprCountryRepository, ExampleTprCountryRepository>();
 
 builder.CreateUmbracoBuilder()
     .AddBackOffice()

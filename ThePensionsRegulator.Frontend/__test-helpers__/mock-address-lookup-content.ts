@@ -4,6 +4,9 @@ export function createMockAddressLookupContent(): AddressLookupContent {
     const i18n: AddressLookupContent["i18n"] = {
         addressLookupLegend: "Find address",
         addressLookupHint: "lookup hint",
+        noJsLegend: "Enter a new address",
+        errorPrefix: "Error: ",
+        searchLegend: "Search by postcode",
         addressLine1Label: "Address line 1",
         addressLine1RequiredErrorMessage: "Address line 1 is required",
         addressLine1MaxLengthErrorMessage: "Address line 1 must be 100 characters or fewer",
@@ -23,6 +26,7 @@ export function createMockAddressLookupContent(): AddressLookupContent {
         postcodeMaxLengthErrorMessage: "Postcode must be 10 characters or fewer",
         postcodePatternErrorMessage: "Enter a valid postcode",
         countryLabel: "Country",
+        countrySelectPlaceholder: "Select a country",
         countryRequiredErrorMessage: "Select a country",
         buildingNameOrNumberLabel: "Building name or number",
         ukManualEntryLinkLabel: "Enter a UK address manually",
@@ -40,7 +44,8 @@ export function createMockAddressLookupContent(): AddressLookupContent {
         internationalManualEntryNotConfirmedErrorMessage: "Confirm the international address",
         ukManualEntryNotConfirmedErrorMessage: "Confirm the UK address",
         resultsNotConfirmedErrorMessage: "Confirm the selected address",
-        searchNotConfirmedErrorMessage: "Confirm the search results"
+        searchNotConfirmedErrorMessage: "Confirm the search results",
+        sameAsLabel: "Same as above"
     };
 
     return { i18n };

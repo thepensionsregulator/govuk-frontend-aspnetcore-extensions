@@ -1,7 +1,5 @@
 ﻿using GovUk.Frontend.ExampleApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Globalization;
 using ThePensionsRegulator.Frontend.Models;
 using ThePensionsRegulator.Frontend.Validation;
 
@@ -13,15 +11,16 @@ namespace GovUk.Frontend.ExampleApp.Controllers
         {
             var viewModel = new AddressLookupViewModel
             {
-                ShippingAddress = new TprAddress
+                BillingAddress = new TprAddress
                 {
-                    AddressLine1 = "Address line 1 value",
-                    AddressLine2 = "Address line 2 value",
-                    AddressLine3 = "Address line 3 value",
-                    PostTown = "Post town value",
-                    PostCounty = "Post county value",
-                    Postcode = "BN1 4DW",
-                    Uprn = "UPRN123"
+                    AddressLine1 = "Example line 1",
+                    AddressLine2 = "Example line 2",
+                    AddressLine3 = "Example line 3",
+                    PostTown = "Example town",
+                    PostCounty = "Example county",
+                    CountryId = 1,
+                    Postcode = "AA1 1AA",
+                    Uprn = "123456"
                 }
             };
 

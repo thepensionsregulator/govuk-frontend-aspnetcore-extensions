@@ -8,41 +8,33 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
 {
     public partial class ComponentGenerator
     {
-        public TagBuilder GenerateTprAddressLookup(ModelExpression @for, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, TprAddressLookupSettings settings, IDictionary<string, int> countries)
+        public TagBuilder GenerateTprAddressLookup(string name, ITprAddress values, ModelStateDictionary modelStateDictionary, TprAddressLookupContent content, TprAddressLookupSettings settings, IDictionary<string, int> countries)
         {
-            var name = @for.Name;
             var fieldset = new TagBuilder("fieldset");
             fieldset.AddCssClass("govuk-fieldset");
+            fieldset.AddCssClass("tpr-address-lookup-view");
 
             var legendElement = new TagBuilder("legend");
             legendElement.AddCssClass("govuk-fieldset__legend govuk-fieldset__legend--for-fieldset");
-            legendElement.InnerHtml.Append(content.AddressLookupLegend);
+            legendElement.InnerHtml.Append(content.NoJsLegend);
             fieldset.InnerHtml.AppendHtml(legendElement);
 
-            if (content.AddressLookupHint is not null)
-            {
-                var hintElement = new TagBuilder("div");
-                hintElement.AddCssClass("govuk-hint");
-                hintElement.InnerHtml.Append(content.AddressLookupHint);
-                fieldset.InnerHtml.AppendHtml(hintElement);
-            }
+            var addressLine1 = GetFieldState(values.AddressLine1, name, nameof(TprAddress.AddressLine1), AddressFieldNames.AddressLine1, modelStateDictionary);
+            var addressLine2 = GetFieldState(values.AddressLine2, name, nameof(TprAddress.AddressLine2), AddressFieldNames.AddressLine2, modelStateDictionary);
+            var addressLine3 = GetFieldState(values.AddressLine3, name, nameof(TprAddress.AddressLine3), AddressFieldNames.AddressLine3, modelStateDictionary);
+            var townOrCity = GetFieldState(values.PostTown, name, nameof(TprAddress.PostTown), AddressFieldNames.PostTown, modelStateDictionary);
+            var postCountry = GetFieldState(values.PostCounty, name, nameof(TprAddress.PostCounty), AddressFieldNames.PostCounty, modelStateDictionary);
+            var countryId = GetFieldState(values.CountryId.ToString(), name, nameof(TprAddress.CountryId), AddressFieldNames.CountryId, modelStateDictionary);
+            var postcode = GetFieldState(values.Postcode, name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
+            var uprn = GetFieldState(values.Uprn, name, nameof(TprAddress.Uprn), AddressFieldNames.Uprn, modelStateDictionary);
 
-            var addressLine1 = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.AddressLine1), AddressFieldNames.AddressLine1, modelStateDictionary);
-            var addressLine2 = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.AddressLine2), AddressFieldNames.AddressLine2, modelStateDictionary);
-            var addressLine3 = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.AddressLine3), AddressFieldNames.AddressLine3, modelStateDictionary);
-            var townOrCity = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.PostTown), AddressFieldNames.PostTown, modelStateDictionary);
-            var postCountry = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.PostCounty), AddressFieldNames.PostCounty, modelStateDictionary);
-            var countryId = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.CountryId), AddressFieldNames.CountryId, modelStateDictionary);
-            var postcode = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Postcode), AddressFieldNames.Postcode, modelStateDictionary);
-            var uprn = GetFieldState(@for.ModelExplorer, name, nameof(TprAddress.Uprn), AddressFieldNames.Uprn, modelStateDictionary);
-
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, "govuk-input--width-20", "address-line1"));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, "govuk-input--width-20", "address-line2"));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine3, content.AddressLine3Label, false, "govuk-input--width-20", "address-line3"));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(townOrCity, content.PostTownLabel, true, "govuk-input--width-10", "address-level2"));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(postCountry, content.CountyLabel, false, "govuk-input--width-10", "address-level1"));
-            fieldset.InnerHtml.AppendHtml(CreateSelectInput(countryId, content.CountryLabel, content.CountryLabel, true, "govuk-input--width-10", countries));
-            fieldset.InnerHtml.AppendHtml(CreateTextInput(postcode, content.PostcodeLabel, false, "govuk-input--width-10", "postal-code"));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine1, content.AddressLine1Label, true, "govuk-input--width-20", "address-line1", content, content.AddressLine1RequiredErrorMessage, 100, content.AddressLine1MaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine2, content.AddressLine2Label, false, "govuk-input--width-20", "address-line2", content, maxLength: 100, maxLengthErrorMessage: content.AddressLine2MaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(addressLine3, content.AddressLine3Label, false, "govuk-input--width-20", "address-line3", content, maxLength: 100, maxLengthErrorMessage: content.AddressLine3MaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(townOrCity, content.PostTownLabel, true, "govuk-input--width-10", "address-level2", content, content.PostTownRequiredErrorMessage, 100, content.PostTownMaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(postCountry, content.CountyLabel, false, "govuk-input--width-10", "address-level1", content, maxLength: 100, maxLengthErrorMessage: content.CountyMaxLengthErrorMessage));
+            fieldset.InnerHtml.AppendHtml(CreateSelectInput(countryId, content.CountryLabel, content.CountrySelectPlaceholder, true, content.CountryRequiredErrorMessage, "govuk-input--width-10", content, countries));
+            fieldset.InnerHtml.AppendHtml(CreateTextInput(postcode, content.PostcodeLabel, false, "govuk-input--width-10", "postal-code", content, maxLength: 10, maxLengthErrorMessage: content.PostcodeMaxLengthErrorMessage));
 
             var uprnInput = new TagBuilder("input");
             uprnInput.Attributes.Add("type", "hidden");
@@ -55,68 +47,10 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             }
             fieldset.InnerHtml.AppendHtml(uprnInput);
 
-            var wrapper = new TagBuilder("div");
-            wrapper.AddCssClass("tpr-address-lookup");
-            //TODO: Add role attribute
-            wrapper.Attributes.Add("data-address-lookup-search-url", settings.SearchUrl);
-            wrapper.Attributes.Add("data-address-lookup-legend", content.AddressLookupLegend);
-            wrapper.Attributes.Add("data-address-lookup-hint", content.AddressLookupHint);
-            wrapper.Attributes.Add("data-address-lookup-address-line-1-label", content.AddressLine1Label);
-            wrapper.Attributes.Add("data-address-lookup-address-line-1-required-error-message", content.AddressLine1RequiredErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-address-line-1-max-length-error-message", content.AddressLine1MaxLengthErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-address-line-2-label", content.AddressLine2Label);
-            wrapper.Attributes.Add("data-address-lookup-address-line-2-max-length-error-message", content.AddressLine2MaxLengthErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-address-line-3-label", content.AddressLine3Label);
-            wrapper.Attributes.Add("data-address-lookup-address-line-3-max-length-error-message", content.AddressLine3MaxLengthErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-post-town-label", content.PostTownLabel);
-            wrapper.Attributes.Add("data-address-lookup-post-town-required-error-message", content.PostTownRequiredErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-post-town-max-length-error-message", content.PostTownMaxLengthErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-county-label", content.CountyLabel);
-            wrapper.Attributes.Add("data-address-lookup-county-max-length-error-message", content.CountyMaxLengthErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-county-state-province-label", content.CountyStateProvinceLabel);
-            wrapper.Attributes.Add("data-address-lookup-county-state-province-max-length-error-message", content.CountyStateProvinceMaxLengthErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-postcode-label", content.PostcodeLabel);
-            wrapper.Attributes.Add("data-address-lookup-postcode-required-error-message", content.PostcodeRequiredErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-postcode-max-length-error-message", content.PostcodeMaxLengthErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-postcode-pattern-error-message", content.PostcodePatternErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-country-label", content.CountryLabel);
-            wrapper.Attributes.Add("data-address-lookup-country-required-error-message", content.CountryRequiredErrorMessage);
-            wrapper.Attributes.Add("data-address-lookup-building-name-or-number-label", content.BuildingNameOrNumberLabel);
-
-            // UK manual entry labels
-            wrapper.Attributes.Add("data-address-lookup-uk-manual-entry-link-label", content.UkManualEntryLinkLabel);
-            wrapper.Attributes.Add("data-address-lookup-uk-manual-entry-legend", content.UkManualEntryLegend);
-
-            // international manual entry labels
-            wrapper.Attributes.Add("data-address-lookup-international-manual-entry-label", content.InternationalManualEntryLabel);
-            wrapper.Attributes.Add("data-address-lookup-international-manual-entry-legend", content.InternationalManualEntryLegend);
-
-            // search view
-            wrapper.Attributes.Add("data-address-lookup-find-address-button", content.FindAddressButton);
-            wrapper.Attributes.Add("data-address-lookup-address-not-found-message", content.AddressNotFoundMessage);
-            wrapper.Attributes.Add("data-address-lookup-service-unavailable-message", content.ServiceUnavailableMessage);
-            wrapper.Attributes.Add("data-address-lookup-search-not-confirmed-error-message", content.SearchNotConfirmedErrorMessage);
-
-            // results view
-            wrapper.Attributes.Add("data-address-lookup-address-select-label", content.AddressSelectLabel);
-            wrapper.Attributes.Add("data-address-lookup-confirm-address-label", content.ConfirmAddressLabel);
-            wrapper.Attributes.Add("data-address-lookup-back-to-postcode-search-label", content.BackToPostcodeSearchLabel);
-            wrapper.Attributes.Add("data-address-lookup-results-not-confirmed-error-message", content.ResultsNotConfirmedErrorMessage);
-
-            // UK manual entry view
-            wrapper.Attributes.Add("data-address-lookup-uk-manual-entry-not-confirmed-error-message", content.UkManualEntryNotConfirmedErrorMessage);
-
-            // international manual entry view
-            wrapper.Attributes.Add("data-address-lookup-international-manual-entry-not-confirmed-error-message", content.InternationalManualEntryNotConfirmedErrorMessage);
-
-            // confirmed view
-            wrapper.Attributes.Add("data-address-lookup-change-address-label", content.ChangeAddressLabel);
-            wrapper.InnerHtml.AppendHtml(fieldset);
-
-            return wrapper;
+            return fieldset;
         }
 
-        private static TagBuilder CreateTextInput(FieldState fieldState, string labelText, bool required, string widthClass, string autocomplete)
+        private static TagBuilder CreateTextInput(FieldState fieldState, string labelText, bool required, string widthClass, string autocomplete, TprAddressLookupContent content, string? requiredErrorMessage = null, int? maxLength = null, string? maxLengthErrorMessage = null)
         {
             var label = new TagBuilder("label");
             label.AddCssClass("govuk-label");
@@ -134,6 +68,15 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             {
                 input.Attributes.Add("required", "");
                 input.Attributes.Add("aria-required", "true");
+                input.Attributes["data-val"] = "true";
+                input.Attributes.Add("data-val-required", requiredErrorMessage ?? string.Empty);
+            }
+            if (maxLength is not null)
+            {
+                input.Attributes.Add("maxlength", maxLength.Value.ToString(CultureInfo.InvariantCulture));
+                input.Attributes["data-val"] = "true";
+                input.Attributes.Add("data-val-length", maxLengthErrorMessage ?? string.Empty);
+                input.Attributes.Add("data-val-length-max", maxLength.Value.ToString(CultureInfo.InvariantCulture));
             }
 
             if (fieldState.AttemptedValue is not null)
@@ -145,14 +88,14 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             group.AddCssClass("govuk-form-group");
             group.AddCssClass(widthClass);
             group.InnerHtml.AppendHtml(label);
-            AppendFieldError(fieldState, input, group, "govuk-input--error");
+            AppendFieldError(fieldState, input, group, "govuk-input--error", content);
 
             group.InnerHtml.AppendHtml(input);
 
             return group;
         }
 
-        private static TagBuilder CreateSelectInput(FieldState fieldState, string labelText, string placeholderText, bool required, string widthClass, IDictionary<string, int> options)
+        private static TagBuilder CreateSelectInput(FieldState fieldState, string labelText, string placeholderText, bool required, string requiredErrorMessage, string widthClass, TprAddressLookupContent content, IDictionary<string, int> options)
         {
             var label = new TagBuilder("label");
             label.AddCssClass("govuk-label");
@@ -167,6 +110,9 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             if (required)
             {
                 select.Attributes.Add("required", "");
+                select.Attributes.Add("aria-required", "true");
+                select.Attributes.Add("data-val", "true");
+                select.Attributes.Add("data-val-required", requiredErrorMessage);
             }
 
             var hasSelection = !string.IsNullOrEmpty(fieldState.AttemptedValue);
@@ -196,12 +142,12 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             group.AddCssClass("govuk-form-group");
             group.AddCssClass(widthClass);
             group.InnerHtml.AppendHtml(label);
-            AppendFieldError(fieldState, select, group, "govuk-select--error");
+            AppendFieldError(fieldState, select, group, "govuk-select--error", content);
             group.InnerHtml.AppendHtml(select);
             return group;
         }
 
-        private static void AppendFieldError(FieldState fieldState, TagBuilder input, TagBuilder group, string errorClass)
+        private static void AppendFieldError(FieldState fieldState, TagBuilder input, TagBuilder group, string errorClass, TprAddressLookupContent content)
         {
             if (!fieldState.HasErrors)
             {
@@ -211,16 +157,21 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             input.AddCssClass(errorClass);
             input.Attributes.Add("aria-describedby", $"{fieldState.Name}-error");
             group.AddCssClass("govuk-form-group--error");
+            group.InnerHtml.AppendHtml(CreateErrorMessage(fieldState, content));
+        }
+
+        private static TagBuilder CreateErrorMessage(FieldState fieldState, TprAddressLookupContent content)
+        {
             var errorMessage = new TagBuilder("p");
             errorMessage.AddCssClass("govuk-error-message");
             errorMessage.Attributes.Add("id", $"{fieldState.Name}-error");
 
             var errorMessageSpan = new TagBuilder("span");
             errorMessageSpan.AddCssClass("govuk-visually-hidden");
-            errorMessageSpan.InnerHtml.Append("Error:");
+            errorMessageSpan.InnerHtml.Append(content.ErrorPrefix);
             errorMessage.InnerHtml.AppendHtml(errorMessageSpan);
             errorMessage.InnerHtml.Append(fieldState.Errors[0].ErrorMessage);
-            group.InnerHtml.AppendHtml(errorMessage);
+            return errorMessage;
         }
 
         private sealed record FieldState(string Name, string FieldKey)
@@ -231,7 +182,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             public bool HasErrors => Errors is { Count: > 0 };
         }
 
-        private FieldState GetFieldState(ModelExplorer modelExplorer, string prefix, string propertyName, string fieldKey, ModelStateDictionary modelState)
+        private FieldState GetFieldState(string? value, string prefix, string propertyName, string fieldKey, ModelStateDictionary modelState)
         {
             var fullName = $"{prefix}.{propertyName}";
 
@@ -239,7 +190,7 @@ namespace ThePensionsRegulator.Frontend.HtmlGeneration
             {
                 return new FieldState(fullName, fieldKey)
                 {
-                    AttemptedValue = Convert.ToString(modelExplorer.GetExplorerForProperty(propertyName).Model, CultureInfo.CurrentCulture)
+                    AttemptedValue = value
                 };
             }
 

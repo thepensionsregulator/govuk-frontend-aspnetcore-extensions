@@ -117,6 +117,15 @@ describe("showFormGroupError", () => {
 		expect(formGroup.children[3]).toBe(input);
 	});
 
+	it("should use a custom visually hidden error prefix", () => {
+		const { formGroup } = createInputFormGroup(id);
+
+		showFormGroupError(formGroup, "Enter a valid postcode", "Issue: ");
+
+		expect(formGroup.querySelector(`#${id}-error`)).toHaveTextContent("Issue: Enter a valid postcode");
+		expect(formGroup.querySelector(".govuk-visually-hidden")).toHaveTextContent("Issue:");
+	});
+
 	it("should add the error ID to aria-describedby without removing the hint ID", () => {
 		const { formGroup, input } = createInputFormGroup(id);
 

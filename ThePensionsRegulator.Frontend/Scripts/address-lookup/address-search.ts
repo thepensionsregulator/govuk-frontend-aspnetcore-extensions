@@ -15,6 +15,7 @@ import { clearFormGroupError, focusFirstInvalidControl, showFormGroupError } fro
 import type { AddressLookupContent, AddressSearchCriteria, AddressSearchOptions } from "./types.js";
 import { createLink } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/link.js";
 import { runActionOnEnter } from "./run-action-on-enter.js";
+import { createParagraph } from "/ThePensionsRegulator.GovUk.Frontend/js/govuk-components/paragraph.js";
 
 export function renderAddressSearch(options: AddressSearchOptions): HTMLElement {
     const addressSearchWrapper = document.createElement("div");
@@ -47,7 +48,7 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     });
     const postcodeInput = postcodeFormGroup.querySelector("input")!;
 
-    const fieldset = createFieldsetFormGroup({legendText: options.content.i18n.addressLookupLegend, children: [ buildingNameFormGroup, postcodeFormGroup ], id: "address-search-fieldset"});
+    const fieldset = createFieldsetFormGroup({legendText: options.content.i18n.searchLegend, children: [ buildingNameFormGroup, postcodeFormGroup ], id: "address-search-fieldset"});
     fieldset.setAttribute("data-address-lookup-submit-error-anchor", "true");
     addressSearchWrapper.appendChild(fieldset);
     
@@ -59,18 +60,19 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
     
     const internationalEntryLink = createLink({labelText: options.content.i18n.internationalManualEntryLabel});
     internationalEntryLink.addEventListener("click", handleOnInternationalEntryClicked);
+    const p = createParagraph();
     
-    const nav = document.createElement("nav");
-    nav.appendChild(internationalEntryLink);
+    p.appendChild(internationalEntryLink);
     
-    addressSearchWrapper.appendChild(nav);
+    addressSearchWrapper.appendChild(p);
 
     return addressSearchWrapper;
     
     async function handleAddressSearch(): Promise<void> {
+        if (findAddressButton.disabled) { return; }
         const validationResult = readAndValidateCriteria(buildingNameOrNumberInput, postcodeInput, options.content);
         if (!validationResult.isValid) {
-            showFormGroupError(postcodeFormGroup, validationResult.errorMessage);
+            showFormGroupError(postcodeFormGroup, validationResult.errorMessage, options.content.i18n.errorPrefix);
             const form = fieldset.closest("form");
              if (form) {
                  focusFirstInvalidControl(form);
@@ -87,14 +89,14 @@ export function renderAddressSearch(options: AddressSearchOptions): HTMLElement 
             const matches = buildingName ? filterAddressesByBuilding(addresses, buildingName) : addresses;
 
             if (matches.length === 0) {
-                showFormGroupError(fieldset, options.content.i18n.addressNotFoundMessage);
+                showFormGroupError(fieldset, options.content.i18n.addressNotFoundMessage, options.content.i18n.errorPrefix);
                 return;
             }
 
             clearFormGroupError(fieldset);
             options.onSearchSuccess(matches, validationResult.criteria);
         } catch {
-            showFormGroupError(fieldset, options.content.i18n.serviceUnavailableMessage);
+            showFormGroupError(fieldset, options.content.i18n.serviceUnavailableMessage, options.content.i18n.errorPrefix);
         } 
         finally {
              findAddressButton.disabled = false;

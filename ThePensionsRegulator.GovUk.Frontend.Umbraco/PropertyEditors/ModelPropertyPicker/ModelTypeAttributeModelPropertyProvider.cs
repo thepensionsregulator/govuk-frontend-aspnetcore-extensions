@@ -139,6 +139,7 @@ namespace ThePensionsRegulator.GovUk.Frontend.Umbraco.PropertyEditors.ModelPrope
                 // Interfaces and user-defined classes: recurse into them
                 if (propType.IsInterface || (propType.IsClass && !propType.FullName!.StartsWith("System.", StringComparison.Ordinal)))
                 {
+                    propNames.Add(fullName);
                     CollectProperties(propType, fullName, depth + 1, maxDepth, pathStack, propNames);
                     continue;
                 }

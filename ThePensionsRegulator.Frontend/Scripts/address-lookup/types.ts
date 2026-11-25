@@ -1,9 +1,12 @@
+import type { AddressLookupStateMachine } from "./address-lookup-state-machine";
+
 export interface AddressLookupOptions {
-    searchEndpoint: string;
+    settings: AddressLookupSettings;
     initialAddress?: InitialAddress;
     fields: AddressFields;
     countries?: CountryOption[];
     content: AddressLookupContent;
+    stateMachine?: AddressLookupStateMachine;
 }
 
 export interface AddressSearchCriteria {
@@ -13,6 +16,11 @@ export interface AddressSearchCriteria {
 
 export interface AddressSearchService {
     searchAddress(postcode: string): Promise<AddressSearchResult[]>;
+}
+
+export interface AddressSearchService {
+    searchAddress(postcode: string): Promise<AddressSearchResult[]>;
+    // getAddressById(uprn: string) : AddressSearchResult | null;
 }
 
 export interface AddressSearchService {
@@ -123,10 +131,11 @@ export interface InitialAddress {
 
 export interface AddressLookupContent {
     i18n: {
-
         // component level legend and hint
         addressLookupLegend: string;
         addressLookupHint?: string;
+        noJsLegend: string;
+        errorPrefix: string;
 
         // manual entry labels and error messages
         addressLine1Label: string;
@@ -148,6 +157,7 @@ export interface AddressLookupContent {
         postcodeMaxLengthErrorMessage: string;
         postcodePatternErrorMessage: string;
         countryLabel: string;
+        countrySelectPlaceholder: string;
         countryRequiredErrorMessage: string;
         buildingNameOrNumberLabel: string;
 
@@ -160,6 +170,7 @@ export interface AddressLookupContent {
         internationalManualEntryLegend: string;
 
         // search view
+        searchLegend: string;
         findAddressButton: string;
         addressNotFoundMessage: string;
         serviceUnavailableMessage: string;
@@ -180,15 +191,21 @@ export interface AddressLookupContent {
 
         // confirmed view
         changeAddressLabel: string;
+
+        // same as checkbox
+        sameAsLabel: string;
     };
 }
 
+export type AddressLookupRole = 'Primary' | 'Secondary';
 export interface AddressLookupSettings {
     searchEndpoint: string;
+    role: AddressLookupRole;
 }
 
 export interface AddressLookupInstance {
     element: HTMLElement;
+    stateMachine: AddressLookupStateMachine;
     isConfirmed(): boolean;
     showNotConfirmedError(): void;
 }

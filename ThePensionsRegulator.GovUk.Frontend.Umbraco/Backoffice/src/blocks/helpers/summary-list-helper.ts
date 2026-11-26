@@ -31,9 +31,11 @@ export function renderSummaryListItem(itemKey: string | undefined, itemValueHtml
                         (layout) => layout.contentKey,
                         (layout) => {
                             const action = actions?.contentData.find(item => item.key === layout.contentKey)!;
+                            const settings = actions?.settingsData?.find(item => item.key === layout.settingsKey);
                             const text = (action.values.find(props => props.alias == "text")?.value as string);
+                            const cssClasses = (settings?.values.find(props => props.alias == "cssClasses")?.value as string | undefined);
                             return html`<li class="govuk-summary-list__actions-list-item">
-                                ${renderSummaryListAction(text)}
+                                ${renderSummaryListAction(text, cssClasses)}
                                 </li>`
                             }
                     )}
@@ -42,6 +44,7 @@ export function renderSummaryListItem(itemKey: string | undefined, itemValueHtml
         </div>`
 }
 
-export function renderSummaryListAction(text: string | undefined): TemplateResult {
-    return  html`<span class="govuk-link">${text}</span>`;
+export function renderSummaryListAction(text: string | undefined, cssClasses: string | undefined = undefined): TemplateResult {
+    const actionCssClasses = cssClasses ? `govuk-link ${cssClasses}` : 'govuk-link';
+    return  html`<span class="${actionCssClasses}">${text}</span>`;
 }

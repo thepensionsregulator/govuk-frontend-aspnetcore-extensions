@@ -44,8 +44,11 @@ export class GovUkSummaryCardView extends UmbElementMixin(LitElement) implements
                             (layout) => layout.contentKey,
                             (layout) => {
                                 const action = this.content?.cardActions?.contentData.find(item => item.key === layout.contentKey)!;
+                                const actionSettings = this.content?.cardActions?.settingsData?.find(item => item.key === layout.settingsKey);
+                                const actionCssClasses = actionSettings?.values.find(props => props.alias == "cssClasses")?.value as string | undefined;
+                                const actionClassList = actionCssClasses ? `govuk-link ${actionCssClasses}` : 'govuk-link';
                                 return html`<div class="govuk-summary-card__action">
-                                    <a class="govuk-link" href="javascript:return false">${action.values.find(props => props.alias == "text")?.value}</a>
+                                    <a class="${actionClassList}" href="javascript:return false">${action.values.find(props => props.alias == "text")?.value}</a>
                                 </div>`}
                             )}
                             </div>` : null }                

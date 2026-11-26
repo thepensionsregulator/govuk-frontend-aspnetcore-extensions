@@ -66,11 +66,14 @@
         public const string SelectOption = "govukSelectOption";
         public const string SummaryCard = "govukSummaryCard";
         public const string SummaryCardSettings = "govukSummaryCardSettings";
+        public const string SummaryCardAction = "govukSummaryCardAction";
+        public const string SummaryCardActionSettings = "govukSummaryCardActionSettings";
         public const string SummaryList = "govukSummaryList";
         public const string SummaryListSettings = "govukSummaryListSettings";
         public const string SummaryListItem = "govukSummaryListItem";
         public const string SummaryListItemSettings = "govukSummaryListItemSettings";
         public const string SummaryListAction = "govukSummaryListAction";
+        public const string SummaryListActionSettings = "govukSummaryListActionSettings";
         public const string Tag = "govukTag";
         public const string TagSettings = "govukTagSettings";
         public const string TaskListSummary = "govukTaskListSummary";

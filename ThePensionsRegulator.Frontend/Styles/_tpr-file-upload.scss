@@ -14,13 +14,15 @@ $button-shadow-size: $govuk-border-width-form-element;
 }
 
 .govuk-file-upload-button--empty .govuk-file-upload-button__pseudo-button {
-    background: $tpr-colour-white;
+    background-color: $tpr-colour-royal-blue;
+    color: $govuk-button-text-colour;
 }
 
 
 .govuk-file-upload-button:active:hover .govuk-file-upload-button__pseudo-button,
 .govuk-file-upload-button:focus:hover .govuk-file-upload-button__pseudo-button {
-    color: $tpr-colour-eclipse;
+    background-color: $tpr-colour-tangerine-yellow;
+    color: $tpr-colour-black;
 }
 
 .govuk-file-upload:focus-within::file-selector-button,
@@ -42,6 +44,6 @@ $button-shadow-size: $govuk-border-width-form-element;
 .govuk-file-upload::file-selector-button:hover,
 .govuk-file-upload-button:hover .govuk-file-upload-button__pseudo-button {
     color: $govuk-button-text-colour;
-    background-color: $tpr-colour-royal-blue;
+    background-color: $tpr-colour-violet;
 }
 

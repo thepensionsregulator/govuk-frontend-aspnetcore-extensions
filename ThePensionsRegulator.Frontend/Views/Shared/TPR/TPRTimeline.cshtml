@@ -1,0 +1,19 @@
+@using ThePensionsRegulator.Frontend.Models
+@addTagHelper *, ThePensionsRegulator.Frontend
+@model TprTimelineModel
+<tpr-timeline>
+
+    @foreach (var item in Model.TimelineItems)
+    {
+        <tpr-timeline-item date="@item.DateTime" heading="@item.Heading" attributes="@item.Attributes">
+
+            <tpr-timeline-item-content>
+
+                @Html.Raw(item.Content)
+
+            </tpr-timeline-item-content>
+
+        </tpr-timeline-item>
+    }
+
+</tpr-timeline>

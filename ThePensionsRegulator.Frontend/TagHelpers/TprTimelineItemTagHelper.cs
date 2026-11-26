@@ -1,4 +1,5 @@
 ﻿using GovUk.Frontend.AspNetCore;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
 using ThePensionsRegulator.GovUk.Frontend;
@@ -18,6 +19,9 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
         [HtmlAttributeName("heading")]
         public string? Heading { get; set; } = string.Empty;
 
+        [HtmlAttributeName("attributes")]
+        public AttributeDictionary? Attributes { get; set; }
+
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var taskListContext = context.GetContextItem<TprTimelineContext>();
@@ -29,9 +33,19 @@ namespace ThePensionsRegulator.Frontend.TagHelpers
                 await output.GetChildContentAsync();
             }
 
+            var attributes = output.Attributes.ToAttributeDictionary();
+
+            if (Attributes is not null)
+            {
+                foreach (var attribute in Attributes)
+                {
+                    attributes[attribute.Key] = attribute.Value;
+                }
+            }
+
             taskListContext.AddItem(new TprTimelineItem
             {
-                Attributes = output.Attributes.ToAttributeDictionary(),
+                Attributes = attributes,
                 Heading = Heading,
                 DateTime = Date,
                 Content = itemContext.HtmlContent

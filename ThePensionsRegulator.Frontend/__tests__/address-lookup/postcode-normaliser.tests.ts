@@ -20,7 +20,11 @@ describe("Postcode normaliser", () => {;
         ["dn551p t", "DN55 1PT"],
         ["w1a1hp", "W1A 1HP"],
         ["ec1a1bb", "EC1A 1BB"],
-        ["SW1", "SW1"]
+        ["SW1", "SW1"],
+        ["", ""],
+        ["   ", ""],
+        ["m1", "M1"],
+        ["  sw1a  2aa  ", "SW1A 2AA"]
     ])("puts all letters to upper and ensures there is a single space between the outward and inward code", (userInput, expected) => {
         const result = normalisePostcode(userInput);
         expect(result).toBe(expected);

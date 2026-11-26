@@ -49,6 +49,18 @@ describe("renderConfirmedAddress", () => {
         expect(context).toHaveTextContent("Confirmed address:");
     });
 
+    it("should render a 'change address' button, that calls the backToSearch function when clicked", () => {
+        const backToSearchFunction = jest.fn();
+        const component = renderConfirmedAddress({address: completeAddress, onBackToSearchRequested: backToSearchFunction, fields, content });
+        const button = component.querySelector("button");
+
+        expect(button).not.toBeNull();
+        expect(button).toHaveTextContent(content.i18n.changeAddressLabel);
+        expect(backToSearchFunction).not.toHaveBeenCalled();
+        button?.click();
+        expect(backToSearchFunction).toHaveBeenCalled();
+    });
+
     it("should omit optional fields without adding blank lines", () => {
         const address: ConfirmedAddress = {
             addressLine1: "10 High Street",
@@ -138,15 +150,32 @@ describe("renderConfirmedAddress", () => {
         expect(component.querySelector("#countryId")).toBeNull();
     });
 
-    it("should report when the change address link is clicked", () => {
-        const onBackToSearchRequested = jest.fn();
-        const component = renderConfirmedAddress({address: completeAddress, onBackToSearchRequested, fields, content });
-        const link = component.querySelector<HTMLAnchorElement>("a")!;
-        const event = new MouseEvent("click", { cancelable: true });
+    it("omits the change-address action when no callback is supplied", () => {
+        const component = renderConfirmedAddress({ address: completeAddress, fields, content });
 
-        link.dispatchEvent(event);
+        expect(component.querySelector("button")).toBeNull();
+        expect(component.querySelector("#addressLine1")).toHaveValue(completeAddress.addressLine1);
+    });
 
-        expect(event.defaultPrevented).toBe(true);
-        expect(onBackToSearchRequested).toHaveBeenCalledTimes(1);
+    it("uses configured field names and ignores unconfigured fields", () => {
+        const component = renderConfirmedAddress({
+            address: completeAddress,
+            fields: { addressLine1: { name: "Office.AddressLine1", value: "old value" }, postcode: undefined },
+            content
+        });
+
+        expect(component.querySelectorAll("input")).toHaveLength(1);
+        expect(component.querySelector("#addressLine1")).toHaveAttribute("name", "Office.AddressLine1");
+        expect(component.querySelector("#addressLine1")).toHaveValue("10 High Street");
+        expect(component.querySelector("#postcode")).toBeNull();
+    });
+
+    it("title-cases the displayed address but preserves postcode casing and submitted values", () => {
+        const address = { addressLine1: "10 HIGH STREET", postTown: "LONDON", postcode: "SW1A 2AA" };
+        const component = renderConfirmedAddress({ address, fields, content });
+
+        expect(component.querySelector("p")).toHaveTextContent("10 High StreetLondonSW1A 2AA");
+        expect(component.querySelector("#addressLine1")).toHaveValue("10 HIGH STREET");
+        expect(component.querySelector("#postcode")).toHaveValue("SW1A 2AA");
     });
 });

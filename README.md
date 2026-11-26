@@ -35,6 +35,7 @@ We add support for:
   - [Text input](/docs/components/text-input.md)
 
 - Additional components:
+  - [TPR address lookup](/docs/components/tpr-address-lookup.md)
   - [Task list summary](/docs/components/task-list-summary.md)
   - [Task list](/docs/components/task-list.md)
   - [TPR back to menu](/docs/components/tpr-back-to-menu.md)

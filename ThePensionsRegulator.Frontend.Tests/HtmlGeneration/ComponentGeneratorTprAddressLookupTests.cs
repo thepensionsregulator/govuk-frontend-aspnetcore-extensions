@@ -1,7 +1,6 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Collections.Generic;
 using System.Text.Encodings.Web;
 using ThePensionsRegulator.Frontend.HtmlGeneration;
@@ -20,19 +19,15 @@ public class ComponentGeneratorTprAddressLookupTests
         { "US", 2 },
         { "CA", 3 }
     };
-    const string MODEL_FOR = "test";
-    private readonly ModelStateDictionary _modelStateDictionary = new ModelStateDictionary();
-    private readonly ModelExpression _modelExpression;
+    private const string MODEL_FOR = "test";
+    private readonly ModelStateDictionary _modelStateDictionary = new();
     private readonly TprAddress _address;
 
     public ComponentGeneratorTprAddressLookupTests()
     {
         _content = new();
         _settings = new();
-        var metadataProvider = new EmptyModelMetadataProvider();
         _address = new TprAddress();
-        var modelExplorer = new ModelExplorer(metadataProvider, metadataProvider.GetMetadataForType(typeof(TprAddress)), _address);
-        _modelExpression = new ModelExpression("test", modelExplorer);
         _componentGenerator = new ComponentGenerator();
     }
 
@@ -41,13 +36,13 @@ public class ComponentGeneratorTprAddressLookupTests
     {
         // Arrange
         const string exampleLegend = "Address details";
-        _content.AddressLookupLegend = exampleLegend;
+        _content.NoJsLegend = exampleLegend;
         // Act
-        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var component = GenerateComponent();
         var document = Parse(component);
 
         // Assert
-        var fieldset = document.DocumentNode.SelectSingleNode("/div/fieldset");
+        var fieldset = document.DocumentNode.SelectSingleNode("/fieldset");
         Assert.NotNull(fieldset);
         AssertCssClass("govuk-fieldset", fieldset);
 
@@ -58,6 +53,22 @@ public class ComponentGeneratorTprAddressLookupTests
             () => AssertCssClass("govuk-fieldset__legend--for-fieldset", legend),
             () => Assert.Equal(exampleLegend, HtmlEntity.DeEntitize(legend.InnerText))
         );
+    }
+
+    [Fact]
+    public void GenerateTprAddressLookupComponent_UsesNoJsHint()
+    {
+        const string hint = "Enter your address details without searching.";
+        _content.AddressLookupIntroductionText = hint;
+        _content.AddressLookupHint = "Search by postcode and confirm a result.";
+
+        var component = _componentGenerator.GenerateTprAddressLookupIntroduction(2, "govuk-heading-m", _content);
+        var document = Parse(component);
+
+        var hintElement = document.DocumentNode.SelectSingleNode("/div/p");
+        Assert.NotNull(hintElement);
+        Assert.Equal(hint, HtmlEntity.DeEntitize(hintElement.InnerText));
+        Assert.DoesNotContain(_content.AddressLookupHint, document.DocumentNode.InnerText);
     }
 
     [Fact]
@@ -78,7 +89,7 @@ public class ComponentGeneratorTprAddressLookupTests
         _content.PostcodeLabel = postcodeLabel;
 
         // Act
-        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var component = GenerateComponent();
         var document = Parse(component);
 
         // Assert
@@ -93,27 +104,29 @@ public class ComponentGeneratorTprAddressLookupTests
     }
 
     [Fact]
-    public void GenerateTprAddressLookupComponent_UsesNativeRequiredValidationWithoutJQueryValidationAttributes()
+    public void GenerateTprAddressLookupComponent_RendersRequiredAndLengthValidationAttributes()
     {
-        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var component = GenerateComponent();
         var document = Parse(component);
         var textInputs = document.DocumentNode.SelectNodes("//input[@type='text']");
 
         Assert.NotNull(textInputs);
-        Assert.All(textInputs, input =>
-        {
-            Assert.Null(input.Attributes["data-val"]);
-            Assert.Null(input.Attributes["data-val-required"]);
-        });
+        Assert.All(textInputs, input => AssertAttribute("true", input, "data-val"));
 
         var requiredInput = document.GetElementbyId($"{MODEL_FOR}.{nameof(TprAddress.AddressLine1)}");
         Assert.NotNull(requiredInput);
         Assert.NotNull(requiredInput.Attributes["required"]);
         AssertAttribute("true", requiredInput, "aria-required");
+        AssertAttribute(_content.AddressLine1RequiredErrorMessage, requiredInput, "data-val-required");
+        AssertAttribute(_content.AddressLine1MaxLengthErrorMessage, requiredInput, "data-val-length");
+        AssertAttribute("100", requiredInput, "data-val-length-max");
 
         var optionalInput = document.GetElementbyId($"{MODEL_FOR}.{nameof(TprAddress.AddressLine2)}");
         Assert.NotNull(optionalInput);
         Assert.Null(optionalInput.Attributes["required"]);
+        Assert.Null(optionalInput.Attributes["data-val-required"]);
+        AssertAttribute(_content.AddressLine2MaxLengthErrorMessage, optionalInput, "data-val-length");
+        AssertAttribute("100", optionalInput, "data-val-length-max");
     }
 
     [Fact]
@@ -125,7 +138,7 @@ public class ComponentGeneratorTprAddressLookupTests
         _address.Uprn = "UPRN123";
 
         // Act
-        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var component = GenerateComponent();
         var document = Parse(component);
 
         // Assert
@@ -150,7 +163,7 @@ public class ComponentGeneratorTprAddressLookupTests
         _modelStateDictionary.SetModelValue($"{MODEL_FOR}.{nameof(TprAddress.AddressLine1)}", "Address from request", "Address from request");
 
         // Act
-        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var component = GenerateComponent();
         var document = Parse(component);
 
         // Assert
@@ -166,10 +179,11 @@ public class ComponentGeneratorTprAddressLookupTests
     {
         var fieldName = $"{MODEL_FOR}.{propertyName}";
         const string errorText = "Choose a value <required>";
+        _content.ErrorPrefix = "Issue: ";
         _modelStateDictionary.AddModelError(fieldName, errorText);
         _modelStateDictionary.AddModelError(fieldName, "Another error");
 
-        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var component = GenerateComponent();
         var document = Parse(component);
 
         var input = document.GetElementbyId(fieldName);
@@ -181,14 +195,14 @@ public class ComponentGeneratorTprAddressLookupTests
         var errorMessage = input.ParentNode.SelectSingleNode("./p[@class='govuk-error-message']");
         Assert.NotNull(errorMessage);
         AssertAttribute($"{fieldName}-error", errorMessage, "id");
-        Assert.Equal("Error:" + errorText, HtmlEntity.DeEntitize(errorMessage.InnerText));
+        Assert.Equal("Issue: " + errorText, HtmlEntity.DeEntitize(errorMessage.InnerText));
         Assert.Equal("label", errorMessage.PreviousSibling.Name);
         Assert.Same(input, errorMessage.NextSibling);
 
         var hiddenPrefix = errorMessage.SelectSingleNode("./span");
         Assert.NotNull(hiddenPrefix);
         AssertCssClass("govuk-visually-hidden", hiddenPrefix);
-        Assert.Equal("Error:", hiddenPrefix.InnerText);
+        Assert.Equal("Issue: ", hiddenPrefix.InnerText);
         Assert.Single(errorMessage.ChildNodes, node => node.NodeType == HtmlNodeType.Element);
     }
 
@@ -205,7 +219,7 @@ public class ComponentGeneratorTprAddressLookupTests
             _modelStateDictionary.AddModelError(fieldName, "Country is not available");
         }
 
-        var component = _componentGenerator.GenerateTprAddressLookup(_modelExpression, _modelStateDictionary, _content, _settings, _countries);
+        var component = GenerateComponent();
         var document = Parse(component);
 
         var select = document.GetElementbyId(fieldName);
@@ -218,6 +232,9 @@ public class ComponentGeneratorTprAddressLookupTests
         Assert.Equal(hasErrors, select.Attributes["aria-describedby"] is not null);
         Assert.Equal(hasErrors, select.ParentNode.SelectSingleNode("./p[@class='govuk-error-message']") is not null);
     }
+
+    private TagBuilder GenerateComponent() =>
+        _componentGenerator.GenerateTprAddressLookup(MODEL_FOR, _address, _modelStateDictionary, _content, _settings, _countries);
 
     private static void AssertInputRenderedCorrectly(string expectedLabelText, string expectedInputId, string expectedWidthClass, string expectedAutocomplete, string expectedAddressField, HtmlDocument document)
     {

@@ -1,0 +1,18 @@
+﻿@using GovUk.Frontend.Umbraco.ExampleApp.Controllers
+@using GovUk.Frontend.Umbraco.ExampleApp.Models
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<AddressLookupViewModel>
+
+@section head {
+	<title>@Model!.Page.PageHeadingOrName()</title>
+}
+
+@using (Html.BeginUmbracoForm<AddressLookupSurfaceController>(nameof(AddressLookupSurfaceController.Index), new { }, new
+{ novalidate = "novalidate" }))
+{
+	<partial name="GOVUK/BlockList" model="Model!.Page.Blocks" />
+}
+
+@section scripts {
+	<partial name="GOVUK/Validation" />
+	<script type="module" src="~/js/address-lookup-example.js"></script>
+}

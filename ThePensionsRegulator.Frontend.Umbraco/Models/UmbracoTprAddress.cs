@@ -1,0 +1,26 @@
+using System.ComponentModel.DataAnnotations;
+using ThePensionsRegulator.Frontend.Models;
+
+namespace ThePensionsRegulator.Frontend.Umbraco.Models;
+
+public class UmbracoTprAddress : ITprAddress
+{
+    public string? Uprn { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string? AddressLine1 { get; set; }
+    [MaxLength(100)]
+    public string? AddressLine2 { get; set; }
+    [MaxLength(100)]
+    public string? AddressLine3 { get; set; }
+    [Required]
+    [MaxLength(100)]
+    public string? PostTown { get; set; }
+    [MaxLength(100)]
+    public string? PostCounty { get; set; }
+    [Required]
+    [MaxLength(10)]
+    public string? Postcode { get; set; }
+    public int? CountryId { get; set; }
+}

@@ -1,5 +1,7 @@
 import { jest } from "@jest/globals";
 import "@testing-library/jest-dom";
+import { createMockAddressLookupContent } from "../../__test-helpers__/mock-address-lookup-content";
+
 import { renderAddressResults } from "../../Scripts/address-lookup/address-results";
 import type { AddressSearchCriteria, AddressSearchResult } from "../../Scripts/address-lookup/types";
 
@@ -12,22 +14,26 @@ describe("renderAddressResults", () => {
         UPRN: "2", UDPRN: "2", ADDRESS: "2 High Street", POST_TOWN: "London", POSTCODE: "SW1A 2AA"
     };
 
+
     function createResults() {
         const onAddressSelected = jest.fn<(address: AddressSearchResult) => void>();
         const onBackToSearchRequested = jest.fn<() => void>();
-
+        const onUkManualEntryRequested = jest.fn<() => void>();
+        const content = createMockAddressLookupContent();
         const component = renderAddressResults({
             addresses: [addressOne, addressTwo],
             criteria,
             onAddressSelected,
-            onBackToSearchRequested
+            onBackToSearchRequested,
+            onUkManualEntryRequested,
+            content
         });
 
         const select = component.querySelector<HTMLSelectElement>("#address-select");
         const button = component.querySelector<HTMLButtonElement>("button");
         const backLink = component.querySelector<HTMLAnchorElement>("nav a");
 
-        return { component, select, button, backLink, onAddressSelected, onBackToSearchRequested };
+        return { component, select, button, backLink, onAddressSelected, onBackToSearchRequested, onUkManualEntryRequested, content };
     }
 
     it("should render a select with a disabled placeholder and an option per address", () => {
@@ -50,26 +56,29 @@ describe("renderAddressResults", () => {
     });
 
     it("should render a Confirm address button and a Return to postcode search link", () => {
-        const { component, button, backLink } = createResults();
+        const { component, button, backLink, content } = createResults();
 
-        expect(button).toHaveTextContent("Confirm address");
-        expect(backLink).toHaveTextContent("Return to postcode search");
+        expect(button).toHaveTextContent(content.i18n.confirmAddressLabel);
+        expect(button).toHaveAttribute("type", "button");
+        expect(backLink).toHaveTextContent(content.i18n.backToPostcodeSearchLabel);
         expect(component.querySelector("nav")).toContainElement(backLink);
     });
 
     it("should show an error and not confirm when no address is selected", () => {
-        const { component, button, onAddressSelected } = createResults();
+        const { component, button, onAddressSelected, content } = createResults();
 
         button!.click();
 
         expect(component.querySelector("#address-select-error")).toHaveTextContent(
-            "Error: Select an address"
+            `Error: ${content.i18n.addressSelectErrorMessage}`
         );
         expect(onAddressSelected).not.toHaveBeenCalled();
     });
 
     it("should clear the error and confirm the selected address", () => {
         const { component, select, button, onAddressSelected } = createResults();
+        button!.click();
+        expect(component.querySelector("#address-select-error")).not.toBeNull();
         select!.value = addressTwo.UPRN;
 
         button!.click();
@@ -87,4 +96,40 @@ describe("renderAddressResults", () => {
         expect(clickEvent.defaultPrevented).toBe(true);
         expect(onBackToSearchRequested).toHaveBeenCalledTimes(1);
     });
+
+    it("requests UK manual entry without navigating or confirming an address", () => {
+        const { component, onUkManualEntryRequested, onAddressSelected, onBackToSearchRequested } = createResults();
+        const link = component.querySelector<HTMLAnchorElement>("nav li:last-child a")!;
+        const event = new MouseEvent("click", { cancelable: true });
+
+        link.dispatchEvent(event);
+
+        expect(event.defaultPrevented).toBe(true);
+        expect(onUkManualEntryRequested).toHaveBeenCalledTimes(1);
+        expect(onAddressSelected).not.toHaveBeenCalled();
+        expect(onBackToSearchRequested).not.toHaveBeenCalled();
+    });
+
+    it("confirms the selected address on Enter without submitting the enclosing form", () => {
+        const { component, select, onAddressSelected } = createResults();
+        const form = document.createElement("form");
+        const onSubmit = jest.fn();
+        form.appendChild(component);
+        form.addEventListener("submit", onSubmit);
+        select!.value = addressOne.UPRN;
+        const event = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true });
+
+        select!.dispatchEvent(event);
+
+        expect(event.defaultPrevented).toBe(true);
+        expect(onAddressSelected).toHaveBeenCalledTimes(1);
+        expect(onAddressSelected).toHaveBeenCalledWith(addressOne);
+        expect(onSubmit).not.toHaveBeenCalled();
+    });
+
+    it("has a select with the 'data-address-lookup-submit-error-anchor' attribute", () => {
+        const { component } = createResults();
+		const formGroup = component.querySelector(".govuk-form-group");
+		expect(formGroup).toHaveAttribute("data-address-lookup-submit-error-anchor");
+	});
 });

@@ -1,5 +1,7 @@
 import { jest } from "@jest/globals";
 import "@testing-library/jest-dom";
+import { CountryOption } from "../../Scripts/address-lookup/types.js";
+import { createMockAddressLookupContent } from "../../__test-helpers__/mock-address-lookup-content";
 import * as realValidation from "../../../ThePensionsRegulator.GovUk.Frontend/Scripts/govuk-components/validation.js";
 
 const focusFirstInvalidControl = jest.fn<(form: HTMLFormElement) => void>();
@@ -12,9 +14,9 @@ jest.unstable_mockModule(
 const { renderAddressInternationalManualEntry, validateInternationalUkManualEntryAddress } =
     await import("../../Scripts/address-lookup/address-international-manual-entry.js");
 
-const countries = [
-	{ value: "FR", text: "France" },
-	{ value: "US", text: "United States" }
+const countries: CountryOption[] = [
+	{ value: "FR", name: "France" },
+	{ value: "US", name: "United States" }
 ];
 
 function createValidValues(overrides: Partial<Parameters<typeof validateInternationalUkManualEntryAddress>[0]> = {}) {
@@ -35,15 +37,16 @@ describe("renderAddressInternationalManualEntry", () => {
 	function createComponent() {
 		const onAddressSubmitted = jest.fn();
 		const onBackToSearchRequested = jest.fn();
-		const component = renderAddressInternationalManualEntry({ onAddressSubmitted, onBackToSearchRequested, countries });
+		const content = createMockAddressLookupContent();
+		const component = renderAddressInternationalManualEntry({ onAddressSubmitted, onBackToSearchRequested, countries, content });
 
-		return { component, onAddressSubmitted, onBackToSearchRequested };
+		return { component, onAddressSubmitted, onBackToSearchRequested, content };
 	}
 
 	it("renders the international entry fields, country options, and secondary actions", () => {
-		const { component } = createComponent();
+		const { component, content } = createComponent();
 		const confirmButton = component.querySelector<HTMLButtonElement>("button");
-		const backLink = component.querySelector<HTMLAnchorElement>("nav a");
+		const backLink = component.querySelector<HTMLAnchorElement>("a");
 		
 		const addressLine1 = component.querySelector<HTMLInputElement>("#address-line-1");
 		expect(addressLine1).toHaveClass("govuk-input", "govuk-input--width-20");
@@ -76,9 +79,10 @@ describe("renderAddressInternationalManualEntry", () => {
 			["FR", "France"],
 			["US", "United States"]
 		]);
-		expect(confirmButton).toHaveTextContent("Confirm address");
+		expect(confirmButton).toHaveTextContent(content.i18n.confirmAddressLabel);
 		expect(confirmButton).toHaveClass("govuk-button", "govuk-button--secondary");
-		expect(backLink).toHaveTextContent("Back to postcode search");
+		expect(confirmButton).toHaveAttribute("type", "button");
+		expect(backLink).toHaveTextContent(content.i18n.backToPostcodeSearchLabel);
 	});
 
 	it("submits the selected country ID and name with a valid international address", () => {
@@ -158,16 +162,56 @@ describe("renderAddressInternationalManualEntry", () => {
 		const { component, onBackToSearchRequested } = createComponent();
 		const clickEvent = new MouseEvent("click", { cancelable: true });
 
-		component.querySelector<HTMLAnchorElement>("nav a")!.dispatchEvent(clickEvent);
+		component.querySelector<HTMLAnchorElement>("a")!.dispatchEvent(clickEvent);
 
 		expect(clickEvent.defaultPrevented).toBe(true);
 		expect(onBackToSearchRequested).toHaveBeenCalledTimes(1);
 	});
+
+	it("uses the fieldset form group as the submission-error anchor", () => {
+		const { component } = createComponent();
+		const fieldset = component.querySelector("fieldset");
+
+		expect(fieldset?.parentElement).toHaveAttribute("data-address-lookup-submit-error-anchor");
+	});
+
+	it("confirms on Enter from the country select without default submission", () => {
+		const { component, onAddressSubmitted } = createComponent();
+		component.querySelector<HTMLInputElement>("#address-line-1")!.value = "123 Rue de Rivoli";
+		component.querySelector<HTMLInputElement>("#post-town")!.value = "Paris";
+		const country = component.querySelector<HTMLSelectElement>("#country")!;
+		country.value = "FR";
+		const event = new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true });
+
+		country.dispatchEvent(event);
+
+		expect(event.defaultPrevented).toBe(true);
+		expect(onAddressSubmitted).toHaveBeenCalledTimes(1);
+		expect(onAddressSubmitted).toHaveBeenCalledWith(expect.objectContaining({ countryId: "FR", countryName: "France" }));
+	});
 });
 
 describe("validateInternationalUkManualEntryAddress", () => {
+	const content = createMockAddressLookupContent();
+
+	it.each(["addressLine1", "addressLine2", "addressLine3", "postTown", "countyStateProvince"] as const)(
+		"accepts exactly 100 trimmed characters in %s", fieldName => {
+			expect(validateInternationalUkManualEntryAddress(createValidValues({ [fieldName]: ` ${"A".repeat(100)} ` }), content).isValid)
+				.toBe(true);
+		}
+	);
+
+	it.each(["", "1234567890"])("accepts an optional or maximum-length international postcode: %s", postcode => {
+		expect(validateInternationalUkManualEntryAddress(createValidValues({ postcode }), content).isValid).toBe(true);
+	});
+
+	it.each([undefined, "   "])("reports a required-country error for %s", countryId => {
+		expect(validateInternationalUkManualEntryAddress(createValidValues({ countryId }), content)).toEqual({
+			isValid: false, errorMessages: [{ fieldName: "countryId", message: content.i18n.countryRequiredErrorMessage }]
+		});
+	});
 	it("returns an international address when required fields are valid", () => {
-		expect(validateInternationalUkManualEntryAddress(createValidValues())).toEqual({
+		expect(validateInternationalUkManualEntryAddress(createValidValues(), content)).toEqual({
 			isValid: true,
 			address: createValidValues()
 		});
@@ -184,7 +228,7 @@ describe("validateInternationalUkManualEntryAddress", () => {
 		["countryId", { countryId: "" }],
 		["postcode", { postcode: "a".repeat(11) }]
 	] as const)("returns one error for an invalid %s value", (fieldName, overrides) => {
-		const result = validateInternationalUkManualEntryAddress(createValidValues(overrides));
+		const result = validateInternationalUkManualEntryAddress(createValidValues(overrides), content);
 
 		expect(result.isValid).toBe(false);
 		if (!result.isValid) {
@@ -198,15 +242,15 @@ describe("validateInternationalUkManualEntryAddress", () => {
 			addressLine1: "",
 			postTown: "",
 			countryId: ""
-		}));
+		}), content);
 
 		expect(result).toEqual({
 			isValid: false,
-			errorMessages: expect.arrayContaining([
-				expect.objectContaining({ fieldName: "addressLine1" }),
-				expect.objectContaining({ fieldName: "postTown" }),
-				expect.objectContaining({ fieldName: "countryId" })
-			])
+			errorMessages: [
+				{ fieldName: "addressLine1", message: content.i18n.addressLine1RequiredErrorMessage },
+				{ fieldName: "postTown", message: content.i18n.postTownRequiredErrorMessage },
+				{ fieldName: "countryId", message: content.i18n.countryRequiredErrorMessage }
+			]
 		});
 	});
 });

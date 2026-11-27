@@ -1,11 +1,21 @@
+import type { AddressLookupStateMachine } from "./address-lookup-state-machine";
+
 export interface AddressLookupOptions {
-    searchEndpoint: string;
-    addressByIdEndpoint: string;
+    settings: AddressLookupSettings;
+    initialAddress?: InitialAddress;
+    fields: AddressFields;
+    countries?: CountryOption[];
+    content: AddressLookupContent;
+    stateMachine?: AddressLookupStateMachine;
 }
 
 export interface AddressSearchCriteria {
     buildingName?: string;
     postcode: string;
+}
+
+export interface AddressSearchService {
+    searchAddress(postcode: string): Promise<AddressSearchResult[]>;
 }
 
 export interface AddressSearchService {
@@ -21,6 +31,7 @@ export interface AddressSearchService {
 export interface AddressSearchOptions {
     searchService: AddressSearchService;
     criteria?: AddressSearchCriteria;
+    content: AddressLookupContent
     onSearchSuccess: (results: AddressSearchResult[], criteria: AddressSearchCriteria) => void;
     onInternationalEntryRequested: () => void;
 }
@@ -60,9 +71,17 @@ export interface AddressSearchResult {
     LAT?: number;
 }
 
+export type AddressFieldKey = Exclude<keyof InitialAddress, 'countryName'>;
+
+export interface AddressField{
+    name: string;
+    value: string
+}
+
+export type AddressFields = Partial<Record<AddressFieldKey, AddressField>>;
+
 export interface FetchAddressSearchServiceOptions{
     searchEndpoint: string;
-    addressByIdEndpoint: string;
     fetchFunction?: typeof globalThis.fetch;
 }
 
@@ -95,5 +114,100 @@ export interface ConfirmedAddress {
     countryId?: string;
     countryName?: string;
     postcode?: string;
-    uprnReference?: string;
+    uprn?: string;
 }
+
+export interface InitialAddress {
+    addressLine1?: string;
+    addressLine2?: string;
+    addressLine3?: string;
+    postTown?: string;
+    postCounty?: string;
+    countryId?: string;
+    countryName?: string;
+    postcode?: string;
+    uprn?: string;
+}
+
+export interface AddressLookupContent {
+    i18n: {
+        // component level legend and hint
+        addressLookupLegend: string;
+        addressLookupHint?: string;
+        noJsLegend: string;
+        errorPrefix: string;
+
+        // manual entry labels and error messages
+        addressLine1Label: string;
+        addressLine1RequiredErrorMessage: string;
+        addressLine1MaxLengthErrorMessage: string;
+        addressLine2Label: string;
+        addressLine2MaxLengthErrorMessage: string;
+        addressLine3Label: string;
+        addressLine3MaxLengthErrorMessage: string;
+        postTownLabel: string;
+        postTownRequiredErrorMessage: string;
+        postTownMaxLengthErrorMessage: string;
+        countyLabel: string;
+        countyMaxLengthErrorMessage: string;
+        countyStateProvinceLabel: string;
+        countyStateProvinceMaxLengthErrorMessage: string;
+        postcodeLabel: string;
+        postcodeRequiredErrorMessage: string;
+        postcodeMaxLengthErrorMessage: string;
+        postcodePatternErrorMessage: string;
+        countryLabel: string;
+        countrySelectPlaceholder: string;
+        countryRequiredErrorMessage: string;
+        buildingNameOrNumberLabel: string;
+
+        // UK manual entry labels
+        ukManualEntryLinkLabel: string;
+        ukManualEntryLegend: string;
+
+        // international manual entry labels
+        internationalManualEntryLabel: string;
+        internationalManualEntryLegend: string;
+
+        // search view
+        searchLegend: string;
+        findAddressButton: string;
+        addressNotFoundMessage: string;
+        serviceUnavailableMessage: string;
+        searchNotConfirmedErrorMessage: string;
+
+        // results view
+        addressSelectLabel: string;
+        confirmAddressLabel: string;
+        backToPostcodeSearchLabel: string;
+        addressSelectErrorMessage: string;
+        resultsNotConfirmedErrorMessage: string;
+
+        // UK manual entry view
+        ukManualEntryNotConfirmedErrorMessage: string;
+
+        // international manual entry view
+        internationalManualEntryNotConfirmedErrorMessage: string;
+
+        // confirmed view
+        changeAddressLabel: string;
+
+        // same as checkbox
+        sameAsLabel: string;
+    };
+}
+
+export type AddressLookupRole = 'Primary' | 'Secondary';
+export interface AddressLookupSettings {
+    searchEndpoint: string;
+    role: AddressLookupRole;
+}
+
+export interface AddressLookupInstance {
+    element: HTMLElement;
+    stateMachine: AddressLookupStateMachine;
+    isConfirmed(): boolean;
+    showNotConfirmedError(): void;
+}
+
+export type CountryOption = { value: string, name: string};

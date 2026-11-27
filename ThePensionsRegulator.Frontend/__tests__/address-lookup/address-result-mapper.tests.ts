@@ -1,5 +1,6 @@
-import { mapAddressSearchResult, mapInternationalManualEntryAddress } from "../../Scripts/address-lookup/address-result-mapper";
-import type { AddressSearchResult, ConfirmedAddress, InternationalManualEntryAddress } from "../../Scripts/address-lookup/types";
+import { confirmedAddressesAreEqual, mapAddressSearchResult, mapInitialAddress, mapInternationalManualEntryAddress, mapUkManualEntryAddress } from "../../Scripts/address-lookup/address-result-mapper";
+import type { AddressSearchResult, ConfirmedAddress, InitialAddress, InternationalManualEntryAddress } from "../../Scripts/address-lookup/types";
+import { createMockAddressLookupContent } from "../../__test-helpers__/mock-address-lookup-content";
 
 describe("mapAddressSearchResult", () => {
 	const baseAddress: AddressSearchResult = {
@@ -91,7 +92,7 @@ describe("mapAddressSearchResult", () => {
 		const mappedAddress: ConfirmedAddress = mapAddressSearchResult({ ...baseAddress, ...result });
 
 		expect([mappedAddress.addressLine1, mappedAddress.addressLine2, mappedAddress.addressLine3]
-			.filter(line => line !== "")).toEqual(expectedLines);
+			.filter(line => line !== undefined && line !== "")).toEqual(expectedLines);
 	});
 
 	it("should map the shared address metadata and preserve the UPRN", () => {
@@ -100,7 +101,7 @@ describe("mapAddressSearchResult", () => {
 		expect(mappedAddress).toMatchObject({
 			postTown: "London",
 			postcode: "SW1A 2AA",
-			uprnReference: "100000000001"
+			uprn: "100000000001"
 		});
 		expect(mappedAddress).not.toHaveProperty("postCounty");
 		expect(mappedAddress).not.toHaveProperty("countryId");
@@ -149,5 +150,209 @@ describe("mapInternationalManualEntryAddress", () => {
 			countryName: undefined,
 			postcode: undefined
 		});
+	});
+});
+
+describe("confirmedAddressesAreEqual", () => {
+	const ukAddress: ConfirmedAddress = mapUkManualEntryAddress({
+		addressLine1: "1 High Street",
+		addressLine2: "Flat 2",
+		addressLine3: "West End",
+		postTown: "London",
+		county: "Greater London",
+		postcode: "SW1A 1AA"
+	});
+	const internationalAddress: ConfirmedAddress = mapInternationalManualEntryAddress({
+		addressLine1: "123 Rue de Rivoli",
+		postTown: "Paris",
+		countyStateProvince: "Ile-de-France",
+		countryId: "FR",
+		countryName: "France",
+		postcode: "75001"
+	});
+
+	it("matches manual UK addresses without UPRNs", () => {
+		expect(confirmedAddressesAreEqual(ukAddress, { ...ukAddress })).toBe(true);
+	});
+
+	it("matches manual international addresses without UPRNs", () => {
+		expect(confirmedAddressesAreEqual(internationalAddress, { ...internationalAddress })).toBe(true);
+	});
+
+	it("ignores casing, surrounding whitespace and postcode spacing", () => {
+		expect(confirmedAddressesAreEqual(ukAddress, {
+			...ukAddress,
+			addressLine1: " 1 high street ",
+			postTown: " london ",
+			postcode: " sw1a1aa "
+		})).toBe(true);
+	});
+
+	it("treats absent, empty and whitespace-only optional fields as equivalent", () => {
+		expect(confirmedAddressesAreEqual(internationalAddress, {
+			...internationalAddress,
+			addressLine2: "",
+			addressLine3: " "
+		})).toBe(true);
+	});
+
+	it.each([
+		"addressLine1", "addressLine2", "addressLine3", "postTown", "postCounty", "postcode"
+	] as const)("rejects a different %s when both UPRNs are absent", field => {
+		expect(confirmedAddressesAreEqual(ukAddress, { ...ukAddress, [field]: "Different" })).toBe(false);
+	});
+
+	it("rejects different international country IDs", () => {
+		expect(confirmedAddressesAreEqual(internationalAddress, {
+			...internationalAddress, countryId: "BE"
+		})).toBe(false);
+	});
+
+	it("uses country IDs rather than country labels when supplied", () => {
+		expect(confirmedAddressesAreEqual(internationalAddress, {
+			...internationalAddress, countryName: "France (French Republic)"
+		})).toBe(true);
+	});
+
+	it("compares country names when neither country ID is supplied", () => {
+		const address = { ...internationalAddress, countryId: undefined };
+		expect(confirmedAddressesAreEqual(address, { ...address, countryName: " france " })).toBe(true);
+		expect(confirmedAddressesAreEqual(address, { ...address, countryName: "Belgium" })).toBe(false);
+	});
+
+	it("matches international addresses without optional postcodes or towns", () => {
+		const address = { addressLine1: "123 Main Street", countryId: "FR" };
+		expect(confirmedAddressesAreEqual(address, { ...address, postcode: "", postTown: "" })).toBe(true);
+	});
+
+	it.each([undefined, "", " "])("compares fields when one UPRN is %s", uprn => {
+		const addressWithUprn = { ...ukAddress, uprn: "123" };
+		const addressWithoutUprn = { ...ukAddress, uprn };
+		expect(confirmedAddressesAreEqual(addressWithUprn, addressWithoutUprn)).toBe(true);
+		expect(confirmedAddressesAreEqual(addressWithoutUprn, addressWithUprn)).toBe(true);
+		expect(confirmedAddressesAreEqual(addressWithUprn, {
+			...addressWithoutUprn, addressLine1: "2 High Street"
+		})).toBe(false);
+	});
+
+	it("matches identical nonempty UPRNs even when address text differs", () => {
+		expect(confirmedAddressesAreEqual(
+			{ ...ukAddress, uprn: "123" },
+			{ ...ukAddress, uprn: "123", addressLine1: "Different" }
+		)).toBe(true);
+	});
+
+	it("rejects conflicting nonempty UPRNs even when address text matches", () => {
+		expect(confirmedAddressesAreEqual(
+			{ ...ukAddress, uprn: "123" },
+			{ ...ukAddress, uprn: "456" }
+		)).toBe(false);
+	});
+});
+
+describe("mapInitialAddress", () => {
+	const content = createMockAddressLookupContent();
+
+	it("maps a complete initial address with the UK country ID as a UK address", () => {
+		const initialAddress: InitialAddress = {
+			addressLine1: "1 High Street",
+			postTown: "London",
+			countryId: "GB",
+			countryName: "United Kingdom",
+			postcode: "SW1A 1AA",
+			uprn: "123"
+		};
+
+		expect(mapInitialAddress(content, initialAddress, "GB")).toEqual({
+			addressLine1: "1 High Street",
+			addressLine2: undefined,
+			addressLine3: undefined,
+			postTown: "London",
+			postCounty: undefined,
+			countryId: "GB",
+			countryName: "United Kingdom",
+			postcode: "SW1A 1AA",
+			uprn: "123"
+		});
+	});
+
+	it("validates an initial address with a different country ID as international", () => {
+		const initialAddress: InitialAddress = {
+			addressLine1: "123 Rue de Rivoli",
+			postTown: "Paris",
+			countryId: "FR",
+			countryName: "France",
+			postcode: "75001"
+		};
+
+		expect(mapInitialAddress(content, initialAddress, "GB")).toMatchObject({
+			addressLine1: "123 Rue de Rivoli",
+			postTown: "Paris",
+			countryId: "FR",
+			countryName: "France",
+			postcode: "75001"
+		});
+	});
+
+	it.each<InitialAddress | undefined>([
+		undefined,
+		{},
+		{ addressLine1: "" },
+		{ addressLine1: "   ", postTown: "London", postcode: "SW1A 1AA" },
+		{ addressLine1: "1 High Street", postTown: "London", postcode: "INVALID" },
+		{ addressLine1: "1 High Street", postcode: "SW1A 1AA" },
+		{ addressLine1: "X".repeat(101), countryId: "FR", countryName: "France" }
+	])("does not confirm an absent or invalid initial address: %j", address => {
+		expect(mapInitialAddress(content, address, "GB")).toBeUndefined();
+	});
+
+	it("validates and normalises a UK address without a UPRN", () => {
+		expect(mapInitialAddress(content, {
+			addressLine1: "1 High Street", addressLine2: "Flat 2", addressLine3: "West End",
+			postTown: "London", postCounty: "Greater London", postcode: " sw1a-1aa ", countryId: "GB"
+		}, "GB")).toEqual({
+			addressLine1: "1 High Street", addressLine2: "Flat 2", addressLine3: "West End",
+			postTown: "London", postCounty: "Greater London", postcode: "SW1A 1AA",
+			countryId: "GB", countryName: undefined, uprn: undefined
+		});
+	});
+
+	it("preserves optional fields on a UPRN-backed initial UK address", () => {
+		expect(mapInitialAddress(content, {
+			addressLine1: "1 High Street", addressLine2: "Flat 2", addressLine3: "West End",
+			postTown: "London", postCounty: "Greater London", postcode: "sw1a1aa", uprn: "123"
+		}, "GB")).toMatchObject({
+			addressLine2: "Flat 2", addressLine3: "West End", postCounty: "Greater London",
+			postcode: "SW1A 1AA", uprn: "123"
+		});
+	});
+
+	it("accepts an international address without an optional postcode", () => {
+		expect(mapInitialAddress(content, {
+			addressLine1: "123 Main Street", postTown: "Paris", countryId: "FR", countryName: "France"
+		}, "GB")).toMatchObject({
+			addressLine1: "123 Main Street", countryId: "FR", countryName: "France",
+			postTown: "Paris", postcode: undefined
+		});
+	});
+});
+
+describe("mapUkManualEntryAddress", () => {
+	it("maps optional lines and county without adding country or UPRN metadata", () => {
+		expect(mapUkManualEntryAddress({
+			addressLine1: "1 High Street", addressLine2: "Flat 2", addressLine3: "West End",
+			postTown: "London", county: "Greater London", postcode: "SW1A 1AA"
+		})).toEqual({
+			addressLine1: "1 High Street", addressLine2: "Flat 2", addressLine3: "West End",
+			postTown: "London", postCounty: "Greater London", postcode: "SW1A 1AA"
+		});
+	});
+
+	it("leaves missing optional UK fields undefined", () => {
+		expect(mapUkManualEntryAddress({ addressLine1: "1 High Street", postTown: "London", postcode: "SW1A 1AA" }))
+			.toEqual({
+				addressLine1: "1 High Street", addressLine2: undefined, addressLine3: undefined,
+				postTown: "London", postCounty: undefined, postcode: "SW1A 1AA"
+			});
 	});
 });

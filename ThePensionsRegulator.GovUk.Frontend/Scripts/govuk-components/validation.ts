@@ -18,14 +18,14 @@ function getValidatableElement(formGroup: HTMLElement) : ValidatableElement | nu
     return null;
 }
 
-export function showFormGroupError(formGroup: HTMLElement, errorMessage: string): void {
+export function showFormGroupError(formGroup: HTMLElement, errorMessage: string, errorPrefix = "Error: "): void {
     formGroup.classList.add("govuk-form-group--error");
 
     const validatableElement = getValidatableElement(formGroup);
     if (validatableElement instanceof HTMLFieldSetElement) {
-        showFieldsetError(formGroup, validatableElement, errorMessage);
+        showFieldsetError(formGroup, validatableElement, errorMessage, errorPrefix);
     }else{
-        showControlError(formGroup, validatableElement as HTMLInputElement | HTMLSelectElement, errorMessage);
+        showControlError(formGroup, validatableElement as HTMLInputElement | HTMLSelectElement, errorMessage, errorPrefix);
     }
 
     ensureErrorSummary();
@@ -34,7 +34,7 @@ export function showFormGroupError(formGroup: HTMLElement, errorMessage: string)
 }
 
 
-function showControlError(formGroup: HTMLElement, control: HTMLInputElement | HTMLSelectElement, errorMessage: string): void {
+function showControlError(formGroup: HTMLElement, control: HTMLInputElement | HTMLSelectElement, errorMessage: string, errorPrefix: string): void {
     if (control instanceof HTMLInputElement) {
         control.classList.add("govuk-input--error");
     }else if (control instanceof HTMLSelectElement) {
@@ -51,11 +51,11 @@ function showControlError(formGroup: HTMLElement, control: HTMLInputElement | HT
         control.insertAdjacentElement("beforebegin", errorMessageElement);
     }
 
-    setErrorMessage(errorMessageElement, errorMessage);
+    setErrorMessage(errorMessageElement, errorMessage, errorPrefix);
     addDescriptionId(control, errorId);
 }
 
-function showFieldsetError(formGroup: HTMLElement, fieldset: HTMLFieldSetElement, errorMessage: string): void {
+function showFieldsetError(formGroup: HTMLElement, fieldset: HTMLFieldSetElement, errorMessage: string, errorPrefix: string): void {
     const errorId = `${fieldset.id}-error`;
     formGroup.classList.add("govuk-form-group--error");
 
@@ -69,16 +69,16 @@ function showFieldsetError(formGroup: HTMLElement, fieldset: HTMLFieldSetElement
         legend?.insertAdjacentElement("afterend", errorMessageElement);
     }
 
-    setErrorMessage(errorMessageElement, errorMessage);
+    setErrorMessage(errorMessageElement, errorMessage, errorPrefix);
     addDescriptionId(fieldset, errorId);
 }
 
-function setErrorMessage(errorMessageElement: HTMLElement, errorMessage: string): void {
+function setErrorMessage(errorMessageElement: HTMLElement, errorMessage: string, errorPrefixText: string): void {
     errorMessageElement.replaceChildren();
 
     const errorPrefix = document.createElement("span");
     errorPrefix.className = "govuk-visually-hidden";
-    errorPrefix.textContent = "Error: ";
+    errorPrefix.textContent = errorPrefixText;
     
     errorMessageElement.appendChild(errorPrefix);
     errorMessageElement.appendChild(document.createTextNode(errorMessage));

@@ -1,7 +1,8 @@
-import type { AddressSearchResult, ConfirmedAddress, InternationalManualEntryAddress, UkManualEntryAddress } from './types';
-
-// const unitedKingdomCountryId = 'GB';
-// const unitedKingdomCountryName = 'United Kingdom';
+import type { AddressLookupContent, AddressSearchResult, ConfirmedAddress, InitialAddress, InternationalManualEntryAddress, UkManualEntryAddress } from './types';
+import { validateUkManualEntryAddress } from './address-uk-manual-entry.js';
+import { validateInternationalUkManualEntryAddress } from './address-international-manual-entry.js';
+import { normalisePostcode } from './postcode-normaliser.js';
+import { sanitisePostcode } from './postcode-sanitiser.js';
 
 export function mapAddressSearchResult(address: AddressSearchResult): ConfirmedAddress {
     const lines: string[] = [];
@@ -64,7 +65,7 @@ export function mapAddressSearchResult(address: AddressSearchResult): ConfirmedA
         addressLine3: lines[2] ?? undefined,
         postTown: address.POST_TOWN?.trim() || undefined,
         postcode: address.POSTCODE,
-        uprnReference: address.UPRN ?? undefined
+        uprn: address.UPRN ?? undefined
     };
 }
 
@@ -92,6 +93,94 @@ export function mapInternationalManualEntryAddress(address: InternationalManualE
         countryName: address.countryName ?? undefined,
         postcode: address.postcode ?? undefined
     };
+}
+
+export function mapInitialAddress(content: AddressLookupContent, address?: InitialAddress, ukCountryId?: string): ConfirmedAddress | undefined {
+    if (address == undefined || !address.addressLine1){
+        return undefined;
+    }
+
+    const isInternational = !!address.countryId && address.countryId !== ukCountryId;
+
+    const ukPostcode = address.postcode ? normalisePostcode(sanitisePostcode(address.postcode)) : '';
+
+    if (!isInternational && address.uprn && address.postTown && ukPostcode) {
+        return {
+            addressLine1: address.addressLine1,
+            addressLine2: address.addressLine2 || undefined,
+            addressLine3: address.addressLine3 || undefined,
+            postTown: address.postTown,
+            postCounty: address.postCounty || undefined,
+            countryId: address.countryId,
+            countryName: address.countryName,
+            postcode: ukPostcode,
+            uprn: address.uprn
+        };
+    }
+
+    // The manual entry validators expect every optional field to be a string.
+    const validationResult = isInternational
+        ? validateInternationalUkManualEntryAddress(
+            {
+                addressLine1: address.addressLine1,
+                addressLine2: address.addressLine2 ?? '',
+                addressLine3: address.addressLine3 ?? '',
+                postTown: address.postTown ?? '',
+                countyStateProvince: address.postCounty ?? '',
+                countryId: address.countryId,
+                countryName: address.countryName,
+                postcode: address.postcode ?? ''
+            },
+            content,
+        )
+        : validateUkManualEntryAddress(
+            {
+                addressLine1: address.addressLine1,
+                addressLine2: address.addressLine2 ?? '',
+                addressLine3: address.addressLine3 ?? '',
+                townOrCity: address.postTown ?? '',
+                county: address.postCounty ?? '',
+                postcode: ukPostcode,
+            },
+            content
+        );
+
+    if (!validationResult.isValid) {
+        return undefined;
+    }
+
+    return {
+        addressLine1: address.addressLine1,
+        addressLine2: address.addressLine2 || undefined,
+        addressLine3: address.addressLine3 || undefined,
+        postTown: address.postTown,
+        postCounty: address.postCounty || undefined,
+        countryId: address.countryId,
+        countryName: address.countryName,
+        postcode: (isInternational ? address.postcode : ukPostcode) || undefined,
+        uprn: address.uprn || undefined
+    };
+}
+export function confirmedAddressesAreEqual(address1: ConfirmedAddress, address2: ConfirmedAddress): boolean {
+    const uprn1 = address1.uprn?.trim();
+    const uprn2 = address2.uprn?.trim();
+    if (uprn1 && uprn2) { return uprn1 === uprn2; }
+
+    const normalise = (value?: string): string => (value ?? '').trim().toUpperCase();
+    const fields = [
+        'addressLine1', 'addressLine2', 'addressLine3', 'postTown', 'postCounty', 'countryId'
+    ] as const satisfies readonly (keyof ConfirmedAddress)[];
+
+    if (!fields.every(field => normalise(address1[field]) === normalise(address2[field]))) {
+        return false;
+    }
+
+    if (!normalise(address1.countryId) && !normalise(address2.countryId)
+        && normalise(address1.countryName) !== normalise(address2.countryName)) {
+        return false;
+    }
+
+    return normalise(address1.postcode).replace(/\s/g, '') === normalise(address2.postcode).replace(/\s/g, '');
 }
 
 function pushStreetLine(lines: string[], buildingNumber: string, address: AddressSearchResult): void {
